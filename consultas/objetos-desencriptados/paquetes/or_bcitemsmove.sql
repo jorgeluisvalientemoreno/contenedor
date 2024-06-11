@@ -1,0 +1,644 @@
+PACKAGE BODY OR_BCItemsMove
+IS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    CSBVERSION  CONSTANT VARCHAR2(20)  := 'SAO203354';
+    
+	
+    
+    
+
+    
+    
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+
+    FUNCTION FRFGETOPERUNITELEMENTS
+    (
+        INUOPERATINGUNITID  IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE
+    )
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+        ORFOPERUNITELEMENTS CONSTANTS.TYREFCURSOR;
+    BEGIN
+
+        OPEN ORFOPERUNITELEMENTS FOR
+            SELECT B.ID, B.ELEMENT_TYPE_ID||' - '||DAIF_ELEMENT_TYPE.FSBGETDISPLAY_NAME(B.ELEMENT_TYPE_ID) ELEMENT_TYPE_ID,
+                   B.CLASS_ID||' - '||DAIF_ELEMENT_CLASS.FSBGETDESCRIPTION(B.ELEMENT_TYPE_ID, B.CLASS_ID) ELEMENT_CLASS_ID,
+                   CODE
+            FROM OR_OPER_UNIT_ELEMENT A, IF_NODE B
+            WHERE A.OPERATING_UNIT_ID = INUOPERATINGUNITID
+            AND A.ELEMENT_ID = B.ID
+            AND A.IS_ASSIGNABLE = GE_BOCONSTANTS.CSBNO
+            UNION
+            SELECT B.ID, B.ELEMENT_TYPE_ID||' - '||DAIF_ELEMENT_TYPE.FSBGETDISPLAY_NAME(B.ELEMENT_TYPE_ID) ELEMENT_TYPE_ID,
+                   B.CLASS_ID||' - '||DAIF_ELEMENT_CLASS.FSBGETDESCRIPTION(B.ELEMENT_TYPE_ID, B.CLASS_ID) ELEMENT_CLASS_ID,
+                   CODE
+            FROM OR_OPER_UNIT_ELEMENT A, IF_ASSIGNABLE B
+            WHERE A.OPERATING_UNIT_ID = INUOPERATINGUNITID
+            AND A.ELEMENT_ID = B.ID
+            AND A.IS_ASSIGNABLE = GE_BOCONSTANTS.CSBYES;
+            
+        RETURN ORFOPERUNITELEMENTS;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF ORFOPERUNITELEMENTS%ISOPEN THEN
+                CLOSE ORFOPERUNITELEMENTS;
+            END IF;
+            RAISE;
+        WHEN OTHERS THEN
+            IF ORFOPERUNITELEMENTS%ISOPEN THEN
+                CLOSE ORFOPERUNITELEMENTS;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FRFGETOPERUNITELEMENTS;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETUNIITEMBALA
+    (
+        INUOPERATUNIID      IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        ORFITEMBALAUO       OUT CONSTANTS.TYREFCURSOR,
+        IBOCENTROREPARACION IN  BOOLEAN DEFAULT FALSE
+    )
+    IS
+        NUNEWSTATUS  GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV%TYPE := 1.1;
+    BEGIN
+        
+        IF (NOT IBOCENTROREPARACION) THEN
+            UT_TRACE.TRACE('FALSE', 6);
+            OPEN ORFITEMBALAUO FOR
+                SELECT  /*+ index(or_ope_uni_item_bala IDX_OR_OPE_UNI_ITEM_BALA_01)
+                            index(ge_items pk_ge_items)
+                        */
+                        OR_OPE_UNI_ITEM_BALA.ITEMS_ID   ITEMS_ID,
+                        GE_ITEMS.DESCRIPTION            DESCRIPTION,
+                        OR_OPE_UNI_ITEM_BALA.BALANCE    BALANCE,
+                        GE_ITEMS.MEASURE_UNIT_ID        MEASURE_UNIT_ID,
+                        NVL(GE_ITEMS_TIPO.SERIADO, GE_BOCONSTANTS.CSBNO) ISSERIADO,
+                        GE_ITEMS.CODE                   CODE
+                  FROM  OR_OPE_UNI_ITEM_BALA,
+                        GE_ITEMS ,
+                        GE_ITEMS_TIPO
+                        /*+ OR_BCItemsMove.GetUniItemBala */
+                 WHERE  OR_OPE_UNI_ITEM_BALA.ITEMS_ID = GE_ITEMS.ITEMS_ID
+                   AND  GE_ITEMS.ID_ITEMS_TIPO = GE_ITEMS_TIPO.ID_ITEMS_TIPO (+)
+                   AND  OR_OPE_UNI_ITEM_BALA.BALANCE > 0
+                   AND  OR_OPE_UNI_ITEM_BALA.OPERATING_UNIT_ID = INUOPERATUNIID;
+        ELSE
+        
+            IF (DAOR_OPERATING_UNIT.FNUGETOPER_UNIT_CLASSIF_ID(INUOPERATUNIID) <>
+                        GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA ) THEN
+                NUNEWSTATUS :=  GE_BOITEMSCONSTANTS.CNUSTATUS_EN_REPARA;
+            END IF;
+            
+            
+            UT_TRACE.TRACE('TRUE', 6);
+            OPEN ORFITEMBALAUO FOR
+                SELECT  /*+ use_nl(seriados ge_items) leading (seriados ge_items) */
+                        GE_ITEMS.ITEMS_ID               ITEMS_ID,
+                        GE_ITEMS.DESCRIPTION            DESCRIPTION,
+                        SERIADOS.BALANCE                BALANCE,
+                        GE_ITEMS.MEASURE_UNIT_ID        MEASURE_UNIT_ID,
+                        GE_ITEMS_TIPO.SERIADO           ISSERIADO,
+                        GE_ITEMS.CODE                   CODE
+                  FROM  GE_ITEMS,
+                        GE_ITEMS_TIPO,
+                        ( SELECT /*+ index(ge_items_seriado IDX_GE_ITEMS_SERIADO_02) */
+                                 COUNT(1) BALANCE, GE_ITEMS_SERIADO.ITEMS_ID ITEMSID
+                            FROM GE_ITEMS_SERIADO
+                           WHERE GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV IN (
+                                    GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPGARANTIA, 
+                                    GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPSEGURO,   
+                                    GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPSATISFACCION, 
+                                    GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPUPGRADE, 
+                                    GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPERADO,   
+                                    NUNEWSTATUS
+                                    )
+                             AND GE_ITEMS_SERIADO.OPERATING_UNIT_ID = INUOPERATUNIID
+                        GROUP BY GE_ITEMS_SERIADO.ITEMS_ID
+                        )  SERIADOS
+                        /*+ OR_bcItemsMove.GetUniItemBala */
+                 WHERE  GE_ITEMS_TIPO.ID_ITEMS_TIPO     =   GE_ITEMS.ID_ITEMS_TIPO
+                   AND  GE_ITEMS.ITEMS_ID               =   SERIADOS.ITEMSID
+                   AND  GE_ITEMS_TIPO.SERIADO           =   GE_BOCONSTANTS.CSBYES;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETUNIITEMBALAMOV
+    (
+        INUOPERATUNIID      IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        ORFITEMSTRANSUO     OUT CONSTANTS.TYREFCURSOR,
+        INUDOCUMENT         IN  GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE
+    )
+    IS
+    BEGIN
+        
+        IF (NOT INUDOCUMENT IS NULL) THEN
+            DAGE_ITEMS_DOCUMENTO.ACCKEY(INUDOCUMENT);
+
+            OPEN ORFITEMSTRANSUO FOR
+                SELECT  OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID,
+                        GE_ITEMS.ITEMS_ID,
+                        GE_ITEMS.DESCRIPTION DESCRIPTION,
+                        GE_ITEMS.MEASURE_UNIT_ID,
+                        OR_OPE_UNI_ITEM_BALA.BALANCE,
+                        OR_UNI_ITEM_BALA_MOV.AMOUNT,
+                        OR_UNI_ITEM_BALA_MOV.TOTAL_VALUE,
+                        OR_UNI_ITEM_BALA_MOV.ID_ITEMS_SERIADO,
+                        OR_UNI_ITEM_BALA_MOV.ID_ITEMS_ESTADO_INV,
+                        OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO,
+                        OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID,
+                        OR_UNI_ITEM_BALA_MOV.TARGET_OPER_UNIT_ID,
+                        GE_ITEMS_SERIADO.SERIE,
+                        GE_ITEMS.CODE
+                  FROM  GE_ITEMS_DOCUMENTO DOCMOV,  
+                        GE_ITEMS_DOC_REL,           
+                        OR_UNI_ITEM_BALA_MOV,
+                        OR_OPE_UNI_ITEM_BALA,
+                        GE_ITEMS_SERIADO,
+                        GE_ITEMS
+                 WHERE  OR_UNI_ITEM_BALA_MOV.ITEMS_ID = GE_ITEMS.ITEMS_ID
+                   AND  OR_UNI_ITEM_BALA_MOV.ITEMS_ID = OR_OPE_UNI_ITEM_BALA.ITEMS_ID
+                   AND  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID = OR_OPE_UNI_ITEM_BALA.OPERATING_UNIT_ID
+                   AND  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID = INUOPERATUNIID
+                   AND  OR_OPE_UNI_ITEM_BALA.OPERATING_UNIT_ID = INUOPERATUNIID
+                   AND  OR_UNI_ITEM_BALA_MOV.MOVEMENT_TYPE = OR_BOITEMSMOVE.CSBNEUTRALMOVETYPE 
+                   AND  OR_UNI_ITEM_BALA_MOV.ITEM_MOVEME_CAUS_ID
+                    IN  (   GE_BOITEMSCONSTANTS.CNUMOVCAUSETRANS,       
+                            GE_BOITEMSCONSTANTS.CNUCAUSALTRANSLATE,     
+                            GE_BOITEMSCONSTANTS.CNUCAUSALENTFACTCOMPRA  
+                        )
+                   AND  OR_UNI_ITEM_BALA_MOV.SUPPORT_DOCUMENT = ' '
+                   AND  OR_UNI_ITEM_BALA_MOV.ID_ITEMS_SERIADO = GE_ITEMS_SERIADO.ID_ITEMS_SERIADO (+)
+                   AND  DOCMOV.ID_ITEMS_DOCUMENTO = OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO
+                   AND  GE_ITEMS_DOC_REL.ID_ITEMS_DOC_ORIGEN = DOCMOV.ID_ITEMS_DOCUMENTO
+                   AND  GE_ITEMS_DOC_REL.ID_ITEMS_DOC_DESTINO = INUDOCUMENT;
+
+        ELSE
+            OPEN ORFITEMSTRANSUO FOR
+                SELECT  OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID,
+                        GE_ITEMS.ITEMS_ID,
+                        GE_ITEMS.DESCRIPTION DESCRIPTION,
+                        GE_ITEMS.MEASURE_UNIT_ID,
+                        OR_OPE_UNI_ITEM_BALA.BALANCE,
+                        OR_UNI_ITEM_BALA_MOV.AMOUNT,
+                        OR_UNI_ITEM_BALA_MOV.TOTAL_VALUE,
+                        OR_UNI_ITEM_BALA_MOV.ID_ITEMS_SERIADO,
+                        OR_UNI_ITEM_BALA_MOV.ID_ITEMS_ESTADO_INV,
+                        OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO,
+                        OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID,
+                        OR_UNI_ITEM_BALA_MOV.TARGET_OPER_UNIT_ID,
+                        GE_ITEMS_SERIADO.SERIE,
+                        GE_ITEMS.CODE
+                  FROM  OR_UNI_ITEM_BALA_MOV,
+                        OR_OPE_UNI_ITEM_BALA,
+                        GE_ITEMS_SERIADO,
+                        GE_ITEMS
+                 WHERE  OR_UNI_ITEM_BALA_MOV.ITEMS_ID = GE_ITEMS.ITEMS_ID
+                   AND  OR_UNI_ITEM_BALA_MOV.ITEMS_ID = OR_OPE_UNI_ITEM_BALA.ITEMS_ID
+                   AND  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID = OR_OPE_UNI_ITEM_BALA.OPERATING_UNIT_ID
+                   AND  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID = INUOPERATUNIID
+                   AND  OR_OPE_UNI_ITEM_BALA.OPERATING_UNIT_ID = INUOPERATUNIID
+                   AND  OR_UNI_ITEM_BALA_MOV.MOVEMENT_TYPE = OR_BOITEMSMOVE.CSBNEUTRALMOVETYPE
+                   AND  OR_UNI_ITEM_BALA_MOV.ITEM_MOVEME_CAUS_ID
+                    IN  (   GE_BOITEMSCONSTANTS.CNUMOVCAUSETRANS,       
+                            GE_BOITEMSCONSTANTS.CNUCAUSALTRANSLATE,     
+                            GE_BOITEMSCONSTANTS.CNUCAUSALENTFACTCOMPRA  
+                        )
+                   AND  OR_UNI_ITEM_BALA_MOV.SUPPORT_DOCUMENT = ' '
+                   AND  OR_UNI_ITEM_BALA_MOV.ID_ITEMS_SERIADO = GE_ITEMS_SERIADO.ID_ITEMS_SERIADO (+);
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBGETACTIVITY(
+        INUPACKAGEID        IN  GE_ITEMS_DOCUMENTO.PACKAGE_ID%TYPE,
+        INUITEMSERIADOID    IN  GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    ) RETURN GE_ITEMS.DESCRIPTION%TYPE
+    IS
+        SBACTIVITYDESC  GE_ITEMS.DESCRIPTION%TYPE;
+
+        CURSOR CUACTIVITY IS
+            SELECT /*+ index(or_order_activity IDX_or_order_activity_06 )
+                        index(ge_items PK_ge_items ) */
+                    (GE_ITEMS.ITEMS_ID || ' - ' ||  GE_ITEMS.DESCRIPTION) ACTIVITY
+            FROM OR_ORDER_ACTIVITY, GE_ITEMS
+                /*+OR_BCItemsMove.fsbGetActivity*/
+            WHERE OR_ORDER_ACTIVITY.PACKAGE_ID        = INUPACKAGEID
+            AND   OR_ORDER_ACTIVITY.SERIAL_ITEMS_ID   = INUITEMSERIADOID
+            AND   GE_ITEMS.ITEMS_ID                   = OR_ORDER_ACTIVITY.ACTIVITY_ID ;
+    BEGIN
+        OPEN CUACTIVITY;
+		FETCH CUACTIVITY INTO SBACTIVITYDESC;
+		CLOSE CUACTIVITY;
+
+		RETURN SBACTIVITYDESC;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF (CUACTIVITY%ISOPEN) THEN
+                CLOSE CUACTIVITY;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            IF (CUACTIVITY%ISOPEN) THEN
+                CLOSE CUACTIVITY;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+    END FSBGETACTIVITY;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFGETITEMSTRANSLATE
+    (
+        INUITEMSDOCUMENTOID     IN  GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE
+    )
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+        RFCURSOR    CONSTANTS.TYREFCURSOR;
+    BEGIN
+       OPEN RFCURSOR FOR
+            SELECT  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID      ORIGIN_OPER_UNIT_ID,
+                    OR_UNI_ITEM_BALA_MOV.TARGET_OPER_UNIT_ID    TARGET_OPER_UNIT_ID,
+                    OR_UNI_ITEM_BALA_MOV.MOVE_DATE              MOVE_DATE,
+                    OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO     DOCUMENTO,
+                    OR_UNI_ITEM_BALA_MOV.ITEMS_ID               ITEMS_ID,
+                    GE_ITEMS.DESCRIPTION                        DESCRIPTION,
+                    OR_UNI_ITEM_BALA_MOV.AMOUNT                 AMOUNT,
+                    OR_UNI_ITEM_BALA_MOV.TOTAL_VALUE            TOTAL_VALUE,
+                    GE_ITEMS_SERIADO.SUBSIDIO                   SUBSIDIO,
+                    GE_ITEMS_SERIADO.ESTADO_TECNICO             ESTADO,
+                    GE_ITEMS_SERIADO.SERIE                      SERIE,
+                    GE_BOITEMSSERIADO.FSBGETITEMSSERIADOATTVALS(GE_ITEMS_SERIADO.ID_ITEMS_SERIADO) ATRIBUTOS,
+                    GE_BORECLAMOITEMS.FSBRETORNADATOSCAMBIO(GE_ITEMS_SERIADO.ID_ITEMS_SERIADO)     DATA_CHANGE,
+                    ORIGINUO.NAME                               ORIGIN_OPUN_NAME,
+                    TARGETUO.NAME                               TARGET_OPUN_NAME,
+                    GE_ITEMS_DOCUMENTO.COMENTARIO               COMENTARIO,
+                    OR_BCITEMSMOVE.FSBGETACTIVITY(GE_ITEMS_DOCUMENTO.PACKAGE_ID, GE_ITEMS_SERIADO.ID_ITEMS_SERIADO) ACTIVITY
+              FROM  GE_ITEMS_SERIADO,
+                    GE_ITEMS,
+                    OR_UNI_ITEM_BALA_MOV,
+                    GE_ITEMS_DOCUMENTO,
+                    OR_OPERATING_UNIT ORIGINUO,
+                    OR_OPERATING_UNIT TARGETUO
+                    /*+OR_BCItemsMove.frfGetItemsTranslate*/
+             WHERE  OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO     =   GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO
+               AND  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID      =   GE_ITEMS_DOCUMENTO.OPERATING_UNIT_ID
+               AND  OR_UNI_ITEM_BALA_MOV.ITEMS_ID               =   GE_ITEMS.ITEMS_ID
+               AND  OR_UNI_ITEM_BALA_MOV.ID_ITEMS_SERIADO       =   GE_ITEMS_SERIADO.ID_ITEMS_SERIADO(+)
+               AND  GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO       =   INUITEMSDOCUMENTOID
+               AND  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID      =   ORIGINUO.OPERATING_UNIT_ID
+               AND  OR_UNI_ITEM_BALA_MOV.TARGET_OPER_UNIT_ID    =   TARGETUO.OPERATING_UNIT_ID;
+
+               
+
+
+
+
+
+       RETURN RFCURSOR;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETAVGCOSTALLUNISERV
+    (
+        INUITEMSID  IN GE_ITEMS.ITEMS_ID%TYPE
+    )
+        RETURN NUMBER
+    IS
+        NUCOST NUMBER ;
+
+        
+        
+        CURSOR CUGETAVG IS
+        SELECT SUM(TOTAL_COSTS)/SUM(BALANCE) COSTO
+            FROM OR_OPERATING_UNIT, OR_OPE_UNI_ITEM_BALA
+                WHERE NVL(ES_EXTERNA,'N') = 'N'
+                AND OR_OPERATING_UNIT.OPERATING_UNIT_ID = OR_OPE_UNI_ITEM_BALA.OPERATING_UNIT_ID
+                AND OR_OPERATING_UNIT.OPER_UNIT_CLASSIF_ID IN (11,12,13,14)
+                AND OR_OPE_UNI_ITEM_BALA.ITEMS_ID   = INUITEMSID
+                AND OR_OPE_UNI_ITEM_BALA.BALANCE <> 0;
+    
+    BEGIN
+    
+        FOR RG IN CUGETAVG LOOP
+            NUCOST := RG.COSTO;
+        END LOOP;
+        RETURN NVL(NUCOST,0);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUGETAVGCOSTALLUNISERV;
+
+    
+    
+    
+    PROCEDURE GETTRANSITBYUNITDOC
+    (
+        INUOPERATUNIID      IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        INUDOCUMENT         IN  GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE,
+        ORFITEMSTRANSUO     OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+    BEGIN
+        
+        IF (INUDOCUMENT IS NOT NULL) THEN
+            DAGE_ITEMS_DOCUMENTO.ACCKEY(INUDOCUMENT);
+
+            OPEN ORFITEMSTRANSUO FOR
+                SELECT  OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID,
+                        OR_UNI_ITEM_BALA_MOV.AMOUNT,
+                        OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO,
+                        OR_UNI_ITEM_BALA_MOV.TARGET_OPER_UNIT_ID
+                  FROM  GE_ITEMS_DOC_REL,       
+                        OR_UNI_ITEM_BALA_MOV
+                 WHERE  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID = INUOPERATUNIID
+                   AND  OR_UNI_ITEM_BALA_MOV.MOVEMENT_TYPE = OR_BOITEMSMOVE.CSBNEUTRALMOVETYPE 
+                   AND  OR_UNI_ITEM_BALA_MOV.SUPPORT_DOCUMENT = ' '
+                   AND  GE_ITEMS_DOC_REL.ID_ITEMS_DOC_ORIGEN = OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO
+                   AND  GE_ITEMS_DOC_REL.ID_ITEMS_DOC_DESTINO = INUDOCUMENT;
+
+        ELSE
+            OPEN ORFITEMSTRANSUO FOR
+                SELECT  OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID,
+                        OR_UNI_ITEM_BALA_MOV.AMOUNT,
+                        OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO,
+                        OR_UNI_ITEM_BALA_MOV.TARGET_OPER_UNIT_ID
+                  FROM  OR_UNI_ITEM_BALA_MOV
+                 WHERE  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID = INUOPERATUNIID
+                   AND  OR_UNI_ITEM_BALA_MOV.MOVEMENT_TYPE = OR_BOITEMSMOVE.CSBNEUTRALMOVETYPE
+                   AND  OR_UNI_ITEM_BALA_MOV.SUPPORT_DOCUMENT = ' ';
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRCGETMOVBYPACKAGE(
+        INUPACKAGEID        IN  MO_PACKAGES.PACKAGE_ID%TYPE,
+        INUITEMSERIADOID    IN  GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    ) RETURN DAOR_UNI_ITEM_BALA_MOV.STYOR_UNI_ITEM_BALA_MOV
+    IS
+        RCMOVEMENT      DAOR_UNI_ITEM_BALA_MOV.STYOR_UNI_ITEM_BALA_MOV;
+        CURSOR CUMOVEMENT IS
+
+            SELECT  /*+ leading( a )
+                        use_nl( a b )
+                        index( a IDX_GE_ITEMS_DOCUMENTO06 )
+                        index( b IDX_OR_UNI_ITEM_BALA_MOV04 ) */
+                    B.*, B.ROWID
+            FROM    /*+ OR_BCItemsMove.frcGetMovByPackage */
+                    GE_ITEMS_DOCUMENTO A,
+                    OR_UNI_ITEM_BALA_MOV B
+            WHERE   B.ID_ITEMS_DOCUMENTO = A.ID_ITEMS_DOCUMENTO
+            AND     A.PACKAGE_ID = INUPACKAGEID
+            AND     A.DOCUMENT_TYPE_ID = GE_BOITEMSCONSTANTS.CNUTIPOENVIOTECNSERV
+            AND     B.MOVEMENT_TYPE = OR_BOITEMSMOVE.CSBINCREASEMOVETYPE
+            AND     B.ID_ITEMS_SERIADO = INUITEMSERIADOID;
+               
+               
+    BEGIN
+        OPEN CUMOVEMENT;
+		FETCH CUMOVEMENT INTO RCMOVEMENT;
+		CLOSE CUMOVEMENT;
+		
+		RETURN RCMOVEMENT;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF (CUMOVEMENT%ISOPEN) THEN
+                CLOSE CUMOVEMENT;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            IF (CUMOVEMENT%ISOPEN) THEN
+                CLOSE CUMOVEMENT;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+    END FRCGETMOVBYPACKAGE;
+    
+
+
+END OR_BCITEMSMOVE;

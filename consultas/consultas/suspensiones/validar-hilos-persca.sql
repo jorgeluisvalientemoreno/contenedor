@@ -1,0 +1,1 @@
+select * from gv$session where module like 'JE%'

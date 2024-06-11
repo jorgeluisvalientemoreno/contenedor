@@ -1,0 +1,6146 @@
+PACKAGE BODY pkFgca AS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+
+    
+    TYPE TYTBCONCEPTOS IS TABLE OF NUMBER INDEX BY BINARY_INTEGER ;
+
+    
+    
+    TYPE TYRCREGLA IS RECORD
+	(
+	    SBFUNCION	CONCPLSU.COPSFUFA%TYPE,
+	    SBNIVELRB	CONCPLSU.COPSNIRO%TYPE,
+	    DTFECHALIQ  CONCPLSU.COPSFELI%TYPE
+	) ;
+
+    
+    TYPE TYTBREGLA IS TABLE OF TYRCREGLA INDEX BY VARCHAR2(30) ;
+
+    
+    
+    TBCONCPLSU	TYTBREGLA ;
+    TBCONCSERV	TYTBREGLA ;
+    TBCONCCICL	TYTBREGLA ;
+
+    
+    TYPE TYRCVISTA IS RECORD
+	(
+	    NURECINI	NUMBER,
+	    NURECFIN	NUMBER
+	) ;
+
+    TYPE TYTBVISTA IS TABLE OF TYRCVISTA INDEX BY FA_BCCHARGESGERATION.STYHASHVISTA;
+
+    
+    
+    TBVISTA		TYTBVISTA ;
+
+    
+    TBVWSERVICIO	PKTBLSERVICIO.TYSERVCODI ;
+    TBVWCONCDUMM	PKTBLCONCEPTO.TYCONCCODI ;
+    TBVWCONCEPTO	PKTBLCONCEPTO.TYCONCCODI ;
+    TBVWORDLIQ		PKTBLCONCEPTO.TYCONCORLI ;
+    TBVWNOMTABLA	PKTBLCONCEPTO.TYCONCDESC ;
+    TBVWFECHALIQ	PKTBLCONCSUSC.TYCOSUFELI ;
+
+    
+    TYPE TYSESUNUSE IS TABLE OF SERVSUSC.SESUNUSE%TYPE INDEX BY VARCHAR2(15);
+
+    
+    TBSPECPRODS		TYSESUNUSE ;
+
+    
+    
+    
+    
+    CNUBLOCK_SIZE	    CONSTANT NUMBER := 1024 ;
+
+    
+    
+    CSBVERSION          CONSTANT VARCHAR2(250) := 'SAO546751';
+    
+    
+    CNUMESSPROCC  	    CONSTANT  NUMBER  := 10010;
+    
+    
+    CBLCOMMIT    	    CONSTANT   BOOLEAN := TRUE;
+
+    
+    
+    
+    
+    SBINDPROD	PKBCSERVSUSC.STYSBIDXSESU ;
+    
+    
+    GTBCONSUMPTIONCONCEPTS LE_BOTIPOEVEN.TYTBCONSUMPTIONCONCEPTS;
+
+    
+    
+    GBLHAYINCO	BOOLEAN ;
+
+    
+    
+    GBLCONCINCO	BOOLEAN ;
+
+    
+    
+    GBLPRODINCO	BOOLEAN ;
+
+    
+    GBLINCOENPROD	BOOLEAN ;
+
+    
+    GBLINSINCO	    BOOLEAN ;
+    
+     
+    GBLDOCOMMIT     BOOLEAN := TRUE;
+
+    
+    GNUSERVICIO		SERVICIO.SERVCODI%TYPE ;
+
+    
+    GSBMODO		    VARCHAR2(1) ;
+
+    
+    GSBTABLASRC		ESPRSEPE.EPSPTABL%TYPE ;
+
+    
+    GNUTRACK		SERVSUSC.SESUNUSE%TYPE ;
+
+    
+    GNUPRODPROC		NUMBER ;
+
+    
+    GBLNORMALMODE	BOOLEAN ;
+
+    
+    
+    GSBTIPOEXE	VARCHAR2(1) ;
+
+    CSBTE_MASIVO	CONSTANT VARCHAR2(1) := 'M' ;
+    CSBTE_CONTRATO	CONSTANT VARCHAR2(1) := 'C' ;
+    CSBTE_PRODUCTO	CONSTANT VARCHAR2(1) := 'P' ;
+
+    
+    GNUCONTRATO	SUSCRIPC.SUSCCODI%TYPE ;
+
+    
+    GNUMAXCHARGES 	    NUMBER;
+
+    NUTHREADTOTAL  NUMBER;		    
+    NUTHREAD       NUMBER;		    
+
+    GNUPROGRAM     CARGOS.CARGPROG%TYPE;    
+
+    SBERRMSG	   GE_ERROR_LOG.DESCRIPTION%TYPE;  
+
+    SBSTATPROCCID  ESTAPROG.ESPRPROG%TYPE;  
+
+    SBMESSPROCC	   MENSAJE.MENSDESC%TYPE;   
+
+    
+    RCPERIFACT     PERIFACT%ROWTYPE;
+
+    
+    
+    SBMULTIPLES_RECAMORA	VARCHAR2(1);
+
+    BLMULT_RECAMORA	BOOLEAN;	
+
+    TBCONCEPTOS	TYTBCONCEPTOS ;	
+
+    
+    RCSERVSUSC  SERVSUSC%ROWTYPE;
+
+    
+    NUPERRECTIPOSERV    NUMBER := 0;
+
+    
+    GNUSERVPROC         SERVICIO.SERVCODI%TYPE := NULL;
+
+    
+    GSBTIPOCOBRO    SERVICIO.SERVTICO%TYPE;
+
+    
+    TNUSESUSERV PKTBLSERVSUSC.TYSESUSERV;
+    TNUSESUNUSE PKTBLSERVSUSC.TYSESUNUSE;
+    TNUSESUSUSC PKTBLSERVSUSC.TYSESUSUSC;
+    TNUSESUPLFA PKTBLSERVSUSC.TYSESUPLFA;
+    TNUSESUCATE PKTBLSERVSUSC.TYSESUCATE;
+    TNUSESUSUCA PKTBLSERVSUSC.TYSESUSUCA;
+    TNUSESUDEPA PKTBLSERVSUSC.TYSESUDEPA;
+    TNUSESULOCA PKTBLSERVSUSC.TYSESULOCA;
+    TDTSESUFEIN PKTBLSERVSUSC.TYSESUFEIN;
+    TDTSESUFERE PKTBLSERVSUSC.TYSESUFERE;
+    TNUSESUCENT PKTBLCENTRAL.TYCENTCODI;
+    TNUSESUESCO PKTBLSERVSUSC.TYSESUESCO;
+    TNUSESUCICO PKTBLSERVSUSC.TYSESUCICO;
+    TNUSESUMULT PKTBLSERVSUSC.TYSESUMULT;
+    TDTSESUFEVI PKTBLSERVSUSC.TYSESUFEVI;
+    TSBSESUROGA PKTBLSERVSUSC.TYSESUROGA;
+    TNUSESUSESG PKTBLSERVSUSC.TYSESUSESG;
+    TDTSESUFUCP PKTBLSERVSUSC.TYSESUFUCP;
+
+    
+    TBFUNCIONES	PKBORULESMGR.TYTBRULES;
+
+    
+    TBCONCRECARGOAPLICAR	PKLATECHARGEMGR.TYTBCONCEPTOSRECARGO ;
+
+    
+    BLLATEPROCESS	BOOLEAN;
+    
+    
+    GSBPROGRAMA         PROCESOS.PROCCODI%TYPE := NULL;
+    
+    
+    
+
+    
+    CURSOR CUCONCAFAC
+    (
+        INUPLAN       IN CONCPLSU.COPSPLSU%TYPE,
+        INUSUBSCRIBER IN SUSCRIPC.SUSCCODI%TYPE,
+        INUSERVSUSC   IN SERVSUSC.SESUNUSE%TYPE,
+        INUSERVICE    IN SERVSUSC.SESUSERV%TYPE,
+        INUCICLO      IN CICLO.CICLCODI%TYPE,
+        IDTFECINIMO   IN PERIFACT.PEFAFIMO%TYPE,
+        IDTFECFINMO   IN PERIFACT.PEFAFFMO%TYPE
+    )
+    IS
+        SELECT COFASERV SERVICIOVW, COFACONC CONCEPTOVW,
+	       SUBSTR (MAX (COFANITA || TO_CHAR (COFACOEQ, '0000')), 11),
+	       NVL (SUBSTR (MAX (COFANITA || TO_CHAR (COFAORGE, '0000') ), 11),
+               '-1' ) SECUENCIA, SUBSTR (MAX (COFANITA ), 2) TABLAVW
+          FROM VWCONCFACT
+         WHERE (
+                   ( COFANITA = '1CONCSERV'
+                      AND COFASERV = INUSERVICE
+                 )
+            OR
+    	           ( COFANITA = '2CONCCICL'
+                      AND  COFACICL = INUCICLO
+                      AND  COFASERV = INUSERVICE
+                 )
+
+            OR     ( COFANITA = '3CONCPLSU'
+                      AND COFAPLSU =  INUPLAN
+    			      AND COFAPLSU <> -1
+    			      AND COFASERV =  INUSERVICE
+                 )
+            OR     ( COFANITA = '4CONCSUSC'
+                      AND COFASUSC = INUSUBSCRIBER
+                      AND COFASERV = INUSERVICE
+                 )
+           OR      ( COFANITA = '5CONCFESU'
+                      AND COFASUSC = INUSUBSCRIBER
+                      AND COFASERV = INUSERVICE
+                      AND COFAFECH BETWEEN IDTFECINIMO AND IDTFECFINMO
+       	         )
+           OR      ( COFANITA = '6CONCSESU'
+                      AND COFASESU = INUSERVSUSC
+                      AND COFASERV = INUSERVICE
+    	         )
+           OR     (
+            	    COFANITA = '7CONCFESS'
+                      AND COFASESU = INUSERVSUSC
+                      AND COFASERV = INUSERVICE
+                      AND COFAFECH BETWEEN IDTFECINIMO AND IDTFECFINMO
+    	         )
+            )
+           AND COFACLCO = PKBILLCONST.CSBEJECUTA_CARGOS
+      GROUP BY COFASERV, COFACONC
+      ORDER BY SECUENCIA;
+
+    
+    CURSOR    CUCONCFESESU (
+			    INUSESUNUSE IN SERVSUSC.SESUNUSE%TYPE,
+			    INUCONCEPTO IN CONCEPTO.CONCCODI%TYPE,
+			    INUSERVICIO IN NUMBER,
+			    IDTFECINIMO IN DATE,
+			    IDTFECFINMO IN DATE
+			 ) IS
+        SELECT NVL (CFSSFUFA, '-'), NVL (CFSSNIRO, 'C'), CFSSFELI
+        FROM   CONCFESS
+        WHERE  CFSSSESU = INUSESUNUSE
+        AND    CFSSCONC = INUCONCEPTO
+        AND    CFSSSERV = INUSERVICIO
+        AND    CFSSFECH BETWEEN IDTFECINIMO AND IDTFECFINMO;
+
+    
+    CURSOR    CUCONCSESU (
+			    INUSESUNUSE IN SERVSUSC.SESUNUSE%TYPE,
+			    INUCONCEPTO IN CONCEPTO.CONCCODI%TYPE
+			 ) IS
+        SELECT NVL (COSSFUFA, '-'), NVL (COSSNIRO, 'C'), COSSFELI
+        FROM   CONCSESU
+        WHERE  COSSSESU = INUSESUNUSE
+        AND    COSSCONC = INUCONCEPTO;
+
+    
+    CURSOR    CUCONCSUSC (
+			  INUSUSCRIPTOR IN NUMBER,
+			  INUCONCEPTO   IN NUMBER,
+			  INUSERVICIO   IN NUMBER
+			 ) IS
+        SELECT NVL (COSUFUFA, '-'), NVL (COSUNIRO, 'C'), COSUFELI
+        FROM   CONCSUSC
+        WHERE  COSUSUSC = INUSUSCRIPTOR
+        AND    COSUCONC = INUCONCEPTO
+        AND    COSUSERV = INUSERVICIO;
+
+    
+    CURSOR  CUCONCCICL (
+			INUCICLO    IN CICLO.CICLCODI%TYPE,
+		        INUSERVICIO IN NUMBER,
+		        INUCONCEPTO IN NUMBER
+		       ) IS
+        SELECT NVL (COCIFUFA, '-') , NVL (COCINIRO, 'C'), COCIFELI
+        FROM   CONCCICL
+        WHERE  COCICICL = INUCICLO
+        AND    COCISERV = INUSERVICIO
+        AND    COCICONC = INUCONCEPTO;
+
+    
+    CURSOR  CUCONCSERV (
+			INUSERVICIO IN NUMBER,
+		        INUCONCEPTO IN NUMBER
+		       ) IS
+        SELECT NVL (COSEFUFA, '-') , NVL (COSENIRO, 'C'), COSEFELI
+        FROM   CONCSERV
+        WHERE  COSESERV = INUSERVICIO
+        AND    COSECONC = INUCONCEPTO;
+
+    
+    CURSOR CUCONCPLSU (
+			INUPLAN IN NUMBER,
+		        INUSERVICIO IN NUMBER,
+		        INUCONCEPTO IN NUMBER
+		      ) IS
+        SELECT NVL (COPSFUFA, '-'), NVL (COPSNIRO, 'C'), COPSFELI
+        FROM   CONCPLSU
+        WHERE  COPSPLSU = INUPLAN
+        AND    COPSSERV = INUSERVICIO
+        AND    COPSCONC = INUCONCEPTO;
+
+    
+    CURSOR CUCONCSUFE (
+			INUSUSCRIPTOR IN NUMBER,
+		        INUCONCEPTO IN NUMBER,
+		        INUSERVICIO IN NUMBER,
+			IDTFECINIMO IN DATE,
+			IDTFECFINMO IN DATE
+		      ) IS
+        SELECT NVL (COFSFUFA, '-'), NVL (COFSNIRO, 'C'), COFSFELI
+        FROM   CONCFESU
+        WHERE  COFSSUSC = INUSUSCRIPTOR
+        AND    COFSCONC = INUCONCEPTO
+        AND    COFSSERV = INUSERVICIO
+        AND    COFSFECH BETWEEN IDTFECINIMO AND IDTFECFINMO;
+
+    
+    
+    
+
+    PROCEDURE LOADSPECIALPRODS ;
+
+    
+    PROCEDURE PRCCHRGSRVS
+	(
+	    INUIDX	IN	NUMBER
+	) ;
+
+    
+    PROCEDURE PROCESSPRODUCT
+	(
+	    INUIDX	IN	NUMBER
+	) ;
+
+    
+    PROCEDURE GENCHRGSERVSUS ;
+
+    
+    PROCEDURE  CLOSECURSFORM ;
+
+    
+    PROCEDURE  INSERTPROCESS ;
+
+    
+    PROCEDURE  UPDATEPROCESSPERCENTAGE ;
+
+    PROCEDURE CLEARDATA ;
+
+    FUNCTION FBLDELINCORECS RETURN BOOLEAN ;
+
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBVERSION
+    RETURN VARCHAR2
+    IS
+    BEGIN
+    
+        PKERRORS.PUSH ('pkFgca.fsbVersion');
+
+        PKERRORS.POP;
+        
+        RETURN (CSBVERSION);
+    
+    END FSBVERSION;
+    
+    PROCEDURE CLEARMEMORY IS
+    BEGIN
+    
+
+        PKERRORS.PUSH ('pkFgca.ClearMemory');
+        
+        PKTBLPARAFACT.CLEARMEMORY;
+        PKTBLPERIFACT.CLEARMEMORY;
+        PKTBLPERICOSE.CLEARMEMORY;
+        PKTBLSERVSUSC.CLEARMEMORY;
+        PKTBLSUSCRIPC.CLEARMEMORY;
+        PKTBLCONCEPTO.CLEARMEMORY;
+        PKTBLCUENCOBR.CLEARMEMORY;
+        PKTBLMENSAJE.CLEARMEMORY;
+        PKTBLPARAMETR.CLEARMEMORY;
+        PKTBLCICLO.CLEARMEMORY;
+        PKTBLCICLCONS.CLEARMEMORY;
+
+        
+        
+        TBCONCPLSU.DELETE    ;
+        TBCONCSERV.DELETE    ;
+        TBCONCCICL.DELETE    ;
+
+        
+        TBVISTA.DELETE      ;
+        TBVWSERVICIO.DELETE ;
+        TBVWCONCDUMM.DELETE ;
+        TBVWCONCEPTO.DELETE ;
+        TBVWORDLIQ.DELETE   ;
+        TBVWNOMTABLA.DELETE ;
+        TBVWFECHALIQ.DELETE;
+
+        
+        
+        TBSPECPRODS.DELETE ;
+
+        PKERRORS.POP;
+    
+    END CLEARMEMORY;
+    
+    
+    PROCEDURE CLEARDATA IS
+    BEGIN
+    
+
+        PKERRORS.PUSH ('pkFgca.ClearData');
+        
+        
+    	TNUSESUNUSE.DELETE;
+    	TNUSESUSERV.DELETE;
+    	TNUSESUSUSC.DELETE;
+    	TNUSESUPLFA.DELETE;
+    	TNUSESUCATE.DELETE;
+    	TNUSESUSUCA.DELETE;
+    	TNUSESUDEPA.DELETE;
+    	TNUSESULOCA.DELETE;
+    	TDTSESUFEIN.DELETE;
+    	TDTSESUFERE.DELETE;
+    	TNUSESUESCO.DELETE;
+    	TNUSESUCICO.DELETE;
+    	TNUSESUMULT.DELETE;
+    	TDTSESUFEVI.DELETE;
+    	TSBSESUROGA.DELETE;
+    	TNUSESUSESG.DELETE;
+    	TDTSESUFUCP.DELETE;
+    	
+        PKERRORS.POP;
+    
+    END CLEARDATA;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CLEARMEMORYENDPROC
+    IS
+    BEGIN
+    
+        PKERRORS.PUSH('pkFgca.ClearMemoryEndProc');
+
+        
+        PKBORULESMGR.CLOSEDYNCURSORS (TBFUNCIONES);
+        
+        TBFUNCIONES.DELETE;
+        
+        FA_BCCHARGESGERATION.SETDAOUSECACHE(FALSE);
+        
+        GSBPROGRAMA := NULL;
+        
+        PKINSTANCEDATAMGR.INSTANCIARPERACTUAL(NULL);
+
+        
+        CLEARDATA() ;
+
+        
+        PKBORATINGMEMORYMGR.ROLLBACKCONCEPT ;
+        
+        PKBORATINGMEMORYMGR.ROLLBACKPRODUCT ;
+        
+        PKBORATINGMEMORYMGR.CLEARSYNCRARRAYS;
+        
+        PKBORATINGMEMORYMGR.CLEARINSTANCEDATACNC;
+
+        
+        PKINSTANCEDATAMGR.LIMPIARMEMORIACOMPONENTES;
+        
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    
+    END CLEARMEMORYENDPROC;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE UPDATEPROCESSPERCENTAGE
+IS
+    SBMESSAGE       MENSAJE.MENSDESC%TYPE;
+    NUPERCENTAGE    NUMBER := 0;
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.UpdateProcessPercentage');
+
+    IF (SBSTATPROCCID IS NULL) THEN
+        PKERRORS.POP;
+        RETURN;
+    END IF;
+
+    SBMESSAGE := SBMESSPROCC;
+
+    PKSTATUSEXEPROGRAMMGR.UPDATEPERCENTAGE
+	(
+	    SBSTATPROCCID,
+	    SBMESSAGE,
+	    GNUPRODPROC,
+	    NUPERCENTAGE,
+	    RCPERIFACT.PEFACODI
+	);
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+    	PKERRORS.POP;
+    	RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+    	RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+    	PKERRORS.NOTIFYERROR (PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+    	PKERRORS.POP;
+    	RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+
+END UPDATEPROCESSPERCENTAGE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FBOISCHRGGENERATED
+    (
+        INUCONCEPT      IN CONCEPTO.CONCCODI%TYPE,
+        INUPRODTYPE     IN SERVICIO.SERVCODI%TYPE
+    )
+    RETURN BOOLEAN
+    IS
+        
+        BOGENERATED     BOOLEAN;
+        
+        
+        NUDEFFCHCAUSE    CAUSCARG.CACACODI%TYPE;
+        
+        
+        NUCHARGECAUSE   CAUSCARG.CACACODI%TYPE;
+        
+    BEGIN
+        PKERRORS.PUSH('pkFgca.fboIsChrgGenerated');
+        UT_TRACE.TRACE('Inicia pkFgca.fboIsChrgGenerated', 5);
+
+        
+        BOGENERATED := PKCONSTANTE.FALSO;
+        
+        
+        NUDEFFCHCAUSE := FA_BOCHARGECAUSES.FNUDEFQUOTACHCAUSE(INUPRODTYPE);
+
+        
+        LOOP
+            
+            BOGENERATED := PKBORATINGMEMORYMGR.FBLISCHRGGENERATED(
+                                PKBILLCONST.AUTOMATICO,
+                                INUCONCEPT,
+                                NULL,
+                                PKCONSTANTE.FALSO,
+                                PKCONSTANTE.VERDADERO
+                          );
+
+            
+            IF (BOGENERATED) THEN
+            
+                
+                PKBORATINGMEMORYMGR.GETCURRENTCHARGECAUSE(NUCHARGECAUSE);
+
+                
+                
+                
+                IF (NUCHARGECAUSE <> NUDEFFCHCAUSE) THEN
+
+                    
+                    PKBORATINGMEMORYMGR.CLOSECURRCHARGESEARCH;
+                    PKERRORS.POP;
+
+                    
+                    RETURN BOGENERATED;
+                END IF;
+            END IF;
+
+            EXIT WHEN BOGENERATED = PKCONSTANTE.FALSO;
+        END LOOP;
+
+        
+        PKBORATINGMEMORYMGR.CLOSECURRCHARGESEARCH;
+
+        UT_TRACE.TRACE('Finaliza pkFgca.fboIsChrgGenerated', 5);
+        PKERRORS.POP;
+
+        RETURN (BOGENERATED);
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END FBOISCHRGGENERATED;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE CHARGESGENERATOR
+(
+    INUCYCLE    IN  CICLO.CICLCODI%TYPE
+)
+IS
+    BLREGTOPROCESS     BOOLEAN;
+
+    
+    RCTBPRODS	PKSERVNUMBERMGR.TYTBSERVNUMBER ;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE COPYTOMEMORYTABLES
+    IS
+    BEGIN
+    
+        PKERRORS.PUSH ('pkFgca.ChargesGenerator.CopyToMemoryTables');
+
+    	TNUSESUNUSE := RCTBPRODS.TBSESUNUSE ;
+    	TNUSESUSERV := RCTBPRODS.TBSESUSERV ;
+    	TNUSESUSUSC := RCTBPRODS.TBSESUSUSC ;
+    	TNUSESUPLFA := RCTBPRODS.TBSESUPLFA ;
+    	TNUSESUCATE := RCTBPRODS.TBSESUCATE ;
+    	TNUSESUSUCA := RCTBPRODS.TBSESUSUCA ;
+    	TNUSESUDEPA := RCTBPRODS.TBSESUDEPA ;
+    	TNUSESULOCA := RCTBPRODS.TBSESULOCA ;
+    	TDTSESUFEIN := RCTBPRODS.TBSESUFEIN ;
+    	TDTSESUFERE := RCTBPRODS.TBSESUFERE ;
+    	TNUSESUESCO := RCTBPRODS.TBSESUESCO ;
+    	TNUSESUCICO := RCTBPRODS.TBSESUCICO ;
+    	TNUSESUMULT := RCTBPRODS.TBSESUMULT ;
+    	TDTSESUFEVI := RCTBPRODS.TBSESUFEVI ;
+    	TSBSESUROGA := RCTBPRODS.TBSESUROGA ;
+    	TNUSESUSESG := RCTBPRODS.TBSESUSESG ;
+    	TDTSESUFUCP := RCTBPRODS.TBSESUFUCP ;
+
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    
+    END COPYTOMEMORYTABLES;
+
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.ChargesGenerator');
+    UT_TRACE.TRACE('INICIO pkFgca.ChargesGenerator', 4);
+
+    LOOP
+    
+    	
+    	BLREGTOPROCESS := FALSE;
+
+    	
+    	
+
+    	IF (GSBMODO = PKBOPROCCTRLBYSERVICEMGR.CSBINCONSISTENTE OR
+    	    (GSBMODO     = PKBOPROCCTRLBYSERVICEMGR.CSBCAIDO AND
+    	     GSBTABLASRC = PKBOPROCCTRLBYSERVICEMGR.CSBSRC_INCO))
+    	THEN
+    	
+    	    
+    	    
+    	    
+    	    BLREGTOPROCESS := PKBCREGIINCO.FBLGETSUBSSERVBYTHREAD
+                			  (
+                				  RCPERIFACT.PEFACODI,
+                				  GNUSERVICIO,
+                				  GNUTRACK,
+                				  CNUBLOCK_SIZE,
+                				  NUTHREADTOTAL,
+                				  NUTHREAD,
+                				  RCTBPRODS
+                			  );
+
+    	    
+    	    GBLNORMALMODE := FALSE ;
+    	
+    	ELSE
+    	
+    	    
+    	    
+    	    BLREGTOPROCESS := PKBCSERVSUSC.FBLGETSUBSSERVBYTHREAD
+            				  (
+            				      INUCYCLE,
+            				      GNUSERVICIO,
+            				      GNUTRACK,
+            				      CNUBLOCK_SIZE,
+            				      NUTHREADTOTAL,
+            				      NUTHREAD,
+            				      RCTBPRODS
+            				  );
+
+    	    
+    	    GBLNORMALMODE := TRUE ;
+    	
+    	END IF;
+
+    	
+        IF (RCTBPRODS.TBSESUNUSE.FIRST IS NULL) THEN
+    	    EXIT;
+        END IF;
+
+    	
+        COPYTOMEMORYTABLES;
+
+        
+        GENCHRGSERVSUS ;
+
+        
+        RCTBPRODS := NULL;
+
+    	
+        EXIT WHEN NOT BLREGTOPROCESS;
+    
+    END LOOP;
+    
+    UT_TRACE.TRACE('FIN pkFgca.ChargesGenerator', 4);
+
+    PKERRORS.POP;
+EXCEPTION
+	WHEN LOGIN_DENIED THEN
+	    PKERRORS.POP;
+	    RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+	    PKERRORS.POP;
+	    RAISE PKCONSTANTE.EXERROR_LEVEL2;
+
+	WHEN OTHERS THEN
+	    PKERRORS.NOTIFYERROR (PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+	    PKERRORS.POP;
+	    RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+
+END CHARGESGENERATOR;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE CLOSECURSFORM
+IS
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.CloseCursForm');
+
+    IF (CUCONCSESU%ISOPEN) THEN
+    	CLOSE CUCONCSESU;
+    END IF;
+
+    IF (CUCONCSUSC%ISOPEN) THEN
+	   CLOSE CUCONCSUSC;
+    END IF;
+    
+    IF (CUCONCCICL%ISOPEN) THEN
+	   CLOSE CUCONCCICL;
+    END IF;
+    
+    IF (CUCONCSERV%ISOPEN) THEN
+	   CLOSE CUCONCSERV;
+    END IF;
+    
+    IF (CUCONCPLSU%ISOPEN) THEN
+	   CLOSE CUCONCPLSU;
+    END IF;
+    
+    IF (CUCONCSUFE%ISOPEN) THEN
+	   CLOSE CUCONCSUFE;
+    END IF;
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN OTHERS THEN
+	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+	PKERRORS.POP;
+	RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+
+END CLOSECURSFORM;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE GENCHRGCNC
+(
+	INUSESUNUSE		 IN	SERVSUSC.SESUNUSE%TYPE,
+	INUSESUSERV		 IN	SERVSUSC.SESUSERV%TYPE,
+	INUCONCEPTO      IN	CONCEPTO.CONCCODI%TYPE,
+	ISBRULE 	     IN	CONCPLSU.COPSFUFA%TYPE,
+	ISBNIVELROLLBACK IN	VARCHAR2
+)
+IS
+    NUVALCARG    CARGOS.CARGVALO%TYPE;
+
+    
+    NUCOMPONENTE	COMPSESU.CMSSIDCO%TYPE ;
+
+    
+    SBERROR	BITAINCO.BIINCAUS%TYPE ;
+
+    
+    SBTIPO	REGIINCO.REINTIIN%TYPE ;
+
+    
+    
+    CNUMSG_ERROR_RULE	CONSTANT NUMBER := 10604;
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.GenChrgCnc');
+
+    
+    
+    IF (ISBRULE IS NULL) THEN
+    	PKERRORS.POP;
+    	RETURN;
+    END IF;
+    
+    BEGIN
+    
+        
+        PKBORULESMGR.EXECUTEFUNCTION
+	    (
+    		ISBRULE,
+    		TBFUNCIONES,
+    		NUVALCARG
+	    );
+    EXCEPTION
+	
+    	WHEN OTHERS THEN
+	        GBLHAYINCO     := TRUE ;
+	        GBLCONCINCO    := TRUE ;
+            GBLINCOENPROD  := TRUE ;
+            
+            NUVALCARG := 0;
+
+            
+            IF ( ISBNIVELROLLBACK = 'P' ) THEN
+
+                
+                GBLPRODINCO := TRUE ;
+
+            END IF;
+
+    	    
+    	    SBERROR := SUBSTR(PKERRORS.FSBGETERRORMESSAGE,1,400) ;
+
+    	    PKERRORS.SETERRORCODE
+			(
+			    PKCONSTANTE.CSBDIVISION,
+			    PKCONSTANTE.CSBMOD_BIL,
+			    CNUMSG_ERROR_RULE
+			);
+
+    	    
+    	    PKERRORS.CHANGEMESSAGE
+    		(
+    		    'LBL_PRODUCTO',
+    		    TO_CHAR(INUSESUNUSE)
+    		);
+
+    	    PKERRORS.CHANGEMESSAGE
+    		(
+    		    'LBL_REGLA',
+    		    ISBRULE
+    		);
+
+    	    
+    	    SBERROR := SUBSTR(PKERRORS.FSBGETERRORMESSAGE || ' Mensaje: ' ||
+    			SBERROR,1,400) ;
+    			
+            UT_TRACE.TRACE('Error en ejecucion de regla: ' || SBERROR, 5);
+
+            
+    	    PKINSTANCEDATAMGR.GETCG_COMPONENT (NUCOMPONENTE) ;
+
+    	    
+    	    PKBORATINGMEMORYMGR.ADDINCONSISTENCE
+    		(
+    		    NUCOMPONENTE,
+    		    SBERROR
+    		) ;
+
+    	    
+    	    
+    	    IF (NOT GBLINSINCO) THEN
+        		GBLINSINCO := TRUE ;
+
+        		
+        		IF (NOT PKBCREGIINCO.FBLEXIST (INUSESUNUSE,
+        		    INUSESUSERV, RCPERIFACT.PEFACODI)) THEN
+        		    
+        		    PKBORATINGMEMORYMGR.ADDINCOPRODUCT (ISBNIVELROLLBACK) ;
+        		END IF;
+
+    	    END IF;
+
+    	    
+    	    IF (ISBNIVELROLLBACK = 'C') THEN
+        		
+        		PKBORATINGMEMORYMGR.ROLLBACKCONCEPT ;
+    	    ELSE
+        		
+        		PKBORATINGMEMORYMGR.ROLLBACKPRODUCT ;
+    	    END IF;
+    
+    END;
+
+    
+    IF (NUVALCARG != 0) THEN
+    	
+    	PKBORATINGMEMORYMGR.ADDINDIVCHARGE (NUVALCARG) ;
+    END IF;
+    
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+        PKERRORS.POP;
+        RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+    	RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+    	PKERRORS.NOTIFYERROR (PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+    	PKERRORS.POP;
+    	RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+
+END GENCHRGCNC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE GENCHRGSERVSUS
+IS
+    
+    NUIDX	NUMBER;
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.GenChrgServSus');
+    UT_TRACE.TRACE('INICIO pkFgca.GenChrgServSus', 4);
+    
+    
+    PKBORATINGMEMORYMGR.CLEARSYNCRARRAYS ;
+
+    
+    GNUPRODPROC := 0;
+    
+    
+    PKBOCONSUMPTPERIOD.OBTPERCONSRECSERVICIO(
+                                                GNUSERVICIO,
+                                                NUPERRECTIPOSERV
+                                            );
+
+    
+    FOR NUIDX IN TNUSESUNUSE.FIRST..TNUSESUNUSE.LAST LOOP
+    	PRCCHRGSRVSCTRL (NUIDX);
+    END LOOP;
+
+    
+    
+    PHYSICALCOMMIT (CBLCOMMIT);
+    
+    UT_TRACE.TRACE('FIN pkFgca.GenChrgServSus', 4);
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+    	PKERRORS.POP;
+    	RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+    	RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+    	PKERRORS.NOTIFYERROR (PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+    	PKERRORS.POP;
+    	RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+
+END GENCHRGSERVSUS;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE GETPARAMETERS
+IS
+    
+    
+    CNUBAD_CHARGEARRAY_TOP	CONSTANT NUMBER := 89;
+BEGIN
+
+    PKERRORS.PUSH('pkFgca.GetParameters');
+
+    
+    SBMESSPROCC := PKTBLMENSAJE.FSBGETDESCRIPTION
+				   (
+					    PKCONSTANTE.CSBDIVISION,
+					    PKCONSTANTE.CSBMOD_GRL,
+					    CNUMESSPROCC
+				   );
+
+    
+    FGCAGETPARAMETERS (SBSTATPROCCID);
+
+    
+    
+    PKBILLFUNCPARAMETERS.GETCHARVALUE
+	(
+	    'USA_MULTIPLES_RECAMORA',
+	    SBMULTIPLES_RECAMORA
+	);
+
+    
+    PKBILLFUNCPARAMETERS.GETNUMBERVALUE
+	(
+	   'BIL_MAX_CHARGES',
+	   GNUMAXCHARGES
+	);
+
+    
+    
+    IF ( GNUMAXCHARGES <= 0 ) THEN
+    
+    	PKERRORS.SETERRORCODE
+    	    (
+    		PKCONSTANTE.CSBDIVISION,
+    		PKCONSTANTE.CSBMOD_BIL,
+    		CNUBAD_CHARGEARRAY_TOP
+    	    );
+
+    	RAISE LOGIN_DENIED;
+    
+    END IF;
+
+    
+    IF ( SBMULTIPLES_RECAMORA = PKCONSTANTE.SI ) THEN
+    	BLMULT_RECAMORA := TRUE;
+    ELSE
+	    BLMULT_RECAMORA := FALSE;
+    END IF;
+
+    
+    
+    LOADSPECIALPRODS ;
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+    	PKERRORS.POP;
+    	RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+    	RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+    	PKERRORS.NOTIFYERROR (PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+    	PKERRORS.POP;
+    	RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+
+END GETPARAMETERS;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE GETRULECALCCNC
+(
+	ISBTABLA 	      IN   VARCHAR2,
+	INUIDX		      IN   NUMBER,
+	INUCONCEPTO	      IN   CONCEPTO.CONCCODI%TYPE,
+	INUSESUPLFA       IN   SERVSUSC.SESUPLFA%TYPE,
+	INUSESUSERV       IN   SERVSUSC.SESUSERV%TYPE,
+	INUSESUSUSC       IN   SERVSUSC.SESUSUSC%TYPE,
+	INUSESUNUSE       IN   SERVSUSC.SESUNUSE%TYPE,
+	OSBRULE		      OUT  VARCHAR2,
+	OSBNIVELROLLBACK  OUT  VARCHAR2,
+    ODTFECHALIQ       OUT  DATE
+)
+IS
+    
+    SBHASHKEY	VARCHAR2(30) ;
+
+BEGIN
+
+    PKERRORS.PUSH('pkFgca.GetRuleCalcCnc');
+
+    
+    WHILE TRUE LOOP
+    
+        BEGIN
+        
+        	
+        	IF (ISBTABLA = 'CONCPLSU') THEN
+        	
+        	    
+             SBHASHKEY := TO_CHAR (INUSESUPLFA,'FM0009') ||'|'||
+        			 TO_CHAR (INUSESUSERV,'FM0009') ||'|'||
+        			 TO_CHAR (INUCONCEPTO, 'FM0009') ;
+
+
+        	    
+        	    
+        	    IF (TBCONCPLSU.EXISTS (SBHASHKEY)) THEN
+                
+            		
+            		OSBRULE          := TBCONCPLSU (SBHASHKEY).SBFUNCION;
+            		OSBNIVELROLLBACK := TBCONCPLSU (SBHASHKEY).SBNIVELRB;
+                    ODTFECHALIQ      := TBCONCPLSU (SBHASHKEY).DTFECHALIQ;
+                
+        	    ELSE
+                
+            		
+            		
+            		OPEN  CUCONCPLSU(
+            				  INUSESUPLFA,
+            				  INUSESUSERV,
+            				  INUCONCEPTO
+            				);
+
+            		FETCH CUCONCPLSU INTO OSBRULE, OSBNIVELROLLBACK, ODTFECHALIQ;
+            		CLOSE CUCONCPLSU;
+
+            		
+            		TBCONCPLSU (SBHASHKEY).SBFUNCION  := OSBRULE;
+            		TBCONCPLSU (SBHASHKEY).SBNIVELRB  := OSBNIVELROLLBACK;
+                    TBCONCPLSU (SBHASHKEY).DTFECHALIQ := ODTFECHALIQ;
+                
+        	    END IF;
+
+        	    EXIT;
+        	
+        	END IF;
+
+        	
+        	IF (ISBTABLA = 'CONCFESU') THEN
+        	
+        	    IF (NOT CUCONCSUFE%ISOPEN) THEN
+            		OPEN  CUCONCSUFE(
+            				  INUSESUSUSC,
+            				  INUCONCEPTO,
+            				  INUSESUSERV,
+            				  RCPERIFACT.PEFAFIMO,
+            				  RCPERIFACT.PEFAFFMO
+            				 );
+        	    END IF;
+
+        	    FETCH CUCONCSUFE INTO OSBRULE, OSBNIVELROLLBACK, ODTFECHALIQ;
+        	    CLOSE CUCONCSUFE;
+        	    EXIT;
+        	
+        	END IF;
+
+        	
+        	IF (ISBTABLA = 'CONCSERV') THEN
+        	
+        	    
+                SBHASHKEY := TO_CHAR (INUSESUSERV,'FM0009') ||'|'||
+        			         TO_CHAR (INUCONCEPTO,'FM0009') ;
+
+
+        	    
+        	    
+        	    IF (TBCONCSERV.EXISTS (SBHASHKEY)) THEN
+                
+            		
+            		OSBRULE          := TBCONCSERV (SBHASHKEY).SBFUNCION;
+            		OSBNIVELROLLBACK := TBCONCSERV (SBHASHKEY).SBNIVELRB;
+                    ODTFECHALIQ      := TBCONCSERV (SBHASHKEY).DTFECHALIQ;
+            	
+        	    ELSE
+                
+            		
+            		
+
+            		OPEN  CUCONCSERV (INUSESUSERV, INUCONCEPTO);
+            		FETCH CUCONCSERV INTO OSBRULE, OSBNIVELROLLBACK, ODTFECHALIQ;
+            		CLOSE CUCONCSERV;
+
+            		
+            		TBCONCSERV (SBHASHKEY).SBFUNCION := OSBRULE ;
+            		TBCONCSERV (SBHASHKEY).SBNIVELRB := OSBNIVELROLLBACK ;
+            		TBCONCSERV (SBHASHKEY).DTFECHALIQ := ODTFECHALIQ ;
+                
+        	    END IF;
+
+        	    EXIT;
+        	
+        	END IF;
+
+        	
+        	IF (ISBTABLA = 'CONCCICL') THEN
+        	
+        	    
+                SBHASHKEY := TO_CHAR(RCPERIFACT.PEFACICL ,'FM0009') ||'|'||
+        			 TO_CHAR (INUSESUSERV, 'FM0009') ||'|'||
+        			 TO_CHAR (INUCONCEPTO, 'FM0009') ;
+
+        	    
+        	    
+        	    IF (TBCONCCICL.EXISTS (SBHASHKEY)) THEN
+                
+            		
+            		OSBRULE          := TBCONCCICL (SBHASHKEY).SBFUNCION ;
+            		OSBNIVELROLLBACK := TBCONCCICL (SBHASHKEY).SBNIVELRB ;
+                    ODTFECHALIQ      := TBCONCCICL (SBHASHKEY).DTFECHALIQ ;
+            	
+        	    ELSE
+                
+            		
+            		
+
+            		OPEN  CUCONCCICL( RCPERIFACT.PEFACICL,
+                     				  INUSESUSERV,
+            				          INUCONCEPTO );
+
+            		FETCH CUCONCCICL INTO OSBRULE, OSBNIVELROLLBACK, ODTFECHALIQ;
+            		CLOSE CUCONCCICL;
+
+            		
+            		TBCONCCICL (SBHASHKEY).SBFUNCION := OSBRULE ;
+            		TBCONCCICL (SBHASHKEY).SBNIVELRB := OSBNIVELROLLBACK ;
+                    TBCONCCICL (SBHASHKEY).DTFECHALIQ := ODTFECHALIQ ;
+                
+        	    END IF;
+
+        	    EXIT;
+        	
+        	END IF;
+
+        	
+        	IF (ISBTABLA = 'CONCSUSC') THEN
+        	
+        	    OPEN  CUCONCSUSC
+        		(
+        		    INUSESUSUSC,
+        		    INUCONCEPTO,
+        		    INUSESUSERV
+        		);
+        	    FETCH CUCONCSUSC INTO OSBRULE, OSBNIVELROLLBACK, ODTFECHALIQ;
+        	    CLOSE CUCONCSUSC;
+        	    EXIT;
+        	
+        	END IF;
+
+        	
+        	IF (ISBTABLA = 'CONCSESU') THEN
+        	
+        	    OPEN  CUCONCSESU (INUSESUNUSE, INUCONCEPTO);
+        	    FETCH CUCONCSESU INTO OSBRULE, OSBNIVELROLLBACK, ODTFECHALIQ;
+        	    CLOSE CUCONCSESU;
+        	    EXIT;
+        	
+        	END IF;
+
+        	
+        	IF (ISBTABLA =  'CONCFESS') THEN
+        	
+        	    OPEN  CUCONCFESESU
+                (
+				  INUSESUNUSE,
+				  INUCONCEPTO,
+				  INUSESUSERV,
+				  RCPERIFACT.PEFAFIMO,
+				  RCPERIFACT.PEFAFFMO
+        		);
+        		
+        	    FETCH CUCONCFESESU INTO OSBRULE, OSBNIVELROLLBACK, ODTFECHALIQ;
+        	    CLOSE CUCONCFESESU;
+        	    EXIT;
+        	
+        	END IF;
+
+        EXCEPTION
+        	WHEN OTHERS THEN
+        	    CLOSECURSFORM;
+        	    RAISE LOGIN_DENIED;
+        
+        END;
+
+        EXIT;
+    
+    END LOOP;
+    
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+        PKERRORS.POP;
+    	RAISE LOGIN_DENIED;
+
+END GETRULECALCCNC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE INSERTPROCESS
+IS
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.InsertProcess');
+
+    
+    PKBORATINGMEMORYMGR.SYNCHRONIZE ;
+
+    
+    PKRATEDSERVICESMGR.UPBILLEDRECORDS(RCPERIFACT.PEFACODI);
+
+    
+    IF (GSBTIPOEXE = CSBTE_MASIVO) THEN
+    
+    	
+    	
+    	PKBCESPRSEPE.UPPROGRESS
+    	(
+    		GNUSERVICIO,
+    		RCPERIFACT.PEFACODI,
+    		PKTBLPROCESOS.FSBGETPROCESS(GNUPROGRAM),
+    		GNUPRODPROC,
+    		GBLNORMALMODE,
+    		GBLHAYINCO
+    	) ;
+
+    	
+    	PKBCESTAPRHI.UPDTRACKNUMBER
+    	(
+    		GNUSERVICIO,
+    		SBSTATPROCCID,
+    		NUTHREAD,
+    		GNUTRACK
+    	) ;
+
+    	
+    	UPDATEPROCESSPERCENTAGE ;
+
+    	
+    	
+    	GNUPRODPROC := 0;
+    
+    END IF;
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+        PKERRORS.POP;
+        RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+        PKERRORS.POP;
+        RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+        PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+        PKERRORS.POP;
+        RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2,SBERRMSG);
+
+END INSERTPROCESS;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE PHYSICALCOMMIT
+(
+	IBLDOCOMMIT	 IN	BOOLEAN DEFAULT FALSE
+)
+IS
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.PhysicalCommit');
+
+    
+    IF (PKBORATINGMEMORYMGR.FBLSYNCHRONIZE (GNUMAXCHARGES) OR
+        IBLDOCOMMIT)
+    THEN
+    
+    	
+    	INSERTPROCESS;
+
+        IF (GBLDOCOMMIT) THEN
+    	    COMMIT;
+        END IF;
+    
+    END IF;
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+    	PKERRORS.POP ;
+    	RAISE LOGIN_DENIED ;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+    	RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+    	PKERRORS.NOTIFYERROR (PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+    	PKERRORS.POP;
+    	RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+
+END PHYSICALCOMMIT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PROCCOMPONENTS
+    (
+        INUPRODUCT          IN  SERVSUSC.SESUNUSE%TYPE,
+        INUPRODTYPE         IN  SERVICIO.SERVCODI%TYPE,
+        INUCONCEPT          IN  CONCEPTO.CONCCODI%TYPE,
+        IRCCONSPERIOD       IN  PERICOSE%ROWTYPE,
+        ISBRULE             IN  CONCPLSU.COPSFUFA%TYPE,
+        ISBROLLBACKLEVEL    IN  VARCHAR2
+    )
+    IS
+        
+        RCCONCEPT           CONCEPTO%ROWTYPE;
+        
+        
+        NUCOMPTYPE          COMPSESU.CMSSTCOM%TYPE;
+
+        
+        NUCOMPCLASS         COMPSESU.CMSSCLSE%TYPE;
+
+        
+        TBCOMPONENTS        PKBCCOMPSESU.TYTBCOMPSESU;
+
+        
+        NUINDX              BINARY_INTEGER;
+
+        
+        DTSTARTDATE         COMPSESU.CMSSFEIN%TYPE;
+        DTENDDATE           COMPSESU.CMSSFERE%TYPE;
+
+        
+        NUCOMPCOUNTER       NUMBER := 1;
+
+    BEGIN
+        PKERRORS.PUSH('pkFGCA.ProcComponents');
+        UT_TRACE.TRACE('Inicia pkFGCA.ProcComponents', 5);
+
+        
+        PKCONCEPTMGR.GETRECORD(INUCONCEPT, RCCONCEPT);
+
+        
+        FA_BOLIQCARGOSFIJOSCOMP.OBTCLASESERVICIOCONCEPTO(INUCONCEPT, NUCOMPCLASS);
+
+        
+        FA_BOLIQCARGOSFIJOSCOMP.OBTTIPOCOMPONENTECONCEPTO(INUCONCEPT, NUCOMPTYPE);
+
+        
+        PKBCPERICOSE.GETDATESBYLIQTYPE
+        (
+            IRCCONSPERIOD,
+            RCCONCEPT.CONCTICC,
+            DTSTARTDATE,
+            DTENDDATE
+        );
+
+        
+        PKBCCOMPSESU.COMPSBYTYPECLASSDATES
+        (
+            INUPRODUCT,
+            NUCOMPTYPE,
+            NUCOMPCLASS,
+            DTSTARTDATE,
+            DTENDDATE,
+            TBCOMPONENTS
+        );
+        
+        UT_TRACE.TRACE('Componentes encontrados: ' || TBCOMPONENTS.COUNT, 5);
+
+        
+        IF TBCOMPONENTS.COUNT > 0 THEN
+
+            
+            NUINDX := TBCOMPONENTS.FIRST;
+
+            LOOP
+
+                EXIT WHEN NUINDX IS NULL;
+                UT_TRACE.TRACE('Componente en Iteraci�n: ' || TBCOMPONENTS(NUINDX).CMSSIDCO, 8);
+
+                
+                FA_BCCHARGESGERATION.SETCOMPDATA(TBCOMPONENTS(NUINDX));
+
+                
+                
+                PKINSTANCEDATAMGR.INSTCANTCOMPONENTES(NUCOMPCOUNTER);
+
+                
+                GENCHRGCNC
+                (
+                	INUPRODUCT,
+                	INUPRODTYPE,
+                	NULL,
+                	ISBRULE,
+                	ISBROLLBACKLEVEL
+                );
+
+                
+                NUCOMPCOUNTER := NUCOMPCOUNTER + 1;
+
+                
+                PKINSTANCEDATAMGR.LIMPIARMEMORIACOMPONENTES;
+
+                
+                NUINDX := TBCOMPONENTS.NEXT(NUINDX);
+
+            END LOOP;
+
+            
+            TBCOMPONENTS.DELETE;
+
+            
+            PKINSTANCEDATAMGR.LIMPIARMEMORIACOMPONENTES;
+
+        END IF;
+
+        UT_TRACE.TRACE('Finaliza pkFGCA.ProcComponents', 5);
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+     END PROCCOMPONENTS;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE PRCCHRGSRVS
+(
+	INUIDX	IN	NUMBER
+)
+IS
+    BLRET	BOOLEAN ;
+    
+    
+    RCPERIFACT  PERIFACT%ROWTYPE;
+    
+    
+    NUDIASMIFA  NUMBER;
+
+    
+    RCSERVICE  SERVICIO%ROWTYPE;
+
+    
+    
+    
+    FUNCTION FBLPRODPROCESSSECURITY
+    (
+        INUNUSE IN SERVSUSC.SESUNUSE%TYPE
+    ) RETURN BOOLEAN
+    IS
+        NUCMPT   COMPSESU.CMSSIDCO%TYPE ;
+        SBPROC   PROCREST.PRREPROC%TYPE;
+        NUCODERR NUMBER;
+        SNCODERR GE_ERROR_LOG.DESCRIPTION%TYPE;
+        BLPROC   BOOLEAN;
+    BEGIN
+    
+        PKERRORS.PUSH('pkFgca.fblProdProcessSecurity');
+
+        
+        SBPROC := PKERRORS.FSBGETAPPLICATION;
+        BLPROC := FALSE;
+
+        BEGIN
+        
+            
+            PKBOPROCESSSECURITY.VALIDATEPRODUCTSECURITY (
+                                                            INUNUSE,
+                                                            SBPROC
+                                                        );
+        EXCEPTION
+            WHEN OTHERS THEN
+                NUCODERR := PKERRORS.FNUGETERRORCODE;
+                SBERRMSG := PKERRORS.FSBGETERRORMESSAGE;
+                PKERRORS.INITIALIZE;
+                BLPROC := TRUE;
+        
+        END;
+
+        IF (BLPROC) THEN
+            PKERRORS.NOTIFYERROR( SBPROC, SBERRMSG, SBERRMSG );
+        END IF;
+
+        PKERRORS.POP;
+        RETURN (BLPROC);
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE LOGIN_DENIED;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    
+    END FBLPRODPROCESSSECURITY;
+    
+    
+    
+    PROCEDURE INITSRVSUSC IS
+    BEGIN
+    
+        PKERRORS.PUSH ('pkFgca.PrcChrgSrvs.InitSrvSusc');
+
+        
+        BLLATEPROCESS := FALSE;
+
+        
+        TBCONCRECARGOAPLICAR.DELETE;
+
+    	
+    	PKBORATINGMEMORYMGR.CLEARPRODUCTCACHE ;
+
+    	
+    	PKBORATINGMEMORYMGR.CLEARINSTANCEDATAPRO ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_TIPOPROC(NULL);
+    	
+    	
+    	PKBCCOMPSESU.LIMPIARCOMPPORPRODMEM;
+
+    	
+    	GBLPRODINCO := FALSE ;
+
+    	
+    	GBLINCOENPROD := FALSE ;
+
+    	
+    	
+    	GBLINSINCO := FALSE ;
+
+        PKERRORS.POP;
+    EXCEPTION
+    	WHEN LOGIN_DENIED THEN
+    	    PKERRORS.POP;
+    	    RAISE LOGIN_DENIED;
+    
+    END INITSRVSUSC;
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.PrcChrgSrvs');
+    UT_TRACE.TRACE('INICIO pkFgca.PrcChrgSrvs', 4);
+
+    
+    RCSERVSUSC := PKTBLSERVSUSC.FRCGETRECORD(TNUSESUNUSE(INUIDX));
+
+    
+    IF ( FBLPRODPROCESSSECURITY (TNUSESUNUSE(INUIDX)) ) THEN
+
+        UT_TRACE.TRACE('Producto no facturable por estado de corte: ' || TNUSESUNUSE(INUIDX), 4);
+
+        
+        GNUTRACK := TNUSESUNUSE(INUIDX) ;
+
+        
+        GNUPRODPROC := GNUPRODPROC + 1;
+
+        PKERRORS.POP;
+        RETURN;
+
+    END IF;
+
+    
+    BLRET := PKSERVNUMBERMGR.FBOISBILLABLE
+		(
+		    TNUSESUNUSE(INUIDX),
+		    PKCONSTANTE.CACHE,
+		    TNUSESUSERV(INUIDX),
+            TNUSESUESCO(INUIDX)
+		) ;
+
+    
+    
+    IF (BLRET)  THEN
+
+        
+        PKINSTANCEDATAMGR.GETCG_BILLPERIODRECORD(RCPERIFACT);
+        
+        UT_TRACE.TRACE('Verificando dias minimos para facturar', 4);
+        UT_TRACE.TRACE('Fecha Inst      : ' || TO_CHAR(TDTSESUFEIN(INUIDX), 'dd-mm-yyyy'), 4);
+        UT_TRACE.TRACE('Fecha final mov : ' || TO_CHAR(RCPERIFACT.PEFAFFMO, 'dd-mm-yyyy'), 4);
+        UT_TRACE.TRACE('Tipo producto   : ' || TNUSESUSERV(INUIDX), 4);
+
+        
+        BLRET := PKBCSERVICIO.FBOMINDAYTOBILL(TDTSESUFEIN(INUIDX),
+                                              RCPERIFACT.PEFAFFMO,
+                                              TNUSESUSERV(INUIDX));
+    END IF;
+
+    
+    IF (NOT BLRET) THEN
+    
+    	
+    	GNUTRACK := TNUSESUNUSE(INUIDX) ;
+
+    	
+    	GNUPRODPROC := GNUPRODPROC + 1;
+
+        UT_TRACE.TRACE('Producto no facturable: ' || TNUSESUNUSE(INUIDX), 4);
+        
+    	PKERRORS.POP;
+    	RETURN;
+    
+    END IF;
+
+    
+    INITSRVSUSC ;
+
+    
+    
+    SETDATSRVSUSC (INUIDX);
+
+    
+    PKBORATINGMEMORYMGR.LOADCHRGSMEMFROMDB ;
+
+    
+    FA_BODEFERRED.GENDEFERREDCHARGES( RCSERVSUSC, RCPERIFACT );
+
+    
+    
+    FA_BORENTING.GENRENTINGCHARGES(TNUSESUNUSE(INUIDX));
+
+    
+    IF GNUSERVPROC IS NULL OR GNUSERVPROC <> TNUSESUSERV (INUIDX) THEN
+    
+        PKSERVICEMGR.GETRECORD(TNUSESUSERV (INUIDX), RCSERVICE);
+        GSBTIPOCOBRO :=  RCSERVICE.SERVTICO;
+        GNUSERVPROC := TNUSESUSERV (INUIDX);
+    END IF;
+
+    
+    PROCESSPRODUCT(INUIDX);
+
+    
+    
+    IF (NOT GBLPRODINCO) THEN
+    	PKBORATINGMEMORYMGR.COMMITPRODUCT ;
+    END IF;
+
+    
+    
+    IF (FBLDELINCORECS) THEN
+    	
+    	PKBORATINGMEMORYMGR.ADDINCORECTODEL;
+    END IF ;
+
+    
+    GNUTRACK := TNUSESUNUSE(INUIDX) ;
+
+    
+    GNUPRODPROC := GNUPRODPROC + 1;
+
+    
+    PHYSICALCOMMIT ;
+    
+    UT_TRACE.TRACE('FIN pkFgca.PrcChrgSrvs', 4);
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+    	PKERRORS.POP;
+    	RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+    	RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+    	PKERRORS.NOTIFYERROR (PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+    	PKERRORS.POP;
+    	RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+
+END PRCCHRGSRVS;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE PROCESSPRODUCT
+(
+	INUIDX	IN	NUMBER
+)
+IS
+    
+    SBNIVELROLLBACK     VARCHAR2(1) ;
+
+    
+    
+    NUSERVICIO          SERVSUSC.SESUSERV%TYPE;
+
+    
+    NUCONCDUMMY         NUMBER;
+
+    
+    NUCONCEPT           CONCEPTO.CONCCODI%TYPE;
+
+    
+    NUORDLIQ            NUMBER;
+
+    
+    SBNOMBTABL          VARCHAR2(30);
+
+    
+    SBRULE              CONCPLSU.COPSFUFA%TYPE;
+    
+    
+    RCCONCEPTO          CONCEPTO%ROWTYPE;
+
+    
+    SBHASHKEY           FA_BCCHARGESGERATION.STYHASHVISTA;
+
+    
+    TBVWSERVICIOTMP	    PKTBLSERVICIO.TYSERVCODI ;
+    TBVWCONCDUMMTMP	    PKTBLCONCEPTO.TYCONCCODI ;
+    TBVWCONCEPTOTMP	    PKTBLCONCEPTO.TYCONCCODI ;
+    TBVWORDLIQTMP       PKTBLCONCEPTO.TYCONCORLI ;
+    TBVWNOMTABLATMP	    PKTBLCONCEPTO.TYCONCDESC ;
+
+    
+    NUIND               NUMBER ;
+    NUINI               NUMBER ;
+    NUFIN               NUMBER ;
+    
+    
+    BLREADVIEW          BOOLEAN ;
+
+    
+    BLPROCESSCONCEPT    BOOLEAN;
+    
+    
+    DTFECHAINILIQCON    DATE;
+
+    
+    RCPERICONSUMO       PERICOSE%ROWTYPE;
+    
+    
+    RCPERIABONO         PERICOSE%ROWTYPE;
+
+    
+    RCPERIACTU          PERICOSE%ROWTYPE;
+    
+    
+    SBFORMALIQ          CONCEPTO.CONCTICC%TYPE;
+
+    
+    NUPERIODOITER       PERICOSE.PECSCONS%TYPE;
+
+    
+    NUINDICE            NUMBER := 1;
+
+    
+    TYPE TYBLINDICADOR  IS TABLE OF BOOLEAN INDEX BY BINARY_INTEGER;
+
+    
+    NUPERRECCONS        NUMBER := 0;
+
+    
+    TBPERCONSLIQ        PKTBLPERICOSE.TYPECSCONS;
+    
+    
+    TBPERIODOSLIQ       PKTBLPERICOSE.TYPECSCONS ;
+    
+    
+    BOCONSTASA          BOOLEAN;
+
+    
+    BOLIQCOMP           BOOLEAN;
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PROCESSLATECONCEPTS
+    IS
+    BEGIN
+    
+    	PKERRORS.PUSH ('pkFgca.ProcessLateConcepts');
+    	
+    	
+    	IF (NOT BLMULT_RECAMORA) THEN
+    	
+    	    PKERRORS.POP;
+    	    RETURN;
+        
+        ELSE
+            
+            PKLATECHARGEMGR.GETBASECONCEPTS;
+    	END IF;
+
+    	
+    	IF (NOT TBCONCEPTOS.EXISTS(NUCONCEPT)) THEN
+    	
+    	    
+    	    TBCONCEPTOS(NUCONCEPT) := RCCONCEPTO.CONCTICL;
+        
+    	END IF;
+
+    	
+    	IF (TBCONCEPTOS(NUCONCEPT) != PKBILLCONST.FNUOBTTIPORECAMORA) THEN
+        
+    	    PKERRORS.POP;
+    	    RETURN;
+        
+    	END IF;
+
+    	
+    	IF (BLLATEPROCESS) THEN
+    	
+    	    IF (NOT TBCONCRECARGOAPLICAR.EXISTS(NUCONCEPT)) THEN
+        		BLPROCESSCONCEPT := FALSE;
+    	    END IF;
+    	    
+    	    PKERRORS.POP;
+    	    RETURN;
+        
+    	END IF;
+
+    	BEGIN
+    	
+    	    
+    	    
+    	    
+    	    PKLATECHARGEMGR.GETLATECONCEPTSTABLE
+    		(
+    		    TNUSESUNUSE (INUIDX),
+    		    PKBCCUENCOBR.FNUGETNONAPPLIEDPAY(RCSERVSUSC.SESUNUSE) ,
+    		    TBCONCRECARGOAPLICAR
+    		);
+
+    	EXCEPTION
+    	    WHEN LOGIN_DENIED THEN
+    	       	NULL;
+        
+    	END;
+
+    	
+    	BLLATEPROCESS := TRUE;
+
+    	
+    	IF (NOT TBCONCRECARGOAPLICAR.EXISTS(NUCONCEPT)) THEN
+            BLPROCESSCONCEPT := FALSE;
+    	END IF;
+
+    	PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED THEN
+            PKERRORS.POP;
+    	    RAISE LOGIN_DENIED;
+    
+    END PROCESSLATECONCEPTS;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CICLOPERIODOS
+    IS
+        RCPERIODOC      PERICOSE%ROWTYPE;
+        RCPERIODOCNULL  PERICOSE%ROWTYPE;
+    BEGIN
+    
+        PKERRORS.PUSH('pkFgca.ProcessProduct.CicloPeriodos');
+        UT_TRACE.TRACE('INICIO pkFgca.ProcessProduct.CicloPeriodos', 5);
+        
+        
+        PKINSTANCEDATAMGR.SETCG_CONSUMPERIOD( RCPERIACTU.PECSCONS );
+        PKINSTANCEDATAMGR.SETCG_CONSPERIODRECORD( RCPERIACTU );
+        
+        
+        NUPERIODOITER := NULL;
+
+        UT_TRACE.TRACE('Procesando periodo actual: ' || RCPERIACTU.PECSCONS, 6);
+
+        
+        IF (BOLIQCOMP) THEN
+        
+            
+            PROCCOMPONENTS(TNUSESUNUSE(INUIDX),
+                           TNUSESUSERV(INUIDX),
+                           NUCONCEPT,
+                           RCPERIACTU,
+                           SBRULE,
+                           SBNIVELROLLBACK);
+
+        ELSE
+
+            
+            GENCHRGCNC
+            (
+            	TNUSESUNUSE(INUIDX),
+            	TNUSESUSERV(INUIDX),
+            	NUCONCEPT,
+            	SBRULE,
+            	SBNIVELROLLBACK
+            );
+        END IF;
+
+         
+         IF ( GBLCONCINCO ) THEN
+            PKERRORS.POP;
+            RETURN;
+         END IF;
+
+        
+        NUINDICE := TBPERIODOSLIQ.NEXT(TBPERIODOSLIQ.FIRST);
+
+        
+        LOOP
+            
+            EXIT WHEN NUINDICE IS NULL;
+
+            
+            NUPERIODOITER := TBPERIODOSLIQ(NUINDICE);
+
+            
+            PKINSTANCEDATAMGR.SETCG_CONSUMPERIOD( NUPERIODOITER );
+            
+            
+            PKINSTANCEDATAMGR.GETRECORDCONSUMPERIOD(NUPERIODOITER, RCPERIODOC);
+
+            
+            PKINSTANCEDATAMGR.SETCG_CONSPERIODRECORD( RCPERIODOC );
+
+            PKGENERALSERVICES.TRACEDATA('Periodo en Iteraci�n: ' || NUPERIODOITER);
+
+            
+            IF (BOLIQCOMP) THEN
+
+                
+                PROCCOMPONENTS(TNUSESUNUSE(INUIDX),
+                               TNUSESUSERV(INUIDX),
+                               NUCONCEPT,
+                               RCPERIODOC,
+                               SBRULE,
+                               SBNIVELROLLBACK);
+
+            ELSE
+
+                
+                GENCHRGCNC
+                (
+                	TNUSESUNUSE(INUIDX),
+                	TNUSESUSERV(INUIDX),
+                	NUCONCEPT,
+                	SBRULE,
+                	SBNIVELROLLBACK
+                );
+            END IF;
+
+            
+            IF ( GBLCONCINCO ) THEN
+                PKERRORS.POP;
+                RETURN;
+            END IF;
+
+            
+            NUINDICE := TBPERIODOSLIQ.NEXT(NUINDICE);
+            
+            
+            RCPERIODOC := RCPERIODOCNULL;
+        END LOOP;
+
+        
+        PKBORATINGMEMORYMGR.COMMITCONCEPT ;
+
+        
+        NUINDICE := 1;
+        
+        UT_TRACE.TRACE('FIN pkFgca.ProcessProduct.CicloPeriodos', 5);
+        
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED THEN
+            NUINDICE := 1;
+            PKERRORS.POP;
+    	    RAISE LOGIN_DENIED;
+    
+    END CICLOPERIODOS;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETCONCEPTS
+    IS
+    BEGIN
+        PKERRORS.PUSH('pkFgca.ProcessProduct.GetConcepts');
+        UT_TRACE.TRACE('Inicia pkFgca.ProcessProduct.GetConcepts', 5);
+
+        
+        IF (CUCONCAFAC%ISOPEN) THEN
+            CLOSE CUCONCAFAC;
+        END IF;
+
+        
+        BLREADVIEW := FALSE ;
+
+        
+        SBINDPROD := TO_CHAR(TNUSESUNUSE(INUIDX));
+
+        
+        
+        IF (TBSPECPRODS.EXISTS (SBINDPROD)) THEN
+        
+        	
+        	BLREADVIEW := TRUE;
+        
+        ELSE
+        
+        	
+        	
+            SBHASHKEY := FA_BCCHARGESGERATION.FSBGETVIEWHASH(TNUSESUPLFA(INUIDX),
+                                                             TNUSESUSERV(INUIDX));
+
+        	
+        	TBVWSERVICIOTMP.DELETE ;
+        	TBVWCONCDUMMTMP.DELETE ;
+        	TBVWCONCEPTOTMP.DELETE ;
+        	TBVWORDLIQTMP.DELETE   ;
+        	TBVWNOMTABLATMP.DELETE ;
+        
+        END IF;
+
+        
+        
+        IF (NOT BLREADVIEW AND TBVISTA.EXISTS (SBHASHKEY)) THEN
+        
+            
+            NUINI := TBVISTA (SBHASHKEY).NURECINI ;
+            NUFIN := TBVISTA (SBHASHKEY).NURECFIN ;
+
+            NUIND := 0 ;
+
+            
+            FOR I IN NUINI..NUFIN LOOP
+            
+                NUIND := NUIND + 1 ;
+
+                TBVWSERVICIOTMP (NUIND) := TBVWSERVICIO (I) ;
+                TBVWCONCDUMMTMP (NUIND) := TBVWCONCDUMM (I) ;
+                TBVWCONCEPTOTMP (NUIND) := TBVWCONCEPTO (I) ;
+                TBVWORDLIQTMP   (NUIND) := TBVWORDLIQ   (I) ;
+                TBVWNOMTABLATMP (NUIND) := TBVWNOMTABLA (I) ;
+            
+            END LOOP ;
+        
+        ELSE
+        
+
+            
+            OPEN CUCONCAFAC (TNUSESUPLFA(INUIDX),
+                             TNUSESUSUSC(INUIDX),
+                             TNUSESUNUSE(INUIDX),
+                             TNUSESUSERV(INUIDX),
+                             RCPERIFACT.PEFACICL,
+                             RCPERIFACT.PEFAFIMO,
+                             RCPERIFACT.PEFAFFMO) ;
+
+            FETCH CUCONCAFAC BULK COLLECT INTO TBVWSERVICIOTMP, TBVWCONCDUMMTMP,
+                                               TBVWCONCEPTOTMP, TBVWORDLIQTMP,
+                                               TBVWNOMTABLATMP;
+
+            CLOSE CUCONCAFAC ;
+
+            
+            IF (TBVWSERVICIOTMP.FIRST IS NULL) THEN
+            
+                UT_TRACE.TRACE('No hay conceptos a liquidar', 5);
+                PKERRORS.POP ;
+                RETURN ;
+            
+            END IF;
+
+            
+            
+            IF (NOT BLREADVIEW) THEN
+            
+                
+                NUINI := NVL (TBVWSERVICIO.LAST,0) + 1;
+
+                
+                
+                FOR I IN TBVWSERVICIOTMP.FIRST..TBVWSERVICIOTMP.LAST LOOP
+                
+                	NUIND := NVL (TBVWSERVICIO.LAST,0) + 1;
+
+                	TBVWSERVICIO (NUIND) := TBVWSERVICIOTMP (I) ;
+                	TBVWCONCDUMM (NUIND) := TBVWCONCDUMMTMP (I) ;
+                	TBVWCONCEPTO (NUIND) := TBVWCONCEPTOTMP (I) ;
+                	TBVWORDLIQ   (NUIND) := TBVWORDLIQTMP   (I) ;
+                	TBVWNOMTABLA (NUIND) := TBVWNOMTABLATMP (I) ;
+                
+                END LOOP ;
+
+                
+                NUFIN := TBVWSERVICIO.LAST ;
+
+                
+                TBVISTA (SBHASHKEY).NURECINI := NUINI ;
+                TBVISTA (SBHASHKEY).NURECFIN := NUFIN ;
+            
+            END IF ;
+        
+        END IF ;
+
+        UT_TRACE.TRACE('Num. conceptos a liquidar: ' || TBVWCONCEPTOTMP.COUNT, 5);
+
+        UT_TRACE.TRACE('Finaliza pkFgca.ProcessProduct.GetConcepts', 5);
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+     END GETCONCEPTS;
+     
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE LOADCONSUMPTIONS
+    IS
+    
+        
+        TBCONSPROD          PKBORATINGMEMORYMGR.TYTBCONSPECOTICO;
+        
+        
+        TBTIPOCONS	        PKTBLTIPOCONS.TYTCONCODI;
+
+        
+        TBCNCCONME          PKTBLCONCEPTO.TYCONCCODI;
+
+
+    BEGIN
+        PKERRORS.PUSH('pkFgca.ProcessProduct.LoadConsumptions');
+        UT_TRACE.TRACE('Inicia pkFgca.ProcessProduct.LoadConsumptions', 5);
+
+        
+        NUIND := TBVWCONCEPTOTMP.FIRST ;
+
+        
+        LOOP
+
+            
+            EXIT WHEN NUIND IS NULL;
+
+            
+            NUCONCEPT := TBVWCONCEPTOTMP(NUIND);
+
+            UT_TRACE.TRACE('Verificando concepto: ' || NUCONCEPT, 5);
+            
+            
+            PKCONCEPTMGR.GETRECORD(NUCONCEPT, RCCONCEPTO);
+            SBFORMALIQ := RCCONCEPTO.CONCTICC;
+
+            
+            IF (SBFORMALIQ =  PKCONSTANTE.CSBCONSUMO AND
+                NOT GTBCONSUMPTIONCONCEPTS.EXISTS(NUCONCEPT)) THEN
+
+                UT_TRACE.TRACE('Concepto ' || NUCONCEPT || ' es de consumo medido' , 6);
+                
+                TBCNCCONME(NUCONCEPT) := NUCONCEPT;
+                
+            END IF;
+
+            
+            NUIND := TBVWCONCEPTOTMP.NEXT(NUIND);
+
+        END LOOP;
+
+        
+        IF ( TBCNCCONME.FIRST IS NOT NULL ) THEN
+
+            UT_TRACE.TRACE('Cargando consumos medidos para ' || TBCNCCONME.COUNT || ' conceptos', 5);
+            
+            
+            PKBORATINGMEMORYMGR.GETCONSUMPRODUCT(TBCNCCONME, TBCONSPROD, TBPERCONSLIQ, TBTIPOCONS);
+
+            
+            PKBOCONSUMPTPERIOD.GETRECNUMPERIODSCONS(
+                                                    RCPERICONSUMO.PECSCONS,
+                                                    TBPERCONSLIQ,
+                                                    RCPERICONSUMO.PECSCICO,
+                                                    NUPERRECCONS
+                                                  );
+
+            
+            PKINSTANCEDATAMGR.SETCG_CONSUMDATATABLE(TBCONSPROD );
+            
+            UT_TRACE.TRACE('Periodos a recuperar por consumos: ' || NUPERRECCONS      , 5);
+            UT_TRACE.TRACE('Consumos agrupados               : ' || TBCONSPROD.COUNT  , 5);
+            UT_TRACE.TRACE('Periodos a  iterar               : ' || TBPERCONSLIQ.COUNT, 5);
+            UT_TRACE.TRACE('Tipo de consumos a procesar      : ' || TBTIPOCONS.COUNT  , 5);
+        ELSE
+            UT_TRACE.TRACE('No existen conceptos de consumos medidos', 5);
+        END IF;
+
+        UT_TRACE.TRACE('Finaliza pkFgca.ProcessProduct.LoadConsumptions', 5);
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+     END LOADCONSUMPTIONS;
+     
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETCONSPERIODS
+    IS
+    
+        
+        NUPERIRECULTLIQ     NUMBER := 0;
+        
+        
+        NUPERRECFECHAINS    NUMBER := 0;
+
+        
+        NUPERRECFECHALIQ    NUMBER := 0;
+        
+        
+        NUPERRECACCUM       NUMBER := 0;
+
+        
+        NUPERIODOSREC       NUMBER := 0;
+        
+        
+        TBPERABOSLIQ        PKTBLPERICOSE.TYPECSCONS ;
+
+        
+        TBPERACCUMLIQ       PKTBLPERICOSE.TYPECSCONS;
+
+    BEGIN
+        PKERRORS.PUSH('pkFgca.ProcessProduct.GetConsPeriods');
+        UT_TRACE.TRACE('Inicia pkFgca.ProcessProduct.GetConsPeriods', 5);
+
+        
+        TBPERIODOSLIQ.DELETE;
+        TBPERACCUMLIQ.DELETE;
+        TBPERABOSLIQ.DELETE;
+
+        
+        IF ( SBFORMALIQ = PKCONSTANTE.CSBCONSUMO ) THEN
+        
+            
+            IF ( BOCONSTASA ) THEN
+            
+                
+                LE_BOACUMFACT.OBTPERCONSACUMNOFACT(
+                                                        TNUSESUNUSE(INUIDX),
+                                                        RCPERIFACT.PEFACODI,
+                                                        NUCONCEPT,
+                                                        RCPERICONSUMO.PECSFECF,
+                                                        TBPERACCUMLIQ
+                                                  );
+
+                
+                IF ( TBPERACCUMLIQ.FIRST IS NOT NULL ) THEN
+                
+                    
+                    PKBOCONSUMPTPERIOD.GETRECNUMPERIODSCONS(
+                                                              RCPERICONSUMO.PECSCONS,
+                                                              TBPERACCUMLIQ,
+                                                              RCPERICONSUMO.PECSCICO,
+                                                              NUPERRECACCUM
+                                                           );
+                
+                ELSE
+                
+                    
+                    TBPERACCUMLIQ(1) := RCPERICONSUMO.PECSCONS;
+
+                    
+                    NUPERRECACCUM := 0;
+                
+                END IF;
+
+                
+                PKBCPERICOSE.GETCACHERECORD
+                (
+                    TBPERACCUMLIQ(TBPERACCUMLIQ.FIRST),
+                    RCPERIACTU
+                );
+
+                PKGENERALSERVICES.TRACEDATA('Periodos por consumos tasados: ' || NUPERRECACCUM);
+
+                
+                TBPERIODOSLIQ := TBPERACCUMLIQ;
+
+                
+                NUPERIODOSREC := NUPERRECACCUM;
+
+
+            
+                
+            ELSE
+
+                IF( TBPERCONSLIQ.FIRST IS NOT NULL) THEN
+
+                    
+                    PKBCPERICOSE.GETCACHERECORD
+                    (
+                        TBPERCONSLIQ(TBPERCONSLIQ.FIRST),
+                        RCPERIACTU
+                    );
+
+                ELSE
+                    
+                    TBPERCONSLIQ(1) := RCPERICONSUMO.PECSCONS;
+
+                    
+                    RCPERIACTU := RCPERICONSUMO;
+                END IF;
+
+                PKGENERALSERVICES.TRACEDATA('Periodos por consumos medidos: ' ||NUPERRECCONS );
+
+                
+                TBPERIODOSLIQ := TBPERCONSLIQ;
+
+                
+                NUPERIODOSREC := NUPERRECCONS;
+            
+            END IF;
+        
+        ELSE
+        
+            
+            RCPERIACTU := RCPERIABONO;
+
+            
+            FA_BOLIQCONCEPTOS.OBTPERRECULTLIQ(
+                                                NUCONCEPT,
+                                                TNUSESUNUSE(INUIDX),
+                                                RCPERIACTU,
+                                                NUPERIRECULTLIQ,
+                                                SBFORMALIQ
+                                             );
+
+            
+            PKBOCONSUMPTPERIOD.OBTPERCONSRECINSTAL(
+                                                    TNUSESUNUSE(INUIDX),
+                                                    NUCONCEPT,
+                                                    RCPERIACTU,
+                                                    NUPERRECFECHAINS,
+                                                    SBFORMALIQ
+                                                  );
+
+            PKBOCONSUMPTPERIOD.OBTPERRECFECHALIQ(
+                                                    DTFECHAINILIQCON,
+                                                    RCPERIACTU,
+                                                    NUPERRECFECHALIQ,
+                                                    SBFORMALIQ
+                                                );
+
+            
+            PKBOCONSUMPTPERIOD.OBTCOMPENDIOCRITERIOS(
+                                                        NUPERRECTIPOSERV,
+                                                        PKCONSTANTE.NULLNUM,
+                                                        NUPERRECFECHAINS,
+                                                        NUPERRECFECHALIQ,
+                                                        NUPERIRECULTLIQ,
+                                                        PKCONSTANTE.NULLNUM,
+                                                        SBFORMALIQ,
+                                                        NUPERIODOSREC
+                                                    );
+
+            UT_TRACE.TRACE('Periodos por �ltima liquidaci�n             : ' || NUPERIRECULTLIQ , 5);
+            UT_TRACE.TRACE('Periodos por tipo de producto               : ' || NUPERRECTIPOSERV, 5);
+            UT_TRACE.TRACE('Periodos por fecha de instalaci�n           : ' || NUPERRECFECHAINS, 5);
+            UT_TRACE.TRACE('Periodos por fecha de inicio de liquidaci�n : ' || NUPERRECFECHALIQ, 5);
+            UT_TRACE.TRACE('Periodos por cargo b�sico                   : ' || NUPERIODOSREC   , 5);
+
+            
+            PKBOCONSUMPTPERIOD.OBTPERCONSANT(
+                                                RCPERIACTU.PECSCONS,
+                                                NUPERIODOSREC,
+                                                TBPERABOSLIQ
+                                            );
+
+            
+            
+            TBPERABOSLIQ(0) := RCPERIACTU.PECSCONS;
+
+            
+            TBPERIODOSLIQ := TBPERABOSLIQ;
+
+        
+        END IF;
+
+        
+        PKINSTANCEDATAMGR.INSTANCIARPERACTUAL(RCPERIACTU.PECSCONS);
+        UT_TRACE.TRACE('Periodo de Consumo Actual   : ' || RCPERIACTU.PECSCONS       , 5);
+
+
+        UT_TRACE.TRACE('Finaliza pkFgca.ProcessProduct.GetConsPeriods', 5);
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+     END GETCONSPERIODS;
+    
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.ProcessProduct');
+    UT_TRACE.TRACE('INICIO pkFgca.ProcessProduct', 4);
+
+    
+    GETCONCEPTS;
+
+    
+    PKBCPERICOSE.GETCONSPERBYBILLPER(TNUSESUCICO(INUIDX),
+                                     RCPERIFACT.PEFACODI,
+                                     RCPERICONSUMO,
+                                     GSBTIPOCOBRO,
+                                     PKCONSTANTE.CSBCONSUMO);
+                                     
+    UT_TRACE.TRACE('Periodo actual de consumo: ' || RCPERICONSUMO.PECSCONS, 5);
+                                    
+    
+    PKBCPERICOSE.GETCONSPERBYBILLPER(TNUSESUCICO(INUIDX),
+                                     RCPERIFACT.PEFACODI,
+                                     RCPERIABONO,
+                                     GSBTIPOCOBRO,
+                                     PKCONSTANTE.CSBABONO);
+                                    
+    UT_TRACE.TRACE('Periodo actual de abono: ' || RCPERIABONO.PECSCONS, 5);
+    
+    
+    LOADCONSUMPTIONS;
+    
+    
+    NUIND := TBVWSERVICIOTMP.FIRST ;
+    
+    
+    LOOP
+    
+        
+        EXIT WHEN NUIND IS NULL ;
+        
+        
+        NUSERVICIO  := TBVWSERVICIOTMP (NUIND) ;
+        NUCONCDUMMY := TBVWCONCDUMMTMP (NUIND) ;
+        NUCONCEPT   := TBVWCONCEPTOTMP (NUIND) ;
+        NUORDLIQ    := TBVWORDLIQTMP   (NUIND) ;
+        SBNOMBTABL  := TBVWNOMTABLATMP (NUIND) ;
+        
+        UT_TRACE.TRACE('******************** Datos de Iteraci�n ********************', 5);
+        UT_TRACE.TRACE('Producto                    : ' || TNUSESUNUSE(INUIDX)       , 5);
+        UT_TRACE.TRACE('Tipo de producto            : ' || TNUSESUSERV(INUIDX)       , 5);
+        UT_TRACE.TRACE('Entidad Configuraci�n       : ' || SBNOMBTABL                , 5);
+        UT_TRACE.TRACE('Concepto a liquidar         : ' || NUCONCEPT                 , 5);
+        UT_TRACE.TRACE('************************************************************', 5);
+
+        
+        PKCONCEPTMGR.GETRECORD(NUCONCEPT, RCCONCEPTO);
+
+        
+        SBFORMALIQ := RCCONCEPTO.CONCTICC;
+        UT_TRACE.TRACE('Tipo de concepto (Form. Liq): ' || SBFORMALIQ, 5);
+
+        
+        BLPROCESSCONCEPT := PKCONSTANTE.VERDADERO;
+
+        
+        PROCESSLATECONCEPTS;
+
+        
+        
+        IF (NOT BLPROCESSCONCEPT                      OR
+            FBOISCHRGGENERATED(NUCONCEPT, NUSERVICIO)
+            )      THEN
+
+            UT_TRACE.TRACE('Concepto no valido para procesar', 5);
+
+        ELSE
+
+            
+            BOLIQCOMP := BI_BCCONCTCCS.FBOEXIST(NUCONCEPT);
+
+            
+            IF (BOLIQCOMP) THEN
+                UT_TRACE.TRACE('Liquida por componente      : SI', 5);
+            ELSE
+                UT_TRACE.TRACE('Liquida por componente      : NO', 5);
+            END IF;
+
+            
+            IF (SBFORMALIQ =  PKCONSTANTE.CSBCONSUMO AND
+                GTBCONSUMPTIONCONCEPTS.EXISTS(NUCONCEPT)) THEN
+
+                
+                BOCONSTASA := PKCONSTANTE.VERDADERO;
+            ELSE
+                BOCONSTASA := PKCONSTANTE.FALSO;
+            END IF;
+
+            
+            IF (BOCONSTASA) THEN
+                UT_TRACE.TRACE('Concepto de consumo tasado', 5);
+            ELSE
+                UT_TRACE.TRACE('Concepto de consumo medido', 5);
+            END IF;
+
+            
+            GBLCONCINCO := PKCONSTANTE.FALSO ;
+
+            
+            PKBORATINGMEMORYMGR.CLEARINSTANCEDATACNC ;
+
+            
+            PKBORATINGMEMORYMGR.CLEARCONCEPTCACHE ;
+
+            
+            PKINSTANCEDATAMGR.SETCG_CONCEPT( NUCONCEPT );
+
+            
+            
+            
+            GETRULECALCCNC
+            (
+                SBNOMBTABL,
+                INUIDX,
+                NUCONCEPT,
+            	TNUSESUPLFA(INUIDX),
+            	TNUSESUSERV(INUIDX),
+            	TNUSESUSUSC(INUIDX),
+                TNUSESUNUSE(INUIDX),
+                SBRULE,
+                SBNIVELROLLBACK,
+                DTFECHAINILIQCON
+            );
+            
+            UT_TRACE.TRACE('Regla obtenida   : ' || SBRULE         , 5);
+            UT_TRACE.TRACE('Nivel de rollback: ' || SBNIVELROLLBACK, 5);
+
+            
+            
+            GETCONSPERIODS;
+
+            
+            CICLOPERIODOS;
+
+            
+            IF (NOT GBLCONCINCO) THEN
+
+                PKBORATINGMEMORYMGR.COMMITCONCEPT ;
+
+            ELSE
+                
+                
+                IF (GBLPRODINCO) THEN
+
+              	    
+                	PKBORATINGMEMORYMGR.CLEARINSTANCEDATACNC;
+
+                    UT_TRACE.TRACE('Error en producto. Termina por nivel de rollback', 4);
+                    PKERRORS.POP;
+                    RETURN;
+                END IF;
+            END IF;
+        END IF;
+
+  	    
+    	PKBORATINGMEMORYMGR.CLEARINSTANCEDATACNC;
+        NUIND := TBVWSERVICIOTMP.NEXT (NUIND) ;
+    
+    END LOOP;
+
+    UT_TRACE.TRACE('FIN pkFgca.ProcessProduct', 4);
+    
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+    	PKERRORS.POP;
+    	RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+    	RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+    	PKERRORS.NOTIFYERROR (PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+    	PKERRORS.POP;
+    	RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+
+END PROCESSPRODUCT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE FGCA
+(
+	INUCICLO        IN	CICLO.CICLCODI%TYPE,
+	IDTFECHGENE     IN	PERIFACT.PEFAFIMO%TYPE,
+	INUSERVICIO	    IN	SERVICIO.SERVCODI%TYPE,
+	ISBMODO		    IN	VARCHAR2,
+	ISBFLAGINCO	    IN	VARCHAR2,
+	ISBTABLASRC	    IN	ESPRSEPE.EPSPTABL%TYPE,
+	INUTRACK	    IN	SERVSUSC.SESUNUSE%TYPE,
+	INUTHREAD       IN	NUMBER,
+	INUTHREADTOTAL  IN	NUMBER,
+	ISBPROCCID      IN	ESTAPROG.ESPRPROG%TYPE,
+	ONUERRORCODE    OUT	NUMBER,
+	OSBERRORMESSAGE OUT	VARCHAR2
+)
+IS
+
+    
+    NUUSER	       CARGOS.CARGUSUA%TYPE;
+    
+    
+    DTFECHCURR	   DATE;
+    
+    
+    SBSESSIONID    SA_TERMINAL.NAME%TYPE;
+
+    PROCEDURE INITIALIZE
+    IS
+    BEGIN
+    
+    
+       	PKERRORS.PUSH ('pkFgca.Initialize');
+
+        
+        GNUVALORPAGO := 0;
+
+        
+        LE_BOTIPOEVEN.GETCONSUMPTIONCONCEPTS(GTBCONSUMPTIONCONCEPTS);
+
+        
+       	PKERRORS.SETAPPLICATION (CSBPROGFGCA);
+
+    	GNUPROGRAM       := PKGENERALSERVICES.FNUIDPROCESO;
+    	SBSESSIONID      := PKGENERALSERVICES.FSBGETTERMINAL;
+    	NUUSER           := SA_BOSYSTEM.GETSYSTEMUSERID;
+    	DTFECHCURR       := SYSDATE;
+        NUTHREAD         := INUTHREAD;
+        NUTHREADTOTAL    := INUTHREADTOTAL;
+
+    	
+    	GNUSERVICIO      := INUSERVICIO;
+    	GSBMODO          := ISBMODO;
+    	GSBTABLASRC      := ISBTABLASRC;
+    	GNUTRACK   	     := NVL (INUTRACK,0);
+
+    	
+    	
+    	IF (ISBMODO=PKBOPROCCTRLBYSERVICEMGR.CSBCAIDO AND ISBFLAGINCO='S') THEN
+    	    
+    	    GBLHAYINCO := TRUE ;
+    	ELSE
+    	    
+    	    GBLHAYINCO := FALSE ;
+    	END IF;
+
+        
+        PKERRORS.GETERRORVAR
+	    (
+    		ONUERRORCODE,
+    		OSBERRORMESSAGE,
+    		PKCONSTANTE.INITIALIZE
+	    );
+
+        
+        OSBERRORMESSAGE := TO_CHAR( PKCONSTANTE.EXITO );
+
+    	
+    	SBSTATPROCCID := ISBPROCCID;
+
+    	
+    	TBFUNCIONES.DELETE;
+
+    	
+    	TBCONCEPTOS.DELETE;
+
+    	
+    	PKBILLFUNCPARAMETERS.INITMEMTABLE ;
+
+    	
+    	PKGRLPARAMEXTENDEDMGR.SETCACHEON ;
+
+        
+        RCPERIFACT := PKBILLINGPERIODMGR.FRCGETCACHEDCURRENTPER
+            		  (
+                        INUCICLO
+            		  );
+
+    	
+    	GSBTIPOEXE := CSBTE_MASIVO ;
+
+    	
+    	
+    	
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_BILLPERIODRECORD (RCPERIFACT) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_TRACKPROCESSID (SBSTATPROCCID) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_USER (NUUSER) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_TERMINAL (SBSESSIONID) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_PROGRAM (GNUPROGRAM) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_CURRDATE (DTFECHCURR) ;
+
+    	
+        GSBPROGRAMA := CSBPROGFGCA;
+    	
+
+    	
+    	PKBCPERICOSE.CLEARCACHECONSPERBYBILLPER ;
+    	PKBCPERICOSE.CLEARCACHEPERENABTORCV ;
+    	PKBCPERIFACT.CLEARCACHEPERIODBYDATE ;
+
+        
+        
+        TA_BOTARIFAS.ESTPROCESOMASIVO(TRUE, INUTHREAD);
+
+    	PKERRORS.POP;
+    
+    END INITIALIZE;
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.Fgca');
+
+    
+    INITIALIZE;
+
+    
+    CLEARMEMORY;
+
+    
+    FA_BCCHARGESGERATION.SETDAOUSECACHE(TRUE);
+    
+    
+    GETPARAMETERS;
+
+    
+    CHARGESGENERATOR(INUCICLO);
+
+    
+    TA_BOTARIFAS.ESTPROCESOMASIVO(FALSE, NULL);
+    
+    
+    CLEARMEMORYENDPROC();
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+        PKERRORS.POP;
+         
+        CLEARMEMORYENDPROC();
+    	PKERRORS.GETERRORVAR ( ONUERRORCODE, OSBERRORMESSAGE );
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+         
+        CLEARMEMORYENDPROC();
+    	PKERRORS.GETERRORVAR( ONUERRORCODE, OSBERRORMESSAGE );
+    WHEN OTHERS THEN
+    	PKERRORS.POP;
+    	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+         
+        CLEARMEMORYENDPROC();
+    	PKERRORS.GETERRORVAR( ONUERRORCODE, OSBERRORMESSAGE );
+
+END FGCA;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE GETCUSTOMER
+(
+	ONUCUSTOMER	OUT	SUSCRIPC.SUSCCLIE%TYPE
+)
+IS
+    
+    NUCONTRATO	SUSCRIPC.SUSCCODI%TYPE ;
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.GetCustomer');
+
+    
+    PKINSTANCEDATAMGR.GETCG_SUBSCRIBER (NUCONTRATO) ;
+
+    
+    ONUCUSTOMER := PKTBLSUSCRIPC.FNUGETCUSTOMER (NUCONTRATO) ;
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN OTHERS THEN
+    	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+    	PKERRORS.POP;
+    	RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+
+END GETCUSTOMER;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE SETBILLINGPLAN
+(
+	INUBILLINGPLAN	IN OUT	SERVSUSC.SESUPLFA%TYPE
+)
+IS
+    RCHICAPLAN HICAPLAN%ROWTYPE;
+    NUPLANBUNDLE NUMBER;
+BEGIN
+
+    PKERRORS.PUSH('pkFgca.SetBillingPlan');
+    
+    
+
+    IF (RCSERVSUSC.SESUFUCP >  RCPERIFACT.PEFAFFMO) THEN
+    
+        RCHICAPLAN := PKBCHICAPLAN.FRCGETCHANGEHISTBYDATE
+			(RCSERVSUSC.SESUNUSE, RCPERIFACT.PEFAFFMO);
+        INUBILLINGPLAN := RCHICAPLAN.HIPLPLFA;
+    
+    END IF;
+    
+    
+    
+    RCSERVSUSC.SESUPLFA := INUBILLINGPLAN;
+
+    
+    PKINSTANCEDATAMGR.SETCG_BILLPLAN (INUBILLINGPLAN);
+
+    
+    PKINSTANCEDATAMGR.SETCG_PRODUCTRECORD (RCSERVSUSC) ;
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN OTHERS THEN
+    	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+    	PKERRORS.POP;
+    	RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+
+END SETBILLINGPLAN;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE SETDATSRVSUSC
+(
+	INUIDX	IN	NUMBER
+)
+IS
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.SetDatSrvSusc');
+
+    
+    
+
+    
+    PKINSTANCEDATAMGR.SETCG_SERVICE(TNUSESUSERV (INUIDX));
+
+    
+    PKINSTANCEDATAMGR.SETCG_SUBSSERVICE(TNUSESUNUSE (INUIDX));
+
+    
+    PKINSTANCEDATAMGR.SETCG_SUBSCRIBER(TNUSESUSUSC(INUIDX));
+
+    
+    SETBILLINGPLAN (TNUSESUPLFA (INUIDX));
+
+    
+    PKINSTANCEDATAMGR.SETCG_CATEGORY(TNUSESUCATE (INUIDX));
+
+    
+    PKINSTANCEDATAMGR.SETCG_SUBCATEGORY(TNUSESUSUCA (INUIDX));
+
+    
+    PKINSTANCEDATAMGR.SETCG_STATE(TNUSESUDEPA (INUIDX));
+
+    
+    PKINSTANCEDATAMGR.SETCG_LOCALITY(TNUSESULOCA (INUIDX));
+    
+    
+    PKINSTANCEDATAMGR.SETCG_INSTALLDATE (TDTSESUFEIN (INUIDX));
+
+    
+    PKINSTANCEDATAMGR.SETCG_QUITDATE(TDTSESUFERE (INUIDX));
+
+    
+    PKINSTANCEDATAMGR.SETCG_PRODTARIFFDATE (TDTSESUFEVI (INUIDX)) ;
+
+    
+    PKINSTANCEDATAMGR.SETCG_SUSPENSIONSTATUS(TNUSESUESCO (INUIDX));
+
+    
+    PKINSTANCEDATAMGR.SETCG_CONSUMPTIONCYCLE(TNUSESUCICO (INUIDX));
+
+    
+    PKINSTANCEDATAMGR.SETCG_WARRANTYROLE (TSBSESUROGA (INUIDX)) ;
+
+    
+    PKINSTANCEDATAMGR.SETCG_PRODUCTRECORD (RCSERVSUSC) ;
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN OTHERS THEN
+        PKERRORS.NOTIFYERROR (PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+        PKERRORS.POP;
+        RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+
+END SETDATSRVSUSC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FUNCTION FBLDELINCORECS
+RETURN BOOLEAN
+IS
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.fblDelIncoRecs');
+
+    
+    IF ((GSBMODO = PKBOPROCCTRLBYSERVICEMGR.CSBINCONSISTENTE
+	 OR (GSBMODO = PKBOPROCCTRLBYSERVICEMGR.CSBCAIDO AND
+	 GSBTABLASRC = PKBOPROCCTRLBYSERVICEMGR.CSBSRC_INCO))
+	 AND NOT GBLINCOENPROD)
+    THEN
+    
+    	PKERRORS.POP;
+    	RETURN (TRUE) ;
+    
+    END IF;
+
+    PKERRORS.POP;
+    RETURN (FALSE) ;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+        PKERRORS.POP;
+        RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+        PKERRORS.POP;
+        RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+        PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        PKERRORS.POP;
+        RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+
+END FBLDELINCORECS;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE LIQBYPRODUCT
+(
+	INUPRODUCTO	    IN	SERVSUSC.SESUNUSE%TYPE,
+	IDTFECHGENE     IN	PERIFACT.PEFAFIMO%TYPE,
+	IDTFECHCONT     IN	PERIFACT.PEFAFECO%TYPE,
+	INUPROGRAMA	    IN	CARGOS.CARGPROG%TYPE,
+	ONUERRORCODE    OUT	NUMBER,
+	OSBERRORMESSAGE OUT	VARCHAR2
+)
+IS
+    
+    NUUSER	       CARGOS.CARGUSUA%TYPE;
+
+    
+    DTFECHCURR	   DATE;
+    
+    
+    SBSESSIONID    SA_TERMINAL.NAME%TYPE;
+
+    PROCEDURE INITIALIZE
+    IS
+    BEGIN
+    
+    	PKERRORS.PUSH ('pkFgca.LiqByProduct.Initialize');
+    	
+        
+        LE_BOTIPOEVEN.GETCONSUMPTIONCONCEPTS(GTBCONSUMPTIONCONCEPTS);
+
+        
+       	PKERRORS.SETAPPLICATION (PKTBLPROCESOS.FSBGETPROCESS(INUPROGRAMA));
+
+    	
+    	RCSERVSUSC       := PKTBLSERVSUSC.FRCGETRECORD (INUPRODUCTO) ;
+
+    	GNUPROGRAM       := INUPROGRAMA ;
+    	SBSESSIONID      := PKGENERALSERVICES.FSBGETTERMINAL ;
+    	NUUSER           := SA_BOSYSTEM.GETSYSTEMUSERID ;
+    	DTFECHCURR       := SYSDATE ;
+
+    	
+    	GNUSERVICIO      := RCSERVSUSC.SESUSERV ;
+    	GSBMODO          := PKBOPROCCTRLBYSERVICEMGR.CSBNORMAL ;
+
+    	GNUTRACK         := 0 ;
+
+    	
+    	GBLHAYINCO	     := FALSE ;
+
+        
+        PKERRORS.GETERRORVAR
+	    (
+    		ONUERRORCODE,
+    		OSBERRORMESSAGE,
+    		PKCONSTANTE.INITIALIZE
+	    );
+
+        
+        OSBERRORMESSAGE := TO_CHAR(PKCONSTANTE.EXITO);
+
+    	
+    	TBFUNCIONES.DELETE;
+
+    	
+    	TBCONCEPTOS.DELETE;
+
+    	
+    	PKBILLFUNCPARAMETERS.INITMEMTABLE ;
+
+    	
+    	PKGRLPARAMEXTENDEDMGR.SETCACHEON ;
+
+        
+        RCPERIFACT := PKBILLINGPERIODMGR.FRCGETCACHEDCURRENTPER
+              	      (
+                        RCSERVSUSC.SESUCICL
+            		  );
+
+    	
+    	GSBTIPOEXE := CSBTE_PRODUCTO ;
+    	
+    	
+        GSBPROGRAMA := CSBPROGFGCA;
+
+    	
+    	
+    	
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_BILLPERIODRECORD (RCPERIFACT) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_USER (NUUSER) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_TERMINAL (SBSESSIONID) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_PROGRAM (GNUPROGRAM) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_CURRDATE (DTFECHCURR) ;
+
+    	
+
+    	
+    	PKBCPERICOSE.CLEARCACHECONSPERBYBILLPER ;
+    	PKBCPERICOSE.CLEARCACHEPERENABTORCV ;
+    	PKBCPERIFACT.CLEARCACHEPERIODBYDATE ;
+    	
+        
+        FA_BCCHARGESGERATION.SETDAOUSECACHE(TRUE);
+
+    	PKERRORS.POP;
+    
+    END INITIALIZE;
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.LiqByProduct');
+    UT_TRACE.TRACE('INICIO pkFgca.LiqByProduct', 4);
+
+    
+    INITIALIZE;
+
+    
+    CLEARMEMORY;
+
+    
+    GETPARAMETERS;
+
+	
+	SETMEMTABLES (1, RCSERVSUSC) ;
+
+    
+    GENCHRGSERVSUS ;
+
+    
+    CLEARMEMORYENDPROC();
+
+    UT_TRACE.TRACE('FIN pkFgca.LiqByProduct', 4);
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+        PKERRORS.POP;
+        
+        CLEARMEMORYENDPROC();
+    	PKERRORS.GETERRORVAR ( ONUERRORCODE, OSBERRORMESSAGE );
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+        
+        CLEARMEMORYENDPROC();
+    	PKERRORS.GETERRORVAR( ONUERRORCODE, OSBERRORMESSAGE );
+    WHEN OTHERS THEN
+    	PKERRORS.POP;
+    	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        
+        CLEARMEMORYENDPROC();
+    	PKERRORS.GETERRORVAR( ONUERRORCODE, OSBERRORMESSAGE );
+
+END LIQBYPRODUCT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE LIQBYCONTRACT
+(
+	INUCONTRATO	IN	SERVSUSC.SESUSUSC%TYPE,
+	IDTFECHGENE     IN	PERIFACT.PEFAFIMO%TYPE,
+	IDTFECHCONT     IN	PERIFACT.PEFAFECO%TYPE,
+	INUPROGRAMA	IN	CARGOS.CARGPROG%TYPE,
+	ONUERRORCODE    OUT	NUMBER,
+	OSBERRORMESSAGE OUT	VARCHAR2
+)
+IS
+
+    
+    NUUSER	       CARGOS.CARGUSUA%TYPE;
+    
+    
+    DTFECHCURR	   DATE;
+    
+    
+    SBSESSIONID    SA_TERMINAL.NAME%TYPE;
+
+    
+    RCSUSCRIPC	SUSCRIPC%ROWTYPE ;
+
+    PROCEDURE INITIALIZE
+    IS
+    BEGIN
+    
+    	PKERRORS.PUSH ('pkFgca.LiqByContract.Initialize');
+
+        
+        LE_BOTIPOEVEN.GETCONSUMPTIONCONCEPTS(GTBCONSUMPTIONCONCEPTS);
+
+        
+       	PKERRORS.SETAPPLICATION (PKTBLPROCESOS.FSBGETPROCESS(INUPROGRAMA));
+
+    	
+    	RCSUSCRIPC := PKTBLSUSCRIPC.FRCGETRECORD (INUCONTRATO) ;
+
+    	GNUPROGRAM           := INUPROGRAMA ;
+    	SBSESSIONID          := PKGENERALSERVICES.FSBGETTERMINAL ;
+    	NUUSER               := SA_BOSYSTEM.GETSYSTEMUSERID ;
+    	DTFECHCURR           := SYSDATE ;
+
+    	GNUCONTRATO          := INUCONTRATO ;
+
+    	
+    	GSBMODO              := PKBOPROCCTRLBYSERVICEMGR.CSBNORMAL ;
+
+    	GNUTRACK    := 0 ;
+
+    	
+    	GBLHAYINCO	:= FALSE ;
+
+        
+        PKERRORS.GETERRORVAR
+	    (
+    		ONUERRORCODE,
+    		OSBERRORMESSAGE,
+    		PKCONSTANTE.INITIALIZE
+	    );
+
+        
+        OSBERRORMESSAGE := TO_CHAR(PKCONSTANTE.EXITO);
+
+    	
+    	TBFUNCIONES.DELETE;
+
+    	
+    	TBCONCEPTOS.DELETE;
+
+    	
+    	PKBILLFUNCPARAMETERS.INITMEMTABLE ;
+
+    	
+    	PKGRLPARAMEXTENDEDMGR.SETCACHEON ;
+
+        
+        RCPERIFACT := PKBILLINGPERIODMGR.FRCGETCACHEDCURRENTPER
+            		  (
+                        	RCSUSCRIPC.SUSCCICL
+            		  );
+
+    	
+    	GSBTIPOEXE := CSBTE_CONTRATO ;
+    	
+    	
+        GSBPROGRAMA := CSBPROGFGCA;
+
+    	
+    	
+    	
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_BILLPERIODRECORD (RCPERIFACT) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_USER (NUUSER) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_TERMINAL (SBSESSIONID) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_PROGRAM (GNUPROGRAM) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_CURRDATE (DTFECHCURR) ;
+
+    	
+    	PKBCPERICOSE.CLEARCACHECONSPERBYBILLPER ;
+    	PKBCPERICOSE.CLEARCACHEPERENABTORCV ;
+    	PKBCPERIFACT.CLEARCACHEPERIODBYDATE ;
+    	
+    	PKERRORS.POP;
+    
+    END INITIALIZE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETPRODSINMEMORY
+    IS
+        
+        TBPRODUCTS      PKSERVNUMBERMGR.TYTBSERVSUSC;
+        
+        
+        NUIDX           NUMBER;
+
+    BEGIN
+        PKERRORS.PUSH('pkFgca.LiqByContract.SetProdsInMemory');
+        UT_TRACE.TRACE('Inicia pkFgca.LiqByContract.SetProdsInMemory', 5);
+
+    	
+    	PKSERVNUMBERMGR.GETPRODUCTSBYCONTRACT(INUCONTRATO, TBPRODUCTS) ;
+
+    	
+    	NUIDX := TBPRODUCTS.FIRST ;
+
+    	LOOP
+
+            
+            EXIT WHEN NUIDX IS NULL ;
+            
+    	    
+    	    SETMEMTABLES (NUIDX, TBPRODUCTS(NUIDX)) ;
+    	    
+            
+            GNUSERVICIO := TBPRODUCTS(NUIDX).SESUSERV;
+
+    	    NUIDX := TBPRODUCTS.NEXT (NUIDX) ;
+
+    	END LOOP ;
+
+        UT_TRACE.TRACE('Finaliza pkFgca.LiqByContract.SetProdsInMemory', 5);
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+     END SETPRODSINMEMORY;
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.LiqByContract');
+    UT_TRACE.TRACE('INICIO pkFgca.LiqByContract', 4);
+
+    
+    INITIALIZE;
+
+    
+    CLEARMEMORY;
+
+    
+    FA_BCCHARGESGERATION.SETDAOUSECACHE(TRUE);
+    
+    
+    GETPARAMETERS;
+
+    
+    SETPRODSINMEMORY;
+    
+    
+    GENCHRGSERVSUS;
+
+    
+    
+    PKBCSUSCRIPC.UPPROCCONTROL(INUCONTRATO, GBLDOCOMMIT);
+
+    
+    CLEARMEMORYENDPROC();
+
+    UT_TRACE.TRACE('FIN pkFgca.LiqByContract', 4);
+    
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+        PKERRORS.POP;
+        
+        CLEARMEMORYENDPROC();
+    	PKERRORS.GETERRORVAR ( ONUERRORCODE, OSBERRORMESSAGE );
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+        
+        CLEARMEMORYENDPROC();
+    	PKERRORS.GETERRORVAR( ONUERRORCODE, OSBERRORMESSAGE );
+    WHEN OTHERS THEN
+    	PKERRORS.POP;
+    	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        
+        CLEARMEMORYENDPROC();
+    	PKERRORS.GETERRORVAR( ONUERRORCODE, OSBERRORMESSAGE );
+
+END LIQBYCONTRACT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE LOADSPECIALPRODS
+IS
+    
+    CURSOR CUCONCSUSCALL IS
+        SELECT COSUSUSC
+        FROM   CONCSUSC
+        WHERE  COSUSERV = GNUSERVICIO
+        AND    COSUACTI = 'S'
+        AND    COSUSUSC > -1;
+
+    
+    CURSOR CUCONCFESUALL IS
+        SELECT COFSSUSC
+        FROM   CONCFESU
+        WHERE  COFSSERV = GNUSERVICIO
+        AND    COFSFECH BETWEEN RCPERIFACT.PEFAFIMO AND RCPERIFACT.PEFAFFMO
+        AND    COFSACTI = 'S'
+        AND    COFSSUSC > -1;
+
+    
+    CURSOR CUCONCSESUALL IS
+        SELECT COSSSESU
+        FROM   CONCSESU
+        WHERE  COSSSERV = GNUSERVICIO
+        AND    COSSACTI = 'S'
+        AND    COSSSESU > -1;
+
+    
+    CURSOR CUCONCFESSALL IS
+        SELECT CFSSSESU
+        FROM   CONCFESS
+        WHERE  CFSSSERV = GNUSERVICIO
+        AND    CFSSFECH BETWEEN RCPERIFACT.PEFAFIMO AND RCPERIFACT.PEFAFFMO
+        AND    CFSSACTI = 'S'
+        AND    CFSSSESU > -1;
+
+    NUIDX	NUMBER ;
+
+    
+    TBSRVSTMP	PKTBLSERVSUSC.TYSESUNUSE ;
+BEGIN
+
+    PKERRORS.PUSH ('pkFgca.LoadSpecialProds');
+
+    
+    IF (GSBTIPOEXE = CSBTE_PRODUCTO) THEN
+    
+        
+    	SBINDPROD := TO_CHAR(RCSERVSUSC.SESUNUSE);
+    	
+    	TBSPECPRODS (SBINDPROD) := RCSERVSUSC.SESUNUSE ;
+    	
+    	PKERRORS.POP;
+    	
+    	RETURN ;
+    
+    END IF;
+
+    
+    IF (GSBTIPOEXE = CSBTE_CONTRATO) THEN
+    
+    	TBSRVSTMP.DELETE ;
+
+    	
+    	PKSERVNUMBERMGR.GETSUBSSERVICES (GNUCONTRATO,TBSRVSTMP) ;
+
+    	NUIDX := TBSRVSTMP.FIRST ;
+
+    	LOOP
+    	
+    	    EXIT WHEN NUIDX IS NULL ;
+
+    	    
+            SBINDPROD := TO_CHAR(TBSRVSTMP (NUIDX));
+    	    
+    	    TBSPECPRODS (SBINDPROD) := TBSRVSTMP (NUIDX) ;
+
+    	    
+    	    NUIDX := TBSRVSTMP.NEXT (NUIDX) ;
+    	
+    	END LOOP ;
+
+    	PKERRORS.POP;
+    	RETURN ;
+    
+    END IF;
+
+    
+    
+    
+    
+
+    FOR RC IN CUCONCSUSCALL LOOP
+    
+        TBSRVSTMP.DELETE ;
+
+        BEGIN
+        
+            
+            PKSERVNUMBERMGR.GETSUBSSERVICES (RC.COSUSUSC,TBSRVSTMP) ;
+        EXCEPTION
+        	WHEN LOGIN_DENIED THEN
+        	    
+        	    GOTO COSUNEXT ;
+        
+        END ;
+
+        NUIDX := TBSRVSTMP.FIRST ;
+
+        LOOP
+        
+            EXIT WHEN NUIDX IS NULL ;
+
+            
+            SBINDPROD := TO_CHAR(TBSRVSTMP (NUIDX));
+
+            IF (NOT TBSPECPRODS.EXISTS (SBINDPROD)) THEN
+            
+                TBSPECPRODS (SBINDPROD) := TBSRVSTMP (NUIDX) ;
+        	
+            END IF;
+
+            
+            NUIDX := TBSRVSTMP.NEXT (NUIDX) ;
+        
+        END LOOP ;
+
+    	<<COSUNEXT>>
+    	NULL ;
+    
+    END LOOP ;
+
+    
+    
+    
+
+    FOR RC IN CUCONCFESUALL LOOP
+    
+        TBSRVSTMP.DELETE ;
+
+        BEGIN
+        
+
+            
+            PKSERVNUMBERMGR.GETSUBSSERVICES (RC.COFSSUSC,TBSRVSTMP) ;
+
+        EXCEPTION
+        	WHEN LOGIN_DENIED THEN
+        	    
+        	    GOTO COFSNEXT ;
+        
+        END ;
+
+        NUIDX := TBSRVSTMP.FIRST ;
+
+        LOOP
+        
+            EXIT WHEN NUIDX IS NULL ;
+
+            
+            SBINDPROD := TO_CHAR(TBSRVSTMP (NUIDX));
+
+            
+            IF (NOT TBSPECPRODS.EXISTS (SBINDPROD)) THEN
+            
+                TBSPECPRODS (SBINDPROD) := TBSRVSTMP (NUIDX) ;
+            
+            END IF;
+
+            
+            NUIDX := TBSRVSTMP.NEXT (NUIDX) ;
+        
+        END LOOP ;
+
+        <<COFSNEXT>>
+        NULL ;
+    
+    END LOOP ;
+
+    
+    
+    
+
+    FOR RC IN CUCONCSESUALL LOOP
+    
+    	
+    	SBINDPROD := TO_CHAR(RC.COSSSESU);
+
+    	
+    	IF (NOT TBSPECPRODS.EXISTS (SBINDPROD)) THEN
+    	
+    	    TBSPECPRODS (SBINDPROD) := RC.COSSSESU ;
+        
+    	END IF;
+    
+    END LOOP ;
+
+    
+    
+    
+
+    FOR RC IN CUCONCFESSALL LOOP
+    
+    	
+    	SBINDPROD := TO_CHAR(RC.CFSSSESU);
+
+    	
+    	IF (NOT TBSPECPRODS.EXISTS (SBINDPROD)) THEN
+    	
+    	    TBSPECPRODS (SBINDPROD) := RC.CFSSSESU ;
+        
+    	END IF;
+    
+    END LOOP ;
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+        PKERRORS.POP;
+        RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+        PKERRORS.POP;
+        RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+        PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        PKERRORS.POP;
+        RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+
+END LOADSPECIALPRODS;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PRESUPUESTOCONTRATO
+    (
+    	INUCONTRATO	    IN	SERVSUSC.SESUSUSC%TYPE,
+    	IDTFECHGENE     IN	PERIFACT.PEFAFIMO%TYPE,
+    	INUPROGRAMA	    IN	CARGOS.CARGPROG%TYPE,
+    	ONUERRORCODE    OUT	NUMBER,
+    	OSBERRORMESSAGE OUT	VARCHAR2
+    )
+    IS
+    BEGIN
+    
+        PKERRORS.PUSH ('pkFgca.PresupuestoContrato');
+        UT_TRACE.TRACE('Inicio pkFgca.PresupuestoContrato',5);
+        
+        
+        FA_BOBUDGET.LIQBUDGETBYCONTRACT
+        (
+            INUCONTRATO,
+        	IDTFECHGENE,
+        	INUPROGRAMA,
+        	ONUERRORCODE,
+        	OSBERRORMESSAGE
+        );
+
+        UT_TRACE.TRACE('Fin pkFgca.PresupuestoContrato',5);
+        PKERRORS.POP;
+    EXCEPTION
+    	WHEN LOGIN_DENIED THEN
+    	    PKERRORS.POP;
+    	    RAISE LOGIN_DENIED;
+        WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	    PKERRORS.POP;
+    	    RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    	WHEN OTHERS THEN
+    	    PKERRORS.POP;
+    	    RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    
+    END PRESUPUESTOCONTRATO;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FBOPROCPERIOD
+    RETURN BOOLEAN
+    IS
+        
+        BOPROCESS       BOOLEAN := TRUE;
+        
+        
+        NUCURRPERIOD    PERICOSE.PECSCONS%TYPE;
+        
+        
+        NUPROCPERIOD    PERICOSE.PECSCONS%TYPE;
+    BEGIN
+    
+        PKERRORS.PUSH ('pkFgca.fboProcPeriod');
+
+        
+        PKINSTANCEDATAMGR.OBTPERACTUAL(NUCURRPERIOD);
+
+        
+        PKINSTANCEDATAMGR.GETCG_CONSUMPERIOD(NUPROCPERIOD);
+        
+        
+        IF( GSBPROGRAMA = CSBPROGFGCA AND NUCURRPERIOD <> NUPROCPERIOD ) THEN
+            BOPROCESS := FALSE;
+        END IF;
+        
+        PKERRORS.POP;
+
+        RETURN BOPROCESS;
+        
+    EXCEPTION
+    	WHEN LOGIN_DENIED THEN
+    	    PKERRORS.POP;
+    	    RAISE LOGIN_DENIED;
+        WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	    PKERRORS.POP;
+    	    RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    	WHEN OTHERS THEN
+    	    PKERRORS.POP;
+    	    RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    
+    END FBOPROCPERIOD;
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PRCCHRGSRVSCTRL
+    (
+    	INUIDX	IN	NUMBER
+    )
+    IS
+        
+        SBERROR	BITAINCO.BIINCAUS%TYPE ;
+
+        
+        NUCOMPONENTE	COMPSESU.CMSSIDCO%TYPE ;
+
+        
+        NUTRACK		SERVSUSC.SESUNUSE%TYPE ;
+
+        
+        NUPRODPROC		NUMBER ;
+
+        CSBMSG_ERROR_PROD   MENSAJE.MENSCODI%TYPE := 10605;
+
+        PROCEDURE INITIALIZE
+        IS
+        BEGIN
+        
+        	PKERRORS.PUSH ('pkFgca.PrcChrgSrvsCtrl.Initialize');
+
+            
+            NUTRACK := GNUTRACK;
+            NUPRODPROC := GNUPRODPROC;
+
+            
+            PKINSTANCEDATAMGR.SETCG_COMPONENT (NULL) ;
+            PKINSTANCEDATAMGR.SETCG_CONCEPT (NULL);
+
+            
+            GBLINSINCO := FALSE;
+
+        	PKERRORS.POP;
+        
+        END INITIALIZE;
+
+    BEGIN
+    
+        PKERRORS.PUSH ('pkFgca.PrcChrgSrvsCtrl');
+        UT_TRACE.TRACE('INICIO pkFgca.PrcChrgSrvsCtrl', 4);
+
+        
+        INITIALIZE;
+
+        
+        BEGIN
+
+            
+            PRCCHRGSRVS(INUIDX);
+
+        EXCEPTION
+            WHEN OTHERS THEN
+                GBLHAYINCO  := TRUE ;
+
+                
+        	    SBERROR := SUBSTR(PKERRORS.FSBGETERRORMESSAGE,1,400) ;
+
+        	    PKERRORS.SETERRORCODE
+    			(
+    			    PKCONSTANTE.CSBDIVISION,
+    			    PKCONSTANTE.CSBMOD_BIL,
+                    CSBMSG_ERROR_PROD
+    			);
+
+        	    
+        	    PKERRORS.CHANGEMESSAGE
+        		(
+        		    'LBL_PRODUCTO',
+        		    TO_CHAR(TNUSESUNUSE(INUIDX))
+        		);
+
+        	    
+        	    SBERROR := SUBSTR(PKERRORS.FSBGETERRORMESSAGE || ' Mensaje: ' ||
+        			SBERROR,1,400) ;
+
+                
+        	    PKINSTANCEDATAMGR.GETCG_COMPONENT (NUCOMPONENTE) ;
+
+                
+        	    PKBORATINGMEMORYMGR.ADDINCONSISTENCE
+        		(
+        		    NUCOMPONENTE,
+        		    SBERROR
+        		) ;
+
+        	    
+        	    
+        	    IF (NOT GBLINSINCO) THEN
+
+            		
+            		IF (NOT PKBCREGIINCO.FBLEXIST (TNUSESUNUSE(INUIDX),
+            		    TNUSESUSERV(INUIDX), RCPERIFACT.PEFACODI)) THEN
+            		    
+            		    PKBORATINGMEMORYMGR.ADDINCOPRODUCT ('P') ;
+            		END IF;
+
+        	    END IF;
+
+                
+                PKBORATINGMEMORYMGR.ROLLBACKCONCEPT ;
+        	    PKBORATINGMEMORYMGR.ROLLBACKPRODUCT ;
+        END;
+
+        
+        IF (NUPRODPROC = GNUPRODPROC ) THEN
+            GNUPRODPROC := GNUPRODPROC + 1;
+        END IF;
+
+        GNUTRACK := TNUSESUNUSE(INUIDX);
+        
+        UT_TRACE.TRACE('FIN pkFgca.PrcChrgSrvsCtrl', 4);
+
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED THEN
+        	PKERRORS.POP;
+        	RAISE LOGIN_DENIED;
+        WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+        	PKERRORS.POP;
+        	RAISE PKCONSTANTE.EXERROR_LEVEL2;
+        WHEN OTHERS THEN
+        	PKERRORS.NOTIFYERROR (PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+        	PKERRORS.POP;
+        	RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    
+    END PRCCHRGSRVSCTRL;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETMEMTABLES
+    (
+       INUIDX	     IN	NUMBER,
+       IRCSERVSUSC   IN  SERVSUSC%ROWTYPE
+    )
+    IS
+    BEGIN
+    
+        PKERRORS.PUSH ('pkFgca.SetMemTables');
+
+    	TNUSESUNUSE (INUIDX) := IRCSERVSUSC.SESUNUSE ;
+    	TNUSESUSERV (INUIDX) := IRCSERVSUSC.SESUSERV ;
+    	TNUSESUSUSC (INUIDX) := IRCSERVSUSC.SESUSUSC ;
+    	TNUSESUPLFA (INUIDX) := IRCSERVSUSC.SESUPLFA ;
+    	TNUSESUCATE (INUIDX) := IRCSERVSUSC.SESUCATE ;
+    	TNUSESUSUCA (INUIDX) := IRCSERVSUSC.SESUSUCA ;
+    	TNUSESUDEPA (INUIDX) := IRCSERVSUSC.SESUDEPA ;
+    	TNUSESULOCA (INUIDX) := IRCSERVSUSC.SESULOCA ;
+    	TDTSESUFEIN (INUIDX) := IRCSERVSUSC.SESUFEIN ;
+    	TDTSESUFERE (INUIDX) := IRCSERVSUSC.SESUFERE ;
+    	TNUSESUESCO (INUIDX) := IRCSERVSUSC.SESUESCO ;
+    	TNUSESUCICO (INUIDX) := IRCSERVSUSC.SESUCICO ;
+    	TNUSESUMULT (INUIDX) := IRCSERVSUSC.SESUMULT ;
+    	TDTSESUFEVI (INUIDX) := IRCSERVSUSC.SESUFEVI ;
+    	TSBSESUROGA (INUIDX) := IRCSERVSUSC.SESUROGA ;
+    	TNUSESUSESG (INUIDX) := IRCSERVSUSC.SESUSESG ;
+    	TDTSESUFUCP (INUIDX) := IRCSERVSUSC.SESUFUCP ;
+
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    
+    END SETMEMTABLES;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INITIALIZE
+    (
+    	INUPRODUCT     IN  SERVSUSC.SESUNUSE%TYPE,
+    	IDTGENDATE     IN  PERIFACT.PEFAFIMO%TYPE,
+    	INUBILLPLAN    IN  PLANSUSC.PLSUCODI%TYPE
+    )
+    IS
+    
+        
+        NUUSER	       CARGOS.CARGUSUA%TYPE;
+        
+        
+        DTFECHCURR	   DATE;
+        
+        
+        SBSESSIONID    SA_TERMINAL.NAME%TYPE;
+
+
+    BEGIN
+    
+    	PKERRORS.PUSH ('pkFgca.Initialize');
+
+    	
+    	RCSERVSUSC := PKTBLSERVSUSC.FRCGETRECORD (INUPRODUCT) ;
+
+    	SBSESSIONID          := PKGENERALSERVICES.FSBGETTERMINAL ;
+    	NUUSER               := SA_BOSYSTEM.GETSYSTEMUSERID ;
+    	DTFECHCURR           := IDTGENDATE ;
+    	GNUCONTRATO          := RCSERVSUSC.SESUSUSC;
+
+    	
+    	TBFUNCIONES.DELETE;
+
+    	
+    	PKBILLFUNCPARAMETERS.INITMEMTABLE ;
+
+    	
+    	PKGRLPARAMEXTENDEDMGR.SETCACHEON;
+
+    	
+        
+        BLMULT_RECAMORA := FALSE;
+
+        
+        RCPERIFACT := PKBILLINGPERIODMGR.FRCGETCACHEDCURRENTPER
+              	      (
+                        RCSERVSUSC.SESUCICL
+            		  );
+
+    	
+    	
+    	
+    	
+    	PKINSTANCEDATAMGR.SETCG_BILLPERIODRECORD (RCPERIFACT) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_USER (NUUSER) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_TERMINAL (SBSESSIONID) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_PROGRAM (GNUPROGRAM) ;
+
+    	
+    	PKINSTANCEDATAMGR.SETCG_CURRDATE (DTFECHCURR) ;
+    	
+
+        
+        GBLDOCOMMIT   := PKCONSTANTE.FALSO;
+
+    	
+    	PKBCPERICOSE.CLEARCACHECONSPERBYBILLPER ;
+    	PKBCPERICOSE.CLEARCACHEPERENABTORCV ;
+    	PKBCPERIFACT.CLEARCACHEPERIODBYDATE ;
+
+        
+        CLEARDATA;
+
+    	PKERRORS.POP;
+    EXCEPTION
+    	WHEN LOGIN_DENIED THEN
+    	    PKERRORS.POP;
+    	    RAISE LOGIN_DENIED;
+        WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	    PKERRORS.POP;
+    	    RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    	WHEN OTHERS THEN
+    	    PKERRORS.POP;
+    	    RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    
+    END INITIALIZE;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETDOCOMMIT
+    (
+       IBLDOCOMMIT  IN BOOLEAN
+    )
+    IS
+    BEGIN
+        PKERRORS.PUSH('pkFgca.SetDoCommit');
+
+        GBLDOCOMMIT := IBLDOCOMMIT;
+
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+      WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END SETDOCOMMIT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETFIXEDPAYMENTMET
+    (
+    	INUFIXEDPAYMENT	IN	NUMBER
+    )
+    IS
+    BEGIN
+        PKERRORS.PUSH('pkFgca.SetFixedPaymentMet');
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN OTHERS THEN
+        	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        	PKERRORS.POP;
+        	RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END SETFIXEDPAYMENTMET;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETBALANCEMET
+    (
+    	INUBALANCEMET	IN	NUMBER
+    )
+    IS
+    BEGIN
+        PKERRORS.PUSH('pkFgca.SetBalanceMet');
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN OTHERS THEN
+        	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        	PKERRORS.POP;
+        	RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END SETBALANCEMET;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETCONCSUBSCONS
+    (
+    	INUCONCSUBSCONS   IN	NUMBER
+    )
+    IS
+    BEGIN
+        PKERRORS.PUSH('pkFgca.SetConcSubsCons');
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN OTHERS THEN
+        	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        	PKERRORS.POP;
+        	RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END SETCONCSUBSCONS;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETESTRATO1
+    (
+    	INUESTRATO1   IN	NUMBER
+    )
+    IS
+    BEGIN
+        PKERRORS.PUSH('pkFgca.SetEstrato1');
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN OTHERS THEN
+        	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        	PKERRORS.POP;
+        	RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END SETESTRATO1;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETESTRATO2
+    (
+    	INUESTRATO2   IN	NUMBER
+    )
+    IS
+    BEGIN
+        PKERRORS.PUSH('pkFgca.SetEstrato2');
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN OTHERS THEN
+        	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        	PKERRORS.POP;
+        	RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END SETESTRATO2;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETRESIDENCECATEGORY
+    (
+    	INUCATEGORYRESIDENC   IN	NUMBER
+    )
+    IS
+    BEGIN
+        PKERRORS.PUSH('pkFgca.SetResidenceCategory');
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN OTHERS THEN
+        	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        	PKERRORS.POP;
+        	RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END SETRESIDENCECATEGORY;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETPRODUCTRECORD
+    (
+        IRCPRODUCT     IN  SERVSUSC%ROWTYPE
+    )
+    IS
+
+    BEGIN
+    
+        PKERRORS.PUSH ('pkFgca.SetProductRecord');
+
+        
+        RCSERVSUSC := IRCPRODUCT;
+
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED THEN
+            PKERRORS.POP;
+            RAISE LOGIN_DENIED;
+        WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE PKCONSTANTE.EXERROR_LEVEL2;
+        WHEN OTHERS THEN
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR (PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    
+    END SETPRODUCTRECORD;
+
+END PKFGCA;

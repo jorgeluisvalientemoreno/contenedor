@@ -1,0 +1,963 @@
+PACKAGE WF_BOCreationPlanControl AS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	SUBTYPE STYNUMBER   IS  NUMBER;
+
+	
+
+	
+
+   
+    
+    
+
+    
+
+
+
+    FUNCTION FSBVERSION  RETURN UT_DATATYPES.STYSAOVERSION;
+    
+    
+
+
+
+
+
+    FUNCTION FBOISPLANCREATION  RETURN UT_DATATYPES.STYBOOLEAN;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE BUILDEREXECUTOR
+    (
+        INUEXTERNALID      IN    WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID        IN    GE_ENTITY.ENTITY_ID%TYPE,
+        INUINTERFACEID     IN    WF_INTERFACE_CONFIG.INTERFACE_CONFIG_ID%TYPE,
+        ONUEXECMAXTIME     OUT   STYNUMBER,
+        ONUSTDTIME         OUT   STYNUMBER,
+        ONUPLANID          OUT   STYNUMBER,
+        ONUUNITTYPEID      OUT   STYNUMBER,
+        ONUERRORCODE       OUT   STYNUMBER,
+        OSBERRORMESSAGE    OUT   UT_DATATYPES.STYMAXVARCHAR
+    );
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATESUBPLAN
+    (
+        INUUNITTYPEID   IN  WF_INSTANCE.UNIT_TYPE_ID%TYPE,
+        INUPLANID       IN  WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID     IN  WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID   IN  WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID     IN  WF_INSTANCE.ENTITY_ID%TYPE,
+        ONUERRORCODE    OUT NOCOPY NUMBER,
+        OSBERRORMESSAGE OUT NOCOPY VARCHAR2
+    );
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATESUBPLANESP
+    (
+        INUUNITTYPEID      IN  WF_INSTANCE.UNIT_TYPE_ID%TYPE,
+        INUPLANID          IN  WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID        IN  WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID      IN  WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID        IN  WF_INSTANCE.ENTITY_ID%TYPE,
+        INUCONSEC          IN  NUMBER,
+        INUMIDPOINTX       IN  NUMBER,
+        INUSTARTINSTANCEID IN  WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUFINALINSTANCEID IN  WF_INSTANCE.INSTANCE_ID%TYPE,
+        IBLACTIVE          IN  BOOLEAN,
+        ONUINSTANCECREATID OUT NOCOPY NUMBER,
+        ONUERRORCODE       OUT NOCOPY NUMBER,
+        OSBERRORMESSAGE    OUT NOCOPY VARCHAR2
+    ) ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATESUBPLANSEQ
+    (
+        INUUNITTYPEID      IN  WF_INSTANCE.UNIT_TYPE_ID%TYPE,
+        INUPLANID          IN  WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID        IN  WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID      IN  WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID        IN  WF_INSTANCE.ENTITY_ID%TYPE,
+        INUXPOSITION       IN  NUMBER,
+        INUYPOSITION       IN  NUMBER,
+        IBLACTIVE          IN  BOOLEAN,
+        ONUINSTANCECREATID OUT NOCOPY NUMBER,
+        ONUERRORCODE       OUT NOCOPY NUMBER,
+        OSBERRORMESSAGE    OUT NOCOPY VARCHAR2
+    );
+
+    
+
+
+
+
+
+    PROCEDURE CREATESUBPLANSEQUECE
+    (
+        ISBSUBPLANTAGNAME     IN            WF_INSTANCE.TAG_NAME%TYPE,
+        INUPLANID             IN            WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID           IN            WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID         IN            WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYTOINHEREXTID IN            WF_INSTANCE.ENTITY_ID%TYPE,
+        INUXPOSITION          IN            NUMBER,
+        INUYPOSITION          IN            NUMBER,
+        ONUSUBPLANID          OUT NOCOPY    WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUERRORCODE          OUT NOCOPY    GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE       OUT NOCOPY    GE_ERROR_LOG.DESCRIPTION%TYPE
+    );
+
+    
+
+
+
+
+
+    PROCEDURE CREATESUBPLANPARALELL
+    (
+        ISBSUBPLANTAGNAME     IN            WF_INSTANCE.TAG_NAME%TYPE,
+        INUPLANID             IN            WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID           IN            WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID         IN            WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYTOINHEREXTID IN            WF_INSTANCE.ENTITY_ID%TYPE,
+        INUCONSECUTIVE        IN            PS_PROCESS_COMPTYPE.SEQUENCE_%TYPE,
+        INUMIDPOSITION        IN            NUMBER,
+        INUSTARTINSTANCEID    IN            WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUFINALINSTANCEID    IN            WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUSUBPLANID          OUT NOCOPY    WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUERRORCODE          OUT NOCOPY    GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE       OUT NOCOPY    GE_ERROR_LOG.DESCRIPTION%TYPE
+    );
+
+END WF_BOCREATIONPLANCONTROL;
+
+PACKAGE BODY WF_BOCreationPlanControl AS
+
+   
+
+
+    CSBVERSION           CONSTANT UT_DATATYPES.STYSAOVERSION := 'SAO530152';
+  	GBOISPLANCREATION    UT_DATATYPES.STYBOOLEAN := FALSE;
+    
+    FUNCTION FSBVERSION  RETURN UT_DATATYPES.STYSAOVERSION
+    IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FBOISPLANCREATION  RETURN UT_DATATYPES.STYBOOLEAN
+    IS
+    BEGIN
+        RETURN GBOISPLANCREATION;
+    END;
+    
+    PROCEDURE BUILDEREXECUTORJ
+    (
+        ISBEXTERNALID   IN VARCHAR2,
+        INUENTITYID     IN NUMBER,
+        INUINTERFACEID  IN NUMBER,
+        ONUSTDTIME      OUT NUMBER,
+        ONUEXECMAXTIME  OUT NUMBER,
+        ONUPLANID       OUT NUMBER,
+        ONUUNITTYPEID   OUT NUMBER,
+        ONUERRORCODE    OUT NUMBER,
+        OSBERRORMSG     OUT VARCHAR2
+    )
+    AS LANGUAGE JAVA
+    NAME 'os.wf.comm.CreatePlanStatic.create(java.lang.String, int, int, int[], int[], long[], long[], long[],java.lang.String[])';
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE BUILDEREXECUTOR
+    (
+        INUEXTERNALID      IN    WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID        IN    GE_ENTITY.ENTITY_ID%TYPE,
+        INUINTERFACEID     IN    WF_INTERFACE_CONFIG.INTERFACE_CONFIG_ID%TYPE,
+        ONUEXECMAXTIME     OUT   STYNUMBER,
+        ONUSTDTIME         OUT   STYNUMBER,
+        ONUPLANID          OUT   STYNUMBER,
+        ONUUNITTYPEID      OUT   STYNUMBER,
+        ONUERRORCODE       OUT   STYNUMBER,
+        OSBERRORMESSAGE    OUT   UT_DATATYPES.STYMAXVARCHAR
+    )
+    IS
+        RCWORKFLOW              PS_BCPLANCREATION.TYRCWORKFLOW;
+        NUERRORCODEPROCESS      STYNUMBER;
+        SBERRORMESSAGEPROCESS   UT_DATATYPES.STYMAXVARCHAR;
+        
+    BEGIN
+        UT_TRACE.TRACE( 'BEGIN WF_BOCreationPlanControl.BuilderExecutor'||CHR(10)||
+                        'inuExternalId: '  ||INUEXTERNALID              ||CHR(10)||
+                        'inuEntityId: '    ||INUENTITYID                ||CHR(10)||
+                        'inuInterfaceId: ' ||INUINTERFACEID             ,10);
+
+        ONUERRORCODE      := GE_BOCONSTANTS.CNUSUCCESS;
+        OSBERRORMESSAGE   := NULL;
+        GBOISPLANCREATION := TRUE;
+
+        
+        RCWORKFLOW := PS_BOPLANCREATION.FNUGETWORKFLOW(INUINTERFACEID, INUEXTERNALID);
+
+        UT_TRACE.TRACE('The flow plan is created with the new model.', 10);
+        
+        PS_BOPLANCREATION.PLANCREATION(INUEXTERNALID, INUENTITYID, INUINTERFACEID,
+                                       RCWORKFLOW.SBTAGNAME, RCWORKFLOW.NUATTRIEQUIVID,
+                                       ONUPLANID,
+                                       ONUERRORCODE, OSBERRORMESSAGE);
+       
+       IF ONUERRORCODE IS NOT NULL THEN
+            
+            RAISE EX.CONTROLLED_ERROR;
+       END IF;
+
+        
+        IF (ONUPLANID IS NOT NULL) THEN
+            
+            PS_BOPLANCREATION.ENQUEUEPLAN(ONUPLANID, ONUERRORCODE, OSBERRORMESSAGE);
+            
+             
+           IF ONUERRORCODE IS NOT NULL THEN
+                
+                RAISE EX.CONTROLLED_ERROR;
+           END IF;
+        END IF;
+
+        GBOISPLANCREATION := FALSE;
+        UT_TRACE.TRACE('END WF_BOCreationPlanControl.BuilderExecutor', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR  THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR WF_BOCreationPlanControl.BuilderExecutor', 5);
+            GBOISPLANCREATION := FALSE;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS WF_BOCreationPlanControl.BuilderExecutor', 5);
+            GBOISPLANCREATION := FALSE;
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    END BUILDEREXECUTOR;
+
+    
+
+
+    PROCEDURE CREATESUBPLANJ
+    (
+        INUUNITTYPEID   IN  NUMBER,
+        INUPLANID       IN  NUMBER,
+        INUPARENTID     IN  NUMBER,
+        ISBEXTERNALID   IN  VARCHAR2,
+        INUENTITYID     IN  NUMBER,
+        ONUERRORCODE    OUT NOCOPY NUMBER,
+        OSBERRORMESSAGE OUT NOCOPY VARCHAR2
+    )
+    AS LANGUAGE JAVA
+    NAME 'os.wf.comm.CreatePlanStatic.createSubPlan(long, long, long, java.lang.String, int, long[], java.lang.String[])';
+
+    PROCEDURE CREATESUBPLANJESP
+    (
+        INUUNITTYPEID   IN  NUMBER,
+        INUPLANID       IN  NUMBER,
+        INUPARENTID     IN  NUMBER,
+        ISBEXTERNALID   IN  VARCHAR2,
+        INUENTITYID     IN  NUMBER,
+        INUCONSEC       IN  NUMBER,
+        INUMIDPOINTX       IN  NUMBER,
+        INUSTARTINSTANCEID IN  NUMBER,
+        INUFINALINSTANCEID IN  NUMBER,
+        SBACTIVE           IN  VARCHAR2,
+        INSTANCECREATEDID OUT NOCOPY NUMBER,
+        ONUERRORCODE    OUT NOCOPY NUMBER,
+        OSBERRORMESSAGE OUT NOCOPY VARCHAR2
+    )
+    AS LANGUAGE JAVA
+    NAME 'os.wf.comm.CreatePlanStatic.createSubPlan(long,long, long, java.lang.String, int, int, int , long ,long ,  java.lang.String, long[], long[], java.lang.String[])';
+    
+    
+    PROCEDURE CREATESUBPLANJSEQ
+    (
+        INUUNITTYPEID           IN  NUMBER,
+        INUPLANID               IN  NUMBER,
+        INUPARENTID             IN  NUMBER,
+        ISBEXTERNALID           IN  VARCHAR2,
+        INUENTITYID             IN  NUMBER,
+        INUXPOSITION            IN  NUMBER,
+        INUYPOSITION            IN  NUMBER,
+        SBACTIVE                IN  VARCHAR2,
+        ONUINSTANCECREATID      OUT NOCOPY  NUMBER,
+        ONUERRORPROCESS         OUT NOCOPY  NUMBER,
+        OSBERRORMESSPROCESS     OUT NOCOPY VARCHAR2
+    )
+    AS LANGUAGE JAVA
+    NAME 'os.wf.comm.CreatePlanStatic.createSubPlanSeq(long,long, long, java.lang.String, int, int, int, java.lang.String, long[], long[], java.lang.String[])';
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATESUBPLAN
+    (
+        INUUNITTYPEID   IN  WF_INSTANCE.UNIT_TYPE_ID%TYPE,
+        INUPLANID       IN  WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID     IN  WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID   IN  WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID     IN  WF_INSTANCE.ENTITY_ID%TYPE,
+        ONUERRORCODE    OUT NOCOPY NUMBER,
+        OSBERRORMESSAGE OUT NOCOPY VARCHAR2
+    )
+    IS
+        NUPARENTID              WF_INSTANCE.PARENT_ID%TYPE;
+        NUERRORCODEPROCESS      NUMBER;
+        SBERRORMESSAGEPROCESS   VARCHAR2(2000);
+    BEGIN
+
+        
+        ONUERRORCODE    := GE_BOCONSTANTS.CNUSUCCESS;
+        OSBERRORMESSAGE := NULL;
+        
+        
+        
+        
+        NUPARENTID := NVL( INUPARENTID, -1 );
+        IF NUPARENTID = -1 THEN
+            NUPARENTID := INUPLANID;
+        END IF;
+        
+        
+        CREATESUBPLANJ
+        (
+            INUUNITTYPEID,
+            INUPLANID,
+            NUPARENTID,
+            ISBEXTERNALID,
+            INUENTITYID,
+            NUERRORCODEPROCESS,
+            SBERRORMESSAGEPROCESS
+        );
+
+        UT_JAVA.VALIDATEERROR( NUERRORCODEPROCESS, SBERRORMESSAGEPROCESS );
+
+    EXCEPTION
+
+        WHEN EX.CONTROLLED_ERROR  THEN
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+
+    END CREATESUBPLAN;
+    
+    PROCEDURE CREATESUBPLANESP
+    (
+        INUUNITTYPEID      IN  WF_INSTANCE.UNIT_TYPE_ID%TYPE,
+        INUPLANID          IN  WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID        IN  WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID      IN  WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID        IN  WF_INSTANCE.ENTITY_ID%TYPE,
+        INUCONSEC          IN  NUMBER,
+        INUMIDPOINTX       IN  NUMBER,
+        INUSTARTINSTANCEID IN  WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUFINALINSTANCEID IN  WF_INSTANCE.INSTANCE_ID%TYPE,
+        IBLACTIVE          IN  BOOLEAN,
+        ONUINSTANCECREATID OUT NOCOPY NUMBER,
+        ONUERRORCODE       OUT NOCOPY NUMBER,
+        OSBERRORMESSAGE    OUT NOCOPY VARCHAR2
+    )
+    IS
+        SBACTIVE                VARCHAR(1) := GE_BOCONSTANTS.CSBNO;
+        NUPARENTID              WF_INSTANCE.PARENT_ID%TYPE;
+        NUERRORCODEPROCESS      NUMBER;
+        SBERRORMESSAGEPROCESS   VARCHAR2(2000);
+    BEGIN
+
+        
+        ONUERRORCODE    := GE_BOCONSTANTS.CNUSUCCESS;
+        OSBERRORMESSAGE := NULL;
+
+        
+        
+        
+        NUPARENTID := NVL( INUPARENTID, -1 );
+        IF NUPARENTID = -1 THEN
+            NUPARENTID := INUPLANID;
+        END IF;
+        
+        
+        IF(IBLACTIVE) THEN
+            SBACTIVE := GE_BOCONSTANTS.CSBYES;
+        END IF;
+
+
+        
+        CREATESUBPLANJESP
+        (
+            INUUNITTYPEID,
+            INUPLANID,
+            NUPARENTID,
+            ISBEXTERNALID,
+            INUENTITYID,
+            INUCONSEC,
+            INUMIDPOINTX       ,
+            INUSTARTINSTANCEID,
+            INUFINALINSTANCEID,
+            SBACTIVE,
+            ONUINSTANCECREATID ,
+            NUERRORCODEPROCESS,
+            SBERRORMESSAGEPROCESS
+        );
+
+        UT_JAVA.VALIDATEERROR( NUERRORCODEPROCESS, SBERRORMESSAGEPROCESS );
+
+    EXCEPTION
+
+        WHEN EX.CONTROLLED_ERROR  THEN
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+
+    END CREATESUBPLANESP;
+
+
+    PROCEDURE CREATESUBPLANSEQ
+    (
+        INUUNITTYPEID      IN  WF_INSTANCE.UNIT_TYPE_ID%TYPE,
+        INUPLANID          IN  WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID        IN  WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID      IN  WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID        IN  WF_INSTANCE.ENTITY_ID%TYPE,
+        INUXPOSITION       IN  NUMBER,
+        INUYPOSITION       IN  NUMBER,
+        IBLACTIVE          IN  BOOLEAN,
+        ONUINSTANCECREATID OUT NOCOPY NUMBER,
+        ONUERRORCODE       OUT NOCOPY NUMBER,
+        OSBERRORMESSAGE    OUT NOCOPY VARCHAR2
+    )
+    IS
+        SBACTIVE                VARCHAR(1) := GE_BOCONSTANTS.CSBNO;
+        NUPARENTID              WF_INSTANCE.PARENT_ID%TYPE;
+
+        NUERRORCODEPROCESS      GE_MESSAGE.MESSAGE_ID%TYPE;
+        SBERRORMESSAGEPROCESS   GE_MESSAGE.DESCRIPTION%TYPE;
+    BEGIN
+
+        
+        ONUERRORCODE    := GE_BOCONSTANTS.CNUSUCCESS;
+        OSBERRORMESSAGE := NULL;
+
+        
+        
+        
+        NUPARENTID := NVL( INUPARENTID, -1 );
+        IF NUPARENTID = -1 THEN
+            NUPARENTID := INUPLANID;
+        END IF;
+        
+        
+        IF(IBLACTIVE) THEN
+            SBACTIVE := GE_BOCONSTANTS.CSBYES;
+        END IF;
+
+        
+        CREATESUBPLANJSEQ
+        (
+            INUUNITTYPEID,
+            INUPLANID,
+            INUPARENTID,
+            ISBEXTERNALID,
+            INUENTITYID,
+            INUXPOSITION,
+            INUYPOSITION,
+            SBACTIVE,
+            ONUINSTANCECREATID,
+            NUERRORCODEPROCESS,
+            SBERRORMESSAGEPROCESS
+        );
+
+        UT_JAVA.VALIDATEERROR( NUERRORCODEPROCESS, SBERRORMESSAGEPROCESS );
+
+    EXCEPTION
+
+        WHEN EX.CONTROLLED_ERROR  THEN
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+
+    END CREATESUBPLANSEQ;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATESUBPLANSEQUECE
+    (
+        ISBSUBPLANTAGNAME     IN            WF_INSTANCE.TAG_NAME%TYPE,
+        INUPLANID             IN            WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID           IN            WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID         IN            WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYTOINHEREXTID IN            WF_INSTANCE.ENTITY_ID%TYPE,
+        INUXPOSITION          IN            NUMBER,
+        INUYPOSITION          IN            NUMBER,
+        ONUSUBPLANID          OUT NOCOPY    WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUERRORCODE          OUT NOCOPY    GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE       OUT NOCOPY    GE_ERROR_LOG.DESCRIPTION%TYPE
+    )
+    IS
+        NUPARENTID                  WF_INSTANCE.PARENT_ID%TYPE;
+        NUERRORCODEPROCESS          GE_ERROR_LOG.ERROR_LOG_ID%TYPE;
+        SBERRORMESSAGEPROCESS       GE_ERROR_LOG.DESCRIPTION%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN WF_BOCreationPlanControl.CreateSubPlanSequece'||CHR(10)||
+                       'ProcessTagName      ['||ISBSUBPLANTAGNAME||']'||CHR(10)||
+                       'PlanId              ['||INUPLANID        ||']', 10);
+        UT_TRACE.TRACE('ExternalId          ['||ISBEXTERNALID    ||']'||CHR(10)||
+                       'inuEntityToInherExtId['||INUENTITYTOINHEREXTID||']'||CHR(10)||
+                       'XPosition           ['||INUXPOSITION     ||']'||CHR(10)||
+                       'YPosition           ['||INUYPOSITION     ||']', 10);
+
+        
+        ONUERRORCODE    := GE_BOCONSTANTS.CNUSUCCESS;
+        OSBERRORMESSAGE := NULL;
+
+        
+
+        NUPARENTID := COALESCE(INUPARENTID, -1);
+        IF (NUPARENTID = -1) THEN
+            NUPARENTID := INUPLANID;
+        END IF;
+        UT_TRACE.TRACE('ParentId            ['||NUPARENTID||']', 10);
+                       
+        
+        PS_BOPLANCREATION.CREATESUBPLANSEQUECE
+        (
+            ISBSUBPLANTAGNAME,
+            INUPLANID,
+            NUPARENTID,
+            ISBEXTERNALID,
+            INUENTITYTOINHEREXTID,
+            INUXPOSITION,
+            INUYPOSITION,
+            ONUSUBPLANID,
+            ONUERRORCODE,
+            OSBERRORMESSAGE
+        );
+
+        UT_TRACE.TRACE('InstanceId          ['||ONUSUBPLANID         ||']'||CHR(10)||
+                       'ErrorCode           ['||NUERRORCODEPROCESS   ||']'||CHR(10)||
+                       'ErrorMessage        ['||SBERRORMESSAGEPROCESS||']'||CHR(10)||
+                       'END WF_BOCreationPlanControl.CreateSubPlanSequece', 10);
+    EXCEPTION
+
+        WHEN EX.CONTROLLED_ERROR  THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR WF_BOCreationPlanControl.CreateSubPlanSequece', 5);
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS WF_BOCreationPlanControl.CreateSubPlanSequece', 5);
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    END CREATESUBPLANSEQUECE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATESUBPLANPARALELL
+    (
+        ISBSUBPLANTAGNAME     IN            WF_INSTANCE.TAG_NAME%TYPE,
+        INUPLANID             IN            WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID           IN            WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID         IN            WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYTOINHEREXTID IN            WF_INSTANCE.ENTITY_ID%TYPE,
+        INUCONSECUTIVE        IN            PS_PROCESS_COMPTYPE.SEQUENCE_%TYPE,
+        INUMIDPOSITION        IN            NUMBER,
+        INUSTARTINSTANCEID    IN            WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUFINALINSTANCEID    IN            WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUSUBPLANID          OUT NOCOPY    WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUERRORCODE          OUT NOCOPY    GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE       OUT NOCOPY    GE_ERROR_LOG.DESCRIPTION%TYPE
+    )
+    IS
+        NUPARENTID                  WF_INSTANCE.PARENT_ID%TYPE;
+        NUERRORCODEPROCESS          GE_ERROR_LOG.ERROR_LOG_ID%TYPE;
+        SBERRORMESSAGEPROCESS       GE_ERROR_LOG.DESCRIPTION%TYPE;
+
+    BEGIN
+        UT_TRACE.TRACE('BEGIN WF_BOCreationPlanControl.CreateSubPlanParalell'||CHR(10)||
+                       'ProcessTagName      ['||ISBSUBPLANTAGNAME ||']'||CHR(10)||
+                       'PlanId              ['||INUPLANID         ||']'||CHR(10)||
+                       'ExternalId          ['||ISBEXTERNALID     ||']'||CHR(10)||
+                       'inuEntityToInherExtId['||INUENTITYTOINHEREXTID||']', 10);
+        UT_TRACE.TRACE('Consecutive         ['||INUCONSECUTIVE    ||']'||CHR(10)||
+                       'MidPosition         ['||INUMIDPOSITION    ||']'||CHR(10)||
+                       'StartInstanceId     ['||INUSTARTINSTANCEID||']'||CHR(10)||
+                       'FinalInstanceId     ['||INUFINALINSTANCEID||']', 10);
+
+        
+        ONUERRORCODE    := GE_BOCONSTANTS.CNUSUCCESS;
+        OSBERRORMESSAGE := NULL;
+
+        
+
+        NUPARENTID := COALESCE(INUPARENTID, -1);
+        IF (NUPARENTID = -1) THEN
+            NUPARENTID := INUPLANID;
+        END IF;
+        UT_TRACE.TRACE('ParentId            ['||NUPARENTID||']', 10);
+
+        
+        PS_BOPLANCREATION.CREATESUBPLANPARALELL
+        (
+            ISBSUBPLANTAGNAME,
+            INUPLANID,
+            NUPARENTID,
+            ISBEXTERNALID,
+            INUENTITYTOINHEREXTID,
+            INUCONSECUTIVE,
+            INUMIDPOSITION,
+            INUSTARTINSTANCEID,
+            INUFINALINSTANCEID,
+            ONUSUBPLANID,
+            ONUERRORCODE,
+            OSBERRORMESSAGE
+        );
+
+        UT_TRACE.TRACE('InstanceId          ['||ONUSUBPLANID         ||']'||CHR(10)||
+                       'ErrorCode           ['||NUERRORCODEPROCESS   ||']'||CHR(10)||
+                       'ErrorMessage        ['||SBERRORMESSAGEPROCESS||']'||CHR(10)||
+                       'END WF_BOCreationPlanControl.CreateSubPlanParalell', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR  THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR WF_BOCreationPlanControl.CreateSubPlanParalell', 5);
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS WF_BOCreationPlanControl.CreateSubPlanParalell', 5);
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    END CREATESUBPLANPARALELL;
+
+END WF_BOCREATIONPLANCONTROL;

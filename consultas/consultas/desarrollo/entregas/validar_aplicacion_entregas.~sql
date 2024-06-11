@@ -1,0 +1,10 @@
+select sid,action from gv$session where action like 'APLICANDO%';
+
+select *
+from dba_objects
+where status!='VALID'
+and owner in ('OPEN','PERSONALIZACIONES','ADM_PERSON');
+
+select *
+from dba_objects
+where object_name=upper('ldc_pksolicitudinteraccion');

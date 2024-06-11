@@ -1,0 +1,407 @@
+
+PACKAGE BODY CC_BOProductDamage
+IS
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    CSBVERSION                  CONSTANT VARCHAR2(10) := 'SAO215892';
+
+    
+    
+    
+
+    
+    CNUNODATES_ERROR             CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 902001;
+    
+    
+    CNUNOANSWER_ERROR            CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 902000;
+    
+    
+    
+
+    
+    
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALPRODUCTTIMEOUT
+    (
+        INUPACKAGEID            IN MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        RCMOTIVE                DAMO_MOTIVE.STYMO_MOTIVE;
+        RCTIMEOUTCOMP           DAPR_TIMEOUT_COMPONENT.STYPR_TIMEOUT_COMPONENT;
+        
+        BOREGISTERTIMEOUT       BOOLEAN := FALSE;
+        BOAUTHORIZETIMEOUT      BOOLEAN := FALSE;
+        SBCOMPAPPROVAL          GE_PARAMETER.VALUE%TYPE;
+        NUMOTIVETYPEID          MO_MOTIVE.MOTIVE_TYPE_ID%TYPE;
+        NUCOMPTIME              PR_TIMEOUT_COMPONENT.COMPENSATED_TIME%TYPE := 0;
+	BEGIN
+        
+        UT_TRACE.TRACE('Inicia CC_BOProductDamage.ValProductTimeOut:'||CHR(10)
+                      ||'inuPackageId['||INUPACKAGEID||']',2);
+                      
+        DAMO_PACKAGES.ACCKEY(INUPACKAGEID);
+
+        
+        NUMOTIVETYPEID := PS_BOMOTIVETYPE.FNUCLAIMSMOTITYPE;
+        RCMOTIVE := MO_BOPACKAGES.FRCGETMOTIBYMOTITYPE(INUPACKAGEID,NUMOTIVETYPEID);
+
+        IF(RCMOTIVE.ANSWER_ID IS NOT NULL) THEN
+            BOREGISTERTIMEOUT := CC_BOPRODUCTDAMAGE.FSBISREQUIREDTIMEOUT(RCMOTIVE.ANSWER_ID) <> GE_BOCONSTANTS.GETNO;
+        END IF;
+        
+        
+        RCTIMEOUTCOMP := CC_BCPRODUCTDAMAGE.FRCTIMEOUTBYPACKAGEID(INUPACKAGEID);
+
+        IF ( BOREGISTERTIMEOUT ) THEN
+        
+            
+            IF (RCTIMEOUTCOMP.TIMEOUT_COMPONENT_ID IS NULL OR
+                RCTIMEOUTCOMP.INITIAL_DATE IS NULL OR
+                RCTIMEOUTCOMP.FINAL_DATE IS NULL
+            ) THEN
+                UT_TRACE.TRACE('Finaliza CC_BOProductDamage.ValProductTimeOut => NO HAY SOLICITUD CON FECHAS DE AFECTACION REGISTRADAS',15);
+                
+                ERRORS.SETERROR(CNUNODATES_ERROR);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            
+            
+            IF (NOT CC_BCPRODUCTDAMAGE.FBOISDAMAGEABSORBED(INUPACKAGEID)) THEN
+
+                SBCOMPAPPROVAL := NVL(GE_BOPARAMETER.FSBGET(TT_BOFAULT.CSBCOMP_APPROVAL),GE_BOCONSTANTS.CSBNO);
+                IF (SBCOMPAPPROVAL = GE_BOCONSTANTS.CSBNO) THEN
+                    
+                    BOAUTHORIZETIMEOUT := TRUE;
+                END IF;
+
+                NUCOMPTIME := TT_BOPRODUCT.TIMEOUTPROCESSALLPRODUCTSTATUS
+                (
+                    RCMOTIVE.PRODUCT_ID,
+                    RCTIMEOUTCOMP.INITIAL_DATE,
+                    RCTIMEOUTCOMP.FINAL_DATE,
+                    BOAUTHORIZETIMEOUT,
+                    INUPACKAGEID,
+                    NULL,
+                    RCTIMEOUTCOMP.TIMEOUT_COMPONENT_ID
+                );
+                
+                UT_TRACE.TRACE('Finaliza CC_BOProductDamage.ValProductTimeOut, Tiempo Compensado =>['||NUCOMPTIME||']',1);
+                RETURN;
+            ELSE
+                UT_TRACE.TRACE('Finaliza CC_BOProductDamage.ValProductTimeOut => Da?o absorbido por falla',15);
+            END IF;
+        END IF;
+
+        
+        IF (RCTIMEOUTCOMP.TIMEOUT_COMPONENT_ID IS NOT NULL) THEN
+            PR_BOTIMESCHEDULER.DELRECORD(RCTIMEOUTCOMP.TIMEOUT_COMPONENT_ID);
+        END IF;
+        
+        UT_TRACE.TRACE('Finaliza CC_BOProductDamage.ValProductTimeOut => No se registra tiempo fuera de servicio',15);
+    EXCEPTION
+		WHEN EX.CONTROLLED_ERROR THEN
+			RAISE;
+		WHEN OTHERS THEN
+			ERRORS.SETERROR;
+			RAISE EX.CONTROLLED_ERROR;
+    END VALPRODUCTTIMEOUT;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETDAMAGEDATAFROMORDER
+    (
+        INUORDERID         IN  OR_ORDER_ACTIVITY.ORDER_ID%TYPE,
+        ONUPACKAGEID       OUT TT_DAMAGE_PRODUCT.PACKAGE_ID%TYPE,
+        ONUPRODUCTID       OUT TT_DAMAGE_PRODUCT.PRODUCT_ID%TYPE,
+        ONUACTIVITYORDERID OUT OR_ORDER_ACTIVITY.ORDER_ACTIVITY_ID%TYPE,
+        ONUPRODUCTTYPEID   OUT SERVICIO.SERVCODI%TYPE,
+        ODTINITIALDATE     OUT PR_TIMEOUT_COMPONENT.INITIAL_DATE%TYPE,
+        ODTFINALDATE       OUT PR_TIMEOUT_COMPONENT.FINAL_DATE%TYPE
+    )
+    IS
+        RCTIMEOUTCOMP      DAPR_TIMEOUT_COMPONENT.STYPR_TIMEOUT_COMPONENT;
+    BEGIN
+
+        UT_TRACE.TRACE('[INICIO] CC_BOProductDamage.GetDamageDataFromOrder ['||INUORDERID||']',5);
+
+        CC_BCPRODUCTDAMAGE.GETDAMAGEDATAFROMORDER(
+            INUORDERID,
+            ONUPACKAGEID,
+            ONUPRODUCTID,
+            ONUACTIVITYORDERID,
+            ONUPRODUCTTYPEID
+        );
+        
+        IF (ONUPACKAGEID IS NOT NULL) THEN
+            RCTIMEOUTCOMP := CC_BCPRODUCTDAMAGE.FRCTIMEOUTBYPACKAGEID(ONUPACKAGEID);
+            
+            IF ( RCTIMEOUTCOMP.INITIAL_DATE IS NOT NULL ) THEN
+                ODTINITIALDATE := RCTIMEOUTCOMP.INITIAL_DATE;
+            END IF;
+            
+            IF ( RCTIMEOUTCOMP.FINAL_DATE IS NOT NULL ) THEN
+                ODTFINALDATE := RCTIMEOUTCOMP.FINAL_DATE;
+            END IF;
+            
+        END IF;
+
+        UT_TRACE.TRACE('[FIN] CC_BOProductDamage.GetDamageDataFromOrder '||
+                'onuActivityOrderId:['||ONUACTIVITYORDERID||'],'||
+                'onuPackageId:['||ONUPACKAGEID||'],'||
+                'onuProductId:['||ONUPRODUCTID||'],'||
+                'onuProductTypeId:['||ONUPRODUCTTYPEID||'],'||
+                'odtInitialDate:['||ODTINITIALDATE||'],'||
+                'odtFinalDate:['||ODTFINALDATE||']',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETDAMAGEDATAFROMORDER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBISREQUIREDTIMEOUT
+    (
+        INUANSWERID     CC_ANSWER.ANSWER_ID%TYPE
+    )
+    RETURN CC_ANSWER.TIME_OUT%TYPE
+    IS
+        SBISREQTIMEOUT    CC_ANSWER.TIME_OUT%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO CC_BOProductDamage.fsbIsRequiredTimeout inuAnswerId['||INUANSWERID||']',10);
+
+        SBISREQTIMEOUT := DACC_ANSWER.FSBGETTIME_OUT(INUANSWERID);
+
+        UT_TRACE.TRACE('FIN CC_BOProductDamage.fsbIsRequiredTimeout => ['||SBISREQTIMEOUT||']',10);
+        RETURN SBISREQTIMEOUT;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FSBISREQUIREDTIMEOUT;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE REGAFFECTATIONDATES
+    (
+        INUPACKAGEID        IN PR_TIMEOUT_COMPONENT.PACKAGE_ID%TYPE,
+        IDTINITIALDATE      IN PR_TIMEOUT_COMPONENT.INITIAL_DATE%TYPE,
+        IDTFINALDATE        IN PR_TIMEOUT_COMPONENT.FINAL_DATE%TYPE
+    )
+    IS
+        RCORDER         DAOR_ORDER.STYOR_ORDER;
+        RCTIMEOUTCOMP   DAPR_TIMEOUT_COMPONENT.STYPR_TIMEOUT_COMPONENT;
+        NUANSWERID      CC_ANSWER.ANSWER_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO CC_BOProductDamage.RegAffectationDates '||
+                'inuPackageId:['||INUPACKAGEID||'],'||
+                'idtInitialDate:['||IDTINITIALDATE||'],'||
+                'idtFinalDate:['||IDTFINALDATE||'],',5);
+
+        
+        RCTIMEOUTCOMP := CC_BCPRODUCTDAMAGE.FRCTIMEOUTBYPACKAGEID(INUPACKAGEID);
+        
+        IF (RCTIMEOUTCOMP.TIMEOUT_COMPONENT_ID IS NULL) THEN
+            
+            PR_BOTIMESCHEDULER.REGISTER(IDTINITIALDATE,
+                                        IDTFINALDATE,
+                                        INUPACKAGEID);
+        ELSE
+            
+            PR_BOTIMESCHEDULER.UPDRECORD(RCTIMEOUTCOMP.TIMEOUT_COMPONENT_ID,
+                                        IDTINITIALDATE,
+                                        IDTFINALDATE);
+        END IF;
+
+        UT_TRACE.TRACE('FIN CC_BOProductDamage.RegAffectationDates',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END REGAFFECTATIONDATES;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUISDAMAGEABSORBED
+    (
+        INUPACKAGEID        IN MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    RETURN NUMBER
+    IS
+        ONUISDMGABSORBED    NUMBER := 0;
+    BEGIN
+        UT_TRACE.TRACE('INICIO CC_BOProductDamage.fnuIsDamageAbsorbed '||
+                'inuPackageId:['||INUPACKAGEID||']',5);
+
+        
+        IF (CC_BCPRODUCTDAMAGE.FBOISDAMAGEABSORBED(INUPACKAGEID)) THEN
+            ONUISDMGABSORBED := 1;
+        END IF;
+
+        UT_TRACE.TRACE('FIN CC_BOProductDamage.fnuIsDamageAbsorbed => ['||ONUISDMGABSORBED||']',5);
+        RETURN ONUISDMGABSORBED;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUISDAMAGEABSORBED;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBVERSION
+    RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END FSBVERSION;
+
+END CC_BOPRODUCTDAMAGE;

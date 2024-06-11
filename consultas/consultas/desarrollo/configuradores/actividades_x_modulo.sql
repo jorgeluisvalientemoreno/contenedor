@@ -1,0 +1,5 @@
+SELECT *
+FROM OPEN.OR_ACT_BY_TASK_MOD
+WHERE TASK_CODE=8
+  and module_id=9
+  and items_id=4000065;

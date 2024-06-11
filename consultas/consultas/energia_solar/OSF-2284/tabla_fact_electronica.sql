@@ -1,0 +1,1 @@
+select * from FACTURA_ELECTRONICA 

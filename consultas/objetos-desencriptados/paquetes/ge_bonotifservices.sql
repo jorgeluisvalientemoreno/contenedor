@@ -1,0 +1,1776 @@
+PACKAGE Ge_BoNotifServices
+IS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+
+    
+    
+    
+    
+    GTBOPERUNITS    DAOR_OPERATING_UNIT.TYTBOR_OPERATING_UNIT;
+    
+    GTBPERSONOTIF   DAGE_PERSON.TYTBGE_PERSON;
+    
+    GTBFIELDSNOTIF      UT_STRING.TYTB_STRING;
+    
+    
+    
+    
+
+    FUNCTION FSBVERSION
+    RETURN VARCHAR2;
+    
+    PROCEDURE GETUNITBYUNIT
+    (
+        INUOPERATINGUNIT        IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE
+    );
+    
+    PROCEDURE GETUNITSBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    );
+    
+    PROCEDURE GETSECUNITSBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    );
+    
+    PROCEDURE GETSUPERVISORBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    );
+    
+    PROCEDURE GETSUPERVISORBYUNIT
+    (
+        INUOPERATINGUNIT        IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE
+    );
+    
+    PROCEDURE GETDISPATCHERBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    );
+    
+    PROCEDURE GETDISPATCHERBYUNIT
+    (
+        INUOPERATINGUNIT        IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE
+    );
+    
+    PROCEDURE GETSUPDISPATCHBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    );
+    
+    PROCEDURE GETSUPDISPATCHBYUNIT
+    (
+        INUOPERATINGUNIT        IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE
+    );
+    
+    PROCEDURE GETPACKAGESELLER
+    (
+        INUPACKAGE              IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+    
+    PROCEDURE GETPACKAGEUNITPERSON
+    (
+        INUPACKAGE              IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+    
+    PROCEDURE GETNUMBERFROMMOTBYPACK
+    (
+        INUPACKAGE              IN  MO_MOTIVE.PACKAGE_ID%TYPE
+    );
+    
+    PROCEDURE CLEARGLOBALVAR;
+    
+    PROCEDURE GETSERNUMBYPACWITHOUTMOT
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+
+    PROCEDURE GETSERNUMFORCONDESC
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+
+    PROCEDURE GETSERNUMFORSUSPORREC
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+
+    
+
+
+
+    PROCEDURE GETCURRENTPERSON ( INUDEFAULTVALUE    IN  NUMBER );
+    
+    
+
+
+
+
+    PROCEDURE GETSUBSPHONEBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    );
+
+    
+
+
+
+
+    PROCEDURE GETSUBSPHONEBYMOTIVE
+    (
+        INUMOTIVEID             IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    
+
+
+
+
+
+    PROCEDURE GETPACKAGERESPPERSON
+    (
+        INUPACKAGE  IN MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+    
+    
+    PROCEDURE GETPACKRESPPERSONMAIL
+    (
+        INUPACKAGE  IN MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+
+
+    PROCEDURE GETPACKRESPPERSONPHONE
+    (
+        INUPACKAGE  IN MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETMAILBYCLIENT
+    (
+        INUCLIENTID  IN  GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE
+    );
+    
+    
+    
+
+
+
+
+    PROCEDURE GETEMAILUSERREGISTER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    );
+
+
+    
+
+
+
+
+    PROCEDURE GETEMAILUSERAPPROVES
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    );
+    
+    
+
+
+
+
+    PROCEDURE GETADMINEMAILBYCONTRACT
+    (
+        INUCONTRACTID              IN  GE_CONTRATO.ID_CONTRATO%TYPE
+    );
+    
+    
+
+
+
+    PROCEDURE GETAUXEMAILBYCONTRACT
+    (
+        INUCONTRACTID              IN  GE_CONTRATO.ID_CONTRATO%TYPE
+    );
+
+
+END GE_BONOTIFSERVICES;
+
+/
+
+PACKAGE BODY Ge_BoNotifServices
+IS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    CSBVERSION    CONSTANT VARCHAR2(10) := 'SAO197977';
+
+    
+    
+    
+
+    CSBLINEAMOVIL CONSTANT VARCHAR2(200) := 'PR_LINEA_MOVIL_7001';
+
+    
+    
+    
+
+    
+    
+    
+    FUNCTION FSBVERSION
+    RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CLEARGLOBALVAR
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.clearGlobalVar',1);
+
+
+        
+        GTBOPERUNITS.DELETE;
+        GTBPERSONOTIF.DELETE;
+        GTBFIELDSNOTIF.DELETE;
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.clearGlobalVar',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CLEARGLOBALVAR;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETUNITBYUNIT
+    (
+        INUOPERATINGUNIT        IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetUnitByUnit',1);
+        
+        
+        CLEARGLOBALVAR;
+
+        
+        GTBOPERUNITS(1) := DAOR_OPERATING_UNIT.FRCGETRECORD(INUOPERATINGUNIT);
+        
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetUnitByUnit',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETUNITBYUNIT;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETUNITSBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetUnitsByOrder',1);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        OR_BOSCHED.GETOPEUNIBYORDER
+        (
+            INUORDERID,
+            UT_DATE.FDTSYSDATE,
+            GTBOPERUNITS
+        );
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetUnitsByOrder',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETUNITSBYORDER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSECUNITSBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetSecUnitsByOrder',1);
+        
+        
+        CLEARGLOBALVAR;
+
+        
+        
+        OR_BOSCHED.GETOPEUNIBYSECORDER
+        (
+            INUORDERID,
+            UT_DATE.FDTSYSDATE,
+            GTBOPERUNITS
+        );
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetSecUnitsByOrder',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETSECUNITSBYORDER;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSUPERVISORBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetSupervisorByOrder',1);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        OR_BOSCHED.GETSUPERVISORBYORDER
+        (
+            INUORDERID,
+            UT_DATE.FDTSYSDATE,
+            GTBPERSONOTIF
+        );
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetSupervisorByOrder',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETSUPERVISORBYORDER;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSUPERVISORBYUNIT
+    (
+        INUOPERATINGUNIT        IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetSupervisorByUnit',1);
+        
+        
+        CLEARGLOBALVAR;
+
+        
+        OR_BOSCHED.GETSUPERVISORBYOPEUNI
+        (
+            INUOPERATINGUNIT,
+            UT_DATE.FDTSYSDATE,
+            GTBPERSONOTIF
+        );
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetSupervisorByUnit',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETSUPERVISORBYUNIT;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETDISPATCHERBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetDispatcherByOrder',1);
+        
+        
+        CLEARGLOBALVAR;
+
+        
+        OR_BOSCHED.GETDISPATCHERBYORDER
+        (
+            INUORDERID,
+            UT_DATE.FDTSYSDATE,
+            GTBOPERUNITS
+        );
+        
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetDispatcherByOrder',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETDISPATCHERBYORDER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETDISPATCHERBYUNIT
+    (
+        INUOPERATINGUNIT        IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetDispatcherByUnit',1);
+    
+        
+        CLEARGLOBALVAR;
+
+        
+        OR_BOSCHED.GETDISPATCHERBYOPEUNI
+        (
+            INUOPERATINGUNIT,
+            UT_DATE.FDTSYSDATE,
+            GTBOPERUNITS
+        );
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetDispatcherByUnit',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETDISPATCHERBYUNIT;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSUPDISPATCHBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetSupDispatchByOrder',1);
+        
+        
+        CLEARGLOBALVAR;
+
+        
+        OR_BOSCHED. GETSUPDISPATCHBYORDER
+        (
+            INUORDERID,
+            UT_DATE.FDTSYSDATE,
+            GTBOPERUNITS
+        );
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetSupDispatchByOrder',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETSUPDISPATCHBYORDER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSUPDISPATCHBYUNIT
+    (
+        INUOPERATINGUNIT        IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetSupDispatchByUnit',1);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        OR_BOSCHED.GETSUPDISPATCHBYOPEUNI
+        (
+            INUOPERATINGUNIT,
+            UT_DATE.FDTSYSDATE,
+            GTBOPERUNITS
+        );
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetSupDispatchByUnit',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETSUPDISPATCHBYUNIT;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETPACKAGESELLER
+    (
+        INUPACKAGE              IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetPackageSeller',1);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        GTBPERSONOTIF(1) := DAGE_PERSON.FRCGETRECORD
+                            (
+                                DAMO_PACKAGES.FNUGETPERSON_ID(INUPACKAGE)
+                            );
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetPackageSeller',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETPACKAGESELLER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETPACKAGEUNITPERSON
+    (
+        INUPACKAGE              IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetPackageUnitPerson',1);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        GTBPERSONOTIF(1) := DAGE_PERSON.FRCGETRECORD
+                            (
+                                DAMO_PACKAGES.FNUGETPERSON_ID(INUPACKAGE)
+                            );
+                            
+        GTBPERSONOTIF(2) := DAGE_PERSON.FRCGETRECORD
+                            (
+                                DAOR_OPERATING_UNIT.FNUGETPERSON_IN_CHARGE
+                                (
+                                    DAMO_PACKAGES.FNUGETPOS_OPER_UNIT_ID
+                                    (
+                                        INUPACKAGE
+                                    )
+                                )
+                            );
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetPackageUnitPerson',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETPACKAGEUNITPERSON;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETNUMBERFROMMOTBYPACK
+    (
+        INUPACKAGE              IN  MO_MOTIVE.PACKAGE_ID%TYPE
+    )
+    IS
+
+        NUPRODUCTID         PR_PRODUCT.PRODUCT_ID%TYPE;
+        NUMOTIVEID          MO_MOTIVE.MOTIVE_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetNumberFromMotByPack',1);
+        UT_TRACE.TRACE('PackageID['||INUPACKAGE||']',10);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        DAMO_PACKAGES.ACCKEY(INUPACKAGE);
+
+        
+        NUMOTIVEID := GE_BCNOTIFSERVICES.FNUGETMOTIVEBYPACKAGE(INUPACKAGE);
+
+        
+        IF  (NUMOTIVEID IS NULL) THEN
+            
+			ERRORS.SETERROR(1098, TO_CHAR(INUPACKAGE));
+		    RAISE EX.CONTROLLED_ERROR;
+		END IF;
+
+        
+        NUPRODUCTID := DAMO_MOTIVE.FNUGETPRODUCT_ID(NUMOTIVEID);
+
+        
+        GTBFIELDSNOTIF(1) := DAPR_PRODUCT.FSBGETSERVICE_NUMBER(NUPRODUCTID);
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetNumberFromMotByPack',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETNUMBERFROMMOTBYPACK;
+    
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSERNUMBYPACWITHOUTMOT
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        NUSUBSCRIPTIONID    PR_PRODUCT.SUBSCRIPTION_ID%TYPE;
+        NUPRODUCTTYPEID     PR_PRODUCT.PRODUCT_TYPE_ID%TYPE;
+        NUPRODUCTID         PR_PRODUCT.PRODUCT_ID%TYPE;
+        TBSUSCRIPC          PKBCSUSCRIPC.TYTBSUSCRIPC;
+        NUSUBSCINDEX        BINARY_INTEGER;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetSerNumByPacWithoutMot',8);
+
+        
+        CLEARGLOBALVAR;
+        
+        NUPRODUCTTYPEID := PS_BOPRODUCTTYPE.FNUGETPRODUCTTYPEBYTAGNAME(CSBLINEAMOVIL);
+        UT_TRACE.TRACE('nuProductTypeId ['||NUPRODUCTTYPEID||']',9);
+        
+        NUSUBSCRIPTIONID := MO_BOPACKAGES.FRCGETINITIALMOTIVE(INUPACKAGEID, FALSE).SUBSCRIPTION_ID;
+        
+        IF (NUSUBSCRIPTIONID IS NOT NULL) THEN
+        
+            UT_TRACE.TRACE('nuSubscriptionId ['||NUSUBSCRIPTIONID||']',9);
+            
+            NUPRODUCTID := PR_BOPRODUCT.FNUGETPRODBYSUSCANDTYPE(NUPRODUCTTYPEID,NUSUBSCRIPTIONID);
+        ELSE
+            
+            TBSUSCRIPC := PKBCSUSCRIPC.FTBSUBSCBYCLIENTID(DAMO_PACKAGES.FNUGETSUBSCRIBER_ID(INUPACKAGEID));
+            
+            NUSUBSCINDEX := TBSUSCRIPC.FIRST;
+            LOOP
+            
+                EXIT WHEN NUSUBSCINDEX IS NULL;
+                NUSUBSCRIPTIONID := TBSUSCRIPC(NUSUBSCINDEX).SUSCCODI;
+                
+                NUPRODUCTID := PR_BOPRODUCT.FNUGETPRODBYSUSCANDTYPE(NUPRODUCTTYPEID,NUSUBSCRIPTIONID);
+                
+                IF (NUPRODUCTID IS NOT NULL) THEN
+                
+                    UT_TRACE.TRACE('nuSubscriptionId ['||NUSUBSCRIPTIONID||']',9);
+                    EXIT;
+                
+                END IF;
+                NUSUBSCINDEX := TBSUSCRIPC.NEXT(NUSUBSCINDEX);
+            
+            END LOOP;
+        
+        END IF;
+        UT_TRACE.TRACE('nuProductId ['||NUPRODUCTID||']',1);
+        
+        GTBFIELDSNOTIF(1) := DAPR_PRODUCT.FSBGETSERVICE_NUMBER(NUPRODUCTID);
+
+        UT_TRACE.TRACE('Finaliza Ge_BoNotifServices.GetSerNumByPacWithoutMot',8);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSERNUMFORCONDESC
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        NUPRODUCTID         PR_PRODUCT.PRODUCT_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetSerNumForConDesc',8);
+
+        
+        CLEARGLOBALVAR;
+        
+        NUPRODUCTID       := MO_BOPACKAGES.FRCGETINITIALMOTIVE(INUPACKAGEID, FALSE).PRODUCT_ID;
+        
+        GTBFIELDSNOTIF(1) := DAPR_PRODUCT.FSBGETSERVICE_NUMBER(NUPRODUCTID);
+
+        UT_TRACE.TRACE('Finaliza Ge_BoNotifServices.GetSerNumForConDesc',8);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSERNUMFORSUSPORREC
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        NUPRODUCTID         PR_PRODUCT.PRODUCT_ID%TYPE;
+        NUMOTIVEID          MO_MOTIVE.MOTIVE_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetSerNumForConDesc',8);
+
+        
+        CLEARGLOBALVAR;
+        
+        NUMOTIVEID:= MO_BOPACKAGES.FNUGETINITIALMOTIVE(INUPACKAGEID);
+        
+        NUPRODUCTID:= DAMO_MOTIVE.FNUGETPRODUCT_ID(NUMOTIVEID);
+        
+        GTBFIELDSNOTIF(1) := DAPR_PRODUCT.FSBGETSERVICE_NUMBER(NUPRODUCTID);
+
+        UT_TRACE.TRACE('Finaliza Ge_BoNotifServices.GetSerNumForConDesc',8);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETCURRENTPERSON ( INUDEFAULTVALUE    IN  NUMBER )
+    IS
+
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetCurrentPerson',15);
+
+        GE_BONOTIFSERVICES.CLEARGLOBALVAR;
+
+        GE_BONOTIFSERVICES.GTBFIELDSNOTIF(1) := GE_BOPERSONAL.FNUGETPERSONID;
+
+        UT_TRACE.TRACE('Finaliza Ge_BoNotifServices.GetCurrentPerson',15);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('Error : ex.CONTROLLED_ERROR',15);
+            RAISE;
+
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('Error : others',15);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSUBSPHONEBYORDER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+        NUPRODUCTID         PR_PRODUCT.PRODUCT_ID%TYPE;
+        NUSUBSCRIBERID      GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE;
+        CUPHONES            CONSTANTS.TYREFCURSOR;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetSubsPhoneByOrder',8);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        NUPRODUCTID :=  DAOR_EXTERN_SYSTEMS_ID.FNUGETPRODUCT_ID(INUORDERID);
+
+        IF NUPRODUCTID IS NULL THEN
+            RETURN;
+            UT_TRACE.TRACE('Finaliza Ge_BoNotifServices.GetSubsPhoneByOrder no tiene producto',8);
+        END IF;
+
+        
+        NUSUBSCRIBERID := PKTBLSUSCRIPC.FNUGETCUSTOMER(DAPR_PRODUCT.FNUGETSUBSCRIPTION_ID(NUPRODUCTID));
+
+        
+        CUPHONES := CC_BCSUBSPHONEREGIS.FRFGETSUBSPHONES(NUSUBSCRIBERID);
+
+        
+        FETCH CUPHONES BULK COLLECT INTO GTBFIELDSNOTIF;
+        CLOSE CUPHONES;
+        UT_TRACE.TRACE('Finaliza Ge_BoNotifServices.GetSubsPhoneByOrder',8);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETSUBSPHONEBYORDER;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSUBSPHONEBYMOTIVE
+    (
+        INUMOTIVEID             IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        NUPACKAGEID         MO_PACKAGES.PACKAGE_ID%TYPE;
+        NUSUBSCRIBERID      GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE;
+        CUPHONES            CONSTANTS.TYREFCURSOR;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetSubsPhoneByMotive',8);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        NUPACKAGEID := DAMO_MOTIVE.FNUGETPACKAGE_ID(INUMOTIVEID);
+
+        
+        NUSUBSCRIBERID := DAMO_PACKAGES.FNUGETSUBSCRIBER_ID(NUPACKAGEID);
+
+        
+        CUPHONES := CC_BCSUBSPHONEREGIS.FRFGETSUBSPHONES(NUSUBSCRIBERID);
+
+        
+        FETCH CUPHONES BULK COLLECT INTO GTBFIELDSNOTIF;
+        CLOSE CUPHONES;
+        UT_TRACE.TRACE('Finaliza Ge_BoNotifServices.GetSubsPhoneByMotive',8);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETSUBSPHONEBYMOTIVE;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETPACKAGERESPPERSON
+    (
+        INUPACKAGE  IN MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        NUASSIGNEDPERSON  GE_PERSON.PERSON_ID%TYPE;
+        NURESPONSABLEAREA GE_PERSON.ORGANIZAT_AREA_ID%TYPE;
+
+    BEGIN
+        UT_TRACE.TRACE('Inicio: Ge_BoNotifServices.GetPackageRespPerson',2);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        NUASSIGNEDPERSON := DAMO_PACKAGES.FNUGETPERSON_ID(INUPACKAGE);
+        GTBFIELDSNOTIF(1) := NUASSIGNEDPERSON;
+
+        
+        NURESPONSABLEAREA := DAGE_PERSON.FNUGETORGANIZAT_AREA_ID(NUASSIGNEDPERSON);
+        
+        IF (DAGE_ORGA_AREA_ADD_DATA.FBLEXIST(NURESPONSABLEAREA)) THEN
+            GTBFIELDSNOTIF(2)  := DAGE_ORGA_AREA_ADD_DATA.FNUGETPERSON_ID(NURESPONSABLEAREA);
+        END IF;
+
+        UT_TRACE.TRACE('Fin: Ge_BoNotifServices.GetPackageRespPerson',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR OR LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETPACKAGERESPPERSON;
+    
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETPACKRESPPERSONMAIL
+    (
+        INUPACKAGE  IN MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        NUASSIGNEDPERSON  GE_PERSON.PERSON_ID%TYPE;
+        NURESPONSABLEAREA GE_PERSON.ORGANIZAT_AREA_ID%TYPE;
+        NURESPPERSONAREA  GE_PERSON.PERSON_ID%TYPE;
+
+    BEGIN
+        UT_TRACE.TRACE('Inicio: Ge_BoNotifServices.GetPackRespPersonMail',2);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        NUASSIGNEDPERSON := DAMO_PACKAGES.FNUGETPERSON_ID(INUPACKAGE);
+        GTBFIELDSNOTIF(1) := DAGE_PERSON.FSBGETE_MAIL(NUASSIGNEDPERSON);
+
+        
+        NURESPONSABLEAREA := DAGE_PERSON.FNUGETORGANIZAT_AREA_ID(NUASSIGNEDPERSON);
+
+        IF (DAGE_ORGA_AREA_ADD_DATA.FBLEXIST(NURESPONSABLEAREA)) THEN
+            NURESPPERSONAREA  := DAGE_ORGA_AREA_ADD_DATA.FNUGETPERSON_ID(NURESPONSABLEAREA);
+            GTBFIELDSNOTIF(2)  := DAGE_PERSON.FSBGETE_MAIL(NURESPPERSONAREA);
+        END IF;
+
+        UT_TRACE.TRACE('Fin: Ge_BoNotifServices.GetPackRespPersonMail',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR OR LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETPACKRESPPERSONMAIL;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETPACKRESPPERSONPHONE
+    (
+        INUPACKAGE  IN MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        NUASSIGNEDPERSON  GE_PERSON.PERSON_ID%TYPE;
+        NURESPONSABLEAREA GE_PERSON.ORGANIZAT_AREA_ID%TYPE;
+        NURESPPERSONAREA  GE_PERSON.PERSON_ID%TYPE;
+
+    BEGIN
+        UT_TRACE.TRACE('Inicio: Ge_BoNotifServices.GetPackRespPersonPhone',2);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        NUASSIGNEDPERSON := DAMO_PACKAGES.FNUGETPERSON_ID(INUPACKAGE);
+        GTBFIELDSNOTIF(1) := DAGE_PERSON.FSBGETPHONE_NUMBER(NUASSIGNEDPERSON);
+
+        
+        NURESPONSABLEAREA := DAGE_PERSON.FNUGETORGANIZAT_AREA_ID(NUASSIGNEDPERSON);
+
+        IF (DAGE_ORGA_AREA_ADD_DATA.FBLEXIST(NURESPONSABLEAREA)) THEN
+            NURESPPERSONAREA  := DAGE_ORGA_AREA_ADD_DATA.FNUGETPERSON_ID(NURESPONSABLEAREA);
+            GTBFIELDSNOTIF(2)  := DAGE_PERSON.FSBGETPHONE_NUMBER(NURESPPERSONAREA);
+        END IF;
+
+        UT_TRACE.TRACE('Fin: Ge_BoNotifServices.GetPackRespPersonPhone',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR OR LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETPACKRESPPERSONPHONE;
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETMAILBYCLIENT
+    (
+        INUCLIENTID  IN  GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE
+    )
+    IS
+        SBMAIL              GE_SUBSCRIBER.E_MAIL%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetMailByClient',8);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        SBMAIL := DAGE_SUBSCRIBER.FSBGETE_MAIL(INUCLIENTID);
+
+        GE_BONOTIFSERVICES.GTBFIELDSNOTIF(1) := SBMAIL;
+
+        UT_TRACE.TRACE('Finaliza Ge_BoNotifServices.GetMailByClient',8);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETMAILBYCLIENT;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETEMAILUSERREGISTER
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+        RCFA_APROMOFA FA_APROMOFA%ROWTYPE;
+        RCGE_PERSON   GE_PERSON%ROWTYPE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetEmailUserRegister',1);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        RCFA_APROMOFA := GE_BCNOTIFSERVICES.FRCGETMOVEMENAPPROVAL (INUORDERID);
+
+        
+        RCGE_PERSON := GE_BCNOTIFSERVICES.FRCGETPERSBYUSERMASK(RCFA_APROMOFA.APMOUSRE);
+
+        
+        GTBFIELDSNOTIF(1) := RCGE_PERSON.E_MAIL;
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetEmailUserRegister',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETEMAILUSERREGISTER;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETEMAILUSERAPPROVES
+    (
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+        RCFA_APROMOFA FA_APROMOFA%ROWTYPE;
+        RCGE_PERSON   GE_PERSON%ROWTYPE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetEmailUserApproves',1);
+
+        
+        CLEARGLOBALVAR;
+
+        
+        RCFA_APROMOFA := GE_BCNOTIFSERVICES.FRCGETMOVEMENAPPROVAL (INUORDERID);
+
+        
+        RCGE_PERSON := GE_BCNOTIFSERVICES.FRCGETPERSBYUSERMASK(RCFA_APROMOFA.APMOUSAR);
+
+        
+        GTBFIELDSNOTIF(1) := RCGE_PERSON.E_MAIL;
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetEmailUserApproves',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETEMAILUSERAPPROVES;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETADMINEMAILBYCONTRACT
+    (
+        INUCONTRACTID              IN  GE_CONTRATO.ID_CONTRATO%TYPE
+    )
+    IS
+
+        RCGE_PERSON         GE_PERSON%ROWTYPE;
+
+        NUCONTRACTORID      GE_CONTRATISTA.ID_CONTRATISTA%TYPE;
+
+        TBPERSONS           DAGE_PERSON.TYTBGE_PERSON;
+
+        NUPERSONINDEX       PLS_INTEGER;
+
+        NUINDEX             NUMBER;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetAdminEmailByContract',1);
+
+        
+        CLEARGLOBALVAR;
+
+        NUINDEX := 1;
+
+        
+        NUCONTRACTORID := DAGE_CONTRATO.FNUGETID_CONTRATISTA(INUCONTRACTID);
+
+        
+        CT_BCCONTRSECURITY.GETADMINS(NUCONTRACTORID, TBPERSONS);
+
+        
+        NUPERSONINDEX := TBPERSONS.FIRST;
+
+        LOOP
+            EXIT WHEN NUPERSONINDEX IS NULL;
+
+            GTBFIELDSNOTIF(NUINDEX) := TBPERSONS(NUPERSONINDEX).E_MAIL;
+
+            NUINDEX := NUINDEX + 1;
+
+            NUPERSONINDEX := TBPERSONS.NEXT(NUPERSONINDEX);
+
+        END LOOP;
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetAdminEmailByContract',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETADMINEMAILBYCONTRACT;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETAUXEMAILBYCONTRACT
+    (
+        INUCONTRACTID              IN  GE_CONTRATO.ID_CONTRATO%TYPE
+    )
+    IS
+
+        RCGE_PERSON         GE_PERSON%ROWTYPE;
+
+        TBPERSONS           DAGE_PERSON.TYTBGE_PERSON;
+
+        NUPERSONINDEX       PLS_INTEGER;
+
+        NUINDEX             NUMBER;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Ge_BoNotifServices.GetAuxEmailByContract',1);
+
+        
+        CLEARGLOBALVAR;
+
+        NUINDEX := 1;
+
+        
+        CT_BCCONTRSECURITY.GETAUX(INUCONTRACTID, TBPERSONS);
+
+        
+        NUPERSONINDEX := TBPERSONS.FIRST;
+
+        LOOP
+            EXIT WHEN NUPERSONINDEX IS NULL;
+
+            GTBFIELDSNOTIF(NUINDEX) := TBPERSONS(NUPERSONINDEX).E_MAIL;
+
+            NUINDEX := NUINDEX + 1;
+
+            NUPERSONINDEX := TBPERSONS.NEXT(NUPERSONINDEX);
+
+        END LOOP;
+
+        UT_TRACE.TRACE('Termina Ge_BoNotifServices.GetAuxEmailByContract',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETAUXEMAILBYCONTRACT;
+
+
+END GE_BONOTIFSERVICES;

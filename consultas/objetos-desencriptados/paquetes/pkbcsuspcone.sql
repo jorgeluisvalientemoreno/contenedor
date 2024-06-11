@@ -1,0 +1,1247 @@
+PACKAGE BODY pkBCSuspcone AS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    CSBVERSION          CONSTANT VARCHAR2(250) := 'SAO209229';
+    
+    CNURECORD_NO_EXISTE	 CONSTANT NUMBER :=10424; 
+    CSBDIVISION		     CONSTANT VARCHAR2(20) := PKCONSTANTE.CSBDIVISION;
+    CSBMODULE            CONSTANT VARCHAR2(20) := PKCONSTANTE.CSBMOD_BIL;
+
+    TYPE TYTBROWID IS TABLE OF ROWID INDEX BY BINARY_INTEGER;
+    TBROWID TYTBROWID;
+    
+    
+    
+    SBERRMSG      	    GE_ERROR_LOG.DESCRIPTION%TYPE;  
+
+    
+    
+    
+    
+    
+    
+
+     FUNCTION FSBVERSION
+         RETURN VARCHAR2
+     IS
+     BEGIN
+         RETURN CSBVERSION;
+     END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDATENEXTORDER
+    (
+        INUNEXTORDER IN SUSPCONE.SUCONUOR%TYPE,
+        INUSUCOSERV  IN SUSPCONE.SUCOSERV%TYPE,
+        INUSUCOCOEC  IN SUSPCONE.SUCOCOEC%TYPE,
+        INUSUCONUSE  IN SUSPCONE.SUCONUSE%TYPE,
+        INUSUCODEPA  IN SUSPCONE.SUCODEPA%TYPE,
+        INUSUCOLOCA  IN SUSPCONE.SUCOLOCA%TYPE,
+        INUSUCOCICL  IN SUSPCONE.SUCOCICL%TYPE,
+        INUSUCOCENT  IN SUSPCONE.SUCOCENT%TYPE
+    )
+    IS
+        NUNUMLOOP   NUMBER;
+
+        CURSOR CU_SUSPCONE ( INUMNEXTORDER SUSPCONE.SUCONUOR%TYPE ) IS
+          SELECT ROWID FROM SUSPCONE
+          WHERE SUCOSERV = INUSUCOSERV
+            AND SUCOCOEC = INUSUCOCOEC
+            AND SUCONUSE = DECODE( INUSUCONUSE, -1, SUCONUSE,
+                                   INUSUCONUSE )
+            AND SUCODEPA = DECODE( INUSUCODEPA, -1, SUCODEPA,
+                                   INUSUCODEPA )
+            AND SUCOLOCA = DECODE( INUSUCOLOCA, -1, SUCOLOCA,
+                                   INUSUCOLOCA )
+            AND NVL(SUCOCICL,0) = DECODE( INUSUCOCICL, -1, NVL(SUCOCICL,0),
+                                          INUSUCOCICL )
+            AND NVL(SUCOCENT,0) = DECODE( INUSUCOCENT, -1, NVL(SUCOCENT,0),
+                                          INUSUCOCENT )
+            AND SUCONUOR <> INUMNEXTORDER
+            AND SUCOFEAT IS NULL
+            AND ROWNUM < 500;
+    BEGIN
+    
+        PKERRORS.PUSH ('pkBCSuspcone.updateNextOrder');
+        NUNUMLOOP := 0;
+        TBROWID.DELETE;
+
+        
+        IF ( INUSUCONUSE = -1 ) THEN
+            
+            LOOP
+                IF CU_SUSPCONE%ISOPEN THEN
+                    CLOSE CU_SUSPCONE;
+                END IF;
+                OPEN CU_SUSPCONE ( INUNEXTORDER );
+                FETCH CU_SUSPCONE BULK COLLECT INTO TBROWID;
+
+                EXIT WHEN TBROWID.FIRST IS NULL;
+
+                
+                FORALL NUM_COUNT IN TBROWID.FIRST..TBROWID.LAST
+                    UPDATE SUSPCONE SET SUCONUOR = INUNEXTORDER
+                    WHERE ROWID=TBROWID(NUM_COUNT);
+
+                TBROWID.DELETE;
+                COMMIT;
+                NUNUMLOOP := NUNUMLOOP + 1;
+                
+            END LOOP;
+            IF NUNUMLOOP = 0 THEN
+                RAISE NO_DATA_FOUND;
+            END IF;
+            RETURN;
+        END IF;
+        
+        
+            LOOP
+                UPDATE /*+ use_index(SUSPCONE, IX_SUCO_NUSE) */ SUSPCONE
+                SET SUCONUOR = INUNEXTORDER
+                WHERE SUCOSERV+0 = INUSUCOSERV    
+                  AND SUCOCOEC+0 = INUSUCOCOEC
+                  AND SUCONUSE = INUSUCONUSE
+                  AND SUCODEPA+0 = DECODE( INUSUCODEPA, -1, SUCODEPA,
+                                         INUSUCODEPA )
+                  AND SUCOLOCA+0 = DECODE( INUSUCOLOCA, -1, SUCOLOCA,
+                                         INUSUCOLOCA )
+                  AND NVL(SUCOCICL,0)+0 = DECODE( INUSUCOCICL, -1, NVL(SUCOCICL,0),
+                                                INUSUCOCICL )
+                  AND NVL(SUCOCENT,0)+0 = DECODE( INUSUCOCENT, -1, NVL(SUCOCENT,0),
+                                                INUSUCOCENT )
+                  AND SUCONUOR <> INUNEXTORDER
+                  AND SUCOFEAT IS NULL
+                  AND ROWNUM < 1000;
+
+                EXIT WHEN SQL%NOTFOUND;
+                NUNUMLOOP := NUNUMLOOP +1;
+                COMMIT;
+            END LOOP;
+
+            
+            IF ( NUNUMLOOP = 0 ) THEN
+                RAISE NO_DATA_FOUND;
+            END IF;
+        PKERRORS.POP;
+
+        EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            PKERRORS.POP;
+            PKERRORS.SETERRORCODE( CSBDIVISION,
+                                   CSBMODULE,
+                                   CNURECORD_NO_EXISTE );
+            RAISE LOGIN_DENIED;
+        WHEN OTHERS THEN
+          	PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+	        PKERRORS.POP;
+	        RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2,SBERRMSG);
+
+    END UPDATENEXTORDER;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FUNCTION FBLEXISTORDER
+    (
+        INUORDERNUMBER  IN  SUSPCONE.SUCONUOR%TYPE
+    )
+RETURN BOOLEAN
+IS
+    
+    BLFOUNDRECORDS  BOOLEAN ;
+    NUORDERNUMBER  NUMBER ;
+
+    
+    CURSOR CUSUSPCONE IS
+    SELECT SUCONUOR
+    FROM   SUSPCONE
+    WHERE  SUCONUOR = INUORDERNUMBER
+    AND    SUCOFEAT IS NULL
+    AND    PROCESS_STATUS IS NULL
+    AND    ROWNUM = 1 ;
+
+BEGIN
+
+    PKERRORS.PUSH('pkBCSuspcone.fblExistOrder');
+
+    BLFOUNDRECORDS := FALSE ;
+
+    IF ( INUORDERNUMBER IS NULL ) THEN
+    
+        PKERRORS.POP;
+        RETURN BLFOUNDRECORDS ;
+    
+    END IF;
+
+    IF (CUSUSPCONE%ISOPEN) THEN
+    
+        CLOSE CUSUSPCONE;
+    
+    END IF;
+
+    
+    OPEN CUSUSPCONE ;
+
+    FETCH CUSUSPCONE INTO NUORDERNUMBER ;
+
+    IF ( CUSUSPCONE%FOUND ) THEN
+    
+        BLFOUNDRECORDS := TRUE ;
+    
+    END IF;
+
+    CLOSE CUSUSPCONE;
+
+    PKERRORS.POP;
+
+    RETURN BLFOUNDRECORDS;
+
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+        PKERRORS.POP;
+        RAISE LOGIN_DENIED;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+        PKERRORS.POP;
+        RAISE PKCONSTANTE.EXERROR_LEVEL2;
+    WHEN OTHERS THEN
+        PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        PKERRORS.POP;
+        RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+
+END FBLEXISTORDER;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FUNCTION FNUROWIDORDER
+(
+	INUNUSE    	IN    	SERVSUSC.SESUNUSE%TYPE,
+    INUTIPO    	IN    	SUSPCONE.SUCOTIPO%TYPE
+)
+RETURN ROWID
+IS
+    
+    NUROWORDSUSPCONE ROWID;
+
+    CNUER_NOT_ORDER_SUP CONSTANT NUMBER := 1645;
+
+    CURSOR CUSUSPCONE IS
+    SELECT /*+ index( suspcone IX_SUCO_NUSE )*/ SUSPCONE.ROWID
+    FROM  SUSPCONE
+    WHERE SUCONUSE = INUNUSE
+    AND   SUCOTIPO = INUTIPO
+    AND   SUCOFEAT IS NULL;
+BEGIN
+    PKERRORS.PUSH ('pkBCSuspcone.fnuRowidOrder');
+
+    PKGENERALSERVICES.TRACEDATA('Numero Servicio '||INUNUSE);
+    PKGENERALSERVICES.TRACEDATA('Tipo '||INUTIPO);
+
+    OPEN CUSUSPCONE;
+    FETCH CUSUSPCONE INTO NUROWORDSUSPCONE;
+
+    IF ( CUSUSPCONE%NOTFOUND ) THEN
+        PKERRORS.SETERRORCODE ( PKCONSTANTE.CSBDIVISION,
+                                PKCONSTANTE.CSBMOD_SAT,
+		    		            CNUER_NOT_ORDER_SUP );
+	    RAISE LOGIN_DENIED;
+    END IF;
+    CLOSE CUSUSPCONE;
+    PKERRORS.POP;
+    RETURN NUROWORDSUSPCONE;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+	PKERRORS.POP;
+	RAISE;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+	PKERRORS.POP;
+	RAISE;
+    WHEN OTHERS THEN
+	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+	PKERRORS.POP;
+        RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+END FNUROWIDORDER;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE UPORDERNUMBER
+(
+    INUORDERROWID    ROWID,
+    INUSUCONUOR      SUSPCONE.SUCONUOR%TYPE,
+    ISBORDENIMP     VARCHAR2
+)
+IS
+BEGIN
+    PKERRORS.PUSH ('pkBCSuspcone.UpOrderNumber');
+    
+    UPDATE SUSPCONE
+    SET    SUCONUOR = INUSUCONUOR,
+           SUCOORIM = ISBORDENIMP
+    WHERE  ROWID = INUORDERROWID;
+    
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+	PKERRORS.POP;
+	RAISE;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+	PKERRORS.POP;
+	RAISE;
+    WHEN OTHERS THEN
+	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+	PKERRORS.POP;
+        RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+END UPORDERNUMBER;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROCEDURE UPORDERNUMBER
+(
+    INUSOCUIDSC     IN  SUSPCONE.SUCOIDSC%TYPE,
+    INUSUCONUOR     IN  SUSPCONE.SUCONUOR%TYPE,
+    INUSUCOACTIVID  IN  SUSPCONE.SUCOACTIV_ID%TYPE,
+    INUSUCOORDTYPE  IN  SUSPCONE.SUCOORDTYPE%TYPE,
+    ISBORDENIMP     IN  VARCHAR2
+)
+IS
+BEGIN
+    PKERRORS.PUSH ('pkBCSuspcone.UpOrderNumber( with 5 parameter)');
+
+    UPDATE SUSPCONE
+    SET    SUCONUOR     = INUSUCONUOR,
+           SUCOACTIV_ID = INUSUCOACTIVID,
+           SUCOORIM     = ISBORDENIMP,
+           SUCOORDTYPE  = INUSUCOORDTYPE
+    WHERE  SUCOIDSC = INUSOCUIDSC;
+
+    PKERRORS.POP;
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+	PKERRORS.POP;
+	RAISE;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+	PKERRORS.POP;
+	RAISE;
+    WHEN OTHERS THEN
+	PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+	PKERRORS.POP;
+        RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+END UPORDERNUMBER;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FUNCTION FNUGETORDERID
+(
+	INUNUSE    	IN    	SERVSUSC.SESUNUSE%TYPE,
+    INUTIPO    	IN    	SUSPCONE.SUCOTIPO%TYPE
+)
+RETURN SUSPCONE.SUCOIDSC%TYPE
+IS
+    
+    NUORDERID SUSPCONE.SUCOIDSC%TYPE := NULL;
+
+    CURSOR CUSUSPCONE IS
+    SELECT /*+ index( suspcone IX_SUCO_NUSE )*/ SUCOIDSC
+    FROM  SUSPCONE
+    WHERE SUCONUSE = INUNUSE
+    AND   SUCOTIPO = INUTIPO
+    AND   SUCOFEAT IS NULL;
+BEGIN
+
+    PKERRORS.PUSH ('pkBCSuspcone.fnuGetOrderID');
+
+    
+    OPEN CUSUSPCONE;
+    FETCH CUSUSPCONE INTO NUORDERID;
+    CLOSE CUSUSPCONE;
+
+    PKERRORS.POP;
+    RETURN NUORDERID;
+    
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+    	PKERRORS.POP;
+    	RAISE;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+    	RAISE;
+    WHEN OTHERS THEN
+        PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        PKERRORS.POP;
+        RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+END FNUGETORDERID;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FUNCTION FRCGETRECORDBYTYPE
+(
+    INUNUSE    	IN    	SERVSUSC.SESUNUSE%TYPE,
+    INUTIPO    	IN    	SUSPCONE.SUCOTIPO%TYPE
+)
+RETURN SUSPCONE%ROWTYPE
+IS
+    
+    RCRECORD SUSPCONE%ROWTYPE;
+
+    CURSOR CUSUSPCONE IS
+    SELECT /*+ index( suspcone IX_SUCO_NUSE ) */ *
+    FROM  SUSPCONE
+    WHERE SUCONUSE = INUNUSE
+    AND   SUCOTIPO = INUTIPO
+    AND   SUCOFEAT IS NULL;
+BEGIN
+
+    PKERRORS.PUSH ('pkBCSuspcone.frcGetRecordbyType');
+
+    
+    OPEN CUSUSPCONE;
+    FETCH CUSUSPCONE INTO RCRECORD;
+    CLOSE CUSUSPCONE;
+
+    PKERRORS.POP;
+    RETURN RCRECORD;
+    
+EXCEPTION
+    WHEN LOGIN_DENIED THEN
+    	PKERRORS.POP;
+    	RAISE;
+    WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+    	PKERRORS.POP;
+    	RAISE;
+    WHEN OTHERS THEN
+        PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+        PKERRORS.POP;
+        RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+END FRCGETRECORDBYTYPE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    PROCEDURE GETFIELDSUSPCNEBYACTIV
+    (
+        INUSUCOACTIV_ID    IN  SUSPCONE.SUCOACTIV_ID%TYPE,
+        ONUSUCOIDSC        OUT SUSPCONE.SUCOIDSC%TYPE,
+        ONUSUCOORDTYPE     OUT SUSPCONE.SUCOORDTYPE%TYPE
+    )
+    IS
+        CURSOR CUSUSPCONE
+        (
+            INUACTIV_ID	IN	SUSPCONE.SUCOACTIV_ID%TYPE
+        )
+        IS
+        SELECT *
+        FROM   SUSPCONE
+        WHERE  SUCOACTIV_ID = INUACTIV_ID;
+    
+        NUORIGINACTIVITYID OR_ORDER_ACTIVITY.ORIGIN_ACTIVITY_ID%TYPE;
+        NUORDERACTIVITYID OR_ORDER_ACTIVITY.ORDER_ACTIVITY_ID%TYPE;
+        
+        RCSUSPCONE CUSUSPCONE%ROWTYPE; 
+    
+    BEGIN
+        PKERRORS.PUSH ('pkBCSuspcone.GetFieldSuspcneByActiv( with 3 parameter)');
+
+        
+        NUORDERACTIVITYID := INUSUCOACTIV_ID;
+
+        NUORIGINACTIVITYID := DAOR_ORDER_ACTIVITY.FNUGETORIGIN_ACTIVITY_ID
+                                 (NUORDERACTIVITYID);
+        
+        IF NUORIGINACTIVITYID IS NOT  NULL THEN
+            NUORDERACTIVITYID := NUORIGINACTIVITYID;
+        END IF;
+        
+
+        IF ( CUSUSPCONE%ISOPEN ) THEN
+            CLOSE CUSUSPCONE;
+        END IF;
+        
+        
+        OPEN CUSUSPCONE( NUORDERACTIVITYID );
+        FETCH CUSUSPCONE INTO RCSUSPCONE;
+        IF ( CUSUSPCONE%NOTFOUND ) THEN
+            CLOSE CUSUSPCONE;
+            PKERRORS.POP;
+            RETURN;  
+        END IF;
+        CLOSE CUSUSPCONE;
+
+        ONUSUCOIDSC     :=  RCSUSPCONE.SUCOIDSC;    
+        ONUSUCOORDTYPE  :=  RCSUSPCONE.SUCOORDTYPE; 
+
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED THEN
+        	PKERRORS.POP;
+        	RAISE;
+        WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+        	PKERRORS.POP;
+        	RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END GETFIELDSUSPCNEBYACTIV;
+    
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETNEXTSEQUENCE
+    RETURN NUMBER
+    IS
+        NUIDSUSPCONE    NUMBER;
+        NUSUCOIDSCAUX   NUMBER;
+        
+        CURSOR CUSUSPCONE(INUSUCOIDSC SUSPCONE.SUCOIDSC%TYPE)
+        IS
+            SELECT SUCOIDSC
+            FROM SUSPCONE
+            WHERE SUCOIDSC = INUSUCOIDSC;
+        
+    BEGIN
+        
+        LOOP
+            NUIDSUSPCONE :=  PKGENERALSERVICES.FNUGETNEXTSEQUENCEVAL('sqsuspcone');
+            IF (CUSUSPCONE%ISOPEN) THEN
+                CLOSE CUSUSPCONE;
+            END IF;
+            OPEN CUSUSPCONE(NUIDSUSPCONE);
+            FETCH CUSUSPCONE INTO NUSUCOIDSCAUX ;
+            IF CUSUSPCONE%NOTFOUND THEN
+               EXIT;
+            END IF;
+        END LOOP;
+
+        IF (CUSUSPCONE%ISOPEN) THEN
+            CLOSE CUSUSPCONE;
+        END IF;
+
+
+        RETURN NUIDSUSPCONE;
+    END;
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   PROCEDURE GETSUCOTIPOBYSUCOIDSC
+    (
+        INUSUCOIDSC IN  SUSPCONE.SUCOIDSC%TYPE,
+        ONUSUCOTIPO OUT SUSPCONE.SUCOTIPO%TYPE
+    )
+    IS
+        RCSUSPCONE  SUSPCONE%ROWTYPE;
+    BEGIN
+
+        RCSUSPCONE  :=  PKTBLSUSPCONE.FRCGETRECORD(INUSUCOIDSC);
+        ONUSUCOTIPO :=  RCSUSPCONE.SUCOTIPO;
+    EXCEPTION
+        WHEN LOGIN_DENIED THEN
+        	PKERRORS.POP;
+        	RAISE;
+        WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+        	PKERRORS.POP;
+        	RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END GETSUCOTIPOBYSUCOIDSC;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE OBTENERPORFECHAYTIPO
+    (
+        ISBTIPO         IN          SUSPCONE.SUCOTIPO%TYPE  ,
+        IDTFECHAINICIAL IN          SUSPCONE.SUCOFEAT%TYPE  ,
+        IDTFECHAFINAL   IN          SUSPCONE.SUCOFEAT%TYPE  ,
+        OTBPRODUCTOS    OUT NOCOPY  PKTBLSUSPCONE.TYSUCONUSE
+    )
+    IS
+
+        
+        
+        
+
+        
+        CURSOR CUPRODUCTOS
+        (
+            ISBTIPO         IN  SUSPCONE.SUCOTIPO%TYPE,
+            IDTFECHAINICIAL IN  SUSPCONE.SUCOFEAT%TYPE,
+            IDTFECHAFINAL   IN  SUSPCONE.SUCOFEAT%TYPE
+        )
+        IS
+            SELECT  --+ index( suspcone, IX_SUSPCONE07 )
+                    SUCONUSE
+            FROM    SUSPCONE
+            WHERE   SUCOTIPO = ISBTIPO
+            AND     SUCOFEAT BETWEEN IDTFECHAINICIAL AND IDTFECHAFINAL;
+
+    BEGIN
+    
+
+        PKERRORS.PUSH
+        (
+            'pkBCSuspcone.ObtenerPorFechaYTipo'
+        );
+
+        IF( CUPRODUCTOS%ISOPEN ) THEN
+        
+            CLOSE CUPRODUCTOS;
+        
+        END IF;
+
+        OPEN    CUPRODUCTOS
+                (
+                    ISBTIPO        ,
+                    IDTFECHAINICIAL,
+                    IDTFECHAFINAL
+                );
+
+        
+        FETCH           CUPRODUCTOS
+        BULK COLLECT
+        INTO            OTBPRODUCTOS;
+
+        CLOSE CUPRODUCTOS;
+
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED THEN
+        
+            PKERRORS.POP;
+            IF( CUPRODUCTOS%ISOPEN ) THEN
+            
+                CLOSE CUPRODUCTOS;
+            
+            END IF;
+            RAISE LOGIN_DENIED;
+        
+        WHEN PKCONSTANTE.EXERROR_LEVEL2 THEN
+        
+            PKERRORS.POP;
+            IF( CUPRODUCTOS%ISOPEN ) THEN
+            
+                CLOSE CUPRODUCTOS;
+            
+            END IF;
+            RAISE PKCONSTANTE.EXERROR_LEVEL2;
+        
+        WHEN OTHERS THEN
+        
+            PKERRORS.NOTIFYERROR
+            (
+                PKERRORS.FSBLASTOBJECT,
+                SQLERRM               ,
+                SBERRMSG
+            );
+            PKERRORS.POP;
+            IF( CUPRODUCTOS%ISOPEN ) THEN
+            
+                CLOSE CUPRODUCTOS;
+            
+            END IF;
+            RAISE_APPLICATION_ERROR
+            (
+                PKCONSTANTE.NUERROR_LEVEL2,
+                SBERRMSG
+            );
+        
+    
+    END OBTENERPORFECHAYTIPO;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPATTENTIONDATE
+    (
+        INUORDERID          IN      SUSPCONE.SUCOIDSC%TYPE,
+        IDTATTENTIONDATE    IN      SUSPCONE.SUCOFEAT%TYPE,
+        ISBCOMMENT          IN      SUSPCONE.SUCOOBSE%TYPE
+    )
+    IS
+
+        
+        CNURECORD_NOT_EXISTS_ERR    CONSTANT MENSAJE.MENSCODI%TYPE := 4165;
+
+    BEGIN
+    
+        UT_TRACE.TRACE( 'Inicio: [pkBCSuspcone.UpAttentionDate]', 7 );
+
+        UPDATE  SUSPCONE
+        SET     SUCOFEAT = IDTATTENTIONDATE,
+                SUCOOBSE = NVL ( ISBCOMMENT, SUCOOBSE )
+        WHERE   SUCOIDSC = INUORDERID;
+
+        
+        IF ( SQL%NOTFOUND ) THEN
+        
+            
+            PKERRORS.SETERRORCODE
+            (
+                PKCONSTANTE.CSBDIVISION,
+                PKCONSTANTE.CSBMOD_SAT,
+                CNURECORD_NOT_EXISTS_ERR
+            );
+
+            
+            RAISE LOGIN_DENIED;
+        
+        END IF;
+
+        UT_TRACE.TRACE( 'Fin: [pkBCSuspcone.UpAttentionDate]', 7 );
+
+    EXCEPTION
+
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            UT_TRACE.TRACE( 'Error: [pkBCSuspcone.UpAttentionDate]', 7 );
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            UT_TRACE.TRACE( 'Error: [pkBCSuspcone.UpAttentionDate]', 7 );
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    
+    END;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRCGETRECORDBYROWID
+    (
+        ISBROWID        IN      ROWID
+    ) RETURN SUSPCONE%ROWTYPE
+    IS
+
+        
+        CNURECORD_NOT_EXISTS_ERR    CONSTANT MENSAJE.MENSCODI%TYPE := 9910;
+
+        
+        RCSUSPCONE                  SUSPCONE%ROWTYPE;
+
+        
+        CURSOR CURECORDBYROWID
+        IS
+            SELECT  *
+            FROM    SUSPCONE
+            WHERE   ROWID = ISBROWID;
+
+    BEGIN
+    
+        UT_TRACE.TRACE( 'Inicio: [pkBCSuspcone.frcGetRecordbyRowId]', 7 );
+
+        
+        IF ( CURECORDBYROWID%ISOPEN ) THEN
+        
+            
+            CLOSE CURECORDBYROWID;
+        
+        END IF;
+
+        OPEN CURECORDBYROWID;
+        FETCH CURECORDBYROWID INTO RCSUSPCONE;
+        CLOSE CURECORDBYROWID;
+        
+        
+        IF ( RCSUSPCONE.SUCOIDSC IS NULL ) THEN
+        
+            
+            PKERRORS.SETERRORCODE
+            (
+                PKCONSTANTE.CSBDIVISION,
+                PKCONSTANTE.CSBMOD_SAT,
+                CNURECORD_NOT_EXISTS_ERR
+            );
+            
+            
+            RAISE LOGIN_DENIED;
+        
+        END IF;
+
+        UT_TRACE.TRACE( 'Fin: [pkBCSuspcone.frcGetRecordbyRowId]', 7 );
+        
+        RETURN RCSUSPCONE;
+
+    EXCEPTION
+
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            UT_TRACE.TRACE( 'Error: [pkBCSuspcone.frcGetRecordbyRowId]', 7 );
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            UT_TRACE.TRACE( 'Error: [pkBCSuspcone.frcGetRecordbyRowId]', 7 );
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    
+    END;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETPENDORDERSBYCOLLECTACTIV
+    (
+        INUCOLLECTACTIVID       IN      SUSPCONE.SUCOACGC%TYPE
+    ) RETURN NUMBER
+    IS
+
+        
+        
+        NUPENDINGORDERS     NUMBER;
+
+        
+        CURSOR CUPENDORDERSBYCOLLECTACTIV
+        IS
+            SELECT  COUNT(1)
+            FROM    SUSPCONE
+            WHERE   SUCOACGC = INUCOLLECTACTIVID
+            AND     SUCOFEAT IS NULL;
+
+    BEGIN
+    
+        UT_TRACE.TRACE( 'Inicio: [pkBCSuspcone.fnuGetPendOrdersByCollectActiv]', 7 );
+
+        
+        IF ( CUPENDORDERSBYCOLLECTACTIV%ISOPEN ) THEN
+        
+            
+            CLOSE CUPENDORDERSBYCOLLECTACTIV;
+        
+        END IF;
+
+        OPEN CUPENDORDERSBYCOLLECTACTIV;
+        FETCH CUPENDORDERSBYCOLLECTACTIV INTO NUPENDINGORDERS;
+        CLOSE CUPENDORDERSBYCOLLECTACTIV;
+
+        UT_TRACE.TRACE( 'Fin: [pkBCSuspcone.fnuGetPendOrdersByCollectActiv]', 7 );
+        
+        RETURN NUPENDINGORDERS;
+
+    EXCEPTION
+
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            UT_TRACE.TRACE( 'Error: [pkBCSuspcone.fnuGetPendOrdersByCollectActiv]', 7 );
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            UT_TRACE.TRACE( 'Error: [pkBCSuspcone.fnuGetPendOrdersByCollectActiv]', 7 );
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDSUSPCONEBYPROD
+    (
+        INUPRODUCTID            IN  SUSPCONE.SUCONUSE%TYPE,
+        INUCONCEPT              IN  SUSPCONE.SUCOCOEC%TYPE,
+        INUORDERID              IN  SUSPCONE.SUCONUOR%TYPE,
+        INUORDERACTID           IN  SUSPCONE.SUCOACTIV_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicio: pkBCSuspcone.UpdSuspconeByProd',2);
+        UT_TRACE.TRACE('C?digo del producto : '|| INUPRODUCTID, 3);
+        UT_TRACE.TRACE('C?digo del concepto : '|| INUCONCEPT, 3);
+        UT_TRACE.TRACE('C?digo de la orden  : '|| INUORDERID, 3);
+        UT_TRACE.TRACE('C?digo de la acticvidad : '|| INUORDERACTID, 3);
+
+        UPDATE  SUSPCONE
+        SET     SUCONUOR = INUORDERID,
+                SUCOACTIV_ID = INUORDERACTID
+        WHERE   SUCONUSE = INUPRODUCTID
+        AND     SUCOCOEC = INUCONCEPT;
+        
+        
+        UT_TRACE.TRACE('Fin: pkBCSuspcone.UpdSuspconeByProd',2);
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 OR EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDSUSPCONEBYPROD;
+    
+
+END PKBCSUSPCONE;

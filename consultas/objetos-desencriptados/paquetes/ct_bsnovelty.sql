@@ -1,0 +1,220 @@
+PACKAGE BODY CT_BSNovelty
+IS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    CSBVERSION                  CONSTANT VARCHAR2(10) := 'SAO304671';
+
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE REGISTERNEWCHARGE
+    (
+        INUOPERUNIT      IN      OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        INUITEM          IN      CT_ITEM_NOVELTY.ITEMS_ID%TYPE,
+        INUTECUNIT       IN      GE_PERSON.PERSON_ID%TYPE,
+        INUORDERID       IN      OR_ORDER.ORDER_ID%TYPE,
+        INUVALUE         IN      NUMBER,
+        INUAMOUNT        IN      NUMBER,
+        INUUSERID        IN      SA_USER.USER_ID%TYPE,
+        INUCOMMENTYPE    IN      GE_COMMENT_TYPE.COMMENT_TYPE_ID%TYPE,
+        ISBCOMMENT       IN      OR_ORDER_COMMENT.ORDER_COMMENT%TYPE,
+        ONUERRORCODE     OUT     GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE  OUT     GE_ERROR_LOG.DESCRIPTION%TYPE
+    )
+    IS
+        NUORDER          OR_ORDER.ORDER_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO - CT_BSNovelty.RegisterNewCharge',1);
+        
+        
+        GE_BOUTILITIES.INITIALIZEOUTPUT(ONUERRORCODE ,OSBERRORMESSAGE);
+        
+        
+        CT_BONOVELTY.VALIDATENOVELTY(
+            INUOPERUNIT,
+            INUITEM,
+            INUTECUNIT,
+            INUORDERID,
+            INUVALUE,
+            INUAMOUNT,
+            INUUSERID,
+            INUCOMMENTYPE,
+            ISBCOMMENT,
+            FALSE
+        );
+
+        
+        CT_BONOVELTY.CREATENOVELTY(
+            INUCONTRACTOR => NULL,
+            INUOPERUNIT   => INUOPERUNIT,
+            INUITEM       => INUITEM,
+            INUTECUNIT    => INUTECUNIT,
+            INUORDERID    => INUORDERID,
+            INUVALUE      => INUVALUE,
+            INUAMOUNT     => INUAMOUNT,
+            INUUSERID     => INUUSERID,
+            INUCOMMENTYPE => INUCOMMENTYPE,
+            ISBCOMMENT    => ISBCOMMENT,
+            ONUORDER      => NUORDER
+        );
+        
+        UT_TRACE.TRACE('FIN - CT_BSNovelty.RegisterNewCharge',1);
+        
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+    	   ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    	WHEN OTHERS THEN
+    	   ERRORS.SETERROR;
+    	   ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    END REGISTERNEWCHARGE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE REVERSENOVELTY
+    (
+        INUORDERID       IN      OR_ORDER.ORDER_ID%TYPE,
+        ISBCOMMENT       IN      OR_ORDER_COMMENT.ORDER_COMMENT%TYPE,
+        ONUERRORCODE     OUT     GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE  OUT     GE_ERROR_LOG.DESCRIPTION%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('INICIO - CT_BSNovelty.ReverseNovelty',1);
+
+        
+        GE_BOUTILITIES.INITIALIZEOUTPUT(ONUERRORCODE ,OSBERRORMESSAGE);
+
+        
+        CT_BONOVELTY.VERIFYNOVELTYTOREVERSE( INUORDERID );
+
+        
+        CT_BONOVELTY.REVERSENOVELTY(
+                INUORDERID    => INUORDERID,
+                IDTDATE       => UT_DATE.FDTSYSDATE,
+                ISBCOMMENT    => ISBCOMMENT
+            );
+
+        UT_TRACE.TRACE('FIN - CT_BSNovelty.ReverseNovelty',1);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+    	   ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    	WHEN OTHERS THEN
+    	   ERRORS.SETERROR;
+    	   ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    END REVERSENOVELTY;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBVERSION
+    RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END FSBVERSION;
+
+END CT_BSNOVELTY;

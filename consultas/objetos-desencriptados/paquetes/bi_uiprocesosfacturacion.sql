@@ -1,0 +1,2734 @@
+PACKAGE BODY BI_UIProcesosFacturacion
+AS  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    CSBVERSION              CONSTANT VARCHAR2(250)  := 'SAO395327';
+    CSBPROGRAMA             CONSTANT VARCHAR2(4) := 'FGCA';
+    CSBESTADO_AUTORIZADO    CONSTANT VARCHAR2(1) := 'A';
+    CNUAPP_EXECUTABLE_ID    CONSTANT NUMBER := 9886;
+    GNUREPORTEFACS          REPOINCO.REINREPO%TYPE;
+    SBERRMSG                GE_ERROR_LOG.DESCRIPTION%TYPE;   
+
+    
+    
+    
+
+    
+    
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2 IS
+    BEGIN
+       RETURN CSBVERSION;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUFACSOBTENERREPORTE
+    RETURN REPOINCO.REINREPO%TYPE
+    IS
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.fnuFACSObtenerReporte');
+        
+        PKERRORS.POP;
+        
+        RETURN GNUREPORTEFACS;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFFATOCONSSERVAUTORIZAR
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+
+        CNUNO_PERIODO_CURRENT   CONSTANT NUMBER := 2915;
+
+        NUCICLCODI              CICLO.CICLCODI%TYPE;
+        NUPEFACODI              PERIFACT.PEFACODI%TYPE;
+
+        
+        TBSERVICIOSAUTORIZAR    PKBOPROCCTRLBYSERVICEMGR.TYTBSERVTOAUTH;
+
+        RFCURSOR                CONSTANTS.TYREFCURSOR;
+        NUINDEX                 NUMBER;
+        
+        RCESPRSEPE              ESPRSEPE%ROWTYPE;
+
+        
+        RCREGISTRO              BI_TYOBSERVAUTO;
+        
+        TBTABLA                 BI_TYTBSERVAUTO;
+        
+        SBDESCRIPCION           VARCHAR2(35);
+        
+        SBPROGRAM               VARCHAR2(4);
+
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.frfFATOConsServAutorizar');
+
+        NUCICLCODI := TO_NUMBER(GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('CICLO', 'CICLCODI'));
+        NUPEFACODI := TO_NUMBER(GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERIFACT', 'PEFACODI'));
+        
+        
+        
+
+        IF (NUPEFACODI IS NULL) THEN
+            ERRORS.SETERROR (CNUNO_PERIODO_CURRENT, NUCICLCODI);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        
+        
+
+        
+        SBPROGRAM   := 'FATO';
+
+        
+        FA_UIPROCESOSFACT.SETMULTICOMPANY(NUCICLCODI, SBPROGRAM);
+
+        
+        PKBOPROCCTRLBYSERVICEMGR.GETSERVTOAUTHORIZE
+        (
+            NUCICLCODI,
+            NUPEFACODI,
+            TBSERVICIOSAUTORIZAR
+        );
+
+        
+        NUINDEX := TBSERVICIOSAUTORIZAR.FIRST;
+        TBTABLA := BI_TYTBSERVAUTO();
+
+        LOOP
+
+            EXIT WHEN NUINDEX IS NULL;
+
+            PKBCESPRSEPE.GETRECORD(
+                                    TBSERVICIOSAUTORIZAR(NUINDEX).SERVCODI,
+                                    NUPEFACODI,
+                                    CSBPROGRAMA,
+                                    RCESPRSEPE
+                                  );
+
+            SBDESCRIPCION := PKTBLSERVICIO.FSBGETDESCRIPTION(RCESPRSEPE.EPSPSERV);
+
+            RCREGISTRO := BI_TYOBSERVAUTO(
+                                            TBSERVICIOSAUTORIZAR(NUINDEX).SERVCODI,
+                                            SBDESCRIPCION,
+                                            RCESPRSEPE.EPSPNUTO,
+                                            RCESPRSEPE.EPSPNUPR,
+                                            RCESPRSEPE.EPSPNUTO - RCESPRSEPE.EPSPNUPR
+                                         );
+
+            TBTABLA.EXTEND;
+            TBTABLA(NUINDEX) := RCREGISTRO;
+
+            NUINDEX := TBSERVICIOSAUTORIZAR.NEXT(NUINDEX);
+
+        END LOOP;
+
+        OPEN RFCURSOR FOR
+            SELECT  A.*
+            FROM    TABLE(CAST(TBTABLA AS BI_TYTBSERVAUTO)) A;
+
+
+        PKERRORS.POP;
+        
+        RETURN RFCURSOR;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALIDARPERIODOACTUAL
+    IS
+    
+        
+        SBINTANCE       VARCHAR2(20) := GE_BOINSTANCECONSTANTS.CSBWORK_INSTANCE;
+        
+        
+        NUCYCLE         CICLO.CICLCODI%TYPE;
+        
+        
+        RCBILLINGPERIOD PERIFACT%ROWTYPE;
+
+    BEGIN
+
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.ValidarPeriodoActual');
+
+        
+            GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(
+                                                        SBINTANCE,
+                                                        NULL,
+                                                        'CICLO',
+                                                        'CICLCODI',
+                                                        NUCYCLE
+                                                     );
+                                                     
+        
+        PKBCPERIFACT.GETCURRPERIODBYCYCLE( TO_NUMBER(NUCYCLE), RCBILLINGPERIOD );
+
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FATOPROCESS
+    (
+        ISBTIPOPROD     IN  VARCHAR2,
+        INUCURRENT      IN  NUMBER,
+        INUTOTAL        IN  NUMBER,
+        ONUERRORCODE    OUT NUMBER,
+        OSBERRORMESS    OUT VARCHAR2
+    )
+    IS
+
+        CNUATRIBUTO_REQUERIDO   CONSTANT NUMBER := 3060;
+
+        NUCICLCODI              CICLO.CICLCODI%TYPE;
+        NUPEFACODI              PERIFACT.PEFACODI%TYPE;
+
+        SBBIAUUSUA              GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBBIAUDOSO              GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBBIAUOBSE              GE_BOINSTANCECONTROL.STYSBVALUE;
+
+        NUTIPOPRODUCTO          NUMBER;
+        RCBITAAUTO              BITAAUTO%ROWTYPE;
+        RCESPRSEPE              ESPRSEPE%ROWTYPE;
+
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FATOProcess');
+
+        NUCICLCODI := TO_NUMBER(GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('CICLO', 'CICLCODI'));
+        NUPEFACODI := TO_NUMBER(GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERIFACT', 'PEFACODI'));
+        SBBIAUUSUA := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('BITAAUTO', 'BIAUUSUA');
+        SBBIAUDOSO := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('BITAAUTO', 'BIAUDOSO');
+        SBBIAUOBSE := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('BITAAUTO', 'BIAUOBSE');
+
+        
+        
+        
+
+        IF (SBBIAUUSUA IS NULL) THEN
+            ERRORS.SETERROR (CNUATRIBUTO_REQUERIDO, 'Usuario que Autoriza');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        IF (SBBIAUDOSO IS NULL) THEN
+            ERRORS.SETERROR (CNUATRIBUTO_REQUERIDO, 'Documento de Soporte');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        IF (SBBIAUOBSE IS NULL) THEN
+            ERRORS.SETERROR (CNUATRIBUTO_REQUERIDO, 'Observaci�n');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        
+        
+        NUTIPOPRODUCTO := TO_NUMBER(ISBTIPOPROD);
+
+        
+		RCBITAAUTO.BIAUCOBI := PKGENERALSERVICES.FNUGETNEXTSEQUENCEVAL('SQ_BITAAUTO_BIAUCOBI');
+		RCBITAAUTO.BIAUPEFA := NUPEFACODI;
+		RCBITAAUTO.BIAUSERV := NUTIPOPRODUCTO;
+		RCBITAAUTO.BIAUFECH := SYSDATE;
+		RCBITAAUTO.BIAUUSAU := SBBIAUUSUA;
+		RCBITAAUTO.BIAUDOSO := SBBIAUDOSO;
+		RCBITAAUTO.BIAUOBSE := SBBIAUOBSE;
+		RCBITAAUTO.BIAUUSUA := PKGENERALSERVICES.FSBGETUSERNAME;
+		RCBITAAUTO.BIAUTERM := PKGENERALSERVICES.FSBGETTERMINAL;
+
+        
+        PKTBLBITAAUTO.INSRECORD(RCBITAAUTO);
+
+        
+		
+        PKBCESPRSEPE.GETRECORD(
+                                RCBITAAUTO.BIAUSERV,
+                                RCBITAAUTO.BIAUPEFA,
+                                CSBPROGRAMA,
+                                RCESPRSEPE
+                              );
+
+        
+        RCESPRSEPE.EPSPESTA := CSBESTADO_AUTORIZADO;
+
+        PKTBLESPRSEPE.UPRECORD(RCESPRSEPE);
+
+        PKGENERALSERVICES.COMMITTRANSACTION;
+        
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR OR LOGIN_DENIED THEN
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESS);
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESS);
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FFVPPROCESS
+    IS
+
+        NUSUBSCRIBER_TYPE_ID    GE_SUBSCRIBER_TYPE.SUBSCRIBER_TYPE_ID%TYPE;
+        NUCICLCODI              CICLO.CICLCODI%TYPE;
+        NUFEVSDIAS              FECHVESU.FEVSDIAS%TYPE;
+
+        SBERRORMESSAGE          VARCHAR2(2000);
+        NUERRORCODE             NUMBER;
+
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FFVPProcess');
+
+        NUSUBSCRIBER_TYPE_ID    := TO_NUMBER(GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('GE_SUBSCRIBER_TYPE', 'SUBSCRIBER_TYPE_ID'));
+        NUCICLCODI              := TO_NUMBER(GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('CICLO', 'CICLCODI'));
+        NUFEVSDIAS              := TO_NUMBER(GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('FECHVESU', 'FEVSDIAS'));
+
+        
+        
+        
+
+        
+        PKCUSTOMERDATELINE.GENEMASIVEDATELINE(
+                                                NUSUBSCRIBER_TYPE_ID,
+                                                NUCICLCODI,
+                                                NUFEVSDIAS,
+                                                NUERRORCODE,
+                                                SBERRORMESSAGE
+                                              );
+
+        
+        IF NUERRORCODE <> GE_BOCONSTANTS.OK THEN
+            RAISE LOGIN_DENIED;
+        END IF;
+        
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FAUHPROCESS
+    IS
+    
+
+        NUSESUNUSE  SERVSUSC.SESUNUSE%TYPE;
+        NUSESUMULT  SERVSUSC.SESUMULT%TYPE;
+        
+        NUINVALID_UNIHAB CONSTANT NUMBER := 200058;
+
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FAUHProcess');
+
+        NUSESUNUSE := TO_NUMBER(GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('SERVSUSC', 'SESUNUSE'));
+        NUSESUMULT := TO_NUMBER(GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('SERVSUSC', 'SESUMULT'));
+        
+        
+        
+        
+        
+        
+        IF NUSESUMULT < 1 THEN
+        
+            PKERRORS.SETERRORCODE(
+                                    PKCONSTANTE.CSBDIVISION,
+                                    PKCONSTANTE.CSBMOD_BIL,
+                                    NUINVALID_UNIHAB
+                                 );
+            RAISE LOGIN_DENIED;
+        END IF;
+
+        
+        
+        PKTBLSERVSUSC.UPAPARTQUANTITY(NUSESUNUSE, NUSESUMULT);
+        
+        PKGENERALSERVICES.COMMITTRANSACTION;
+        
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FAFSOBTCARGOSCONTRATO
+    (
+        INUCONTRATO     IN  SUSCRIPC.SUSCCODI%TYPE,
+        ORFREFCURSOR    OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+    
+        SBSQL       VARCHAR2(2000);
+    
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FAFSObtCargosContrato');
+
+        ORFREFCURSOR := BI_BCFWPROCESOSFACTURACION.FRFOBTCARGOSCONTRATO(INUCONTRATO);
+        
+         
+        FA_BOBILLINGBYPACKAGE.GETCHARGES(ORFREFCURSOR);
+
+        PKERRORS.POP;
+                    
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FAFSOBTDATOSCONTRATO
+    (
+        INUCONTRATO     IN  SUSCRIPC.SUSCCODI%TYPE,
+        OSBNOMBRE       OUT VARCHAR2,
+        OSBIDENTIFICA   OUT GE_SUBSCRIBER.IDENTIFICATION%TYPE,
+        ONUSUSCSAPE     OUT NUMBER,
+        ONUSUSCSAFA     OUT NUMBER,
+        ONUSUSCVARE     OUT NUMBER,
+        ONUSUSCVRAP     OUT NUMBER
+    )
+    IS
+    
+        NUCLIENTE       SUSCRIPC.SUSCCLIE%TYPE;
+        RCSUBSCRIBER    DAGE_SUBSCRIBER.STYGE_SUBSCRIBER;
+    
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FAFSObtDatosContrato');
+    
+        
+        NUCLIENTE := PKTBLSUSCRIPC.FNUGETCUSTOMER(INUCONTRATO);
+        
+        
+        RCSUBSCRIBER := DAGE_SUBSCRIBER.FRCGETRECORD(NUCLIENTE);
+        
+        
+        OSBNOMBRE :=  RCSUBSCRIBER.SUBSCRIBER_NAME||' '||RCSUBSCRIBER.SUBS_LAST_NAME;
+        
+        OSBIDENTIFICA := RCSUBSCRIBER.IDENTIFICATION;
+
+        
+        ONUSUSCSAPE := PKBCSUBSCRIPTION.FNUGETOUTSTANDBAL(INUCONTRATO);
+        
+        
+        ONUSUSCSAFA :=	PKBCSUBSCRIPTION.FNUGETPOSITIVEBAL(INUCONTRATO);
+        
+        
+        ONUSUSCVARE := PKBCSUBSCRIPTION.FNUGETCLAIMVALUE(INUCONTRATO);
+        
+        
+        ONUSUSCVRAP := PKBCSUBSCRIPTION.FNUGETNONAPPLIEDPAY (INUCONTRATO);
+        
+        PKERRORS.POP;
+    
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE OBTFECHASISTEMA
+    (
+        ODTFECHASISTEMA OUT DATE
+    )
+    IS
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.ObtFechaSistema');
+        
+        
+        ODTFECHASISTEMA := TRUNC(UT_DATE.FDTSYSDATE);
+        
+        PKERRORS.POP;
+    
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FAFSOBTPRODUCTOSXCONTRATO
+    (
+        INUCONTRATO     IN  SUSCRIPC.SUSCCODI%TYPE,
+        ORFREFCURSOR    OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FAFSObtProductosXContrato');
+        
+        
+        ORFREFCURSOR := BI_BCFWPROCESOSFACTURACION.FRFOBTPRODUCTOSXCONTRATO(INUCONTRATO);
+        
+        PKERRORS.POP;
+            
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE LOVCONCEPTOS
+    (
+        ORFREFCURSOR    OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.LOVConceptos');
+
+        ORFREFCURSOR := BI_BCFWPROCESOSFACTURACION.FRFOBTTODOSCONCEPTOS;
+        
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE LOVCAUSACARGOS
+    (
+        ORFREFCURSOR    OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.LOVCausaCargos');
+
+        ORFREFCURSOR := BI_BCFWPROCESOSFACTURACION.FRFOBTTODASCAUSACARGO;
+        
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FGCTINIDATOSCONTRATO
+    (
+        INUCONTRATO     IN  SUSCRIPC.SUSCCODI%TYPE,
+        OSBIDENTIFICA   OUT GE_SUBSCRIBER.IDENTIFICATION%TYPE,
+        OSBNOMBRE       OUT GE_SUBSCRIBER.SUBSCRIBER_NAME%TYPE,
+        ONUANO          OUT PERIFACT.PEFAANO%TYPE,
+        ONUMES          OUT PERIFACT.PEFAMES%TYPE,
+        ONUPERIODO      OUT PERIFACT.PEFACODI%TYPE,
+        ODTFECHAGEN     OUT PERIFACT.PEFAFEGE%TYPE
+    )
+    IS
+    
+        NUCLIENTE   GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE;
+        NUCICLO     SUSCRIPC.SUSCCICL%TYPE;
+        
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FGCTIniDatosContrato');
+    
+        
+        NUCLIENTE := PKTBLSUSCRIPC.FNUGETCUSTOMER(TO_NUMBER(INUCONTRATO));
+        
+        
+        OSBNOMBRE := DAGE_SUBSCRIBER.FSBGETSUBSCRIBER_NAME(NUCLIENTE)||' '||DAGE_SUBSCRIBER.FSBGETSUBS_LAST_NAME(NUCLIENTE);
+        
+        
+        OSBIDENTIFICA := DAGE_SUBSCRIBER.FSBGETIDENTIFICATION(NUCLIENTE);
+        
+        
+        NUCICLO := PKTBLSUSCRIPC.FNUGETBILLINGCYCLE (TO_NUMBER(INUCONTRATO), PKCONSTANTE.NOCACHE);
+        
+        
+        PKBILLINGPERIODMGR.ACCCURRENTPERIOD
+        (
+            NUCICLO,
+            ONUANO,
+            ONUMES,
+            ONUPERIODO
+        );
+        
+        
+        ODTFECHAGEN := TRUNC(PKGENERALSERVICES.FDTGETSYSTEMDATE);
+        
+        PKERRORS.POP;
+    
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FGCTVALDATOS
+    (
+        INUCONTRATO     IN  SUSCRIPC.SUSCCODI%TYPE,
+        INUPERIODO		IN	PERIFACT.PEFACODI%TYPE,
+        IDTFECHAGENE	IN	DATE
+    )
+    IS
+
+        RCPERIFACT		    PERIFACT%ROWTYPE;	
+        
+        NUCICLO             SUSCRIPC.SUSCCICL%TYPE;
+        RCCICLO             CICLO%ROWTYPE;
+        NUCOMPANYUSER       NUMBER;
+        NUCOMPANYCICLE      NUMBER;
+        NUCOMPANYERROR      NUMBER := 17016;
+        NUSHAREDBILLCYCLE   NUMBER := 11197;
+        
+        
+        CNUDATE_OUT_OF_RANGE	CONSTANT NUMBER := 901914;
+
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FGCTValDatos');
+    
+        
+        
+        LE_BOREVERTFILE.VALIDATERUNPROCESSLREV;
+    
+        
+        NUCICLO := PKTBLSUSCRIPC.FNUGETBILLINGCYCLE (INUCONTRATO, PKCONSTANTE.NOCACHE);
+
+        
+        RCCICLO := PKTBLCICLO.FRCGETRECORD(NUCICLO);
+
+        
+        NUCOMPANYCICLE := RCCICLO.CICLSIST;
+
+        
+        NUCOMPANYUSER := SA_BOSYSTEM.FNUGETUSERCOMPANYID;
+
+        
+        
+        IF (PKTBLEXCECIEM.FBLEXIST(NUCOMPANYUSER,NUCICLO,'FGCT')) THEN
+
+            PKERRORS.SETERRORCODE
+            (
+                PKCONSTANTE.CSBDIVISION,
+                PKCONSTANTE.CSBMOD_BIL,
+                NUSHAREDBILLCYCLE
+            );
+
+            RAISE LOGIN_DENIED;
+
+        END IF;
+
+        
+        IF ( NUCOMPANYUSER != NUCOMPANYCICLE ) THEN
+
+            PKERRORS.SETERRORCODE
+            (
+                PKCONSTANTE.CSBDIVISION,
+                PKCONSTANTE.CSBMOD_BIL,
+                NUCOMPANYERROR
+            );
+
+            RAISE LOGIN_DENIED;
+
+    	END IF;
+
+
+        
+        RCPERIFACT := PKTBLPERIFACT.FRCGETRECORD ( INUPERIODO );
+
+        
+        
+        IF ( TRUNC(IDTFECHAGENE) < TRUNC(RCPERIFACT.PEFAFIMO) OR TRUNC(IDTFECHAGENE) > TRUNC(RCPERIFACT.PEFAFFMO) ) THEN
+
+            ERRORS.SETERROR( CNUDATE_OUT_OF_RANGE );
+            PKERRORS.POP;
+            RAISE LOGIN_DENIED;
+
+        END IF;
+
+        
+        PKBILLPROCESSCONTROLMGR.VALCHARGESNOTGENERATE (INUCONTRATO);
+
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FGCTVALIDATASAUSURA
+    (
+        IDTFECHAGEN IN  DATE,
+        OBLPREGUNTA OUT BOOLEAN
+    )
+    IS
+
+        SBFLAGUSURA		VARCHAR2(1) ;
+        
+        SBMENSAJE			VARCHAR2(4000);
+        SBERRMSG			VARCHAR2(4000);
+        NUALERTA			NUMBER;
+
+        
+        CNUMSG_WARNING_TASA_USURA	CONSTANT NUMBER := 1016;
+
+        CNUMSG_ERROR_TASA_USURA		CONSTANT NUMBER := 901915;
+
+
+    BEGIN
+    
+
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FGCTValidaTasaUsura');
+    
+        OBLPREGUNTA := FALSE;
+
+        SBFLAGUSURA := PKGENERALPARAMETERSMGR.FSBGETSTRINGVALUE
+        (
+            'BIL_CONTINUA_SIN_TASA_USURA'
+        );
+
+        BEGIN
+
+            
+            PKEFFECTIVEINTERESTRATEMGR.VALCURRUSURYINTRATE
+            (
+                IDTFECHAGEN
+            );
+
+        EXCEPTION
+            WHEN LOGIN_DENIED THEN
+
+                SBMENSAJE := PKERRORS.FSBGETERRORMESSAGE ;
+
+                
+                PKERRORS.NOTIFYERROR
+                (
+                    PKERRORS.FSBLASTOBJECT,
+                    SBMENSAJE,
+                    SBERRMSG
+                );
+
+                
+                IF  ( SBFLAGUSURA = PKCONSTANTE.NO ) THEN
+
+                    
+                    ERRORS.SETERROR( CNUMSG_ERROR_TASA_USURA );
+                    PKERRORS.POP;
+                    RAISE LOGIN_DENIED;
+
+                
+                ELSE
+                
+                    OBLPREGUNTA := TRUE;
+
+                END IF;
+        END ;
+        
+        PKERRORS.POP;
+        
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FGCTGENCARGOSXCONTRATO
+    (
+        INUCONTRATO     IN  SUSCRIPC.SUSCCODI%TYPE,
+        IDTFECHAGEN     IN  DATE,
+        IDTFECHACONT    IN  DATE
+    )
+    IS
+    
+        CSBPROGRAM          CONSTANT VARCHAR2(4) := 'FGCT';
+        NUCICLO             SUSCRIPC.SUSCCICL%TYPE;
+
+        
+        NUERRORCODE         GE_ERROR_LOG.ERROR_LOG_ID%TYPE;
+        SBERRORMESSAGE      GE_ERROR_LOG.DESCRIPTION%TYPE;
+
+        
+        RCPROCESOS          PROCESOS%ROWTYPE;
+
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FGCTGenCargosXContrato');
+        
+        RCPROCESOS := GE_BCPROCESOS.FRCPROGRAMA(CSBPROGRAM);
+        
+        
+        NUCICLO := PKTBLSUSCRIPC.FNUGETBILLINGCYCLE(INUCONTRATO);
+        
+        
+        PKFGCA.LIQBYCONTRACT(
+                                INUCONTRATO,        
+                                IDTFECHAGEN,        
+                                IDTFECHACONT,       
+                                RCPROCESOS.PROCCONS,
+                                NUERRORCODE,
+                                SBERRORMESSAGE
+                            );
+
+        
+        IF (NUERRORCODE = PKCONSTANTE.EXITO) THEN
+
+            
+            PKFGFC.GENERATE
+            (
+                NUCICLO,
+                INUCONTRATO,
+                IDTFECHAGEN,
+                NULL, 
+                1,  
+                1,  
+                NUERRORCODE,
+                SBERRORMESSAGE,
+                -1,	
+                RCPROCESOS.PROCCONS
+            );
+            
+            
+            IF ( NUERRORCODE != 0 ) THEN
+                PKGENERALSERVICES.ROLLBACKTRANSACTION;
+                RAISE LOGIN_DENIED;
+            END IF;
+
+        ELSE
+        
+            
+            PKGENERALSERVICES.ROLLBACKTRANSACTION;
+            RAISE LOGIN_DENIED;
+        
+        END IF;
+        
+        
+        PKBCSUSCRIPC.UPPROCCONTROL(INUCONTRATO, PKCONSTANTE.VERDADERO);
+        
+        PKERRORS.POP;
+	
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALFECHAGENERACIONFAFS
+    (
+        INUCONTRATO     IN  SUSCRIPC.SUSCCODI%TYPE,
+        IDTFECHAGEN     IN  DATE,
+        OBLRESULTADO    OUT BOOLEAN
+    )
+    IS
+    BEGIN
+
+        PKERRORS.PUSH('BI_UIReportesFacturacion.ValFechaGeneracionFAFS');
+
+        OBLRESULTADO := PKBILLINGPERIODMGR.FBLISBETWEENDATEMOV
+                        (
+                            INUCONTRATO,
+                            IDTFECHAGEN
+                        );
+
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ADICIONAFACTURACONTRATO
+    (
+        INUCONTRATO     IN  SUSCRIPC.SUSCCODI%TYPE,
+        ONUESTADOCTA    OUT FACTURA.FACTCODI%TYPE,
+        ONUNUMFISCAL    OUT FACTURA.FACTNUFI%TYPE,
+        OSBPREFIJO      OUT FACTURA.FACTPREF%TYPE,
+        OSBTICODES      OUT  TIPOCOMP.TICODESC%TYPE
+    )
+    IS
+
+        CSBPROGRAMA CONSTANT    VARCHAR2(4) := 'FAFS';
+        CNUFINSUSC  CONSTANT    NUMBER := 2;
+
+        SBMENSAJE           MENSAJE.MENSDESC%TYPE;						
+        NUCICLO             CICLO.CICLCODI%TYPE;						
+        NUERRORCODE         NUMBER;										
+        SBERRORMESSAGE      VARCHAR2(2000);								
+        NUESTADOCTA         FACTURA.FACTCODI%TYPE;						
+
+        CNUPROCESO          CONSTANT NUMBER(1) 		:= 1;				
+        CNUMSG_PROCESO      CONSTANT NUMBER(5) 		:= 10010;			
+        CNUMENS_TERMINO_NOK CONSTANT NUMBER(5) 		:= 1027;			
+
+    BEGIN
+
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.AdicionaFacturaContrato');
+
+        
+        
+        PKBOPROCESSSECURITY.VALIDATESUBSCRIBERSECURITY( INUCONTRATO, CSBPROGRAMA);
+
+        
+        PKTBLSUSCRIPC.UPPROCESSNUMBER
+        (
+            INUCONTRATO,
+            CNUFINSUSC
+        );
+
+        
+        SBMENSAJE := PKTBLMENSAJE.FSBGETDESCRIPTION
+                     (
+                        PKCONSTANTE.CSBDIVISION,
+                        PKCONSTANTE.CSBMOD_GRL,
+                        CNUMSG_PROCESO
+                     );
+
+        
+        NUCICLO := PKTBLSUSCRIPC.FNUGETBILLINGCYCLE
+        (
+            INUCONTRATO,
+            PKCONSTANTE.NOCACHE
+        );
+
+        
+        PKGENERATEBILL.SETTAXRERATINGON;
+
+        
+        
+        PKGENERATEBILL.SETDOCOMMIT(FALSE);
+
+        
+        PKGENERATEBILL.GENERATE
+        (
+            NUCICLO,
+            INUCONTRATO,
+            PKGENERALSERVICES.FDTGETSYSTEMDATE,
+            CNUPROCESO,
+            NULL,
+            GE_BOCONSTANTS.FNUGETDOCTYPECONS,
+            NUERRORCODE,
+            SBERRORMESSAGE,
+            PKCONSTANTE.NULLNUM,
+            CSBPROGRAMA
+        );
+        
+        
+        PKGENERATEBILL.SETDOCOMMIT(TRUE);
+
+        IF ( NUERRORCODE != PKCONSTANTE.EXITO ) THEN
+
+            PKGENERALSERVICES.ROLLBACKTRANSACTION ;
+
+            
+            SBMENSAJE := PKTBLMENSAJE.FSBGETDESCRIPTION
+                         (
+                            PKCONSTANTE.CSBDIVISION,
+                            PKCONSTANTE.CSBMOD_GRL,
+                            CNUMENS_TERMINO_NOK
+                         );
+
+            
+            RAISE LOGIN_DENIED;
+
+        END IF;
+
+        
+        NUESTADOCTA := PKGENERATEBILL.FNUGETGENERATEDACCOST ;
+
+        
+        IF ( PKTBLFACTURA.FBLEXIST (NUESTADOCTA, PKCONSTANTE.NOCACHE) ) THEN
+            ONUESTADOCTA := NUESTADOCTA ;
+            ONUNUMFISCAL := PKTBLFACTURA.FNUGETFISCALNUMBER (NUESTADOCTA);
+            OSBPREFIJO := PKTBLFACTURA.FSBGETPREFIX (NUESTADOCTA);
+            
+            OSBTICODES := PKBCACCOUNTSTATUS.FSBGETTIPOCOMP(NUESTADOCTA);
+        END IF;
+
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+            
+            PKGENERATEBILL.SETDOCOMMIT(TRUE);
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            
+            PKGENERATEBILL.SETDOCOMMIT(TRUE);
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END ADICIONAFACTURACONTRATO;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE OBTENERPRODUCTOYCONTRATO
+    IS
+
+        
+        SBINSTANCE      GE_BOINSTANCECONTROL.STYSBNAME;
+        RCSERVSUSC      SERVSUSC%ROWTYPE;
+        SBPRODUCTO      VARCHAR2(15);
+        SBERRMSG        VARCHAR2(2000);    
+
+    BEGIN
+
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.ObtenerProductoYContrato');
+
+        
+        GE_BOINSTANCECONTROL.GETCURRENTINSTANCE( SBINSTANCE );
+
+        
+        GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE('WORK_INSTANCE',NULL,'PR_PRODUCT', 'PRODUCT_ID', SBPRODUCTO);
+
+        
+        RCSERVSUSC := PKTBLSERVSUSC.FRCGETRECORD(TO_NUMBER(SBPRODUCTO));
+
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'ASOCPROD', 'ASPRPRLI', SBPRODUCTO);
+        
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'SUSCRIPC', 'SUSCCODI', RCSERVSUSC.SESUSUSC);
+
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG );
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FAPBPROCESS
+    IS
+
+        CNUNULL_ATTRIBUTE CONSTANT NUMBER := 2126;
+
+        SBASPRPRLI GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBSUSCCODI GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBASPRPRBA GE_BOINSTANCECONTROL.STYSBVALUE;
+        
+        RCELMESESU  ELMESESU%ROWTYPE;
+        RCSERVSUSC  SERVSUSC%ROWTYPE;
+        RCASOCPROD  ASOCPROD%ROWTYPE;
+
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FAPBProcess');
+        
+        SBASPRPRLI := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('ASOCPROD', 'ASPRPRLI');
+        SBSUSCCODI := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('SUSCRIPC', 'SUSCCODI');
+        SBASPRPRBA := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('ASOCPROD', 'ASPRPRBA');
+
+        
+        
+        
+
+        IF (SBASPRPRBA IS NULL) THEN
+            ERRORS.SETERROR (CNUNULL_ATTRIBUTE, 'Producto Base');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        
+        
+
+        
+        PKTBLASOCPROD.VALIDATEDUPVALUES(TO_NUMBER(SBASPRPRLI));
+        
+        
+        RCELMESESU := PKBCELMESESU.FRCMEASACTSERVNUM(TO_NUMBER(SBASPRPRLI));
+        
+        IF (RCELMESESU.EMSSELME IS NOT NULL) THEN
+
+            PKERRORS.SETERRORCODE(
+                                    PKCONSTANTE.CSBDIVISION,
+                                    PKCONSTANTE.CSBMOD_BIL,
+                                    1035
+                                 );
+            RAISE LOGIN_DENIED;
+            
+        END IF;
+        
+        
+        RCSERVSUSC := PKTBLSERVSUSC.FRCGETRECORD(TO_NUMBER(SBASPRPRBA));
+        
+        IF RCSERVSUSC.SESUSUSC <> TO_NUMBER(SBSUSCCODI) THEN
+
+            PKERRORS.SETERRORCODE(
+                                    PKCONSTANTE.CSBDIVISION,
+                                    PKCONSTANTE.CSBMOD_BIL,
+                                    1037
+                                 );
+                                 
+            RAISE LOGIN_DENIED;
+                                 
+        END IF;
+        
+        
+        RCELMESESU := PKBCELMESESU.FRCMEASACTSERVNUM(TO_NUMBER(SBASPRPRBA));
+        
+        IF (RCELMESESU.EMSSELME IS NULL) THEN
+        
+            PKERRORS.SETERRORCODE(
+                                    PKCONSTANTE.CSBDIVISION,
+                                    PKCONSTANTE.CSBMOD_BIL,
+                                    1036
+                                 );
+                                 
+            RAISE LOGIN_DENIED;
+            
+        END IF;
+        
+        
+        RCASOCPROD.ASPRPRLI := TO_NUMBER(SBASPRPRLI);
+        RCASOCPROD.ASPRPRBA := TO_NUMBER(SBASPRPRBA);
+        
+        PKTBLASOCPROD.INSRECORD(RCASOCPROD);
+        
+        COMMIT;
+        
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE OBTENERCONTRATOYNOMBRE
+    IS
+        
+        SBINSTANCE      GE_BOINSTANCECONTROL.STYSBNAME;
+        RCSUSCRIPC      SUSCRIPC%ROWTYPE;
+        SBCONTRATO      VARCHAR2(15);
+        SBNOMBRE        VARCHAR2(201);
+        SBERRMSG        VARCHAR2(2000);    
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.ObtenerContratoYNombre');
+        
+        
+        GE_BOINSTANCECONTROL.GETCURRENTINSTANCE( SBINSTANCE );
+
+        
+        GE_BOINSTANCECONTROL.GETGLOBALATTRIBUTE ( 'GLOBAL_LEVEL_ID', SBCONTRATO );
+
+        
+        RCSUSCRIPC := PKTBLSUSCRIPC.FRCGETRECORD(TO_NUMBER(SBCONTRATO));
+
+        
+        SBNOMBRE := GE_BOSUBSCRIBER.FSBGETNAME(RCSUSCRIPC.SUSCCLIE);
+
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'SESUASOC', 'SSASSUSC', SBCONTRATO);
+
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'GE_SUBSCRIBER', 'SUBSCRIBER_NAME', SBNOMBRE);
+        
+        PKERRORS.POP;
+    
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFFASOCONSPRODOTROCONTRATO
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+    
+        CNUNULL_ATTRIBUTE CONSTANT NUMBER := 2126;
+
+        SBSSASSUSC GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBSUBSCRIBER_NAME GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBSUSCCODI GE_BOINSTANCECONTROL.STYSBVALUE;
+        
+        RFREFCURSOR     CONSTANTS.TYREFCURSOR;
+    
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FASOConsProdOtroContrato');
+        
+        SBSSASSUSC := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('SESUASOC', 'SSASSUSC');
+        SBSUBSCRIBER_NAME := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('GE_SUBSCRIBER', 'SUBSCRIBER_NAME');
+        SBSUSCCODI := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('SUSCRIPC', 'SUSCCODI');
+
+        
+        
+        
+
+        IF (SBSUSCCODI IS NULL) THEN
+            ERRORS.SETERROR (CNUNULL_ATTRIBUTE, 'N�mero Otro Contrato');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        
+        
+        
+        
+        PKSUBSCRIBERMGR.VALBASICDATA(TO_NUMBER(SBSUSCCODI));
+        
+        
+        
+        PKASSOCSERVSUBSAGROUPMGR.VALIDATESUBSCRIBERS
+        (
+            TO_NUMBER(SBSSASSUSC),
+            TO_NUMBER(SBSUSCCODI)
+        );
+        
+        
+        RFREFCURSOR := BI_BCFWPROCESOSFACTURACION.FRFFASOOBTPRODUCTOSXCONTRATO(TO_NUMBER(SBSUSCCODI));
+
+        PKERRORS.POP;
+        
+        RETURN RFREFCURSOR;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FASOAGRUPAPRODUCTOS
+    (
+        ISBPRODUCTO     IN  VARCHAR2,
+        INUCURRENT      IN  NUMBER,
+        INUTOTAL        IN  NUMBER,
+        ONUERRORCODE    OUT NUMBER,
+        OSBERRORMESS    OUT VARCHAR2
+    )
+    IS
+    
+        CNUNULL_ATTRIBUTE CONSTANT NUMBER := 2126;
+        
+        SBSSASSUSC GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBSUSCCODI GE_BOINSTANCECONTROL.STYSBVALUE;
+        
+        SBPROCESS   VARCHAR2(4) := 'FASO';
+        
+        NUERRORCODE         GE_ERROR_LOG.ERROR_LOG_ID%TYPE;
+        SBERRORMESSAGE      GE_ERROR_LOG.DESCRIPTION%TYPE;
+
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FASOAgrupaProductos');
+        
+        SBSSASSUSC := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('SESUASOC', 'SSASSUSC');
+        SBSUSCCODI := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('SUSCRIPC', 'SUSCCODI');
+
+        
+        
+        
+
+        IF (SBSUSCCODI IS NULL) THEN
+            ERRORS.SETERROR (CNUNULL_ATTRIBUTE, 'N�mero Otro Contrato');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+
+        
+        
+        
+
+        
+        PKASSOCSERVSUBSAGROUPMGR.VALIDATEEXISTGROUPING(TO_NUMBER(ISBPRODUCTO));
+        
+        
+        PKBOPROCESSSECURITY.VALIDATEPRODUCTSECURITY(TO_NUMBER(ISBPRODUCTO), SBPROCESS);
+        
+        
+        PKSERVSUBSCRIBERGROUPING.CREATESUBSASSOCIATION
+        (
+            TO_NUMBER(SBSSASSUSC),
+            TO_NUMBER(SBSUSCCODI),
+            TO_NUMBER(ISBPRODUCTO),
+            NUERRORCODE,
+            SBERRORMESSAGE
+        );
+        
+        IF NUERRORCODE <> PKCONSTANTE.EXITO THEN
+
+            PKERRORS.SETERRORMESSAGE (SBERRORMESSAGE);
+            RAISE LOGIN_DENIED;
+            
+        END IF;
+        
+        PKERRORS.POP;
+    
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFFDSOCONSPRODAGRUPADOS
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+    
+        SBSSASSUSC GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBSUBSCRIBER_NAME GE_BOINSTANCECONTROL.STYSBVALUE;
+        
+        RFREFCURSOR     CONSTANTS.TYREFCURSOR;
+    
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.frfFDSOConsProdAgrupados');
+        
+        SBSSASSUSC := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('SESUASOC', 'SSASSUSC');
+        SBSUBSCRIBER_NAME := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('GE_SUBSCRIBER', 'SUBSCRIBER_NAME');
+
+        
+        
+        
+
+        
+        RFREFCURSOR := BI_BCFWPROCESOSFACTURACION.FRFFDSOOBTPRODUCTOSAGRUPADOS(TO_NUMBER(SBSSASSUSC));
+
+        PKERRORS.POP;
+
+        RETURN RFREFCURSOR;
+    
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FDSODESAGRUPAPRODUCTOS
+    (
+        ISBPRODUCTO     IN  VARCHAR2,
+        INUCURRENT      IN  NUMBER,
+        INUTOTAL        IN  NUMBER,
+        ONUERRORCODE    OUT NUMBER,
+        OSBERRORMESS    OUT VARCHAR2
+    )
+    IS
+
+        SBPROCESS   VARCHAR2(4) := 'FASO';
+
+        NUERRORCODE         GE_ERROR_LOG.ERROR_LOG_ID%TYPE;
+        SBERRORMESSAGE      GE_ERROR_LOG.DESCRIPTION%TYPE;
+
+    BEGIN
+
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FDSODesagrupaProductos');
+
+        
+        PKBOPROCESSSECURITY.VALIDATEPRODUCTSECURITY(TO_NUMBER(ISBPRODUCTO), SBPROCESS);
+
+        
+        PKSERVSUBSCRIBERGROUPING.DELETEASSOCIATION
+        (
+            TO_NUMBER(ISBPRODUCTO),
+            NUERRORCODE,
+            SBERRORMESSAGE
+        );
+
+        IF NUERRORCODE <> PKCONSTANTE.EXITO THEN
+
+            PKERRORS.SETERRORMESSAGE (SBERRORMESSAGE);
+            RAISE LOGIN_DENIED;
+
+        END IF;
+
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FBCLPROCESS
+    IS
+    
+        SBCICLCODI GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBPEFACODI GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBPEFAANO GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBPEFAMES GE_BOINSTANCECONTROL.STYSBVALUE;
+        
+        CSBPROGRAM          CONSTANT VARCHAR2(4) := 'FBCL';
+        
+        TBSERVPEND          PKBOPROCCTRLBYSERVICEMGR.TYTBSERVTOAUTH;
+        CNUERRORFGCC		CONSTANT MENSAJE.MENSCODI%TYPE := 10102;
+        RCESPRSEPE          ESPRSEPE%ROWTYPE;
+        NUTOTALPRODUCTOS    NUMBER;
+        NUPRODUCTOSPROC     NUMBER;
+        
+        SBMODO				ESPRSEPE.EPSPESTA%TYPE;
+        SBTABLA				ESPRSEPE.EPSPTABL%TYPE;
+        SBINCO				ESPRSEPE.EPSPINPR%TYPE;
+        SBIDULTIMA		    ESPRSEPE.EPSPIDPR%TYPE;
+        SBTITULOREPO        MENSAJE.MENSDESC%TYPE;
+        NUIDREPORTE         REPORTES.REPONUME%TYPE;
+        SBCONNECTIONSTRING  VARCHAR2(1000);
+        
+        SBRUTA              VARCHAR2(300);		
+        SBUSUARIO           VARCHAR2(200);		
+        SBCOMANDO           VARCHAR2(500);		
+        SBMENSAJE           VARCHAR2(1000);		
+        DTFECHA             VARCHAR2(100);		
+
+        
+        CSBTRACE_PATH       CONSTANT PARAMETR.PAMECODI%TYPE := 'RUTA_TRAZA';
+
+    
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FBCLProcess');
+        
+        SBCICLCODI := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('CICLO', 'CICLCODI');
+        SBPEFACODI := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERIFACT', 'PEFACODI');
+        SBPEFAANO := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERIFACT', 'PEFAANO');
+        SBPEFAMES := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERIFACT', 'PEFAMES');
+
+        
+        
+        
+        
+        IF NOT PKEXECUTEDPROCESSMGR.FBLEXISTRECORD( TO_NUMBER(SBPEFACODI), CSBPROGRAM) THEN
+        
+            
+            PKEXECUTEDPROCESSMGR.ADDRECORD( TO_NUMBER(SBPEFACODI),
+                                            CSBPROGRAMA,
+                                            NULL
+                                          );
+        END IF;
+
+        
+        PKBOPROCCTRLBYSERVICEMGR.BLOCKPROCESS(CSBPROGRAMA, TO_NUMBER(SBPEFACODI));
+        
+        
+        PKBODELGENCHARGBYFGCL.GETSERVTODELLIQ(  TO_NUMBER(SBCICLCODI),
+                                                TO_NUMBER(SBPEFACODI),
+                                                CSBPROGRAMA,
+                                                TBSERVPEND
+                                             );
+
+        IF PKBCESPRSEPE.FBLEXIST(TBSERVPEND(1).SERVCODI, TO_NUMBER(SBPEFACODI), CSBPROGRAMA) THEN
+        
+            
+            
+            PKBCESPRSEPE.GETRECORD( TBSERVPEND(1).SERVCODI,
+                                    TO_NUMBER(SBPEFACODI),
+                                    CSBPROGRAMA,
+                                    RCESPRSEPE
+                                  );
+                                  
+                                  
+            
+            NUTOTALPRODUCTOS := RCESPRSEPE.EPSPNUTO;
+            NUPRODUCTOSPROC := RCESPRSEPE.EPSPNUPR;
+
+        ELSE
+
+            
+            NUTOTALPRODUCTOS := PKBCSERVSUSC.FNUCOUNTSUBSERVTOPROCESS(TO_NUMBER(SBCICLCODI), TBSERVPEND(1).SERVCODI );
+            NUPRODUCTOSPROC := 0;
+
+        END IF;
+        
+        
+        IF PKEXECUTEDPROCESSMGR.FBOGENERATEDACCOUNT(TO_NUMBER(SBPEFACODI)) THEN
+
+            PKERRORS.SETERRORCODE
+            (
+                PKCONSTANTE.CSBDIVISION,
+				PKCONSTANTE.CSBMOD_BIL,
+				CNUERRORFGCC
+            );
+
+			RAISE LOGIN_DENIED;
+			
+        END IF;
+        
+        
+        
+        SBTITULOREPO := PKTBLMENSAJE.FSBGETDESCRIPTION( PKCONSTANTE.CSBDIVISION,
+                                                        PKCONSTANTE.CSBMOD_BIL,
+                                                        20013
+                                                      );
+
+        
+        PKBOPROCCTRLBYSERVICEMGR.GETEXECMODEBYSERV( TBSERVPEND(1).SERVCODI,
+                                                    TO_NUMBER(SBPEFACODI),
+                                                    CSBPROGRAMA,
+                                                    SBMODO,
+                                                    SBTABLA,
+                                                    SBINCO,
+                                                    SBIDULTIMA
+                                                  );
+                                                  
+        
+        PKBOPROCCTRLBYSERVICEMGR.INSSERVTOPROCINREPOINCO( TBSERVPEND(1).SERVCODI,
+                                                          SBMODO,
+                                                          SBTABLA,
+                                                          SBINCO,
+                                                          SBIDULTIMA,
+                                                          SBTITULOREPO,
+                                                          NUIDREPORTE
+                                                        );
+
+
+        
+        IF PKBCESPRSEPE.FBLEXIST(TBSERVPEND(1).SERVCODI,TO_NUMBER(SBPEFACODI), CSBPROGRAMA) THEN
+        
+            PKBCESPRSEPE.UPSTATEDATA( TBSERVPEND(1).SERVCODI,
+                                      TO_NUMBER(SBPEFACODI),
+                                      CSBPROGRAMA,
+                                      PKBOPROCCTRLBYSERVICEMGR.FSBGETBLOCKSTATE,
+                                      PKSESSIONMGR.FSBGETPROCSESSION,
+                                      NULL	
+                                    );
+                                    
+        ELSE
+            
+            PKBOPROCCTRLBYSERVICEMGR.REGSERVICEPROCESSSTAT(	TO_NUMBER(SBPEFACODI),
+                                                            TBSERVPEND(1).SERVCODI,
+                                                            CSBPROGRAMA,
+                                                            NUTOTALPRODUCTOS
+                                                          );
+        END IF;
+        
+        
+        PKBOPROCCTRLBYSERVICEMGR.UNBLOCKPROCESS( CSBPROGRAMA,
+                                                 TO_NUMBER(SBPEFACODI),
+                                                 PKBCPROCEJEC.FSBGETDOCOMMITCMD
+                                               );
+
+        IF PKEXECUTEDPROCESSMGR.FBLEXISTRECORD (TO_NUMBER(SBPEFACODI),CSBPROGRAMA) THEN
+
+            
+	        PKEXECUTEDPROCESSMGR.DELETERECORD( TO_NUMBER(SBPEFACODI), CSBPROGRAMA);
+                                            
+            COMMIT;
+            
+		END IF;
+
+        
+        
+        SBRUTA := PKGENERALPARAMETERSMGR.FSBGETSTRINGVALUE (CSBTRACE_PATH);
+
+        SBRUTA := RTRIM (LTRIM (SBRUTA));
+
+        
+        IF SBRUTA IS NULL THEN
+            SBRUTA := '/tmp';
+        END IF;
+
+        
+        SBCONNECTIONSTRING := GE_BODATABASECONNECTION.FSBGETDEFAULTCONNECTIONSTRING;
+
+        
+        SBUSUARIO := SA_BOSYSTEM.GETCURRENTORACLEUSER;
+
+        
+        DTFECHA := TO_CHAR(SYSDATE,'DDMMYYYYHHMISS') ;
+
+        
+        SBCOMANDO := 'fbcl ' ||
+                   	 SBCONNECTIONSTRING || ' ' ||
+                   	 SBCICLCODI || ' ' ||
+                   	 SBPEFACODI || ' ' ||
+                   	 TO_CHAR (NUIDREPORTE) ||
+                   	 ' > ' || SBRUTA || '/fbcl_'|| SBUSUARIO || '_'||
+                     SBPEFACODI || '_' ||
+                     DTFECHA ||'.trc' || ' 2>'||CHR(38)||'1 '||CHR(38);
+                     
+        
+        LLAMASIST (SBCOMANDO);
+
+        PKERRORS.POP;
+    
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FECPINICIADATOS
+    IS
+    
+        SBINSTANCE      GE_BOINSTANCECONTROL.STYSBNAME;
+
+        SBPRODUCTO      VARCHAR2(10);
+        NUCYCLE			SERVSUSC.SESUCICO%TYPE;
+        NUPERICOSE      PERICOSE.PECSCONS%TYPE;
+        NUPERIFACT      PERIFACT.PEFACODI%TYPE;
+        NUBILLCYCLE     SERVSUSC.SESUCICO%TYPE;
+        NUANO			PERIFACT.PEFAANO%TYPE;
+        NUMES			PERIFACT.PEFAMES%TYPE;
+        DTFECHAINI      PERICOSE.PECSFECI%TYPE;
+        DTFECHAFIN      PERICOSE.PECSFECF%TYPE;
+    
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FECPIniciaDatos');
+
+        
+        GE_BOINSTANCECONTROL.GETCURRENTINSTANCE( SBINSTANCE );
+
+        
+        GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE('WORK_INSTANCE',NULL,'SERVSUSC', 'SESUNUSE', SBPRODUCTO);
+
+        
+        NUCYCLE := PKTBLSERVSUSC.FNUGETCYCLE( TO_NUMBER(SBPRODUCTO) );
+
+        
+        NUBILLCYCLE := PKTBLSERVSUSC.FNUGETBILLINGCYCLE( TO_NUMBER(SBPRODUCTO) );
+
+        
+        PKBILLINGPERIODMGR.ACCCURRENTPERIOD
+        (
+            NUBILLCYCLE,
+            NUANO,
+            NUMES,
+            NUPERIFACT
+        );
+
+        
+        PKBCPERICOSE.GETCURRPERBYCONSCYCLE
+    	(
+    	    NUCYCLE,
+    	    NUPERIFACT,
+    	    NUPERICOSE
+    	);
+    	
+    	
+        PKTBLPERICOSE.GETDATES
+        (
+            NUPERICOSE,
+            DTFECHAINI,
+            DTFECHAFIN
+        );
+
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'CONSSESU', 'COSSSESU', SBPRODUCTO);
+
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'PERIFACT', 'PEFACODI', NUPERIFACT);
+        
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'PERIFACT', 'PEFAANO', NUANO);
+        
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'PERIFACT', 'PEFAMES', NUMES);
+        
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'PERICOSE', 'PECSCONS', NUPERICOSE);
+        
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'PERICOSE', 'PECSFECI', TO_CHAR(DTFECHAINI,'DD-MM-YYYY HH24:MI:SS'));
+        
+        
+        GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE( SBINSTANCE, NULL, 'PERICOSE', 'PECSFECF', TO_CHAR(DTFECHAFIN,'DD-MM-YYYY HH24:MI:SS'));
+
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE FECPPROCESS
+    IS
+
+        CNUNULL_ATTRIBUTE CONSTANT NUMBER := 2126;
+        SBCOSSSESU GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBPEFACODI GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBPEFAANO GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBPEFAMES GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBPECSCONS GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBPECSFECI GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBPECSFECF GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBCOSSCOCA GE_BOINSTANCECONTROL.STYSBVALUE;
+        SBTCONCODI GE_BOINSTANCECONTROL.STYSBVALUE;
+        
+        NUTIPOPROD      SERVICIO.SERVCODI%TYPE;
+        CSBPROGFGCA     CONSTANT VARCHAR2(4) := 'FGCA';
+        CNUEXECFGCA     CONSTANT NUMBER      := 18050;
+        TBCONSSESU      PKTBLCONSSESU.TYTBCONSSESU;
+        CNUEXISTCONS	CONSTANT NUMBER      := 18048;
+        RCELMESESU      ELMESESU%ROWTYPE;
+        
+        NUERRORCODE     GE_ERROR_LOG.ERROR_LOG_ID%TYPE;
+        SBERRORMESSAGE  GE_ERROR_LOG.DESCRIPTION%TYPE;
+        
+        CNUNOTELMEAFOR  CONSTANT NUMBER      := 18051;
+        CSBFECP         CONSTANT VARCHAR2(50) := 'FECP - Registro de Consumos por Producto'; 
+        TBINSERTEDDATA  GE_TYTBSTRING;
+        
+        SBUSER          VARCHAR2(50);
+        RCFUNCIONA      FUNCIONA%ROWTYPE;
+        RCCONSUMPTION   CM_BOCONSUMPTIONENGINE.TYRCCONSUMPTION;
+        NUALERTA        NUMBER;
+        NUSESUCATE      SERVSUSC.SESUCATE%TYPE;
+        NUSESUSUCA      SERVSUSC.SESUSUCA%TYPE;
+
+    BEGIN
+    
+        PKERRORS.PUSH('BI_UIProcesosFacturacion.FECPProcess');
+    
+        SBCOSSSESU := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('CONSSESU', 'COSSSESU');
+        SBPEFACODI := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERIFACT', 'PEFACODI');
+        SBPEFAANO  := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERIFACT', 'PEFAANO');
+        SBPEFAMES  := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERIFACT', 'PEFAMES');
+        SBPECSCONS := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERICOSE', 'PECSCONS');
+        SBPECSFECI := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERICOSE', 'PECSFECI');
+        SBPECSFECF := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('PERICOSE', 'PECSFECF');
+        SBCOSSCOCA := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('CONSSESU', 'COSSCOCA');
+        SBTCONCODI := GE_BOINSTANCECONTROL.FSBGETFIELDVALUE ('TIPOCONS', 'TCONCODI');
+
+        
+        
+        
+
+        IF (SBCOSSCOCA IS NULL) THEN
+            ERRORS.SETERROR (CNUNULL_ATTRIBUTE, 'Unidades de Consumo');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        IF (SBTCONCODI IS NULL) THEN
+            ERRORS.SETERROR (CNUNULL_ATTRIBUTE, 'Tipo de Consumo');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        
+        
+        
+        
+        PKSERVNUMBERMGR.VALEXISTPRODBYCOMPANY(TO_NUMBER(SBCOSSSESU));
+        
+        
+        NUTIPOPROD := PKTBLSERVSUSC.FNUGETSERVICE(TO_NUMBER(SBCOSSSESU));
+        
+        
+        
+        
+        IF ( PKBCESPRSEPE.FBLEXIST(NUTIPOPROD, TO_NUMBER(SBPEFACODI), CSBPROGFGCA) OR
+             (UPPER(NVL(PKEXECUTEDPROCESSMGR.FSBGETSTATUSOFPROCESS(TO_NUMBER(SBPEFACODI), CSBPROGFGCA), 'x')) = 'T')
+           ) THEN
+
+            PKERRORS.SETERRORCODE
+            (
+                PKCONSTANTE.CSBDIVISION,
+                PKCONSTANTE.CSBMOD_BIL ,
+                CNUEXECFGCA
+            );
+            
+            RAISE LOGIN_DENIED;
+
+        END IF;
+        
+        
+        PKBCCONSSESU.GETCONSPRODBYPECSTYCO
+        (
+        	TO_NUMBER(SBCOSSSESU),
+        	TO_NUMBER(SBPECSCONS),
+        	TO_NUMBER(SBTCONCODI),
+        	TBCONSSESU
+        );
+
+        IF ( TBCONSSESU.COSSSESU.FIRST IS NOT NULL ) THEN
+           	
+        	PKERRORS.SETERRORCODE( PKCONSTANTE.CSBDIVISION,
+        	                       PKCONSTANTE.CSBMOD_BIL,
+        	                       CNUEXISTCONS
+        	                      );
+        	RAISE LOGIN_DENIED;
+
+        END IF;
+        
+        
+        
+        
+        RCELMESESU := PKBCELMESESU.FRCMEASACTBYSERVSUSCTIPCONS( TO_NUMBER(SBCOSSSESU),
+                                                                TO_NUMBER(SBTCONCODI),
+        													 	TO_DATE(SBPECSFECI, UT_DATE.FSBDATE_FORMAT),
+        													 	TO_DATE(SBPECSFECF, UT_DATE.FSBDATE_FORMAT));
+
+        
+        IF ( RCELMESESU.EMSSELME IS NULL ) THEN
+            
+    		IF ( NOT PKAFORSUBSSERVMGR.FBLEXIST( TO_NUMBER(SBCOSSSESU), TO_NUMBER(SBTCONCODI)) ) THEN
+    		
+    				PKERRORS.SETERRORCODE
+                    (
+                        PKCONSTANTE.CSBDIVISION,
+                        PKCONSTANTE.CSBMOD_BIL,
+                        CNUNOTELMEAFOR
+                    );
+                    
+    				RAISE LOGIN_DENIED;
+
+    		END IF;
+        END IF;
+        
+        
+        SBUSER := PKGENERALSERVICES.FSBGETUSERNAME;
+
+        
+        RCFUNCIONA := PKBCFUNCIONA.FRCFUNCIONA(SBUSER);
+
+        RCCONSUMPTION.NUPRODUCT                 := TO_NUMBER(SBCOSSSESU);
+        RCCONSUMPTION.NUCONSUMPTIONTYPE         := TO_NUMBER(SBTCONCODI);
+        RCCONSUMPTION.NUMEASUREELEMENT          := RCELMESESU.EMSSELME;
+        RCCONSUMPTION.NUCONSUMPTIONPERIOD       := TO_NUMBER(SBPECSCONS);
+        RCCONSUMPTION.NUCALCMETHOD              := CM_BOCONSTANTS.CNUBIL_MECC_ESTIMADO;
+        RCCONSUMPTION.SBCALCFUNC                := CSBFECP;
+        RCCONSUMPTION.NUCONSUMPTIONDAYS         := TRUNC(TO_DATE(SBPECSFECF, UT_DATE.FSBDATE_FORMAT)) - TRUNC(TO_DATE(SBPECSFECI, UT_DATE.FSBDATE_FORMAT)) + 1;
+        RCCONSUMPTION.NUCONSUMPTION             := TO_NUMBER(SBCOSSCOCA);
+        RCCONSUMPTION.SBREGISTERMODE            := CM_BOCONSUMPTIONENGINE.CSBNORMAL_REGISTER;
+
+        
+        CM_BOCONSUMPTIONENGINE.CLEARCONSUMPTIONTABLE;
+
+        
+        CM_BOCONSUMPTIONENGINE.REGISTERCONSUMPTION(RCCONSUMPTION, CSBFECP);
+        
+        
+        CM_BOCONSUMPTIONENGINE.SETDOWNCONSUMPTIONS(FALSE, CSBFECP, TBINSERTEDDATA);
+                                               
+
+        PKGENERALSERVICES.COMMITTRANSACTION;
+        
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+
+        WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR( PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG );
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR( PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END FECPPROCESS;
+
+
+END BI_UIPROCESOSFACTURACION;

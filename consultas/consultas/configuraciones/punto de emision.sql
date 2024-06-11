@@ -1,0 +1,5 @@
+SELECT *
+FROM PUNTEMIS;
+
+select *
+from OPEN.PUEMUSUA

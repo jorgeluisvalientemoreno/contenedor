@@ -1,0 +1,47 @@
+declare
+	cursor cuDatos is
+	select p.package_id
+	from open.mo_packages p
+	where p.motive_status_id=14
+	  and p.attention_date<to_date('01/01/2018')
+	 ;
+	  
+	cursor cuPlan(nuSolicitud number) is
+	select d.plan_id
+	from open.wf_data_external d, open.wf_instance i
+	where d.plan_id=i.plan_id
+	  and d.plan_id=i.instance_id
+	  and i.status_id=6
+	  and d.package_id=nuSolicitud;
+	
+	cursor cuInstancias(nuPlan number) is
+	select *
+	from open.wf_instance i
+	where i.plan_id = nuPlan;
+	
+	cursor cuAtributos(nuInstancia number) is
+	select *
+	from open.WF_INSTANCE_ATTRIB a
+	where a.INSTANCE_ID = nuInstancia;
+begin
+	DBMS_OUTPUT.put_line('SOLICITUD|INSTANCE_ATTRIB_ID');
+	for reg in cuDatos loop 
+		for reg2 in cuPlan(reg.package_id) loop
+			for reg3 in cuInstancias(reg2.plan_id) loop
+				for reg4 in cuAtributos(reg3.instance_id) loop
+					begin
+						DELETE FROM Open.wf_instance_data_map
+							   WHERE (SOURCE_ID =reg4.INSTANCE_ATTRIB_ID OR TARGET =reg4.INSTANCE_ATTRIB_ID);
+						DELETE FROM Open.wf_instance_attrib a
+							WHERE a.instance_attrib_id =reg4.INSTANCE_ATTRIB_ID;
+							commit;
+					    DBMS_OUTPUT.put_line(REG.PACKAGE_ID||'|'||reg4.INSTANCE_ATTRIB_ID);
+					Exception
+						when others then 
+							rollback;
+					end;
+				end loop;
+			end loop;
+		end loop;
+	end loop;
+end;

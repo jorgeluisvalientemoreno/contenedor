@@ -1,0 +1,1 @@
+select * from equi_tipo_identfael

@@ -1,0 +1,1841 @@
+PACKAGE BODY cc_boRelacionComercial
+IS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    TYPE TYTBTIPOSRELCOMERCIAL IS TABLE OF DACC_RELATION_TYPE.STYCC_RELATION_TYPE
+        INDEX BY VARCHAR2(16);
+    
+    
+    
+    
+    CSBVERSION              CONSTANT VARCHAR2(250)  := 'SAO223961';
+    
+    CNUERR_PARAMETRO_NULO   CONSTANT NUMBER := 1422;
+    
+    CNUERR_NO_AMPARADOR     CONSTANT NUMBER := 15501;
+    
+    CNUERR_SIN_AMPARADOS    CONSTANT NUMBER := 15502;
+    
+    
+
+
+    
+    
+    
+    GNUESTACTIVO            NUMBER := MO_BOCONSTANTS.CNURELATION_ACTIVE;
+    GNUESTINACTIVO          NUMBER := MO_BOCONSTANTS.CNURELATION_INACTIVE;
+    GNUTIPOPRODAMPARADOR    NUMBER;
+    
+    
+    GNUDEFAULTMEANVACO      MEANVACO.MAVCCODI%TYPE;
+    
+    
+    GTBTIPOSRELCOMERCIAL    TYTBTIPOSRELCOMERCIAL;
+
+    
+    
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+
+    FUNCTION FBLPRODESTAAMPARADO
+    (
+        INUIDPRODUCTO   IN PR_PRODUCT.PRODUCT_ID%TYPE,
+        IDTFECHA        IN CC_DETAIL_COM_RELA.INITIAL_DATE%TYPE DEFAULT SYSDATE
+    )
+    RETURN BOOLEAN
+    IS
+        RCDETPRODAMPARADO   DACC_DETAIL_COM_RELA.STYCC_DETAIL_COM_RELA;
+    BEGIN
+        
+        RCDETPRODAMPARADO := CC_BCRELACIONCOMERCIAL.FRCOBTDETPRODAMPARADO(INUIDPRODUCTO,
+                                                                          IDTFECHA);
+        
+        
+        IF (RCDETPRODAMPARADO.DETAIL_COM_RELA_ID IS NULL) THEN
+            RETURN FALSE;
+        ELSE
+            RETURN TRUE;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    FUNCTION FBLPRODESAMPARADOR
+    (
+        INUIDPRODUCTO   IN PR_PRODUCT.PRODUCT_ID%TYPE,
+        IDTFECHA        IN CC_DETAIL_COM_RELA.INITIAL_DATE%TYPE DEFAULT SYSDATE
+    )
+    RETURN BOOLEAN
+    IS
+        TBDETPRODAMPARADOR   DACC_DETAIL_COM_RELA.TYTBCC_DETAIL_COM_RELA;
+    BEGIN
+        
+        TBDETPRODAMPARADOR := CC_BCRELACIONCOMERCIAL.FTBOBTDETPRODAMPARADOR(INUIDPRODUCTO,
+                                                                            IDTFECHA);
+
+        
+        IF (TBDETPRODAMPARADOR.COUNT = GE_BOCONSTANTS.CNUNULLNUM) THEN
+            RETURN FALSE;
+        ELSE
+            RETURN TRUE;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    FUNCTION FBLCLIENTEESAMPARADOR
+    (
+        INUIDCLIENTE    IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE,
+        IDTFECHA        IN CC_COMM_RELATION.INITIAL_DATE%TYPE DEFAULT SYSDATE
+    )
+    RETURN BOOLEAN
+    IS
+        TBRELSDECLIENTE     DACC_COMM_RELATION.TYTBCC_COMM_RELATION;
+    BEGIN
+        
+        TBRELSDECLIENTE := CC_BCRELACIONCOMERCIAL.FTBOBTRELSAMPARADAS(INUIDCLIENTE,
+                                                                      IDTFECHA);
+
+        
+        IF (TBRELSDECLIENTE.COUNT = GE_BOCONSTANTS.CNUNULLNUM) THEN
+            RETURN FALSE;
+        ELSE
+            RETURN TRUE;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    FUNCTION FBLCLIENTECONTIPOREL
+    (
+        INUIDCLIENTE    IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE,
+        INUTIPORELCOM   IN CC_RELATION_TYPE.RELATION_TYPE_ID%TYPE,
+        IDTFECHA        IN CC_COMM_RELATION.INITIAL_DATE%TYPE DEFAULT SYSDATE
+    )
+    RETURN BOOLEAN
+    IS
+        TBRELSDECLIENTE     DACC_COMM_RELATION.TYTBCC_COMM_RELATION;
+    BEGIN
+        
+        TBRELSDECLIENTE := CC_BCRELACIONCOMERCIAL.FTBOBTRELSDECLIENTE(INUIDCLIENTE,
+                                                                      IDTFECHA,
+                                                                      INUTIPORELCOM);
+
+        
+        IF (TBRELSDECLIENTE.COUNT = GE_BOCONSTANTS.CNUNULLNUM) THEN
+            RETURN FALSE;
+        ELSE
+            RETURN TRUE;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    PROCEDURE OBTINFODELAMPARADOR
+    (
+        INUIDPRODUCTO       IN  PR_PRODUCT.PRODUCT_ID%TYPE,
+        ONUIDPRODAMPARADOR  OUT PR_PRODUCT.PRODUCT_ID%TYPE,
+        ONUIDCONTRATO       OUT PR_PRODUCT.SUBSCRIPTION_ID%TYPE,
+        ONUIDCLIENTE        OUT GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE
+    )
+    IS
+        RCDETPRODAMPARADO   DACC_DETAIL_COM_RELA.STYCC_DETAIL_COM_RELA;
+    BEGIN
+        
+        RCDETPRODAMPARADO := CC_BCRELACIONCOMERCIAL.FRCOBTDETPRODAMPARADO(INUIDPRODUCTO,
+                                                                          UT_DATE.FDTSYSDATE);
+                                                                      
+        IF (RCDETPRODAMPARADO.DETAIL_COM_RELA_ID IS NOT NULL) THEN
+            ONUIDPRODAMPARADOR := RCDETPRODAMPARADO.SP_PRODUCT_ID;
+            ONUIDCONTRATO := DAPR_PRODUCT.FNUGETSUBSCRIPTION_ID(RCDETPRODAMPARADO.SP_PRODUCT_ID);
+            ONUIDCLIENTE := PKTBLSUSCRIPC.FNUGETCUSTOMER(ONUIDCONTRATO);
+        END IF;
+        
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    PROCEDURE RETIRARPRODUCTO
+    (
+        INUIDPRODUCTO       IN  PR_PRODUCT.PRODUCT_ID%TYPE,
+        IDTFECHARETIRO      IN  CC_DETAIL_COM_RELA.FINAL_DATE%TYPE DEFAULT SYSDATE
+    )
+    IS
+        RCDETPRODAMPARADO   DACC_DETAIL_COM_RELA.STYCC_DETAIL_COM_RELA;
+        TBDETRELACION       DACC_DETAIL_COM_RELA.TYTBCC_DETAIL_COM_RELA;
+        TBPRODAMPARADOS     DACC_DETAIL_COM_RELA.TYTBCC_DETAIL_COM_RELA;
+        RCRELCOMERCIAL      DACC_COMM_RELATION.STYCC_COMM_RELATION;
+    BEGIN
+        
+        RCDETPRODAMPARADO := CC_BCRELACIONCOMERCIAL.FRCOBTDETPRODAMPARADO(INUIDPRODUCTO,
+                                                                          IDTFECHARETIRO);
+                                                                      
+        
+        IF (RCDETPRODAMPARADO.DETAIL_COM_RELA_ID IS NOT NULL) THEN
+            
+            DACC_DETAIL_COM_RELA.UPDFINAL_DATE(RCDETPRODAMPARADO.DETAIL_COM_RELA_ID,
+                                               TRUNC(IDTFECHARETIRO));
+                                               
+            
+            TBDETRELACION := CC_BCRELACIONCOMERCIAL.FTBDETALLESDERELACION(RCDETPRODAMPARADO.COMM_RELATION_ID,
+                                                                          IDTFECHARETIRO);
+                                               
+
+            
+            IF (TBDETRELACION.COUNT = GE_BOCONSTANTS.CNUNULLNUM) THEN
+                
+                RCRELCOMERCIAL := DACC_COMM_RELATION.FRCGETRECORD(RCDETPRODAMPARADO.COMM_RELATION_ID);
+                
+                RCRELCOMERCIAL.FINAL_DATE := TRUNC(IDTFECHARETIRO);
+                RCRELCOMERCIAL.STATUS_ID := GNUESTINACTIVO;
+                DACC_COMM_RELATION.UPDRECORD(RCRELCOMERCIAL);
+            END IF;
+            
+            
+            TBPRODAMPARADOS := CC_BCRELACIONCOMERCIAL.FTBOBTDETPRODAMPARADOR(RCDETPRODAMPARADO.SP_PRODUCT_ID,
+                                                                             IDTFECHARETIRO);
+
+
+            
+            IF (TBPRODAMPARADOS.COUNT = GE_BOCONSTANTS.CNUNULLNUM) THEN
+                
+                IF (NOT MO_BOMOTIVE.FBOPRODHASPENDMOTBYTAG(RCDETPRODAMPARADO.SP_PRODUCT_ID, PS_BOPRODUCTMOTIVE.FSBGETGENERRETSERV)) THEN
+                    PR_BORETIRE.RETIREPRODUCT(RCDETPRODAMPARADO.SP_PRODUCT_ID,
+                                          PR_BOCONSTANTS.CNURETTYPADMINISTRATIVE,
+                                          IDTFECHARETIRO,
+                                          IDTFECHARETIRO,
+                                          NULL);
+                END IF;
+            END IF;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    FUNCTION FNUTIPOPRODAMPARADOR
+    RETURN PR_PRODUCT.PRODUCT_TYPE_ID%TYPE
+    IS
+    BEGIN
+        IF (GNUTIPOPRODAMPARADOR IS NOT NULL) THEN
+            RETURN GNUTIPOPRODAMPARADOR;
+        END IF;
+
+        
+        GNUTIPOPRODAMPARADOR := GE_BOPARAMETER.FNUGET('PROD_TYPE_SPONSOR');
+        
+        
+        IF (GNUTIPOPRODAMPARADOR IS NULL) THEN
+            ERRORS.SETERROR(CNUERR_PARAMETRO_NULO, 'PROD_TYPE_SPONSOR');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        RETURN GNUTIPOPRODAMPARADOR;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETDEFAULTMEANVACO
+    RETURN MEANVACO.MAVCCODI%TYPE
+    IS
+    BEGIN
+
+        
+        IF ( GNUDEFAULTMEANVACO IS NULL ) THEN
+            
+            GNUDEFAULTMEANVACO := GE_BOPARAMETER.FNUVALORNUMERICO('MAVC_NULO_SIN_LECT');
+        END IF;
+        
+        RETURN GNUDEFAULTMEANVACO;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            GNUDEFAULTMEANVACO := NULL;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            GNUDEFAULTMEANVACO := NULL;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUGETDEFAULTMEANVACO;
+    
+
+    PROCEDURE AMPARARPRODUCTO
+    (
+        INUCONTAMPARADOR    IN  PR_PRODUCT.SUBSCRIPTION_ID%TYPE,
+        INUIDPRODUCTO       IN  PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    IS
+        TBPRODS             DAPR_PRODUCT.TYTBPR_PRODUCT;
+        TBPRODSAMPARADOS    DACC_DETAIL_COM_RELA.TYTBCC_DETAIL_COM_RELA;
+        RCPRODAPARADO       DACC_DETAIL_COM_RELA.STYCC_DETAIL_COM_RELA;
+        NUTIPOPRODAMPARADOR PR_PRODUCT.PRODUCT_TYPE_ID%TYPE;
+        NUPRODAMPARADOR     PR_PRODUCT.PRODUCT_ID%TYPE;
+        NUIND               BINARY_INTEGER;
+        DTFECHAACT          DATE := UT_DATE.FDTSYSDATE;
+    BEGIN
+        
+        NUTIPOPRODAMPARADOR := FNUTIPOPRODAMPARADOR;
+        
+        
+        TBPRODS := PR_BCPRODUCT.FTBGETPRODBYSUBSNTYPE(INUCONTAMPARADOR, NUTIPOPRODAMPARADOR);
+        
+        
+        IF (TBPRODS.COUNT > GE_BOCONSTANTS.CNUNULLNUM) THEN
+            NUPRODAMPARADOR := TBPRODS(TBPRODS.FIRST).PRODUCT_ID;
+        ELSE
+            
+            TBPRODS.DELETE;
+            TBPRODS := PR_BCPRODUCT.FTBPRODSBYSUBSCID(INUCONTAMPARADOR);
+
+            
+            NUIND := TBPRODS.FIRST;
+            WHILE (NUIND IS NOT NULL) LOOP
+                
+                IF (FBLPRODESAMPARADOR(TBPRODS(NUIND).PRODUCT_ID)) THEN
+                    NUPRODAMPARADOR := TBPRODS(NUIND).PRODUCT_ID;
+                    EXIT;
+                END IF;
+                NUIND := TBPRODS.NEXT(NUIND);
+            END LOOP;
+        END IF;
+        
+        
+        IF (NUPRODAMPARADOR IS NULL) THEN
+            ERRORS.SETERROR(CNUERR_NO_AMPARADOR, INUCONTAMPARADOR);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        
+        TBPRODSAMPARADOS := CC_BCRELACIONCOMERCIAL.FTBOBTDETPRODAMPARADOR(NUPRODAMPARADOR,
+                                                                          DTFECHAACT);
+                                                                          
+        
+        IF (TBPRODSAMPARADOS.COUNT = GE_BOCONSTANTS.CNUNULLNUM ) THEN
+            ERRORS.SETERROR(CNUERR_SIN_AMPARADOS, NUPRODAMPARADOR);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        
+        RCPRODAPARADO.DETAIL_COM_RELA_ID := CC_BOSEQUENCE.FNUGETSEQ_CC_DETAIL_COM_RELA;
+        RCPRODAPARADO.COMM_RELATION_ID := TBPRODSAMPARADOS(TBPRODSAMPARADOS.FIRST).COMM_RELATION_ID;
+        RCPRODAPARADO.SP_PRODUCT_ID := NUPRODAMPARADOR;
+        RCPRODAPARADO.CV_PRODUCT_ID := INUIDPRODUCTO;
+        RCPRODAPARADO.INITIAL_DATE := DTFECHAACT;
+        RCPRODAPARADO.FINAL_DATE := UT_DATE.FDTMAXDATE;
+        
+        
+        DACC_DETAIL_COM_RELA.INSRECORD(RCPRODAPARADO);
+        
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    PROCEDURE INSRELACIONCOMERCIAL
+    (
+        ONUNUEVARELCOM      OUT CC_COMM_RELATION.COMM_RELATION_ID%TYPE,
+        INUTIPORELACION     IN  CC_COMM_RELATION.RELATION_TYPE_ID%TYPE,
+        INUCLIENTEAMPARADOR IN  CC_COMM_RELATION.SP_SUBSCRIBER_ID%TYPE,
+        INUCLIENTEAMPARADO  IN  CC_COMM_RELATION.CV_SUBSCRIBER_ID%TYPE,
+        INUIDDIRECCION      IN  CC_COMM_RELATION.ADDRESS_ID%TYPE,
+        IDTFECHAINICIAL     IN  CC_COMM_RELATION.INITIAL_DATE%TYPE DEFAULT SYSDATE
+    )
+    IS
+        RCRELCOMERCIAL  DACC_COMM_RELATION.STYCC_COMM_RELATION;
+    BEGIN
+        
+        RCRELCOMERCIAL.COMM_RELATION_ID := CC_BOSEQUENCE.FNUGETSEQ_CC_COMM_RELATION;
+        RCRELCOMERCIAL.RELATION_TYPE_ID := INUTIPORELACION;
+        RCRELCOMERCIAL.SP_SUBSCRIBER_ID := INUCLIENTEAMPARADOR;
+        RCRELCOMERCIAL.CV_SUBSCRIBER_ID := INUCLIENTEAMPARADO;
+        RCRELCOMERCIAL.ADDRESS_ID := INUIDDIRECCION;
+        RCRELCOMERCIAL.INITIAL_DATE := IDTFECHAINICIAL;
+        RCRELCOMERCIAL.FINAL_DATE := UT_DATE.FDTMAXDATE;
+        RCRELCOMERCIAL.STATUS_ID := GNUESTACTIVO;
+        
+        
+        DACC_COMM_RELATION.INSRECORD(RCRELCOMERCIAL);
+        
+        
+        ONUNUEVARELCOM := RCRELCOMERCIAL.COMM_RELATION_ID;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    PROCEDURE INSDETALLERELCOM
+    (
+        INUIDRELCOMERCIAL   IN CC_DETAIL_COM_RELA.COMM_RELATION_ID%TYPE,
+        INUPRODAMPARADOR    IN CC_DETAIL_COM_RELA.SP_PRODUCT_ID%TYPE,
+        INUPRODAMPARADO     IN CC_DETAIL_COM_RELA.CV_PRODUCT_ID%TYPE,
+        INUFECHAINICIAL     IN CC_COMM_RELATION.INITIAL_DATE%TYPE DEFAULT SYSDATE
+    )
+    IS
+        RCRELCOMERCIAL  DACC_DETAIL_COM_RELA.STYCC_DETAIL_COM_RELA;
+    BEGIN
+        
+        RCRELCOMERCIAL.DETAIL_COM_RELA_ID := CC_BOSEQUENCE.FNUGETSEQ_CC_DETAIL_COM_RELA;
+        RCRELCOMERCIAL.COMM_RELATION_ID := INUIDRELCOMERCIAL;
+        RCRELCOMERCIAL.SP_PRODUCT_ID := INUPRODAMPARADOR;
+        RCRELCOMERCIAL.CV_PRODUCT_ID := INUPRODAMPARADO;
+        RCRELCOMERCIAL.INITIAL_DATE := INUFECHAINICIAL;
+        RCRELCOMERCIAL.FINAL_DATE := UT_DATE.FDTMAXDATE;
+        
+        
+        DACC_DETAIL_COM_RELA.INSRECORD(RCRELCOMERCIAL);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUOBTRELACIONCOM
+    (
+        INUIDCLIEAMPARADOR  IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE,
+        INUIDCLIEAMPARADO   IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE,
+        INUIDTIPORELACION   IN CC_RELATION_TYPE.RELATION_TYPE_ID%TYPE,
+        IDTFECHAINICIAL     IN CC_COMM_RELATION.INITIAL_DATE%TYPE
+    )
+    RETURN CC_COMM_RELATION.COMM_RELATION_ID%TYPE
+    IS
+        RCRELACION      DACC_COMM_RELATION.STYCC_COMM_RELATION;
+    BEGIN
+        
+        RCRELACION := CC_BCRELACIONCOMERCIAL.FRCOBTRELCLIENTES(INUIDCLIEAMPARADOR,
+                                                               INUIDCLIEAMPARADO,
+                                                               INUIDTIPORELACION,
+                                                               IDTFECHAINICIAL);
+                                                               
+        
+        IF (RCRELACION.COMM_RELATION_ID IS NULL) THEN
+            INSRELACIONCOMERCIAL(RCRELACION.COMM_RELATION_ID,
+                                 INUIDTIPORELACION,
+                                 INUIDCLIEAMPARADOR,
+                                 INUIDCLIEAMPARADO,
+                                 NULL,
+                                 IDTFECHAINICIAL);
+        END IF;
+        
+        RETURN RCRELACION.COMM_RELATION_ID;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUPRODAMPPORCONTRATO
+    (
+        INUCONTRATO SUSCRIPC.SUSCCODI%TYPE,
+        IDTFECHA    DATE
+    )
+    RETURN PR_PRODUCT.PRODUCT_ID%TYPE
+    IS
+        TBPRODS     DAPR_PRODUCT.TYTBPR_PRODUCT;
+        NUPRODAMP   PR_PRODUCT.PRODUCT_ID%TYPE;
+        NUIND       BINARY_INTEGER;
+    BEGIN
+        
+        TBPRODS := PR_BCPRODUCT.FTBPRODSBYSUBSCID(INUCONTRATO);
+        
+        
+        NUIND := TBPRODS.FIRST;
+        WHILE (NUIND IS NOT NULL) LOOP
+            
+            IF (FBLPRODESAMPARADOR(TBPRODS(NUIND).PRODUCT_ID, IDTFECHA)) THEN
+                NUPRODAMP := TBPRODS(NUIND).PRODUCT_ID;
+                EXIT;
+            END IF;
+            NUIND := TBPRODS.NEXT(NUIND);
+        END LOOP;
+        
+        
+        RETURN NUPRODAMP;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUPRODAMPPORCLIENTE
+    (
+        INUIDCLIENTE        GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE,
+        IRCCONTAMPARADO     SUSCRIPC%ROWTYPE,
+        IDTFECHA            DATE
+    )
+    RETURN PR_PRODUCT.PRODUCT_ID%TYPE
+    IS
+        TBCONTRATOS     PKBCSUSCRIPC.TYTBSUSCRIPC;
+        NUPRODAMP       PR_PRODUCT.PRODUCT_ID%TYPE;
+        NUIND           BINARY_INTEGER;
+    BEGIN
+        
+        TBCONTRATOS := PKBCSUSCRIPC.FTBSUBSCBYCLIENTID(INUIDCLIENTE);
+
+        
+        NUIND := TBCONTRATOS.FIRST;
+        WHILE (NUIND IS NOT NULL) LOOP
+            
+            IF (TBCONTRATOS(NUIND).SUSCSIST = IRCCONTAMPARADO.SUSCSIST AND
+                TBCONTRATOS(NUIND).SUSCTISU = IRCCONTAMPARADO.SUSCTISU AND
+                TBCONTRATOS(NUIND).SUSCCICL = IRCCONTAMPARADO.SUSCCICL) THEN
+                
+                NUPRODAMP := FNUPRODAMPPORCONTRATO(TBCONTRATOS(NUIND).SUSCCODI, IDTFECHA);
+                
+                
+                IF (NUPRODAMP IS NOT NULL) THEN
+                    EXIT;
+                END IF;
+            END IF;
+
+            NUIND := TBCONTRATOS.NEXT(NUIND);
+        END LOOP;
+
+        
+        RETURN NUPRODAMP;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREARPRODAMPARADOR
+    (
+        INUIDCLIENTE        IN  GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE,
+        INUIDCONTRATO       IN  SUSCRIPC.SUSCCODI%TYPE,
+        INUIDDIRCONTRATO    IN  SUSCRIPC.SUSCIDDI%TYPE,
+        INUIDPLANCOMERCIAL  IN  CC_COMMERCIAL_PLAN.COMMERCIAL_PLAN_ID%TYPE,
+        INUIDEMPRESA        IN  PR_PRODUCT.COMPANY_ID%TYPE,
+        ONUIDNUEVOPROD      OUT PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    IS
+        NUIDDIRPROD         AB_ADDRESS.ADDRESS_ID%TYPE;
+    BEGIN
+        
+        NUIDDIRPROD := NVL(DAGE_SUBSCRIBER.FNUGETADDRESS_ID(INUIDCLIENTE),
+                           INUIDDIRCONTRATO);
+
+        
+        
+        PR_BOCREATIONPRODUCT.REGISTER(
+                            INUIDCONTRATO, 
+                            FNUTIPOPRODAMPARADOR,
+                            INUIDPLANCOMERCIAL, 
+                            NULL,               
+                            NUIDDIRPROD,        
+                            NULL,               
+                            NULL,               
+                            INUIDEMPRESA,       
+                            NULL,               
+                            NULL,               
+                            ONUIDNUEVOPROD,     
+                            PR_BOCONSTANTS.FNUGETACTIVEPRODUCT); 
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ADICIONARPRODUCTO
+    (
+        INUIDCLIAMPARADOR   IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE,
+        INUIDPLANCOMERCIAL  IN CC_COMMERCIAL_PLAN.COMMERCIAL_PLAN_ID%TYPE,
+        IORCCONTAMPARADOR   IN OUT SUSCRIPC%ROWTYPE,
+        INUIDTIPORELACION   IN CC_COMM_RELATION.RELATION_TYPE_ID%TYPE,
+        IDTFECHAINICIAL     IN CC_COMM_RELATION.INITIAL_DATE%TYPE,
+        IDTFECHAFINAL       IN CC_COMM_RELATION.FINAL_DATE%TYPE,
+        INUIDCLIAMPARADO    IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE,
+        INUIDPRODAMPARADO   IN PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    IS
+        RCCONTPROD          SUSCRIPC%ROWTYPE;
+        RCPROD              DAPR_PRODUCT.STYPR_PRODUCT;
+        NUIDPRODAMPARADOR   PR_PRODUCT.PRODUCT_ID%TYPE;
+        NURELCOMERCIAL      CC_COMM_RELATION.COMM_RELATION_ID%TYPE;
+        INUNUEVOCONTRATO    SUSCRIPC.SUSCCODI%TYPE;
+        NUERRORCODE         GE_MESSAGE.MESSAGE_ID%TYPE;
+        SBERRORMESSAGE      GE_MESSAGE.DESCRIPTION%TYPE;
+    BEGIN
+        
+        RCPROD := DAPR_PRODUCT.FRCGETRECORD(INUIDPRODAMPARADO);
+        RCCONTPROD := PKTBLSUSCRIPC.FRCGETRECORD(RCPROD.SUBSCRIPTION_ID);
+
+        
+        NURELCOMERCIAL := FNUOBTRELACIONCOM(INUIDCLIAMPARADOR,
+                                            INUIDCLIAMPARADO,
+                                            INUIDTIPORELACION,
+                                            IDTFECHAINICIAL);
+
+        
+        IF (IORCCONTAMPARADOR.SUSCSIST IS NULL) THEN
+            
+            CREARPRODAMPARADOR(INUIDCLIAMPARADOR,
+                               IORCCONTAMPARADOR.SUSCCODI,
+                               IORCCONTAMPARADOR.SUSCIDDI,
+                               INUIDPLANCOMERCIAL,
+                               RCCONTPROD.SUSCSIST,
+                               NUIDPRODAMPARADOR);
+
+            
+            INSDETALLERELCOM(NURELCOMERCIAL,
+                             NUIDPRODAMPARADOR,
+                             INUIDPRODAMPARADO,
+                             IDTFECHAINICIAL);
+            
+            
+            IORCCONTAMPARADOR.SUSCSIST := RCCONTPROD.SUSCSIST;
+            IORCCONTAMPARADOR.SUSCTISU := RCCONTPROD.SUSCTISU;
+            IORCCONTAMPARADOR.SUSCCICL := RCCONTPROD.SUSCCICL;
+            IORCCONTAMPARADOR.SUSCTIMO := RCCONTPROD.SUSCTIMO;
+            PKTBLSUSCRIPC.UPRECORD(IORCCONTAMPARADOR);
+        ELSE
+            
+            IF (IORCCONTAMPARADOR.SUSCSIST = RCCONTPROD.SUSCSIST AND
+                IORCCONTAMPARADOR.SUSCTISU = RCCONTPROD.SUSCTISU AND
+                IORCCONTAMPARADOR.SUSCCICL = RCCONTPROD.SUSCCICL) THEN
+                
+                NUIDPRODAMPARADOR := FNUPRODAMPPORCONTRATO(IORCCONTAMPARADOR.SUSCCODI, IDTFECHAINICIAL);
+
+                
+                IF (NUIDPRODAMPARADOR IS NULL) THEN
+                    CREARPRODAMPARADOR(INUIDCLIAMPARADOR,
+                                       IORCCONTAMPARADOR.SUSCCODI,
+                                       IORCCONTAMPARADOR.SUSCIDDI,
+                                       INUIDPLANCOMERCIAL,
+                                       IORCCONTAMPARADOR.SUSCSIST,
+                                       NUIDPRODAMPARADOR);
+                END IF;
+
+                
+                INSDETALLERELCOM(NURELCOMERCIAL,
+                                 NUIDPRODAMPARADOR,
+                                 INUIDPRODAMPARADO,
+                                 IDTFECHAINICIAL);
+                
+            ELSE
+                
+                NUIDPRODAMPARADOR := FNUPRODAMPPORCLIENTE(INUIDCLIAMPARADOR,
+                                                          RCCONTPROD,
+                                                          IDTFECHAINICIAL);
+
+                
+                IF (NUIDPRODAMPARADOR IS NOT NULL) THEN
+                    
+                    INSDETALLERELCOM(NURELCOMERCIAL,
+                                     NUIDPRODAMPARADOR,
+                                     INUIDPRODAMPARADO,
+                                     IDTFECHAINICIAL);
+
+                ELSE
+                    
+                    PKSUBSCRIBER.REGISTERSUBSCRIPTION(INUIDCLIAMPARADOR,
+                                                      INUNUEVOCONTRATO,
+                                                      RCCONTPROD.SUSCCICL,
+                                                      IORCCONTAMPARADOR.SUSCBANC,
+                                                      IORCCONTAMPARADOR.SUSCBAPA,
+                                                      IORCCONTAMPARADOR.SUSCCUBP,
+                                                      IORCCONTAMPARADOR.SUSCCUCO,
+                                                      IORCCONTAMPARADOR.SUSCSBBP,
+                                                      IORCCONTAMPARADOR.SUSCSUBA,
+                                                      IORCCONTAMPARADOR.SUSCTCBA,
+                                                      IORCCONTAMPARADOR.SUSCTCBP,
+                                                      IORCCONTAMPARADOR.SUSCTDCO,
+                                                      IORCCONTAMPARADOR.SUSCTTPA,
+                                                      IORCCONTAMPARADOR.SUSCVETC,
+                                                      IORCCONTAMPARADOR.SUSCIDDI,
+                                                      IORCCONTAMPARADOR.SUSCTIMO,
+                                                      RCCONTPROD.SUSCTISU,
+                                                      NUERRORCODE,
+                                                      SBERRORMESSAGE,
+                                                      RCCONTPROD.SUSCSIST);
+                                                      
+                    
+                    ERRORS.CHECKERROR(NUERRORCODE);
+                    
+                    
+                    CREARPRODAMPARADOR(INUIDCLIAMPARADOR,
+                                       INUNUEVOCONTRATO,
+                                       IORCCONTAMPARADOR.SUSCIDDI,
+                                       INUIDPLANCOMERCIAL,
+                                       RCCONTPROD.SUSCSIST,
+                                       NUIDPRODAMPARADOR);
+
+                    
+                    INSDETALLERELCOM(NURELCOMERCIAL,
+                                     NUIDPRODAMPARADOR,
+                                     INUIDPRODAMPARADO,
+                                     IDTFECHAINICIAL);
+                END IF;
+            END IF;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    FUNCTION FNUPRIMERCONTAMPARADOR
+    (
+        INUIDCLIENTE    IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE,
+        INUTIPORELACION IN CC_RELATION_TYPE.RELATION_TYPE_ID%TYPE,
+        IDTFECHA        IN CC_COMM_RELATION.INITIAL_DATE%TYPE DEFAULT SYSDATE
+    )
+    RETURN SUSCRIPC.SUSCCODI%TYPE
+    IS
+        TBCONTRATOS     PKBCSUSCRIPC.TYTBSUSCRIPC;
+        TBPRODS         DAPR_PRODUCT.TYTBPR_PRODUCT;
+        TBPRODAMPARADOS DACC_DETAIL_COM_RELA.TYTBCC_DETAIL_COM_RELA;
+        NUCONTRATO      SUSCRIPC.SUSCCODI%TYPE;
+        NUINDCONT       BINARY_INTEGER;
+        NUINDPROD       BINARY_INTEGER;
+        NUTIPOREL       CC_RELATION_TYPE.RELATION_TYPE_ID%TYPE;
+    BEGIN
+        
+        TBCONTRATOS := PKBCSUSCRIPC.FTBSUBSCBYCLIENTID(INUIDCLIENTE);
+
+        
+        NUINDCONT := TBCONTRATOS.FIRST;
+        WHILE (NUINDCONT IS NOT NULL) LOOP
+            
+            TBPRODS := PR_BCPRODUCT.FTBPRODSBYSUBSCID(TBCONTRATOS(NUINDCONT).SUSCCODI);
+
+            
+            NUINDPROD := TBPRODS.FIRST;
+            WHILE (NUINDPROD IS NOT NULL) LOOP
+                
+                TBPRODAMPARADOS := CC_BCRELACIONCOMERCIAL.FTBOBTDETPRODAMPARADOR(TBPRODS(NUINDPROD).PRODUCT_ID,
+                                                                                 IDTFECHA);
+                
+                IF (TBPRODAMPARADOS.COUNT > GE_BOCONSTANTS.CNUNULLNUM) THEN
+                    
+                    NUTIPOREL := DACC_COMM_RELATION.FNUGETRELATION_TYPE_ID(TBPRODAMPARADOS(TBPRODAMPARADOS.FIRST).COMM_RELATION_ID);
+                    IF (NUTIPOREL = INUTIPORELACION) THEN
+                        NUCONTRATO := TBPRODS(NUINDPROD).SUBSCRIPTION_ID;
+                        EXIT;
+                    END IF;
+                END IF;
+                NUINDPROD := TBPRODS.NEXT(NUINDPROD);
+            END LOOP;
+
+            
+            IF (NUCONTRATO IS NOT NULL) THEN
+                EXIT;
+            END IF;
+            NUINDCONT := TBCONTRATOS.NEXT(NUINDCONT);
+        END LOOP;
+
+        
+        RETURN NUCONTRATO;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    PROCEDURE LIMPIARMEMORIA
+    IS
+    BEGIN
+    
+        UT_TRACE.TRACE( 'Inicio: [CC_BORelacionComercial.LimpiarMemoria]', 5 );
+
+        
+        GTBTIPOSRELCOMERCIAL.DELETE;
+        DACC_RELATION_TYPE.CLEARMEMORY;
+
+        UT_TRACE.TRACE( 'Fin: [CC_BORelacionComercial.LimpiarMemoria]', 5 );
+
+    EXCEPTION
+
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE( 'Error: [CC_BORelacionComercial.LimpiarMemoria]', 5 );
+            RAISE;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE( 'Error: [CC_BORelacionComercial.LimpiarMemoria]', 5 );
+            RAISE EX.CONTROLLED_ERROR;
+    
+    END;
+
+    FUNCTION FRCOBTTIPORELCOMERCIAL
+    (
+        INUIDRELCOMERCIAL       IN      CC_COMM_RELATION.COMM_RELATION_ID%TYPE
+    ) RETURN DACC_RELATION_TYPE.STYCC_RELATION_TYPE
+    IS
+
+        
+        RCTIPORELCOMERCIAL      DACC_RELATION_TYPE.STYCC_RELATION_TYPE;
+
+        
+        SBTIPRELIDX             VARCHAR2(16);
+
+    BEGIN
+    
+        UT_TRACE.TRACE( 'Inicio: [CC_BORelacionComercial.frcObtTipoRelComercial]', 5 );
+
+        
+        
+        SBTIPRELIDX := TO_CHAR( INUIDRELCOMERCIAL );
+
+        
+        
+        IF ( NOT GTBTIPOSRELCOMERCIAL.EXISTS( SBTIPRELIDX ) ) THEN
+        
+            
+            
+            GTBTIPOSRELCOMERCIAL( SBTIPRELIDX ) := CC_BCRELACIONCOMERCIAL.FRCOBTTIPORELCOMERCIAL
+            (
+                INUIDRELCOMERCIAL
+            );
+        
+        END IF;
+
+        
+        
+        RCTIPORELCOMERCIAL := GTBTIPOSRELCOMERCIAL( SBTIPRELIDX );
+
+        UT_TRACE.TRACE( 'Fin: [CC_BORelacionComercial.frcObtTipoRelComercial]', 5 );
+
+        RETURN( RCTIPORELCOMERCIAL );
+
+    EXCEPTION
+
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE( 'Error: [CC_BORelacionComercial.frcObtTipoRelComercial]', 5 );
+            RAISE;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE( 'Error: [CC_BORelacionComercial.frcObtTipoRelComercial]', 5 );
+            RAISE EX.CONTROLLED_ERROR;
+    
+    END;
+
+    FUNCTION FNUCLIAMPARADORXTIPO
+    (
+        INUIDCLIAMPARADO    IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE,
+        INUIDTIPORELACION   IN CC_RELATION_TYPE.RELATION_TYPE_ID%TYPE,
+        IDTFECHA            IN CC_COMM_RELATION.INITIAL_DATE%TYPE DEFAULT SYSDATE
+    )
+    RETURN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE
+    IS
+        TBAMPARADOS     DACC_COMM_RELATION.TYTBCC_COMM_RELATION;
+        NUIDAMPARADOR   GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE;
+    BEGIN
+        
+        TBAMPARADOS := CC_BCRELACIONCOMERCIAL.FTBAMPARADORESXTIPO(INUIDCLIAMPARADO,
+                                                                  INUIDTIPORELACION,
+                                                                  IDTFECHA);
+
+        
+        IF (TBAMPARADOS.COUNT > 0) THEN
+            NUIDAMPARADOR := TBAMPARADOS(TBAMPARADOS.FIRST).SP_SUBSCRIBER_ID;
+        END IF;
+
+        
+        RETURN NUIDAMPARADOR;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE WARRANTYCONTRACTREGISTER_BSS
+    (
+       INUPACKAGEID  IN MO_DATA_COMM_RELA.PACKAGE_ID%TYPE
+    )
+    IS
+        
+        RCCOMMRELATION      DACC_COMM_RELATION.STYCC_COMM_RELATION;
+        NUDEPARTAM          AB_ADDRESS.GEOGRAP_LOCATION_ID%TYPE;
+        NULOCALIDA          AB_ADDRESS.GEOGRAP_LOCATION_ID%TYPE;
+
+        ONUERRORCODE        GE_MESSAGE.MESSAGE_ID%TYPE := NULL;
+        OSBERRORMESSAGE     VARCHAR2(2000) := NULL;
+    BEGIN
+
+        UT_TRACE.TRACE('INICIO CC_BORelacionComercial.WARRANTYCONTRACTRegister_BSS  inuPackageId['||INUPACKAGEID||']', 5 );
+
+        
+        RCCOMMRELATION := CC_BCRELACIONCOMERCIAL.FRCINFORELATBYPACKAGE ( INUPACKAGEID );
+
+        
+        UT_TRACE.TRACE('commercial_relat_id['||RCCOMMRELATION.COMM_RELATION_ID||
+                       '] Address['||RCCOMMRELATION.ADDRESS_ID||']' ,5);
+
+        IF RCCOMMRELATION.ADDRESS_ID IS NOT NULL THEN
+            NULOCALIDA := DAAB_ADDRESS.FNUGETGEOGRAP_LOCATION_ID(RCCOMMRELATION.ADDRESS_ID);
+            NUDEPARTAM := GE_BCGEOGRA_LOCATION.FNUGETDEPARTMENT(NULOCALIDA);
+        END IF;
+        IF NUDEPARTAM IS NULL AND NULOCALIDA IS NULL THEN
+            NUDEPARTAM := -1;
+            NULOCALIDA := -1;
+        END IF;
+
+        UT_TRACE.TRACE('nuDepartam['||NUDEPARTAM||'] nuLocalida['||NULOCALIDA||']' ,5);
+
+        UT_TRACE.TRACE('Relaci�n comercial ['||RCCOMMRELATION.COMM_RELATION_ID||']' ,5);
+
+        
+        PKWARRANTYCONTRACTREG.RUNPROCESS (
+                    RCCOMMRELATION.COMM_RELATION_ID,    
+                    RCCOMMRELATION.RELATION_TYPE_ID,    
+                    NUDEPARTAM,                         
+                    NULOCALIDA,                         
+                    RCCOMMRELATION.ADDRESS_ID,          
+                    RCCOMMRELATION.INITIAL_DATE,        
+                    RCCOMMRELATION.FINAL_DATE,          
+                    UT_DATE.FDTSYSDATE,                 
+                    ONUERRORCODE,
+                    OSBERRORMESSAGE
+                                       );
+        GW_BOERRORS.CHECKERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        UT_TRACE.TRACE('onuErrorCode['||ONUERRORCODE||'] osbErrorMessage['||OSBERRORMESSAGE||']',3);
+
+        UT_TRACE.TRACE('FIN CC_BORelacionComercial.WARRANTYCONTRACTRegister_BSS', 5 );
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ACTIVECOMMRELATION
+    (
+        INUPACKAGEID     IN MO_DATA_COMM_RELA.PACKAGE_ID%TYPE
+    )
+    IS
+        
+        RCCOMMRELATION                  DACC_COMM_RELATION.STYCC_COMM_RELATION;
+        NUCOMM_RELATION_ID      CC_COMM_RELATION.COMM_RELATION_ID%TYPE;
+
+    BEGIN
+
+        UT_TRACE.TRACE('INICIO cc_boRelacionComercial.ActiveCommRelation inuPackageId ['||INUPACKAGEID||']', 5);
+
+        
+        RCCOMMRELATION := CC_BCRELACIONCOMERCIAL.FRCINFORELATBYPACKAGE(INUPACKAGEID);
+
+        
+        NUCOMM_RELATION_ID:=RCCOMMRELATION.COMM_RELATION_ID;
+
+        
+        DACC_COMM_RELATION.UPDSTATUS_ID (
+                            NUCOMM_RELATION_ID,
+                            MO_BOCONSTANTS.CNURELATION_ACTIVE
+                        );
+
+        UT_TRACE.TRACE('FIN cc_boRelacionComercial.ActiveCommRelation', 5);
+        
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ACTIVECOMMRELATION;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ENDINGCOMMRELATION
+    (
+        INUCOMRELAID     IN     CC_COMM_RELATION.COMM_RELATION_ID%TYPE,
+        INUCAUSA         IN     CC_CAUSAL.CAUSAL_ID%TYPE
+    )
+    IS
+        
+        RCCOMMRELATION        DACC_COMM_RELATION.STYCC_COMM_RELATION;
+
+        SBCRITERIADETARECO    VARCHAR2(100);
+        TBDETAILRECO          DACC_DETAIL_COM_RELA.TYTBCC_DETAIL_COM_RELA;
+        RCDETAILRECO          DACC_DETAIL_COM_RELA.STYCC_DETAIL_COM_RELA;
+
+        
+        NUERRORCODE        GE_ERROR_LOG.ERROR_LOG_ID%TYPE;
+        SBERRORMESSAGE     GE_ERROR_LOG.DESCRIPTION%TYPE;
+        SBEXISTGARANTIES   VARCHAR(1);
+
+    BEGIN
+
+        UT_TRACE.TRACE('INICIO cc_boRelacionComercial.EndingCommRelation ProductId ['||INUCOMRELAID||']', 5);
+
+        
+        DACC_COMM_RELATION.GETRECORD(INUCOMRELAID,RCCOMMRELATION);
+
+        
+        RCCOMMRELATION.STATUS_ID:=MO_BOCONSTANTS.CNURELATION_INACTIVE;
+        RCCOMMRELATION.FINAL_DATE:=SYSDATE;
+
+        
+        DACC_COMM_RELATION.UPDRECORD(RCCOMMRELATION);
+        
+        
+        TBDETAILRECO :=  CC_BCRELACIONCOMERCIAL.FTBDETALLESDERELACION(INUCOMRELAID,SYSDATE);
+
+        
+        IF (TBDETAILRECO.COUNT>0) THEN
+
+        FOR I IN  TBDETAILRECO.FIRST..TBDETAILRECO.LAST
+            LOOP
+
+                RCDETAILRECO:=TBDETAILRECO(I);
+                RCDETAILRECO.FINAL_DATE:=SYSDATE;
+
+                UT_TRACE.TRACE('Producto: Amparador ['||RCDETAILRECO.SP_PRODUCT_ID ||'], Amparado ['||RCDETAILRECO.CV_PRODUCT_ID||']', 5);
+
+                
+                DACC_DETAIL_COM_RELA.UPDRECORD(RCDETAILRECO);
+
+            END LOOP;
+        END IF;
+        
+        
+        SBEXISTGARANTIES:=FSBCOMMRELAEXISTGARAN(INUCOMRELAID);
+
+        
+        IF (SBEXISTGARANTIES=GE_BOCONSTANTS.CSBYES) THEN
+
+            
+            PKWARRANTYCONTRACT.FINALIZEWARRANTYCONTRACT(INUCOMRELAID, SYSDATE,NULL,NUERRORCODE,SBERRORMESSAGE);
+        
+            
+            GW_BOERRORS.CHECKERROR(NUERRORCODE, SBERRORMESSAGE);
+            UT_TRACE.TRACE('nuErrorCode['||NUERRORCODE||'] osbErrorMessage['||SBERRORMESSAGE||']',3);
+
+            
+             PR_BOWARRANTY.UPDATECAUSAL(INUCOMRELAID,INUCAUSA,SYSDATE);
+        
+        END IF;
+
+        UT_TRACE.TRACE('FIN cc_boRelacionComercial.EndingCommRelation Comm. Relation ['||INUCOMRELAID ||']', 5);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ENDINGCOMMRELATION;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PROCESARELACION
+    (
+       INUPACKAGEID  IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+		
+        RCCOMMRELATION      DACC_COMM_RELATION.STYCC_COMM_RELATION;
+        NUIDRELACION        CC_COMM_RELATION.COMM_RELATION_ID%TYPE;
+
+        
+        RCMOTIVEPRODUCT           DAMO_MOTIVE.STYMO_MOTIVE;
+        RFMOTIVEPRODUCTS          CONSTANTS.TYREFCURSOR;
+
+        
+        RCMOTIVEWARRANTY          DAMO_MOTIVE.STYMO_MOTIVE;
+        RFMOTIVEWARRANTIES        CONSTANTS.TYREFCURSOR;
+
+        
+        NUNEWPRODUCTID      PR_PRODUCT.PRODUCT_ID%TYPE;
+
+        
+        RCDETAILCOMMRELA    DACC_DETAIL_COM_RELA.STYCC_DETAIL_COM_RELA;
+        
+        NUCLIENTE           GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE;
+	BEGIN
+
+        UT_TRACE.TRACE('INICIO cc_boRelacionComercial.ProcesaRelacion  inuPackageId ['||INUPACKAGEID||']',5);
+
+	    
+        RCCOMMRELATION := CC_BCRELACIONCOMERCIAL.FRCINFORELATBYPACKAGE ( INUPACKAGEID );
+
+        
+        NUIDRELACION :=  RCCOMMRELATION.COMM_RELATION_ID;
+
+        
+        RFMOTIVEPRODUCTS:= MO_BCMOTIVE.FRFPRODUCTBYPACKAGE(INUPACKAGEID);
+        
+        LOOP
+        FETCH  RFMOTIVEPRODUCTS INTO RCMOTIVEPRODUCT.PRODUCT_ID , RCMOTIVEPRODUCT.SUBSCRIPTION_ID;
+            EXIT WHEN RFMOTIVEPRODUCTS%NOTFOUND;
+
+            UT_TRACE.TRACE('Procesa Producto ['||RCMOTIVEPRODUCT.PRODUCT_ID||']  Contrato ['||RCMOTIVEPRODUCT.SUBSCRIPTION_ID||']',5);
+            
+            
+            CREAPRODCOPIA(RCMOTIVEPRODUCT.PRODUCT_ID, RCMOTIVEPRODUCT.SUBSCRIPTION_ID,NUNEWPRODUCTID);
+
+            UT_TRACE.TRACE('NewProductId ['||NUNEWPRODUCTID||']',5);
+            
+            
+
+
+            PKTBLSERVSUSC.UPDSESUMECV(NUNEWPRODUCTID, FNUGETDEFAULTMEANVACO);
+            PKTBLSERVSUSC.CLEARMEMORY;
+            
+            
+            INSDETALLERELCOM(
+               NUIDRELACION,
+               NUNEWPRODUCTID,
+               RCMOTIVEPRODUCT.PRODUCT_ID,
+               SYSDATE
+            );
+            
+            
+            RFMOTIVEWARRANTIES:= MO_BCWARRANTIES.FRFWARRANPRODUCTPACK(RCMOTIVEPRODUCT.PRODUCT_ID, INUPACKAGEID);
+
+            LOOP
+            FETCH  RFMOTIVEWARRANTIES INTO RCMOTIVEWARRANTY.MOTIVE_ID;
+
+                EXIT WHEN RFMOTIVEWARRANTIES%NOTFOUND;
+                
+                UT_TRACE.TRACE('Procesa Motivo ['||RCMOTIVEWARRANTY.MOTIVE_ID||']  Producto ['||RCMOTIVEPRODUCT.PRODUCT_ID||'] New Producto ['||NUNEWPRODUCTID||']',5);
+
+                
+                PROCESAGARANTIASMOTIVO(RCMOTIVEWARRANTY.MOTIVE_ID,NUIDRELACION,NUNEWPRODUCTID,RCMOTIVEPRODUCT.SUBSCRIPTION_ID);
+
+            END LOOP;
+
+        END LOOP;
+
+        
+        ACTIVECOMMRELATION(INUPACKAGEID);
+
+        
+        NUCLIENTE := PKTBLSUSCRIPC.FNUGETSUSCCLIE( RCMOTIVEPRODUCT.SUBSCRIPTION_ID );
+
+        
+        GE_BOSUBSCRIBER.SETSUBSCRIBERSTATUS( NUCLIENTE );
+
+        UT_TRACE.TRACE('FIN cc_boRelacionComercial.ProcesaRelacion',5);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            GNUDEFAULTMEANVACO := NULL;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            GNUDEFAULTMEANVACO := NULL;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END PROCESARELACION;
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREAPRODCOPIA
+    (
+       INUPRODUCTID  IN   PR_PRODUCT.PRODUCT_ID%TYPE,
+       INUCONTRACT   IN   SUSCRIPC.SUSCCODI%TYPE,
+       ONUPRODUCTID  OUT  PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    IS
+        RCPRPRODUCT         DAPR_PRODUCT.STYPR_PRODUCT;
+
+        NUSESUESCO          NUMBER:=PKGENERALPARAMETERSMGR.FNUGETNUMBERVALUE ('EST_SERVICIO_SIN_CORTE');
+        RCSERVSUSC          SERVSUSC%ROWTYPE;
+        
+        RCDATASERVSUSC      SERVSUSC%ROWTYPE;
+
+    BEGIN
+
+         UT_TRACE.TRACE('INICIO cc_boRelacionComercial.CreaProdCopia  inuProductId ['||INUPRODUCTID||'] inuContratoId ['||INUCONTRACT||']',5);
+
+         
+         RCPRPRODUCT := DAPR_PRODUCT.FRCGETRECORD(INUPRODUCTID);
+         
+         
+         
+         RCPRPRODUCT.SUBSCRIPTION_ID:=  INUCONTRACT;
+         RCPRPRODUCT.ROLE_WARRANTY  :=  PR_BOCONSTANTS.CSBRENTER_ROL_WARRANTY;
+         RCPRPRODUCT.CREATION_DATE  :=  SYSDATE;
+         RCPRPRODUCT.RETIRE_DATE    :=  UT_DATE.FDTMAXDATE;
+         
+         
+         
+         RCSERVSUSC:=PKTBLSERVSUSC.FRCGETRECORD(RCPRPRODUCT.PRODUCT_ID);
+         RCSERVSUSC.SESUESCO    :=NUSESUESCO;
+         RCSERVSUSC.SESUROGA    :=RCPRPRODUCT.ROLE_WARRANTY;
+         RCSERVSUSC.SESUSUSC    :=RCPRPRODUCT.SUBSCRIPTION_ID;
+         RCSERVSUSC.SESUFUCC    :=RCPRPRODUCT.CREATION_DATE;
+         RCSERVSUSC.SESUFERE    :=RCPRPRODUCT.RETIRE_DATE;
+         
+         
+         UT_TRACE.TRACE('Contrato Bocommercial ['||RCSERVSUSC.SESUSUSC||']',5);
+         
+         
+         PR_BOCOPYPRODUCT.COPYPRODUCT(
+             RCPRPRODUCT,
+             RCSERVSUSC,
+             FALSE,
+             TRUE,
+             TRUE,
+             TRUE,
+             RCDATASERVSUSC,
+             FALSE
+         );
+         
+         ONUPRODUCTID:=RCDATASERVSUSC.SESUNUSE;
+         
+         UT_TRACE.TRACE('FIN cc_boRelacionComercial.CreaProdCopia',5);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CREAPRODCOPIA;
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PROCESAGARANTIASMOTIVO
+    (
+        INUMOTIVEID         IN  MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUIDRELACION       IN  CC_COMM_RELATION.COMM_RELATION_ID%TYPE,
+        INUNEWPRODUCT       IN  PR_PRODUCT.PRODUCT_ID%TYPE,
+        INUNEWSUSCRIPC      IN  SUSCRIPC.SUSCCODI%TYPE
+    )
+    IS
+        SBCRITERIWARRANTY     VARCHAR2(100);
+        TBWARRANTY            DAMO_WARRANTY.TYTBMO_WARRANTY;
+        RCMOMOTIVE            DAMO_MOTIVE.STYMO_MOTIVE;
+
+    BEGIN
+
+        UT_TRACE.TRACE('INICIO cc_boRelacionComercial.ProcesaGarantiasMotivo inuMotiveId ['||INUMOTIVEID||']',5);
+
+        
+        PR_BOWARRANTY.CREATEWARRANTY(INUMOTIVEID, INUIDRELACION,INUNEWPRODUCT,INUNEWSUSCRIPC);
+
+        UT_TRACE.TRACE('FIN cc_boRelacionComercial.ProcesaGarantiasMotivo',5);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END PROCESAGARANTIASMOTIVO;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBCOMMRELAEXISTGARAN
+    (
+        INUCOMMRELAID   IN  CC_DETAIL_COM_RELA.COMM_RELATION_ID%TYPE
+    )
+    RETURN VARCHAR2
+    IS
+        BLEXISTGARANTIES    BOOLEAN;
+
+    BEGIN
+
+        UT_TRACE.TRACE('INICIO cc_boRelacionComercial.fsbCommRelaExistGaran inuCommRelaId ['||INUCOMMRELAID||']',5);
+
+        
+        BLEXISTGARANTIES:=CC_BCRELACIONCOMERCIAL.FBLCOMMRELAEXISTGARAN(INUCOMMRELAID);
+
+        IF(BLEXISTGARANTIES)THEN
+        
+            UT_TRACE.TRACE('FIN cc_boRelacionComercial.fsbCommRelaExistGaran Si Existen Garantias',5);
+            RETURN GE_BOCONSTANTS.CSBYES;
+        ELSE
+        
+            UT_TRACE.TRACE('FIN cc_boRelacionComercial.fsbCommRelaExistGaran No Existen Garantias',5);
+            RETURN GE_BOCONSTANTS.CSBNO;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FSBCOMMRELAEXISTGARAN;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETCOMMRELABYDETAIL
+    (
+        INUDETAILCOMMRELA   IN  CC_DETAIL_COM_RELA.DETAIL_COM_RELA_ID%TYPE
+    )
+    RETURN CC_DETAIL_COM_RELA.COMM_RELATION_ID%TYPE
+    IS
+         RCDETAILCOMMRELA   DACC_DETAIL_COM_RELA.STYCC_DETAIL_COM_RELA;
+
+    BEGIN
+
+        UT_TRACE.TRACE('INICIO cc_boRelacionComercial.fnuGetCommRelaByDetail inuDetailCommRela ['||INUDETAILCOMMRELA||']',5);
+
+        
+        DACC_DETAIL_COM_RELA.ACCKEY(INUDETAILCOMMRELA);
+
+        
+        DACC_DETAIL_COM_RELA.GETRECORD(INUDETAILCOMMRELA,RCDETAILCOMMRELA);
+
+        UT_TRACE.TRACE('FIN cc_boRelacionComercial.fnuGetCommRelaByDetail Relaci�n Comercial ['||RCDETAILCOMMRELA.COMM_RELATION_ID||']',5);
+
+        
+        RETURN RCDETAILCOMMRELA.COMM_RELATION_ID;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETCOMMRELABYDETAIL;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBCOMMRELASUBSCRIBERS
+    (
+        INUTYPERELATION     IN  CC_COMM_RELATION.RELATION_TYPE_ID%TYPE,
+        INUSPSUBSCRIBERID   IN  CC_COMM_RELATION.SP_SUBSCRIBER_ID%TYPE,
+        INUCVSUBSCRIBERID   IN  CC_COMM_RELATION.CV_SUBSCRIBER_ID%TYPE,
+        INUADDRESS          IN  CC_COMM_RELATION.ADDRESS_ID%TYPE,
+        IDTINITIAL_DATE     IN  CC_COMM_RELATION.INITIAL_DATE%TYPE,
+        IDTFINAL_DATE       IN  CC_COMM_RELATION.FINAL_DATE%TYPE
+    )
+    RETURN VARCHAR2
+    IS
+        BLEXISTRELATION    BOOLEAN;
+
+    BEGIN
+
+        UT_TRACE.TRACE('INICIO cc_boRelacionComercial.fsbCommRelaSubscribers',5);
+
+        
+        BLEXISTRELATION:=CC_BCRELACIONCOMERCIAL.FBLCOMMRELASUBSCRIBERS(
+                                                INUTYPERELATION,
+                                                INUSPSUBSCRIBERID,
+                                                INUCVSUBSCRIBERID,
+                                                INUADDRESS,
+                                                IDTINITIAL_DATE,
+                                                IDTFINAL_DATE
+                                                );
+
+        IF(BLEXISTRELATION)THEN
+
+            UT_TRACE.TRACE('FIN cc_boRelacionComercial.fsbCommRelaSubscribers Existe Relaci�n',5);
+            RETURN GE_BOCONSTANTS.CSBYES;
+        ELSE
+            UT_TRACE.TRACE('FIN cc_boRelacionComercial.fsbCommRelaSubscribers No Existe Relaci�n',5);
+            RETURN GE_BOCONSTANTS.CSBNO;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FSBCOMMRELASUBSCRIBERS;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBPRODUCTINCOMMRELA
+    (
+        INUPRODUCTID        IN  PR_PRODUCT.PRODUCT_ID%TYPE,
+        INUCOMMRELAID       IN  CC_COMM_RELATION.COMM_RELATION_ID%TYPE
+    )
+    RETURN VARCHAR2
+    IS
+        BLEXISTPRODUCT    BOOLEAN;
+
+    BEGIN
+
+        UT_TRACE.TRACE('INICIO cc_boRelacionComercial.fsbProductInCommRela',5);
+
+        
+        BLEXISTPRODUCT:=CC_BCRELACIONCOMERCIAL.FBLPRODUCTINCOMMRELA(
+                                                  INUPRODUCTID,
+                                                  INUCOMMRELAID
+                                                );
+
+        IF(BLEXISTPRODUCT)THEN
+
+            UT_TRACE.TRACE('FIN cc_boRelacionComercial.fsbProductInCommRela Existe Relaci�n',5);
+            RETURN GE_BOCONSTANTS.CSBYES;
+        ELSE
+            UT_TRACE.TRACE('FIN cc_boRelacionComercial.fsbProductInCommRela No Existe Relaci�n',5);
+            RETURN GE_BOCONSTANTS.CSBNO;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FSBPRODUCTINCOMMRELA;
+    
+
+
+
+END CC_BORELACIONCOMERCIAL;

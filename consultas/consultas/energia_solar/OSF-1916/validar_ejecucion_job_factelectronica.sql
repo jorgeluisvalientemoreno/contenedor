@@ -1,0 +1,1 @@
+select * from estaproc e where e.proceso like '%PRJOBPROCESARFACELE%' ;

@@ -1,0 +1,167 @@
+PACKAGE OR_BSEjecutarOrden
+IS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    
+
+    FUNCTION FSBVERSION  RETURN VARCHAR2;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE EJECUTARORDEN
+    (
+        INUORDERID          IN  OR_ORDER.ORDER_ID%TYPE,
+        INUCAUSALID         IN  GE_CAUSAL.CAUSAL_ID%TYPE,
+        ONUERRORCODE        OUT NUMBER,
+        OSBERRORMESSAGE     OUT VARCHAR2,
+        IDTCHANGEDATE       IN OR_ORDER_STAT_CHANGE.STAT_CHG_DATE%TYPE DEFAULT NULL
+    );
+
+END OR_BSEJECUTARORDEN;
+
+
+PACKAGE BODY OR_BSEjecutarOrden
+IS
+    
+    CSBVERSION          CONSTANT    VARCHAR2(20) := 'SAO198736';
+
+    
+
+    
+
+    
+
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE EJECUTARORDEN
+    (
+        INUORDERID          IN  OR_ORDER.ORDER_ID%TYPE,
+        INUCAUSALID         IN  GE_CAUSAL.CAUSAL_ID%TYPE,
+        ONUERRORCODE        OUT NUMBER,
+        OSBERRORMESSAGE     OUT VARCHAR2,
+        IDTCHANGEDATE       IN OR_ORDER_STAT_CHANGE.STAT_CHG_DATE%TYPE DEFAULT NULL
+    )
+    IS
+        
+        
+        PROCEDURE INITOUTPUTDATA IS
+        BEGIN
+        
+            GE_BOUTILITIES.INITIALIZEOUTPUT(ONUERRORCODE, OSBERRORMESSAGE);
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        
+        END;
+        
+        PROCEDURE VALIDADATOS
+        (
+            INUORDID    IN  OR_ORDER.ORDER_ID%TYPE,
+            INUCAUID    IN  GE_CAUSAL.CAUSAL_ID%TYPE
+        ) IS
+        BEGIN
+            
+            
+            
+            
+            IF (NOT DAGE_CAUSAL.FBLEXIST(INUCAUSALID)) THEN
+                ERRORS.SETERROR(19082,INUCAUSALID);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            
+            IF (NOT DAOR_ORDER.FBLEXIST(INUORDID) ) THEN
+                ERRORS.SETERROR(19102,INUORDID);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+        END;
+
+    BEGIN
+        
+        
+        
+        INITOUTPUTDATA;
+
+        
+        VALIDADATOS(INUORDERID,INUCAUSALID);
+
+
+        
+        OR_BOEJECUTARORDEN.EXECORDERWITHCAUSAL( INUORDERID, INUCAUSALID,NULL,NULL,IDTCHANGEDATE );
+        
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+			ERRORS.GETERROR(ONUERRORCODE,OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+			ERRORS.SETERROR;
+			ERRORS.GETERROR(ONUERRORCODE,OSBERRORMESSAGE);
+    END EJECUTARORDEN;
+    
+END OR_BSEJECUTARORDEN;

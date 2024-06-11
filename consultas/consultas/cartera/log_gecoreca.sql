@@ -1,0 +1,1 @@
+select * from  logpno_ehg l where l.fecha>= '20/02/2024'
