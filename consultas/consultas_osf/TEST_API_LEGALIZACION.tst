@@ -1,0 +1,21 @@
+PL/SQL Developer Test script 3.0
+17
+-- Created on 09/05/2024 by JORGE VALIENTE 
+declare
+  -- Local variables here
+  onuErrorCode    number;
+  osbErrorMessage varchar2(4000);
+begin
+  -- Test statements here
+  api_legalizeOrders('305493086|3771|38963||298150967>0;;;;|||1277;OSF-2577',
+                     to_date('07/05/2024 00:00:00', 'DD/MM/YYYY HH24:MI:SS'),
+                     to_date('08/05/2024 05:19:16', 'DD/MM/YYYY HH24:MI:SS'),
+                     null,
+                     onuErrorCode,
+                     osbErrorMessage);
+  dbms_output.put_line('Error: ' || onuErrorCode || ' - ' ||
+                       osbErrorMessage);
+  Rollback;
+end;
+0
+0
