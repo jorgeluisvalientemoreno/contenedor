@@ -3,15 +3,15 @@ select * from open.ge_object g where g.object_id = 121721;
 --JOB en TAREAS PROGRAMDAS OSF
 select *
   from open.GE_PROCESS_SCHEDULE b
- where
+-- where
 --b.parameters_ like '%121721%'
- b.process_schedule_id = 536553
- ORDER BY B.Start_Date_ DESC;
+-- b.process_schedule_id = 536553
+ ORDER BY B.PROCESS_SCHEDULE_ID DESC;
 --select * from dba_scheduler_job_run_details;
 --JOB Corriendo
-select * from dba_jobs_running a where a.JOB in (2693102) order by 1 desc;
+select * from dba_jobs_running a where a.JOB in (3415968) order by 1 desc;
 --JOB DATA
-select sysdate, a.* from dba_jobs a where a.job in (2693102);
+select sysdate, a.* from dba_jobs a where a.job in (3415968);
 ---
 select *
   from open.ge_object g

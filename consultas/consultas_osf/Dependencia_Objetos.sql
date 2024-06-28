@@ -1,39 +1,37 @@
 SELECT *
   FROM DBA_OBJECTS a
- WHERE upper(a.OBJECT_NAME) = upper('LDC_CONFTITRLEGA');
+ WHERE upper(a.OBJECT_NAME) = upper('LD_BOCONSTANS');
 
 select *
   from dba_dependencies a
- where upper(a.REFERENCED_NAME) = upper('LDC_CONFTITRLEGA'); --PKG_GESTION_PRODUCTO
+ where upper(a.REFERENCED_NAME) = upper('LD_BOCONSTANS'); --PKG_GESTION_PRODUCTO
 
 select *
   from dba_dependencies a
- where upper(a.name) = upper('LDC_CONFTITRLEGA'); --PKG_GESTION_PRODUCTO
+ where upper(a.name) = upper('LD_BOCONSTANS'); --PKG_GESTION_PRODUCTO
 
 select a.name, a.TYPE
   from dba_source a
- where upper(a.TEXT) like upper('%LDC_CONFTITRLEGA%')
+ where upper(a.TEXT) like upper('%LD_BOCONSTANS%')
 --and a.TYPE = 'TRIGGER'
  group by a.name, a.TYPE;
 
 select *
   from dba_jobs a
- where upper(a.WHAT) in
-       (select a.name
-          from dba_source a
-         where upper(a.TEXT) like upper('%LDC_CONFTITRLEGA%')
-         group by a.name)
---like upper('%LDC_CONFTITRLEGA%')
+ where upper(a.WHAT) in (select a.name
+                           from dba_source a
+                          where upper(a.TEXT) like upper('%LD_BOCONSTANS%')
+                          group by a.name)
+--like upper('%LD_BOCONSTANS%')
 ;
 
 select a.*, rowid
   from OPEN.GE_OBJECT a --where upper(a.name_) like upper('%LDC%Interacci%')
- where upper(a.name_) in
-       (select a.name
-          from dba_source a
-         where upper(a.TEXT) like upper('%LDC_CONFTITRLEGA%')
-         group by a.name)
---like upper('%LDC_CONFTITRLEGA%')
+ where upper(a.name_) in (select a.name
+                            from dba_source a
+                           where upper(a.TEXT) like upper('%LD_BOCONSTANS%')
+                           group by a.name)
+--like upper('%LD_BOCONSTANS%')
 
 ;
 select gps.*, dj.*
@@ -44,9 +42,9 @@ select gps.*, dj.*
          where upper(g.name_) in
                (select a.name
                   from dba_source a
-                 where upper(a.TEXT) like upper('%LDC_CONFTITRLEGA%')
+                 where upper(a.TEXT) like upper('%LD_BOCONSTANS%')
                  group by a.name)
-        --like upper('%LDC_CONFTITRLEGA%')
+        --like upper('%LD_BOCONSTANS%')
         ) gobject
  where gps.parameters_ like '%' || gobject.object_id || '%'
    and gps.job != -1
@@ -54,7 +52,7 @@ select gps.*, dj.*
 
 select gs.*, rowid
   from open.ge_statement gs
- where upper(gs.statement) like upper('%LDC_CONFTITRLEGA%');
+ where upper(gs.statement) like upper('%LD_BOCONSTANS%');
 
 /*select *
   from dba_dependencies a

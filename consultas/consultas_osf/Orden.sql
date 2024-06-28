@@ -225,7 +225,13 @@ select distinct oo.order_id Orden,
                 oo.is_pending_liq Pendiente_Liquidacion,
                 (select mm.motive_status_id || ' - ' || d.description
                    from open.ps_motive_status d
-                  where d.motive_status_id = mm.motive_status_id) Estado_Motivo
+                  where d.motive_status_id = mm.motive_status_id) Estado_Motivo,
+                (select decode(count(1),
+                               0,
+                               'No esta gestioanda',
+                               'Esta Gestionada')
+                   from open.ldc_otlegalizar lo
+                  where lo.order_id = oo.order_id) LEGO
   from open.or_order_activity ooa
   left join open.or_order oo
     on oo.order_id = ooa.order_id
@@ -273,18 +279,18 @@ select distinct oo.order_id Orden,
 -- and ooa.subscription_id =1041350
 -- and ooa.product_id in (1087616)
 -- and trunc(oo.legalization_date) >= '01/06/2024'
--- and trunc(oo.created_date) >= trunc(sysdate) --'01/01/2024'
+--and 
+ trunc(oo.created_date) = '24/06/2024'
 -- and oo.task_type_id in (12119)
 -- and trunc(mp.request_date) >= '19/04/2024'
 -- and mp.motive_status_id = 13
--- and 
- oo.order_id in (329686642)
+-- and oo.order_id in (329686642)
 -- and ooa.order_activity_id in(4295602)    
 -- and mp.cust_care_reques_num in ('212356951', '212681274')
 -- and ooa.order_id in (318396156, 318396150) --(318396156,318396150)
--- and oo.order_status_id in (0,5)
+ and oo.order_status_id in (8)
 -- and oo.causal_id = 9944--in (8, 12)
--- and oo.task_type_id in (12119)
+ and oo.task_type_id in (10553,10554,10555,10556)
 -- and ooa.activity_id in (100008491,4001025,4295124)
 -- and mp.package_type_id = 1000101
 -- and (mm.subscription_id = 48052064 or mm.product_id = 50062001)

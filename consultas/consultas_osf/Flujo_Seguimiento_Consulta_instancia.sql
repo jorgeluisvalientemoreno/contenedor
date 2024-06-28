@@ -50,7 +50,7 @@ use_nl( g h )
                open.wf_unit_type     b,
                open.wf_instance      c,
                open.wf_unit          f
-         WHERE a.package_id = 196557162 --998937
+         WHERE a.package_id = 213221608 --998937
            AND b.unit_type_id = a.unit_type_id -- 31657381
            AND c.plan_id = a.plan_id
            AND f.unit_id(+) = c.unit_id) instancias_flujo,

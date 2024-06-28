@@ -1,5 +1,5 @@
 PL/SQL Developer Test script 3.0
-2369
+2398
 -- Created on 19/06/2024 by JORGE VALIENTE 
 declare
 
@@ -82,99 +82,103 @@ declare
                     isbPackagesType  varchar2) is
   --Solicitudes de venta pendientes por pago de comision al legalizar
   
-    select 205608619 id, 'L' sbTime
-      from dual/*
-    union all
-    select 202803399 id, 'B' sbTime
-      from dual
-    union all
-    select 202803399 id, 'L' sbTime
-      from dual
-    union all
-    select 212247589 id, 'B' sbTime
-      from dual*/;
-
-  /*select *
-  from ((select mo_packages.package_id id, 'B' sbTime
-           from mo_packages
-          Where mo_packages.request_date Between
-                To_Date('01022020', 'DDMMYYYY') And idtToday
-            --and PKG_BCUNIDADOPERATIVA.FSBGETESEXTERNA(mo_packages.pos_oper_unit_id) = 'Y'
-            and mo_packages.pos_oper_unit_id = 4585
-            and mo_packages.package_type_id in
-                (SELECT to_number(regexp_substr(isbPackagesType,
-                                                '[^,]+',
-                                                1,
-                                                LEVEL)) AS tipk
-                   FROM dual
-                 CONNECT BY regexp_substr(isbPackagesType,
-                                          '[^,]+',
-                                          1,
-                                          LEVEL) IS NOT NULL)
-            AND mo_packages.PACKAGE_TYPE_ID <> 100271
-            and mo_packages.MOTIVE_STATUS_ID <> nuPkgAnulado -- 32-Solicitud ANULADA
-            and (((select count(1)
-                     from cupon
-                    where cupotipo = 'DE'
-                      AND cupoflpa = 'S'
-                      and cupodocu = to_char(mo_packages.package_id)) > 0) Or
-                ((select count(1)
-                     from cupon
-                    where cupotipo = 'DE'
-                      AND cupodocu = to_char(mo_packages.package_id)) = 0))
-            and not exists (select null
-                   from LDC_PKG_OR_ITEM
-                  where Mo_packages.package_id =
-                        LDC_PKG_OR_ITEM.package_id
-                    and LDC_PKG_OR_ITEM.order_item_id in
-                        (nuActCIVZNR,
-                         nuActCIVZSR,
-                         nuActCIVZNC,
-                         nuActCIVZSC,
-                         nuActMZR,
-                         nuActMZC))
-            AND mod(mo_packages.package_id, inuTotHilos) +
-                inuNroHilo = inuTotHilos) union
-       --Solicitudes de venta pendientes por pago de comision al legalizar
-        (select mo_packages.package_id id, 'L' sbTime
-           from mo_packages
-          Where mo_packages.request_date Between
-                To_Date('01022020', 'DDMMYYYY') And idtToday
-            --and PKG_BCUNIDADOPERATIVA.FSBGETESEXTERNA(mo_packages.pos_oper_unit_id) = 'Y'
-            and mo_packages.pos_oper_unit_id = 4585
-            and mo_packages.package_type_id in
-                (SELECT to_number(regexp_substr(isbPackagesType,
-                                                '[^,]+',
-                                                1,
-                                                LEVEL)) AS tipk
-                   FROM dual
-                 CONNECT BY regexp_substr(isbPackagesType,
-                                          '[^,]+',
-                                          1,
-                                          LEVEL) IS NOT NULL)
-            and mo_packages.MOTIVE_STATUS_ID = nuPkgAtendido -- 14-Solicitud atendida
-            and (((select count(1)
-                     from cupon
-                    where cupotipo = 'DE'
-                      AND cupoflpa = 'S'
-                      and cupodocu = to_char(mo_packages.package_id)) > 0) Or
-                ((select count(1)
-                     from cupon
-                    where cupotipo = 'DE'
-                      AND cupodocu = to_char(mo_packages.package_id)) = 0))
-            and not exists (select null
-                   from LDC_PKG_OR_ITEM
-                  where mo_packages.package_id =
-                        LDC_PKG_OR_ITEM.package_id
-                    and LDC_PKG_OR_ITEM.order_item_id in
-                        (nuActCLVZNR,
-                         nuActCLVZSR,
-                         nuActCLVZNC,
-                         nuActCLVZSC,
-                         nuActMZR,
-                         nuActMZC))
-            AND mod(mo_packages.package_id, inuTotHilos) +
-                inuNroHilo = inuTotHilos));*/
+  /*select 205608619 id, 'L' sbTime
+                from dual/*
+              union all
+              select 202803399 id, 'B' sbTime
+                from dual
+              union all
+              select 202803399 id, 'L' sbTime
+                from dual
+              union all
+              select 212247589 id, 'B' sbTime
+                from dual*/ --;
+  
+  --/*
+    select *
+      from ((select mo_packages.package_id id, 'B' sbTime
+               from mo_packages
+              Where mo_packages.request_date Between
+                    To_Date('01022020', 'DDMMYYYY') And idtToday
+                   --and PKG_BCUNIDADOPERATIVA.FSBGETESEXTERNA(mo_packages.pos_oper_unit_id) = 'Y'
+                and mo_packages.pos_oper_unit_id in
+                    (4321, 4585, 4341, 4342, 4585, 4585)
+                and mo_packages.package_type_id in
+                    (SELECT to_number(regexp_substr(isbPackagesType,
+                                                    '[^,]+',
+                                                    1,
+                                                    LEVEL)) AS tipk
+                       FROM dual
+                     CONNECT BY regexp_substr(isbPackagesType,
+                                              '[^,]+',
+                                              1,
+                                              LEVEL) IS NOT NULL)
+                AND mo_packages.PACKAGE_TYPE_ID <> 100271
+                and mo_packages.MOTIVE_STATUS_ID <> nuPkgAnulado -- 32-Solicitud ANULADA
+                and (((select count(1)
+                         from cupon
+                        where cupotipo = 'DE'
+                          AND cupoflpa = 'S'
+                          and cupodocu = to_char(mo_packages.package_id)) > 0) Or
+                    ((select count(1)
+                         from cupon
+                        where cupotipo = 'DE'
+                          AND cupodocu = to_char(mo_packages.package_id)) = 0))
+                and not exists (select null
+                       from LDC_PKG_OR_ITEM
+                      where Mo_packages.package_id =
+                            LDC_PKG_OR_ITEM.package_id
+                        and LDC_PKG_OR_ITEM.order_item_id in
+                            (nuActCIVZNR,
+                             nuActCIVZSR,
+                             nuActCIVZNC,
+                             nuActCIVZSC,
+                             nuActMZR,
+                             nuActMZC))
+                AND mod(mo_packages.package_id, inuTotHilos) +
+                    inuNroHilo = inuTotHilos) union
+           --Solicitudes de venta pendientes por pago de comision al legalizar
+            (select mo_packages.package_id id, 'L' sbTime
+               from mo_packages
+              Where mo_packages.request_date Between
+                    To_Date('01022020', 'DDMMYYYY') And idtToday
+                   --and PKG_BCUNIDADOPERATIVA.FSBGETESEXTERNA(mo_packages.pos_oper_unit_id) = 'Y'
+                and mo_packages.pos_oper_unit_id in
+                    (4321, 4585, 4341, 4342, 4585, 4585)
+                and mo_packages.package_type_id in
+                    (SELECT to_number(regexp_substr(isbPackagesType,
+                                                    '[^,]+',
+                                                    1,
+                                                    LEVEL)) AS tipk
+                       FROM dual
+                     CONNECT BY regexp_substr(isbPackagesType,
+                                              '[^,]+',
+                                              1,
+                                              LEVEL) IS NOT NULL)
+                and mo_packages.MOTIVE_STATUS_ID = nuPkgAtendido -- 14-Solicitud atendida
+                and (((select count(1)
+                         from cupon
+                        where cupotipo = 'DE'
+                          AND cupoflpa = 'S'
+                          and cupodocu = to_char(mo_packages.package_id)) > 0) Or
+                    ((select count(1)
+                         from cupon
+                        where cupotipo = 'DE'
+                          AND cupodocu = to_char(mo_packages.package_id)) = 0))
+                and not exists (select null
+                       from LDC_PKG_OR_ITEM
+                      where mo_packages.package_id =
+                            LDC_PKG_OR_ITEM.package_id
+                        and LDC_PKG_OR_ITEM.order_item_id in
+                            (nuActCLVZNR,
+                             nuActCLVZSR,
+                             nuActCLVZNC,
+                             nuActCLVZSC,
+                             nuActMZR,
+                             nuActMZC))
+                AND mod(mo_packages.package_id, inuTotHilos) +
+                    inuNroHilo = inuTotHilos));
+  --*/
 
   nuProductId  pr_product.product_id%type;
   sbES_externa or_operating_unit.es_externa%type;
@@ -452,6 +456,10 @@ declare
                               onuerrorcode,
                               osberrormessage,
                               onuOrder);
+    
+      dbms_output.put_line('Paso LDC_prRegisterNewCharge Orden[' ||
+                           onuOrder || '] Error: ' || onuerrorcode ||
+                           ' - ' || osberrormessage);
     
       pkg_traza.trace('Salida - Codigo Error: ' || osberrormessage ||
                       ' - Mesaje Error: ' || osberrormessage ||
@@ -1232,7 +1240,9 @@ begin
                       cnuNivelTraza);
     
       --Validar si la unidad operativa es externa y tiene contrato vigente
-      dbms_output.put_line('if sbES_externa[' || sbES_externa || '] = ''Y'' and nuExisteContratoVigente['|| nuExisteContratoVigente ||'] > 0 then');
+      dbms_output.put_line('if sbES_externa[' || sbES_externa ||
+                           '] = ''Y'' and nuExisteContratoVigente[' ||
+                           nuExisteContratoVigente || '] > 0 then');
       if sbES_externa = 'Y' and nuExisteContratoVigente > 0 then
       
         nuContraId := nvl(PKG_BCUNIDADOPERATIVA.FNUGETCONTRATISTA(nuOperatingUnitId),
@@ -1300,7 +1310,7 @@ begin
           INTO dtFechaRing;
         CLOSE cuInfoPremise;
         pkg_traza.trace('Fecha Anillado: ' || dtFechaRing, cnuNivelTraza);
-        
+      
         --Obtener la zona del sector operativo asociado a la direccion del producto
         open cuZonaOperativa(nuOperatingSectorId);
         fetch cuZonaOperativa
@@ -1322,6 +1332,10 @@ begin
           IF nuGeograpLoca IS NOT NULL THEN
             --VALIDACION DE LA LOCALIDAD
             ----FIN CONTROL VALIDACION DE DATA PARTE 1
+          
+            --Validar si la unidad operativa es externa y tiene contrato vigente
+            dbms_output.put_line('if sbAssignType[' || sbAssignType ||
+                                 '] IN (''C'', ''N'') then');
           
             --Validar si el tipo de asignacion es por DEMANDA  : C => Obtener sectores de la Zona asociada a la Base Operativa de la UT
             if sbAssignType IN ('C', 'N') then
@@ -1349,12 +1363,14 @@ begin
                                                                                          nuOperatingSectorId));
             end if;
           
-            pkg_traza.trace('Cantidad para establecer multa o comision (nuOperatingSectorIdAux) --> ' ||
-                            nuOperatingSectorIdAux,
-                            cnuNivelTraza);
+            dbms_output.put_line('Cantidad para establecer multa o comision (nuOperatingSectorIdAux) --> ' ||
+                                 nuOperatingSectorIdAux);
           
             --Validar si se registra multa o comision
-            dbms_output.put_line('if nuOperatingSectorIdAux[' || nuOperatingSectorIdAux || '] = 0 or nuOperatingSectorIdAux[' || nuOperatingSectorIdAux ||'] = -1 then');
+            dbms_output.put_line('if nuOperatingSectorIdAux[' ||
+                                 nuOperatingSectorIdAux ||
+                                 '] = 0 or nuOperatingSectorIdAux[' ||
+                                 nuOperatingSectorIdAux || '] = -1 then');
             if nuOperatingSectorIdAux = 0 or nuOperatingSectorIdAux = -1 then
             
               pkg_traza.trace('Crera Multa', cnuNivelTraza);
@@ -1712,7 +1728,7 @@ begin
               
               end if;
             else
-              pkg_traza.trace('Comision', cnuNivelTraza);
+              dbms_output.put_line('Comision');
             
               --Al generar la novedad,  se debe calcular el valor a pagar (con la funcion -> IN: mo_packages.package_id)
               RgCommission := frcRetornaValorComision(pkg.sbTime,
@@ -1720,9 +1736,8 @@ begin
                                                       nuAdressId,
                                                       nuProductId,
                                                       nuOperatingUnitId);
-              pkg_traza.trace('Valor comision: ' ||
-                              RgCommission.onuCommissionValue,
-                              cnuNivelTraza);
+              dbms_output.put_line('Valor comision: ' ||
+                                   RgCommission.onuCommissionValue);
             
               if RgCommission.onuCommissionValue > 0 then
               
@@ -1731,12 +1746,20 @@ begin
                 inuOrderId := null;
               
                 -- CA854
+                dbms_output.put_line('IF MONTHS_BETWEEN(PKG_BCSOLICITUDES.FDTGETFECHAREGISTRO(pkg.id[' ||
+                                     pkg.id || ']),
+                                  dtFechaRing[' ||
+                                     dtFechaRing || '])[' ||
+                                     PKG_BCSOLICITUDES.FDTGETFECHAREGISTRO(pkg.id) ||
+                                     '] <= nuCantMeses[' || nuCantMeses ||
+                                     '] THEN');
                 IF MONTHS_BETWEEN(PKG_BCSOLICITUDES.FDTGETFECHAREGISTRO(pkg.id),
                                   dtFechaRing) <= nuCantMeses THEN
                   sbZonaCalc := 'N';
                 ELSE
                   sbZonaCalc := 'S';
                 END IF;
+                dbms_output.put_line('sbZonaCalc: '  || sbZonaCalc);                
               
                 pkg_traza.trace('Zona calculada: ' || sbZonaCalc ||
                                 ' - Zona Original: ' ||
@@ -2053,6 +2076,10 @@ begin
                   sbZonaTAbla := RgCommission.sbIsZone;
                 end if;
               else
+                dbms_output.put_line('if nvl(RgCommission.sbIsZone[' ||
+                                     RgCommission.sbIsZone ||
+                                     '], ''X'') = ''X'' then');
+              
                 if nvl(RgCommission.sbIsZone, 'X') = 'X' then
                   prcRegistraExcepcion(pkg.id);
                 end if;
@@ -2345,11 +2372,13 @@ begin
                                    'Procesando Solicitud: ' || pkg.id,
                                    nucantiregcom,
                                    inuTotalRegistros);
-    COMMIT;
+  
+    Rollback;
+    --COMMIT;
   
   end loop;
-
-  commit;
+  Rollback;
+  --commit;
 
   pkg_traza.trace('prcRegistraLogComision(' || inusesion || ',' ||
                   idtToday || ',' || inuNroHilo || ',' || 0 ||
