@@ -33,7 +33,6 @@ SELECT --/*
  FA_Cargapro.caapvabl,
  FA_Cargapro.caaptaco,
  FA_Cargapro.caapnoap --*/
-
   FROM open.FA_Cargapro /*+ FA_BCUIBillingApprMvts.GetChargesToApprove */
  WHERE FA_Cargapro.caapnuse = 50090869
    and trunc(FA_Cargapro.caapfecr) = '29/01/2024'

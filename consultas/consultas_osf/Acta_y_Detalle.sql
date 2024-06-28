@@ -6,23 +6,24 @@ select gc.valor_total_contrato,
  where gc.id_contrato = 6901;
 
 --Acta
-select ga.*, rowid from open.ge_acta ga where ga.id_acta = 224971;
+select ga.*, rowid from open.ge_acta ga where ga.id_acta = 6668;
 
+--Detalle acta
 select a.*, rowid
   from OPEN.CT_ORDER_CERTIFICA a
- where a.certificate_id = 224971;
+ where a.certificate_id = 6668;
 
 select sum(gda.valor_total) TOTAL_ACTA
   from open.ge_detalle_acta gda
- where gda.id_acta = 224971
+ where gda.id_acta = 6668
    and gda.affect_contract_val = 'Y';
 
 --Detalle de Acta
 with ordenes as
  (select g.id_orden orden
     from open.ge_detalle_acta g
-   where g.id_acta in (224971)
-     and g.id_items = 4000360
+   where g.id_acta in (6668)
+  --and g.id_items = 4000360
    group by g.id_orden)
 select aa.geograp_location_id, gel.description
   from ordenes
@@ -34,8 +35,3 @@ select aa.geograp_location_id, gel.description
     on gel.geograp_location_id = aa.geograp_location_id
  group by aa.geograp_location_id, gel.description
  order by aa.geograp_location_id;
-/*(select ga.id_acta
-                    from open.ge_acta ga
-                   where ga.estado = 'A'
-                     and ga.fecha_creacion > sysdate - 20)
-and g.id_items in (100002253, 100002275, 100009646, 100009645)*/
