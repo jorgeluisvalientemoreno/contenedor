@@ -7,36 +7,8 @@ SELECT distinct ora_.actividad || ' - ' || giorigen.description,
     on giorigen.items_id = ora_.actividad
   left join open.ge_items gigenera
     on gigenera.items_id = ora_.actividad_regenerar
- WHERE ORA_.ACTIVIDAD in (103120,
-                          103122,
-                          103127,
-                          103121,
-                          103123,
-                          103125,
-                          4294446,
-                          4294447,
-                          4294448,
-                          4294449,
-                          4295220,
-                          4295221)
-   and ora_.id_causal in (262,
-                          3038,
-                          3039,
-                          3041,
-                          3042,
-                          3043,
-                          3044,
-                          3045,
-                          3046,
-                          3060,
-                          3061,
-                          3062,
-                          3078,
-                          3086,
-                          3089,
-                          3230,
-                          3770,
-                          9775)
+ WHERE ORA_.ACTIVIDAD in (4295150)
+   and ora_.id_causal in (9594)
  order by ora_.actividad || ' - ' || giorigen.description asc,
                 ora_.id_causal asc;
 
@@ -74,4 +46,4 @@ SELECT distinct /*+ INDEX(OR_regenera_activida IDX_OR_REGENERA_ACTIVIDA_02)
     on otti.items_id = ora_.actividad_regenerar
   left join open.or_task_type ott
     on ott.task_type_id = otti.task_type_id
- WHERE ORA_.ACTIVIDAD in (4294447);
+ WHERE ORA_.ACTIVIDAD in (4295150);

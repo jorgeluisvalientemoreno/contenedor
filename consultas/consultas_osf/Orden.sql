@@ -6,6 +6,7 @@ select distinct oo.order_id Orden,
                   where oos.order_status_id = oo.order_status_id) Estado_Orden,
                 nvl(ooa.subscription_id, mm.subscription_id) Contrato,
                 nvl(ooa.product_id, mm.product_id) Producto,
+                pp.product_type_id || ' - ' || (select s1.servdesc from OPEN.SERVICIO s1 where s1.servcodi = pp.product_type_id) Tipo_Producto,
                 DireccionOrden.address_id || ' - ' ||
                 DireccionOrden.address Direccion_Orden,
                 localidad_Orden.geograp_location_id || ' - ' ||
@@ -22,10 +23,7 @@ select distinct oo.order_id Orden,
                 (select gi.description
                    from open.ge_items gi
                   where gi.items_id = ooa.activity_id) Actividad,
-                oo.task_type_id || ' - ' ||
-                (select a.description
-                   from open.or_task_type a
-                  where a.task_type_id = oo.task_type_id) Tipo_Trabajo,
+                oo.task_type_id || ' - ' || ott.description Tipo_Trabajo,
                 oo.causal_id || ' - ' ||
                 (select gc.description
                    from open.ge_causal gc
@@ -53,9 +51,9 @@ select distinct oo.order_id Orden,
                    from open.ps_package_type b
                   where b.package_type_id = mp.package_type_id) Tipo_Solicitud,
                 mp.reception_type_id || ' - ' ||
-                (select c.description
-                   from open.ge_reception_type c
-                  where c.reception_type_id = mp.reception_type_id) Medio_Recepcion,
+                (select grt.description
+                   from open.ge_reception_type grt
+                  where grt.reception_type_id = mp.reception_type_id) Medio_Recepcion,
                 mp.request_date Registro_Solicitud,
                 mp.cust_care_reques_num Interaccion,
                 mp.motive_status_id || ' - ' ||
@@ -219,6 +217,7 @@ select distinct oo.order_id Orden,
                        '[3] GENERADO',
                        4,
                        '[4] NO ENCONTRO TARIFA') ESTADO_DE_GENERACION_CARGO,
+                c.concdesc || ' - ' || ott.concept Concepto,
                 ooa.order_activity_id Orden_Actividad,
                 oop.person_id || ' - ' || gp.name_ Responsable,
                 ooc.order_comment Comentario_Orden,
@@ -231,7 +230,13 @@ select distinct oo.order_id Orden,
                                'No esta gestioanda',
                                'Esta Gestionada')
                    from open.ldc_otlegalizar lo
-                  where lo.order_id = oo.order_id) LEGO
+                  where lo.order_id = oo.order_id) LEGO,
+                decode(ooa.status,
+                       'F',
+                       ooa.status || ' - Finalizado',
+                       ooa.status || ' - Registrado') Estado_Actividad,
+                ooa.order_activity_id Actividad_Orden,
+                mp.pos_oper_unit_id Punto_venta
   from open.or_order_activity ooa
   left join open.or_order oo
     on oo.order_id = ooa.order_id
@@ -274,28 +279,32 @@ select distinct oo.order_id Orden,
     on oop.order_id = oo.order_id
   left join OPEN.ge_person gp
     on gp.person_id = oop.person_id
+  left join open.or_task_type ott
+    on ott.task_type_id = oo.task_type_id
+  left join open.concepto c
+    on c.conccodi = ott.concept
  where --)select ou.order_id from orden_uobysol ou)
 -- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
 -- and ooa.subscription_id =1041350
 -- and ooa.product_id in (1087616)
 -- and trunc(oo.legalization_date) >= '01/06/2024'
---and 
- trunc(oo.created_date) = '24/06/2024'
+--and trunc(oo.created_date) = '08/07/2024'
 -- and oo.task_type_id in (12119)
--- and trunc(mp.request_date) >= '19/04/2024'
--- and mp.motive_status_id = 13
--- and oo.order_id in (329686642)
--- and ooa.order_activity_id in(4295602)    
+-- and trunc(mp.request_date) >= '07/07/2024'
+-- and mp.motive_status_id = 14
+-- and oo.order_id in (330184691) --(326799133,326799151,326799756)--(328666162)--
+-- and ooa.order_activity_id in(4295602)
 -- and mp.cust_care_reques_num in ('212356951', '212681274')
 -- and ooa.order_id in (318396156, 318396150) --(318396156,318396150)
- and oo.order_status_id in (8)
+-- and oo.order_status_id in (5)
 -- and oo.causal_id = 9944--in (8, 12)
- and oo.task_type_id in (10553,10554,10555,10556)
--- and ooa.activity_id in (100008491,4001025,4295124)
--- and mp.package_type_id = 1000101
+--and oo.task_type_id in (10797)
+-- and ooa.activity_id in (100009517)
+-- and mp.package_type_id = 100284
 -- and (mm.subscription_id = 48052064 or mm.product_id = 50062001)
 -- and mp.cust_care_reques_num in ('210494274','207413106')
--- and mp.package_id in (194101711)
+-- and 
+mp.package_id in (215307341)
 -- and pp.product_status_id = 15
 -- and mm.motive_id = 96953319
 -- and oo.operating_unit_id in (1775, 1931, 1773, 3557)
