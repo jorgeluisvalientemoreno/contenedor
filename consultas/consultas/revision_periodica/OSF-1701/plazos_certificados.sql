@@ -11,10 +11,8 @@ select c.plazos_cert_id,
        c.vaciointerno
 from ldc_plazos_cert  c
 left join open.ldc_confimensrp m  on m.merpedin = open.ldc_getedadrp(c.id_producto)
-where c.id_producto = 1002398
+where c.id_producto in (51877218)
 
---Validar producto 1002398 para ver si sale en el spool
---YR
 
 /*select *
 from ldc_plazos_cert  c

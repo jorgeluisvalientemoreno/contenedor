@@ -210,7 +210,7 @@ select p.package_type_id,
  where p.package_type_id in (&solicitud)
  union all
  select p.package_type_id,
-       'POS-TRAMITE',
+       'POST-TRAMITE',
        possol.object_name
   from open.ps_package_type p
   left join open.PS_CNF_INSTANCE pre
@@ -229,12 +229,12 @@ where PACKAGE_TYPE_ID in (&solicitud)
  and executing_time='B'
  and c.config_expression_id=w.config_expression_id
  union all
- select package_type_id, 'POS-MOTIVO', c.object_name
+ select package_type_id, 'POST-MOTIVO', c.object_name
 from OPEN.PS_PRD_MOTIV_PACKAGE mot, open.PS_PROD_MOTI_EVENTS e, open.PS_WHEN_MOTIVE w, open.gr_config_expression c 
 where PACKAGE_TYPE_ID in (&solicitud)
  and mot.product_motive_id=e.product_motive_id
  and w.prod_moti_events_id=e.prod_moti_events_id
- and executing_time='A'
+ and executing_time='AF'
  and c.config_expression_id=w.config_expression_id
 
 UNION ALL 

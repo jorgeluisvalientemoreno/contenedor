@@ -25,8 +25,8 @@ select s.inpnsesu,
   left join  or_task_type  t on  t.task_type_id = o.task_type_id
   left join servsusc  ss  on ss.sesunuse = a.product_id
   left join pr_product  p  on p.product_id = ss.sesunuse
- Where s.inpnpefa in (107378)
--- and ss.sesuesco not in (1,3,5,6)
+ Where s.inpnpefa in (111230)
+and a.product_id in (51864372,51864534,51911053,51864371,51934320,51864380,51864405,51864505,51864497,51864530,51864365,51864522,51836924,51718876,51718913)
  
   
  --o.created_date >= '12/04/2024'

@@ -1,7 +1,8 @@
 --facturas_por_producto
-select *
+select f.*
 from factura  f
-where f.factsusc = 48202612
+inner join servsusc  ss  on ss.sesususc = f.factsusc
+where ss.sesunuse in (51877218)
 and   f.factpefa = 107378
 order by f.factfege desc
 

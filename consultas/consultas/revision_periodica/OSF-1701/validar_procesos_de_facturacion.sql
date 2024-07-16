@@ -12,13 +12,14 @@ select pf.pefacicl,
        pf.pefafcco
   from procejec p
   left join open.perifact pf  on pf.pefacodi = p.prejcope
- where p.prejfech >= '01/10/2023'
-   and pf.pefacicl = 101
-  --and p.prejcope = 107063
+ where p.prejfech >= '01/01/2024'
+  and pf.pefacicl  in (201)
+  and p.prejcope = 111230
    and exists (select null
           from procejec p2
          where p2.prejcope = p.prejcope
            and p2.prejprog in ('FGCC')
            and p2.prejespr = 'T')
+           and p.prejfech >= '24/04/2024'
  order by p.prejcope desc, p.prejfech desc
 

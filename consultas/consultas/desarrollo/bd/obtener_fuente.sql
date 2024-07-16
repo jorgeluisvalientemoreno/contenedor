@@ -1,5 +1,5 @@
 ALTER SESSION SET CURRENT_SCHEMA= "OPEN";
-select dbms_metadata.get_ddl('PACKAGE_BODY',upper('MO_BCRestriction')) FROM DUAL  ;
+select dbms_metadata.get_ddl('PACKAGE_BODY',upper('GE_BCORGANIZAT_AREA')) FROM DUAL  ;
 
 SELECT text FROM all_source WHERE name = 'GE_BOACEPTARITEMS';
 SELECT line,  text FROM all_source WHERE name = upper('ge_bocalendar') AND type='PACKAGE BODY' order by 1;
