@@ -126,7 +126,7 @@ left join open.sa_exec_oper_type op on op.exec_oper_type_id=s.exec_oper_type_id
 left join open.sa_tab_object sot on sot.executable_name=s.name and s.executable_type_id =1
 left join open.ge_object obj on obj.object_id=sot.object_id and s.executable_type_id =1
 where s.executable_id!=-1
- and s.name='LDC_CARGINFO'
+ and s.name in ('LDISP', 'CCPPR',  'CCGSC')
 )
 
 select s.*,

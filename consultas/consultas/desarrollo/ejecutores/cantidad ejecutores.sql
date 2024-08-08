@@ -9,9 +9,10 @@ from gv$session
 where MODULE LIKE 'demonio%';
 
 
-SELECT count(*)
+SELECT inst_id, count(*)
 FROM gv$session
-WHERE module='PROCESS_SERVER';
+WHERE module='PROCESS_SERVER'
+group by inst_id;
 
 
 

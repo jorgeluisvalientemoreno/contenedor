@@ -50,3 +50,10 @@ where l.JOB_NAME='BAJAR_RECLAMOS_PQR_ESCRITAS';
 select *
 from dba_scheduler_job_run_details d
 where d.JOB_NAME='BAJAR_RECLAMOS_PQR_ESCRITAS'
+
+
+--detener job
+exec DBMS_SCHEDULER.stop_JOB (job_name => 'ADM_PERSON.JOB_VENTAS_ELECGEN');
+
+--ejecutar  job
+exec DBMS_SCHEDULER.run_job (job_name => 'ADM_PERSON.JOB_VENTAS_ELECGEN');

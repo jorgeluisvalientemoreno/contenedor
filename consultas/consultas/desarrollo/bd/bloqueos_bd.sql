@@ -78,7 +78,9 @@ SELECT    'alter system kill session '
      || ' immediate;',
      s.*
   FROM  GV$SESSION S, gV$ACCESS g
- WHERE     object LIKE upper('%pkg_gestionordenes%')
+ WHERE     object LIKE upper('%PKG_BCFACTUELECTRONICAGEN%')
      and g.sid = S.SID     
+     and g.INST_ID=s.INST_ID
+     and username='ADM_PERSON'
      
      -- AND g.OWNER = 'OPEN'
