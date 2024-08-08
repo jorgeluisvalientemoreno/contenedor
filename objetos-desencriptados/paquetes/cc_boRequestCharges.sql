@@ -1,0 +1,161 @@
+PACKAGE BODY cc_boRequestCharges
+IS
+    
+    
+    
+    
+    CSBVERSION  CONSTANT VARCHAR2(250)  := 'SAO201685';
+    
+    
+    
+    
+    CURSOR CUCOMPBYCLASS
+	(
+	    INUSESUNUSE  SERVSUSC.SESUNUSE%TYPE,
+	    INUTIPOCOMP  COMPSESU.CMSSTCOM%TYPE,
+	    INUCLASESERV COMPSESU.CMSSCLSE%TYPE
+	)
+    IS
+        SELECT CMSSIDCO
+        FROM   COMPSESU
+        WHERE  CMSSSESU = INUSESUNUSE
+        AND    CMSSTCOM = INUTIPOCOMP
+        AND    CMSSCLSE = INUCLASESERV
+        AND NVL(CMSSINCL,PKCONSTANTE.NO) = PKCONSTANTE.NO;
+
+    
+    
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+
+FUNCTION  GETREQUESTBASICCHARGE
+(
+	INUSERVICENUMBER   IN	SERVSUSC.SESUNUSE%TYPE,
+	INUSERVICE         IN	SERVSUSC.SESUSERV%TYPE,
+	INUSTATE           IN	SERVSUSC.SESUDEPA%TYPE,
+	INULOCALITY        IN	SERVSUSC.SESULOCA%TYPE,
+	INUCATEGORY        IN	SERVSUSC.SESUCATE%TYPE,
+	INUSUBCATEGORY     IN	SERVSUSC.SESUSUCA%TYPE,
+	INUBILLPLAN        IN	SERVSUSC.SESUPLFA%TYPE,
+	INUCONCEPT         IN	CONCEPTO.CONCCODI%TYPE,
+	IDREQUESTDATE      IN	MO_PACKAGES.REQUEST_DATE%TYPE
+)
+RETURN NUMBER
+IS
+    NUCHARGEVALUE   CARGOS.CARGVALO%TYPE := PKBILLCONST.CERO;
+    NUCODTARIFA     TA_TARICONC.TACOCONS%TYPE;
+    NUCODVIGENCIA   TA_VIGETACO.VITCCONS%TYPE;
+    NUPORCTARIFA    TA_VIGETACO.VITCPORC%TYPE;
+    RCSERVSUSC      SERVSUSC%ROWTYPE;
+    NUEMPRESA       SUSCRIPC.SUSCSIST%TYPE;
+
+BEGIN
+    UT_TRACE.TRACE('Inicio de cc_boRequestCharges.GetRequestBasicCharge', 5);
+
+    
+    RCSERVSUSC := PKTBLSERVSUSC.FRCGETRECORD(INUSERVICENUMBER);
+    NUEMPRESA := PKTBLSUSCRIPC.FNUGETCOMPANY (RCSERVSUSC.SESUSUSC);
+    TA_BOCRITERIOSBUSQUEDA.ESTDATOEMPRESALOCAL(NUEMPRESA);
+
+    
+    TA_BOCRITERIOSBUSQUEDA.ESTCRITERIOMEMORIA(
+                                    TA_BCCRITERIOSBUSQUEDA.FSBPROVINCI,
+                                    INUSTATE
+                                    );
+    TA_BOCRITERIOSBUSQUEDA.ESTCRITERIOMEMORIA(
+                                    TA_BCCRITERIOSBUSQUEDA.FSBLOCALIDA,
+                                    INULOCALITY
+                                    );
+    TA_BOCRITERIOSBUSQUEDA.ESTCRITERIOMEMORIA(
+                                    TA_BCCRITERIOSBUSQUEDA.FSBCATEGORI,
+                                    INUCATEGORY
+                                    );
+    TA_BOCRITERIOSBUSQUEDA.ESTCRITERIOMEMORIA(
+                                    TA_BCCRITERIOSBUSQUEDA.FSBSUBCATEG,
+                                    INUSUBCATEGORY
+                                    );
+    TA_BOCRITERIOSBUSQUEDA.ESTCRITERIOMEMORIA(
+                                    TA_BCCRITERIOSBUSQUEDA.FSBPLANFACT,
+                                    INUBILLPLAN
+                                    );
+    TA_BOCRITERIOSBUSQUEDA.ESTCRITERIOMEMORIA(
+                                    TA_BCCRITERIOSBUSQUEDA.FSBTIPOCOMP,
+                                    PKCONSTANTE.NULLNUM
+                                    );
+    TA_BOCRITERIOSBUSQUEDA.ESTCRITERIOMEMORIA(
+                                    TA_BCCRITERIOSBUSQUEDA.FSBCLASESER,
+                                    PKCONSTANTE.NULLNUM
+                                    );
+    TA_BOCRITERIOSBUSQUEDA.ESTCRITERIOMEMORIA(
+                                    TA_BCCRITERIOSBUSQUEDA.FSBZONA,
+                                    TA_BOUTILITARIO.CSBDATO_NULO
+                                    );
+    
+    TA_BOTARIFAS.LIQTARIFADATOSBASICOS( INUSERVICE,
+                                        INUCONCEPT,
+                                        PKCONSTANTE.NULLNUM,
+                                        PKCONSTANTE.NULLNUM,
+                                        IDREQUESTDATE,
+                                        FALSE, 
+                                        NUCODTARIFA,
+                                        NUCODVIGENCIA,
+                                        NUCHARGEVALUE,
+                                        NUPORCTARIFA
+                                     );
+                                     
+    
+    NUCHARGEVALUE := ROUND (NUCHARGEVALUE, 2);
+    UT_TRACE.TRACE('Fin de cc_boRequestCharges.GetRequestBasicCharge - Cargo B�sico: '||NUCHARGEVALUE, 5);
+    RETURN  NUCHARGEVALUE;
+
+EXCEPTION
+    WHEN EX.CONTROLLED_ERROR THEN
+        RAISE EX.CONTROLLED_ERROR;
+    WHEN OTHERS THEN
+        ERRORS.SETERROR;
+        RAISE EX.CONTROLLED_ERROR;
+END;
+
+
+
+
+
+
+
+
+
+FUNCTION  FNUGETPREPAIDCHARGE
+(
+	INUPACKAGEID      IN	MO_PACKAGES.PACKAGE_ID%TYPE
+)
+RETURN NUMBER
+IS
+    RCMOTIVE        DAMO_MOTIVE.STYMO_MOTIVE;
+    
+BEGIN
+    UT_TRACE.TRACE('Inicio de cc_boRequestCharges.fnuGetPrePaidCharge', 5);
+
+    
+    RCMOTIVE        := MO_BOPACKAGES.FRCGETINITIALMOTIVE(INUPACKAGEID);
+
+    
+    IF (RCMOTIVE.MOTIVE_ID IS NULL) THEN
+        RETURN PKBILLCONST.CERO;
+    END IF;
+    
+    UT_TRACE.TRACE('Fin de cc_boRequestCharges.fnuGetPrePaidCharge - Valor del Cargo: '||RCMOTIVE.CREDIT_LIMIT, 5);
+
+    RETURN  RCMOTIVE.CREDIT_LIMIT;
+
+EXCEPTION
+    WHEN EX.CONTROLLED_ERROR THEN
+        RAISE EX.CONTROLLED_ERROR;
+    WHEN OTHERS THEN
+        ERRORS.SETERROR;
+        RAISE EX.CONTROLLED_ERROR;
+END;
+
+END CC_BOREQUESTCHARGES;

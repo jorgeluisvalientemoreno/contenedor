@@ -1,0 +1,5272 @@
+PACKAGE BODY GE_BOItemsSeriado
+IS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    CSBVERSION                  CONSTANT VARCHAR2(20) := 'SAO212060';
+    
+    CNULOCK_NOWAIT      CONSTANT NUMBER(1) := 1;
+
+    CNUINVALID_SERIE            CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143738;
+    CNUINVALID_ATRIBUTE         CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143739;
+    CNUNULL_VALUE               CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 1184;
+    CNUMOV_REGISTER             CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143742;
+	
+    CSBPIPE                     CONSTANT VARCHAR2(1) := '|';
+    CSBIGUAL                    CONSTANT VARCHAR2(1) := '=';
+    CSBTAB                      CONSTANT VARCHAR2(1) := CHR(9);
+    CSBLINE_FEED                CONSTANT VARCHAR2(1) := CHR(10);
+    CNUINVALID_ITEM_SELLER      CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 508;
+    CNUITEM_BLACKLIST           CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 6243;
+    CNUITEM_NO_DISP             CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 11000;
+    CNUITEM_NO_SELL_PROC        CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 6263;
+    CNUITEM_NO_OPER_UNIT        CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 6703;
+    CNUITEM_ERROR_DATE          CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 3852;
+    CNUITEM_DOC_NULO            CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143741;
+    CNUITEM_DOC_DOC_EXIST       CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 6705;
+    CNUNULL_INPUT               CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 3296;
+    CNUCLIENTPROPERTY           CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 8541;
+    CNUITEM_EXISTS              CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 17742;
+    CNUSHARED_ITEM_NOCAPA       CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 7642;
+    CNUNOT_EXIST_SERIE          CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 300262;
+    CNUVALUENULL                CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 1184;
+    CNUNOT_EXIST                CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 14746;
+    CNUINVALID_STATUS           CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143787;
+    CNUBAD_ITM_TYPE             CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 300233;
+
+    
+    CNUINVALIDINSTALLFLAG       CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 18222;
+    
+    CNUINVALIDPRODUCTTYPE       CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 18223;
+    
+    CNUNOTCAPACITYINFO          CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 18162;
+    
+    CNUINVALEQUIPMENTSTATUS     CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143787;
+    
+    CNUNOTENOUGHCAPACITY        CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 18184;
+    
+    CNUCAPACITYEMPTY            CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 18186;
+    
+    CNUNOTCOMPBYTYPEFORPRODUCT  CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 3178;
+    
+    CNUAPPTABLEBUSSY            CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 6951;
+    
+    CNUITEM_LOCK                CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 150008;
+    
+    CNUNOSERIE                  CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 13752;
+    
+    CNUITEMNOTFOUND             CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 7613;
+    
+    CNUERR_901047   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 901047;
+    
+    
+    CSBINV_INVENT       GE_MESSAGE.MESSAGE_ID%TYPE := 16983;
+    
+    
+    CNUERR251                   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 251;
+
+    CSBFWINSTANCENAME           CONSTANT GE_BOINSTANCECONTROL.STYSBNAME := 'FW_DEF_ITEMS_SERIADOS';
+    CSBITEMSERIENTITY           CONSTANT GE_BOINSTANCECONTROL.STYSBNAME := 'GE_ITEMS_SERIADO';
+    CSBMAXVALUE                 CONSTANT VARCHAR2(10) := 'MAXVALUE';    
+
+    GSBCONTEXTO                 GE_BOINSTANCECONTROL.STYSBSQL := NULL;
+    
+
+    
+    
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	PROCEDURE VALIDARSERIE
+    (
+        ISBSERIE            IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ONUIDITEMSERIADO    OUT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    )
+	IS
+	BEGIN
+	   GE_BCITEMSSERIADO.GETIDBYSERIE(ISBSERIE, ONUIDITEMSERIADO);
+	   
+        IF ONUIDITEMSERIADO IS NOT NULL THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUINVALID_SERIE, ISBSERIE);
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END VALIDARSERIE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE REGISTRARITEM
+    (
+        INUITEMSID          IN  GE_ITEMS_SERIADO.ITEMS_ID%TYPE,
+        ISBSERIE            IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ISBESTADOTECNICO    IN  GE_ITEMS_SERIADO.ESTADO_TECNICO%TYPE,
+        INUESTADOINVENTARIO IN  GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV%TYPE,
+        INUCOSTO            IN  GE_ITEMS_SERIADO.COSTO%TYPE,
+        INUSUBSIDIO         IN  GE_ITEMS_SERIADO.SUBSIDIO%TYPE,
+        ISBPROPIEDAD        IN  GE_ITEMS_SERIADO.PROPIEDAD%TYPE,
+        IDTFECHAINGRESO     IN  GE_ITEMS_SERIADO.FECHA_INGRESO%TYPE,
+        ONUIDITEMSERIADO    OUT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    )
+    IS
+        RCITEMSSERIADO  DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUIDITEMSERIADO GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+    BEGIN
+    
+        VALIDARSERIE(ISBSERIE, NUIDITEMSERIADO);
+
+        RCITEMSSERIADO.ITEMS_ID             := INUITEMSID;
+        RCITEMSSERIADO.SERIE                := UPPER(ISBSERIE);
+        RCITEMSSERIADO.ESTADO_TECNICO       := ISBESTADOTECNICO;
+        RCITEMSSERIADO.ID_ITEMS_ESTADO_INV  := INUESTADOINVENTARIO;
+        RCITEMSSERIADO.COSTO                := INUCOSTO;
+        RCITEMSSERIADO.SUBSIDIO             := INUSUBSIDIO;
+        RCITEMSSERIADO.PROPIEDAD            := ISBPROPIEDAD;
+        RCITEMSSERIADO.FECHA_INGRESO        := IDTFECHAINGRESO;
+
+
+        ONUIDITEMSERIADO                    := GE_BOITEMSSEQUENCE.NEXTGE_ITEMS_SERIADO;
+        RCITEMSSERIADO.ID_ITEMS_SERIADO     := ONUIDITEMSERIADO;
+
+        DAGE_ITEMS_SERIADO.INSRECORD(RCITEMSSERIADO);
+        
+        IF(DAGE_ITEMS.FSBGETSHARED(INUITEMSID) = GE_BOCONSTANTS.CSBYES) THEN
+            GE_BOITEMSSERIADO.COPYCAPACITYFROMITEM(RCITEMSSERIADO.ID_ITEMS_SERIADO);
+            
+            IF(NOT GE_BCITEMSSERIADO.FBLHASCAPACITY(RCITEMSSERIADO.ID_ITEMS_SERIADO))
+            THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUSHARED_ITEM_NOCAPA, INUITEMSID);
+            END IF;
+        END IF;
+
+        
+        IF_BOPREVMAINTENANCE.UPDATESERIALITEM(ONUIDITEMSERIADO);
+        
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END REGISTRARITEM;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ACTUALIZARITEM
+    (
+        INUIDITEMSERIADO    IN GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        ISBESTADOTECNICO    IN  GE_ITEMS_SERIADO.ESTADO_TECNICO%TYPE,
+        INUESTADOINVENTARIO IN  GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV%TYPE,
+        INUCOSTO            IN  GE_ITEMS_SERIADO.COSTO%TYPE,
+        INUSUBSIDIO         IN  GE_ITEMS_SERIADO.SUBSIDIO%TYPE,
+        ISBPROPIEDAD        IN  GE_ITEMS_SERIADO.PROPIEDAD%TYPE,
+        IDTCHANGEDATE       IN OR_ORDER_STAT_CHANGE.STAT_CHG_DATE%TYPE DEFAULT NULL
+    )
+    IS
+        RCITEMSSERIADO  DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+    BEGIN
+
+        DAGE_ITEMS_SERIADO.GETRECORD(INUIDITEMSERIADO,RCITEMSSERIADO);
+
+        RCITEMSSERIADO.ESTADO_TECNICO       := NVL(ISBESTADOTECNICO,RCITEMSSERIADO.ESTADO_TECNICO);
+        RCITEMSSERIADO.ID_ITEMS_ESTADO_INV  := NVL(INUESTADOINVENTARIO,RCITEMSSERIADO.ID_ITEMS_ESTADO_INV);
+        RCITEMSSERIADO.COSTO                := NVL(INUCOSTO, RCITEMSSERIADO.COSTO);
+        RCITEMSSERIADO.SUBSIDIO             := NVL(INUSUBSIDIO,RCITEMSSERIADO.SUBSIDIO);
+        RCITEMSSERIADO.PROPIEDAD            := NVL(ISBPROPIEDAD,RCITEMSSERIADO.PROPIEDAD);
+        
+        DAGE_ITEMS_SERIADO.UPDRECORD(RCITEMSSERIADO,CNULOCK_NOWAIT);
+        
+        
+        IF_BOPREVMAINTENANCE.UPDATESERIALITEM(INUIDITEMSERIADO,NULL,NULL,IDTCHANGEDATE);
+        
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ACTUALIZARITEM;
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ELIMINARITEM
+    (
+        INUIDITEMSERIADO    IN GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    )
+    IS
+    BEGIN
+
+        IF OR_BCUNIITEMBALAMOV.FBLHAVEMOVITEMSERIE(INUIDITEMSERIADO) THEN
+            ERRORS.SETERROR(CNUMOV_REGISTER ,DAGE_ITEMS_SERIADO.FSBGETSERIE(INUIDITEMSERIADO));
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        GE_BCITEMSSERIADO.DELALLATTRIBUTES(INUIDITEMSERIADO);
+        
+        DAGE_ITEMS_SERIADO.DELRECORD(INUIDITEMSERIADO);
+        
+        
+        IF_BOPREVMAINTENANCE.UPDATESERIALITEM(INUIDITEMSERIADO);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ELIMINARITEM;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE REGISTRARATRIBUTO
+    (
+        INUIDITEMSTIPOATRIB IN  GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_ATR%TYPE,
+        INUIDITEMSERIADO    IN  GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_SERIADO%TYPE,
+        ISBVALOR            IN  GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE,
+        ONUIDATRIBUTEVALUE  OUT GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_AT_VAL%TYPE
+    )
+    IS
+        RCITEMSTIPOATRIB    DAGE_ITEMS_TIPO_AT_VAL.STYGE_ITEMS_TIPO_AT_VAL;
+        NUITEMTIPO          GE_ITEMS_TIPO.ID_ITEMS_TIPO%TYPE;
+        SBDISPLAYNAME       GE_ENTITY_ATTRIBUTES.DISPLAY_NAME%TYPE;
+        NUENTITYATTRIBUTE   GE_ENTITY_ATTRIBUTES.ENTITY_ATTRIBUTE_ID%TYPE;
+    BEGIN
+    
+        RCITEMSTIPOATRIB.ITEMS_ID   := DAGE_ITEMS_SERIADO.FNUGETITEMS_ID(INUIDITEMSERIADO);
+        NUITEMTIPO                  := DAGE_ITEMS.FNUGETID_ITEMS_TIPO(RCITEMSTIPOATRIB.ITEMS_ID);
+
+        
+        IF NUITEMTIPO <> DAGE_ITEMS_TIPO_ATR.FNUGETID_ITEMS_TIPO(INUIDITEMSTIPOATRIB) THEN
+            NUENTITYATTRIBUTE := DAGE_ITEMS_TIPO_ATR.FNUGETENTITY_ATTRIBUTE_ID(INUIDITEMSTIPOATRIB);
+            SBDISPLAYNAME := DAGE_ENTITY_ATTRIBUTES.FSBGETDISPLAY_NAME(NUENTITYATTRIBUTE);
+            
+            ERRORS.SETERROR(CNUINVALID_ATRIBUTE, SBDISPLAYNAME||'|'||DAGE_ITEMS_TIPO.FSBGETDESCRIPCION(NUITEMTIPO));
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        RCITEMSTIPOATRIB.ID_ITEMS_TIPO_ATR      := INUIDITEMSTIPOATRIB;
+        RCITEMSTIPOATRIB.ID_ITEMS_SERIADO       := INUIDITEMSERIADO;
+        RCITEMSTIPOATRIB.VALOR                  := ISBVALOR;
+        ONUIDATRIBUTEVALUE                      := GE_BOITEMSSEQUENCE.NEXTGE_ITEMS_TIPO_AT_VAL;
+        RCITEMSTIPOATRIB.ID_ITEMS_TIPO_AT_VAL   := ONUIDATRIBUTEVALUE;
+
+        DAGE_ITEMS_TIPO_AT_VAL.INSRECORD(RCITEMSTIPOATRIB);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END REGISTRARATRIBUTO;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ACTUALIZARATRIBUTO
+    (
+        INUIDITEMSTIPOATRIB IN  GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_ATR%TYPE,
+        INUIDITEMSERIADO    IN  GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_SERIADO%TYPE,
+        ISBVALOR            IN  GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE,
+        ONUIDATRIBUTEVALUE  OUT GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_AT_VAL%TYPE
+    )
+    IS
+        SBVALORACTUAL       GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE;
+        SBDISPLAYNAME       GE_ENTITY_ATTRIBUTES.DISPLAY_NAME%TYPE;
+        SBTECHNICALNAME     GE_ENTITY_ATTRIBUTES.TECHNICAL_NAME%TYPE;
+        NUENTITYATTRIBUTE   GE_ENTITY_ATTRIBUTES.ENTITY_ATTRIBUTE_ID%TYPE;
+
+        NUITEMTIPO          GE_ITEMS.ID_ITEMS_TIPO%TYPE;
+        NUITEMSID           GE_ITEMS.ITEMS_ID%TYPE;
+        NUGAMAID            GE_ITEMS_GAMA.ID_ITEMS_GAMA%TYPE;
+        TBCONSUMPTIONTYPES  GE_BCCONSTYPEBYGAMA.TYTBCONSUMPTIONTYPE;
+
+        SBSERIALITEM        GE_ITEMS_SERIADO.SERIE%TYPE;
+        NUELEMENTID         ELEMMEDI.ELMEIDEM%TYPE;
+        RCELEMMEDI          ELEMMEDI%ROWTYPE;
+        NUNUMEDIGI          ELEMMEDI.ELMENUDC%TYPE;
+        NUTOPE              ELEMMEDI.ELMETOPE%TYPE;
+        
+        NUERRORCODE     MENSAJE.MENSCODI%TYPE;
+        SBERRORMESSAGE  MENSAJE.MENSDESC%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN GE_BOItemsSeriado.ActualizarAtributo',1);
+        UT_TRACE.TRACE('inuIdItemsTipoAtrib ['||INUIDITEMSTIPOATRIB||']',2);
+        UT_TRACE.TRACE('inuIdItemSeriado    ['||INUIDITEMSERIADO||']',2);
+        UT_TRACE.TRACE('isbValor            ['||ISBVALOR||']',2);
+        UT_TRACE.TRACE('onuIdAtributeValue  ['||ONUIDATRIBUTEVALUE||']',2);
+        
+        NUENTITYATTRIBUTE := DAGE_ITEMS_TIPO_ATR.FNUGETENTITY_ATTRIBUTE_ID(INUIDITEMSTIPOATRIB);
+
+        IF ISBVALOR IS NULL THEN
+            SBDISPLAYNAME := DAGE_ENTITY_ATTRIBUTES.FSBGETDISPLAY_NAME(NUENTITYATTRIBUTE);
+            ERRORS.SETERROR(CNUNULL_VALUE, SBDISPLAYNAME);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+
+        GE_BCITEMSSERIADO.GETATRIBUTEVALUE(
+                                            INUIDITEMSTIPOATRIB,
+                                            INUIDITEMSERIADO,
+                                            ONUIDATRIBUTEVALUE,
+                                            SBVALORACTUAL
+                                          );
+
+        IF ONUIDATRIBUTEVALUE IS NULL THEN
+            REGISTRARATRIBUTO
+            (
+                INUIDITEMSTIPOATRIB,
+                INUIDITEMSERIADO,
+                ISBVALOR,
+                ONUIDATRIBUTEVALUE
+            );
+
+        ELSE
+            DAGE_ITEMS_TIPO_AT_VAL.UPDVALOR(ONUIDATRIBUTEVALUE, ISBVALOR);
+        END IF;
+
+        
+        SBTECHNICALNAME := DAGE_ENTITY_ATTRIBUTES.FSBGETTECHNICAL_NAME(NUENTITYATTRIBUTE);
+
+        IF SBTECHNICALNAME = CSBMAXVALUE THEN
+            UT_TRACE.TRACE('Actualizar MAXVALUE-Tope m�ximo', 2);
+            
+            
+            
+            
+            NUITEMSID := DAGE_ITEMS_SERIADO.FNUGETITEMS_ID(INUIDITEMSERIADO);
+            NUITEMTIPO := DAGE_ITEMS.FNUGETID_ITEMS_TIPO(NUITEMSID);
+            
+            IF DAGE_ITEMS_TIPO.FSBGETMEASURES(NUITEMTIPO) = GE_BOCONSTANTS.CSBYES THEN
+                NUGAMAID := GE_BCITEMS_GAMA_ITEM.FNUOBTENERITEMGAMA(NUITEMSID);
+                
+                IF NUGAMAID IS NOT NULL THEN
+                    GE_BCCONSTYPEBYGAMA.GETCONSUMPTIONTYPE(NUGAMAID, TBCONSUMPTIONTYPES);
+                    
+                    IF TBCONSUMPTIONTYPES.FIRST IS NOT NULL THEN
+                        
+                        SBSERIALITEM := DAGE_ITEMS_SERIADO.FSBGETSERIE(INUIDITEMSERIADO);
+                        NUELEMENTID := PKMEASUREMENTELEMENMGR.FNUGETMEASUREELEMENTID(SBSERIALITEM);
+                        UT_TRACE.TRACE('nuElementId ['||NUELEMENTID||']',2);
+                        
+                        IF NUELEMENTID IS NOT NULL THEN
+                            RCELEMMEDI := PKTBLELEMMEDI.FRCGETRECORD(NUELEMENTID);
+                            NUTOPE := TO_NUMBER(ISBVALOR);
+                            UT_TRACE.TRACE('nuTope      ['||NUTOPE||']',2);
+                            NUNUMEDIGI := LENGTH(NUTOPE);
+                            UT_TRACE.TRACE('nuNumeDigi  ['||NUNUMEDIGI||']',2);
+
+                            
+                            PKMEASUREMENTELEMEN.REGISTERORUPDATEIF_EXISTS
+                            (
+                                RCELEMMEDI.ELMECODI, 
+                                RCELEMMEDI.ELMECLEM,
+                                NUNUMEDIGI,
+                                RCELEMMEDI.ELMEUIEM,
+                                RCELEMMEDI.ELMEPOSI,
+                                RCELEMMEDI.ELMEFACM,
+                                RCELEMMEDI.ELMEFACD,
+                                NUTOPE,
+                                NUELEMENTID,
+                                NUERRORCODE,
+                                SBERRORMESSAGE
+                            );
+                            
+                            GW_BOERRORS.CHECKERROR(NUERRORCODE, SBERRORMESSAGE);
+                            
+                            UT_TRACE.TRACE('Elemmedi actualizado',2);
+                        END IF;
+                    END IF;
+                END IF;
+            END IF;
+        END IF;
+        UT_TRACE.TRACE('END  GE_BOItemsSeriado.ActualizarAtributo',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ACTUALIZARATRIBUTO;
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE TRANSLATEITEMSERIADO
+    (
+        INUIDITEMSSERIADO       IN  GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        INUOPERARINGUNITID      IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        INUTARGETOPERUNITID     IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        ISBTRANSITO             IN  VARCHAR2
+    )
+    IS
+        RCITEMSSERIADO          DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+    BEGIN
+        UT_TRACE.TRACE('--[INICIO] GE_BOItemsSeriado.TranslateItemSeriado', 5);
+
+        
+        DAOR_OPERATING_UNIT.ACCKEY(INUOPERARINGUNITID);
+
+        
+        DAGE_ITEMS_SERIADO.GETRECORD(INUIDITEMSSERIADO, RCITEMSSERIADO);
+
+        
+        RCITEMSSERIADO.OPERATING_UNIT_ID := INUTARGETOPERUNITID;
+
+        
+        
+        IF (ISBTRANSITO = GE_BOCONSTANTS.CSBYES) THEN
+            RCITEMSSERIADO.ID_ITEMS_ESTADO_INV := GE_BOITEMSCONSTANTS.CNUSTATUS_TRANSITO; 
+        ELSIF DAOR_OPERATING_UNIT.FNUGETOPER_UNIT_CLASSIF_ID(INUTARGETOPERUNITID) = GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA THEN
+            
+            RCITEMSSERIADO.ID_ITEMS_ESTADO_INV := GE_BOITEMSCONSTANTS.CNUSTATUS_EN_REPARA;
+        ELSIF DAOR_OPERATING_UNIT.FNUGETOPER_UNIT_CLASSIF_ID(INUOPERARINGUNITID) = GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA THEN
+            
+            RCITEMSSERIADO.ID_ITEMS_ESTADO_INV := GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE;
+        END IF;
+
+        
+        DAGE_ITEMS_SERIADO.UPDRECORD(RCITEMSSERIADO);
+        
+        
+        IF_BOPREVMAINTENANCE.UPDATESERIALITEM(RCITEMSSERIADO.ID_ITEMS_SERIADO);
+
+        UT_TRACE.TRACE('--[FIN] GE_BOItemsSeriado.TranslateItemSeriado', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBGETITEMSSERIADOATTVALS
+    (
+        INUIDITEMSSERIADO       IN  GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        ISBPROPERTIES           IN  VARCHAR2 DEFAULT GE_BOCONSTANTS.CSBNO,
+        ISBALLATTRIBUTES        IN  VARCHAR2 DEFAULT GE_BOCONSTANTS.CSBNO
+    )   RETURN VARCHAR2
+    IS
+        TBITEMSSERIADOATTVAL        GE_BCITEMSSERIADO.TYTBITEMSTIPOATVAL;
+        SBVALOR                     VARCHAR2(2000);
+    BEGIN
+        UT_TRACE.TRACE('--[INICIO] GE_BOItemsSeriado.getItemsSeriadoAttVals', 6);
+
+        
+        IF (INUIDITEMSSERIADO IS NULL) THEN
+            RETURN NULL;
+        END IF;
+
+        TBITEMSSERIADOATTVAL.DELETE;
+
+        
+        IF (ISBALLATTRIBUTES = GE_BOCONSTANTS.CSBYES) THEN
+            TBITEMSSERIADOATTVAL := GE_BCITEMSSERIADO.FTBITEMSSERALLATTVAL(INUIDITEMSSERIADO);
+        ELSE
+            TBITEMSSERIADOATTVAL := GE_BCITEMSSERIADO.FTBITEMSSERIADOATTVAL(INUIDITEMSSERIADO);
+        END IF;
+
+        IF (TBITEMSSERIADOATTVAL.COUNT = 0) THEN
+            RETURN NULL;
+        END IF;
+
+        FOR BIIDX IN TBITEMSSERIADOATTVAL.FIRST .. TBITEMSSERIADOATTVAL.LAST LOOP
+            IF (SBVALOR IS NULL) THEN
+                IF (ISBPROPERTIES = GE_BOCONSTANTS.CSBYES) THEN
+                    SBVALOR := TBITEMSSERIADOATTVAL(BIIDX).DISPLAY_NAME
+                        || CSBIGUAL || TBITEMSSERIADOATTVAL(BIIDX).VALOR ;
+                ELSE
+                    SBVALOR := TBITEMSSERIADOATTVAL(BIIDX).VALOR;
+                END IF;
+            ELSE
+                IF (ISBPROPERTIES = GE_BOCONSTANTS.CSBYES) THEN
+                    SBVALOR := SBVALOR || CSBPIPE
+                        || TBITEMSSERIADOATTVAL(BIIDX).DISPLAY_NAME || CSBIGUAL
+                        || TBITEMSSERIADOATTVAL(BIIDX).VALOR;
+                ELSE
+                    SBVALOR := SBVALOR || CSBPIPE || TBITEMSSERIADOATTVAL(BIIDX).VALOR;
+                END IF;
+            END IF;
+        END LOOP;
+
+        UT_TRACE.TRACE('--[FIN] GE_BOItemsSeriado.getItemsSeriadoAttVals', 6);
+        RETURN SBVALOR;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALITEMTOSELL
+    (
+        ISBSERIE            IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        INUVENDEDOR         IN  OR_OPER_UNIT_PERSONS.PERSON_ID%TYPE,
+        ONUITEMID           OUT GE_ITEMS_SERIADO.ITEMS_ID%TYPE,
+        ONUIDITEMSSERIADO   OUT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        ONUOPERATINGUNITID  OUT GE_ITEMS_SERIADO.OPERATING_UNIT_ID%TYPE,
+        ONUPROPERTY         OUT GE_ITEMS_SERIADO.PROPIEDAD%TYPE,
+        OSBSERVICENUMBER    OUT GE_EMPAQUETAMIENTO.NUMERO_SERVICIO%TYPE
+    )
+    IS
+        BLERROR             BOOLEAN;
+        NUIDITEMSSERIADO    GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        SBPROPERTY          GE_ITEMS_SERIADO.PROPIEDAD%TYPE ;
+        SBNAME              OR_OPERATING_UNIT.NAME%TYPE;
+        NUPOSID             OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE;
+        TBEMPAQUETAM        DAGE_EMPAQUETAMIENTO.TYTBGE_EMPAQUETAMIENTO;
+    BEGIN
+        UT_TRACE.TRACE('--[INICIO] GE_BOItemsSeriado.ValItemToSell', 5);
+        
+        
+        IF (ISBSERIE IS NULL) THEN
+            ERRORS.SETERROR(CNUNULL_INPUT, '[N�mero de Serie]');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        
+        IF (INUVENDEDOR IS NULL) THEN
+            ERRORS.SETERROR(CNUNULL_INPUT, '[C�digo del Vendedor]');
+            RAISE EX.CONTROLLED_ERROR;
+        ELSE
+            
+            DAGE_PERSON.ACCKEY(INUVENDEDOR);
+        END IF;
+        
+        UT_TRACE.TRACE('-- Obtiene Id del Item Seriado ',5);
+        
+        GE_BCITEMSSERIADO.GETIDBYSERIE(ISBSERIE, NUIDITEMSSERIADO);
+        SBPROPERTY := NVL(DAGE_ITEMS_SERIADO.FSBGETPROPIEDAD(NUIDITEMSSERIADO, 0), GE_BOITEMSCONSTANTS.CSBEMPRESA);
+
+        
+        IF SBPROPERTY <> GE_BOITEMSCONSTANTS.CSBTRAIDO_CLIENTE THEN
+            
+            IF (GE_BCITEMSSERIADO.FBLVALITEMFORSEL(ISBSERIE,INUVENDEDOR)) THEN
+                ERRORS.SETERROR(CNUINVALID_ITEM_SELLER);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+        END IF;
+            
+        
+        BLERROR := PR_BOEQUIPMENT.FBLVALPRODUCTOBYEQUIPO(
+                            PS_BOCOMPONENTTYPE.FNUGETCOMPTYPEQUIPO,
+                            ISBSERIE);
+        
+        
+        IF (GE_BCITEMSSERIADO.FBLITEMBLACKLIST(ISBSERIE)) THEN
+            ERRORS.SETERROR(CNUITEM_BLACKLIST);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        
+        
+        IF (GE_BCITEMSSERIADO.FBLVALIDATEITEM(ISBSERIE)) THEN
+            ERRORS.SETERROR(CNUITEM_NO_DISP);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        
+        GE_BCITEMSSERIADO.RETURNITEMINFOLOCK(
+                                            ISBSERIE,
+                                            ONUIDITEMSSERIADO,
+                                            ONUOPERATINGUNITID,
+                                            ONUITEMID,
+                                            ONUPROPERTY
+                                        );
+        
+        DAGE_EMPAQUETAMIENTO.GETRECORDS('id_items_seriado = '||ONUIDITEMSSERIADO, TBEMPAQUETAM);
+        
+        
+        IF TBEMPAQUETAM.FIRST IS NOT NULL THEN
+            OSBSERVICENUMBER := TBEMPAQUETAM(TBEMPAQUETAM.FIRST).NUMERO_SERVICIO;
+        END IF;
+
+        
+        IF ONUPROPERTY = GE_BOITEMSCONSTANTS.CSBTRAIDO_CLIENTE AND ONUOPERATINGUNITID IS NULL THEN
+
+            
+            GE_BOPERSONAL.GETCURRENTCHANNEL(INUVENDEDOR, NUPOSID);
+            
+            
+            IF(NUPOSID IS NOT NULL) THEN
+
+                ONUOPERATINGUNITID := DAOR_OPERATING_UNIT.FNUGETASSO_OPER_UNIT(NUPOSID);
+
+            END IF;
+
+        END IF;
+
+        UT_TRACE.TRACE('--[FIN] GE_BOItemsSeriado.ValItemToSell', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END VALITEMTOSELL;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE MOVITEMBYSELL
+    (
+        INUIDITEMSERIE      IN      GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        INUVALOR            IN      GE_ITEMS_SERIADO.COSTO%TYPE,
+        IDTFECHA            IN      GE_ITEMS_SERIADO.FECHA_SALIDA%TYPE,
+        ISBDOCUMENTO        IN      GE_ITEMS_DOCUMENTO.DOCUMENTO_EXTERNO%TYPE,
+        ISBESTADODOC        IN      GE_ITEMS_DOCUMENTO.ESTADO%TYPE,
+        INUPACKAGE_ID       IN      GE_ITEMS_DOCUMENTO.PACKAGE_ID%TYPE DEFAULT NULL
+    )
+    IS
+        RCITEM              DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUIDITEMDOCUMENTO   GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE;
+        NUUNIITEMMOVID      OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE;
+        SBMOVEMENTTYPE      OR_UNI_ITEM_BALA_MOV.MOVEMENT_TYPE%TYPE;
+        NUVALOR             OR_UNI_ITEM_BALA_MOV.VALOR_VENTA%TYPE;
+        NUCOST              OR_UNI_ITEM_BALA_MOV.TOTAL_VALUE%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('--[INICIO] GE_BOItemsSeriado.MovItemBySell', 5);
+        
+        DAGE_ITEMS_SERIADO.GETRECORD(INUIDITEMSERIE, RCITEM);
+
+        
+        IF(TO_DATE(IDTFECHA) > UT_DATE.FDTSYSDATE) THEN
+            ERRORS.SETERROR(CNUITEM_ERROR_DATE);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        IF(ISBDOCUMENTO IS NULL) THEN
+            ERRORS.SETERROR(CNUITEM_DOC_NULO);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        IF (RCITEM.ID_ITEMS_ESTADO_INV = GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO) THEN
+
+            ERRORS.SETERROR(CNUITEM_NO_SELL_PROC);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        RCITEM.ID_ITEMS_ESTADO_INV := GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO;
+
+        
+        RCITEM.FECHA_SALIDA := IDTFECHA;
+
+        
+        IF (RCITEM.OPERATING_UNIT_ID IS NOT NULL) THEN
+
+            
+            RCITEM.PROPIEDAD := GE_BOITEMSCONSTANTS.CSBVENDIDO_CLIENTE;
+            
+             
+            RCITEM.SUBSCRIBER_ID := DAMO_PACKAGES.FNUGETSUBSCRIBER_ID(INUPACKAGE_ID,0);
+
+            
+            RCITEM.FECHA_GARANTIA := IDTFECHA + DAGE_ITEMS.FNUGETWARRANTY_DAYS(RCITEM.ITEMS_ID);
+
+            
+            SBMOVEMENTTYPE := OR_BOITEMSMOVE.CSBDECREASEMOVETYPE;
+            NUVALOR := INUVALOR;
+            NUCOST := NULL;
+            
+            UT_TRACE.TRACE('isbDocumento := '||ISBDOCUMENTO,15);
+            
+            
+            NUIDITEMDOCUMENTO := GE_BCITEMSDOCUMENTO.FNUGETITEMSDOCBYDOCEXT
+                                    (
+                                        GE_BOITEMSCONSTANTS.CNUTIPOFACTURAVENTA,
+                                        RCITEM.OPERATING_UNIT_ID,
+                                        ISBDOCUMENTO
+                                    );
+            
+            
+            UT_TRACE.TRACE('nuIdItemDocumento := '||NUIDITEMDOCUMENTO,15);
+            
+            IF(NUIDITEMDOCUMENTO IS NULL) THEN
+            
+                UT_TRACE.TRACE('--Se registra el documento ',15);
+                
+                GE_BOITEMSDOCUMENTO.REGISTRARDOCUMENTO(
+                                                        GE_BOITEMSCONSTANTS.CNUTIPOFACTURAVENTA,
+                                                        RCITEM.OPERATING_UNIT_ID,
+                                                        RCITEM.OPERATING_UNIT_ID,
+                                                        IDTFECHA,
+                                                        ISBDOCUMENTO,
+                                                        ISBESTADODOC,
+                                                        NULL,
+                                                        NUIDITEMDOCUMENTO,
+                                                        INUPACKAGE_ID
+                                                        );
+
+            END IF;
+
+            UT_TRACE.TRACE('documento utilizado para el movimiento := '||NUIDITEMDOCUMENTO,15);
+
+            
+            
+            OR_BOITEMSMOVE.REGISTERITEMSMOVE(
+                                                RCITEM.OPERATING_UNIT_ID,
+                                                RCITEM.OPERATING_UNIT_ID,
+                                                RCITEM.ITEMS_ID,
+                                                RCITEM,
+                                                SBMOVEMENTTYPE,
+                                                GE_BOITEMSCONSTANTS.CNUCAUSALSALIDAPORVENTA,
+                                                NUIDITEMDOCUMENTO,
+                                                1,
+                                                NUCOST,
+                                                NUVALOR,
+                                                NULL,
+                                                NUUNIITEMMOVID
+                                            );
+        ELSE
+            
+            SBMOVEMENTTYPE := OR_BOITEMSMOVE.CSBNEUTRALMOVETYPE;
+            NUVALOR := 0;
+            NUCOST := 0;
+        END IF;
+
+        
+        RCITEM.OPERATING_UNIT_ID := NULL;
+        
+        
+        DAGE_ITEMS_SERIADO.UPDRECORD(RCITEM,CNULOCK_NOWAIT);
+        
+        
+        IF_BOPREVMAINTENANCE.UPDATESERIALITEM(RCITEM.ID_ITEMS_SERIADO);
+
+        UT_TRACE.TRACE('--[FIN] GE_BOItemsSeriado.MovItemBySell', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END MOVITEMBYSELL;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETITEMINFOBYSERIE
+    (
+        INUITEMID           IN  GE_ITEMS_SERIADO.ITEMS_ID%TYPE,
+        ISBSERIE            IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        INUOPERATINGUNIT    IN  GE_ITEMS_SERIADO.OPERATING_UNIT_ID%TYPE,
+        ONUITEMSERIADOID    OUT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        ONUVALUE            OUT GE_ITEMS_SERIADO.COSTO%TYPE,
+        OSBARG              OUT VARCHAR2,
+        INUDOCTYPE          IN  GE_DOCUMENT_TYPE.DOCUMENT_TYPE_ID%TYPE DEFAULT NULL
+    )
+    IS
+        RCITEM              DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        BLSETERROR          BOOLEAN := FALSE;
+        NUALMACEN           OR_OPERATING_UNIT.ASSO_OPER_UNIT%TYPE;
+        NUITEMTIPO          NUMBER;
+
+    BEGIN
+        ONUVALUE := NULL;
+        ONUITEMSERIADOID := NULL;
+        OSBARG := NULL;
+
+        
+        IF (ISBSERIE IS NULL) THEN
+            ERRORS.SETERROR(CNUNULL_INPUT, '[N�mero de Serie]');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        GE_BCITEMSSERIADO.GETIDBYSERIE(ISBSERIE, ONUITEMSERIADOID);
+
+        IF ONUITEMSERIADOID IS NOT NULL THEN
+            
+            DAGE_ITEMS_SERIADO.GETRECORD( ONUITEMSERIADOID, RCITEM);
+            
+
+            IF  RCITEM.PROPIEDAD = GE_BOITEMSCONSTANTS.CSBTRAIDO_CLIENTE THEN
+
+                
+                NUITEMTIPO := DAGE_ITEMS.FNUGETID_ITEMS_TIPO(RCITEM.ITEMS_ID);
+                IF  NUITEMTIPO = GE_BOITEMSCONSTANTS.FNUGROUP_TYPEITEMS AND
+                    INUDOCTYPE = GE_BOITEMSCONSTANTS.CNUTIPOAJUSTEENTRADA
+                THEN
+                    ONUVALUE         := -5;
+                    OSBARG           := NUITEMTIPO||' - '||DAGE_ITEMS_TIPO.FSBGETDESCRIPCION(NUITEMTIPO);
+                    RETURN;
+                END IF;
+
+            END IF;
+            
+            
+            IF(RCITEM.ITEMS_ID != INUITEMID) THEN
+                ONUITEMSERIADOID := NULL;
+                ONUVALUE         := -3;
+                OSBARG           := RCITEM.ITEMS_ID || ' - ' || DAGE_ITEMS.FSBGETDESCRIPTION(RCITEM.ITEMS_ID);
+                RETURN;
+            END IF;
+            
+            
+            IF (GE_BOEMPAQUETAEQUIPOS.FSBVALIDAREMPAQUETADO(ISBSERIE, ONUITEMSERIADOID) = GE_BOCONSTANTS.CSBYES) THEN
+                ONUITEMSERIADOID := NULL;
+                ONUVALUE         := -4;
+                RETURN;
+            END IF;
+            
+            
+
+            IF INUDOCTYPE IS NOT NULL THEN
+                IF INUDOCTYPE = GE_BOITEMSCONSTANTS.CNUTIPOAJUSTEENTRADA THEN
+                    UT_TRACE.TRACE('Ajuste de Entrada',15);
+                    IF RCITEM.ID_ITEMS_ESTADO_INV NOT IN
+                        (
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_CHATARRA,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_DADO_BAJA,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE
+                        ) THEN
+                        BLSETERROR := TRUE;
+                    END IF;
+
+                ELSIF INUDOCTYPE = GE_BOITEMSCONSTANTS.CNUTIPOAJUSTESALIDA THEN
+                    UT_TRACE.TRACE('Ajuste de SAlida',15);
+                    IF RCITEM.ID_ITEMS_ESTADO_INV NOT IN
+                        (
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_EN_AISLAMIENTO,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPERADO,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_CHATARRA,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_POR_RECUPERAR
+                        ) THEN
+                        BLSETERROR := TRUE;
+                    END IF;
+                ELSIF INUDOCTYPE = GE_BOITEMSCONSTANTS.CNUTIPOAJUSTERECLASIFICACION THEN
+                    UT_TRACE.TRACE('Ajuste por reclasificacion',15);
+                    IF RCITEM.ID_ITEMS_ESTADO_INV NOT IN
+                        (
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPERADO,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_EN_REPARA,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_OBSOLETO,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_EN_AISLAMIENTO,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_POR_RECUPERAR,
+                            GE_BOITEMSCONSTANTS.CNUSTATUS_CHATARRA
+                        ) THEN
+                        BLSETERROR := TRUE;
+                    END IF;
+                END IF;
+            END IF;
+
+            IF BLSETERROR THEN
+                ONUITEMSERIADOID := NULL;
+                ONUVALUE         := -2;
+                OSBARG           := RCITEM.ID_ITEMS_ESTADO_INV || ' - ' || DAGE_ITEMS_ESTADO_INV.FSBGETDESCRIPCION(RCITEM.ID_ITEMS_ESTADO_INV);
+                RETURN;
+            END IF;
+
+            
+            IF(INUOPERATINGUNIT IS NULL) THEN
+                
+                IF RCITEM.OPERATING_UNIT_ID IS NULL THEN
+                    ONUITEMSERIADOID := RCITEM.ID_ITEMS_SERIADO;
+                    ONUVALUE         := RCITEM.COSTO;
+                    RETURN;
+                ELSE
+                    ONUITEMSERIADOID := NULL;
+                    ONUVALUE         := -1;
+                    OSBARG           := RCITEM.OPERATING_UNIT_ID || ' - ' || DAOR_OPERATING_UNIT.FSBGETNAME(RCITEM.OPERATING_UNIT_ID);
+                END IF;
+            
+            ELSE
+                
+                BEGIN
+                    NUALMACEN := DAOR_OPERATING_UNIT.FNUGETASSO_OPER_UNIT(INUOPERATINGUNIT);
+                    UT_TRACE.TRACE('El almacen asociado a la unidad operativa es '||NUALMACEN);
+                EXCEPTION
+                    WHEN EX.CONTROLLED_ERROR THEN
+                        UT_TRACE.TRACE('No se encontro almacen asociado', 5);
+                    WHEN OTHERS THEN
+                        ERRORS.SETERROR;
+                        UT_TRACE.TRACE('No se encontro almacen asociado', 5);
+                END ;
+
+                
+                IF(RCITEM.OPERATING_UNIT_ID = INUOPERATINGUNIT OR
+                    (NUALMACEN IS NOT NULL AND RCITEM.OPERATING_UNIT_ID = NUALMACEN) ) THEN
+                   ONUITEMSERIADOID := RCITEM.ID_ITEMS_SERIADO;
+                   ONUVALUE         := RCITEM.COSTO;
+                
+                ELSE
+                    IF (RCITEM.OPERATING_UNIT_ID IS NULL AND RCITEM.PROPIEDAD = GE_BOITEMSCONSTANTS.CSBTRAIDO_CLIENTE ) THEN
+                        ONUITEMSERIADOID := NULL;
+                        ONUVALUE         := -6;
+                        RETURN;
+                    END IF;
+
+                    ONUITEMSERIADOID := NULL;
+                    ONUVALUE         := -1;
+                    OSBARG           := RCITEM.OPERATING_UNIT_ID || ' - ' || DAOR_OPERATING_UNIT.FSBGETNAME(RCITEM.OPERATING_UNIT_ID,0);
+                END IF;
+            
+            END IF;
+        ELSE
+            
+            
+            NUITEMTIPO := DAGE_ITEMS.FNUGETID_ITEMS_TIPO(INUITEMID);
+            IF  NUITEMTIPO = GE_BOITEMSCONSTANTS.FNUGROUP_TYPEITEMS AND
+                INUDOCTYPE = GE_BOITEMSCONSTANTS.CNUTIPOAJUSTEENTRADA
+            THEN
+                ONUITEMSERIADOID := NULL;
+                ONUVALUE         := -5;
+                OSBARG           := NUITEMTIPO||' - '||DAGE_ITEMS_TIPO.FSBGETDESCRIPCION(NUITEMTIPO);
+            END IF;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETITEMINFOBYSERIE;
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETITEMSFROMUNITBYITEM
+    (
+        INUOPERATINGUNITID      IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        INUTARGETOPERUNITID     IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        INUITEMSID              IN  GE_ITEMS.ITEMS_ID%TYPE,
+        ORFCURSOR               OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+        BOCENTROREPARACION      BOOLEAN;
+    BEGIN
+        UT_TRACE.TRACE('--[INICIO] GE_BOItemsSeriado.GetItemsFromUnitByItem', 5);
+
+        
+        BOCENTROREPARACION := FALSE;
+        
+        DAGE_ITEMS.ACCKEY(INUITEMSID);
+
+        
+        IF (NOT INUTARGETOPERUNITID IS NULL) THEN
+            DAOR_OPERATING_UNIT.ACCKEY(INUTARGETOPERUNITID);
+
+            
+            IF (DAOR_OPERATING_UNIT.FNUGETOPER_UNIT_CLASSIF_ID(INUTARGETOPERUNITID) =
+                    GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA ) THEN 
+                BOCENTROREPARACION := TRUE;
+            END IF;
+        END IF;
+
+        ORFCURSOR :=
+            GE_BCITEMSSERIADO.FRFGETITEMSFROMUNITBYITEM
+            (
+                INUOPERATINGUNITID,
+                INUITEMSID,
+                BOCENTROREPARACION
+            );
+        UT_TRACE.TRACE('--[FIN] GE_BOItemsSeriado.GetItemsFromUnitByItem', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(ORFCURSOR);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(ORFCURSOR);
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETITEMSFROMUNITBYSERIE
+    (
+        INUOPERATINGUNITID      IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        INUTARGETOPERUNITID     IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        ISBSERIE                IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ONUITEM                 OUT GE_ITEMS_SERIADO.ITEMS_ID%TYPE
+    )
+    IS
+        BOCENTROREPARACION      BOOLEAN;
+    BEGIN
+        UT_TRACE.TRACE('--[INICIO] GE_BOItemsSeriado.GetItemsFromUnitBySerie', 5);
+
+        
+        BOCENTROREPARACION := FALSE;
+
+        
+        IF (NOT INUTARGETOPERUNITID IS NULL) THEN
+            DAOR_OPERATING_UNIT.ACCKEY(INUTARGETOPERUNITID);
+
+            
+            IF (DAOR_OPERATING_UNIT.FNUGETOPER_UNIT_CLASSIF_ID(INUTARGETOPERUNITID) =
+                    GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA ) THEN 
+                BOCENTROREPARACION := TRUE;
+            END IF;
+        END IF;
+        
+        ONUITEM := GE_BCITEMSSERIADO.FNUGETITEMSFROMUNITBYSERIE
+                    (
+                        INUOPERATINGUNITID,
+                        ISBSERIE,
+                        BOCENTROREPARACION
+                    );
+        
+        UT_TRACE.TRACE('--[FIN] GE_BOItemsSeriado.GetItemsFromUnitBySerie', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETIDBYSERIE
+    (
+        ISBSERIE            IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ONUIDITEMSERIADO    OUT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    )
+    IS
+
+    BEGIN
+        UT_TRACE.TRACE('--[INICIO] GE_BOItemsSeriado.getIdBySerie', 5);
+
+        GE_BCITEMSSERIADO.GETIDBYSERIE(ISBSERIE, ONUIDITEMSERIADO);
+
+        UT_TRACE.TRACE('--[FIN] GE_BOItemsSeriado.getIdBySerie', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETITEMSFROMUNITBYSTATUS
+    (
+        INUOPERATINGUNITID      IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        ISBESTADOTECNICO        IN  GE_ITEMS_SERIADO.ESTADO_TECNICO%TYPE,
+        INUITEMSESTADOINV       IN  GE_ITEMS_ESTADO_INV.ID_ITEMS_ESTADO_INV%TYPE,
+        ORFCURSOR               OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+
+    BEGIN
+        UT_TRACE.TRACE('--[INICIO] GE_BOItemsSeriado.GetItemsFromUnitByStatus', 5);
+
+        
+        IF (NOT INUOPERATINGUNITID IS NULL) THEN
+            DAOR_OPERATING_UNIT.ACCKEY(INUOPERATINGUNITID);
+        ELSE
+            UT_TRACE.TRACE('inuOperatingUnitId IS NULL', 3);
+            ERRORS.SETERROR(3253, 'Tienda');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        ORFCURSOR :=
+            GE_BCITEMSSERIADO.FRFGETITEMSFROMUNITBYSTATUS
+            (
+                INUOPERATINGUNITID,
+                ISBESTADOTECNICO,
+                INUITEMSESTADOINV
+            );
+        UT_TRACE.TRACE('--[FIN] GE_BOItemsSeriado.GetItemsFromUnitByStatus', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(ORFCURSOR);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(ORFCURSOR);
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBGETSERIEATRIBUTO
+    (
+        INUITEMID                   IN  GE_ITEMS.ITEMS_ID%TYPE,
+        INUIDITEMSTIPOATR           IN  GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_ATR%TYPE,
+        ISBATRIBUTOVALUE            IN  GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE
+    )
+    RETURN VARCHAR2
+    IS
+            SBSERIE                 GE_ITEMS_SERIADO.SERIE%TYPE;
+
+        CURSOR CUITEMSERIADO IS
+            SELECT  /*+ INDEX(a IDX_GE_ITEMS_TIPO_AT_VAL_02) */ B.SERIE
+            FROM    GE_ITEMS_TIPO_AT_VAL A,
+                    GE_ITEMS_SERIADO B
+            WHERE   A.ID_ITEMS_SERIADO = B.ID_ITEMS_SERIADO
+            AND     A.ID_ITEMS_TIPO_ATR = INUIDITEMSTIPOATR
+            AND     A.VALOR = ISBATRIBUTOVALUE
+            AND     B.ITEMS_ID = INUITEMID;
+
+        PROCEDURE CERRARCURSOR
+        IS
+        BEGIN
+            IF (CUITEMSERIADO%ISOPEN) THEN
+                CLOSE CUITEMSERIADO;
+            END IF;
+        END;
+
+    BEGIN
+        CERRARCURSOR;
+
+        OPEN CUITEMSERIADO;
+        FETCH CUITEMSERIADO INTO SBSERIE;
+        IF (CUITEMSERIADO%NOTFOUND) THEN
+            SBSERIE := NULL;
+        END IF;
+        CLOSE CUITEMSERIADO;
+
+        RETURN SBSERIE;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            CERRARCURSOR;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            CERRARCURSOR;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+    
+    
+    PROCEDURE INICIALIZARINSTANCIA
+    IS
+        NUINSTANCE              GE_BOINSTANCECONTROL.STYNUINDEX;
+    BEGIN
+
+        IF ( NOT GE_BOINSTANCECONTROL.FBLISINITINSTANCECONTROL ) THEN
+            
+            GE_BOINSTANCECONTROL.INITINSTANCEMANAGER;
+        END IF;
+
+        IF ( GE_BOINSTANCECONTROL.FBLACCKEYINSTANCESTACK (CSBFWINSTANCENAME, NUINSTANCE) ) THEN
+            
+            GE_BOINSTANCECONTROL.CLEARINSTANCE( CSBFWINSTANCENAME );
+        ELSE
+            
+            GE_BOINSTANCECONTROL.CREATEINSTANCE ( CSBFWINSTANCENAME, NULL );
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INICIALIZARINSTANCIA;
+
+
+    
+    
+    
+    PROCEDURE INICIALIZARATRIBUTO
+    (
+        INUIDITEMSTIPOATR       IN  GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE,
+        OSBIDATRIBUTEVALUE      OUT GE_BOINSTANCECONTROL.STYSBVALUE
+    )
+    IS
+        RCITEMSTIPOATR          DAGE_ITEMS_TIPO_ATR.STYGE_ITEMS_TIPO_ATR;
+        SBATRNOMBTECNICO        GE_ENTITY_ATTRIBUTES.TECHNICAL_NAME%TYPE;
+    BEGIN
+        
+        RCITEMSTIPOATR := DAGE_ITEMS_TIPO_ATR.FRCGETRECORD( INUIDITEMSTIPOATR );
+        
+        SBATRNOMBTECNICO := DAGE_ENTITY_ATTRIBUTES.FSBGETTECHNICAL_NAME( RCITEMSTIPOATR.ENTITY_ATTRIBUTE_ID );
+        
+        GE_BOINSTANCECONTROL.ADDATTRIBUTE( CSBFWINSTANCENAME, NULL, CSBITEMSERIENTITY, SBATRNOMBTECNICO, NULL, TRUE );
+        
+        IF ( RCITEMSTIPOATR.REGLA_INICIO IS NOT NULL ) THEN
+            GE_BOINSTANCECONTROL.SETCURRENTDATA( CSBFWINSTANCENAME, NULL, CSBITEMSERIENTITY, SBATRNOMBTECNICO );
+            GE_BOINSTANCECONTROL.EXECUTEEXPRESSION ( RCITEMSTIPOATR.REGLA_INICIO );
+            GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE( CSBFWINSTANCENAME, NULL, CSBITEMSERIENTITY, SBATRNOMBTECNICO, OSBIDATRIBUTEVALUE );
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INICIALIZARATRIBUTO;
+
+    
+    
+    
+    PROCEDURE VALIDARATRIBUTO
+    (
+        INUIDITEMSTIPOATR       IN  GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE,
+        SBNEWATRIBUTEVALUE      IN  GE_BOINSTANCECONTROL.STYSBVALUE,
+        SBCONTEXTO              IN  GE_BOINSTANCECONTROL.STYSBSQL
+    )
+    IS
+        RCITEMSTIPOATR          DAGE_ITEMS_TIPO_ATR.STYGE_ITEMS_TIPO_ATR;
+        SBATRNOMBTECNICO        GE_ENTITY_ATTRIBUTES.TECHNICAL_NAME%TYPE;
+        TBPARAMETROS            UT_STRING.TYTB_STRPARAMETERS;
+        NUIDXPARAMETROS         NUMBER;
+    BEGIN
+        
+        RCITEMSTIPOATR := DAGE_ITEMS_TIPO_ATR.FRCGETRECORD( INUIDITEMSTIPOATR );
+        
+        SBATRNOMBTECNICO := DAGE_ENTITY_ATTRIBUTES.FSBGETTECHNICAL_NAME( RCITEMSTIPOATR.ENTITY_ATTRIBUTE_ID );
+
+        
+        IF RCITEMSTIPOATR.REGLA_VALIDACION IS NOT NULL THEN
+
+            
+            IF SBCONTEXTO <> NVL(GSBCONTEXTO,' ') THEN
+                BEGIN
+                    
+                    UT_STRING.EXTPARAMETERS( SBCONTEXTO, CSBPIPE , CSBIGUAL, TBPARAMETROS );
+                    NUIDXPARAMETROS := TBPARAMETROS.FIRST;
+                    WHILE NUIDXPARAMETROS IS NOT NULL LOOP
+                        
+                        GE_BOINSTANCECONTROL.ADDATTRIBUTE( CSBFWINSTANCENAME, NULL, CSBITEMSERIENTITY, TBPARAMETROS(NUIDXPARAMETROS).SBPARAMETER, TBPARAMETROS(NUIDXPARAMETROS).SBVALUE, TRUE );
+                        NUIDXPARAMETROS:= TBPARAMETROS.NEXT(NUIDXPARAMETROS);
+                    END LOOP;
+                    GSBCONTEXTO := SBCONTEXTO;
+                EXCEPTION
+                    WHEN OTHERS THEN
+                        GSBCONTEXTO := NULL;
+                        RAISE;
+                END;
+            END IF;
+
+            
+            IF ( RCITEMSTIPOATR.REGLA_VALIDACION IS NOT NULL ) THEN
+                GE_BOINSTANCECONTROL.SETCURRENTDATA( CSBFWINSTANCENAME, NULL, CSBITEMSERIENTITY, SBATRNOMBTECNICO );
+                GE_BOINSTANCECONTROL.EXECUTEEXPRESSION ( RCITEMSTIPOATR.REGLA_VALIDACION );
+            END IF;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END VALIDARATRIBUTO;
+
+    
+    
+    
+    PROCEDURE CERRARINSTANCIA
+    IS
+    BEGIN
+
+        IF ( GE_BOINSTANCECONTROL.FBLISINITINSTANCECONTROL ) THEN
+            
+            GE_BOINSTANCECONTROL.STOPINSTANCEMANAGER;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CERRARINSTANCIA;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETITEMSINVSTATUS
+    (
+        ORFDATACURSOR   OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+
+    BEGIN
+        GE_BCITEMSSERIADO.GETITEMSINVSTATUS(ORFDATACURSOR);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(ORFDATACURSOR);
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(ORFDATACURSOR);
+            RAISE EX.CONTROLLED_ERROR;
+    END GETITEMSINVSTATUS;
+    
+
+
+
+    PROCEDURE GETITEMSTYPE
+    (
+        ORFCURSOR   OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+
+    BEGIN
+        UT_TRACE.TRACE('Inicia GE_BOItemsSeriado.GetItemsType',15);
+
+        
+        IF ORFCURSOR%ISOPEN THEN
+            CLOSE ORFCURSOR;
+        END IF;
+        
+        ORFCURSOR := GE_BCITEMSSERIADO.FRFGETITEMSTYPE;
+
+        UT_TRACE.TRACE('Finaliza GE_BOItemsSeriado.GetItemsType',15);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('Error : ex.CONTROLLED_ERROR',15);
+            RAISE;
+
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('Error : OTHERS',15);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+    PROCEDURE GETITEMSSTATUS
+    (
+        ORFCURSOR   OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+
+    BEGIN
+        UT_TRACE.TRACE('Inicia GE_BOItemsSeriado.GetItemsStatus',15);
+
+        
+        IF ORFCURSOR%ISOPEN THEN
+            CLOSE ORFCURSOR;
+        END IF;
+        
+        ORFCURSOR := GE_BCITEMSSERIADO.FRFGETITEMSSTATUS;
+
+        UT_TRACE.TRACE('Finaliza GE_BOItemsSeriado.GetItemsStatus',15);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('Error : ex.CONTROLLED_ERROR',15);
+            RAISE;
+
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('Error : OTHERS',15);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETIDSERIALBYATT
+    (
+        INUIDITEMSTIPO      IN  GE_ITEMS_TIPO.ID_ITEMS_TIPO%TYPE,
+        ISBTECHNICALNAME    IN  GE_ENTITY_ATTRIBUTES.TECHNICAL_NAME%TYPE,
+        ISBVALUE            IN  GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE,
+        ONUITEMSERIADOID    OUT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        OSBSERIE            OUT GE_ITEMS_SERIADO.SERIE%TYPE
+    )
+    IS
+        
+        NUITEMSTIPOATRID    GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE;
+        NUITEMSSERIADO      GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        SBSERIE             GE_ITEMS_SERIADO.SERIE%TYPE;
+        SBDESCRPTPIEM       GE_ITEMS_TIPO.DESCRIPCION%TYPE;
+
+        CURSOR CUITEMSERVAL
+        (
+            INUITEMTPATTRID  IN GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE,
+            ISBVALRIMEI      IN GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE
+        )
+        IS
+            SELECT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO,
+                   GE_ITEMS_SERIADO.SERIE
+            FROM GE_ITEMS_SERIADO, GE_ITEMS_TIPO_AT_VAL
+            WHERE GE_ITEMS_SERIADO.ID_ITEMS_SERIADO = GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_SERIADO
+            AND GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_ATR = INUITEMTPATTRID
+            AND GE_ITEMS_TIPO_AT_VAL.VALOR = ISBVALRIMEI
+            AND ROWNUM = 1;
+
+    BEGIN
+        
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.getIdSerialByAtt');
+
+        
+        NUITEMSTIPOATRID := GE_BCITEMSSERIADO.FNUGETIDATTRIBUTE( INUIDITEMSTIPO,ISBTECHNICALNAME);
+
+        IF CUITEMSERVAL%ISOPEN THEN CLOSE CUITEMSERVAL; END IF;
+        OPEN CUITEMSERVAL(NUITEMSTIPOATRID, ISBVALUE);
+        FETCH CUITEMSERVAL INTO ONUITEMSERIADOID, OSBSERIE;
+
+        
+        IF CUITEMSERVAL%NOTFOUND THEN
+            CLOSE CUITEMSERVAL;
+            
+            
+            SBDESCRPTPIEM := DAGE_ITEMS_TIPO.FSBGETDESCRIPCION(INUIDITEMSTIPO);
+            ERRORS.SETERROR(16562,SBDESCRPTPIEM||'|'||ISBTECHNICALNAME||' '||ISBVALUE);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        CLOSE CUITEMSERVAL;
+
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.getIdSerialByAtt');
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CONNECTDEVICE
+    (
+        INUITEMSERIADOID    IN GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        ISBESTADO           IN VARCHAR2,
+        IDTFECHA            IN DATE
+    )
+    IS
+        
+        NUSTATEITEMSTIPOATRID   GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE;
+        NULASTITEMSTIPOATRID    GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE;
+        ONUIDATTVALUE           GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_AT_VAL%TYPE;
+    BEGIN
+        
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.ConnectDevice',7);
+
+        
+        IF (ISBESTADO <> OR_BOCONSTANTS.CSBSI AND ISBESTADO <> OR_BOCONSTANTS.CSBNO ) THEN
+            ERRORS.SETERROR(18662,ISBESTADO);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        
+        NUSTATEITEMSTIPOATRID := GE_BCITEMSSERIADO.FNUGETIDATTRIBUTE( GE_BOCONSTANTS.CNUTIPO_DISP_MOVIL,
+                                                                      'STATE_CONNECTION'
+                                                                    );
+
+        NULASTITEMSTIPOATRID := GE_BCITEMSSERIADO.FNUGETIDATTRIBUTE( GE_BOCONSTANTS.CNUTIPO_DISP_MOVIL,
+                                                                     'LAST_CONNECTION'
+                                                                   );
+        
+        IF (ISBESTADO = OR_BOCONSTANTS.CSBSI) THEN
+            GE_BOITEMSSERIADO.ACTUALIZARATRIBUTO( NUSTATEITEMSTIPOATRID,
+                                                  INUITEMSERIADOID,
+                                                  'On-Line',
+                                                  ONUIDATTVALUE
+                                                );
+        END IF;
+
+        
+        IF (ISBESTADO = OR_BOCONSTANTS.CSBNO ) THEN
+            GE_BOITEMSSERIADO.ACTUALIZARATRIBUTO( NUSTATEITEMSTIPOATRID,
+                                                  INUITEMSERIADOID,
+                                                  'Off-Line',
+                                                  ONUIDATTVALUE
+                                                );
+        END IF;
+
+        
+        GE_BOITEMSSERIADO.ACTUALIZARATRIBUTO(   NULASTITEMSTIPOATRID,
+                                                INUITEMSERIADOID,
+                                                TO_CHAR(IDTFECHA,UT_DATE.FSBDATE_FORMAT),
+                                                ONUIDATTVALUE
+                                            );
+
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.ConnectDevice',7);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CONNECTDEVICE;
+
+    
+
+
+
+
+
+    PROCEDURE UPDITEMSERIADOCAP
+    (
+        INUITEMSERIADOID    IN  GE_ITEM_SERIADO_CAP.ID_ITEMS_SERIADO%TYPE,
+        INUPRODUCTTYPEID    IN  GE_ITEM_SERIADO_CAP.PRODUCT_TYPE_ID%TYPE,
+        INUCAPACITYTOTAL    IN  GE_ITEM_SERIADO_CAP.CAPACITY_TOTAL%TYPE,
+        INUCAPACITYOCCUPIED IN  GE_ITEM_SERIADO_CAP.CAPACITY_OCCUPIED%TYPE
+    )
+    IS
+        TBITEMSERIADOCAP    DAGE_ITEM_SERIADO_CAP.TYTBGE_ITEM_SERIADO_CAP;
+        NUINDEX             BINARY_INTEGER;
+        RCITEMSERIADOCAP    DAGE_ITEM_SERIADO_CAP.STYGE_ITEM_SERIADO_CAP;
+        CNURECORD_NOT_EXIST CONSTANT NUMBER(1) := 1;
+    BEGIN
+
+        UT_TRACE.TRACE('inuItemSeriadoId: '||INUITEMSERIADOID||', inuProductTypeId: '||INUPRODUCTTYPEID||
+                       'inuCapacityTotal: '||INUCAPACITYTOTAL||', inuCapacityOccupied: '||INUCAPACITYOCCUPIED , 1);
+
+        TBITEMSERIADOCAP    := GE_BCITEMCAPACITY.FTBGETCAPSSERBYITEM(INUITEMSERIADOID, INUPRODUCTTYPEID);
+
+        UT_TRACE.TRACE('tbItemSeriadoCap.count: '||TBITEMSERIADOCAP.COUNT, 1);
+
+        IF(TBITEMSERIADOCAP.COUNT = 0) THEN
+            ERRORS.SETERROR(CNURECORD_NOT_EXIST, DAGE_ITEM_SERIADO_CAP.FSBGETMESSAGEDESCRIPTION);
+            
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        NUINDEX := TBITEMSERIADOCAP.FIRST;
+        
+        UT_TRACE.TRACE('tbItemSeriadoCap(nuIndex).capacity_occupied: '||TBITEMSERIADOCAP(NUINDEX).CAPACITY_OCCUPIED||
+                     ', tbItemSeriadoCap(nuIndex).capacity_total: '||TBITEMSERIADOCAP(NUINDEX).CAPACITY_TOTAL, 1);
+        
+        
+        IF( TBITEMSERIADOCAP(NUINDEX).CAPACITY_OCCUPIED > INUCAPACITYOCCUPIED OR
+            TBITEMSERIADOCAP(NUINDEX).CAPACITY_TOTAL < INUCAPACITYOCCUPIED)  THEN
+            ERRORS.SETERROR(18202, TBITEMSERIADOCAP(NUINDEX).CAPACITY_OCCUPIED||'|'||TBITEMSERIADOCAP(NUINDEX).CAPACITY_TOTAL); 
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        DAGE_ITEM_SERIADO_CAP.GETRECORD(TBITEMSERIADOCAP(NUINDEX).ITEM_SERIADO_CAP_ID, RCITEMSERIADOCAP);
+
+        
+        RCITEMSERIADOCAP.CAPACITY_TOTAL := INUCAPACITYOCCUPIED;
+        
+        DAGE_ITEM_SERIADO_CAP.UPDRECORD(RCITEMSERIADOCAP);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+    PROCEDURE COPYCAPACITYFROMITEM
+    (
+        INUITEMSERIADOID    IN  GE_ITEM_SERIADO_CAP.ID_ITEMS_SERIADO%TYPE
+    )
+    IS
+        NUITEMSID           GE_ITEMS.ITEMS_ID%TYPE;
+        CURFGETDATA         CONSTANTS.TYREFCURSOR;
+        RCITEMCAPACITY      GE_BCITEMCAPACITY.RCITEMSCAPACITY;
+        RCCOPYITEMCAPACITY  DAGE_ITEM_SERIADO_CAP.STYGE_ITEM_SERIADO_CAP;
+    BEGIN
+
+        UT_TRACE.TRACE('INICIA - GE_BOItemsSeriado.copyCapacityFromItem',25);
+        UT_TRACE.TRACE('inuItemSeriadoId := '||INUITEMSERIADOID,25);
+
+        IF(GE_BCITEMSSERIADO.FSBVALEXISTITEMSERIADOCAP(INUITEMSERIADOID) = OR_BOCONSTANTS.CSBSI) THEN
+             ERRORS.SETERROR(CNUITEM_EXISTS, INUITEMSERIADOID); 
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        NUITEMSID   := DAGE_ITEMS_SERIADO.FNUGETITEMS_ID(INUITEMSERIADOID);
+        UT_TRACE.TRACE('nuItemsId :='||NUITEMSID,25);
+        
+        CURFGETDATA := GE_BCITEMCAPACITY.FRFGETITEMCAPACITY(NUITEMSID);
+        
+        FETCH CURFGETDATA INTO RCITEMCAPACITY;
+        WHILE CURFGETDATA%FOUND
+        LOOP
+
+            RCCOPYITEMCAPACITY.ITEM_SERIADO_CAP_ID  :=  GE_BOSEQUENCE.FNUGETNEXTVALSEQUENCE('GE_ITEM_SERIADO_CAP','SEQ_GE_ITEM_SERIADO_CAP');
+            RCCOPYITEMCAPACITY.CAPACITY_TOTAL       :=  RCITEMCAPACITY.CAPACITY;
+            RCCOPYITEMCAPACITY.CAPACITY_OCCUPIED    :=  0;
+            RCCOPYITEMCAPACITY.ID_ITEMS_SERIADO     :=  INUITEMSERIADOID;
+            RCCOPYITEMCAPACITY.PRODUCT_TYPE_ID      :=  RCITEMCAPACITY.PRODUCT_TYPE_ID;
+
+            DAGE_ITEM_SERIADO_CAP.INSRECORD(RCCOPYITEMCAPACITY);
+
+            FETCH CURFGETDATA INTO RCITEMCAPACITY;
+        END LOOP;
+        UT_TRACE.TRACE('FIN - GE_BOItemsSeriado.copyCapacityFromItem',25);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALEXISTITEMSERIADO
+    (
+        INUITEMID    IN  GE_ITEMS.ITEMS_ID%TYPE,
+        OSBEXISTITEM OUT VARCHAR2
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('INICIO - GE_BOItemsSeriado.valExistItemSeriado',25);
+
+        OSBEXISTITEM := GE_BCITEMSSERIADO.FSBVALITEMBYSERITEM( INUITEMID );
+        
+        UT_TRACE.TRACE('FIN - GE_BOItemsSeriado.valExistItemSeriado',25);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDCAPACITYITEMSER
+    (
+        INUITEMSERIADOID  IN GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV%TYPE,
+        INUPRODUCTTYPEID  IN GE_ITEM_SERIADO_CAP.PRODUCT_TYPE_ID%TYPE,
+        ISBFLAGINSTALL    IN VARCHAR2
+    )
+    IS
+        NUITEMSTATUS GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV%TYPE;
+        SBITEMSTATUS GE_ITEMS_ESTADO_INV.DESCRIPCION%TYPE;
+        SBSERIE      GE_ITEMS_SERIADO.SERIE%TYPE;
+        TBITEMSERCAP DAGE_ITEM_SERIADO_CAP.TYTBGE_ITEM_SERIADO_CAP;
+    BEGIN
+        UT_TRACE.TRACE('INICIO - GE_BOItemsSeriado.updCapacityItemSer',25);
+
+        
+        SBSERIE      := DAGE_ITEMS_SERIADO.FSBGETSERIE( INUITEMSERIADOID );
+
+        
+        NUITEMSTATUS := DAGE_ITEMS_SERIADO.FNUGETID_ITEMS_ESTADO_INV( INUITEMSERIADOID );
+        SBITEMSTATUS := DAGE_ITEMS_ESTADO_INV.FSBGETDESCRIPCION( NUITEMSTATUS );
+
+        
+        
+        IF ISBFLAGINSTALL IS NULL OR ISBFLAGINSTALL NOT IN (GE_BOCONSTANTS.CSBYES, GE_BOCONSTANTS.CSBNO) THEN
+            ERRORS.SETERROR(CNUINVALIDINSTALLFLAG,SBSERIE);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        
+        IF INUPRODUCTTYPEID IS NULL OR NOT PKTBLSERVICIO.FBLEXIST( INUPRODUCTTYPEID )  THEN
+            ERRORS.SETERROR(CNUINVALIDPRODUCTTYPE,SBSERIE);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        
+        TBITEMSERCAP := GE_BCITEMCAPACITY.FTBGETCAPSSERBYITEM ( INUITEMSERIADOID, INUPRODUCTTYPEID );
+        IF TBITEMSERCAP.FIRST IS NULL THEN
+            
+            ERRORS.SETERROR(CNUNOTCAPACITYINFO,SBSERIE);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        IF ( ISBFLAGINSTALL = GE_BOCONSTANTS.CSBYES ) THEN
+             
+             IF ( NUITEMSTATUS != GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO ) THEN
+                 
+                 
+                 ERRORS.SETERROR( CNUINVALEQUIPMENTSTATUS, NUITEMSTATUS||'-'||SBITEMSTATUS||'|'||SBSERIE );
+                 RAISE EX.CONTROLLED_ERROR;
+             END IF;
+
+             
+             IF ( TBITEMSERCAP(TBITEMSERCAP.FIRST).CAPACITY_TOTAL <= TBITEMSERCAP(TBITEMSERCAP.FIRST).CAPACITY_OCCUPIED ) THEN
+                 
+                 ERRORS.SETERROR(CNUNOTENOUGHCAPACITY,SBSERIE||'|'||NUITEMSTATUS||'-'||SBITEMSTATUS||'|'||INUPRODUCTTYPEID);
+                 RAISE EX.CONTROLLED_ERROR;
+             END IF;
+
+             
+             DAGE_ITEM_SERIADO_CAP.UPDCAPACITY_OCCUPIED
+             (
+                TBITEMSERCAP(TBITEMSERCAP.FIRST).ITEM_SERIADO_CAP_ID,
+                TBITEMSERCAP(TBITEMSERCAP.FIRST).CAPACITY_OCCUPIED + 1
+             );
+
+        
+        ELSE
+             
+             TBITEMSERCAP := GE_BCITEMCAPACITY.FTBGETCAPSSERBYITEM ( INUITEMSERIADOID, INUPRODUCTTYPEID );
+
+            IF ( TBITEMSERCAP(TBITEMSERCAP.FIRST).CAPACITY_OCCUPIED <= 0 ) THEN
+                
+                ERRORS.SETERROR(CNUCAPACITYEMPTY,SBSERIE||'|'||NUITEMSTATUS||'-'||SBITEMSTATUS||'|'||INUPRODUCTTYPEID);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            
+            DAGE_ITEM_SERIADO_CAP.UPDCAPACITY_OCCUPIED
+            (
+                TBITEMSERCAP(TBITEMSERCAP.FIRST).ITEM_SERIADO_CAP_ID,
+                TBITEMSERCAP(TBITEMSERCAP.FIRST).CAPACITY_OCCUPIED - 1
+            );
+        END IF;
+
+        UT_TRACE.TRACE('FIN - GE_BOItemsSeriado.updCapacityItemSer',25);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETITEMSERBYINSTALL
+    (
+        INUSUBSCRIBERID   IN  SUSCRIPC.SUSCCLIE%TYPE,
+        INUADDRESSID      IN  PR_COMPONENT.ADDRESS_ID%TYPE,
+        INUPRODUCTTYPEID  IN  GE_ITEM_SERIADO_CAP.PRODUCT_TYPE_ID%TYPE,
+        ONUITEMSERIADOID  OUT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        OSBSERIE          OUT GE_ITEMS_SERIADO.SERIE%TYPE
+    )
+    IS
+        CUACTIVEEQUIPMENTS  CONSTANTS.TYREFCURSOR;
+        
+        NUCOMPONENTID    PR_COMPONENT.COMPONENT_ID%TYPE;
+        SERVICENUMBER    PR_COMPONENT.SERVICE_NUMBER%TYPE;
+        NUITEMSERIADOID  GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        
+        TBITEMSSERCAP    DAGE_ITEM_SERIADO_CAP.TYTBGE_ITEM_SERIADO_CAP;
+    BEGIN
+        UT_TRACE.TRACE('INICIO - GE_BOItemsSeriado.getItemSerByInstall',25);
+        
+        
+        CUACTIVEEQUIPMENTS := PR_BCCOMPONENT.FRFGETEQUIPBYCLIEADDR( INUSUBSCRIBERID, INUADDRESSID );
+
+        
+        LOOP
+            FETCH CUACTIVEEQUIPMENTS INTO NUCOMPONENTID, SERVICENUMBER;
+            EXIT WHEN CUACTIVEEQUIPMENTS%NOTFOUND;
+            
+            
+            GE_BCITEMSSERIADO.GETIDBYSERIE ( SERVICENUMBER, NUITEMSERIADOID );
+
+            UT_TRACE.TRACE('Equipo activo componente ['||NUCOMPONENTID||'] servicenumber/serie['||SERVICENUMBER||'] itemseriado['||NUITEMSERIADOID||']',5);
+
+            
+            IF NUITEMSERIADOID IS NOT NULL THEN
+                TBITEMSSERCAP := GE_BCITEMCAPACITY.FTBGETCAPSSERBYITEM ( NUITEMSERIADOID, INUPRODUCTTYPEID );
+
+                IF TBITEMSSERCAP.FIRST IS NOT NULL THEN
+                    
+                    IF TBITEMSSERCAP(TBITEMSSERCAP.FIRST).CAPACITY_TOTAL > TBITEMSSERCAP(TBITEMSSERCAP.FIRST).CAPACITY_OCCUPIED THEN
+                        
+                        
+                        ONUITEMSERIADOID :=  NUITEMSERIADOID;
+                        OSBSERIE         :=  SERVICENUMBER;
+                        EXIT;
+                    END IF;
+                END IF;
+            END IF;
+
+        END LOOP;
+
+        IF CUACTIVEEQUIPMENTS%ISOPEN THEN
+            CLOSE CUACTIVEEQUIPMENTS;
+        END IF;
+
+        UT_TRACE.TRACE('FIN - GE_BOItemsSeriado.getItemSerByInstall',25);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF CUACTIVEEQUIPMENTS%ISOPEN THEN
+                CLOSE CUACTIVEEQUIPMENTS;
+            END IF;
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            IF CUACTIVEEQUIPMENTS%ISOPEN THEN
+                CLOSE CUACTIVEEQUIPMENTS;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDPRODUCTWITHSERIAL
+    (
+        INUPRODUCTID       IN PR_COMPONENT.PRODUCT_ID%TYPE,
+        ISBSERIE           IN PR_COMPONENT.SERVICE_NUMBER%TYPE
+    )
+    IS
+        NUCOMPONENTTYPE    PR_COMPONENT.COMPONENT_TYPE_ID%TYPE;
+        NUPRCOMPONENTID    PR_COMPONENT.COMPONENT_ID%TYPE;
+        SBCOMPONENTTYPE    PS_COMPONENT_TYPE.DESCRIPTION%TYPE;
+
+        TBEQUIPMENT        DAPR_COMPONENT.TYTBPR_COMPONENT;
+    BEGIN
+        UT_TRACE.TRACE('INICIO - GE_BOItemsSeriado.updProductWithSerial',25);
+
+        NUCOMPONENTTYPE := GE_BOPARAMETER.FNUGET('PS_EQUIPMENT_COMP');
+        
+        
+        TBEQUIPMENT := PR_BCCOMPONENT.FTBCOMPONENTSBYTYPE ( INUPRODUCTID, NUCOMPONENTTYPE );
+
+        
+        IF TBEQUIPMENT.FIRST IS NULL THEN
+            SBCOMPONENTTYPE := DAPS_COMPONENT_TYPE.FSBGETDESCRIPTION( NUCOMPONENTTYPE );
+            
+            ERRORS.SETERROR(CNUNOTCOMPBYTYPEFORPRODUCT,'['||NUCOMPONENTTYPE||'-'||SBCOMPONENTTYPE||']|'||INUPRODUCTID);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        NUPRCOMPONENTID :=  TBEQUIPMENT(TBEQUIPMENT.FIRST).COMPONENT_ID;
+        
+        
+        UT_TRACE.TRACE('Actualizando el producto ['||INUPRODUCTID||'] componente['||NUPRCOMPONENTID||'] con la serie['||ISBSERIE||']',4);
+        DAPR_COMPONENT.UPDSERVICE_NUMBER( NUPRCOMPONENTID , ISBSERIE) ;
+        
+        UT_TRACE.TRACE('FIN - GE_BOItemsSeriado.updProductWithSerial',25);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETITEMSERBYRETIRE
+    (
+         INUCOMPONENTID    IN  PR_COMPONENT.COMPONENT_TYPE_ID%TYPE,
+         ONUITEMSERIADOID  OUT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+         OSBSERIE          OUT PR_COMPONENT.SERVICE_NUMBER%TYPE
+    )
+    IS
+        SBSERVICENUMBER    PR_COMPONENT.SERVICE_NUMBER%TYPE;
+        NUITEMSERIADOID    GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        TBITEMSSERCAP      DAGE_ITEM_SERIADO_CAP.TYTBGE_ITEM_SERIADO_CAP;
+    BEGIN
+        UT_TRACE.TRACE('INICIO - GE_BOItemsSeriado.getItemSerByRetire',25);
+
+        UT_TRACE.TRACE('inuComponentId=['||INUCOMPONENTID||']',4);
+
+        
+        SBSERVICENUMBER := DAPR_COMPONENT.FSBGETSERVICE_NUMBER ( INUCOMPONENTID );
+
+        
+        GE_BCITEMSSERIADO.GETIDBYSERIE ( SBSERVICENUMBER, NUITEMSERIADOID );
+
+        
+        
+        
+        ONUITEMSERIADOID := NULL;
+        OSBSERIE         := NULL;
+
+        
+        IF NUITEMSERIADOID IS NOT NULL THEN
+            TBITEMSSERCAP := GE_BCITEMCAPACITY.FTBGETCAPSSERBYITEM ( NUITEMSERIADOID, NULL );
+
+            
+            IF ( TBITEMSSERCAP.FIRST IS NOT NULL ) THEN
+                 
+                 ONUITEMSERIADOID :=  NUITEMSERIADOID;
+                 OSBSERIE         :=  SBSERVICENUMBER;
+            END IF;
+        END IF;
+        
+        UT_TRACE.TRACE('onuItemSeriadoId=['||ONUITEMSERIADOID||'] osbSerie=['||OSBSERIE||']',4);
+
+        UT_TRACE.TRACE('FIN - GE_BOItemsSeriado.getItemSerByRetire',25);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETITEMSERBYSERIE
+    (
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ORCITEMSERIADO  OUT DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO
+    )
+    IS
+        NUIDITEMSERIADO  GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+    BEGIN
+        GE_BOITEMSSERIADO.GETIDBYSERIE(ISBSERIE, NUIDITEMSERIADO);
+        IF NUIDITEMSERIADO IS NOT NULL THEN
+            
+            DAGE_ITEMS_SERIADO.GETRECORD(NUIDITEMSERIADO, ORCITEMSERIADO) ;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+   END GETITEMSERBYSERIE;
+   
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALIDATECOMPONENTANDSERIE
+    (
+        INUCOMPONENTID      IN PR_COMPONENT.COMPONENT_ID%TYPE,
+        ISBSERIE            IN GE_ITEMS_SERIADO.SERIE%TYPE
+    )
+    IS
+        NUIDITEMSERIADO GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        NUCLASSITEM     GE_ITEMS.ITEMS_ID%TYPE;
+        NUALMACEN       OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE;
+        NUORDERID       OR_ORDER.ORDER_ID%TYPE;
+        
+        RCPRCOMPONENT   DAPR_COMPONENT.STYPR_COMPONENT;
+        RCITEM1         DAGE_ITEMS.STYGE_ITEMS;
+        RCITEM2         DAGE_ITEMS.STYGE_ITEMS;
+        RCITEMSERIADO   DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        RCMOCOMPONENT   DAMO_COMPONENT.STYMO_COMPONENT;
+        RCORDER         DAOR_ORDER.STYOR_ORDER;
+        RCUNIT          DAOR_OPERATING_UNIT.STYOR_OPERATING_UNIT;
+
+        CUMOCOMP        DAMO_COMPONENT.TYRFRECORDS;
+    BEGIN
+        
+        IF (INUCOMPONENTID IS NULL) THEN
+            GE_BOERRORS.SETERRORCODE(13751);
+        END IF;
+        
+        
+        IF (ISBSERIE IS NULL) THEN
+            GE_BOERRORS.SETERRORCODE(13752);
+        END IF;
+
+        
+        IF NOT DAPR_COMPONENT.FBLEXIST(INUCOMPONENTID) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13738, INUCOMPONENTID);
+        END IF;
+        
+        
+
+
+        
+        DAPR_COMPONENT.GETRECORD(INUCOMPONENTID, RCPRCOMPONENT);
+        
+        
+        IF (RCPRCOMPONENT.COMPONENT_TYPE_ID <> PS_BOCOMPONENTTYPE.FNUGETCOMPTYPEQUIPO) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13739, INUCOMPONENTID);
+        END IF;
+        
+        
+        IF (RCPRCOMPONENT.CLASS_SERVICE_ID IS NULL) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13740, INUCOMPONENTID);
+        END IF;
+
+        
+        NUCLASSITEM := DAPS_CLASS_SERVICE.FNUGETITEM_ID(RCPRCOMPONENT.CLASS_SERVICE_ID);
+
+        
+        IF (NUCLASSITEM IS NULL) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13742, INUCOMPONENTID);
+        END IF;
+        
+        
+        DAGE_ITEMS.GETRECORD(NUCLASSITEM, RCITEM1);
+        
+        
+        GE_BOITEMSSERIADO.GETITEMSERBYSERIE(ISBSERIE, RCITEMSERIADO);
+        
+        
+        IF (RCITEMSERIADO.ID_ITEMS_SERIADO IS NULL) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13744, ISBSERIE);
+        END IF;
+        
+        
+        DAGE_ITEMS.GETRECORD(RCITEMSERIADO.ITEMS_ID, RCITEM2);
+
+        
+        
+        IF ((RCITEM1.ID_ITEMS_TIPO <> RCITEM2.ID_ITEMS_TIPO) OR
+            (RCITEM1.ITEM_CLASSIF_ID <> RCITEM2.ITEM_CLASSIF_ID)) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13745, INUCOMPONENTID||'|'||ISBSERIE);
+        END IF;
+
+        
+        IF (RCITEMSERIADO.ID_ITEMS_ESTADO_INV <> GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13746, ISBSERIE);
+        END IF;
+        
+        
+        
+        CUMOCOMP := MO_BCCOMPONENT.FRFTOINSTALLCOMPBYPRCOMP(INUCOMPONENTID);
+        FETCH CUMOCOMP INTO RCMOCOMPONENT;
+        GE_BOGENERALUTIL.CLOSE_REFCURSOR(CUMOCOMP);
+
+        
+        IF (RCMOCOMPONENT.COMPONENT_ID IS NULL) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13747, INUCOMPONENTID);
+        END IF;
+        
+        
+        NUORDERID :=  MO_BCORDERSCOMPONENT.FNUORDERBYCOMPONENT(RCMOCOMPONENT.COMPONENT_ID);
+
+        
+        IF (NUORDERID IS NULL) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13748, RCMOCOMPONENT.COMPONENT_ID);
+        END IF;
+
+        
+        DAOR_ORDER.GETRECORD(NUORDERID, RCORDER);
+        
+        
+        IF (RCORDER.OPERATING_UNIT_ID IS NULL) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13749, NUORDERID||'|'||INUCOMPONENTID);
+        END IF;
+        
+        
+        DAOR_OPERATING_UNIT.GETRECORD(RCORDER.OPERATING_UNIT_ID, RCUNIT);
+        
+        
+        NUALMACEN := NVL(RCUNIT.ASSO_OPER_UNIT, RCUNIT.OPERATING_UNIT_ID);
+
+        
+        IF ((RCITEMSERIADO.OPERATING_UNIT_ID IS NULL) OR (RCITEMSERIADO.OPERATING_UNIT_ID <> NUALMACEN)) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13750, ISBSERIE||'|'||DAOR_OPERATING_UNIT.FSBGETNAME(NUALMACEN));
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(CUMOCOMP);
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(CUMOCOMP);
+            RAISE EX.CONTROLLED_ERROR;
+   END VALIDATECOMPONENTANDSERIE;
+   
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFGETITSERBYSERVNUMB
+    (
+        ISBSERVICENUMBER    IN  PR_PRODUCT.SERVICE_NUMBER%TYPE
+    )
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+        RFCURSOR    CONSTANTS.TYREFCURSOR;
+    BEGIN
+
+        RFCURSOR := GE_BCITEMSSERIADO.FRFGETITSERBYSERVNUMB(ISBSERVICENUMBER);
+        
+        RETURN RFCURSOR;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(RFCURSOR);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(RFCURSOR);
+            RAISE EX.CONTROLLED_ERROR;
+    END FRFGETITSERBYSERVNUMB;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBISACTIVEONOPUNIT
+    (
+        INUPERSONID     IN  GE_PERSON.PERSON_ID%TYPE,
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE
+    )
+    RETURN VARCHAR2
+    IS
+    BEGIN
+        IF (NOT GE_BCITEMSSERIADO.FBLVALITEMFORSEL(ISBSERIE, INUPERSONID))THEN
+            RETURN GE_BOCONSTANTS.CSBYES;
+        END IF;
+        
+        RETURN GE_BOCONSTANTS.CSBNO;
+	EXCEPTION
+		WHEN EX.CONTROLLED_ERROR THEN
+            RAISE  EX.CONTROLLED_ERROR;
+		WHEN OTHERS THEN
+			ERRORS.SETERROR;
+            RAISE  EX.CONTROLLED_ERROR;
+	END FSBISACTIVEONOPUNIT;
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBISINOPERUNIT
+    (
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE
+    )
+    RETURN VARCHAR2
+    IS
+    BEGIN
+        RETURN GE_BCITEMSSERIADO.FSBISINOPERUNIT(ISBSERIE);
+	EXCEPTION
+		WHEN EX.CONTROLLED_ERROR THEN
+            RAISE  EX.CONTROLLED_ERROR;
+		WHEN OTHERS THEN
+			ERRORS.SETERROR;
+            RAISE  EX.CONTROLLED_ERROR;
+	END FSBISINOPERUNIT;
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBCLIENTITEM
+    (
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE
+    )
+    RETURN VARCHAR2
+    IS
+        NUSERIALITEMID   GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+    BEGIN
+        GE_BOITEMSSERIADO.GETIDBYSERIE(ISBSERIE, NUSERIALITEMID);
+         IF (DAGE_ITEMS_SERIADO.FSBGETPROPIEDAD(NUSERIALITEMID) IN (GE_BOITEMSCONSTANTS.CSBTRAIDO_CLIENTE,
+                                                                   GE_BOITEMSCONSTANTS.CSBVENDIDO_CLIENTE)
+            )
+        THEN
+            RETURN GE_BOCONSTANTS.CSBYES;
+        END IF;
+	RETURN GE_BOCONSTANTS.CSBNO;
+	EXCEPTION
+		WHEN EX.CONTROLLED_ERROR THEN
+            RAISE  EX.CONTROLLED_ERROR;
+		WHEN OTHERS THEN
+			ERRORS.SETERROR;
+            RAISE  EX.CONTROLLED_ERROR;
+	END FSBCLIENTITEM;
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETITEMCOSTBYSERIE
+    (
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE
+    )
+    RETURN GE_ITEMS_SERIADO.COSTO%TYPE
+    IS
+
+      
+      NUIDITEMSERIADO   GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+
+      
+      NUVALOR           GE_ITEMS_SERIADO.COSTO%TYPE;
+
+    BEGIN
+
+         
+         GE_BOITEMSSERIADO.GETIDBYSERIE(ISBSERIE, NUIDITEMSERIADO);
+
+         
+         IF ( NUIDITEMSERIADO IS NULL ) THEN
+         
+            ERRORS.SETERROR(CNUNOT_EXIST_SERIE,ISBSERIE);
+            RAISE EX.CONTROLLED_ERROR;
+         
+         END IF;
+
+         
+         NUVALOR := DAGE_ITEMS_SERIADO.FNUGETCOSTO(NUIDITEMSERIADO);
+
+         RETURN NUVALOR;
+        
+	 EXCEPTION
+		WHEN EX.CONTROLLED_ERROR THEN
+            RAISE  EX.CONTROLLED_ERROR;
+		WHEN OTHERS THEN
+			ERRORS.SETERROR;
+            RAISE  EX.CONTROLLED_ERROR;
+	END FNUGETITEMCOSTBYSERIE;
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUOPERATINGUNITBYSERIE
+    (
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE
+    )
+    RETURN OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE
+    IS
+        RCSERIALITEM    DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+    BEGIN
+        RCSERIALITEM := GE_BCITEMSSERIADO.FRCSERIALITEMBYSERIE(ISBSERIE);
+        RETURN RCSERIALITEM.OPERATING_UNIT_ID;
+	EXCEPTION
+		WHEN EX.CONTROLLED_ERROR THEN
+            RAISE  EX.CONTROLLED_ERROR;
+		WHEN OTHERS THEN
+			ERRORS.SETERROR;
+            RAISE  EX.CONTROLLED_ERROR;
+	END FNUOPERATINGUNITBYSERIE;
+	
+	
+	 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	PROCEDURE GETITEMSERBYSERIEANDLOCK
+    (
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ORCITEMSERIADO  OUT DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO
+    )
+    IS
+        NUIDITEMSERIADO  GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        NUERROR         NUMBER;
+        SBERROR         VARCHAR2(2000);
+    BEGIN
+        GE_BOITEMSSERIADO.GETIDBYSERIE(ISBSERIE, NUIDITEMSERIADO);
+
+        IF NUIDITEMSERIADO IS NOT NULL THEN
+            
+            BEGIN
+                DAGE_ITEMS_SERIADO.LOCKBYPK(NUIDITEMSERIADO, ORCITEMSERIADO);
+            EXCEPTION
+                WHEN EX.CONTROLLED_ERROR THEN
+                    ERRORS.GETERROR(NUERROR, SBERROR);
+                    IF NUERROR = CNUAPPTABLEBUSSY THEN
+                        ERRORS.SETERROR(CNUITEM_LOCK, ''||ISBSERIE);
+                        RAISE EX.CONTROLLED_ERROR;
+                    ELSE
+                        RAISE;
+                    END IF;
+                WHEN OTHERS THEN
+                    ERRORS.SETERROR;
+                    RAISE EX.CONTROLLED_ERROR;
+            END;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+   END GETITEMSERBYSERIEANDLOCK;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALIDATEINPUTDATAREGISTER
+    (
+        INUITEMSID          IN  GE_ITEMS_SERIADO.ITEMS_ID%TYPE,
+        ISBSERIE            IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ISBTECHNICALSTATUS  IN  GE_ITEMS_SERIADO.ESTADO_TECNICO%TYPE,
+        INUESTADOINVENTARIO IN  GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV%TYPE,
+        INUCOSTO            IN  GE_ITEMS_SERIADO.COSTO%TYPE,
+        ISBPROPERTY         IN  GE_ITEMS_SERIADO.PROPIEDAD%TYPE
+    )
+    IS
+        NUITEMSTIPOID  GE_ITEMS_TIPO.ID_ITEMS_TIPO%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('inuItemsId := '||INUITEMSID||'
+                        isbSerie := '||ISBSERIE||'
+                        inuTechnicalStatus := '||ISBTECHNICALSTATUS||'
+                        inuEstadoInventario := '||INUESTADOINVENTARIO||'
+                        inuCosto := '||INUCOSTO||'
+                        isbProperty := '||ISBPROPERTY, 3);
+
+        
+        IF (INUITEMSID IS NULL OR ISBTECHNICALSTATUS IS NULL OR
+            INUESTADOINVENTARIO IS NULL OR INUCOSTO IS NULL OR
+            ISBPROPERTY IS NULL OR ISBSERIE IS NULL)
+        THEN
+            
+            GE_BOERRORS.SETERRORCODE(110330);
+        END IF;
+
+        
+        DAGE_ITEMS.ACCKEY(INUITEMSID);
+        
+        
+        NUITEMSTIPOID := DAGE_ITEMS.FNUGETID_ITEMS_TIPO(INUITEMSID);
+
+        IF (DAGE_ITEMS_TIPO.FSBGETSERIADO(NUITEMSTIPOID) = OR_BOCONSTANTS.CSBNO) THEN
+            
+            GE_BOERRORS.SETERRORCODE(6384);
+        END IF;
+
+        
+        IF (ISBTECHNICALSTATUS <> GE_BOITEMSCONSTANTS.FSBOBTESTNUEVO AND
+            ISBTECHNICALSTATUS <> GE_BOITEMSCONSTANTS.FSBOBTESTREACOND)
+        THEN
+            
+            GE_BOERRORS.SETERRORCODE(4624);
+        END IF;
+
+        
+        DAGE_ITEMS_ESTADO_INV.ACCKEY(INUESTADOINVENTARIO);
+
+        
+        IF (ISBPROPERTY <> GE_BOITEMSCONSTANTS.FSBOBTTRAIDOCLIENTE AND
+            ISBPROPERTY <> GE_BOITEMSCONSTANTS.FSBOBTTERCEROS AND
+            ISBPROPERTY <> GE_BOITEMSCONSTANTS.FSBOBTEMPRESA)
+        THEN
+            
+            GE_BOERRORS.SETERRORCODE(116883);
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END VALIDATEINPUTDATAREGISTER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ITEMATTRIBUTEREGISTER
+    (
+        INUITEMSID          IN GE_ITEMS_SERIADO.ITEMS_ID%TYPE,
+        INUIDITEMSERIADO    IN GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        ISBSERIE            IN GE_ITEMS_SERIADO.SERIE%TYPE,
+        ISBATTRIBUTES       IN GE_BOUTILITIES.STYSTATEMENT,
+        INUOPERATINGUNIT    IN OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        ISBESTADOTECNICO    IN GE_ITEMS_SERIADO.ESTADO_TECNICO%TYPE,
+        INUESTADOINVENTARIO IN GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV%TYPE,
+        INUCOSTO            IN GE_ITEMS_SERIADO.COSTO%TYPE,
+        ISBPROPIEDAD        IN GE_ITEMS_SERIADO.PROPIEDAD%TYPE
+    )
+    IS
+        TBVALATTRIBUTES     UT_STRING.TYTB_STRING;
+        NUINDEX             BINARY_INTEGER;
+        NUIDATRIBUTEVALUE   GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_AT_VAL%TYPE;
+        NUIDTIPOITEM        GE_ITEMS_TIPO.ID_ITEMS_TIPO%TYPE;
+        SBCONTEXTO          GE_BOUTILITIES.STYSTATEMENTATTRIBUTE;
+        NUIDITEMSTIPOATRIB  GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE;
+        RCITEMSERIADO       DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUITEMSMOVE         OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE;
+        RCITEMSTIPOATR      DAGE_ITEMS_TIPO_ATR.STYGE_ITEMS_TIPO_ATR;
+    BEGIN
+
+        
+        NUIDTIPOITEM := DAGE_ITEMS.FNUGETID_ITEMS_TIPO(INUITEMSID);
+
+        UT_TRACE.TRACE('nuIdTipoItem := '||NUIDTIPOITEM, 3);
+
+        
+        RCITEMSERIADO := DAGE_ITEMS_SERIADO.FRCGETRECORD(INUIDITEMSERIADO);
+
+        
+        SBCONTEXTO :=
+        'ID_ITEMS_TIPO'||CSBIGUAL||NUIDTIPOITEM||CSBPIPE
+        ||'ITEMS_ID'||CSBIGUAL||INUITEMSID||CSBPIPE
+        ||'SERIE'||CSBIGUAL||ISBSERIE||CSBPIPE
+        ||'ESTADO_TECNICO'||CSBIGUAL||ISBESTADOTECNICO||CSBPIPE
+        ||'ID_ITEMS_ESTADO_INV'||CSBIGUAL||INUESTADOINVENTARIO||CSBPIPE
+        ||'PROPIEDAD'||CSBIGUAL||ISBPROPIEDAD||CSBPIPE
+        ||'COSTO'||CSBIGUAL||INUCOSTO||CSBPIPE
+        ||'SUBSIDIO'||CSBIGUAL||0||CSBPIPE
+        ||'FECHA_INGRESO'||CSBIGUAL||UT_DATE.FSBSTR_SYSDATE;
+
+        UT_TRACE.TRACE('sbContexto := '||SBCONTEXTO, 3);
+
+        
+        UT_STRING.EXTSTRING(ISBATTRIBUTES, '|', TBVALATTRIBUTES);
+
+        UT_TRACE.TRACE('isbAttributes := '||ISBATTRIBUTES, 3);
+
+        NUINDEX := TBVALATTRIBUTES.FIRST;
+
+        WHILE NUINDEX IS NOT NULL
+        LOOP
+
+            UT_TRACE.TRACE('tbValAttributes('||NUINDEX||') := '||TBVALATTRIBUTES(NUINDEX), 3);
+
+            
+
+            NUIDITEMSTIPOATRIB := GE_BCITEMSSERIADO.FNUGETIDATTBYITEMSTIPOSEQ
+                                  (
+                                      NUIDTIPOITEM,
+                                      NUINDEX
+                                  );
+                                  
+            UT_TRACE.TRACE('nuIdItemsTipoAtrib := '||NUIDITEMSTIPOATRIB, 3);
+
+            DAGE_ITEMS_TIPO_ATR.GETRECORD(NUIDITEMSTIPOATRIB, RCITEMSTIPOATR);
+
+            IF (RCITEMSTIPOATR.REQUERIDO = OR_BOCONSTANTS.CSBSI AND
+                TBVALATTRIBUTES(NUINDEX) IS NULL) THEN
+                
+                GE_BOERRORS.SETERRORCODEARGUMENT(1184, DAGE_ENTITY_ATTRIBUTES.FSBGETTECHNICAL_NAME(RCITEMSTIPOATR.ENTITY_ATTRIBUTE_ID));
+
+            ELSIF (TBVALATTRIBUTES(NUINDEX) IS NOT NULL) THEN
+                UT_TRACE.TRACE('Valida el atributo ', 3);
+
+                
+                GE_BOITEMSSERIADO.VALIDARATRIBUTO
+                (
+                    NUIDITEMSTIPOATRIB,
+                    TBVALATTRIBUTES(NUINDEX),
+                    SBCONTEXTO
+                );
+
+                UT_TRACE.TRACE('Registro el atributo del �tem ', 3);
+
+                
+                GE_BOITEMSSERIADO.REGISTRARATRIBUTO
+                (
+                    NUIDITEMSTIPOATRIB,
+                    INUIDITEMSERIADO,
+                    TBVALATTRIBUTES(NUINDEX),
+                    NUIDATRIBUTEVALUE
+                );
+
+            END IF;
+
+            NUINDEX := TBVALATTRIBUTES.NEXT(NUINDEX);
+            UT_TRACE.TRACE('nuIndex := '||NUINDEX, 3);
+        END LOOP;
+
+        IF (INUOPERATINGUNIT IS NOT NULL) THEN
+            OR_BOITEMSMOVE.REGISTERITEMSMOVE
+            (
+                INUOPERATINGUNIT,
+                INUOPERATINGUNIT,
+                INUITEMSID,
+                RCITEMSERIADO,
+                OR_BOCONSTANTS.CNUINCREASE,
+                NULL,
+                NULL,
+                1,
+                INUCOSTO,
+                0,
+                GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE,
+                NUITEMSMOVE
+            );
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ITEMATTRIBUTEREGISTER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSERIALITEMDATA
+    (
+        ISBSERIE             IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ONUITEMSSERIADOID    OUT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        ONUITEMSID           OUT GE_ITEMS_SERIADO.ITEMS_ID%TYPE,
+        OSBITEMSDESC         OUT GE_ITEMS.DESCRIPTION%TYPE,
+        ONUITEMSTIPOID       OUT GE_ITEMS.ID_ITEMS_TIPO%TYPE,
+        OSBITEMSTIPODESC     OUT GE_ITEMS_TIPO.DESCRIPCION%TYPE,
+        ONUSTATEINVID        OUT GE_ITEMS_ESTADO_INV.ID_ITEMS_ESTADO_INV%TYPE,
+        OSBSTATEINVDESC      OUT GE_ITEMS_ESTADO_INV.DESCRIPCION%TYPE,
+        ONUOPERATINGUNITID   OUT OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        ONUOPERATINGUNITDESC OUT OR_OPERATING_UNIT.NAME%TYPE,
+        ONUITEMSGAMAID	     OUT GE_ITEMS_GAMA.ID_ITEMS_GAMA%TYPE,
+        OSBITEMSGAMADESC     OUT GE_ITEMS_GAMA.DESCRIPCION%TYPE,
+        OSBATTRIBUTES        OUT GE_BOUTILITIES.STYSTATEMENT
+    )
+    IS
+        TBSERIALDATA GE_BCITEMSSERIADO.TYTBSERIALITEMDATA;
+        RCSERIALDATA GE_BCITEMSSERIADO.STYSERIALITEMDATA;
+        NUINDEX      BINARY_INTEGER;
+    BEGIN
+        IF ISBSERIE IS NULL THEN
+            
+            ERRORS.SETERROR(CNUNOSERIE);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        TBSERIALDATA := GE_BCITEMSSERIADO.FTBGETSERIALITEMDATA(ISBSERIE);
+
+        IF TBSERIALDATA.COUNT > 0 THEN
+
+            NUINDEX := TBSERIALDATA.FIRST;
+
+            RCSERIALDATA := TBSERIALDATA(NUINDEX);
+
+            
+            ONUITEMSSERIADOID       := RCSERIALDATA.ID_ITEMS_SERIADO;
+            ONUITEMSID              := RCSERIALDATA.ITEMS_ID;
+            OSBITEMSDESC            := RCSERIALDATA.ITEMS_DESC;
+            ONUITEMSTIPOID          := RCSERIALDATA.ID_ITEMS_TIPO;
+            OSBITEMSTIPODESC        := RCSERIALDATA.ITEM_TYPE_DESC;
+            ONUSTATEINVID           := RCSERIALDATA.ID_ITEMS_ESTADO_INV;
+            OSBSTATEINVDESC         := RCSERIALDATA.STATE_DESC;
+            ONUOPERATINGUNITID      := RCSERIALDATA.OPERATING_UNIT_ID;
+            ONUOPERATINGUNITDESC    := RCSERIALDATA.NAME;
+            ONUITEMSGAMAID	        := RCSERIALDATA.ID_ITEMS_GAMA;
+            OSBITEMSGAMADESC        := RCSERIALDATA.GAMA_DESC;
+
+            
+            OSBATTRIBUTES := FSBGETITEMSSERIADOATTVALS(ONUITEMSSERIADOID, GE_BOCONSTANTS.CSBYES);
+        ELSE
+            
+            ERRORS.SETERROR(CNUITEMNOTFOUND, ISBSERIE);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETSERIALITEMDATA;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SEALASSOCIATION
+    (
+        INUASSOSERIALITEMSID    IN  GE_ASSO_SERIAL_ITEMS.ASSO_SERIAL_ITEMS_ID%TYPE ,
+        INUSERIALITEMSID        IN  GE_ASSO_SERIAL_ITEMS.SERIAL_ITEMS_ID%TYPE,
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE ,
+        ISBLOCATION             IN  GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE
+    )
+    IS
+        RCASSOSERIALITEM        DAGE_ASSO_SERIAL_ITEMS.STYGE_ASSO_SERIAL_ITEMS;
+        NUITEMSERIADOID         GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        NUOPERUNITID            OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE;
+        RCSERIALITEM            DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUUNIITEMMOVID          OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE;
+        CSBTECHNICAL_NAME       GE_ENTITY_ATTRIBUTES.TECHNICAL_NAME%TYPE := 'LOCATION';
+        
+    BEGIN
+    
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.SealAssociation. inuAssoSerialItemsId '||TO_CHAR(INUASSOSERIALITEMSID)||' inuSerialItemsId '||TO_CHAR(INUSERIALITEMSID)||' inuOrderId '||TO_CHAR(INUORDERID)||' isbLocation '||ISBLOCATION, 2);
+        
+        
+        RCSERIALITEM := DAGE_ITEMS_SERIADO.FRCGETRECORD(INUASSOSERIALITEMSID);
+        
+        IF (NOT DAGE_ASSO_SERIAL_ITEMS.FBLEXIST(INUASSOSERIALITEMSID) ) THEN
+            RCASSOSERIALITEM.ASSO_SERIAL_ITEMS_ID  := INUASSOSERIALITEMSID;
+            RCASSOSERIALITEM.SERIAL_ITEMS_ID := INUSERIALITEMSID;
+
+            
+            DAGE_ASSO_SERIAL_ITEMS.INSRECORD(RCASSOSERIALITEM);
+
+            IF INUORDERID IS NOT NULL THEN
+            
+                
+                NUOPERUNITID := DAOR_ORDER.FNUGETOPERATING_UNIT_ID(INUORDERID);
+                
+                UT_TRACE.TRACE('rcSerialItem.Operating_Unit_Id '||TO_CHAR(RCSERIALITEM.OPERATING_UNIT_ID)   ||' - '
+                    ||' rcSerialItem.Id_Items_Seriado '         ||TO_CHAR(RCSERIALITEM.ID_ITEMS_SERIADO)    ||' - '
+                    ||' rcSerialItem.Id_Items_Estado_Inv '      ||TO_CHAR(RCSERIALITEM.ID_ITEMS_ESTADO_INV) ||' - '
+                    ||' nuOperUnitId '                          ||TO_CHAR(NUOPERUNITID)                     , 2 );
+
+                
+                IF(NUOPERUNITID = RCSERIALITEM.OPERATING_UNIT_ID) THEN
+
+                    OR_BOITEMSMOVE.CREATEMOVBYLEGALIZE
+                                (
+                                    INUORDERID,
+                                    RCSERIALITEM.OPERATING_UNIT_ID,
+                                    RCSERIALITEM.ITEMS_ID,
+                                    RCSERIALITEM,
+                                    OR_BOITEMSMOVE.CSBDECREASEMOVETYPE,
+                                    1,
+                                    NULL,
+                                    NUUNIITEMMOVID,
+                                    GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO
+                                );
+                ELSE
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CSBINV_INVENT, RCSERIALITEM.SERIE||'|'||TO_CHAR(NUOPERUNITID)||'-'||DAOR_OPERATING_UNIT.FSBGETNAME(NUOPERUNITID,0) );
+                END IF;
+            ELSE
+                DAGE_ITEMS_SERIADO.UPDID_ITEMS_ESTADO_INV(INUASSOSERIALITEMSID, GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO);
+                
+                IF_BOPREVMAINTENANCE.UPDATESERIALITEM(INUASSOSERIALITEMSID);
+            END IF;
+        END IF;
+
+        
+        IF (ISBLOCATION IS NOT NULL) THEN
+            GE_BOITEMSSERIADO.UPDVALUEATTR
+                (
+                    CSBTECHNICAL_NAME,
+                    RCSERIALITEM.SERIE,
+                    ISBLOCATION
+                );
+        END IF;
+
+        UT_TRACE.TRACE('-- FIN GE_BOItemsSeriado.SealAssociation. nuUniItemMovId '||TO_CHAR(NUUNIITEMMOVID), 3);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END SEALASSOCIATION;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SEALDISSOCIATION
+    (
+        INUASSOSERIALITEMSID    IN  GE_ASSO_SERIAL_ITEMS.ASSO_SERIAL_ITEMS_ID%TYPE,
+        INUSERIALITEMSID        IN  GE_ASSO_SERIAL_ITEMS.SERIAL_ITEMS_ID%TYPE,
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+        RCSERIALITEM            DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUUNIITEMMOVID          OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE;
+        NUCODEFRAUDGENERATED    FM_POSSIBLE_NTL.POSSIBLE_NTL_ID%TYPE;
+    BEGIN
+
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.SealDissociation. inuAssoSerialItemsId '||TO_CHAR(INUASSOSERIALITEMSID)||' inuSerialItemsId '||TO_CHAR(INUSERIALITEMSID)||' inuOrderId '||TO_CHAR(INUORDERID), 3);
+        
+        
+        RCSERIALITEM := DAGE_ITEMS_SERIADO.FRCGETRECORD(INUASSOSERIALITEMSID);
+
+        UT_TRACE.TRACE('rcSerialItem.Id_Items_Seriado '||TO_CHAR(RCSERIALITEM.ID_ITEMS_SERIADO), 2 );
+        
+        
+        
+        IF ( DAGE_ASSO_SERIAL_ITEMS.FBLEXIST(INUASSOSERIALITEMSID)
+            AND
+                RCSERIALITEM.ID_ITEMS_ESTADO_INV = GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO
+
+            ) THEN
+            UT_TRACE.TRACE(' Existe item asociado ', 2 );
+            DAGE_ITEMS_SERIADO.UPDID_ITEMS_ESTADO_INV(RCSERIALITEM.ID_ITEMS_SERIADO, GE_BOITEMSCONSTANTS.CNUSTATUS_DADO_BAJA);
+            
+            IF_BOPREVMAINTENANCE.UPDATESERIALITEM(RCSERIALITEM.ID_ITEMS_SERIADO);
+        END IF;
+
+        IF INUORDERID IS NOT NULL THEN
+            UT_TRACE.TRACE(' inuOrderId: '||TO_CHAR(INUORDERID)     ||' rcSerialItem.Operating_Unit_Id: '
+                        ||TO_CHAR(RCSERIALITEM.OPERATING_UNIT_ID)   ||' rcSerialItem.Items_Id:'
+                        ||TO_CHAR(RCSERIALITEM.ITEMS_ID)            , 2 );
+
+            OR_BOITEMSMOVE.CREATEMOVBYLEGALIZE
+                            (
+                                INUORDERID,
+                                DAOR_ORDER.FNUGETOPERATING_UNIT_ID(INUORDERID),
+                                RCSERIALITEM.ITEMS_ID,
+                                RCSERIALITEM,
+                                OR_BOITEMSMOVE.CSBNEUTRALMOVETYPE,
+                                1,
+                                NULL,
+                                NUUNIITEMMOVID
+                            );
+        END IF;
+    
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.SealDissociation ', 3);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END SEALDISSOCIATION;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATEBILLINGITEM
+    (
+        INUSERIALITEMID IN GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    )
+    IS
+        RCSERIALITEM       DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        TBCONSUMPTIONTYPES GE_BCCONSTYPEBYGAMA.TYTBCONSUMPTIONTYPE;
+        TBSERIALITEMVAL    GE_BCITEMSSERIADO.TYTBITEMSTIPOATVAL;
+        
+        NUITEMTIPO      GE_ITEMS_TIPO.ID_ITEMS_TIPO%TYPE;
+        NUGAMAID        GE_ITEMS_GAMA.ID_ITEMS_GAMA%TYPE;
+        NUMETERCLASS    ELEMMEDI.ELMECLEM%TYPE;
+        NUNUMEDIGI      ELEMMEDI.ELMENUDC%TYPE;
+        NUUBICINST      ELEMMEDI.ELMEUIEM%TYPE;
+        NUPOSICION      ELEMMEDI.ELMEPOSI%TYPE;
+        NUFACTCONV      ELEMMEDI.ELMEFACM%TYPE;
+        NUFACTDEMA      ELEMMEDI.ELMEFACD%TYPE;
+        INUTOPE         ELEMMEDI.ELMETOPE%TYPE;
+        NUELEMMEDI      ELEMMEDI.ELMEIDEM%TYPE;
+        NUERRORCODE     MENSAJE.MENSCODI%TYPE;
+        SBERRORMESSAGE  MENSAJE.MENSDESC%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.CreateBillingItem', 3);
+
+        
+        RCSERIALITEM := DAGE_ITEMS_SERIADO.FRCGETRECORD(INUSERIALITEMID);
+        
+        
+        NUITEMTIPO := DAGE_ITEMS.FNUGETID_ITEMS_TIPO(RCSERIALITEM.ITEMS_ID);
+        UT_TRACE.TRACE('nuItemTipo : '||NUITEMTIPO, 4);
+        
+        
+        IF NUITEMTIPO IS NOT NULL THEN
+
+            
+            IF DAGE_ITEMS_TIPO.FSBGETMEASURES(NUITEMTIPO) = GE_BOCONSTANTS.CSBYES THEN
+                UT_TRACE.TRACE('El tipo medible : '||NUITEMTIPO, 4);
+
+                
+                NUGAMAID := GE_BCITEMS_GAMA_ITEM.FNUOBTENERITEMGAMA(RCSERIALITEM.ITEMS_ID);
+                UT_TRACE.TRACE('Gama : '||NUGAMAID, 4);
+                
+                
+                IF NUGAMAID IS NOT NULL AND
+                   NOT PKMEASUREMENTELEMENMGR.FBLEXISTMEASUREELEMENT
+                                              (
+                                                 RCSERIALITEM.SERIE,
+                                                 PKCONSTANTE.NOCACHE
+                                              )
+                THEN
+
+                    
+                    GE_BCCONSTYPEBYGAMA.GETCONSUMPTIONTYPE(NUGAMAID, TBCONSUMPTIONTYPES);
+
+                    
+                    IF TBCONSUMPTIONTYPES.FIRST IS NOT NULL THEN
+                        UT_TRACE.TRACE('Si tiene tipos de consumo', 4);
+
+                        
+                        NUNUMEDIGI := 1;
+                        NUUBICINST := 1;
+                        NUPOSICION := 1;
+                        NUFACTCONV := 1;
+                        NUFACTDEMA := 1;
+                        INUTOPE    := 999999999;
+                        NUMETERCLASS := PKTBLPARAMETR.FNUGETVALUENUMBER('CLASE_GENERAL');
+                        TBSERIALITEMVAL.DELETE;
+
+                        
+                        TBSERIALITEMVAL := GE_BCITEMSSERIADO.FTBITEMSSERIADOATTVAL(INUSERIALITEMID);
+
+                         
+                        IF (TBSERIALITEMVAL.LAST IS NOT NULL) THEN
+                            FOR NUIDX IN TBSERIALITEMVAL.FIRST .. TBSERIALITEMVAL.LAST LOOP
+                                IF  TBSERIALITEMVAL.EXISTS(NUIDX) THEN
+                                    IF TBSERIALITEMVAL(NUIDX).TECHNICAL_NAME = CSBMAXVALUE THEN
+                                        UT_TRACE.TRACE('Coloca tope del atributo', 4);
+                                        INUTOPE := TO_NUMBER(TBSERIALITEMVAL(NUIDX).VALOR);
+                                        EXIT;
+                                    END IF;
+                                END IF;
+                            END LOOP;
+                        END IF;
+
+                        
+                        IF INUTOPE IS NOT NULL THEN
+                            NUNUMEDIGI := LENGTH(INUTOPE);
+                        END IF;
+
+                        
+                        PKMEASUREMENTELEMEN.REGISTERORUPDATEIF_EXISTS
+                        (
+                            RCSERIALITEM.SERIE, 
+                            NUMETERCLASS,
+                            NUNUMEDIGI,
+                            NUUBICINST, 
+                            NUPOSICION, 
+                            NUFACTCONV, 
+                            NUFACTDEMA, 
+                            INUTOPE,
+                            NUELEMMEDI,
+                            NUERRORCODE,
+                            SBERRORMESSAGE
+                        );
+
+                        GW_BOERRORS.CHECKERROR(NUERRORCODE, SBERRORMESSAGE);
+
+                    END IF;
+                END IF;
+            END IF;
+        END IF;
+
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.CreateBillingItem', 3);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.CreateBillingItem', 3);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.CreateBillingItem', 3);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CREATEBILLINGITEM;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETOPERUNIT
+    (
+        ISBSERIE       IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        INUOPERUNITID  IN  GE_ITEMS_SERIADO.OPERATING_UNIT_ID%TYPE
+    )
+    IS
+        
+        NUITEMSERID     GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.SetOperUnit',1);
+        
+        GE_BOITEMSSERIADO.GETIDBYSERIE(ISBSERIE,NUITEMSERID);
+
+        
+        DAGE_ITEMS_SERIADO.UPDOPERATING_UNIT_ID(NUITEMSERID,INUOPERUNITID);
+        
+        IF_BOPREVMAINTENANCE.UPDATESERIALITEM(NUITEMSERID);
+
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.SetOperUnit',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.SetOperUnit',1);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('others GE_BOItemsSeriado.SetOperUnit',1);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END SETOPERUNIT;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETITEMSTATEBYSERIE
+    (
+        ISBSERIE    IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ORFCURSOR   OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+        NUSERIALITEMID  GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        NUITEMSTATUS    GE_ITEMS_ESTADO_INV.ID_ITEMS_ESTADO_INV%TYPE;
+        SBITEMSTATUS    GE_ITEMS_ESTADO_INV.DESCRIPCION%TYPE;
+    BEGIN
+        
+        UT_TRACE.TRACE('BEGIN GE_BOItemsSeriado.GetItemStateBySerie ['||ISBSERIE||']',1);
+
+        IF ISBSERIE IS NULL THEN
+            
+            ERRORS.SETERROR(CNUNOSERIE);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        GE_BCITEMSSERIADO.GETIDBYSERIE(ISBSERIE, NUSERIALITEMID);
+
+        UT_TRACE.TRACE('nuSerialItemId ['||NUSERIALITEMID||']',2);
+
+        IF (NUSERIALITEMID IS NULL) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUITEMNOTFOUND, ISBSERIE);
+        END IF;
+
+        NUITEMSTATUS := DAGE_ITEMS_SERIADO.FNUGETID_ITEMS_ESTADO_INV(NUSERIALITEMID);
+        SBITEMSTATUS := DAGE_ITEMS_ESTADO_INV.FSBGETDESCRIPCION(NUITEMSTATUS);
+
+        IF NUITEMSTATUS NOT IN  (
+                                    GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE,
+                                    GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO,
+                                    GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPGARANTIA,
+                                    GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPERADO
+                                ) THEN
+            
+            
+            GE_BOERRORS.SETERRORCODEARGUMENT( CNUINVALEQUIPMENTSTATUS, NUITEMSTATUS||'-'||SBITEMSTATUS||'|'||ISBSERIE );
+        END IF;
+
+        GE_BCITEMSSERIADO.GETITEMSTATEBYSERIE(NUSERIALITEMID, ORFCURSOR);
+
+        UT_TRACE.TRACE('END GE_BOItemsSeriado.GetItemStateBySerie',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.GetItemStateBySerie',1);
+            IF ORFCURSOR%ISOPEN THEN
+                CLOSE ORFCURSOR;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.GetItemStateBySerie',1);
+            IF ORFCURSOR%ISOPEN THEN
+                CLOSE ORFCURSOR;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+    FUNCTION FSBVALIDATEASSOPROCESSFRAUD
+    (
+        INUITEMID       IN  GE_ASSO_SERIAL_ITEMS.SERIAL_ITEMS_ID%TYPE,
+        INUSERIALITEMID IN  GE_ASSO_SERIAL_ITEMS.ASSO_SERIAL_ITEMS_ID%TYPE,
+        ISBLOCATION     IN  GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE,
+        ISBACTION       IN  GE_BOITEMS.STYLETTER
+    )RETURN VARCHAR2 IS
+
+      SBRESPONSE FM_POSSIBLE_NTL.COMMENT_%TYPE := NULL;
+
+    BEGIN
+      
+    UT_TRACE.TRACE('INICIA  GE_BOItemsSeriado.fsbValidateAssoProcessFraud'
+        ||' inuItemId ['        ||TO_CHAR(INUITEMID)        ||'] - '
+        ||' inuSerialItemId ['  ||TO_CHAR(INUSERIALITEMID)  ||'] - '
+        ||' isbLocation ['      ||ISBLOCATION               ||'] - '
+        ||' isbAction ['        ||TO_CHAR(ISBACTION)        ||'] - ',1);
+   
+        
+        
+        IF( INUSERIALITEMID IS NOT NULL
+            AND
+            GE_BOITEMSCONSTANTS.CSBSEALACTIONINSTALL =  ISBACTION
+        )THEN
+            SBRESPONSE :=  FSBFRAUDASSOEXIST(INUITEMID,INUSERIALITEMID);
+        END IF;
+        
+        
+        
+        IF( SBRESPONSE IS NULL
+            AND
+            (
+                INUITEMID IS NOT NULL
+                AND
+                (
+                    GE_BOITEMSCONSTANTS.CSBSEALACTIONMAINTAIN      = ISBACTION
+                OR
+                    GE_BOITEMSCONSTANTS.CSBSEALACTIONREMOVE        = ISBACTION
+                OR
+                    GE_BOITEMSCONSTANTS.CSBSEALACTIONMANIPULATED   = ISBACTION
+                )
+            )
+        )THEN
+            SBRESPONSE :=  FSBFRAUDASSOREMORMAINTAIN
+                            (
+                                INUITEMID,
+                                INUSERIALITEMID,
+                                ISBACTION
+                            );
+        END IF;
+
+        
+        
+        IF( SBRESPONSE IS NULL
+                AND
+                (
+                    INUSERIALITEMID IS NOT NULL
+                    AND
+                    (
+                        GE_BOITEMSCONSTANTS.CSBSEALACTIONMAINTAIN      = ISBACTION
+                    OR
+                        GE_BOITEMSCONSTANTS.CSBSEALACTIONMANIPULATED   = ISBACTION
+                    )
+                )
+        )THEN
+            SBRESPONSE :=  FSBMAINTAINSSEALCHANGELOCAT
+                            (
+                                INUSERIALITEMID,
+                                ISBLOCATION,
+                                ISBACTION
+                            );
+        END IF;
+        
+        
+        
+        IF (SBRESPONSE IS NULL AND INUSERIALITEMID IS NULL) THEN
+            SBRESPONSE := GE_BOITEMSCONSTANTS.FSBTRYTOUSENULLSEAL;
+        END IF;
+        
+        UT_TRACE.TRACE('END    [GE_BOItemsSeriado.fsbValidateAssoProcessFraud]',1);
+        RETURN  SBRESPONSE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.fsbValidateAssoProcessFraud',1);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.fsbValidateAssoProcessFraud',1);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FSBVALIDATEASSOPROCESSFRAUD;
+     
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    FUNCTION FSBFRAUDASSOEXIST
+    (
+        INUSERIALITEMID         IN  GE_ASSO_SERIAL_ITEMS.SERIAL_ITEMS_ID%TYPE,
+        INUASSOSERIALITEMID     IN  GE_ASSO_SERIAL_ITEMS.ASSO_SERIAL_ITEMS_ID%TYPE
+    ) RETURN VARCHAR2 IS
+                                                 
+      SBRESPONSE FM_POSSIBLE_NTL.COMMENT_%TYPE;
+      RCASSOSERIALITEM DAGE_ASSO_SERIAL_ITEMS.STYGE_ASSO_SERIAL_ITEMS;
+      
+    BEGIN
+
+        UT_TRACE.TRACE('INICIA  GE_BOItemsSeriado.fsbFraudAssoExist. inuSerialItemId ['
+                        ||TO_CHAR(INUSERIALITEMID)||']. inuAssoSerialItemId ['
+                        ||TO_CHAR(INUASSOSERIALITEMID)||']',1);
+    
+        IF(INUASSOSERIALITEMID IS NOT NULL AND INUSERIALITEMID IS NOT NULL)THEN
+            IF(DAGE_ASSO_SERIAL_ITEMS.FBLEXIST(INUASSOSERIALITEMID))THEN
+                
+                DAGE_ASSO_SERIAL_ITEMS.GETRECORD(INUASSOSERIALITEMID, RCASSOSERIALITEM);
+                
+                
+                
+                IF(RCASSOSERIALITEM.SERIAL_ITEMS_ID IS NOT NULL)THEN
+                    
+                    UT_TRACE.TRACE('El sello '||TO_CHAR(INUASSOSERIALITEMID)||' se encuentra asociado al �tem '
+                                    ||TO_CHAR(RCASSOSERIALITEM.SERIAL_ITEMS_ID), 2 );
+                    SBRESPONSE := GE_BOITEMSCONSTANTS.FSBSEALFRAUDNOTASSO;
+                END IF;
+            END IF;
+        END IF;
+        UT_TRACE.TRACE('FIN  GE_BOItemsSeriado.fsbFraudAssoExist',1);
+        RETURN SBRESPONSE;
+    EXCEPTION
+    WHEN EX.CONTROLLED_ERROR THEN
+        UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.fsbFraudAssoExist',1);
+        RAISE EX.CONTROLLED_ERROR;
+    WHEN OTHERS THEN
+        UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.fsbFraudAssoExist',1);
+        ERRORS.SETERROR;
+        RAISE EX.CONTROLLED_ERROR; 
+    END FSBFRAUDASSOEXIST;
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    FUNCTION FSBFRAUDASSOREMORMAINTAIN
+    (
+        INUSERIALITEMID         IN  GE_ASSO_SERIAL_ITEMS.SERIAL_ITEMS_ID%TYPE,
+        INUASSOSERIALITEMID     IN GE_ASSO_SERIAL_ITEMS.ASSO_SERIAL_ITEMS_ID%TYPE,
+        ISBACTION               IN GE_BOITEMS.STYLETTER
+    ) RETURN VARCHAR2 IS
+      
+      SBRESPONSE FM_POSSIBLE_NTL.COMMENT_%TYPE;
+      RFCURSOR CONSTANTS.TYREFCURSOR;
+      
+      NUASSOITEM    GE_ASSO_SERIAL_ITEMS.ASSO_SERIAL_ITEMS_ID%TYPE;
+        
+    BEGIN
+      
+        UT_TRACE.TRACE('INICIA  GE_BOItemsSeriado.fSBFraudAssoRemOrMaintain',1);
+        UT_TRACE.TRACE(' Serial_Items_Id ['|| INUSERIALITEMID ||'] ,asso_serial_items_id ['|| INUASSOSERIALITEMID ||']'   ,5);
+
+        IF(GE_BOITEMSCONSTANTS.CSBSEALACTIONMAINTAIN = ISBACTION)THEN
+            SBRESPONSE  := GE_BOITEMSCONSTANTS.FSBSEALMAINTAINSNOTASSOITEM;
+        ELSIF(GE_BOITEMSCONSTANTS.CSBSEALACTIONREMOVE = ISBACTION)THEN
+            SBRESPONSE  := GE_BOITEMSCONSTANTS.FSBSEALREMOVENOTASSTOEQUIP;
+        ELSIF(GE_BOITEMSCONSTANTS.CSBSEALACTIONMANIPULATED = ISBACTION)THEN
+            SBRESPONSE  := GE_BOITEMSCONSTANTS.FSBSEALMANIPULANOTASSOITEM;
+        END IF;
+    
+        IF(INUSERIALITEMID IS NOT NULL)THEN
+            GE_BCITEMSSERIADO.GETMAINTAINSSEALNOTASSOITEM(INUSERIALITEMID,RFCURSOR);
+            LOOP
+            FETCH  RFCURSOR INTO NUASSOITEM;
+                IF( NUASSOITEM = INUASSOSERIALITEMID)THEN
+                   SBRESPONSE := '';
+                END IF;
+                EXIT WHEN RFCURSOR%NOTFOUND;
+            END LOOP;
+        END IF;
+
+        UT_TRACE.TRACE('FIN  GE_BOItemsSeriado.fSBFraudAssoRemOrMaintain',1);
+
+        RETURN SBRESPONSE;
+      
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.fSBFraudAssoRemOrMaintain',1);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.fSBFraudAssoRemOrMaintain',1);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;    
+    END FSBFRAUDASSOREMORMAINTAIN;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    FUNCTION FSBMAINTAINSSEALCHANGELOCAT
+    (
+        INUSERIALITEMID     IN  GE_ASSO_SERIAL_ITEMS.ASSO_SERIAL_ITEMS_ID%TYPE,
+        ISBLOCATION         IN  GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE,
+        ISBACTION           IN  GE_BOITEMS.STYLETTER
+    )RETURN VARCHAR2 IS
+      
+        NUIDATRIBUTEVALUE   GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_AT_VAL%TYPE;
+        SBVALORACTUAL       GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE;
+        SBRESPONSE          FM_POSSIBLE_NTL.COMMENT_%TYPE;
+        RCITEMSTIPOATVAL    GE_ITEMS_TIPO_AT_VAL%ROWTYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.fsbMaintainsSealChangeLocat. inuSerialItemId ['
+                        ||TO_CHAR(INUSERIALITEMID)  ||']. isbLocation ['
+                        ||ISBLOCATION               ||']. isbAction ['
+                        ||ISBACTION                 ||']', 2 );
+
+        IF(GE_BOITEMSCONSTANTS.CSBSEALACTIONMAINTAIN = ISBACTION)THEN
+            SBRESPONSE  := GE_BOITEMSCONSTANTS.FSBSEALMAINTAINCHANGELOCAT;
+        ELSIF(GE_BOITEMSCONSTANTS.CSBSEALACTIONMANIPULATED = ISBACTION)THEN
+            SBRESPONSE  := GE_BOITEMSCONSTANTS.FSBSEALMANIPULACHANGELOCAT;
+        END IF;
+        
+        IF(INUSERIALITEMID IS NOT NULL)THEN
+            RCITEMSTIPOATVAL.ID_ITEMS_TIPO_ATR  := GE_BCITEMSSERIADO.FNUGETIDATTRIBUTE( GE_BOITEMSCONSTANTS.CNUTYPE_SEAL,GE_BOITEMSCONSTANTS.CSBSEALATTRIBUTETECHNICALNAME);
+            RCITEMSTIPOATVAL.ID_ITEMS_SERIADO := INUSERIALITEMID;
+            GE_BCITEMSSERIADO.GETATRIBUTEVALUE
+                (
+                    RCITEMSTIPOATVAL.ID_ITEMS_TIPO_ATR,
+                    RCITEMSTIPOATVAL.ID_ITEMS_SERIADO,
+                    NUIDATRIBUTEVALUE,
+                    SBVALORACTUAL
+                );
+
+            UT_TRACE.TRACE('nuIdAtributeValue ['||TO_CHAR(NUIDATRIBUTEVALUE)||']. sbValorActual ['||SBVALORACTUAL||']', 2 );
+            
+            IF(ISBLOCATION = SBVALORACTUAL) THEN
+                SBRESPONSE := '';
+            END  IF;
+        END IF;
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.fsbMaintainsSealChangeLocat.', 2);
+        RETURN SBRESPONSE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.fblMaintainsSealChangeLoca',1);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.fblMaintainsSealChangeLoca',1);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;      
+    END FSBMAINTAINSSEALCHANGELOCAT;    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    PROCEDURE PROCESSFRAUD
+    (
+        INUPRODUCT              IN  FM_POSSIBLE_NTL.PRODUCT_ID%TYPE,
+        INUGEOGRAPHLOCATION     IN  FM_POSSIBLE_NTL.GEOGRAP_LOCATION_ID%TYPE,
+        INUPRODUCTTYPE          IN  FM_POSSIBLE_NTL.PRODUCT_TYPE_ID%TYPE,
+        ISBCOMMENTGENERIC       IN  FM_POSSIBLE_NTL.COMMENT_%TYPE,
+        INUDISCOVERYTYPE        IN  FM_POSSIBLE_NTL.DISCOVERY_TYPE_ID%TYPE,
+        ONUCODECREATEDFRAUD     OUT FM_POSSIBLE_NTL.POSSIBLE_NTL_ID%TYPE
+    )
+    IS
+        NUORDERID           OR_ORDER.ORDER_ID%TYPE;
+        NUPACKAGEID         MO_PACKAGES.PACKAGE_ID%TYPE;
+        CNUERR901711        CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 901711;
+        SBCOMMENT           FM_POSSIBLE_NTL.COMMENT_%TYPE;
+    BEGIN
+
+        UT_TRACE.TRACE( 'INICIA  GE_BOItemsSeriado.ProcessFraud. '
+            ||' inuProduct '            ||TO_CHAR(INUPRODUCT)            ||' - '
+            ||' inuProductType '        ||TO_CHAR(INUPRODUCTTYPE)        ||' - '
+            ||' inuGeographLocation '   ||TO_CHAR(INUGEOGRAPHLOCATION)   ||' - '
+            ||' isbCommentGeneric '     ||ISBCOMMENTGENERIC              ||' - '
+            ||' inuDiscoveryType '      ||TO_CHAR(INUDISCOVERYTYPE),1);
+
+        
+        IF (INUPRODUCT IS NULL) THEN
+            GE_BOERRORS.SETERRORCODE(CNUERR901711);
+        END IF;
+        
+        
+        SBCOMMENT := TO_CHAR(NUORDERID)||'. '||ISBCOMMENTGENERIC;
+        
+        
+        FM_BOREGISTER.REGISTER
+            (
+                INUPRODUCT,
+                INUGEOGRAPHLOCATION,
+                NULL,
+                INUPRODUCTTYPE,
+                SBCOMMENT,
+                INUDISCOVERYTYPE,
+                NULL,
+                NULL,
+                FM_BOCONSTANTS.CSBPENDINGNTLSTATUS,
+                NULL,
+                NULL,
+                ONUCODECREATEDFRAUD,
+                NUORDERID,
+                NUPACKAGEID
+            );
+
+    UT_TRACE.TRACE('FIN  GE_BOItemsSeriado.ProcessFraud. onuCodeCreatedFraud '||TO_CHAR(ONUCODECREATEDFRAUD),1);
+
+    EXCEPTION
+    WHEN EX.CONTROLLED_ERROR THEN
+        UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.ProcessFraud',1);
+        RAISE EX.CONTROLLED_ERROR;
+    WHEN OTHERS THEN
+        UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.ProcessFraud',1);
+        ERRORS.SETERROR;
+        RAISE EX.CONTROLLED_ERROR;   
+   END PROCESSFRAUD;
+   
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SEALASSODISSO
+    (
+        SBSEALS         VARCHAR2
+    )
+    IS
+        TBSEALS           UT_STRING.TYTB_STRING;
+        TBSEAL            UT_STRING.TYTB_STRING;
+        NUMETERID         GE_ASSO_SERIAL_ITEMS.SERIAL_ITEMS_ID%TYPE;
+        SBSERIESEAL       GE_ITEMS_SERIADO.SERIE%TYPE;
+        NUITEMID          GE_ITEMS_SERIADO.ITEMS_ID%TYPE;
+        SBLOCATIONSEAL    GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE;
+        SBINSTALLSEAL     VARCHAR2(1);
+        RCMETER           DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        RCSEAL            DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUITEMSTIPOATTRID GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE;
+        NUIDATRIBUTEVALUE GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_AT_VAL%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.SealAssoDisso sbSeals : '||SBSEALS, 1);
+
+        UT_STRING.EXTSTRING(SBSEALS, CSBLINE_FEED, TBSEALS);
+
+        FOR I IN 1 .. TBSEALS.COUNT LOOP
+            IF TBSEALS.EXISTS(I) THEN
+            
+                UT_STRING.EXTSTRING(TBSEALS(I), CSBTAB, TBSEAL);
+
+                NUMETERID := TO_NUMBER(TBSEAL(1));
+                UT_TRACE.TRACE('nuMeterId : '||NUMETERID, 2);
+                
+                SBSERIESEAL := TBSEAL(2);
+                UT_TRACE.TRACE('sbSerieSeal : '||SBSERIESEAL, 2);
+                
+                NUITEMID := TO_NUMBER(TBSEAL(3));
+                UT_TRACE.TRACE('nuItemId : '||NUITEMID, 2);
+                
+                SBLOCATIONSEAL := TBSEAL(4);
+                UT_TRACE.TRACE('sbLocationSeal : '||SBLOCATIONSEAL, 2);
+                
+                SBINSTALLSEAL := TBSEAL(5);
+                UT_TRACE.TRACE('sbInstallSeal : '||SBINSTALLSEAL, 2);
+                
+                
+                DAGE_ITEMS_SERIADO.GETRECORD(NUMETERID, RCMETER);
+
+                
+                GE_BOITEMSSERIADO.GETITEMSERBYSERIE(SBSERIESEAL, RCSEAL);
+
+                
+                IF RCSEAL.ID_ITEMS_SERIADO IS NULL THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CNUNOT_EXIST_SERIE, SBSERIESEAL);
+                END IF;
+
+                IF RCSEAL.ITEMS_ID <> NUITEMID THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT(7616, SBSERIESEAL||'|'||RCSEAL.ITEMS_ID);
+                END IF;
+
+
+                
+                IF SBINSTALLSEAL = GE_BOITEMSCONSTANTS.CSBSEALACTIONINSTALL THEN
+                    UT_TRACE.TRACE('Asociar Sello : '||RCSEAL.ID_ITEMS_SERIADO||' de '||RCMETER.ID_ITEMS_SERIADO, 2);
+
+                    IF RCSEAL.ID_ITEMS_ESTADO_INV <> GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE THEN
+                        GE_BOERRORS.SETERRORCODEARGUMENT
+                        (
+                                CNUINVALID_STATUS,
+                                DAGE_ITEMS_ESTADO_INV.FSBGETDESCRIPCION(RCSEAL.ID_ITEMS_ESTADO_INV)
+                                ||'|'||RCSEAL.SERIE
+                        );
+                    END IF;
+
+                    GE_BOITEMSSERIADO.SEALASSOCIATION(RCSEAL.ID_ITEMS_SERIADO, NUMETERID, NULL, SBLOCATIONSEAL);
+
+                
+                ELSIF SBINSTALLSEAL = GE_BOITEMSCONSTANTS.CSBSEALACTIONREMOVE THEN
+                    UT_TRACE.TRACE('Dessociar Sello : '||RCSEAL.ID_ITEMS_SERIADO||' de '||RCMETER.ID_ITEMS_SERIADO, 2);
+
+                    IF RCSEAL.ID_ITEMS_ESTADO_INV <> GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO THEN
+                        GE_BOERRORS.SETERRORCODEARGUMENT
+                        (
+                                CNUINVALID_STATUS,
+                                DAGE_ITEMS_ESTADO_INV.FSBGETDESCRIPCION(RCSEAL.ID_ITEMS_ESTADO_INV)
+                                ||'|'||RCSEAL.SERIE
+                        );
+                    END IF;
+
+                    GE_BOITEMSSERIADO.SEALDISSOCIATION(RCSEAL.ID_ITEMS_SERIADO, NUMETERID, NULL);
+
+                END IF;
+            END IF;
+        END LOOP;
+        
+
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.SealAssoDisso', 1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.SealAssoDisso', 1);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.SealAssoDisso', 1);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END SEALASSODISSO;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETATTRSERIALID
+    (
+        ISBTECHNICALNAME   IN  GE_ENTITY_ATTRIBUTES.TECHNICAL_NAME%TYPE,
+        ISBSERIE           IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ONUITEMSERIALID    OUT GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE,
+        ONUITEMSTIPOATTRID OUT GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE
+    )
+    IS
+        RCITEMSERIADO     DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUITEMTIPO        GE_ITEMS.ID_ITEMS_TIPO%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.GetAttrSerialId', 4);
+
+        
+        IF ISBTECHNICALNAME IS NULL THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUVALUENULL, 'Nombre t�cnico del atributo');
+        END IF;
+        UT_TRACE.TRACE('isbTechnicalName : '||ISBTECHNICALNAME, 5);
+
+        
+        IF ISBSERIE IS NULL THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUVALUENULL, 'Serie');
+        END IF;
+        UT_TRACE.TRACE('isbSerie : '||ISBSERIE, 5);
+
+        
+        GE_BOITEMSSERIADO.GETITEMSERBYSERIE(ISBSERIE, RCITEMSERIADO);
+
+        
+        IF RCITEMSERIADO.ID_ITEMS_SERIADO IS NULL THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUNOT_EXIST, ISBSERIE);
+        END IF;
+        ONUITEMSERIALID := RCITEMSERIADO.ID_ITEMS_SERIADO;
+        UT_TRACE.TRACE('onuItemSerialId : '||ONUITEMSERIALID, 5);
+
+        
+        NUITEMTIPO := DAGE_ITEMS.FNUGETID_ITEMS_TIPO(RCITEMSERIADO.ITEMS_ID);
+
+        
+        IF NUITEMTIPO IS NULL THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUVALUENULL, 'Tipo de �tem');
+        END IF;
+        UT_TRACE.TRACE('nuItemTipo : '||NUITEMTIPO, 5);
+
+        
+        ONUITEMSTIPOATTRID := GE_BCITEMSSERIADO.FNUGETIDATTRIBUTE(NUITEMTIPO, ISBTECHNICALNAME);
+        UT_TRACE.TRACE('onuItemsTipoAttrId : '||ONUITEMSTIPOATTRID, 5);
+
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.GetAttrSerialId', 4);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.GetAttrSerialId', 4);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.GetAttrSerialId', 4);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETATTRSERIALID;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBGETVALUEATTR
+    (
+        ISBTECHNICALNAME IN GE_ENTITY_ATTRIBUTES.TECHNICAL_NAME%TYPE,
+        ISBSERIE         IN GE_ITEMS_SERIADO.SERIE%TYPE
+    )
+    RETURN GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE
+    IS
+        NUITEMSERIALID    GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        NUITEMSTIPOATTRID GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE;
+        NUIDATRIBUTEVALUE GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_AT_VAL%TYPE;
+        SBVALOR           GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.fsbGetValueAttr', 3);
+
+        
+        GETATTRSERIALID
+        (
+            ISBTECHNICALNAME,
+            ISBSERIE,
+            NUITEMSERIALID,
+            NUITEMSTIPOATTRID
+        );
+        UT_TRACE.TRACE('nuItemsTipoAttrId : '||NUITEMSTIPOATTRID, 4);
+        
+        
+        GE_BCITEMSSERIADO.GETATRIBUTEVALUE
+        (
+            NUITEMSTIPOATTRID,
+            NUITEMSERIALID,
+            NUIDATRIBUTEVALUE,
+            SBVALOR
+        );
+        UT_TRACE.TRACE('sbValor : '||SBVALOR, 4);
+
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.fsbGetValueAttr', 3);
+        RETURN SBVALOR;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.fsbGetValueAttr', 3);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.fsbGetValueAttr', 3);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FSBGETVALUEATTR;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDVALUEATTR
+    (
+        ISBTECHNICALNAME IN GE_ENTITY_ATTRIBUTES.TECHNICAL_NAME%TYPE,
+        ISBSERIE         IN GE_ITEMS_SERIADO.SERIE%TYPE,
+        ISBVALOR         IN GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE
+    )
+    IS
+        NUITEMSERIALID    GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        NUITEMSTIPOATTRID GE_ITEMS_TIPO_ATR.ID_ITEMS_TIPO_ATR%TYPE;
+        NUIDATRIBUTEVALUE GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_AT_VAL%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.UpdValueAttr', 3);
+
+        
+        GETATTRSERIALID
+        (
+            ISBTECHNICALNAME,
+            ISBSERIE,
+            NUITEMSERIALID,
+            NUITEMSTIPOATTRID
+        );
+        UT_TRACE.TRACE('nuItemsTipoAttrId : '||NUITEMSTIPOATTRID, 4);
+        
+        
+        IF ISBVALOR IS NULL THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUVALUENULL, 'Valor');
+        END IF;
+        UT_TRACE.TRACE('isbValor : '||ISBVALOR, 4);
+        
+        
+        GE_BOITEMSSERIADO.ACTUALIZARATRIBUTO
+        (
+            NUITEMSTIPOATTRID,
+            NUITEMSERIALID,
+            ISBVALOR,
+            NUIDATRIBUTEVALUE
+        );
+        UT_TRACE.TRACE('nuIdAtributeValue : '||NUIDATRIBUTEVALUE, 4);
+
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.UpdValueAttr', 3);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR GE_BOItemsSeriado.UpdValueAttr', 3);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS GE_BOItemsSeriado.UpdValueAttr', 3);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDVALUEATTR;
+    
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSEALLOCATIONS
+    (
+        INUITEMSID      IN  GE_ITEMS.ITEMS_ID%TYPE,
+        ORFDATACURSOR   OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+        NUITEMSTIPOATRID    GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_ATR%TYPE;
+    BEGIN
+      
+          UT_TRACE.TRACE('INICIA [GE_BOItemsSeriado.getSealLocations]',10);
+          
+          GE_BCITEMSSERIADO.GETSEALLOCATIONS(INUITEMSID, ORFDATACURSOR);                   
+          
+          UT_TRACE.TRACE('FIN [GE_BOItemsSeriado.getSealLocations]',10);
+          
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETSEALLOCATIONS;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALSEALOFEQUIP
+    (
+        INUORDERID          IN  OR_ORDER.ORDER_ID%TYPE,
+        INUORDERACTID       IN  OR_ORDER_ACTIVITY.ORDER_ACTIVITY_ID%TYPE,
+        INUADDRESSID        IN  OR_ORDER_ACTIVITY.ADDRESS_ID%TYPE,
+        INUSUBSCRIBERID     IN  OR_ORDER_ACTIVITY.SUBSCRIBER_ID%TYPE,
+        INUCOMPPRODID       IN  OR_ORDER_ACTIVITY.COMPONENT_ID%TYPE,
+        INUCOMPONENTTYPEID  IN  PR_COMPONENT.COMPONENT_TYPE_ID%TYPE,
+        INUCLASSSERVICEID   IN  PR_COMPONENT.CLASS_SERVICE_ID%TYPE,
+        INUPRODUCTID        IN  OR_ORDER_ACTIVITY.PRODUCT_ID%TYPE,
+        INUPRODUCTTYPEID    IN  PR_PRODUCT.PRODUCT_TYPE_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.ValSealOfEquip. inuOrderId: '
+                        ||TO_CHAR(INUORDERID)           ||', inuOrderActId: ', 2 );
+    
+        
+        GE_BOITEMSSERIADO.PROCESSSEAL
+            (
+                INUORDERID,
+                INUORDERACTID,
+                INUADDRESSID,
+                INUSUBSCRIBERID,
+                INUCOMPPRODID,
+                INUCOMPONENTTYPEID,
+                INUCLASSSERVICEID,
+                INUPRODUCTID,
+                INUPRODUCTTYPEID
+            );
+
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.ValSealOfEquip', 2 );
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END VALSEALOFEQUIP;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PROCESSSEAL
+    (
+        INUORDERID          IN  OR_ORDER.ORDER_ID%TYPE,
+        INUORDERACTID       IN  OR_ORDER_ACTIVITY.ORDER_ACTIVITY_ID%TYPE,
+        INUADDRESSID        IN  OR_ORDER_ACTIVITY.ADDRESS_ID%TYPE,
+        INUSUBSCRIBERID     IN  OR_ORDER_ACTIVITY.SUBSCRIBER_ID%TYPE,
+        INUCOMPPRODID       IN  OR_ORDER_ACTIVITY.COMPONENT_ID%TYPE,
+        INUCOMPONENTTYPEID  IN  PR_COMPONENT.COMPONENT_TYPE_ID%TYPE,
+        INUCLASSSERVICEID   IN  PR_COMPONENT.CLASS_SERVICE_ID%TYPE,
+        INUPRODUCTID        IN  OR_ORDER_ACTIVITY.PRODUCT_ID%TYPE,
+        INUPRODUCTTYPEID    IN  PR_PRODUCT.PRODUCT_TYPE_ID%TYPE
+    )
+    IS
+        TBASSOSEALTOEQUIP       OR_BOINSTANCEACTIVITIES.TYTBASSOSEALTOEQUIP;
+        SBINDEXSEALTOASSO       GE_ITEMS_SERIADO.SERIE%TYPE;
+        NUITEMSSERIADOID        GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        SBINSTANCEVALUE         GE_BOINSTANCECONTROL.STYSBVALUE;
+        NUPRODUCTID             PR_PRODUCT.PRODUCT_ID%TYPE;
+        NUPRODUCTTYPEID         PR_PRODUCT.PRODUCT_TYPE_ID%TYPE;
+        RCEQUIPMENT             DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+    BEGIN
+        UT_TRACE.TRACE('Inicio GE_BOItemsSeriado.ProcessSeal', 2 );
+        
+        OR_BOINSTANCEACTIVITIES.GETEQUIPTOASSOC(NULL, TBASSOSEALTOEQUIP);
+
+        UT_TRACE.TRACE('tbAssoSealToEquip.count '||TBASSOSEALTOEQUIP.COUNT, 2 );
+        
+        
+        IF(TBASSOSEALTOEQUIP.COUNT >0) THEN
+
+            SBINDEXSEALTOASSO := TBASSOSEALTOEQUIP.FIRST;
+
+            
+            WHILE (SBINDEXSEALTOASSO IS NOT NULL) LOOP
+
+                UT_TRACE.TRACE('sbIndexSealTOAsso '||SBINDEXSEALTOASSO, 2 );
+                
+                
+                OR_BOACTIVITIESLEGALIZEBYFILE.VALASSOSEALCOMP
+                        (
+                            TBASSOSEALTOEQUIP(SBINDEXSEALTOASSO).SEALSERIE,
+                            TBASSOSEALTOEQUIP(SBINDEXSEALTOASSO).ACTIVITYID,
+                            TBASSOSEALTOEQUIP(SBINDEXSEALTOASSO).ISTOASSOC,
+                            RCEQUIPMENT
+                        );
+                        
+                
+                
+                IF (TBASSOSEALTOEQUIP(SBINDEXSEALTOASSO).METEREQUIP IS NULL) THEN
+                    UT_TRACE.TRACE('el meterEquip es nulo, se actualiza por el: '||RCEQUIPMENT.ITEMS_ID, 2 );
+
+                    TBASSOSEALTOEQUIP(SBINDEXSEALTOASSO).METEREQUIP := RCEQUIPMENT.ITEMS_ID;
+                END IF;
+
+                
+                IF TBASSOSEALTOEQUIP(SBINDEXSEALTOASSO).METEREQUIP IS NOT NULL THEN
+
+                    
+                    GE_BCITEMSSERIADO.GETIDBYSERIE
+                    (
+                        TBASSOSEALTOEQUIP(SBINDEXSEALTOASSO).SEALSERIE,
+                        NUITEMSSERIADOID
+                    );
+                                        
+                    UT_TRACE.TRACE('nuItemsSeriadoId '||NUITEMSSERIADOID, 2 );
+                    
+                    NUPRODUCTID     := INUPRODUCTID;
+                    NUPRODUCTTYPEID := INUPRODUCTTYPEID;
+                    
+                    
+                    IF (NUPRODUCTID IS NULL) THEN
+                        NUPRODUCTID := DAOR_ORDER_ACTIVITY.FNUGETPRODUCT_ID(INUORDERACTID);
+
+                        
+                        IF (NUPRODUCTID IS NOT NULL) THEN
+                            NUPRODUCTTYPEID := DAPR_PRODUCT.FNUGETPRODUCT_TYPE_ID(NUPRODUCTID);
+                        END IF;
+                    END IF;
+                    
+                    
+                    GE_BOITEMSSERIADO.VALANDPROCESSSEALANDFRAUD
+                        (
+                            NUITEMSSERIADOID,
+                            RCEQUIPMENT.ID_ITEMS_SERIADO,
+                            INUORDERID,
+                            TBASSOSEALTOEQUIP(SBINDEXSEALTOASSO).LOCATION,
+                            TBASSOSEALTOEQUIP(SBINDEXSEALTOASSO).ISTOASSOC,
+                            TBASSOSEALTOEQUIP(SBINDEXSEALTOASSO).SEALSERIE,
+                            RCEQUIPMENT.SERIE,
+                            NUPRODUCTID,
+                            NUPRODUCTTYPEID
+                        );
+                END IF;
+                SBINDEXSEALTOASSO := TBASSOSEALTOEQUIP.NEXT(SBINDEXSEALTOASSO);
+            END LOOP;
+        END IF;
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.ProcessSeal', 2 );
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END PROCESSSEAL;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALANDPROCESSSEALANDFRAUD
+    (
+        INUASSOSERIALITEMSID    IN  GE_ASSO_SERIAL_ITEMS.ASSO_SERIAL_ITEMS_ID%TYPE,
+        INUSERIALITEMSID        IN  GE_ASSO_SERIAL_ITEMS.SERIAL_ITEMS_ID%TYPE,
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE,
+        ISBLOCATION             IN  GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE,
+        ISTOASSOC               IN  GE_BOITEMS.STYLETTER,
+        SEALSERIE               IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ISBEQUIPTOASSO          IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        INUPRODUCTID            IN  OR_ORDER_ACTIVITY.PRODUCT_ID%TYPE,
+        INUPRODUCTTYPEID        IN  PR_PRODUCT.PRODUCT_TYPE_ID%TYPE
+    )
+    IS
+        SBRESPONSE              FM_POSSIBLE_NTL.COMMENT_%TYPE;
+        NUCODEFRAUDGENERATED    FM_POSSIBLE_NTL.POSSIBLE_NTL_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO GE_BOItemsSeriado.ValAndProcessSealAndFraud', 2 );
+        
+        
+        SBRESPONSE := GE_BOITEMSSERIADO.FSBVALIDATEASSOPROCESSFRAUD
+                        (
+                            INUSERIALITEMSID,
+                            INUASSOSERIALITEMSID,
+                            ISBLOCATION,
+                            ISTOASSOC
+                        );
+
+        UT_TRACE.TRACE(' Respuesta de Fraude sbResponse==>'||SBRESPONSE,3 );
+
+        
+        IF(SBRESPONSE IS NULL) THEN
+            
+            GE_BOITEMSSERIADO.PROCESSASSOCIATIONS
+                (
+                    INUASSOSERIALITEMSID,
+                    INUSERIALITEMSID,
+                    INUORDERID,
+                    ISBLOCATION,
+                    ISTOASSOC,
+                    SEALSERIE,
+                    ISBEQUIPTOASSO
+                );
+            
+        ELSE 
+
+            OR_BOLEGALIZEACTIVITIES.CREATEFRAUDTOSEAL
+                (
+                    INUORDERID,
+                    INUPRODUCTID,
+                    DAOR_ORDER.FNUGETGEOGRAP_LOCATION_ID(INUORDERID),
+                    INUPRODUCTTYPEID,
+                    SBRESPONSE,
+                    FM_BOCONSTANTS.CSBEXTERNALSYSTEM,
+                    NUCODEFRAUDGENERATED
+                );
+
+            UT_TRACE.TRACE('Hay fraude. nuCodeFraudGenerated '||NUCODEFRAUDGENERATED, 2 );
+
+        END IF;
+
+        UT_TRACE.TRACE('FIN GE_BOItemsSeriado.ValAndProcessSealAndFraud', 2 );
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END VALANDPROCESSSEALANDFRAUD;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PROCESSASSOCIATIONS
+    (
+        INUASSOSERIALITEMSID    IN  GE_ASSO_SERIAL_ITEMS.ASSO_SERIAL_ITEMS_ID%TYPE,
+        INUSERIALITEMSID        IN  GE_ASSO_SERIAL_ITEMS.SERIAL_ITEMS_ID%TYPE,
+        INUORDERID              IN  OR_ORDER.ORDER_ID%TYPE,
+        ISBLOCATION             IN  GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE,
+        ISTOASSOC               IN  GE_BOITEMS.STYLETTER,
+        SEALSERIE               IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ISBEQUIPTOASSO          IN  GE_ITEMS_SERIADO.SERIE%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('INICIO ge_boitemsseriado.ProcessAssociations', 2 );
+        IF(ISTOASSOC = GE_BCITEMSSERIADO.CSBASSOCSEAL) THEN
+            UT_TRACE.TRACE('Se debe asociar el sello: '||SEALSERIE||' con el equipo: '||ISBEQUIPTOASSO, 2 );
+            GE_BOITEMSSERIADO.SEALASSOCIATION
+                (
+                    INUASSOSERIALITEMSID,
+                    INUSERIALITEMSID,
+                    INUORDERID,
+                    ISBLOCATION
+                );
+        ELSIF(ISTOASSOC = GE_BCITEMSSERIADO.CSBDISSOCSEAL) THEN
+            UT_TRACE.TRACE('Se debe desasociar el sello: '||SEALSERIE||' del equipo: '||ISBEQUIPTOASSO, 2 );
+            GE_BOITEMSSERIADO.SEALDISSOCIATION
+                (
+                    INUASSOSERIALITEMSID,
+                    INUSERIALITEMSID,
+                    INUORDERID
+                );
+        END IF;
+        UT_TRACE.TRACE('FIN ge_boitemsseriado.ProcessAssociations', 2 );
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END PROCESSASSOCIATIONS;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFGETITEMDATABYID
+    (
+        INUSERIALITEMID IN  GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    )
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+        RFSERIALITEM    CONSTANTS.TYREFCURSOR;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN GE_BOItemsSeriado.frfGetItemDataById ['||INUSERIALITEMID||']',2);
+        RFSERIALITEM:= GE_BCITEMSSERIADO.FRFGETITEMDATABYID(INUSERIALITEMID);
+        UT_TRACE.TRACE('END GE_BOItemsSeriado.frfGetItemDataById',2);
+        RETURN RFSERIALITEM;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBISPATTERN
+    (
+        INUSERIALITEMID IN  GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    )
+    RETURN VARCHAR2
+    IS
+        SBISPATTERN             VARCHAR2(1);
+        NUOPERUNITSERIAL        GE_ITEMS_SERIADO.OPERATING_UNIT_ID%TYPE;
+        NUOPERUNITPATTERN       GE_ITEMS_SERIADO.OPERATING_UNIT_ID%TYPE;
+        DTVALIDDATE             OR_ITEM_PATTERN.VALID_UNTIL%TYPE;
+        DTSYSDATE               OR_ITEM_PATTERN.VALID_UNTIL%TYPE := TRUNC(SYSDATE);
+    BEGIN
+        UT_TRACE.TRACE('BEGIN GE_BOItemsSeriado.fsbIsPattern ['||INUSERIALITEMID||']',2);
+
+        SBISPATTERN       := 'N';
+        NUOPERUNITSERIAL  := DAGE_ITEMS_SERIADO.FNUGETOPERATING_UNIT_ID(INUSERIALITEMID, 0);
+        NUOPERUNITPATTERN := DAOR_ITEM_PATTERN.FNUGETOPERATING_UNIT_ID(INUSERIALITEMID, 0);
+        DTVALIDDATE       := DAOR_ITEM_PATTERN.FDTGETVALID_UNTIL(INUSERIALITEMID, 0);
+        
+        IF NUOPERUNITSERIAL IS NOT NULL AND NUOPERUNITPATTERN IS NOT NULL THEN
+            IF NUOPERUNITSERIAL = NUOPERUNITPATTERN AND DTVALIDDATE >= DTSYSDATE THEN
+                SBISPATTERN := 'Y';
+            END IF;
+        END IF;
+
+        UT_TRACE.TRACE('END GE_BOItemsSeriado.fsbIsPattern ['||SBISPATTERN||']', 2);
+        RETURN SBISPATTERN;
+    END;
+    
+END GE_BOITEMSSERIADO;

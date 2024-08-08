@@ -1,0 +1,11 @@
+192.168.10.9
+
+
+1 Instalar DosBox - https://www.dosbox.com/download.php?main=1
+2 Crear carpeta dos en la unidad C y copiar el ejecutable unwrap.exe y  crear un archivo sql.sql
+3 Ejecutar DosBox, montar una unidad mapeando la ruta c:/dos [: => Shift + ñ, / => -] 
+  -> comando [mount f c:/dos], acceder a la unidad montada [f:]
+4 Buscar un objeto wrap y guardar el contenido en el archivo c:/sql.sql [codificación ANSI]
+5 Ejecutar en DosBox
+  -> comando [unwrap.exe sql.sql] => SQL.SQ
+

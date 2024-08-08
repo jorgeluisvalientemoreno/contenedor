@@ -1,0 +1,122 @@
+DECLARE
+	INUCONTRACTID       GE_ACTA.ID_CONTRATO%TYPE:=1445;
+    INUNEWVALUETOTAL    GE_ACTA.VALOR_TOTAL%TYPE:=1000000000;
+    INUNEWVALUEADVANCE  GE_ACTA.VALUE_ADVANCE%TYPE:=100000000;
+    IDTINITIALDATE      GE_ACTA.FECHA_INICIO%TYPE:=NULL;
+    IDTNEWFINALDATE     GE_ACTA.FECHA_FIN%TYPE:=NULL;
+    INUCOMMENTTYPEID    GE_ACTA.COMMENT_TYPE_ID%TYPE:=1297;
+    ISBCOMMENT          GE_ACTA.COMMENT_%TYPE:='SE MODIFICA VALOR CONTRATO SEGUN CA 100-8487.SE CAMBIA VALOR DE CONTRATO DE ' ;
+	
+         SBNEWSTATUSCONTRACT    GE_CONTRATO.STATUS%TYPE;
+         NUCERTIFICATETYPE      GE_ACTA.ID_TIPO_ACTA%TYPE;
+         RCCONTRACT             DAGE_CONTRATO.STYGE_CONTRATO;
+         BLRESULT               BOOLEAN := TRUE;
+         
+         
+        
+        NUVALUETOTAL          GE_ACTA.VALOR_TOTAL%TYPE;
+
+        
+        NUVALUEADVANCE        GE_ACTA.VALUE_ADVANCE%TYPE;
+
+        
+        DTFINALDATE           GE_ACTA.FECHA_FIN%TYPE;
+        
+        NUDIFEANTICIPO        GE_ACTA.VALUE_ADVANCE%TYPE;
+        
+        LIQ_ANTICIPO            VARCHAR2(1);
+
+    BEGIN
+        
+        UT_TRACE.TRACE('INICIO CT_BOContract.ChangeContract',10);
+
+        
+        NUCERTIFICATETYPE := CT_BOCONSTANTS.FNUGETCHANGECERTITYPE;
+
+        
+        DAGE_CONTRATO.GETRECORD(INUCONTRACTID,RCCONTRACT);
+        
+        
+        --DTFINALDATE    :=  RCCONTRACT.FECHA_FINAL;
+        NUVALUEADVANCE :=  RCCONTRACT.VALOR_ANTICIPO;
+        NUVALUETOTAL   :=  RCCONTRACT.VALOR_TOTAL_CONTRATO;
+        
+        
+        IF IDTNEWFINALDATE IS NOT NULL THEN
+            
+            
+            IF ( TRUNC(IDTNEWFINALDATE ) < TRUNC( DTFINALDATE ) ) THEN
+                 UT_TRACE.TRACE('Error - La nueva fecha final del contrato es menor a la fecha final actual del contrato',11);
+                 --ERRORS.SETERROR(CNUERRORDATES);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            RCCONTRACT.FECHA_FINAL := IDTNEWFINALDATE;
+
+            
+            GE_BOCONTRATO.VALPLANCONDITIONS(RCCONTRACT.ID_CONTRATO,RCCONTRACT.FECHA_INICIAL,RCCONTRACT.FECHA_FINAL);
+
+        END IF;
+
+        IF INUNEWVALUETOTAL IS NOT NULL THEN
+            
+            
+            /*IF ( INUNEWVALUETOTAL < NUVALUETOTAL ) THEN
+                UT_TRACE.TRACE('Error - El nuevo valor total del contrato es menor al valor actual del contrato ',11);
+                ERRORS.SETERROR(CNUERRORVALUES);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;*/
+			ISBCOMMENT:=ISBCOMMENT|| RCCONTRACT.VALOR_TOTAL_CONTRATO || ' A '||INUNEWVALUETOTAL; 
+            RCCONTRACT.VALOR_TOTAL_CONTRATO := INUNEWVALUETOTAL;
+        END IF;
+            
+        IF INUNEWVALUEADVANCE IS NOT NULL THEN
+            
+            
+            /*IF ( (INUNEWVALUEADVANCE < NUVALUEADVANCE) OR INUNEWVALUEADVANCE >= INUNEWVALUETOTAL ) THEN
+                UT_TRACE.TRACE('Error - El nuevo valor del anticipo del contrato es menor al valor actual del anticipo del contrato o
+                                  Es mayor o igual que el nuevo valor del contrato ',11);
+                ERRORS.SETERROR(CNUERRORVALUESADVANCE);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;*/
+            ISBCOMMENT:=ISBCOMMENT|| 'Y VALOR DE ANTICIPO DE '	||RCCONTRACT.VALOR_TOTAL_PAGADO;
+            RCCONTRACT.VALOR_TOTAL_PAGADO  :=  RCCONTRACT.VALOR_TOTAL_PAGADO +( INUNEWVALUEADVANCE - RCCONTRACT.VALOR_ANTICIPO);
+			ISBCOMMENT := ISBCOMMENT || ' A '|| RCCONTRACT.VALOR_TOTAL_PAGADO;
+
+            
+            RCCONTRACT.VALOR_ANTICIPO      :=   INUNEWVALUEADVANCE;
+
+        END IF;
+
+        
+        DAGE_CONTRATO.UPDRECORD(RCCONTRACT);
+        
+        
+        CT_BOCERTIFICATE.CREATESTATUSCERTICONTRACT(NUCERTIFICATETYPE,INUCONTRACTID, INUNEWVALUETOTAL,
+                                                 INUNEWVALUEADVANCE, RCCONTRACT.FECHA_INICIAL, RCCONTRACT.FECHA_FINAL, ISBCOMMENT, INUCOMMENTTYPEID);
+
+        UT_TRACE.TRACE('Creaci?n de acta de liquidaci?n de anticipo',6);
+         
+        NUDIFEANTICIPO := NVL(INUNEWVALUEADVANCE,NUVALUEADVANCE) - NUVALUEADVANCE;
+
+        LIQ_ANTICIPO := GE_BOPARAMETER.FSBVALORALFANUMERICO('LIQUIDA_ANTICIPO');
+
+        IF  NVL(NUDIFEANTICIPO,0) > 0 AND NVL(LIQ_ANTICIPO,'N') = 'Y' THEN
+        
+            CT_BOCERTIFICATE.CREATELIQADMINCERTIFICATE(INUCONTRACTID,
+                                                        INUNEWVALUETOTAL,
+                                                        NUDIFEANTICIPO,
+                                                        ISBCOMMENT,
+                                                        INUCOMMENTTYPEID);
+         END IF;
+
+        UT_TRACE.TRACE('FIN CT_BOContract.ChangeContract',10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ERROR - CONTROLLED_ERROR CT_BOContract.ChangeContract',10);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('ERROR - OTHERS CT_BOContract.ChangeContract',10);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    /

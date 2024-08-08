@@ -1,0 +1,1940 @@
+PACKAGE BODY CT_BcCertificate
+IS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    CSBVERSION                  CONSTANT VARCHAR2(10) := 'SAO336694';
+
+    
+    
+    
+
+       
+    
+    
+    
+    FUNCTION FSBVERSION
+    RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFDATABYCERTIFICATE
+    (
+        INUCERTIFICATEID IN GE_ACTA.ID_ACTA%TYPE
+    )
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+        
+        RFDATACERTIFICATE   CONSTANTS.TYREFCURSOR;
+    BEGIN
+    
+        UT_TRACE.TRACE('INICIO CT_BcCertificate.frfDataByCertificate',14);
+
+        OPEN RFDATACERTIFICATE FOR
+            SELECT  GE_ACTA.ID_BASE_ADMINISTRATIVA,
+                    GE_ACTA.ID_PERIODO,
+                    GE_ACTA.ID_TIPO_ACTA,
+                    GE_CONTRATO.ID_CONTRATO,
+                    GE_CONTRATO.ID_TIPO_CONTRATO,
+                    GE_CONTRATO.ID_CONTRATISTA,
+                    (SELECT CT_PRINT_FORMAT.CONFEXME_ID
+                     FROM CT_PRINT_FORMAT
+                     WHERE GE_ACTA.ID_TIPO_ACTA = CT_PRINT_FORMAT.CERTIFICATE_TYPE_ID
+                     AND GE_CONTRATO.ID_TIPO_CONTRATO = CT_PRINT_FORMAT.CONTRACT_TYPE_ID) CONFEXME_ID
+            FROM GE_ACTA, GE_CONTRATO
+                    /*+ CT_BcCertificate.frfDataByCertificate*/
+            WHERE GE_ACTA.ID_CONTRATO = GE_CONTRATO.ID_CONTRATO
+            AND GE_ACTA.ID_ACTA = INUCERTIFICATEID;
+
+        RETURN RFDATACERTIFICATE;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FRFDATABYCERTIFICATE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETMATCHINGLIQCERTIF
+    (
+        INUCONTRACTID	    IN  GE_ACTA.ID_CONTRATO%TYPE,
+        INUPERIODID	        IN  GE_ACTA.ID_PERIODO%TYPE,
+        INUADMINBASEID	    IN  GE_ACTA.ID_BASE_ADMINISTRATIVA%TYPE,
+        IDTFINALDATE	    IN  GE_ACTA.FECHA_FIN%TYPE,
+        INUPERSONID         IN  GE_PERSON.PERSON_ID%TYPE,
+        ONUCERTIFICATEID    OUT GE_ACTA.ID_ACTA%TYPE
+    )
+    IS
+        
+        CURSOR CUCERTIFICATES
+        IS
+            SELECT GE_ACTA.ID_ACTA
+            FROM   GE_ACTA
+                    /*+ CT_BcCertificate.GetMatchingLiqCertif.cuCertificates*/
+            WHERE  GE_ACTA.ESTADO = CT_BOCONSTANTS.FSBGETOPENEDCERTIFSTATUS
+              AND  GE_ACTA.ID_PERIODO = INUPERIODID
+              AND  GE_ACTA.FECHA_FIN >= IDTFINALDATE
+              AND  GE_ACTA.ID_CONTRATO = INUCONTRACTID
+              AND  GE_ACTA.ID_BASE_ADMINISTRATIVA = INUADMINBASEID
+              AND  GE_ACTA.ID_TIPO_ACTA = CT_BOCONSTANTS.FNUGETLIQUIDATIONCERTITYPE
+              AND  GE_ACTA.PERSON_ID IS NULL
+              AND  NOT EXISTS (SELECT GE_DETALLE_ACTA.ID_ACTA
+                               FROM   GE_DETALLE_ACTA
+                               WHERE  GE_DETALLE_ACTA.TIPO_GENERACION = CT_BOCONSTANTS.FSBGETAUTODETGENTYPE
+                                 AND  GE_DETALLE_ACTA.ID_ACTA = GE_ACTA.ID_ACTA);
+        
+        CURSOR CUCERTIFSNOADMINBASE
+        IS
+            SELECT GE_ACTA.ID_ACTA
+            FROM   GE_ACTA
+                    /*+ CT_BcCertificate.GetMatchingLiqCertif.cuCertifsNoAdminBase*/
+            WHERE  GE_ACTA.ESTADO = CT_BOCONSTANTS.FSBGETOPENEDCERTIFSTATUS
+              AND  GE_ACTA.ID_PERIODO = INUPERIODID
+              AND  GE_ACTA.FECHA_FIN >= IDTFINALDATE
+              AND  GE_ACTA.ID_CONTRATO = INUCONTRACTID
+              AND  GE_ACTA.ID_BASE_ADMINISTRATIVA IS NULL
+              AND  GE_ACTA.ID_TIPO_ACTA = CT_BOCONSTANTS.FNUGETLIQUIDATIONCERTITYPE
+              AND  GE_ACTA.PERSON_ID IS NULL
+              AND  NOT EXISTS (SELECT GE_DETALLE_ACTA.ID_ACTA
+                               FROM   GE_DETALLE_ACTA
+                               WHERE  GE_DETALLE_ACTA.TIPO_GENERACION = CT_BOCONSTANTS.FSBGETAUTODETGENTYPE
+                                 AND  GE_DETALLE_ACTA.ID_ACTA = GE_ACTA.ID_ACTA);
+                                 
+        
+        CURSOR CUCERTIFICATESPER
+        IS
+            SELECT GE_ACTA.ID_ACTA
+            FROM   GE_ACTA
+                    /*+ CT_BcCertificate.GetMatchingLiqCertif.cuCertificatesPer*/
+            WHERE  GE_ACTA.ESTADO = CT_BOCONSTANTS.FSBGETOPENEDCERTIFSTATUS
+              AND  GE_ACTA.ID_PERIODO = INUPERIODID
+              AND  GE_ACTA.FECHA_FIN >= IDTFINALDATE
+              AND  GE_ACTA.ID_CONTRATO = INUCONTRACTID
+              AND  GE_ACTA.ID_BASE_ADMINISTRATIVA = INUADMINBASEID
+              AND  GE_ACTA.ID_TIPO_ACTA = CT_BOCONSTANTS.FNUGETLIQUIDATIONCERTITYPE
+              AND  GE_ACTA.PERSON_ID = INUPERSONID
+              AND  NOT EXISTS (SELECT GE_DETALLE_ACTA.ID_ACTA
+                               FROM   GE_DETALLE_ACTA
+                               WHERE  GE_DETALLE_ACTA.TIPO_GENERACION = CT_BOCONSTANTS.FSBGETAUTODETGENTYPE
+                                 AND  GE_DETALLE_ACTA.ID_ACTA = GE_ACTA.ID_ACTA);
+        
+        CURSOR CUCERTIFSNOADMINBASEPER
+        IS
+            SELECT GE_ACTA.ID_ACTA
+            FROM   GE_ACTA
+                    /*+ CT_BcCertificate.GetMatchingLiqCertif.cuCertifsNoAdminBasePer*/
+            WHERE  GE_ACTA.ESTADO = CT_BOCONSTANTS.FSBGETOPENEDCERTIFSTATUS
+              AND  GE_ACTA.ID_PERIODO = INUPERIODID
+              AND  GE_ACTA.FECHA_FIN >= IDTFINALDATE
+              AND  GE_ACTA.ID_CONTRATO = INUCONTRACTID
+              AND  GE_ACTA.ID_BASE_ADMINISTRATIVA IS NULL
+              AND  GE_ACTA.ID_TIPO_ACTA = CT_BOCONSTANTS.FNUGETLIQUIDATIONCERTITYPE
+              AND  GE_ACTA.PERSON_ID = INUPERSONID
+              AND  NOT EXISTS (SELECT GE_DETALLE_ACTA.ID_ACTA
+                               FROM   GE_DETALLE_ACTA
+                               WHERE  GE_DETALLE_ACTA.TIPO_GENERACION = CT_BOCONSTANTS.FSBGETAUTODETGENTYPE
+                                 AND  GE_DETALLE_ACTA.ID_ACTA = GE_ACTA.ID_ACTA);
+    BEGIN
+        IF (    (INUADMINBASEID IS NULL)
+            AND (INUPERSONID IS NULL)) THEN
+            OPEN CUCERTIFSNOADMINBASE;
+            FETCH CUCERTIFSNOADMINBASE INTO ONUCERTIFICATEID;
+            CLOSE CUCERTIFSNOADMINBASE;
+            RETURN;
+        END IF;
+
+        IF (    (INUADMINBASEID IS NOT NULL)
+            AND (INUPERSONID IS NULL)) THEN
+            OPEN CUCERTIFICATES;
+            FETCH CUCERTIFICATES INTO ONUCERTIFICATEID;
+            CLOSE CUCERTIFICATES;
+        END IF;
+
+        IF (    (INUADMINBASEID IS NULL)
+            AND (INUPERSONID IS NOT NULL)) THEN
+            OPEN CUCERTIFSNOADMINBASEPER;
+            FETCH CUCERTIFSNOADMINBASEPER INTO ONUCERTIFICATEID;
+            CLOSE CUCERTIFSNOADMINBASEPER;
+            RETURN;
+        END IF;
+
+        IF (    (INUADMINBASEID IS NOT NULL)
+            AND (INUPERSONID IS NOT NULL)) THEN
+            OPEN CUCERTIFICATESPER;
+            FETCH CUCERTIFICATESPER INTO ONUCERTIFICATEID;
+            CLOSE CUCERTIFICATESPER;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF (CUCERTIFICATES%ISOPEN) THEN
+                CLOSE CUCERTIFICATES;
+            END IF;
+            IF (CUCERTIFSNOADMINBASE%ISOPEN) THEN
+                CLOSE CUCERTIFSNOADMINBASE;
+            END IF;
+            IF (CUCERTIFICATESPER%ISOPEN) THEN
+                CLOSE CUCERTIFICATESPER;
+            END IF;
+            IF (CUCERTIFSNOADMINBASEPER%ISOPEN) THEN
+                CLOSE CUCERTIFSNOADMINBASEPER;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF (CUCERTIFICATES%ISOPEN) THEN
+                CLOSE CUCERTIFICATES;
+            END IF;
+            IF (CUCERTIFSNOADMINBASE%ISOPEN) THEN
+                CLOSE CUCERTIFSNOADMINBASE;
+            END IF;
+            IF (CUCERTIFICATESPER%ISOPEN) THEN
+                CLOSE CUCERTIFICATESPER;
+            END IF;
+            IF (CUCERTIFSNOADMINBASEPER%ISOPEN) THEN
+                CLOSE CUCERTIFSNOADMINBASEPER;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETMATCHINGLIQCERTIF;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETPREVIOUSLIQCERTIF
+    (
+        INUCONTRACTID	    IN  GE_ACTA.ID_CONTRATO%TYPE,
+        INUPERIODID	        IN  GE_ACTA.ID_PERIODO%TYPE,
+        INUADMINBASEID	    IN  GE_ACTA.ID_BASE_ADMINISTRATIVA%TYPE,
+        IDTMAXFINALDATE	    IN  GE_ACTA.FECHA_FIN%TYPE,
+        INUPERSONID         IN  GE_PERSON.PERSON_ID%TYPE,
+        ONUCERTIFICATEID    OUT GE_ACTA.ID_ACTA%TYPE,
+        ODTFINALDATE	    OUT GE_ACTA.FECHA_FIN%TYPE
+    )
+    IS
+        
+        CURSOR CUCERTIFICATES
+        IS
+            SELECT GE_ACTA.ID_ACTA,
+                   GE_ACTA.FECHA_FIN
+            FROM   GE_ACTA
+                    /*+ CT_BcCertificate.GetPreviousLiqCertif.cuCertificates*/
+            WHERE  GE_ACTA.ID_PERIODO = INUPERIODID
+              AND  GE_ACTA.FECHA_FIN < IDTMAXFINALDATE
+              AND  GE_ACTA.ID_CONTRATO = INUCONTRACTID
+              AND  GE_ACTA.ID_BASE_ADMINISTRATIVA = INUADMINBASEID
+              AND  GE_ACTA.ID_TIPO_ACTA = CT_BOCONSTANTS.FNUGETLIQUIDATIONCERTITYPE
+              AND  GE_ACTA.PERSON_ID IS NULL
+            ORDER BY GE_ACTA.FECHA_FIN DESC;
+        
+        CURSOR CUCERTIFSNOADMINBASE
+        IS
+            SELECT GE_ACTA.ID_ACTA,
+                   GE_ACTA.FECHA_FIN
+            FROM   GE_ACTA
+                    /*+ CT_BcCertificate.GetPreviousLiqCertif.cuCertifsNoAdminBase*/
+            WHERE  GE_ACTA.ID_PERIODO = INUPERIODID
+              AND  GE_ACTA.FECHA_FIN < IDTMAXFINALDATE
+              AND  GE_ACTA.ID_CONTRATO = INUCONTRACTID
+              AND  GE_ACTA.ID_BASE_ADMINISTRATIVA IS NULL
+              AND  GE_ACTA.ID_TIPO_ACTA = CT_BOCONSTANTS.FNUGETLIQUIDATIONCERTITYPE
+              AND  GE_ACTA.PERSON_ID IS NULL
+            ORDER BY GE_ACTA.FECHA_FIN DESC;
+        
+        CURSOR CUCERTIFICATESPER
+        IS
+            SELECT GE_ACTA.ID_ACTA,
+                   GE_ACTA.FECHA_FIN
+            FROM   GE_ACTA
+                    /*+ CT_BcCertificate.GetPreviousLiqCertif.cuCertificatesPer*/
+            WHERE  GE_ACTA.ID_PERIODO = INUPERIODID
+              AND  GE_ACTA.FECHA_FIN < IDTMAXFINALDATE
+              AND  GE_ACTA.ID_CONTRATO = INUCONTRACTID
+              AND  GE_ACTA.ID_BASE_ADMINISTRATIVA = INUADMINBASEID
+              AND  GE_ACTA.ID_TIPO_ACTA = CT_BOCONSTANTS.FNUGETLIQUIDATIONCERTITYPE
+              AND  GE_ACTA.PERSON_ID = INUPERSONID
+            ORDER BY GE_ACTA.FECHA_FIN DESC;
+        
+        CURSOR CUCERTIFSNOADMINBASEPER
+        IS
+            SELECT GE_ACTA.ID_ACTA,
+                   GE_ACTA.FECHA_FIN
+            FROM   GE_ACTA
+                    /*+ CT_BcCertificate.GetPreviousLiqCertif.cuCertifsNoAdminBasePer*/
+            WHERE  GE_ACTA.ID_PERIODO = INUPERIODID
+              AND  GE_ACTA.FECHA_FIN < IDTMAXFINALDATE
+              AND  GE_ACTA.ID_CONTRATO = INUCONTRACTID
+              AND  GE_ACTA.ID_BASE_ADMINISTRATIVA IS NULL
+              AND  GE_ACTA.ID_TIPO_ACTA = CT_BOCONSTANTS.FNUGETLIQUIDATIONCERTITYPE
+              AND  GE_ACTA.PERSON_ID = INUPERSONID
+            ORDER BY GE_ACTA.FECHA_FIN DESC;
+    BEGIN
+        IF (    (INUADMINBASEID IS NULL)
+            AND (INUPERSONID IS NULL)) THEN
+            OPEN CUCERTIFSNOADMINBASE;
+            FETCH CUCERTIFSNOADMINBASE INTO ONUCERTIFICATEID,
+                                            ODTFINALDATE;
+            CLOSE CUCERTIFSNOADMINBASE;
+            RETURN;
+        END IF;
+
+        IF (    (INUADMINBASEID IS NOT NULL)
+            AND (INUPERSONID IS NULL)) THEN
+            OPEN CUCERTIFICATES;
+            FETCH CUCERTIFICATES INTO ONUCERTIFICATEID,
+                                      ODTFINALDATE;
+            CLOSE CUCERTIFICATES;
+        END IF;
+
+        IF (    (INUADMINBASEID IS NULL)
+            AND (INUPERSONID IS NOT NULL)) THEN
+            OPEN CUCERTIFSNOADMINBASEPER;
+            FETCH CUCERTIFSNOADMINBASEPER INTO ONUCERTIFICATEID,
+                                               ODTFINALDATE;
+            CLOSE CUCERTIFSNOADMINBASEPER;
+            RETURN;
+        END IF;
+
+        IF (    (INUADMINBASEID IS NOT NULL)
+            AND (INUPERSONID IS NOT NULL)) THEN
+            OPEN CUCERTIFICATESPER;
+            FETCH CUCERTIFICATESPER INTO ONUCERTIFICATEID,
+                                         ODTFINALDATE;
+            CLOSE CUCERTIFICATESPER;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF (CUCERTIFICATES%ISOPEN) THEN
+                CLOSE CUCERTIFICATES;
+            END IF;
+            IF (CUCERTIFSNOADMINBASE%ISOPEN) THEN
+                CLOSE CUCERTIFSNOADMINBASE;
+            END IF;
+            IF (CUCERTIFICATESPER%ISOPEN) THEN
+                CLOSE CUCERTIFICATESPER;
+            END IF;
+            IF (CUCERTIFSNOADMINBASEPER%ISOPEN) THEN
+                CLOSE CUCERTIFSNOADMINBASEPER;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF (CUCERTIFICATES%ISOPEN) THEN
+                CLOSE CUCERTIFICATES;
+            END IF;
+            IF (CUCERTIFSNOADMINBASE%ISOPEN) THEN
+                CLOSE CUCERTIFSNOADMINBASE;
+            END IF;
+            IF (CUCERTIFICATESPER%ISOPEN) THEN
+                CLOSE CUCERTIFICATESPER;
+            END IF;
+            IF (CUCERTIFSNOADMINBASEPER%ISOPEN) THEN
+                CLOSE CUCERTIFSNOADMINBASEPER;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETPREVIOUSLIQCERTIF;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FBLHASDETAILS
+    (
+        INUCERTIFICATEID    IN GE_ACTA.ID_ACTA%TYPE
+    )
+    RETURN BOOLEAN
+    IS
+        SBVARIA VARCHAR2(1);
+
+        CURSOR CUDETAILCERTIF IS
+            SELECT 'x'
+            FROM GE_DETALLE_ACTA
+                    /*+ CT_BcCertificate.fblHasDetails*/
+            WHERE GE_DETALLE_ACTA.ID_ACTA = INUCERTIFICATEID
+            AND ROWNUM < 2;
+    BEGIN
+        UT_TRACE.TRACE('INICIO  ct_bccertificate.fblHasDetails');
+
+        IF CUDETAILCERTIF%ISOPEN THEN CLOSE CUDETAILCERTIF; END IF;
+
+        OPEN CUDETAILCERTIF;
+        FETCH CUDETAILCERTIF INTO SBVARIA;
+        CLOSE CUDETAILCERTIF;
+
+        IF SBVARIA IS NULL THEN
+            RETURN FALSE;
+        ELSE
+            RETURN TRUE;
+        END IF;
+
+        UT_TRACE.TRACE('FIN ct_bccertificate.fblHasDetails');
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF CUDETAILCERTIF%ISOPEN THEN CLOSE CUDETAILCERTIF; END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF CUDETAILCERTIF%ISOPEN THEN CLOSE CUDETAILCERTIF; END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FBLHASDETAILS;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUCALCULATECERTIFTOTALVALUE
+    (
+        INUCERTIFICATEID    IN  GE_ACTA.ID_ACTA%TYPE
+    )
+    RETURN GE_ACTA.VALOR_TOTAL%TYPE
+    IS
+        NUTOTALVALUE GE_ACTA.VALOR_TOTAL%TYPE;
+    BEGIN
+
+        SELECT /*+ index ( GE_DETALLE_ACTA IDX_GE_DETALLE_ACTA_01 ) */
+               SUM(GE_DETALLE_ACTA.VALOR_TOTAL) VALOR_TOTAL
+        INTO   NUTOTALVALUE
+        FROM   GE_DETALLE_ACTA
+                /*+ CT_BcCertificate.fnuCalculateCertifTotalValue*/
+        WHERE  GE_DETALLE_ACTA.ID_ACTA = INUCERTIFICATEID;
+
+        RETURN NUTOTALVALUE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUCALCULATECERTIFTOTALVALUE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUCERTIFTOTALVALUEBYITEM
+    (
+        INUCERTIFICATEID    IN  GE_ACTA.ID_ACTA%TYPE,
+        INUITEMSID          IN  GE_ITEMS.ITEMS_ID%TYPE
+    )
+    RETURN GE_ACTA.VALOR_TOTAL%TYPE
+    IS
+        NUTOTALVALUE GE_ACTA.VALOR_TOTAL%TYPE;
+    BEGIN
+
+        SELECT /*+ index ( GE_DETALLE_ACTA IDX_GE_DETALLE_ACTA_01 ) */
+               SUM(GE_DETALLE_ACTA.VALOR_TOTAL) VALOR_TOTAL
+        INTO   NUTOTALVALUE
+        FROM   GE_DETALLE_ACTA
+                /*+ CT_BcCertificate.fnuCertifTotalValueByItem*/
+        WHERE  GE_DETALLE_ACTA.ID_ACTA = INUCERTIFICATEID
+          AND  GE_DETALLE_ACTA.ID_ITEMS = INUITEMSID;
+
+        RETURN NUTOTALVALUE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUCERTIFTOTALVALUEBYITEM;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUCERTIFTOTALAMOUNTBYITEM
+    (
+        INUCERTIFICATEID    IN  GE_ACTA.ID_ACTA%TYPE,
+        INUITEMSID          IN  GE_ITEMS.ITEMS_ID%TYPE
+    )
+    RETURN NUMBER
+    IS
+        NUTOTALAMOUNT NUMBER;
+    BEGIN
+
+        SELECT /*+ index ( GE_DETALLE_ACTA IDX_GE_DETALLE_ACTA_01 ) */
+               SUM(GE_DETALLE_ACTA.CANTIDAD) CANTIDAD
+        INTO   NUTOTALAMOUNT
+        FROM   GE_DETALLE_ACTA
+                /*+ CT_BcCertificate.fnuCertifTotalAmountByItem*/
+        WHERE  GE_DETALLE_ACTA.ID_ACTA = INUCERTIFICATEID
+          AND  GE_DETALLE_ACTA.ID_ITEMS = INUITEMSID;
+
+        RETURN NUTOTALAMOUNT;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUCERTIFTOTALAMOUNTBYITEM;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUTOTALVALUEBYORDERBYCERTTYPE
+    (
+        INUCERTIFTYPEID     IN  GE_ACTA.ID_TIPO_ACTA%TYPE,
+        INUORDERID          IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    RETURN NUMBER
+    IS
+        NUTOTALVALUE NUMBER;
+    BEGIN
+
+        SELECT SUM(GE_DETALLE_ACTA.VALOR_TOTAL) VALOR_TOTAL
+        INTO   NUTOTALVALUE
+        FROM   GE_ACTA,
+               GE_DETALLE_ACTA
+                /*+ CT_BcCertificate.fnuTotalValueByOrderByCertType*/
+        WHERE  GE_ACTA.ID_TIPO_ACTA = INUCERTIFTYPEID
+          AND  GE_DETALLE_ACTA.ID_ACTA = GE_ACTA.ID_ACTA
+          AND  GE_DETALLE_ACTA.ID_ORDEN = INUORDERID;
+
+        RETURN NUTOTALVALUE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUTOTALVALUEBYORDERBYCERTTYPE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDCERTIFICATE
+    (
+        INUCERTIFICATEID    IN  GE_ACTA.ID_ACTA%TYPE,
+        INUTOTALVALUE       IN  GE_ACTA.VALOR_TOTAL%TYPE,
+        IDTLASTUPDATEDATE   IN  GE_ACTA.FECHA_ULT_ACTUALIZAC%TYPE
+    )
+    IS
+    BEGIN
+
+        UPDATE GE_ACTA
+        SET
+               GE_ACTA.VALOR_TOTAL = NVL(INUTOTALVALUE,
+                                         0),
+               GE_ACTA.FECHA_ULT_ACTUALIZAC = IDTLASTUPDATEDATE
+        WHERE  GE_ACTA.ID_ACTA = INUCERTIFICATEID;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDCERTIFICATE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE RELATEDCERTIFSBYCONTRACT
+    (
+        INUCERTIFICATEID IN  GE_ACTA.ID_ACTA%TYPE,
+        INUCONTRACTID    IN  GE_CONTRATO.ID_CONTRATO%TYPE,
+        OTBCERTIFICATES  OUT DAGE_ACTA.TYTBID_ACTA
+    )
+    IS
+        CURSOR CUCERTIFICATES IS
+            SELECT DISTINCT C2.CERTIFICATE_ID
+            FROM   CT_ORDER_CERTIFICA C1,
+                   CT_ORDER_CERTIFICA C2,
+                   GE_ACTA
+                   /*+ CT_BcCertificate.RelatedCertifsByContract*/
+            WHERE  C1.CERTIFICATE_ID = INUCERTIFICATEID
+              AND  C1.ORDER_ID = C2.ORDER_ID
+              AND  C2.CERTIFICATE_ID <> INUCERTIFICATEID
+              AND  C2.CERTIFICATE_ID = GE_ACTA.ID_ACTA
+              AND  GE_ACTA.ID_CONTRATO = INUCONTRACTID;
+    BEGIN
+
+        OPEN CUCERTIFICATES;
+        FETCH CUCERTIFICATES BULK COLLECT INTO OTBCERTIFICATES;
+        CLOSE CUCERTIFICATES;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF (CUCERTIFICATES%ISOPEN) THEN
+                CLOSE CUCERTIFICATES;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF (CUCERTIFICATES%ISOPEN) THEN
+                CLOSE CUCERTIFICATES;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END RELATEDCERTIFSBYCONTRACT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DELORDERSFROMCERTIF
+    (
+        INUCERTIFICATEID    IN  GE_ACTA.ID_ACTA%TYPE
+    )
+    IS
+    BEGIN
+
+        DELETE FROM CT_ORDER_CERTIFICA
+        WHERE  CT_ORDER_CERTIFICA.CERTIFICATE_ID = INUCERTIFICATEID;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END DELORDERSFROMCERTIF;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DELAUTOGENDETAILSFROMCERTIF
+    (
+        INUCERTIFICATEID    IN  GE_ACTA.ID_ACTA%TYPE
+    )
+    IS
+    BEGIN
+
+        DELETE FROM GE_DETALLE_ACTA
+        WHERE  GE_DETALLE_ACTA.ID_ACTA = INUCERTIFICATEID
+          AND  GE_DETALLE_ACTA.TIPO_GENERACION = CT_BOCONSTANTS.FSBGETAUTODETGENTYPE;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END DELAUTOGENDETAILSFROMCERTIF;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETDETAILSWITHORDER
+    (
+        INUCERTIFICATEID    IN  GE_ACTA.ID_ACTA%TYPE,
+        OTBDETAILSWITHORDER OUT TYTBDETAILSWITHORDER
+    )
+    IS
+        CURSOR CUDETAILS IS
+            SELECT /*+ index ( GE_DETALLE_ACTA IDX_GE_DETALLE_ACTA_01 ) */
+                   GE_DETALLE_ACTA.ID_DETALLE_ACTA,
+                   GE_DETALLE_ACTA.ID_ITEMS,
+                   GE_DETALLE_ACTA.CANTIDAD,
+                   OR_ORDER.ORDER_ID,
+                   OR_ORDER.OPERATING_UNIT_ID
+            FROM   GE_DETALLE_ACTA,
+                   OR_ORDER
+                   /*+ CT_BcCertificate.GetDetailsWithOrder*/
+            WHERE  GE_DETALLE_ACTA.ID_ACTA = INUCERTIFICATEID
+              AND  GE_DETALLE_ACTA.ID_ORDEN = OR_ORDER.ORDER_ID
+              AND  GE_DETALLE_ACTA.TIPO_GENERACION = CT_BOCONSTANTS.FSBGETAUTODETGENTYPE
+              AND  GE_DETALLE_ACTA.CANTIDAD > 0;
+    BEGIN
+
+        OPEN CUDETAILS;
+        FETCH CUDETAILS BULK COLLECT INTO OTBDETAILSWITHORDER;
+        CLOSE CUDETAILS;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF (CUDETAILS%ISOPEN) THEN
+                CLOSE CUDETAILS;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF (CUDETAILS%ISOPEN) THEN
+                CLOSE CUDETAILS;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETDETAILSWITHORDER;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FBLHASOPNCERTIFBYORDER
+    (
+        INUORDERID      IN  OR_ORDER.ORDER_ID%TYPE,
+        ONUCERTIFICATE  OUT GE_ACTA.ID_ACTA%TYPE
+    ) RETURN BOOLEAN
+    IS
+        NUACTA      GE_ACTA.ID_ACTA%TYPE;
+
+        CURSOR CUORDRCERTIF
+        IS
+            SELECT CT_ORDER_CERTIFICA.CERTIFICATE_ID
+            FROM CT_ORDER_CERTIFICA, GE_ACTA
+                    /*+ CT_BcCertificate.fblHasOpnCertifByOrder*/
+            WHERE CT_ORDER_CERTIFICA.CERTIFICATE_ID = GE_ACTA.ID_ACTA
+            AND GE_ACTA.ESTADO = CT_BOCONSTANTS.FSBGETOPENEDCERTIFSTATUS
+            AND CT_ORDER_CERTIFICA.ORDER_ID = INUORDERID
+            AND ROWNUM < 3;
+
+        PROCEDURE CLOSECUR
+        IS
+        BEGIN
+            IF CUORDRCERTIF%ISOPEN THEN CLOSE CUORDRCERTIF; END IF;
+        END;
+
+    BEGIN
+        
+        UT_TRACE.TRACE('INICIO CT_BcCertificate.fblHasOpnCertifByOrder');
+
+        
+        CLOSECUR;
+
+        OPEN CUORDRCERTIF;
+        FETCH CUORDRCERTIF INTO NUACTA;
+        CLOSE CUORDRCERTIF;
+
+        ONUCERTIFICATE := NUACTA;
+        
+        UT_TRACE.TRACE('FIN CT_BcCertificate.fblHasOpnCertifByOrder');
+
+        IF NUACTA IS NULL THEN
+            RETURN FALSE;
+        ELSE
+            RETURN TRUE;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            CLOSECUR;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            CLOSECUR;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FBLHASOPNCERTIFBYORDER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DELETEORDER
+    (
+        INUORDERID    IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+    BEGIN
+        
+        DELETE FROM OR_ORDER_COMMENT
+        WHERE OR_ORDER_COMMENT.ORDER_ID = INUORDERID;
+
+        
+        DELETE FROM OR_ORDER_PERSON
+        WHERE OR_ORDER_PERSON.ORDER_ID = INUORDERID;
+
+        
+        DELETE FROM OR_ORDER_OPEUNI_CHAN
+        WHERE OR_ORDER_OPEUNI_CHAN.ORDER_ID = INUORDERID;
+
+        
+        DELETE FROM OR_EXTERN_SYSTEMS_ID
+        WHERE OR_EXTERN_SYSTEMS_ID.ORDER_ID = INUORDERID;
+
+        
+        DELETE FROM CT_PROCESS_LOG
+        WHERE CT_PROCESS_LOG.ORDER_ID = INUORDERID;
+
+        
+        DELETE FROM CT_ORDER_CERTIFICA
+        WHERE CT_ORDER_CERTIFICA.ORDER_ID = INUORDERID;
+
+        UPDATE OR_ORDER_ACTIVITY
+        SET    ORDER_ITEM_ID = NULL
+        WHERE  OR_ORDER_ACTIVITY.ORDER_ID = INUORDERID;
+
+        
+        DELETE FROM OR_ORDER_ACTIVITY
+        WHERE OR_ORDER_ACTIVITY.ORDER_ID = INUORDERID;
+
+        
+        DELETE FROM OR_ORDER_ITEMS
+        WHERE OR_ORDER_ITEMS.ORDER_ID = INUORDERID;
+
+        
+        DAOR_ORDER.DELRECORD(INUORDERID);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END DELETEORDER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FBLHASDETAILSBYORDER
+    (
+        INUCERTIFICATEID    IN GE_ACTA.ID_ACTA%TYPE,
+        INUORDERID          IN GE_DETALLE_ACTA.ID_ORDEN%TYPE
+    )
+    RETURN BOOLEAN
+    IS
+        SBFOUND VARCHAR2(1);
+
+        CURSOR CUDETAILCERTIF IS
+            SELECT /*+ INDEX(ge_detalle_acta IDX_GE_DETALLE_ACTA_04)*/
+                   'X'
+              FROM GE_DETALLE_ACTA
+                    /*+ CT_BcCertificate.fblHasDetailsByOrder*/
+             WHERE GE_DETALLE_ACTA.ID_ORDEN = INUORDERID
+               AND GE_DETALLE_ACTA.ID_ACTA  = INUCERTIFICATEID
+               AND ROWNUM = 1;
+
+    BEGIN
+        UT_TRACE.TRACE('INICIO  ct_bccertificate.fblHasDetailsByOrder');
+
+        IF CUDETAILCERTIF%ISOPEN THEN CLOSE CUDETAILCERTIF; END IF;
+
+        OPEN CUDETAILCERTIF;
+        FETCH CUDETAILCERTIF INTO SBFOUND;
+        CLOSE CUDETAILCERTIF;
+
+        IF SBFOUND IS NULL THEN
+            RETURN FALSE;
+        ELSE
+            RETURN TRUE;
+        END IF;
+
+        UT_TRACE.TRACE('FIN ct_bccertificate.fblHasDetailsByOrder');
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF CUDETAILCERTIF%ISOPEN THEN CLOSE CUDETAILCERTIF; END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF CUDETAILCERTIF%ISOPEN THEN CLOSE CUDETAILCERTIF; END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FBLHASDETAILSBYORDER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFPRINTTABLEPL
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+        
+        RFRESULT        CONSTANTS.TYREFCURSOR;
+    BEGIN
+        
+        UT_TRACE.TRACE('INICIO CT_BcCertificate.frfPrintTablePL');
+        OPEN RFRESULT FOR
+            SELECT  A.ID ID_ACTA
+            FROM TABLE (CAST(TBPRINTTABLEPL AS GE_TYTBVARCHAR2 )) A;
+
+        UT_TRACE.TRACE('FIN CT_BcCertificate.frfPrintTablePL');
+        RETURN RFRESULT;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FRFPRINTTABLEPL;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUCALCERTIFREALTOTVALUE
+    (
+        INUCERTIFICATEID    IN  GE_ACTA.ID_ACTA%TYPE
+    )
+    RETURN GE_ACTA.VALOR_TOTAL%TYPE
+    IS
+        NUTOTALVALUE GE_ACTA.VALOR_TOTAL%TYPE;
+    BEGIN
+
+        SELECT /*+ index ( GE_DETALLE_ACTA IDX_GE_DETALLE_ACTA_01 ) */
+               SUM(GE_DETALLE_ACTA.VALOR_TOTAL) VALOR_TOTAL
+        INTO   NUTOTALVALUE
+        FROM   GE_DETALLE_ACTA
+                /*+ CT_BcCertificate.fnuCalCertifRealTotValue*/
+        WHERE  GE_DETALLE_ACTA.ID_ACTA = INUCERTIFICATEID
+          AND  GE_DETALLE_ACTA.ID_ITEMS NOT IN (GE_BOITEMSCONSTANTS.CNUDOWNPAYMENTITEM,
+                                                GE_BOITEMSCONSTANTS.CNUWARRANTYFUNDITEM);
+
+        RETURN NUTOTALVALUE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUCALCERTIFREALTOTVALUE;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFGETCERTIFPEDINGPAY
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+        
+        RFRESULT                CONSTANTS.TYREFCURSOR;
+        SBVAR                   VARCHAR2(1);
+
+        
+        CNUERROR_NOTCERTIF      NUMBER := 901244;
+        
+        CURSOR CUEXISTSCERTIRPENDPAY
+        IS
+            SELECT /*+ index(ge_acta IDX_GE_ACTA06) */ 'X'
+            FROM GE_ACTA
+                    /*+ CT_BcCertificate.frfGetCertifPedingPay*/
+            WHERE GE_ACTA.ESTADO = GE_BOCONSTANTS.CSBACTA_CERRADA
+            AND GE_ACTA.EXTERN_PAY_DATE IS NULL
+            AND ROWNUM = 1;
+    BEGIN
+        
+        UT_TRACE.TRACE('INICIO CT_BcCertificate.frfGetCertifPedingPay',8);
+        
+        IF CUEXISTSCERTIRPENDPAY%ISOPEN THEN
+            CLOSE CUEXISTSCERTIRPENDPAY;
+        END IF;
+        
+        OPEN CUEXISTSCERTIRPENDPAY;
+        FETCH CUEXISTSCERTIRPENDPAY INTO SBVAR;
+        IF CUEXISTSCERTIRPENDPAY%NOTFOUND THEN
+            CLOSE CUEXISTSCERTIRPENDPAY;
+            
+            
+            ERRORS.SETERROR(CNUERROR_NOTCERTIF);
+            RAISE EX.CONTROLLED_ERROR;
+            
+        END IF;
+        
+        CLOSE CUEXISTSCERTIRPENDPAY;
+        
+        OPEN RFRESULT FOR
+            SELECT /*+ index(ge_acta IDX_GE_ACTA06) */ *
+            FROM GE_ACTA
+            WHERE GE_ACTA.ESTADO = GE_BOCONSTANTS.CSBACTA_CERRADA
+            AND GE_ACTA.EXTERN_PAY_DATE IS NULL;
+        
+        RETURN RFRESULT;
+
+        UT_TRACE.TRACE('FIN CT_BcCertificate.frfGetCertifPedingPay',8);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FRFGETCERTIFPEDINGPAY;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETORDERSTOREGENOBLIG
+    (
+        INUCERTIFICATEID IN  GE_ACTA.ID_ACTA%TYPE
+    )
+    IS
+        DTBREAKDATE         DATE;
+        TBROWID             DAOR_ORDER.TYTBROWID;
+        SBVALUEAUTO         OR_ORDER.SAVED_DATA_VALUES%TYPE := CT_BOCONSTANTS.FSBSAVEDDATAVALUEAUTO;
+        
+        CURSOR CUORDERS
+        IS
+            
+            SELECT
+                    /*+ ordered*/
+                    OR_ORDER.ROWID
+            FROM    /*+ CT_BcCertificate.GetOrdersToRegenOblig SAOXXXXXX*/
+                    OR_ORDER
+            WHERE   NVL(SAVED_DATA_VALUES,'-') <> SBVALUEAUTO
+            AND     ORDER_ID IN
+            (
+                SELECT  /*+ INDEX(ct_order_certifica PK_CT_ORDER_CERTIFICA)*/
+                        CT_ORDER_CERTIFICA.ORDER_ID ORDER_ID
+                FROM    CT_ORDER_CERTIFICA
+                        /*+ CT_BcCertificate.GetOrdersToRegenOblig.cuOrders*/
+                WHERE   CT_ORDER_CERTIFICA.CERTIFICATE_ID = INUCERTIFICATEID
+                UNION ALL
+                
+                SELECT  /*+ INDEX(or_related_order IDX_OR_RELATED_ORDER_02)*/
+                        OR_RELATED_ORDER.RELATED_ORDER_ID ORDER_ID
+                FROM    CT_ORDER_CERTIFICA,
+                        OR_RELATED_ORDER,
+                        OR_ORDER
+                WHERE   OR_RELATED_ORDER.ORDER_ID = CT_ORDER_CERTIFICA.ORDER_ID
+                AND     OR_ORDER.ORDER_ID = CT_ORDER_CERTIFICA.ORDER_ID
+                AND     OR_RELATED_ORDER.RELA_ORDER_TYPE_ID IN (GE_BOCONSTANTS.FNUGETTRANSTYPEADJORDER,GE_BOCONSTANTS.FNUGETTRANSTYPEADJORDERINSP)
+                AND     CT_ORDER_CERTIFICA.CERTIFICATE_ID = INUCERTIFICATEID
+                AND     OR_ORDER.IS_PENDING_LIQ IS NOT NULL
+            )
+            AND NVL(OR_ORDER.IS_PENDING_LIQ,'Y') <> CT_BOCONSTANTS.CSBEXCLUDEDORDER;
+    BEGIN
+        UT_TRACE.TRACE('INICIO CT_BcCertificate.GetOrdersToRegenOblig',2);
+        
+        DTBREAKDATE := TRUNC(DAGE_ACTA.FDTGETFECHA_FIN(INUCERTIFICATEID));
+        
+        OPEN CUORDERS;
+        LOOP
+            FETCH CUORDERS BULK COLLECT INTO TBROWID LIMIT CT_BOCONSTANTS.CNUORDERSNUMBER;
+            FORALL I IN 1..TBROWID.COUNT
+                INSERT INTO TMP_VARCHAR(FIELD) VALUES (TBROWID(I));
+            EXIT WHEN CUORDERS%NOTFOUND;
+        END LOOP;
+        CLOSE CUORDERS;
+        
+        UT_TRACE.TRACE('TERMINA CT_BcCertificate.GetOrdersToRegenOblig',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETORDERSTOREGENOBLIG;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDATEORDERVERDATE
+    (
+        INUCERTIFICATEID    IN  CT_ORDER_CERTIFICA.CERTIFICATE_ID%TYPE,
+        INUORDERID          IN  CT_ORDER_CERTIFICA.ORDER_ID%TYPE,
+        IDTVERIFDATE        IN  CT_ORDER_CERTIFICA.VERIFICATION_DATE%TYPE
+    )
+    IS
+    BEGIN
+    
+        UPDATE  CT_ORDER_CERTIFICA
+        SET     VERIFICATION_DATE   = IDTVERIFDATE
+        WHERE   ORDER_ID            = INUORDERID
+        AND     CERTIFICATE_ID      = INUCERTIFICATEID;
+    
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDATEORDERVERDATE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDATECERTLIQORDERS
+    (
+        INUCERTIFICATEID    IN  CT_ORDER_CERTIFICA.CERTIFICATE_ID%TYPE
+    )
+    IS
+    BEGIN
+
+        UPDATE  OR_ORDER
+        SET     OR_ORDER.IS_PENDING_LIQ = GE_BOCONSTANTS.CSBYES
+        WHERE   ORDER_ID IN
+                (
+                    SELECT  ORDER_ID
+                    FROM    CT_ORDER_CERTIFICA
+                    WHERE   CERTIFICATE_ID = INUCERTIFICATEID
+                )
+        AND     IS_PENDING_LIQ IS NULL;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDATECERTLIQORDERS;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFGETORDERSTOMARK
+    (
+        INUCONTRACTORID            IN        GE_CONTRATO.ID_CONTRATISTA%TYPE,
+        IDTINITDATE                IN        GE_PERIODO_CERT.FECHA_INICIAL%TYPE,
+        IDTENDDATE                 IN        GE_PERIODO_CERT.FECHA_FINAL%TYPE
+    )
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+    
+        CNUSUCCESSFULLCLASSCAUSAL   CONSTANT GE_CAUSAL.CLASS_CAUSAL_ID%TYPE := GE_BOPARAMETER.FNUGET('ACCOM_CAUSE_TYPE');
+
+        DTBREAKDATE         DATE;
+        
+        RFRESULT                CONSTANTS.TYREFCURSOR;
+    BEGIN
+        
+        UT_TRACE.TRACE('INICIO CT_BcCertificate.frfGetOrdersToMark',8);
+        
+        DTBREAKDATE := TRUNC(IDTENDDATE);
+
+        OPEN RFRESULT FOR
+            SELECT 
+
+
+
+
+
+
+
+                    DISTINCT(OR_ORDER.ORDER_ID),
+                    (
+                        SELECT  /*+ index(or_task_type PK_OR_TASK_TYPE)*/
+                                CONCAT(CONCAT(OR_ORDER.TASK_TYPE_ID,' - '),OR_TASK_TYPE.DESCRIPTION)
+                        FROM    OR_TASK_TYPE
+                        WHERE   OR_TASK_TYPE.TASK_TYPE_ID = OR_ORDER.TASK_TYPE_ID
+                    ) "Tipo de Trabajo",
+                    CONCAT(CONCAT(OR_ORDER.OPERATING_UNIT_ID,' - '),OR_OPERATING_UNIT.NAME) "Unidad de Trabajo",
+                    (
+                        SELECT  /*+ index(ge_contratista PK_GE_CONTRATISTA)*/
+                                CONCAT(CONCAT(OR_OPERATING_UNIT.CONTRACTOR_ID, ' - ' ), GE_CONTRATISTA.DESCRIPCION)
+                        FROM    GE_CONTRATISTA
+                        WHERE   GE_CONTRATISTA.ID_CONTRATISTA = OR_OPERATING_UNIT.CONTRACTOR_ID
+                    ) CONTRATISTA,
+                    (
+                        SELECT  /*+ index(ge_base_administra PK_GE_BASE_ADMINISTRA)*/
+                                CONCAT(CONCAT(GE_BASE_ADMINISTRA.ID_BASE_ADMINISTRA, ' - '), GE_BASE_ADMINISTRA.DESCRIPCION)
+                        FROM    GE_BASE_ADMINISTRA
+                        WHERE   GE_BASE_ADMINISTRA.ID_BASE_ADMINISTRA = OR_OPERATING_UNIT.ADMIN_BASE_ID
+                    )"Base Administrativa",
+                    (
+                        SELECT  /*+ index(or_operating_sector PK_OR_OPERATING_SECTOR)*/
+                                CONCAT(CONCAT(OR_ORDER.OPERATING_SECTOR_ID, ' - '), OR_OPERATING_SECTOR.DESCRIPTION)
+                        FROM    OR_OPERATING_SECTOR
+                        WHERE   OR_OPERATING_SECTOR.OPERATING_SECTOR_ID = OR_ORDER.OPERATING_SECTOR_ID
+                    )"Sector Operativo",
+                    OR_ORDER.CREATED_DATE "Fecha de Creaci�n",
+                    OR_ORDER.EXECUTION_FINAL_DATE "Fecha Final de Ejecuci�n",
+                    OR_ORDER.LEGALIZATION_DATE "Fecha de Legalizaci�n",
+                    DECODE
+                    (
+                        (
+                            SELECT  /*+ index(OR_ORDER_ACTIVITY IDX_OR_ORDER_ACTIVITY_05  )*/
+                                    'Y'
+                            FROM    OR_ORDER_ACTIVITY
+                            WHERE   EXISTS
+                                    (
+                                        SELECT  /*+ index(CT_ITEM_NOVELTY PK_CT_ITEM_NOVELTY)*/
+                                                1
+                                        FROM   CT_ITEM_NOVELTY
+                                        WHERE  CT_ITEM_NOVELTY.ITEMS_ID = OR_ORDER_ACTIVITY.ACTIVITY_ID
+                                        AND    ROWNUM = 1
+                                    )
+                            AND     OR_ORDER_ACTIVITY.ORDER_ID = OR_ORDER.ORDER_ID
+                        ),
+                        'Y',
+                        'Si',
+                        'No'
+                    ) "�Es Novedad?"
+             FROM   OR_OPERATING_UNIT,
+                    OR_ORDER,
+                    OR_ORDER_ACTIVITY,
+                    GE_CAUSAL
+                    /*+ CT_BcCertificate.frfGetOrdersToMark SAO212199*/
+             WHERE
+                    
+                    OR_ORDER.OPERATING_UNIT_ID = OR_OPERATING_UNIT.OPERATING_UNIT_ID
+               AND  OR_OPERATING_UNIT.CONTRACTOR_ID = INUCONTRACTORID
+               AND  OR_OPERATING_UNIT.ES_EXTERNA = GE_BOCONSTANTS.CSBYES
+                    
+               AND  OR_ORDER.ORDER_STATUS_ID = OR_BOCONSTANTS.CNUORDER_STAT_CLOSED
+               AND  OR_ORDER_ACTIVITY.ORDER_ID = OR_ORDER.ORDER_ID
+                    
+               AND  OR_ORDER.CAUSAL_ID = GE_CAUSAL.CAUSAL_ID
+               AND  GE_CAUSAL.CLASS_CAUSAL_ID = CNUSUCCESSFULLCLASSCAUSAL
+                    
+               AND  TRUNC(OR_ORDER.LEGALIZATION_DATE) BETWEEN TRUNC(IDTINITDATE) AND DTBREAKDATE
+                    
+               AND  OR_ORDER.IS_PENDING_LIQ IS NULL
+                    
+               AND  NOT EXISTS
+                    (
+                        SELECT  /*+index (ct_order_certifica IDX_CT_ORDER_CERTIFICA04)*/
+                                'X'
+                        FROM    CT_ORDER_CERTIFICA
+                        WHERE   CT_ORDER_CERTIFICA.ORDER_ID = OR_ORDER.ORDER_ID
+                    );
+
+        RETURN RFRESULT;
+
+        UT_TRACE.TRACE('FIN CT_BcCertificate.frfGetOrdersToMark',8);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FRFGETORDERSTOMARK;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FBLHASVERORDERS
+    (
+        INUCERTIFICATEID    IN  CT_ORDER_CERTIFICA.CERTIFICATE_ID%TYPE
+    )
+    RETURN BOOLEAN
+    IS
+        NUCOUNT    NUMBER;
+    BEGIN
+
+        SELECT  COUNT(*)
+                /*+ fnuCalCertifRealTotValue.fblHasVerOrders*/
+        INTO    NUCOUNT
+        FROM    CT_ORDER_CERTIFICA
+        WHERE   CT_ORDER_CERTIFICA.CERTIFICATE_ID = INUCERTIFICATEID
+        AND     CT_ORDER_CERTIFICA.VERIFICATION_DATE IS NOT NULL
+        AND     ROWNUM < 2;
+
+        RETURN NUCOUNT = 1;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RETURN FALSE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RETURN FALSE;
+    END FBLHASVERORDERS;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETTASKTYPEIDBYORDER
+    (
+        INUORDERID      IN  OR_ORDER.ORDER_ID%TYPE
+    ) RETURN NUMBER
+    IS
+        NUTASKTYPEID        OR_TASK_TYPE.TASK_TYPE_ID%TYPE;
+        CNUADJUSTORDERTYPE  OR_RELATED_ORDER.RELA_ORDER_TYPE_ID%TYPE :=  GE_BOCONSTANTS.FNUGETTRANSTYPEADJORDER;
+
+        CURSOR CUORDERAJUSTE
+            (
+                NUORDERID           IN  OR_ORDER.ORDER_ID%TYPE,
+                NUADJUSTORDERTYPE   IN  OR_RELATED_ORDER.RELA_ORDER_TYPE_ID%TYPE
+            ) IS
+            SELECT  /*+ INDEX(OR_related_order IDX_OR_RELATED_ORDER04)
+                        INDEX(or_order PK_OR_ORDER)
+                        USE_NL(OR_related_order, or_order)
+                    */
+                OR_ORDER.TASK_TYPE_ID
+            FROM  OR_RELATED_ORDER, OR_ORDER
+            /*+ CT_BcCertificate.fnugetTaskTypeIdByOrder SAO223022 */
+            WHERE OR_RELATED_ORDER.RELATED_ORDER_ID = INUORDERID
+            AND   OR_RELATED_ORDER.RELA_ORDER_TYPE_ID = NUADJUSTORDERTYPE
+            AND   OR_ORDER.ORDER_ID = OR_RELATED_ORDER.ORDER_ID;
+    BEGIN
+        UT_TRACE.TRACE('INICIO fnugetTaskTypeIdByOrder. inuOrderId: '||TO_CHAR(INUORDERID), 2 );
+
+        OPEN CUORDERAJUSTE(INUORDERID, CNUADJUSTORDERTYPE);
+        FETCH CUORDERAJUSTE INTO NUTASKTYPEID;
+        CLOSE CUORDERAJUSTE;
+
+        IF (NUTASKTYPEID IS NOT NULL)THEN
+            UT_TRACE.TRACE('FIN CT_BcCertificate.fnugetTaskTypeIdByOrder. Es una orden de ajuste. nuTaskTypeId: '||TO_CHAR(NUTASKTYPEID), 2 );
+            RETURN NUTASKTYPEID;
+        ELSE
+            NUTASKTYPEID := DAOR_ORDER.FNUGETTASK_TYPE_ID(INUORDERID);
+            UT_TRACE.TRACE('FIN CT_BcCertificate.fnugetTaskTypeIdByOrder. No es una orden de ajuste. nuTaskTypeId: '||TO_CHAR(NUTASKTYPEID), 2 );
+            RETURN NUTASKTYPEID;
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUGETTASKTYPEIDBYORDER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDATECERTLIQEXCLORDERS
+    (
+        INUCERTIFICATEID    IN  CT_ORDER_CERTIFICA.CERTIFICATE_ID%TYPE
+    )
+    IS
+    BEGIN
+
+        UPDATE  OR_ORDER
+        SET     OR_ORDER.IS_PENDING_LIQ = CT_BOCONSTANTS.CSBEXCLUDEDORDER
+        WHERE   ORDER_ID IN
+                (
+                    SELECT  /*+ index (ct_order_certifica IDX_CT_ORDER_CERTIFICA03)
+                                index (ct_excluded_order PK_CT_EXCLUDED_ORDER)*/
+                            CT_ORDER_CERTIFICA.ORDER_ID
+                    FROM    CT_ORDER_CERTIFICA,
+                            CT_EXCLUDED_ORDER
+                    WHERE   CT_ORDER_CERTIFICA.CERTIFICATE_ID = INUCERTIFICATEID
+                    AND     CT_ORDER_CERTIFICA.ORDER_ID = CT_EXCLUDED_ORDER.ORDER_ID
+                );
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDATECERTLIQEXCLORDERS;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+	PROCEDURE DELORDERFROMCERTIFICATES
+    (
+        INUORDERID     IN OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+    BEGIN
+        
+        DELETE FROM CT_ORDER_CERTIFICA
+        WHERE CT_ORDER_CERTIFICA.ORDER_ID = INUORDERID;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END DELORDERFROMCERTIFICATES;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+	PROCEDURE DELORDERFROMADJUSTREL
+    (
+        INUORDERID     IN OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+    BEGIN
+        
+        DELETE FROM OR_RELATED_ORDER
+        WHERE OR_RELATED_ORDER.RELATED_ORDER_ID = INUORDERID
+        AND     OR_RELATED_ORDER.RELA_ORDER_TYPE_ID = GE_BOCONSTANTS.FNUGETTRANSTYPEADJORDER;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END DELORDERFROMADJUSTREL;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUHASPENDINGASOCCERTS
+    (
+        INUCERTIFICATEID IN  GE_ACTA.ID_ACTA%TYPE
+    )
+    RETURN GE_ACTA.ID_ACTA%TYPE
+    IS
+        CURSOR CUCERTIFICATES IS
+            SELECT  /*+
+                        index (C1 IDX_CT_ORDER_CERTIFICA03)
+                        index (C2 IDX_CT_ORDER_CERTIFICA03)
+                        index (CERT2 PK_GE_ACTA)
+                    */
+                    CERT2.ID_ACTA
+            FROM    CT_ORDER_CERTIFICA C1,
+                    CT_ORDER_CERTIFICA C2,
+                    GE_ACTA CERT2
+                    /*+ CT_BcCertificate.fnuHasPendingAsocCerts SAO234820*/
+            WHERE   C1.CERTIFICATE_ID = INUCERTIFICATEID
+              AND   C1.ORDER_ID = C2.ORDER_ID
+              AND   C2.CERTIFICATE_ID <> INUCERTIFICATEID
+              AND   CERT2.ID_ACTA = C2.CERTIFICATE_ID
+              AND   CERT2.IS_PENDING = CT_BOCONSTANTS.CNUIS_PENDING
+              AND   ROWNUM = 1;
+              
+        NUPENDCERT      GE_ACTA.ID_ACTA%TYPE;
+    BEGIN
+
+        OPEN CUCERTIFICATES;
+        FETCH CUCERTIFICATES INTO NUPENDCERT;
+        CLOSE CUCERTIFICATES;
+        RETURN NUPENDCERT;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF (CUCERTIFICATES%ISOPEN) THEN
+                CLOSE CUCERTIFICATES;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF (CUCERTIFICATES%ISOPEN) THEN
+                CLOSE CUCERTIFICATES;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUHASPENDINGASOCCERTS;
+    
+END CT_BCCERTIFICATE;

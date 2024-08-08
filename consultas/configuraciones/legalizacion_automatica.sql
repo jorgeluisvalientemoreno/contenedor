@@ -1,0 +1,7 @@
+SELECT *
+  FROM  open.LDC_CONFTITRLEGA c
+  where actividad=100008356;
+
+
+
+---LDC_JOBPRLEGORTRAUTO

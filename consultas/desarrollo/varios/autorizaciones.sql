@@ -1,0 +1,2 @@
+select *
+from CSE.DL_AUTHORIZED_USER

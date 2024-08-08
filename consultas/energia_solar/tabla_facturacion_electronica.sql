@@ -1,0 +1,1 @@
+select * from factura_electronica 

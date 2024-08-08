@@ -1,0 +1,67 @@
+PACKAGE OR_BOServices IS
+
+    CSBVERSION   CONSTANT VARCHAR2(20) := 'SAO42993';
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	
+
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2;
+
+	
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CLIENTPROCESSPOSTLEGALIZE (
+        INUORDER_ID     IN  OR_ORDER.ORDER_ID%TYPE,
+		INUACTION_ID 	IN	OR_TRANSITION.ACTION_ID%TYPE
+	);
+
+END OR_BOSERVICES;

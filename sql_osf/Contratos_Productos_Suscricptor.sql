@@ -1,0 +1,24 @@
+----PRODUCTO
+select a.subscription_id contrato,
+       a.product_id producto,
+       a.product_type_id Tipo_Producto,
+       aa.address_id || ' - ' || aa.address Direccion_Prodcuto,
+       a.provisional_end_date Fecha_instalacion,
+       a.provisional_beg_date Fecha_retiro
+  from open.pr_product a, open.ab_address aa
+ where a.address_id = aa.address_id
+      --and a.product_id = 52517937
+   and a.address_id = 4277070
+   and a.product_type_id = 7014;
+----------CONTRATO
+select a.susccodi contrato,
+       aa.address_id || ' - ' || aa.address Direccion_Cobro
+  from OPEN.SUSCRIPC a, open.ab_address aa
+ where a.susciddi = aa.address_id
+   and a.susccodi in (67270177, 67344303);
+-----------CLIENTE
+select S.*
+  from OPEN.SUSCRIPC a, OPEN.GE_SUBSCRIBER S
+ WHERE S.SUBSCRIBER_ID = A.SUSCCLIE
+   AND A.SUSCCODI IN (67270177, 67344303);
+select a.*, rowid from OPEN.AB_ADDRESS a where a.address_id = 429835

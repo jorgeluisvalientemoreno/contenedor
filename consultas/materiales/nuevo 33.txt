@@ -1,0 +1,4 @@
+21-16469336-10-09-01
+marca-serial-año-refxmarca-tipo entrada
+
+https://github.com/innovaciongascaribe/smartflex/actions/runs/3961753007/jobs/6787563434

@@ -1,0 +1,421 @@
+PACKAGE GC_BODebtNegoCharges
+IS
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    TYPE TYRCCHARGESBYPROD IS RECORD
+    (
+        NUPRODUCTID     PR_PRODUCT.PRODUCT_ID%TYPE,
+        TBCHARGES       PKBCCHARGES.TYTBREACCHARGES
+    );
+    
+    TYPE TYTBCHARGESBYPROD IS TABLE OF TYRCCHARGESBYPROD INDEX BY VARCHAR2(50);
+
+    
+    TYPE TYRCCHARGESBYACC IS RECORD
+    (
+        NUACCOUNTID     CUENCOBR.CUCOCODI%TYPE,
+        NUVALUE         NUMBER,
+        TBCHARGES       PKBCCHARGES.TYTBREACCHARGES
+    );
+    
+    TYPE TYTBCHARGESBYACC IS TABLE OF TYRCCHARGESBYACC INDEX BY BINARY_INTEGER;
+
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+
+
+
+    FUNCTION FSBVERSION
+    RETURN VARCHAR2;
+    
+     
+
+
+
+
+
+    PROCEDURE REGISTERCHARGENEGO
+    (
+        INUPRODNEGDEUDA IN      GC_DEBT_NEGOT_CHARGE.DEBT_NEGOT_PROD_ID%TYPE,
+        INUPRODUCTO     IN      SERVSUSC.SESUNUSE%TYPE,
+        INUPERSONID     IN      GE_PERSON.PERSON_ID%TYPE,
+        ONUVALNOFACT    OUT     GC_DEBT_NEGOT_PROD.NOT_BILLED_VALUE%TYPE,
+        ONUVALTRASDEF   OUT     NUMBER
+    );
+
+    
+
+
+
+
+    PROCEDURE INITIALIZEDATA;
+    
+    
+
+
+
+
+    PROCEDURE LOADCHARGESFORDEBTNEG
+    (
+        ITBPRODUCTS     IN      CC_TYTBPRODUCT,
+        OCUCHARGES      OUT     PKCONSTANTE.TYREFCURSOR
+    );
+    
+    
+
+
+
+
+
+    PROCEDURE SETCHARGESBILLED
+    (
+        INUPRODUCTID        IN      SERVSUSC.SESUNUSE%TYPE,
+        ONUBALANCE          OUT     NUMBER
+    );
+    
+    
+
+
+
+
+
+    PROCEDURE SETCHARGESNOBILLED
+    (
+        ITBNEWCHARGES   IN  PKBCCARGOS.TYTBRCCARGOS,
+        ONUBALANCE      OUT NUMBER
+    );
+    
+    
+
+
+
+
+
+    PROCEDURE SETCHARGESREACTIVE
+    (
+        INUPRODUCTID    IN  SERVSUSC.SESUNUSE%TYPE,
+        ITBCHARGESREACT IN  PKBCCHARGES.TYTBREACCHARGES,
+        ONUBALANCEREACT OUT NUMBER
+    );
+
+    
+
+
+
+
+
+    PROCEDURE SETCHARGESDEFERRED
+    (
+        IRCDEFCHARGES   IN  PKCHARGEMGR.TYRCTBCHARGES
+    );
+
+    
+
+
+
+
+    PROCEDURE SETVALUECHARGE
+    (
+        INUPRODUCT      IN  SERVSUSC.SESUNUSE%TYPE,
+        INUCONCEPT      IN  CONCEPTO.CONCCODI%TYPE,
+        INUDISCOUNTVAL  IN  NUMBER,
+        ORFCHARGES      OUT PKCONSTANTE.TYREFCURSOR
+    );
+    
+    
+
+
+
+
+    PROCEDURE SETCHARGEFINANCING
+    (
+        INUSUSCRIPTION      IN      SUSCRIPC.SUSCCODI%TYPE,
+        INUSERVICENUMBER    IN      SERVSUSC.SESUNUSE%TYPE
+    );
+
+    
+
+
+
+
+    FUNCTION FNUADJUSTVALUE
+    (
+        INUVALUE 	    IN	CUENCOBR.CUCOVATO%TYPE,
+        INUADJUSTFACTOR IN  TIMOEMPR.TMEMFAAJ%TYPE
+    )
+    RETURN CUENCOBR.CUCOVATO%TYPE;
+
+    
+
+
+
+
+    FUNCTION FNUVALUEREACTIVE
+    (
+        INUSUBSCRIPTIONID   IN  SERVSUSC.SESUSUSC%TYPE,
+        INUPRODUCTID        IN  SERVSUSC.SESUNUSE%TYPE DEFAULT NULL
+    )
+    RETURN NUMBER;
+    
+    
+
+
+
+
+
+    PROCEDURE REGISTERDISCOUNTNEGO
+    (
+        INUDEBTNEGOTPROD IN GC_DEBT_NEGOT_CHARGE.DEBT_NEGOT_PROD_ID%TYPE,
+        INUPRODUCT       IN SERVSUSC.SESUNUSE%TYPE,
+        INUPERSONID      IN GE_PERSON.PERSON_ID%TYPE
+    );
+
+
+    PROCEDURE ADJUSTLOADPRODDEBTNEG
+    (
+        INUPRODUCTID        IN  CUENCOBR.CUCONUSE%TYPE,
+        ONUADJUSTVALUE     OUT  CUENCOBR.CUCOSACU%TYPE
+    );
+    
+    
+
+
+
+
+    PROCEDURE GETCHARGES
+    (
+        OCUCHARGES   OUT   PKCONSTANTE.TYREFCURSOR
+    );
+    
+    PROCEDURE GETDATA
+    (
+        ORFCHARGES  OUT PKCONSTANTE.TYREFCURSOR
+    );
+
+    
+
+
+
+
+    PROCEDURE DISTRIBUTECREDITS;
+    
+    
+
+
+
+
+    PROCEDURE SETPUNISHCHARGES
+    (
+        INUPRODUCTID                IN          SERVSUSC.SESUNUSE%TYPE,
+        ITBPUNISHCHARGES            IN          PKBCCHARGES.TYTBREACCHARGES,
+        ONUPUNISHBALANCE            OUT         NUMBER
+    );
+    
+    
+
+
+
+
+    PROCEDURE GETPUNISHCHARGES
+    (
+        INUPRODUCTID                IN          SERVSUSC.SESUNUSE%TYPE,
+        OTBPUNISHCHARGES            OUT         PKBCCHARGES.TYTBREACCHARGES
+    );
+    
+    
+
+
+
+
+    PROCEDURE INITCHARGESREACTIVE;
+    
+    
+
+
+
+
+
+    PROCEDURE DISTREACTCHARGES
+    (
+        INUPRODUCTID                IN          SERVSUSC.SESUNUSE%TYPE,
+        INUREACTVALUE               IN          NUMBER,
+        ITBPUNISHCHARGES            IN          PKBCCHARGES.TYTBREACCHARGES,
+        OTBDISTCHARGES              OUT         PKBCCHARGES.TYTBREACCHARGES
+    );
+    
+    
+
+
+
+
+    PROCEDURE RECALCULATETAXES
+    (
+        ORFCHARGES      OUT CONSTANTS.TYREFCURSOR
+    );
+
+END GC_BODEBTNEGOCHARGES;
+

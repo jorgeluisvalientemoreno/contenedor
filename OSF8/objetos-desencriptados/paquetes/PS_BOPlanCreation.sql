@@ -1,0 +1,3174 @@
+PACKAGE PS_BOPlanCreation
+IS
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+
+
+
+    FUNCTION FSBVERSION
+    RETURN   UT_DATATYPES.STYSAOVERSION;
+    
+    
+
+
+
+
+
+
+    FUNCTION FNUGETWORKFLOW
+    (
+        INUINTERFACEID   IN   WF_INTERFACE_CONFIG.INTERFACE_CONFIG_ID%TYPE,
+        INUEXTERNALID    IN   WF_INSTANCE.EXTERNAL_ID%TYPE
+    )
+    RETURN PS_BCPLANCREATION.TYRCWORKFLOW;
+    
+    
+
+
+
+
+
+    FUNCTION FBLEXISTFLOWTAGNAME
+    (
+        ISBTAGWORKFLOW     IN     WF_FLOW.TAG_NAME%TYPE
+    )
+    RETURN UT_DATATYPES.STYBOOLEAN;
+    
+    
+
+
+
+
+
+    PROCEDURE GETMAINNODEFROMFLOWXML
+    (
+        ISBTAGNAME      IN    WF_FLOW.TAG_NAME%TYPE,
+        OXLMAINMODE     OUT   DBMS_XMLDOM.DOMNODE,
+        OXLFLOWDOC      OUT   DBMS_XMLDOM.DOMDOCUMENT
+    );
+    
+    
+
+
+
+
+    PROCEDURE PLANCREATION
+    (
+        INUEXTERNALID       IN            WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID         IN            GE_ENTITY.ENTITY_ID%TYPE,
+        INUINTERFACEID      IN            WF_INTERFACE_CONFIG.INTERFACE_CONFIG_ID%TYPE,
+        ISBTAGWORKFLOW      IN            WF_FLOW.TAG_NAME%TYPE,
+        INUATTRIEQUIVID     IN            WF_ATTRIBUTES_EQUIV.ATTRIBUTES_EQUIV_ID%TYPE,
+        ONUPLANID           OUT           WF_INSTANCE.PLAN_ID%TYPE,
+        ONUERRORCODE        OUT           GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE     OUT NOCOPY    GE_ERROR_LOG.DESCRIPTION%TYPE
+    );
+    
+    
+
+
+
+
+    PROCEDURE ENQUEUEPLAN
+    (
+        INUPLANID           IN             WF_INSTANCE.PLAN_ID%TYPE,
+        ONUERRORCODE        OUT            GE_MESSAGE.MESSAGE_ID%TYPE,
+        OSBERRORMESSAGE     OUT NOCOPY     GE_MESSAGE.DESCRIPTION%TYPE
+    );
+    
+    
+
+
+
+
+
+    PROCEDURE CREATESUBPLANSEQUECE
+    (
+        ISBSUBPLANTAGNAME     IN            WF_INSTANCE.TAG_NAME%TYPE,
+        INUPLANID             IN            WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID           IN            WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID         IN            WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYTOINHEREXTID IN            WF_INSTANCE.ENTITY_ID%TYPE,
+        INUXPOSITION          IN            NUMBER,
+        INUYPOSITION          IN            NUMBER,
+        ONUSUBPLANID          OUT NOCOPY    WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUERRORCODE          OUT NOCOPY    GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE       OUT NOCOPY    GE_ERROR_LOG.DESCRIPTION%TYPE
+    );
+    
+    
+
+
+
+
+
+    PROCEDURE CREATESUBPLANPARALELL
+    (
+        ISBSUBPLANTAGNAME     IN            WF_INSTANCE.TAG_NAME%TYPE,
+        INUPLANID             IN            WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID           IN            WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID         IN            WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYTOINHEREXTID IN            WF_INSTANCE.ENTITY_ID%TYPE,
+        INUCONSECUTIVE        IN            PS_PROCESS_COMPTYPE.SEQUENCE_%TYPE,
+        INUMIDPOSITION        IN            NUMBER,
+        INUSTARTINSTANCEID    IN            WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUFINALINSTANCEID    IN            WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUSUBPLANID          OUT NOCOPY    WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUERRORCODE          OUT NOCOPY    GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE       OUT NOCOPY    GE_ERROR_LOG.DESCRIPTION%TYPE
+    );
+
+END PS_BOPLANCREATION;
+
+PACKAGE BODY PS_BOPlanCreation
+IS
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    CSBVERSION              CONSTANT UT_DATATYPES.STYSAOVERSION := 'SAO568006';
+
+    
+
+    
+    CSBNODES                CONSTANT UT_DATATYPES.STYXMLTAG := 'NODES';
+    CSBNODE                 CONSTANT UT_DATATYPES.STYXMLTAG := 'NODE';
+    CSBID                   CONSTANT UT_DATATYPES.STYXMLTAG := 'ID';
+    CSBTYPE                 CONSTANT UT_DATATYPES.STYXMLTAG := 'TYPE';
+    CSBUNIT_TYPE_ID         CONSTANT UT_DATATYPES.STYXMLTAG := 'UNIT_TYPE_ID';
+    CSBBEHAVIOR             CONSTANT UT_DATATYPES.STYXMLTAG := 'BEHAVIOR';
+    CSBENTITY_ID            CONSTANT UT_DATATYPES.STYXMLTAG := 'ENTITY_ID';
+    CSBNODE_DESC            CONSTANT UT_DATATYPES.STYXMLTAG := 'DESCRIPTION';
+    CSBMULTI_INSTANCE       CONSTANT UT_DATATYPES.STYXMLTAG := 'MULTI_INSTANCE';
+    CSBMODULE_ID            CONSTANT UT_DATATYPES.STYXMLTAG := 'MODULE_ID';
+    CSBGEOMETRY             CONSTANT UT_DATATYPES.STYXMLTAG := 'GEOMETRY';
+    CSBWAITING_ACTIVITY     CONSTANT UT_DATATYPES.STYXMLTAG := 'WAITING_ACTIVITY';
+    
+    
+    CSBPRE_RULE             CONSTANT UT_DATATYPES.STYXMLTAG := 'PRE_RULE';
+    CSBPOST_RULE            CONSTANT UT_DATATYPES.STYXMLTAG := 'POST_RULE';
+    CSBACTI_RULE            CONSTANT UT_DATATYPES.STYXMLTAG := 'ACTIVITY_RULE';
+    CSBRULE                 CONSTANT UT_DATATYPES.STYXMLTAG := 'RULE';
+    CSBRULE_NAME            CONSTANT UT_DATATYPES.STYXMLTAG := 'NAME';
+
+    
+    CSBATTRIBUTES           CONSTANT UT_DATATYPES.STYXMLTAG := 'ATTRIBUTES';
+    CSBATTRIBUTE            CONSTANT UT_DATATYPES.STYXMLTAG := 'ATTRIBUTE';
+    CSBATTRIBUTE_ID         CONSTANT UT_DATATYPES.STYXMLTAG := 'ATTRIBUTE_ID';
+    CSBATTR_TECHNICALNAME   CONSTANT UT_DATATYPES.STYXMLTAG := 'TECHNICAL_NAME';
+    CSBIS_DUPLICATED        CONSTANT UT_DATATYPES.STYXMLTAG := 'IS_DUPLICATED';
+    CSBATTR_TYPE            CONSTANT UT_DATATYPES.STYXMLTAG := 'TYPE';
+    CSBATTR_VALUE           CONSTANT UT_DATATYPES.STYXMLTAG := 'VALUE';
+    CSBATTR_DATA_TYPE       CONSTANT UT_DATATYPES.STYXMLTAG := 'DATA_TYPE';
+    CSBATTR_STATEMENT       CONSTANT UT_DATATYPES.STYXMLTAG := 'STATEMENT/SOURCE';
+    CSBATTR_REQUIRED        CONSTANT UT_DATATYPES.STYXMLTAG := 'REQUIRED';
+    
+    
+    CSBTRANSITIONS          CONSTANT UT_DATATYPES.STYXMLTAG := 'TRANSITIONS';
+    CSBTRANSITION           CONSTANT UT_DATATYPES.STYXMLTAG := 'TRANSITION';
+    CSBORIGIN_NODE          CONSTANT UT_DATATYPES.STYXMLTAG := 'ORIGIN_NODE';
+    CSBTARGET_NODE          CONSTANT UT_DATATYPES.STYXMLTAG := 'TARGET_NODE';
+    CSBTRANS_DESC           CONSTANT UT_DATATYPES.STYXMLTAG := 'DESCRIPTION';
+    CSBVAL_EXPRESSION       CONSTANT UT_DATATYPES.STYXMLTAG := 'VALIDATE_EXPRESSION';
+    CSBTRANS_GROUP          CONSTANT UT_DATATYPES.STYXMLTAG := 'GROUP';
+    CSBTRANS_GEOMETRY       CONSTANT UT_DATATYPES.STYXMLTAG := 'GEOMETRY';
+
+    
+    CNUINTERFACE_MOTIVE     CONSTANT WF_INTERFACE_CONFIG.INTERFACE_CONFIG_ID%TYPE := 1;
+    CNUINTERFACE_PACKAGE    CONSTANT WF_INTERFACE_CONFIG.INTERFACE_CONFIG_ID%TYPE := 21;
+
+    
+    CSBEXTERNAL_ID          CONSTANT UT_DATATYPES.STYTOKEN := ':EXTERNAL_ID:';
+
+    
+    CSBDINAMYC_PROCESS      CONSTANT WF_INSTANCE.NODE_TYPE_ID%TYPE := 8;
+    
+    
+    CSBACTIVE_TASK          CONSTANT WF_ENTITY_PROCESS.STATUS_ID%TYPE := 'A';
+
+    
+    CNUDELAY_TIME           CONSTANT UT_JSON.STYNUMBER := 0;
+
+    
+    CNUPRE_RULE_TYPE        CONSTANT UT_JSON.STYNUMBER := 1;
+
+    
+    CNUSUBPROC_SEPARATION   CONSTANT NUMBER := 80;
+    CSBSUBPROCESS_SIZE      CONSTANT UT_DATATYPES.STYTOKEN := '138'|| GE_BOCONSTANTS.CSBENTER||'47';
+    CSBCHAR_RETURN          CONSTANT UT_DATATYPES.STYTOKEN := CHR(13);
+    CSBSEC_SUBPROC_SIZE     CONSTANT UT_DATATYPES.STYTOKEN := '138'||CSBCHAR_RETURN||'55';
+
+    
+    CNUMULTI_UNIQUE         CONSTANT WF_INSTANCE.MULTI_INSTANCE%TYPE := 'N';
+
+    
+    CSBORIGINAL_TRANS       CONSTANT WF_INSTANCE_TRANS.ORIGINAL%TYPE := 'Y';
+
+    
+    CSBGEOMETRY_START       CONSTANT WF_INSTANCE.GEOMETRY%TYPE := '20' ||GE_BOCONSTANTS.CSBENTER||'184';
+    CSBGEOMETRY_END         CONSTANT WF_INSTANCE.GEOMETRY%TYPE := '589'||GE_BOCONSTANTS.CSBENTER||'184';
+
+    
+    CSBSEPARATOR            CONSTANT UT_DATATYPES.STYTOKEN := '_';
+
+    
+    
+    
+
+    
+    CNUERR_NOT_INIT_PLAN    CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 3145;
+
+    
+    CNUGROUP_DESC           CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 912652;
+    
+    
+    CNUERR_NOT_FLOW         CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 918920;
+    
+     
+    CNUERR_NOT_CAUSAL         CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 918924;
+
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBVERSION
+    RETURN UT_DATATYPES.STYSAOVERSION
+    IS
+    BEGIN
+        RETURN CSBVERSION;
+    END FSBVERSION;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETWORKFLOW
+    (
+        INUINTERFACEID   IN   WF_INTERFACE_CONFIG.INTERFACE_CONFIG_ID%TYPE,
+        INUEXTERNALID    IN   WF_INSTANCE.EXTERNAL_ID%TYPE
+    )
+    RETURN PS_BCPLANCREATION.TYRCWORKFLOW
+    IS
+        CSBBIND_CLAUSE CONSTANT UT_DATATYPES.STYTOKEN := ':EXTERNAL_ID';
+        SBSTATEMENT    UT_DATATYPES.STYSQL;
+        RCWORKFLOW     PS_BCPLANCREATION.TYRCWORKFLOW;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.fnuGetWorkFlow'||CHR(10)||
+                       'InterfaceId         ['||INUINTERFACEID  ||']'||CHR(10)||
+                       'ExternalId          ['||INUEXTERNALID   ||']', 10);
+
+        
+        SBSTATEMENT := PS_BCPLANCREATION.FSBGETSTATEMENT(INUINTERFACEID);
+        SBSTATEMENT := REPLACE(SBSTATEMENT, CSBEXTERNAL_ID, CSBBIND_CLAUSE);
+        
+        
+        IF (INUINTERFACEID = CNUINTERFACE_PACKAGE) THEN
+        
+            
+            RCWORKFLOW := PS_BCPLANCREATION.FNUGETFLOWBYPACKTYPE(INUINTERFACEID, INUEXTERNALID, SBSTATEMENT);
+            
+        
+        ELSIF (INUINTERFACEID = CNUINTERFACE_MOTIVE) THEN
+
+            
+            RCWORKFLOW := PS_BCPLANCREATION.FNUGETFLOWBYMOTIPACK(INUINTERFACEID, INUEXTERNALID, SBSTATEMENT);
+            
+        END IF;
+        
+        IF (RCWORKFLOW.NUWORKFLOWID IS NULL) THEN
+            GE_BOERRORS.SETERRORCODE(CNUERR_NOT_FLOW);
+        END IF;
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.fnuGetWorkFlow'            ||CHR(10)||
+                       'WorkflowId          ['||RCWORKFLOW.NUWORKFLOWID  ||']'||CHR(10)||
+                       'FlowTagName         ['||RCWORKFLOW.SBTAGNAME     ||']'||CHR(10)||
+                       'AttriEquivId        ['||RCWORKFLOW.NUATTRIEQUIVID||']', 10);
+        RETURN RCWORKFLOW;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.fnuGetWorkFlow', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.fnuGetWorkFlow', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUGETWORKFLOW;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FBLEXISTFLOWTAGNAME
+    (
+        ISBTAGWORKFLOW     IN     WF_FLOW.TAG_NAME%TYPE
+    )
+    RETURN UT_DATATYPES.STYBOOLEAN
+    IS
+        BLEXIST     UT_DATATYPES.STYBOOLEAN;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.fblExistFlowTagName'||CHR(10)||
+                       'TagWorkflow         ['||ISBTAGWORKFLOW||']', 10);
+
+        BLEXIST := PS_BCPLANCREATION.FBLEXISTFLOWTAGNAME(ISBTAGWORKFLOW);
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.fblExistFlowTagName', 10);
+        RETURN BLEXIST;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.fblExistFlowTagName', 5);
+            RETURN GE_BOCONSTANTS.GETFALSE;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.fblExistFlowTagName', 5);
+            RETURN GE_BOCONSTANTS.GETFALSE;
+    END FBLEXISTFLOWTAGNAME;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETMAINNODEFROMFLOWXML
+    (
+        ISBTAGNAME      IN    WF_FLOW.TAG_NAME%TYPE,
+        OXLMAINMODE     OUT   DBMS_XMLDOM.DOMNODE,
+        OXLFLOWDOC      OUT   DBMS_XMLDOM.DOMDOCUMENT
+    )
+    IS
+        XLFLOWXML       UT_DATATYPES.STYXML;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.GetMainNodeFromFlowXML'||CHR(10)||
+                       'TagName             ['||ISBTAGNAME||']', 10);
+
+        
+        XLFLOWXML  := PS_BCPLANCREATION.FXLGETFLOWBYTAGNAME(ISBTAGNAME);
+
+        
+        OXLFLOWDOC  := XMLDOM.NEWDOMDOCUMENT(XLFLOWXML);
+        OXLMAINMODE := DBMS_XSLPROCESSOR.SELECTSINGLENODE(DBMS_XMLDOM.MAKENODE (OXLFLOWDOC), CSBNODE);
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.GetMainNodeFromFlowXML', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.GetMainNodeFromFlowXML', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.GetMainNodeFromFlowXML', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETMAINNODEFROMFLOWXML;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUINSTANCEBYTAGNAME
+    (
+        ISBTAGNAME   IN     WF_INSTANCE.TAG_NAME%TYPE,
+        INUPLANID    IN     WF_INSTANCE.PLAN_ID%TYPE
+    )
+    RETURN WF_INSTANCE.INSTANCE_ID%TYPE
+    IS
+        NUINSTANCEID   WF_INSTANCE.INSTANCE_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.fnuInstanceByTagName'||CHR(10)||
+                       'isbTagname          ['||ISBTAGNAME||']'||CHR(10)||
+                       'inuPlanId           ['||INUPLANID||']', 10);
+
+        NUINSTANCEID := PS_BCPLANCREATION.FNUINSTANCEBYTAGNAME(ISBTAGNAME, INUPLANID);
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.fnuInstanceByTagName'||CHR(10)||
+                       'returning InstanceId          ['||NUINSTANCEID||']', 10);
+        RETURN NUINSTANCEID;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.fnuInstanceByTagName', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.fnuInstanceByTagName', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUINSTANCEBYTAGNAME;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUINSTANCEBYPARENT
+    (
+        ISBTAGNAME   IN     WF_INSTANCE.TAG_NAME%TYPE,
+        INUPARENTID    IN     WF_INSTANCE.PARENT_ID%TYPE
+    )
+    RETURN WF_INSTANCE.INSTANCE_ID%TYPE
+    IS
+        NUINSTANCEID   WF_INSTANCE.INSTANCE_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.fnuInstanceByParent'||CHR(10)||
+                       'isbTagname          ['||ISBTAGNAME||']'||CHR(10)||
+                       'inuParentId           ['||INUPARENTID||']', 10);
+
+        NUINSTANCEID := PS_BCPLANCREATION.FNUINSTANCEBYPARENT(ISBTAGNAME, INUPARENTID);
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.fnuInstanceByParent'||CHR(10)||
+                       'returning InstanceId          ['||NUINSTANCEID||']', 10);
+        RETURN NUINSTANCEID;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.fnuInstanceByParent', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.fnuInstanceByParent', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUINSTANCEBYPARENT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRCBUILDERTRANSITION
+    (
+        IXLTRANSITIONNODE   IN      DBMS_XMLDOM.DOMNODE,
+        INUPARENTID         IN      WF_INSTANCE.PARENT_ID%TYPE
+    )
+    RETURN DAWF_INSTANCE_TRANS.STYWF_INSTANCE_TRANS
+    IS
+        SBTAGNAMEORIGINNODE     WF_INSTANCE.TAG_NAME%TYPE;
+        SBTAGNAMETARGETNODE     WF_INSTANCE.TAG_NAME%TYPE;
+        RCTRANSITION            DAWF_INSTANCE_TRANS.STYWF_INSTANCE_TRANS;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.frcBuilderTransition inuParentId: '||INUPARENTID, 10);
+
+        
+        DBMS_XSLPROCESSOR.VALUEOF(IXLTRANSITIONNODE, CSBORIGIN_NODE,    SBTAGNAMEORIGINNODE);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLTRANSITIONNODE, CSBTARGET_NODE,    SBTAGNAMETARGETNODE);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLTRANSITIONNODE, CSBTRANS_GEOMETRY, RCTRANSITION.GEOMETRY);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLTRANSITIONNODE, CSBTRANS_GROUP,    RCTRANSITION.GROUP_ID);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLTRANSITIONNODE, CSBVAL_EXPRESSION, RCTRANSITION.EXPRESSION);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLTRANSITIONNODE, CSBTRANS_DESC,     RCTRANSITION.DESCRIPTION);
+
+        
+        RCTRANSITION.INST_TRAN_ID       := WF_BOCNFSEQUENCES.FNUSEQ_WF_INSTANCE_TRANS;
+        RCTRANSITION.ORIGIN_ID          := FNUINSTANCEBYPARENT(SBTAGNAMEORIGINNODE, INUPARENTID);
+        RCTRANSITION.TARGET_ID          := FNUINSTANCEBYPARENT(SBTAGNAMETARGETNODE, INUPARENTID);
+        RCTRANSITION.EXPRESSION_TYPE    := 0;
+        RCTRANSITION.TRANSITION_TYPE_ID := NULL;
+        RCTRANSITION.ORIGINAL           := CSBORIGINAL_TRANS;
+        RCTRANSITION.STATUS             := WF_BOCONSTANTS.CNUTRANS_CREATED;
+        RCTRANSITION.EXPIRED_DATA       := GE_BOCONSTANTS.CSBNO;
+
+        UT_TRACE.TRACE('inst_tran_id        ['||RCTRANSITION.INST_TRAN_ID       ||']'||CHR(10)||
+                       'origin_id           ['||RCTRANSITION.ORIGIN_ID          ||']'||CHR(10)||
+                       'target_id           ['||RCTRANSITION.TARGET_ID          ||']'||CHR(10)||
+                       'geometry            ['||RCTRANSITION.GEOMETRY           ||']', 10);
+
+        UT_TRACE.TRACE('group_id            ['||RCTRANSITION.GROUP_ID           ||']'||CHR(10)||
+                       'expression          ['||RCTRANSITION.EXPRESSION         ||']'||CHR(10)||
+                       'expression_type     ['||RCTRANSITION.EXPRESSION_TYPE    ||']'||CHR(10)||
+                       'description         ['||RCTRANSITION.DESCRIPTION        ||']', 10);
+                       
+        UT_TRACE.TRACE('transition_type_id  ['||RCTRANSITION.TRANSITION_TYPE_ID ||']'||CHR(10)||
+                       'original            ['||RCTRANSITION.ORIGINAL           ||']'||CHR(10)||
+                       'status              ['||RCTRANSITION.STATUS             ||']'||CHR(10)||
+                       'expired_data        ['||RCTRANSITION.EXPIRED_DATA       ||']'||CHR(10)||
+                       'END PS_BOPlanCreation.frcBuilderTransition', 10);
+        RETURN RCTRANSITION;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.frcBuilderTransition', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.frcBuilderTransition', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END FRCBUILDERTRANSITION;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DEFINETRANSITIONS
+    (
+        IXLNODE         IN      DBMS_XMLDOM.DOMNODE,
+        INUPARENTID     IN      WF_INSTANCE.PARENT_ID%TYPE
+    )
+    IS
+        SBPATH              UT_DATATYPES.STYMAXVARCHAR;
+        XLTRANSITIONLIST    DBMS_XMLDOM.DOMNODELIST;
+        XLTRANSITIONNODE    DBMS_XMLDOM.DOMNODE;
+        NUNUMTRANSITIONS    UT_DATATYPES.STYNUMBERINDEX;
+        NUIDXTRANSITION     UT_DATATYPES.STYNUMBERINDEX:= 0;
+        TBTRANSITIONS       DAWF_INSTANCE_TRANS.TYTBWF_INSTANCE_TRANS;
+        RCTRANSITION        DAWF_INSTANCE_TRANS.STYWF_INSTANCE_TRANS;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.DefineTransitions', 10);
+
+        
+        SBPATH := CSBTRANSITIONS||GE_BOCONSTANTS.CSBSLASH||CSBTRANSITION;
+
+        
+        XLTRANSITIONLIST  := DBMS_XSLPROCESSOR.SELECTNODES(IXLNODE, SBPATH);
+
+        
+        NUNUMTRANSITIONS := COALESCE( DBMS_XMLDOM.GETLENGTH(XLTRANSITIONLIST), 0 );
+        UT_TRACE.TRACE('NumTransitions      ['||NUNUMTRANSITIONS||']', 10);
+
+        
+        WHILE (NUIDXTRANSITION < NUNUMTRANSITIONS) LOOP
+
+            
+            XLTRANSITIONNODE := DBMS_XMLDOM.ITEM(XLTRANSITIONLIST, NUIDXTRANSITION);
+
+            
+            RCTRANSITION := FRCBUILDERTRANSITION(XLTRANSITIONNODE, INUPARENTID);
+
+            
+            TBTRANSITIONS(NUIDXTRANSITION) := RCTRANSITION;
+
+            
+            NUIDXTRANSITION := NUIDXTRANSITION + 1;
+
+        END LOOP;
+
+        
+        IF (NUNUMTRANSITIONS > 0) THEN
+            
+            DAWF_INSTANCE_TRANS.INSRECORDS(TBTRANSITIONS);
+        END IF;
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.DefineTransitions', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.DefineTransitions', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.DefineTransitions', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END DEFINETRANSITIONS;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRCINITINSTANCE
+    RETURN DAWF_INSTANCE.STYWF_INSTANCE
+    IS
+        RCINSTANCE      DAWF_INSTANCE.STYWF_INSTANCE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.frcInitInstance', 10);
+
+        
+        RCINSTANCE.INSTANCE_ID          := WF_BOCNFSEQUENCES.FNUSEQ_WF_INSTANCE;
+        RCINSTANCE.ORIGINAL_TASK        := NULL;
+        RCINSTANCE.UNIT_ID              := NULL;
+        RCINSTANCE.STATUS_ID            := WF_BOCONSTANTS.CNUCREATED;
+        RCINSTANCE.PREVIOUS_STATUS_ID   := NULL;
+        RCINSTANCE.ONLINE_EXEC_ID       := NULL;
+        RCINSTANCE.PRE_EXPRESSION_ID    := NULL;
+        RCINSTANCE.POS_EXPRESSION_ID    := NULL;
+        RCINSTANCE.QUANTITY             := NULL;
+        RCINSTANCE.INITIAL_DATE         := NULL;
+        RCINSTANCE.FINAL_DATE           := NULL;
+        RCINSTANCE.SINCRONIC_TIMEOUT    := NULL;
+        RCINSTANCE.ASINCRONIC_TIMEOUT   := NULL;
+        RCINSTANCE.TRY_NUMBER           := 0;
+        RCINSTANCE.FUNCTION_TYPE        := NULL;
+        RCINSTANCE.IS_COUNTABLE         := NULL;
+        RCINSTANCE.TOTAL_TIME           := NULL;
+        RCINSTANCE.GROUP_ID             := NULL;
+        RCINSTANCE.MIN_GROUP_SIZE       := NULL;
+        RCINSTANCE.UNIT_TYPE_ID         := NULL;
+        RCINSTANCE.EXECUTION_ORDER      := NULL;
+        RCINSTANCE.ANNULATION_ORDER     := NULL;
+        RCINSTANCE.NOTIFICATION_ID      := NULL;
+        RCINSTANCE.EXECUTION_ID         := NULL;
+        RCINSTANCE.PREVIOUS_INSTANCE_ID := NULL;
+        RCINSTANCE.CATEGORY_ID          := WF_BOCONSTANTS.CNUMAINPROCESS;
+        RCINSTANCE.EXPIRED_DATA         := GE_BOCONSTANTS.CSBNO;
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.frcInitInstance', 10);
+        RETURN RCINSTANCE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.frcInitInstance', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.frcInitInstance', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END FRCINITINSTANCE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DEFINEBASICINFO
+    (
+        IXLNODE            IN               DBMS_XMLDOM.DOMNODE,
+        IORCINSTANCE       IN OUT NOCOPY    DAWF_INSTANCE.STYWF_INSTANCE,
+        INUINSTANCETYPE    IN               WF_INSTANCE.CATEGORY_ID%TYPE
+    )
+    IS
+        NUNODETYPEID       WF_INSTANCE.NODE_TYPE_ID%TYPE;
+        NUPROCESSTYPE      WF_INSTANCE.NODE_TYPE_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.DefineBasicInfo inuInstanceType: [ '||INUINSTANCETYPE||' ]', 10);
+
+        
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBNODE_DESC,        IORCINSTANCE.DESCRIPTION);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBWAITING_ACTIVITY, IORCINSTANCE.ACTION_ID);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBGEOMETRY,         IORCINSTANCE.GEOMETRY);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBMULTI_INSTANCE,   IORCINSTANCE.MULTI_INSTANCE);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBMODULE_ID,        IORCINSTANCE.MODULE_ID);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBENTITY_ID,        IORCINSTANCE.ENTITY_ID);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBID,               IORCINSTANCE.TAG_NAME);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBUNIT_TYPE_ID,     IORCINSTANCE.UNIT_TYPE_ID);
+
+        IORCINSTANCE.CATEGORY_ID    := INUINSTANCETYPE;
+        
+        
+        IF (INUINSTANCETYPE = WF_BOCONSTANTS.CNUMAINPROCESS) THEN   
+            NUNODETYPEID := WF_BOCONSTANTS.CNUROOT;
+        ELSIF (INUINSTANCETYPE = WF_BOCONSTANTS.CNUPROCESS) THEN    
+            NUNODETYPEID := WF_BOCONSTANTS.CNUNORMAL;
+            DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBBEHAVIOR,     NUPROCESSTYPE);
+        ELSIF (INUINSTANCETYPE = WF_BOCONSTANTS.CNUACTIVITY) THEN  
+            DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBBEHAVIOR,     NUNODETYPEID);
+        END IF;
+        IORCINSTANCE.NODE_TYPE_ID := NUNODETYPEID;
+        
+        
+        IF (INUINSTANCETYPE = WF_BOCONSTANTS.CNUPROCESS AND
+              NUPROCESSTYPE = CSBDINAMYC_PROCESS) THEN
+            IORCINSTANCE.DINAMYC_PROCESS := GE_BOCONSTANTS.CSBYES;
+        ELSE
+            IORCINSTANCE.DINAMYC_PROCESS := GE_BOCONSTANTS.CSBNO;
+        END IF;
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.DefineBasicInfo', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.DefineBasicInfo', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.DefineBasicInfo', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END DEFINEBASICINFO;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DEFINEINHERITEDINFO
+    (
+        IORCINSTANCE            IN OUT NOCOPY   DAWF_INSTANCE.STYWF_INSTANCE,
+        INUEXTERNALID           IN              WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYTOINHEREXTID   IN              WF_INSTANCE.ENTITY_ID%TYPE,
+        INUROOTINSTANCEID       IN              WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUPARINSTANCEID        IN              WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUROOTEXTERNALID       IN              WF_INSTANCE.ROOT_EXTERNAL_ID%TYPE,
+        INUROOTENTITYID         IN              WF_INSTANCE.ROOT_ENTITY_ID%TYPE,
+        INUPARENTEXTERNALID     IN              WF_INSTANCE.PARENT_EXTERNAL_ID%TYPE,
+        INUPAREXTENTITYID       IN              WF_INSTANCE.PAR_EXT_ENTITY_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.DefineInheritedInfo'||CSBCHAR_RETURN
+                        ||'inuExternalId ['||INUEXTERNALID||']  inuEntityToInherExtId: '||INUENTITYTOINHEREXTID||']', 10);
+        UT_TRACE.TRACE(' inuRootInstanceId['||INUROOTINSTANCEID||'] inuRootExternalId['||INUROOTEXTERNALID||'] '||CSBCHAR_RETURN ||
+                        'inuRootEntityId ['||INUROOTENTITYID||'] inuParInstanceId ['||INUPARINSTANCEID||']'||CSBCHAR_RETURN ||
+                        'inuParentExternalId ['||INUPARENTEXTERNALID||'] inuParExtEntityId['||INUPAREXTENTITYID||']',10);
+        
+        IF (INUROOTINSTANCEID IS NULL) THEN
+
+            IORCINSTANCE.PARENT_ID          := NULL;
+            IORCINSTANCE.PLAN_ID            := IORCINSTANCE.INSTANCE_ID;
+            IORCINSTANCE.LAYER_ID           := -1;
+            IORCINSTANCE.PARENT_EXTERNAL_ID := INUEXTERNALID;
+            IORCINSTANCE.PAR_EXT_ENTITY_ID  := IORCINSTANCE.ENTITY_ID;
+            IORCINSTANCE.ROOT_EXTERNAL_ID   := INUEXTERNALID;
+            IORCINSTANCE.ROOT_ENTITY_ID     := IORCINSTANCE.ENTITY_ID;
+            IORCINSTANCE.EXTERNAL_ID        := INUEXTERNALID;
+            
+        ELSE 
+        
+            IORCINSTANCE.PARENT_ID          := INUPARINSTANCEID;
+            IORCINSTANCE.PLAN_ID            := INUROOTINSTANCEID;
+            IORCINSTANCE.LAYER_ID           := NULL;
+            IORCINSTANCE.PARENT_EXTERNAL_ID := INUPARENTEXTERNALID;
+            IORCINSTANCE.PAR_EXT_ENTITY_ID  := INUPAREXTENTITYID;
+            IORCINSTANCE.ROOT_EXTERNAL_ID   := INUROOTEXTERNALID;
+            IORCINSTANCE.ROOT_ENTITY_ID     := INUROOTENTITYID;
+            
+            
+
+
+
+
+
+
+
+            IF  IORCINSTANCE.ENTITY_ID = INUENTITYTOINHEREXTID OR
+                IORCINSTANCE.ENTITY_ID IS NULL
+            THEN
+                IORCINSTANCE.EXTERNAL_ID :=  INUEXTERNALID;
+            ELSE
+                IORCINSTANCE.EXTERNAL_ID :=  NULL;
+            END IF;
+            
+        END IF;
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.DefineInheritedInfo', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.DefineInheritedInfo', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.DefineInheritedInfo', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END DEFINEINHERITEDINFO;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DEFINEPRERULE
+    (
+        IXLNODE         IN              DBMS_XMLDOM.DOMNODE,
+        IORCINSTANCE    IN OUT NOCOPY   DAWF_INSTANCE.STYWF_INSTANCE
+    )
+    IS
+        SBPATH          UT_DATATYPES.STYMAXVARCHAR;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.DefinePreRule', 10);
+
+        
+        SBPATH := CSBPRE_RULE||GE_BOCONSTANTS.CSBSLASH||
+                  CSBRULE    ||GE_BOCONSTANTS.CSBSLASH||CSBRULE_NAME;
+
+        
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, SBPATH, IORCINSTANCE.PRE_RULE_NAME);
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.DefinePreRule', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.DefinePreRule', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.DefinePreRule', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END DEFINEPRERULE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DEFINEPOSTRULE
+    (
+        IXLNODE         IN              DBMS_XMLDOM.DOMNODE,
+        IORCINSTANCE    IN OUT NOCOPY   DAWF_INSTANCE.STYWF_INSTANCE
+    )
+    IS
+        SBPATH          UT_DATATYPES.STYMAXVARCHAR;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.DefinePostRule', 10);
+
+        
+        SBPATH := CSBPOST_RULE||GE_BOCONSTANTS.CSBSLASH||
+                  CSBRULE     ||GE_BOCONSTANTS.CSBSLASH||CSBRULE_NAME;
+
+        
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, SBPATH, IORCINSTANCE.POS_RULE_NAME);
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.DefinePostRule', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.DefinePostRule', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.DefinePostRule', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END DEFINEPOSTRULE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DEFINEACTIVITYRULE
+    (
+        IXLNODE         IN              DBMS_XMLDOM.DOMNODE,
+        IORCINSTANCE    IN OUT NOCOPY   DAWF_INSTANCE.STYWF_INSTANCE
+    )
+    IS
+        SBPATH          UT_DATATYPES.STYMAXVARCHAR;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.DefineActivityRule', 10);
+
+        
+        SBPATH := CSBACTI_RULE||GE_BOCONSTANTS.CSBSLASH||
+                  CSBRULE     ||GE_BOCONSTANTS.CSBSLASH||CSBRULE_NAME;
+
+        
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, SBPATH, IORCINSTANCE.RULE_NAME);
+        
+        UT_TRACE.TRACE('END PS_BOPlanCreation.DefineActivityRule', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.DefineActivityRule', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.DefineActivityRule', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END DEFINEACTIVITYRULE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INSERTINSTANCE
+    (
+        IORCINSTANCE    IN OUT NOCOPY   DAWF_INSTANCE.STYWF_INSTANCE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.InsertInstance'               ||CHR(10)||
+                       'instance_id         ['||IORCINSTANCE.INSTANCE_ID        ||']'||CHR(10)||
+                       'description         ['||IORCINSTANCE.DESCRIPTION        ||']'||CHR(10)||
+                       'parent_id           ['||IORCINSTANCE.PARENT_ID          ||']'||CHR(10)||
+                       'plan_id             ['||IORCINSTANCE.PLAN_ID            ||']'||CHR(10)||
+                       'status_id           ['||IORCINSTANCE.STATUS_ID          ||']', 10);
+        UT_TRACE.TRACE('action_id           ['||IORCINSTANCE.ACTION_ID          ||']'||CHR(10)||
+                       'layer_id            ['||IORCINSTANCE.LAYER_ID           ||']'||CHR(10)||
+                       'external_id         ['||IORCINSTANCE.EXTERNAL_ID        ||']'||CHR(10)||
+                       'geometry            ['||IORCINSTANCE.GEOMETRY           ||']'||CHR(10)||
+                       'try_number          ['||IORCINSTANCE.TRY_NUMBER         ||']', 10);
+        UT_TRACE.TRACE('multi_instance      ['||IORCINSTANCE.MULTI_INSTANCE     ||']'||CHR(10)||
+                       'node_type_id        ['||IORCINSTANCE.NODE_TYPE_ID       ||']'||CHR(10)||
+                       'module_id           ['||IORCINSTANCE.MODULE_ID          ||']'||CHR(10)||
+                       'parent_externalid   ['||IORCINSTANCE.PARENT_EXTERNAL_ID ||']'||CHR(10)||
+                       'entity_id           ['||IORCINSTANCE.ENTITY_ID          ||']', 10);
+        UT_TRACE.TRACE('par_ext_entityid    ['||IORCINSTANCE.PAR_EXT_ENTITY_ID  ||']'||CHR(10)||
+                       'rule_name           ['||IORCINSTANCE.RULE_NAME          ||']'||CHR(10)||
+                       'pre_rule_name       ['||IORCINSTANCE.PRE_RULE_NAME      ||']'||CHR(10)||
+                       'pos_rule_name       ['||IORCINSTANCE.POS_RULE_NAME      ||']'||CHR(10)||
+                       'root_external_id    ['||IORCINSTANCE.ROOT_EXTERNAL_ID   ||']', 10);
+        UT_TRACE.TRACE('root_entity_id      ['||IORCINSTANCE.ROOT_ENTITY_ID     ||']'||CHR(10)||
+                       'category_id         ['||IORCINSTANCE.CATEGORY_ID        ||']'||CHR(10)||
+                       'expired_data        ['||IORCINSTANCE.EXPIRED_DATA       ||']'||CHR(10)||
+                       'tag_name            ['||IORCINSTANCE.TAG_NAME           ||']'||CHR(10)||
+                       'dinamyc_process     ['||IORCINSTANCE.DINAMYC_PROCESS    ||']', 10);
+        
+        DAWF_INSTANCE.INSRECORD(IORCINSTANCE);
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.InsertInstance', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.InsertInstance', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.InsertInstance', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END INSERTINSTANCE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRCBUILDERATTRIBUTE
+    (
+        IXLATTRIBUTENODE   IN    DBMS_XMLDOM.DOMNODE,
+        INUINSTANCEID      IN    WF_INSTANCE.INSTANCE_ID%TYPE
+    )
+    RETURN DAWF_INSTANCE_ATTRIB.STYWF_INSTANCE_ATTRIB
+    IS
+        RCATTRIBUTE         DAWF_INSTANCE_ATTRIB.STYWF_INSTANCE_ATTRIB;
+        NUATTRIBUTETYPE     GE_ATTRIBUTES_TYPE.ATTRIBUTE_TYPE_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.frcBuilderAttribute', 10);
+
+        
+        DBMS_XSLPROCESSOR.VALUEOF(IXLATTRIBUTENODE, CSBATTR_TECHNICALNAME, RCATTRIBUTE.NAME_ATTRIBUTE);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLATTRIBUTENODE, CSBIS_DUPLICATED,      RCATTRIBUTE.IS_DUPLICABLE);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLATTRIBUTENODE, CSBATTR_TYPE,          RCATTRIBUTE.IN_OUT);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLATTRIBUTENODE, CSBATTR_VALUE,         RCATTRIBUTE.VALUE);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLATTRIBUTENODE, CSBATTR_STATEMENT,     RCATTRIBUTE.SQL_STATEMENT);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLATTRIBUTENODE, CSBATTR_REQUIRED,      RCATTRIBUTE.MANDATORY);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLATTRIBUTENODE, CSBATTR_DATA_TYPE,     RCATTRIBUTE.ATTRIBUTE_TYPE_ID);
+        DBMS_XSLPROCESSOR.VALUEOF(IXLATTRIBUTENODE, CSBATTRIBUTE_ID,       RCATTRIBUTE.ATTRIBUTE_ID);
+        
+        
+        RCATTRIBUTE.INSTANCE_ATTRIB_ID := WF_BOCNFSEQUENCES.FNUSEQ_WF_INSTANCE_ATTRIB;
+        RCATTRIBUTE.INSTANCE_ID        := INUINSTANCEID;
+        RCATTRIBUTE.ATTRIB_LAYER       := 0;
+        RCATTRIBUTE.STATEMENT_ID       := NULL;
+        RCATTRIBUTE.EXPIRED_DATA       := GE_BOCONSTANTS.CSBNO;
+
+        UT_TRACE.TRACE('instance_attribid   ['||RCATTRIBUTE.INSTANCE_ATTRIB_ID  ||']'||CHR(10)||
+                       'instance_id         ['||RCATTRIBUTE.INSTANCE_ID         ||']'||CHR(10)||
+                       'attribute_id        ['||RCATTRIBUTE.ATTRIBUTE_ID        ||']'||CHR(10)||
+                       'value               ['||RCATTRIBUTE.VALUE               ||']', 10);
+        UT_TRACE.TRACE('attrib_layer        ['||RCATTRIBUTE.ATTRIB_LAYER        ||']'||CHR(10)||
+                       'is_duplicable       ['||RCATTRIBUTE.IS_DUPLICABLE       ||']'||CHR(10)||
+                       'in_out              ['||RCATTRIBUTE.IN_OUT              ||']'||CHR(10)||
+                       'statement_id        ['||RCATTRIBUTE.STATEMENT_ID        ||']'||CHR(10)||
+                       'mandatory           ['||RCATTRIBUTE.MANDATORY           ||']', 10);
+        UT_TRACE.TRACE('attribute_type_id   ['||RCATTRIBUTE.ATTRIBUTE_TYPE_ID   ||']'||CHR(10)||
+                       'name_attribute      ['||RCATTRIBUTE.NAME_ATTRIBUTE      ||']'||CHR(10)||
+                       'sql_statement       ['||RCATTRIBUTE.SQL_STATEMENT       ||']'||CHR(10)||
+                       'expired_data        ['||RCATTRIBUTE.EXPIRED_DATA        ||']'||CHR(10)||
+                       'END PS_BOPlanCreation.frcBuilderAttribute', 10);
+        RETURN RCATTRIBUTE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.frcBuilderAttribute', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.frcBuilderAttribute', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END FRCBUILDERATTRIBUTE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DEFINEATTRIBUTES
+    (
+        IXLNODE         IN      DBMS_XMLDOM.DOMNODE,
+        INUINSTANCEID   IN      WF_INSTANCE.INSTANCE_ID%TYPE
+    )
+    IS
+        SBSPECIFICPATH      UT_DATATYPES.STYMAXVARCHAR;
+        XLLISTATTRIBUTES    DBMS_XMLDOM.DOMNODELIST;
+        XLNODEATTRIBUTE     DBMS_XMLDOM.DOMNODE;
+        NUNUMATTRIBUTES     UT_DATATYPES.STYNUMBERINDEX;
+        NUIDXATTRIBUTE      UT_DATATYPES.STYNUMBERINDEX:= 0;
+        TBATTRIBUTES        DAWF_INSTANCE_ATTRIB.TYTBWF_INSTANCE_ATTRIB;
+        RCATTRIBUTE         DAWF_INSTANCE_ATTRIB.STYWF_INSTANCE_ATTRIB;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.DefineAttributes'||CHR(10)||
+                       'InstanceId          ['||INUINSTANCEID||']', 10);
+
+        
+        SBSPECIFICPATH := CSBATTRIBUTES||GE_BOCONSTANTS.CSBSLASH||CSBATTRIBUTE;
+        
+        
+        XLLISTATTRIBUTES := DBMS_XSLPROCESSOR.SELECTNODES(IXLNODE, SBSPECIFICPATH);
+        
+        
+        NUNUMATTRIBUTES := COALESCE(DBMS_XMLDOM.GETLENGTH(XLLISTATTRIBUTES), 0);
+        UT_TRACE.TRACE('NumAttributes       ['||NUNUMATTRIBUTES||']', 10);
+        
+        
+        WHILE (NUIDXATTRIBUTE < NUNUMATTRIBUTES) LOOP
+
+            
+            XLNODEATTRIBUTE := DBMS_XMLDOM.ITEM(XLLISTATTRIBUTES, NUIDXATTRIBUTE);
+            
+            
+            RCATTRIBUTE := FRCBUILDERATTRIBUTE(XLNODEATTRIBUTE, INUINSTANCEID);
+            
+            
+            TBATTRIBUTES(NUIDXATTRIBUTE) := RCATTRIBUTE;
+            
+            
+            NUIDXATTRIBUTE := NUIDXATTRIBUTE + 1;
+            
+        END LOOP;
+
+        
+        IF (NUNUMATTRIBUTES > 0) THEN
+            
+            DAWF_INSTANCE_ATTRIB.INSRECORDS(TBATTRIBUTES);
+        END IF;
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.DefineAttributes', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.DefineAttributes', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.DefineAttributes', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END DEFINEATTRIBUTES;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRCBUILDERCAUSAL
+    (
+        INUINSTANCEID     IN     WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUCAUSALID       IN     WF_CAUSALS_ACTIVITY.CAUSAL_ID%TYPE,
+        ISBALIAS          IN     WF_CAUSALS_ACTIVITY.ALIAS%TYPE
+    )
+    RETURN DAWF_INSTANCE_CAUSAL.STYWF_INSTANCE_CAUSAL
+    IS
+        RCCAUSALINSTANCE         DAWF_INSTANCE_CAUSAL.STYWF_INSTANCE_CAUSAL;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.frcBuilderCausal'||CHR(10)||
+                       'instance_id         ['||INUINSTANCEID     ||']'||CHR(10)||
+                       'causal_id           ['||INUCAUSALID       ||']'||CHR(10)||
+                       'alias               ['||ISBALIAS          ||']', 10);
+        
+        
+        RCCAUSALINSTANCE.INSTANCE_CAUSAL_ID := WF_BOSEQUENCES.FNUSEQ_WF_INSTANCE_CAUSAL;
+        RCCAUSALINSTANCE.INSTANCE_ID        := INUINSTANCEID;
+        RCCAUSALINSTANCE.CAUSAL_ID          := INUCAUSALID;
+        RCCAUSALINSTANCE.ALIAS              := ISBALIAS;
+        RCCAUSALINSTANCE.EXPIRED_DATA       := GE_BOCONSTANTS.CSBNO;
+
+        UT_TRACE.TRACE('instance_causal_id  ['||RCCAUSALINSTANCE.INSTANCE_CAUSAL_ID||']'||CHR(10)||
+                       'expired_data        ['||RCCAUSALINSTANCE.EXPIRED_DATA      ||']'||CHR(10)||
+                       'END PS_BOPlanCreation.frcBuilderCausal', 10);
+        RETURN RCCAUSALINSTANCE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.frcBuilderCausal', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.frcBuilderCausal', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END FRCBUILDERCAUSAL;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DEFINECAUSALS
+    (
+        INUINSTANCEID    IN    WF_INSTANCE.INSTANCE_ID%TYPE,
+        ISBTAGNAME       IN    WF_CAUSAL_UNIT_TYPE.ACTIVITY_TAG_NAME%TYPE
+    )
+    IS
+        TBCAUSALSACTIVITY       PS_BCPLANCREATION.TYTBCAUSALSACTIVITY;
+        NUNUMCAUSALS            UT_DATATYPES.STYNUMBERINDEX;
+        NUIDXCAUSAL             UT_DATATYPES.STYNUMBERINDEX:= 1;
+        TBCAUSALSINSTANCE       DAWF_INSTANCE_CAUSAL.TYTBWF_INSTANCE_CAUSAL;
+        RCCAUSALINSTANCE        DAWF_INSTANCE_CAUSAL.STYWF_INSTANCE_CAUSAL;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.DefineCausals'||CHR(10)||
+                       'InstanceId          ['||INUINSTANCEID||']'||CHR(10)||
+                       'Tagname             ['||ISBTAGNAME||']', 10);
+
+        
+        TBCAUSALSACTIVITY := PS_BCPLANCREATION.FTBCAUSALSBYACTIVITY(ISBTAGNAME);
+        NUNUMCAUSALS      := TBCAUSALSACTIVITY.COUNT;
+        UT_TRACE.TRACE('NumCausals          ['||NUNUMCAUSALS||']', 5);
+        
+        
+        WHILE (NUIDXCAUSAL <= NUNUMCAUSALS) LOOP
+
+            
+            RCCAUSALINSTANCE := FRCBUILDERCAUSAL(INUINSTANCEID,
+                                                 TBCAUSALSACTIVITY(NUIDXCAUSAL).NUCAUSALID,
+                                                 TBCAUSALSACTIVITY(NUIDXCAUSAL).SBALIAS);
+
+            
+            TBCAUSALSINSTANCE(NUIDXCAUSAL) := RCCAUSALINSTANCE;
+            
+            
+            IF (NOT DAGE_CAUSAL.FBLEXIST(RCCAUSALINSTANCE.CAUSAL_ID)) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUERR_NOT_CAUSAL,
+                                                 RCCAUSALINSTANCE.CAUSAL_ID||'|'||ISBTAGNAME);
+            END IF;
+
+            
+            NUIDXCAUSAL := NUIDXCAUSAL + 1;
+
+        END LOOP;
+
+        
+        IF (NUNUMCAUSALS > 0) THEN
+            
+            DAWF_INSTANCE_CAUSAL.INSRECORDS(TBCAUSALSINSTANCE);
+        END IF;
+        
+        UT_TRACE.TRACE('END PS_BOPlanCreation.DefineCausals', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.DefineCausals', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.DefineCausals', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END DEFINECAUSALS;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PROCESSUNITNODE
+    (
+        INUEXTERNALID           IN          WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYTOINHEREXTID   IN          WF_INSTANCE.ENTITY_ID%TYPE,
+        IXLNODE                 IN          DBMS_XMLDOM.DOMNODE,
+        INUROOTINSTANCEID       IN          WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUPARINSTANCEID        IN          WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUROOTEXTERNALID       IN          WF_INSTANCE.ROOT_EXTERNAL_ID%TYPE,
+        INUROOTENTITYID         IN          WF_INSTANCE.ROOT_ENTITY_ID%TYPE,
+        INUPARENTEXTERNALID     IN          WF_INSTANCE.PARENT_EXTERNAL_ID%TYPE,
+        INUPAREXTENTITYID       IN          WF_INSTANCE.PAR_EXT_ENTITY_ID%TYPE,
+        ONUINSTANCECREATED      OUT         WF_INSTANCE.INSTANCE_ID%TYPE
+    )
+    IS
+        RCINSTANCE              DAWF_INSTANCE.STYWF_INSTANCE;
+        NUINSTANCETYPE          WF_INSTANCE.CATEGORY_ID%TYPE;
+        SBPATH                  UT_DATATYPES.STYMAXVARCHAR;
+        XLSUBNODELIST           DBMS_XMLDOM.DOMNODELIST;
+        XLSUBNODE               DBMS_XMLDOM.DOMNODE;
+        NUNUMSUBNODES           UT_DATATYPES.STYNUMBERINDEX;
+        NUIDXSUBNODE            UT_DATATYPES.STYNUMBERINDEX:= 0;
+        NUINSTANCECREATED       WF_INSTANCE.PLAN_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.ProcessUnitNode inuExternalId: '||INUEXTERNALID||' inuEntityToInherExtId: '||INUENTITYTOINHEREXTID, 10);
+        
+        UT_TRACE.TRACE('inuRootInstanceId: '||INUROOTINSTANCEID||'inuParInstanceId: '||INUPARINSTANCEID||CHR(10)||
+                       'inuRootExternalId: '||INUROOTEXTERNALID||'inuRootEntityId: '||INUROOTENTITYID||CHR(10)||
+                       'inuParentExternalId: '||INUPARENTEXTERNALID||'inuParExtEntityId: '||INUPAREXTENTITYID, 10);
+        
+        RCINSTANCE := FRCINITINSTANCE;
+
+        
+        DBMS_XSLPROCESSOR.VALUEOF(IXLNODE, CSBTYPE, NUINSTANCETYPE);
+        
+        
+        DEFINEBASICINFO(IXLNODE, RCINSTANCE, NUINSTANCETYPE);
+
+        
+        DEFINEINHERITEDINFO(RCINSTANCE, INUEXTERNALID, INUENTITYTOINHEREXTID, INUROOTINSTANCEID, INUPARINSTANCEID,
+                            INUROOTEXTERNALID, INUROOTENTITYID, INUPARENTEXTERNALID,
+                            INUPAREXTENTITYID);
+
+        
+        DEFINEPRERULE(IXLNODE, RCINSTANCE);
+
+        
+        DEFINEPOSTRULE(IXLNODE, RCINSTANCE);
+
+        
+        DEFINEACTIVITYRULE(IXLNODE, RCINSTANCE);
+
+        
+        INSERTINSTANCE(RCINSTANCE);
+
+        
+        DEFINEATTRIBUTES(IXLNODE, RCINSTANCE.INSTANCE_ID);
+
+        
+        SBPATH        := CSBNODES||GE_BOCONSTANTS.CSBSLASH||CSBNODE;
+        XLSUBNODELIST := DBMS_XSLPROCESSOR.SELECTNODES(IXLNODE, SBPATH);
+        
+        
+        NUNUMSUBNODES := COALESCE( DBMS_XMLDOM.GETLENGTH(XLSUBNODELIST), 0 );
+        UT_TRACE.TRACE('NumSubNodes         ['||NUNUMSUBNODES||']', 5);
+        
+        
+        WHILE (NUIDXSUBNODE < NUNUMSUBNODES) LOOP
+
+            
+            XLSUBNODE := DBMS_XMLDOM.ITEM(XLSUBNODELIST, NUIDXSUBNODE);
+            
+            
+            PROCESSUNITNODE
+            (
+                INUEXTERNALID, INUENTITYTOINHEREXTID, XLSUBNODE,
+                RCINSTANCE.PLAN_ID, RCINSTANCE.INSTANCE_ID,
+                RCINSTANCE.ROOT_EXTERNAL_ID, RCINSTANCE.ROOT_ENTITY_ID,
+                RCINSTANCE.EXTERNAL_ID, RCINSTANCE.ENTITY_ID,
+                NUINSTANCECREATED
+            );
+            
+            
+            NUIDXSUBNODE := NUIDXSUBNODE + 1;
+            
+        END LOOP;
+
+        
+        DEFINETRANSITIONS(IXLNODE, RCINSTANCE.INSTANCE_ID);
+        
+
+        
+        DEFINECAUSALS(RCINSTANCE.INSTANCE_ID, RCINSTANCE.TAG_NAME);
+
+        
+        
+        ONUINSTANCECREATED := RCINSTANCE.INSTANCE_ID;
+        UT_TRACE.TRACE('InstanceCreated     ['||ONUINSTANCECREATED||']'||CHR(10)||
+                       'END PS_BOPlanCreation.ProcessUnitNode', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.ProcessUnitNode', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.ProcessUnitNode', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END PROCESSUNITNODE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE RELATEDATAEXTERNAL
+    (
+        INUEXTERNALID       IN       WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUINTERFACEID      IN       WF_INTERFACE_CONFIG.INTERFACE_CONFIG_ID%TYPE,
+        INUPLANID           IN       WF_INSTANCE.PLAN_ID%TYPE,
+        ISBFLOWTAGNAME      IN       WF_INSTANCE.TAG_NAME%TYPE
+    )
+    IS
+        RCDATAEXTERNAL      DAWF_DATA_EXTERNAL.STYWF_DATA_EXTERNAL;
+        NUPACKAGEID         MO_PACKAGES.PACKAGE_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.RelateDataExternal'||CHR(10)||
+                       'ExternalId          ['||INUEXTERNALID  ||']'||CHR(10)||
+                       'InterfaceId         ['||INUINTERFACEID ||']', 10);
+
+        
+        IF (INUINTERFACEID = CNUINTERFACE_PACKAGE) THEN     
+            NUPACKAGEID := INUEXTERNALID;
+        ELSIF (INUINTERFACEID = CNUINTERFACE_MOTIVE) THEN   
+            NUPACKAGEID := DAMO_MOTIVE.FNUGETPACKAGE_ID(INUEXTERNALID);
+        END IF;
+
+        
+        RCDATAEXTERNAL.PLAN_ID          := INUPLANID;
+        RCDATAEXTERNAL.PACK_TYPE_TAG    := DAMO_PACKAGES.FSBGETTAG_NAME(NUPACKAGEID);
+        RCDATAEXTERNAL.PRODUCT_TYPE_TAG := NULL;
+        RCDATAEXTERNAL.UNIT_TYPE_ID     := NULL;
+        RCDATAEXTERNAL.PACKAGE_ID       := NUPACKAGEID;
+        RCDATAEXTERNAL.FLOW_TAG_NAME    := ISBFLOWTAGNAME;
+        RCDATAEXTERNAL.EXPIRED_DATA     := GE_BOCONSTANTS.CSBNO;
+        
+        UT_TRACE.TRACE('PlanId              ['||INUPLANID       ||']'||CHR(10)||
+                       'FlowTagName         ['||ISBFLOWTAGNAME  ||']'||CHR(10)||
+                       'PackageId           ['||NUPACKAGEID     ||']'||CHR(10)||
+                       'PackTagName         ['||RCDATAEXTERNAL.PACK_TYPE_TAG||']', 5);
+
+        
+        DAWF_DATA_EXTERNAL.INSRECORD(RCDATAEXTERNAL);
+        UT_TRACE.TRACE('END PS_BOPlanCreation.RelateDataExternal', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.RelateDataExternal', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.RelateDataExternal', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END RELATEDATAEXTERNAL;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE RELATEINSTANCEEQUIV
+    (
+        INUEXTERNALID       IN     WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID         IN     GE_ENTITY.ENTITY_ID%TYPE,
+        INUATTRIEQUIVID     IN     WF_ATTRIBUTES_EQUIV.ATTRIBUTES_EQUIV_ID%TYPE,
+        INUPLANID           IN     WF_INSTANCE.PLAN_ID%TYPE
+    )
+    IS
+        RCINSTANCEEQUIV     DAWF_INSTANCE_EQUIV.STYWF_INSTANCE_EQUIV;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.RelateInstanceEquiv', 10);
+
+        RCINSTANCEEQUIV.INSTANCE_ID         := INUPLANID;
+        RCINSTANCEEQUIV.ATTRIBUTES_EQUIV_ID := INUATTRIEQUIVID;
+        RCINSTANCEEQUIV.EXTERNAL_ID         := INUEXTERNALID;
+        RCINSTANCEEQUIV.ENTITY_ID           := INUENTITYID;
+        RCINSTANCEEQUIV.EXPIRED_DATA        := GE_BOCONSTANTS.CSBNO;
+        
+        UT_TRACE.TRACE('instance_id         ['||RCINSTANCEEQUIV.INSTANCE_ID        ||']'||CHR(10)||
+                       'attributes_equiv_id ['||RCINSTANCEEQUIV.ATTRIBUTES_EQUIV_ID||']'||CHR(10)||
+                       'external_id         ['||RCINSTANCEEQUIV.EXTERNAL_ID        ||']'||CHR(10)||
+                       'entity_id           ['||RCINSTANCEEQUIV.ENTITY_ID          ||']'||CHR(10)||
+                       'expired_data        ['||RCINSTANCEEQUIV.EXPIRED_DATA       ||']', 5);
+
+        DAWF_INSTANCE_EQUIV.INSRECORD(RCINSTANCEEQUIV);
+        UT_TRACE.TRACE('END PS_BOPlanCreation.RelateInstanceEquiv', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.RelateInstanceEquiv', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.RelateInstanceEquiv', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END RELATEINSTANCEEQUIV;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE RELATEENTITYPROCESS
+    (
+        INUEXTERNALID       IN       WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID         IN       GE_ENTITY.ENTITY_ID%TYPE,
+        INUPLANID           IN       WF_INSTANCE.PLAN_ID%TYPE
+    )
+    IS
+        RCENTITYPROCESS         DAWF_ENTITY_PROCESS.STYWF_ENTITY_PROCESS;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.RelateEntityProcess'||CHR(10)||
+                       'external_id         ['||INUEXTERNALID     ||']'||CHR(10)||
+                       'entity_id           ['||INUENTITYID       ||']'||CHR(10)||
+                       'plan_id             ['||INUPLANID         ||']', 10);
+
+        RCENTITYPROCESS.ENTITY_PROCESS_ID := WF_BOSEQUENCES.FNUSEQ_WF_ENTITY_PROCESS;
+        RCENTITYPROCESS.PROCESS_ID        := WF_BOSEQUENCES.FNUSEQ_WF_PROCESS_ID;
+        RCENTITYPROCESS.PLAN_ID           := INUPLANID;
+        RCENTITYPROCESS.EXTERNAL_ID       := INUEXTERNALID;
+        RCENTITYPROCESS.ENTITY_ID         := INUENTITYID;
+        RCENTITYPROCESS.STATUS_ID         := CSBACTIVE_TASK;
+        RCENTITYPROCESS.EXPIRED_DATA      := GE_BOCONSTANTS.CSBNO;
+        UT_TRACE.TRACE('entity_process_id   ['||RCENTITYPROCESS.ENTITY_PROCESS_ID ||']'||CHR(10)||
+                       'process_id          ['||RCENTITYPROCESS.PROCESS_ID        ||']'||CHR(10)||
+                       'status_id           ['||RCENTITYPROCESS.STATUS_ID         ||']'||CHR(10)||
+                       'expired_data        ['||RCENTITYPROCESS.EXPIRED_DATA      ||']', 10);
+
+        DAWF_ENTITY_PROCESS.INSRECORD(RCENTITYPROCESS);
+        UT_TRACE.TRACE('END PS_BOPlanCreation.RelateEntityProcess', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.RelateEntityProcess', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.RelateEntityProcess', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END RELATEENTITYPROCESS;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ASSOCIATEPLAN
+    (
+        INUEXTERNALID       IN      WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID         IN      GE_ENTITY.ENTITY_ID%TYPE,
+        INUINTERFACEID      IN      WF_INTERFACE_CONFIG.INTERFACE_CONFIG_ID%TYPE,
+        INUATTRIEQUIVID     IN      WF_ATTRIBUTES_EQUIV.ATTRIBUTES_EQUIV_ID%TYPE,
+        INUPLANID           IN      WF_INSTANCE.PLAN_ID%TYPE,
+        ISBFLOWTAGNAME      IN      WF_INSTANCE.TAG_NAME%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.AssociatePlan', 10);
+
+        
+        RELATEDATAEXTERNAL
+        (
+            INUEXTERNALID,
+            INUINTERFACEID,
+            INUPLANID,
+            ISBFLOWTAGNAME
+        );
+        
+        
+        RELATEINSTANCEEQUIV
+        (
+            INUEXTERNALID,
+            INUENTITYID,
+            INUATTRIEQUIVID,
+            INUPLANID
+        );
+        
+        
+        RELATEENTITYPROCESS
+        (
+            INUEXTERNALID,
+            INUENTITYID,
+            INUPLANID
+        );
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.AssociatePlan', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.AssociatePlan', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.AssociatePlan', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ASSOCIATEPLAN;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PLANCREATION
+    (
+        INUEXTERNALID       IN            WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID         IN            GE_ENTITY.ENTITY_ID%TYPE,
+        INUINTERFACEID      IN            WF_INTERFACE_CONFIG.INTERFACE_CONFIG_ID%TYPE,
+        ISBTAGWORKFLOW      IN            WF_FLOW.TAG_NAME%TYPE,
+        INUATTRIEQUIVID     IN            WF_ATTRIBUTES_EQUIV.ATTRIBUTES_EQUIV_ID%TYPE,
+        ONUPLANID           OUT           WF_INSTANCE.PLAN_ID%TYPE,
+        ONUERRORCODE        OUT           GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE     OUT NOCOPY    GE_ERROR_LOG.DESCRIPTION%TYPE
+    )
+    IS
+        XLMAINNODE          DBMS_XMLDOM.DOMNODE;
+        NUPLANID            WF_INSTANCE.PLAN_ID%TYPE;
+        XLFLOWDOC           DBMS_XMLDOM.DOMDOCUMENT;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.PlanCreation'  ||CHR(10)||
+                       'ExternalId          ['||INUEXTERNALID  ||']'||CHR(10)||
+                       'EntityId            ['||INUENTITYID    ||']'||CHR(10)||
+                       'InterfaceId         ['||INUINTERFACEID ||']'||CHR(10)||
+                       'AttriEquivId        ['||INUATTRIEQUIVID||']', 10);
+
+        
+        GETMAINNODEFROMFLOWXML(ISBTAGWORKFLOW, XLMAINNODE, XLFLOWDOC);
+
+        
+        PROCESSUNITNODE
+        (
+            INUEXTERNALID, INUENTITYID, XLMAINNODE, 
+            NULL, NULL, NULL, NULL, NULL, NULL,     
+            NUPLANID                                
+        );
+        UT_TRACE.TRACE('Plan created        ['||NUPLANID||']', 5);
+        
+        XMLDOM.FREEDOCUMENT(XLFLOWDOC);
+        
+        
+        ASSOCIATEPLAN
+        (
+            INUEXTERNALID,
+            INUENTITYID,
+            INUINTERFACEID,
+            INUATTRIEQUIVID,
+            NUPLANID,
+            ISBTAGWORKFLOW
+        );
+
+        ONUPLANID := NUPLANID;
+        UT_TRACE.TRACE('END PS_BOPlanCreation.PlanCreation, [onuPlanId]: '||ONUPLANID, 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.PlanCreation', 5);
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.PlanCreation', 5);
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    END PLANCREATION;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE EXECUTEPLANPRERULE
+    (
+        INUPLANID           IN             WF_INSTANCE.PLAN_ID%TYPE,
+        ONUERRORCODE        OUT            GE_MESSAGE.MESSAGE_ID%TYPE,
+        OSBERRORMESSAGE     OUT NOCOPY     GE_MESSAGE.DESCRIPTION%TYPE
+    )
+    IS
+        SBPRERULENAME       WF_INSTANCE.PRE_RULE_NAME%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.ExecutePlanPreRule', 10);
+
+        
+        SBPRERULENAME := DAWF_INSTANCE.FSBGETPRE_RULE_NAME(INUPLANID);
+        UT_TRACE.TRACE('PreRuleName         ['||SBPRERULENAME||']', 10);
+
+        
+        IF (SBPRERULENAME IS NOT NULL) THEN
+            
+            WF_BORULEMANAGER.EXECUTERULE
+            (
+                INUPLANID,                              
+                SBPRERULENAME, CNUPRE_RULE_TYPE,        
+                ONUERRORCODE,  OSBERRORMESSAGE          
+            );
+        END IF;
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.ExecutePlanPreRule', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.ExecutePlanPreRule', 5);
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.ExecutePlanPreRule', 5);
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    END EXECUTEPLANPRERULE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ENQUEUEPLAN
+    (
+        INUPLANID           IN             WF_INSTANCE.PLAN_ID%TYPE,
+        ONUERRORCODE        OUT            GE_MESSAGE.MESSAGE_ID%TYPE,
+        OSBERRORMESSAGE     OUT NOCOPY     GE_MESSAGE.DESCRIPTION%TYPE
+    )
+    IS
+        RCINSTANCE          PS_BCPLANCREATION.TYRCINSTANCE;
+        NUPROCESSID         WF_ENTITY_PROCESS.PROCESS_ID%TYPE;
+        RWMEESSAGEHANDLE    GE_BOQUEUEMANAGER_WF.STYRAW(16);
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.EnqueuePlan'||CHR(10)||
+                       'PlanId              ['||INUPLANID||']', 10);
+
+        
+        EXECUTEPLANPRERULE(INUPLANID, ONUERRORCODE, OSBERRORMESSAGE);
+
+        
+        IF (ONUERRORCODE IS NOT NULL) THEN
+            UT_TRACE.TRACE('Error executing the rule.', 5);
+            RETURN;
+        END IF;
+        
+        
+        DAWF_INSTANCE.UPDSTATUS_ID(INUPLANID, WF_BOCONSTANTS.CNUWAITING_RESULTS);
+        
+        
+        RCINSTANCE := PS_BCPLANCREATION.FRCGETINSTANCEBYPLAN(INUPLANID, WF_BOCONSTANTS.CNUSTART);
+        UT_TRACE.TRACE('Instance START      ['||RCINSTANCE.NUINSTANCEID||']'||CHR(10)||
+                       'ExternalId          ['||RCINSTANCE.NUEXTERNALID||']'||CHR(10)||
+                       'EntityId            ['||RCINSTANCE.NUENTITYID  ||']', 10);
+
+        
+        IF(RCINSTANCE.NUINSTANCEID IS NULL) THEN
+            
+            GE_BOERRORS.SETERRORCODE(CNUERR_NOT_INIT_PLAN);
+        END IF;
+
+        
+        NUPROCESSID := PS_BCPLANCREATION.FNUGETPROCESSID(RCINSTANCE.NUEXTERNALID, RCINSTANCE.NUENTITYID);
+        UT_TRACE.TRACE('PrevInstanceId      ['||INUPLANID                  ||']'||CHR(10)||
+                       'ExecutionId         ['||NUPROCESSID                ||']'||CHR(10)||
+                       'StatusId            ['||WF_BOCONSTANTS.CNUINITIATED||']', 10);
+
+        
+        PS_BCPLANCREATION.UPDINFOINSTANCE
+        (
+            RCINSTANCE.NUINSTANCEID,            
+            INUPLANID,                          
+            NUPROCESSID,                        
+            WF_BOCONSTANTS.CNUINITIATED         
+        );
+
+        
+        DAWF_INSTANCE.UPDINITIAL_DATE(INUPLANID, UT_DATE.FDTSYSDATE);
+        
+        
+        GE_BOQUEUEMANAGER_WF.ENQUEUENEWWFENGINE
+        (
+            RCINSTANCE.NUINSTANCEID,            
+            INUPLANID,                          
+            CNUDELAY_TIME,                      
+            TO_CHAR(RCINSTANCE.NUINSTANCEID),   
+            RWMEESSAGEHANDLE                    
+        );
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.EnqueuePlan', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.EnqueuePlan', 5);
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.EnqueuePlan', 5);
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    END ENQUEUEPLAN;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETENTITYANDEXTERNAL
+    (
+        INUINSTANCEID     IN             WF_INSTANCE.INSTANCE_ID%TYPE,
+        OSBEXTERNALID     OUT NOCOPY     WF_INSTANCE.EXTERNAL_ID%TYPE,
+        ONUENTITYID       OUT            WF_INSTANCE.ENTITY_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.GetEntityAndExternal'||CHR(10)||
+                       'InstanceId          ['||INUINSTANCEID||']', 10);
+
+        PS_BCPLANCREATION.GETENTITYANDEXTERNAL(INUINSTANCEID, OSBEXTERNALID, ONUENTITYID);
+
+        UT_TRACE.TRACE('ExternalId          ['||OSBEXTERNALID||']'||CHR(10)||
+                       'EntityId            ['||ONUENTITYID  ||']'||CHR(10)||
+                       'END PS_BOPlanCreation.GetEntityAndExternal', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.GetEntityAndExternal', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.GetEntityAndExternal', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETENTITYANDEXTERNAL;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRCBUILDERINSTANCE
+    (
+        ISBSUBPLANTAGNAME     IN     WF_INSTANCE.TAG_NAME%TYPE,
+        ISBDESCRIPTION        IN     WF_INSTANCE.DESCRIPTION%TYPE,
+        INUPLANID             IN     WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID           IN     WF_INSTANCE.PARENT_ID%TYPE,
+        ISBGEOMETRY           IN     WF_INSTANCE.GEOMETRY%TYPE,
+        INUEXTERNALID         IN     WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID           IN     WF_INSTANCE.ENTITY_ID%TYPE,
+        INUMODULEID           IN     WF_INSTANCE.MODULE_ID%TYPE,
+        INUROOTEXTERNALID     IN     WF_INSTANCE.ROOT_EXTERNAL_ID%TYPE,
+        INUROOTENTITYID       IN     WF_INSTANCE.ROOT_ENTITY_ID%TYPE,
+        ISBPAREXTERNALID      IN     WF_INSTANCE.PARENT_EXTERNAL_ID%TYPE,
+        INUPAREXTENTITYID     IN     WF_INSTANCE.PAR_EXT_ENTITY_ID%TYPE,
+        INUNODETYPEID         IN     WF_INSTANCE.NODE_TYPE_ID%TYPE
+    )
+    RETURN DAWF_INSTANCE.STYWF_INSTANCE
+    IS
+        RCINSTANCE          DAWF_INSTANCE.STYWF_INSTANCE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.frcBuilderInstance', 10);
+        
+        RCINSTANCE.INSTANCE_ID        := WF_BOCNFSEQUENCES.FNUSEQ_WF_INSTANCE;
+        RCINSTANCE.TAG_NAME           := ISBSUBPLANTAGNAME;
+        RCINSTANCE.DESCRIPTION        := ISBDESCRIPTION;
+        RCINSTANCE.PLAN_ID            := INUPLANID;
+        RCINSTANCE.PARENT_ID          := INUPARENTID;
+        RCINSTANCE.STATUS_ID          := WF_BOCONSTANTS.CNUCREATED;
+        RCINSTANCE.GEOMETRY           := ISBGEOMETRY;
+        RCINSTANCE.TRY_NUMBER         := 0;
+        RCINSTANCE.MULTI_INSTANCE     := CNUMULTI_UNIQUE;
+        RCINSTANCE.MODULE_ID          := INUMODULEID;
+        RCINSTANCE.EXTERNAL_ID        := INUEXTERNALID;
+        RCINSTANCE.PARENT_EXTERNAL_ID := ISBPAREXTERNALID;
+        RCINSTANCE.ENTITY_ID          := INUENTITYID;
+        RCINSTANCE.PAR_EXT_ENTITY_ID  := INUPAREXTENTITYID;
+        RCINSTANCE.ROOT_EXTERNAL_ID   := INUROOTEXTERNALID;
+        RCINSTANCE.ROOT_ENTITY_ID     := INUROOTENTITYID;
+        RCINSTANCE.NODE_TYPE_ID       := INUNODETYPEID;
+        RCINSTANCE.CATEGORY_ID        := WF_BOCONSTANTS.CNUMAINPROCESS;
+        RCINSTANCE.EXPIRED_DATA       := GE_BOCONSTANTS.CSBNO;
+        RCINSTANCE.DINAMYC_PROCESS    := GE_BOCONSTANTS.CSBNO;
+
+        UT_TRACE.TRACE('InstanceId          ['||RCINSTANCE.INSTANCE_ID       ||']'||CHR(10)||
+                       'SubPlanTagName      ['||RCINSTANCE.TAG_NAME          ||']'||CHR(10)||
+                       'Description         ['||RCINSTANCE.DESCRIPTION       ||']'||CHR(10)||
+                       'PlanId              ['||RCINSTANCE.PLAN_ID           ||']'||CHR(10)||
+                       'ParentId            ['||RCINSTANCE.PARENT_ID         ||']', 10);
+        UT_TRACE.TRACE('StatusId            ['||RCINSTANCE.STATUS_ID         ||']'||CHR(10)||
+                       'Geometry            ['||RCINSTANCE.GEOMETRY          ||']'||CHR(10)||
+                       'TryNumber           ['||RCINSTANCE.TRY_NUMBER        ||']'||CHR(10)||
+                       'MultiInstance       ['||RCINSTANCE.MULTI_INSTANCE    ||']'||CHR(10)||
+                       'ModuleId            ['||RCINSTANCE.MODULE_ID         ||']', 10);
+        UT_TRACE.TRACE('ExternalId          ['||RCINSTANCE.EXTERNAL_ID       ||']'||CHR(10)||
+                       'ParentExternalId    ['||RCINSTANCE.PARENT_EXTERNAL_ID||']'||CHR(10)||
+                       'EntityId            ['||RCINSTANCE.ENTITY_ID         ||']'||CHR(10)||
+                       'ParExtEntityId      ['||RCINSTANCE.PAR_EXT_ENTITY_ID ||']'||CHR(10)||
+                       'RootExternalId      ['||RCINSTANCE.ROOT_EXTERNAL_ID  ||']', 10);
+        UT_TRACE.TRACE('RootEntityId        ['||RCINSTANCE.ROOT_ENTITY_ID    ||']'||CHR(10)||
+                       'NodeTypeId          ['||RCINSTANCE.NODE_TYPE_ID      ||']'||CHR(10)||
+                       'CategoryId          ['||RCINSTANCE.CATEGORY_ID       ||']'||CHR(10)||
+                       'ExpiredData         ['||RCINSTANCE.EXPIRED_DATA      ||']'||CHR(10)||
+                       'DinamycProcess      ['||RCINSTANCE.DINAMYC_PROCESS   ||']'||CHR(10)||
+                       'END PS_BOPlanCreation.frcBuilderInstance', 10);
+        RETURN RCINSTANCE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.frcBuilderInstance', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.frcBuilderInstance', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FRCBUILDERINSTANCE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBGETDESCNODECHILD
+    (
+        INUPARENTID         IN          WF_INSTANCE.PARENT_ID%TYPE,
+        INUNODETYPEID       IN          WF_INSTANCE.NODE_TYPE_ID%TYPE
+    )
+    RETURN WF_INSTANCE.DESCRIPTION%TYPE
+    IS
+        SBDESCRIPTION       WF_INSTANCE.DESCRIPTION%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.fsbGetDescNodeChild'||CHR(10)||
+                       'ParentId        ['||INUPARENTID  ||']'||CHR(10)||
+                       'NodeTypeId      ['||INUNODETYPEID||']', 10);
+        
+        SBDESCRIPTION := PS_BCPLANCREATION.FSBGETDESCNODECHILD(INUPARENTID, INUNODETYPEID);
+        
+        UT_TRACE.TRACE('DescInstance    ['||SBDESCRIPTION||']'||CHR(10)||
+                       'END PS_BOPlanCreation.fsbGetDescNodeChild', 10);
+        RETURN SBDESCRIPTION;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.fsbGetDescNodeChild', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.fsbGetDescNodeChild', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END FSBGETDESCNODECHILD;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATESUBPLANDEFAULT
+    (
+        ISBSUBPLANTAGNAME     IN     WF_INSTANCE.TAG_NAME%TYPE,
+        INUPLANID             IN     WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID           IN     WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID         IN     WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYID           IN     WF_INSTANCE.ENTITY_ID%TYPE,
+        INUROOTEXTERNALID     IN     WF_INSTANCE.ROOT_EXTERNAL_ID%TYPE,
+        INUROOTENTITYID       IN     WF_INSTANCE.ROOT_ENTITY_ID%TYPE,
+        ISBPAREXTERNALID      IN     WF_INSTANCE.PARENT_EXTERNAL_ID%TYPE,
+        INUPAREXTENTITYID     IN     WF_INSTANCE.PAR_EXT_ENTITY_ID%TYPE,
+        ONUSUBPLANID          OUT    WF_INSTANCE.INSTANCE_ID%TYPE
+    )
+    IS
+        SBGROUPDESC             WF_INSTANCE.DESCRIPTION%TYPE;
+        NUMODULEID              WF_INSTANCE.MODULE_ID%TYPE;
+        SBINSTASTARTDESC        WF_INSTANCE.DESCRIPTION%TYPE;
+        SBINSTAFINALDESC        WF_INSTANCE.DESCRIPTION%TYPE;
+        SBINSTASTARTTAGNAME     WF_INSTANCE.TAG_NAME%TYPE;
+        SBINSTAFINALTAGNAME     WF_INSTANCE.TAG_NAME%TYPE;
+        TBINSTANCES             DAWF_INSTANCE.TYTBWF_INSTANCE;
+        NUIDXINSTA              WF_INSTANCE.INSTANCE_ID%TYPE := 0;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.CreateSubplanDefault'||CHR(10)||
+                       'SubPlanTagName      ['||ISBSUBPLANTAGNAME||']'||CHR(10)||
+                       'PlanId              ['||INUPLANID        ||']'||CHR(10)||
+                       'ParentId            ['||INUPARENTID      ||']'||CHR(10)||
+                       'ExternalId          ['||ISBEXTERNALID    ||']', 10);
+        UT_TRACE.TRACE('EntityId            ['||INUENTITYID      ||']'||CHR(10)||
+                       'RootExternalId      ['||INUROOTEXTERNALID||']'||CHR(10)||
+                       'RootEntityId        ['||INUROOTENTITYID  ||']'||CHR(10)||
+                       'ParExternalId       ['||ISBPAREXTERNALID ||']'||CHR(10)||
+                       'ParExtEntityId      ['||INUPAREXTENTITYID||']', 10);
+        
+        
+        SBGROUPDESC := DAGE_MESSAGE.FSBGETDESCRIPTION(CNUGROUP_DESC);
+
+        
+        NUMODULEID  := DAWF_INSTANCE.FNUGETMODULE_ID(INUPARENTID);
+        UT_TRACE.TRACE('GroupDesc           ['||SBGROUPDESC||']'||CHR(10)||
+                       'ModuleId            ['||NUMODULEID ||']', 10);
+        
+        
+        TBINSTANCES(NUIDXINSTA) := FRCBUILDERINSTANCE(ISBSUBPLANTAGNAME, SBGROUPDESC, INUPLANID,
+                                                      INUPARENTID, NULL, ISBEXTERNALID, INUENTITYID,
+                                                      NUMODULEID,INUROOTEXTERNALID,INUROOTENTITYID,
+                                                      ISBPAREXTERNALID, INUPAREXTENTITYID,
+                                                      WF_BOCONSTANTS.CNUROOT);
+
+
+        
+        SBINSTASTARTDESC := FSBGETDESCNODECHILD(INUPARENTID, WF_BOCONSTANTS.CNUSTART);
+        SBINSTAFINALDESC := FSBGETDESCNODECHILD(INUPARENTID, WF_BOCONSTANTS.CNUEND);
+
+        
+        SBINSTASTARTTAGNAME := ISBSUBPLANTAGNAME||CSBSEPARATOR||WF_BOCONSTANTS.CNUSTART;
+        SBINSTAFINALTAGNAME := ISBSUBPLANTAGNAME||CSBSEPARATOR||WF_BOCONSTANTS.CNUEND;
+
+        UT_TRACE.TRACE('InstaStartDesc      ['||SBINSTASTARTDESC   ||']'||CHR(10)||
+                       'InstaFinalDesc      ['||SBINSTAFINALDESC   ||']'||CHR(10)||
+                       'InstaStartTagName   ['||SBINSTASTARTTAGNAME||']'||CHR(10)||
+                       'InstaFinalTagName   ['||SBINSTAFINALTAGNAME||']', 5);
+
+        
+        TBINSTANCES(NUIDXINSTA+1) := FRCBUILDERINSTANCE(SBINSTASTARTTAGNAME,
+                                                        SBINSTASTARTDESC, INUPLANID,
+                                                        TBINSTANCES(NUIDXINSTA).INSTANCE_ID,
+                                                        CSBGEOMETRY_START, ISBEXTERNALID, INUENTITYID,
+                                                        NUMODULEID,INUROOTEXTERNALID,INUROOTENTITYID,
+                                                        TBINSTANCES(NUIDXINSTA).EXTERNAL_ID,
+                                                        TBINSTANCES(NUIDXINSTA).ENTITY_ID,
+                                                        WF_BOCONSTANTS.CNUSTART);
+
+        
+        TBINSTANCES(NUIDXINSTA+2) := FRCBUILDERINSTANCE(SBINSTAFINALTAGNAME,
+                                                        SBINSTAFINALDESC, INUPLANID,
+                                                        TBINSTANCES(NUIDXINSTA).INSTANCE_ID,
+                                                        CSBGEOMETRY_END, ISBEXTERNALID, INUENTITYID,
+                                                        NUMODULEID,INUROOTEXTERNALID,INUROOTENTITYID,
+                                                        TBINSTANCES(NUIDXINSTA).EXTERNAL_ID,
+                                                        TBINSTANCES(NUIDXINSTA).ENTITY_ID,
+                                                        WF_BOCONSTANTS.CNUEND);
+        
+        DAWF_INSTANCE.INSRECORDS(TBINSTANCES);
+
+        ONUSUBPLANID := TBINSTANCES(NUIDXINSTA).INSTANCE_ID;
+        UT_TRACE.TRACE('SubPlanId           ['||ONUSUBPLANID||']'||CHR(10)||
+                       'END PS_BOPlanCreation.CreateSubplanDefault', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.CreateSubplanDefault', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.CreateSubplanDefault', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END CREATESUBPLANDEFAULT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBCALGEOMETRYBYPOS
+    (
+        INUXPOSITION     IN     NUMBER,
+        INUYPOSITION     IN     NUMBER
+    )
+    RETURN WF_INSTANCE.GEOMETRY%TYPE
+    IS
+        SBGEOMETRY    WF_INSTANCE.GEOMETRY%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.fsbCalGeometryByPos'||CHR(10)||
+                       'XPosition           ['||INUXPOSITION||']'||CHR(10)||
+                       'YPosition           ['||INUYPOSITION||']', 10);
+
+        SBGEOMETRY := (INUXPOSITION + CNUSUBPROC_SEPARATION) || CSBCHAR_RETURN ||
+                      (INUYPOSITION - 4) || CSBCHAR_RETURN || CSBSEC_SUBPROC_SIZE;
+
+        UT_TRACE.TRACE('Geometry            ['||SBGEOMETRY  ||']'||CHR(10)||
+                       'END PS_BOPlanCreation.fsbCalGeometryByPos', 10);
+        RETURN SBGEOMETRY;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.fsbCalGeometryByPos', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.fsbCalGeometryByPos', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FSBCALGEOMETRYBYPOS;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDINFOSUBPLAN
+    (
+        INUINSTANCEID        IN     WF_INSTANCE.INSTANCE_ID%TYPE,
+        ISBGEOMETRY          IN     WF_INSTANCE.GEOMETRY%TYPE,
+        INUNODETYPE          IN     WF_INSTANCE.NODE_TYPE_ID%TYPE,
+        ISBMULTIINSTANCE     IN     WF_INSTANCE.MULTI_INSTANCE%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.UpdInfoSubPlan' ||CHR(10)||
+                       'InstanceId          ['||INUINSTANCEID   ||']'||CHR(10)||
+                       'Geometry            ['||ISBGEOMETRY     ||']'||CHR(10)||
+                       'NodeType            ['||INUNODETYPE     ||']'||CHR(10)||
+                       'MultiInstance       ['||ISBMULTIINSTANCE||']', 10);
+        
+        PS_BCPLANCREATION.UPDINFOSUBPLAN(INUINSTANCEID, ISBGEOMETRY,
+                                         INUNODETYPE, ISBMULTIINSTANCE);
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.UpdInfoSubPlan', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.UpdInfoSubPlan', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.UpdInfoSubPlan', 5);
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDINFOSUBPLAN;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATESUBPLANSEQUECE
+    (
+        ISBSUBPLANTAGNAME     IN            WF_INSTANCE.TAG_NAME%TYPE,
+        INUPLANID             IN            WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID           IN            WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID         IN            WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYTOINHEREXTID IN            WF_INSTANCE.ENTITY_ID%TYPE,
+        INUXPOSITION          IN            NUMBER,
+        INUYPOSITION          IN            NUMBER,
+        ONUSUBPLANID          OUT NOCOPY    WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUERRORCODE          OUT NOCOPY    GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE       OUT NOCOPY    GE_ERROR_LOG.DESCRIPTION%TYPE
+    )
+    IS
+        XLMAINNODE            DBMS_XMLDOM.DOMNODE;
+        SBPAREXTERNALID       WF_INSTANCE.PARENT_EXTERNAL_ID%TYPE;
+        NUPARENTITYID         WF_INSTANCE.PAR_EXT_ENTITY_ID%TYPE;
+        SBROOTEXTERNALID      WF_INSTANCE.ROOT_EXTERNAL_ID%TYPE;
+        NUROOTENTITYID        WF_INSTANCE.ROOT_ENTITY_ID%TYPE;
+        SBGEOMETRY            WF_INSTANCE.GEOMETRY%TYPE;
+        XLFLOWDOC               DBMS_XMLDOM.DOMDOCUMENT;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.CreateSubPlanSequece'||CHR(10)||
+                       'SubPlanTagName      ['||ISBSUBPLANTAGNAME||']'||CHR(10)||
+                       'PlanId              ['||INUPLANID        ||']'||CHR(10)||
+                       'ParentId            ['||INUPARENTID      ||']', 10);
+        UT_TRACE.TRACE('inuEntityToInherExtId['||INUENTITYTOINHEREXTID ||']'||CHR(10)||
+                       'ExternalId          ['||ISBEXTERNALID    ||']'||CHR(10)||
+                       'XPosition           ['||INUXPOSITION     ||']'||CHR(10)||
+                       'YPosition           ['||INUYPOSITION     ||']', 10);
+
+        
+        GETENTITYANDEXTERNAL(INUPLANID, SBROOTEXTERNALID, NUROOTENTITYID);
+        UT_TRACE.TRACE('RootExternalId      ['||SBROOTEXTERNALID  ||']'||CHR(10)||
+                       'RootEntityId        ['||NUROOTENTITYID    ||']', 10);
+
+        
+        GETENTITYANDEXTERNAL(INUPARENTID, SBPAREXTERNALID, NUPARENTITYID);
+        UT_TRACE.TRACE('ParExternalId       ['||SBPAREXTERNALID  ||']'||CHR(10)||
+                       'ParEntityId         ['||NUPARENTITYID    ||']', 10);
+
+        
+        IF (FBLEXISTFLOWTAGNAME(ISBSUBPLANTAGNAME)) THEN
+
+            
+            GETMAINNODEFROMFLOWXML(ISBSUBPLANTAGNAME, XLMAINNODE, XLFLOWDOC);
+
+            
+            PROCESSUNITNODE
+            (
+                ISBEXTERNALID, INUENTITYTOINHEREXTID, XLMAINNODE,
+                INUPLANID, INUPARENTID,
+                SBROOTEXTERNALID, NUROOTENTITYID,
+                SBPAREXTERNALID,  NUPARENTITYID,
+                ONUSUBPLANID
+            );
+        ELSE
+            
+            CREATESUBPLANDEFAULT(ISBSUBPLANTAGNAME,
+                                 INUPLANID, INUPARENTID,
+                                 SBPAREXTERNALID,  NUPARENTITYID,
+                                 SBROOTEXTERNALID, NUROOTENTITYID,
+                                 SBPAREXTERNALID,  NUPARENTITYID,
+                                 ONUSUBPLANID);
+        END IF;
+        UT_TRACE.TRACE('Subplan created     ['||ONUSUBPLANID||']', 10);
+
+        
+        SBGEOMETRY := FSBCALGEOMETRYBYPOS(INUXPOSITION, INUYPOSITION);
+        UT_TRACE.TRACE('Geometry calculated ['||SBGEOMETRY||']', 10);
+
+        
+        UPDINFOSUBPLAN
+        (
+            ONUSUBPLANID,
+            SBGEOMETRY,                 
+            WF_BOCONSTANTS.CNUNORMAL,   
+            CNUMULTI_UNIQUE             
+        );
+        
+        XMLDOM.FREEDOCUMENT(XLFLOWDOC);
+        UT_TRACE.TRACE('END PS_BOPlanCreation.CreateSubPlanSequece', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.CreateSubPlanSequece', 5);
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.CreateSubPlanSequece', 5);
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    END CREATESUBPLANSEQUECE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBCALGEOMETRYBYCONSE
+    (
+        INUCONSECUTIVE      IN      PS_PROCESS_COMPTYPE.SEQUENCE_%TYPE,
+        INUMIDPOSITION      IN      NUMBER
+    )
+    RETURN WF_INSTANCE.GEOMETRY%TYPE
+    IS
+        SBGEOMETRY    WF_INSTANCE.GEOMETRY%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.fsbCalGeometryByConse'||CHR(10)||
+                       'Consecutive         ['||INUCONSECUTIVE||']'||CHR(10)||
+                       'MidPosition         ['||INUMIDPOSITION||']', 10);
+
+        SBGEOMETRY := INUMIDPOSITION || GE_BOCONSTANTS.CSBENTER || INUCONSECUTIVE *
+                      CNUSUBPROC_SEPARATION || GE_BOCONSTANTS.CSBENTER ||
+                      CSBSUBPROCESS_SIZE;
+                      
+        UT_TRACE.TRACE('Geometry            ['||SBGEOMETRY||']'||CHR(10)||
+                       'END PS_BOPlanCreation.fsbCalGeometryByConse', 10);
+        RETURN SBGEOMETRY;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.fsbCalGeometryByConse', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.fsbCalGeometryByConse', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FSBCALGEOMETRYBYCONSE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATETRANSITION
+    (
+        INUORIGINID          IN      WF_INSTANCE_TRANS.ORIGIN_ID%TYPE,
+        INUTARGETID          IN      WF_INSTANCE_TRANS.TARGET_ID%TYPE,
+        ISBGEOMETRY          IN      WF_INSTANCE_TRANS.GEOMETRY%TYPE,
+        INUGROUPID           IN      WF_INSTANCE_TRANS.GROUP_ID%TYPE,
+        ISBEXPRESSION        IN      WF_INSTANCE_TRANS.EXPRESSION%TYPE,
+        INUEXPRESSIONTYPE    IN      WF_INSTANCE_TRANS.EXPRESSION_TYPE%TYPE,
+        ISBDESCRIPTION       IN      WF_INSTANCE_TRANS.DESCRIPTION%TYPE,
+        INUTRANSITIONTYPEID  IN      WF_INSTANCE_TRANS.TRANSITION_TYPE_ID%TYPE,
+        ISBORIGINAL          IN      WF_INSTANCE_TRANS.ORIGINAL%TYPE,
+        INUSTATUS            IN      WF_INSTANCE_TRANS.STATUS%TYPE
+    )
+    IS
+        RCTRANSITION        DAWF_INSTANCE_TRANS.STYWF_INSTANCE_TRANS;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.CreateTransition', 10);
+        
+        
+        RCTRANSITION.INST_TRAN_ID       := WF_BOCNFSEQUENCES.FNUSEQ_WF_INSTANCE_TRANS;
+        RCTRANSITION.ORIGIN_ID          := INUORIGINID;
+        RCTRANSITION.TARGET_ID          := INUTARGETID;
+        RCTRANSITION.GEOMETRY           := ISBGEOMETRY;
+        RCTRANSITION.GROUP_ID           := INUGROUPID;
+        RCTRANSITION.EXPRESSION         := ISBEXPRESSION;
+        RCTRANSITION.EXPRESSION_TYPE    := INUEXPRESSIONTYPE;
+        RCTRANSITION.DESCRIPTION        := ISBDESCRIPTION;
+        RCTRANSITION.TRANSITION_TYPE_ID := INUTRANSITIONTYPEID;
+        RCTRANSITION.ORIGINAL           := ISBORIGINAL;
+        RCTRANSITION.STATUS             := INUSTATUS;
+        RCTRANSITION.EXPIRED_DATA       := GE_BOCONSTANTS.CSBNO;
+        
+        UT_TRACE.TRACE('inst_tran_id        ['||RCTRANSITION.INST_TRAN_ID      ||']'||CHR(10)||
+                       'origin_id           ['||RCTRANSITION.ORIGIN_ID         ||']'||CHR(10)||
+                       'target_id           ['||RCTRANSITION.TARGET_ID         ||']'||CHR(10)||
+                       'geometry            ['||RCTRANSITION.GEOMETRY          ||']'||CHR(10)||
+                       'group_id            ['||RCTRANSITION.GROUP_ID          ||']'||CHR(10)||
+                       'expression          ['||RCTRANSITION.EXPRESSION        ||']', 10);
+        UT_TRACE.TRACE('expression_type     ['||RCTRANSITION.EXPRESSION_TYPE   ||']'||CHR(10)||
+                       'description         ['||RCTRANSITION.DESCRIPTION       ||']'||CHR(10)||
+                       'transTypeId         ['||RCTRANSITION.TRANSITION_TYPE_ID||']'||CHR(10)||
+                       'original            ['||RCTRANSITION.ORIGINAL          ||']'||CHR(10)||
+                       'status              ['||RCTRANSITION.STATUS            ||']'||CHR(10)||
+                       'expired_data        ['||RCTRANSITION.EXPIRED_DATA      ||']', 10);
+        
+        
+        DAWF_INSTANCE_TRANS.INSRECORD(RCTRANSITION);
+
+        UT_TRACE.TRACE('END PS_BOPlanCreation.CreateTransition', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.CreateTransition', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.CreateTransition', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CREATETRANSITION;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATESUBPLANPARALELL
+    (
+        ISBSUBPLANTAGNAME     IN            WF_INSTANCE.TAG_NAME%TYPE,
+        INUPLANID             IN            WF_INSTANCE.PLAN_ID%TYPE,
+        INUPARENTID           IN            WF_INSTANCE.PARENT_ID%TYPE,
+        ISBEXTERNALID         IN            WF_INSTANCE.EXTERNAL_ID%TYPE,
+        INUENTITYTOINHEREXTID IN            WF_INSTANCE.ENTITY_ID%TYPE,
+        INUCONSECUTIVE        IN            PS_PROCESS_COMPTYPE.SEQUENCE_%TYPE,
+        INUMIDPOSITION        IN            NUMBER,
+        INUSTARTINSTANCEID    IN            WF_INSTANCE.INSTANCE_ID%TYPE,
+        INUFINALINSTANCEID    IN            WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUSUBPLANID          OUT NOCOPY    WF_INSTANCE.INSTANCE_ID%TYPE,
+        ONUERRORCODE          OUT NOCOPY    GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        OSBERRORMESSAGE       OUT NOCOPY    GE_ERROR_LOG.DESCRIPTION%TYPE
+    )
+    IS
+        XLMAINNODE            DBMS_XMLDOM.DOMNODE;
+        SBPAREXTERNALID       WF_INSTANCE.PARENT_EXTERNAL_ID%TYPE;
+        NUPARENTITYID         WF_INSTANCE.PAR_EXT_ENTITY_ID%TYPE;
+        SBROOTEXTERNALID      WF_INSTANCE.ROOT_EXTERNAL_ID%TYPE;
+        NUROOTENTITYID        WF_INSTANCE.ROOT_ENTITY_ID%TYPE;
+        SBGEOMETRY            WF_INSTANCE.GEOMETRY%TYPE;
+        XLFLOWDOC             DBMS_XMLDOM.DOMDOCUMENT;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN PS_BOPlanCreation.CreateSubPlanParalell'||CHR(10)||
+                       'SubPlanTagName      ['||ISBSUBPLANTAGNAME ||']'||CHR(10)||
+                       'PlanId              ['||INUPLANID         ||']'||CHR(10)||
+                       'ParentId            ['||INUPARENTID       ||']'||CHR(10)||
+                       'ExternalId          ['||ISBEXTERNALID     ||']'||CHR(10)||
+                       'inuEntityToInherExtId['||INUENTITYTOINHEREXTID ||']', 10);
+        UT_TRACE.TRACE('Consecutive         ['||INUCONSECUTIVE    ||']'||CHR(10)||
+                       'MidPosition         ['||INUMIDPOSITION    ||']'||CHR(10)||
+                       'StartInstanceId     ['||INUSTARTINSTANCEID||']'||CHR(10)||
+                       'FinalInstanceId     ['||INUFINALINSTANCEID||']', 10);
+
+        
+        GETENTITYANDEXTERNAL(INUPLANID, SBROOTEXTERNALID, NUROOTENTITYID);
+        UT_TRACE.TRACE('RootExternalId      ['||SBROOTEXTERNALID  ||']'||CHR(10)||
+                       'RootEntityId        ['||NUROOTENTITYID    ||']', 10);
+
+        
+        GETENTITYANDEXTERNAL(INUPARENTID, SBPAREXTERNALID, NUPARENTITYID);
+        UT_TRACE.TRACE('ParExternalId       ['||SBPAREXTERNALID  ||']'||CHR(10)||
+                       'ParEntityId         ['||NUPARENTITYID    ||']', 10);
+
+        
+        GETMAINNODEFROMFLOWXML(ISBSUBPLANTAGNAME, XLMAINNODE, XLFLOWDOC);
+        
+        
+        PROCESSUNITNODE
+        (
+            ISBEXTERNALID, INUENTITYTOINHEREXTID, XLMAINNODE,
+            INUPLANID, INUPARENTID,
+            SBROOTEXTERNALID, NUROOTENTITYID,
+            SBPAREXTERNALID,  NUPARENTITYID,
+            ONUSUBPLANID
+        );
+        UT_TRACE.TRACE('Subplan created     ['||ONUSUBPLANID||']', 10);
+
+        
+        SBGEOMETRY := FSBCALGEOMETRYBYCONSE(INUCONSECUTIVE, INUMIDPOSITION);
+        UT_TRACE.TRACE('Geometry calculated ['||SBGEOMETRY||']', 10);
+
+        
+        UPDINFOSUBPLAN
+        (
+            ONUSUBPLANID,
+            SBGEOMETRY,                 
+            WF_BOCONSTANTS.CNUNORMAL,   
+            CNUMULTI_UNIQUE             
+        );
+
+        
+        CREATETRANSITION
+        (
+            INUSTARTINSTANCEID, ONUSUBPLANID,
+            NULL, 0, NULL, 0, NULL, 1,
+            CSBORIGINAL_TRANS, WF_BOCONSTANTS.CNUTRANS_CREATED
+        );
+        
+        
+        CREATETRANSITION
+        (
+            ONUSUBPLANID, INUFINALINSTANCEID,
+            NULL, 0, NULL, 0, NULL, 1,
+            CSBORIGINAL_TRANS, WF_BOCONSTANTS.CNUTRANS_CREATED
+        );
+        
+        XMLDOM.FREEDOCUMENT(XLFLOWDOC);
+        UT_TRACE.TRACE('END PS_BOPlanCreation.CreateSubPlanParalell', 10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR PS_BOPlanCreation.CreateSubPlanParalell', 5);
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS PS_BOPlanCreation.CreateSubPlanParalell', 5);
+            ERRORS.SETERROR;
+            ERRORS.GETERROR(ONUERRORCODE, OSBERRORMESSAGE);
+    END CREATESUBPLANPARALELL;
+
+END PS_BOPLANCREATION;

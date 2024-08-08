@@ -1,0 +1,1488 @@
+PACKAGE BODY PR_BOSuspendCriterions
+IS
+
+    
+    
+    
+    CSBVERSION                  CONSTANT VARCHAR2(10) := 'SAO390034';
+
+    
+    
+    
+    
+    CNUNULL_ATTRIBUTE    CONSTANT NUMBER := 119562;
+    
+    
+    
+    
+    
+    TYPE TYLOCATIONPRODUCT IS RECORD
+    (
+        PRODUCT_ID         PR_PRODUCT.PRODUCT_ID%TYPE,
+        DEPARTMENT         GE_GEOGRA_LOCATION.GEOGRAP_LOCATION_ID%TYPE,
+        LOCALITY           GE_GEOGRA_LOCATION.GEOGRAP_LOCATION_ID%TYPE,
+        NEIGHBORTHOOD      GE_GEOGRA_LOCATION.GEOGRAP_LOCATION_ID%TYPE,
+        OPERATINGSECTOR    OR_OPERATING_SECTOR.OPERATING_SECTOR_ID%TYPE
+    );
+    
+    TYPE TYSERVSUSC IS RECORD
+    (
+        RCSERVSUSC           SERVSUSC%ROWTYPE,
+        PRODUCT_STATUS       PR_PRODUCT.PRODUCT_STATUS_ID%TYPE
+    );
+
+    TYPE TYBALANCEPRODUCT IS RECORD
+    (
+        SESUNUSE      SERVSUSC.SESUNUSE%TYPE,
+        STANDBALANCE  NUMBER,
+        CLAIMVALUE    NUMBER,
+        NONAPPLIEDPAY NUMBER,
+        TOTALVALUE    NUMBER,
+        EXPTOTALVAL   NUMBER
+    );
+    
+    TYPE TYFINANCIALPRODUCT IS RECORD
+    (
+        SESUNUSE             SERVSUSC.SESUNUSE%TYPE,
+        PRODUCTBALANCE       CUENCOBR.CUCOSACU%TYPE,
+        PRODUCTEXPBALANCE    CUENCOBR.CUCOSACU%TYPE,
+        QUANTITYFINANCINGS   NUMBER
+    );
+    
+    
+    
+    
+    
+    
+    GRCSERVSUSC    TYSERVSUSC := NULL;
+    
+    
+    GRTYLOCATIONPRODUCT    TYLOCATIONPRODUCT := NULL;
+    
+    
+    GRTYFINANCIALPRODUCT     TYFINANCIALPRODUCT := NULL;
+    
+    
+    GRTYBALANCEPRODUCT     TYBALANCEPRODUCT := NULL;
+
+    
+    
+    
+
+    FUNCTION FSBVERSION
+    RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END FSBVERSION;
+    
+    FUNCTION FNUGETNOTCURRENTBALPROD
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    RETURN NUMBER;
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETSUSCRIPSERVICE
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.GetSuscripService Servicio Suscrito['||INUSERVSUSC||']',4);
+
+        IF (GRCSERVSUSC.RCSERVSUSC.SESUNUSE IS NULL OR GRCSERVSUSC.RCSERVSUSC.SESUNUSE != INUSERVSUSC) THEN
+
+            UT_TRACE.TRACE('Obteniendo informaci�n',5);
+
+            
+            GRCSERVSUSC.RCSERVSUSC := PKTBLSERVSUSC.FRCGETRECORD (INUSERVSUSC);
+
+            
+            GRCSERVSUSC.PRODUCT_STATUS := DAPR_PRODUCT.FNUGETPRODUCT_STATUS_ID (INUSERVSUSC);
+
+        END IF;
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.GetSuscripService',4);
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END GETSUSCRIPSERVICE;
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETPRODUCTLOCATION
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    IS
+        NUPRODUCTADDRESS    PR_PRODUCT.ADDRESS_ID%TYPE;
+        
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.GetProductLocation Producto['||INUPRODUCT||']',4);
+
+        IF (GRTYLOCATIONPRODUCT.PRODUCT_ID IS NULL OR GRTYLOCATIONPRODUCT.PRODUCT_ID != INUPRODUCT) THEN
+        
+            UT_TRACE.TRACE('Obteniendo informaci�n',5);
+
+            
+            GRTYLOCATIONPRODUCT.PRODUCT_ID := INUPRODUCT;
+            
+            
+            NUPRODUCTADDRESS := DAPR_PRODUCT.FNUGETADDRESS_ID (INUPRODUCT);
+            
+            
+            IF ( NUPRODUCTADDRESS IS NULL) THEN
+            
+                
+                GRTYLOCATIONPRODUCT.LOCALITY        := NULL;
+                GRTYLOCATIONPRODUCT.DEPARTMENT      := NULL;
+                GRTYLOCATIONPRODUCT.NEIGHBORTHOOD   := NULL;
+                GRTYLOCATIONPRODUCT.OPERATINGSECTOR := NULL;
+                
+            ELSE
+                
+                GRTYLOCATIONPRODUCT.LOCALITY := DAAB_ADDRESS.FNUGETGEOGRAP_LOCATION_ID (NUPRODUCTADDRESS);
+
+                
+                GRTYLOCATIONPRODUCT.DEPARTMENT := GE_BCGEOGRA_LOCATION.FNUGETDEPARTMENT (GRTYLOCATIONPRODUCT.LOCALITY);
+
+                
+                GRTYLOCATIONPRODUCT.NEIGHBORTHOOD := DAAB_ADDRESS.FNUGETNEIGHBORTHOOD_ID (NUPRODUCTADDRESS);
+
+                
+                GRTYLOCATIONPRODUCT.OPERATINGSECTOR := DAGE_GEOGRA_LOCATION.FNUGETOPERATING_SECTOR_ID (GRTYLOCATIONPRODUCT.LOCALITY);
+
+            END IF;
+            
+        END IF;
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.GetProductLocation',4);
+
+    EXCEPTION
+
+ 	  WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END GETPRODUCTLOCATION;
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETBALANCEPRODUCT
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    IS
+
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.GetBalanceProduct Servicio Suscrito['||INUSERVSUSC||']',4);
+
+        IF (GRTYBALANCEPRODUCT.SESUNUSE IS NULL OR GRTYBALANCEPRODUCT.SESUNUSE != INUSERVSUSC) THEN
+
+            UT_TRACE.TRACE('Obteniendo informaci�n',5);
+
+            
+            GRTYBALANCEPRODUCT.SESUNUSE := INUSERVSUSC;
+
+            
+            PKBCCUENCOBR.GETPRODUCTTOTALVALUE
+            (
+                INUSERVSUSC,
+                GRTYBALANCEPRODUCT.STANDBALANCE ,
+                GRTYBALANCEPRODUCT.CLAIMVALUE   ,
+                GRTYBALANCEPRODUCT.NONAPPLIEDPAY,
+                GRTYBALANCEPRODUCT.TOTALVALUE   ,
+                GRTYBALANCEPRODUCT.EXPTOTALVAL
+            );
+
+        END IF;
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.GetBalanceProduct',4);
+
+    EXCEPTION
+
+ 	  WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END GETBALANCEPRODUCT;
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETFINANCIALPRODUCT
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    IS
+
+        TBFINANCINGS CC_BCFINANCING.TYTBFINANCINGS;
+
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.GetFinancialProduct Servicio Suscrito['||INUSERVSUSC||']',4);
+
+        
+        GETBALANCEPRODUCT (INUSERVSUSC);
+
+        IF (GRTYFINANCIALPRODUCT.SESUNUSE IS NULL OR GRTYFINANCIALPRODUCT.SESUNUSE != INUSERVSUSC) THEN
+        
+            UT_TRACE.TRACE('Obteniendo informaci�n',5);
+
+            
+            GRTYFINANCIALPRODUCT.SESUNUSE := INUSERVSUSC;
+
+            
+            GRTYFINANCIALPRODUCT.PRODUCTBALANCE := GRTYBALANCEPRODUCT.TOTALVALUE;
+            
+            
+            GRTYFINANCIALPRODUCT.PRODUCTEXPBALANCE := GRTYBALANCEPRODUCT.EXPTOTALVAL;
+            
+            
+            TBFINANCINGS := CC_BCFINANCING.FTBGETFINANCINGSBYYEAR ( INUSERVSUSC,
+                                                                    CC_BOFINANCING.CSBFINANCING_PROGRAM,
+                                                                    CC_BOFINANCING.CSBDIFERIDO_REGISTER);
+
+            
+            GRTYFINANCIALPRODUCT.QUANTITYFINANCINGS := TBFINANCINGS.COUNT;
+
+        END IF;
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.GetFinancialProduct',4);
+
+    EXCEPTION
+
+ 	  WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END GETFINANCIALPRODUCT;
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALIDATEDATA
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    IS
+    BEGIN
+
+        
+        IF (INUSERVSUSC IS NULL) THEN
+            ERRORS.SETERROR(CNUNULL_ATTRIBUTE,'C�digo del Producto');
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        
+        
+        PKTBLSERVSUSC.ACCKEY(INUSERVSUSC);
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END VALIDATEDATA;
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETSERVICECATEGORY
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    RETURN SERVSUSC.SESUCATE%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetServiceCategory Servicio Suscrito['||INUSERVSUSC||']',4);
+
+        
+        VALIDATEDATA(INUSERVSUSC);
+
+        
+        GETSUSCRIPSERVICE( INUSERVSUSC );
+        
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetServiceCategory Categor�a['||GRCSERVSUSC.RCSERVSUSC.SESUCATE||']',4);
+        
+        
+        RETURN GRCSERVSUSC.RCSERVSUSC.SESUCATE;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETSERVICECATEGORY;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETSERVICESUBCATEG
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    RETURN SERVSUSC.SESUSUCA%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetServiceSubCateg Servicio Suscrito['||INUSERVSUSC||']',4);
+
+        
+        VALIDATEDATA (INUSERVSUSC);
+
+        
+        GETSUSCRIPSERVICE( INUSERVSUSC );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetServiceSubCateg SubCategor�a['||GRCSERVSUSC.RCSERVSUSC.SESUSUCA||']',4);
+
+        
+        RETURN GRCSERVSUSC.RCSERVSUSC.SESUSUCA;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETSERVICESUBCATEG;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETSERVICECUTSTATE
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    RETURN SERVSUSC.SESUESCO%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetServiceCutState Servicio Suscrito['||INUSERVSUSC||']',4);
+
+        
+        VALIDATEDATA (INUSERVSUSC);
+
+        
+        GETSUSCRIPSERVICE( INUSERVSUSC );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetServiceCutState Estado de Corte['||GRCSERVSUSC.RCSERVSUSC.SESUESCO||']',4);
+
+        
+        RETURN GRCSERVSUSC.RCSERVSUSC.SESUESCO;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETSERVICECUTSTATE;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETSERVICEBILLCYCLE
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    RETURN SERVSUSC.SESUCICL%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetServiceBillCycle Servicio Suscrito['||INUSERVSUSC||']',4);
+
+        
+        VALIDATEDATA (INUSERVSUSC);
+
+        
+        GETSUSCRIPSERVICE( INUSERVSUSC );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetServiceBillCycle Ciclo de Facturaci�n['||GRCSERVSUSC.RCSERVSUSC.SESUCICL||']',4);
+
+        
+        RETURN GRCSERVSUSC.RCSERVSUSC.SESUCICL;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETSERVICEBILLCYCLE;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETPRODUCTDEPARTMEN
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN GE_GEOGRA_LOCATION.GEOGRAP_LOCATION_ID%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetProductDepartmen Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        GETPRODUCTLOCATION ( INUPRODUCT );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetProductDepartmen Departamento['||GRTYLOCATIONPRODUCT.DEPARTMENT||']',4);
+
+        
+        RETURN GRTYLOCATIONPRODUCT.DEPARTMENT;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETPRODUCTDEPARTMEN;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETPRODUCTLOCALITY
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN GE_GEOGRA_LOCATION.GEOGRAP_LOCATION_ID%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetProductLocality Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        GETPRODUCTLOCATION ( INUPRODUCT );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetProductLocality Localidad['||GRTYLOCATIONPRODUCT.LOCALITY||']',4);
+
+        
+        RETURN GRTYLOCATIONPRODUCT.LOCALITY;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETPRODUCTLOCALITY;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETPRODUCTNEIGHBORT
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN GE_GEOGRA_LOCATION.GEOGRAP_LOCATION_ID%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetProductNeighbort Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        GETPRODUCTLOCATION ( INUPRODUCT );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetProductNeighbort Barrio['||GRTYLOCATIONPRODUCT.NEIGHBORTHOOD||']',4);
+
+        
+        RETURN GRTYLOCATIONPRODUCT.NEIGHBORTHOOD;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETPRODUCTNEIGHBORT;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETPRODUCTOPERSECT
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN GE_GEOGRA_LOCATION.OPERATING_SECTOR_ID%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetProductOperSect Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        GETPRODUCTLOCATION ( INUPRODUCT );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetProductOperSect Sector Operativo['||GRTYLOCATIONPRODUCT.OPERATINGSECTOR||']',4);
+
+        
+        RETURN GRTYLOCATIONPRODUCT.OPERATINGSECTOR;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETPRODUCTOPERSECT;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETPRODUCTSTATUS
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN PR_PRODUCT.PRODUCT_STATUS_ID%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetProductStatus Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+        
+        
+        GETSUSCRIPSERVICE( INUPRODUCT );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetProductStatus Estado del Producto['||GRCSERVSUSC.PRODUCT_STATUS||']',4);
+
+        
+        RETURN GRCSERVSUSC.PRODUCT_STATUS;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETPRODUCTSTATUS;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETPRODUCTBALANCE
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN CUENCOBR.CUCOSACU%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetProductBalance Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        GETFINANCIALPRODUCT( INUPRODUCT );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetProductBalance Deuda Corriente['||GRTYFINANCIALPRODUCT.PRODUCTBALANCE||']',4);
+
+        
+        RETURN GRTYFINANCIALPRODUCT.PRODUCTBALANCE;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETPRODUCTBALANCE;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETPRODUCTEXPBALANC
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN CUENCOBR.CUCOSACU%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetProductExpBalanc Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        GETFINANCIALPRODUCT(INUPRODUCT);
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetProductExpBalanc Deuda Vencida['||GRTYFINANCIALPRODUCT.PRODUCTEXPBALANCE||']',4);
+        
+        
+        RETURN GRTYFINANCIALPRODUCT.PRODUCTEXPBALANCE;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETPRODUCTEXPBALANC;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETQUANTFINANCINGS
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    RETURN NUMBER
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetQuantFinancings Producto['||INUSERVSUSC||']',4);
+
+        
+        VALIDATEDATA (INUSERVSUSC);
+        
+        
+        GETFINANCIALPRODUCT (INUSERVSUSC);
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetQuantFinancings Financiaciones['||GRTYFINANCIALPRODUCT.QUANTITYFINANCINGS||']',4);
+
+        
+        RETURN GRTYFINANCIALPRODUCT.QUANTITYFINANCINGS;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETQUANTFINANCINGS;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBGETFINANCIALSTATUS
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    RETURN SERVSUSC.SESUESFN%TYPE
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetFinancialStatus Producto['||INUSERVSUSC||']',4);
+
+        
+        VALIDATEDATA (INUSERVSUSC);
+
+        
+        GETSUSCRIPSERVICE( INUSERVSUSC );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetFinancialStatus Estado Financiero['||GRCSERVSUSC.RCSERVSUSC.SESUESFN||']',4);
+
+        
+        RETURN GRCSERVSUSC.RCSERVSUSC.SESUESFN;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FSBGETFINANCIALSTATUS;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETOUTSTANDBAL
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN NUMBER
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetOutStandBal Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        GETBALANCEPRODUCT(INUPRODUCT);
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetOutStandBal Saldo ['||GRTYBALANCEPRODUCT.STANDBALANCE||']',4);
+
+        
+        RETURN GRTYBALANCEPRODUCT.STANDBALANCE;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETOUTSTANDBAL;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETCLAIMVALUE
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN NUMBER
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetClaimValue Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        GETBALANCEPRODUCT(INUPRODUCT);
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetClaimValue Reclamo ['||GRTYBALANCEPRODUCT.CLAIMVALUE||']',4);
+
+        
+        RETURN GRTYBALANCEPRODUCT.CLAIMVALUE;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETCLAIMVALUE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETNONAPPLIEDPAY
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN NUMBER
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetNonAppliedPay Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        GETBALANCEPRODUCT(INUPRODUCT);
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetNonAppliedPay Pago no Abonado ['||GRTYBALANCEPRODUCT.NONAPPLIEDPAY||']',4);
+
+        
+        RETURN GRTYBALANCEPRODUCT.NONAPPLIEDPAY;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETNONAPPLIEDPAY;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETPRODEXPTOTALVAL
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN NUMBER
+    IS
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetProdExpTotalVal Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        GETBALANCEPRODUCT(INUPRODUCT);
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetProdExpTotalVal Saldo vencido ['||GRTYBALANCEPRODUCT.EXPTOTALVAL||']',4);
+
+        
+        RETURN GRTYBALANCEPRODUCT.EXPTOTALVAL;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETPRODEXPTOTALVAL;
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETOUTSTANDBALNOTCURR
+    (
+        
+        INUPRODUCT    IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    RETURN NUMBER
+    IS
+    
+        NUNOTCURRENTBALANCE    NUMBER;
+    
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetOutStandBalNotCurr Producto['||INUPRODUCT||']',4);
+
+        
+        VALIDATEDATA (INUPRODUCT);
+
+        
+        NUNOTCURRENTBALANCE := FNUGETNOTCURRENTBALPROD(INUPRODUCT);
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetOutStandBalNotCurr Saldo ['||NUNOTCURRENTBALANCE||']',4);
+
+        
+        RETURN NUNOTCURRENTBALANCE;
+
+    EXCEPTION
+
+ 	    WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETOUTSTANDBALNOTCURR;
+    
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETNOTCURRENTBALPROD
+    (
+        
+        INUSERVSUSC    IN    SERVSUSC.SESUNUSE%TYPE
+    )
+    RETURN NUMBER
+    IS
+    
+        STANDBALANCENOTCURR     NUMBER;
+        
+    BEGIN
+
+        UT_TRACE.TRACE('Inicio PR_BOSuspendCriterions.fnuGetNotCurrentBalProd Servicio Suscrito['||INUSERVSUSC||']',4);
+
+        UT_TRACE.TRACE('Obteniendo informaci�n',5);
+        
+        STANDBALANCENOTCURR := 0;
+
+        
+        PKBCCUENCOBR.GETPRODUCTTOTALVALUENOTCURR
+        (
+            INUSERVSUSC,
+            STANDBALANCENOTCURR
+        );
+
+        UT_TRACE.TRACE('Fin PR_BOSuspendCriterions.fnuGetNotCurrentBalProd',4);
+        
+        RETURN STANDBALANCENOTCURR;
+
+    EXCEPTION
+
+ 	  WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+
+    END FNUGETNOTCURRENTBALPROD;
+
+
+
+END PR_BOSUSPENDCRITERIONS;

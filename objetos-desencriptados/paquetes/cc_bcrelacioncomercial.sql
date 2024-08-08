@@ -1,0 +1,521 @@
+
+CREATE OR REPLACE PACKAGE BODY CC_BCRELACIONCOMERCIAL IS
+   CSBVERSION CONSTANT VARCHAR2( 250 ) := 'SAO189445';
+   FUNCTION FSBVERSION
+    RETURN VARCHAR2
+    IS
+    BEGIN
+      RETURN CSBVERSION;
+   END;
+   FUNCTION FRFOBTPRODSAMPARADOS( INUIDCLIENTE IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE, IDTFECHA IN CC_COMM_RELATION.INITIAL_DATE%TYPE := SYSDATE )
+    RETURN PKCONSTANTE.TYREFCURSOR
+    IS
+      RFCONSULTA PKCONSTANTE.TYREFCURSOR;
+    BEGIN
+      OPEN RFCONSULTA FOR SELECT  b.cv_subscriber_id,
+                    a.sp_product_id,
+                    a.cv_product_id,
+                    a.initial_date,
+                    a.final_date
+            FROM cc_detail_com_rela a, cc_comm_relation b
+            WHERE a.comm_relation_id = b.comm_relation_id
+            AND b.sp_subscriber_id  = inuIdCliente
+            AND idtFecha BETWEEN b.initial_date AND b.final_date
+            AND EXISTS ( SELECT 'X' FROM cc_status s
+                         WHERE s.status_id = b.status_id
+                         AND s.is_final_status = cc_boConstants.csbNO);
+      RETURN RFCONSULTA;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+   FUNCTION FRCOBTDETPRODAMPARADO( INUIDPRODUCTO IN PR_PRODUCT.PRODUCT_ID%TYPE, IDTFECHA IN CC_DETAIL_COM_RELA.INITIAL_DATE%TYPE )
+    RETURN DACC_DETAIL_COM_RELA.STYCC_DETAIL_COM_RELA
+    IS
+      RCDETPRODAMPARADO DACC_DETAIL_COM_RELA.STYCC_DETAIL_COM_RELA;
+      CURSOR CUDETPRODAMPARADO IS
+SELECT a.*, a.rowid
+            FROM cc_detail_com_rela a
+            WHERE a.cv_product_id = inuIdProducto
+            AND idtFecha BETWEEN a.initial_date AND a.final_date;
+      PROCEDURE CERRARCURSOR
+       IS
+       BEGIN
+         IF ( CUDETPRODAMPARADO%ISOPEN ) THEN
+            CLOSE CUDETPRODAMPARADO;
+         END IF;
+      END;
+    BEGIN
+      CERRARCURSOR;
+      OPEN CUDETPRODAMPARADO;
+      FETCH CUDETPRODAMPARADO
+         INTO RCDETPRODAMPARADO;
+      CLOSE CUDETPRODAMPARADO;
+      RETURN RCDETPRODAMPARADO;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         CERRARCURSOR;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         CERRARCURSOR;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+   FUNCTION FTBOBTDETPRODAMPARADOR( INUIDPRODUCTO IN PR_PRODUCT.PRODUCT_ID%TYPE, IDTFECHA IN CC_DETAIL_COM_RELA.INITIAL_DATE%TYPE )
+    RETURN DACC_DETAIL_COM_RELA.TYTBCC_DETAIL_COM_RELA
+    IS
+      TBDETPRODAMPARADOR DACC_DETAIL_COM_RELA.TYTBCC_DETAIL_COM_RELA;
+      CURSOR CUDETPRODAMPARADOR IS
+SELECT a.*, a.rowid
+            FROM cc_detail_com_rela a
+            WHERE a.sp_product_id = inuIdProducto
+            AND idtFecha BETWEEN a.initial_date AND a.final_date;
+      PROCEDURE CERRARCURSOR
+       IS
+       BEGIN
+         IF ( CUDETPRODAMPARADOR%ISOPEN ) THEN
+            CLOSE CUDETPRODAMPARADOR;
+         END IF;
+      END;
+    BEGIN
+      CERRARCURSOR;
+      OPEN CUDETPRODAMPARADOR;
+      FETCH CUDETPRODAMPARADOR
+         BULK COLLECT INTO TBDETPRODAMPARADOR;
+      CLOSE CUDETPRODAMPARADOR;
+      RETURN TBDETPRODAMPARADOR;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         CERRARCURSOR;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         CERRARCURSOR;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+   FUNCTION FTBOBTRELSDECLIENTE( INUIDCLIENTE IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE, IDTFECHA IN CC_COMM_RELATION.INITIAL_DATE%TYPE, INUTIPORELACION IN CC_COMM_RELATION.RELATION_TYPE_ID%TYPE )
+    RETURN DACC_COMM_RELATION.TYTBCC_COMM_RELATION
+    IS
+      TBRELSDECLIENTE DACC_COMM_RELATION.TYTBCC_COMM_RELATION;
+      CURSOR CURELACIONESDECLIENTE IS
+SELECT a.*, a.rowid
+            FROM cc_comm_relation a
+            WHERE (a.sp_subscriber_id = inuIdCliente OR
+                   a.cv_subscriber_id = inuIdCliente )
+            AND a.relation_type_id = inuTipoRelacion
+            AND idtFecha BETWEEN a.initial_date AND a.final_date;
+      PROCEDURE CERRARCURSOR
+       IS
+       BEGIN
+         IF ( CURELACIONESDECLIENTE%ISOPEN ) THEN
+            CLOSE CURELACIONESDECLIENTE;
+         END IF;
+      END;
+    BEGIN
+      CERRARCURSOR;
+      OPEN CURELACIONESDECLIENTE;
+      FETCH CURELACIONESDECLIENTE
+         BULK COLLECT INTO TBRELSDECLIENTE;
+      CLOSE CURELACIONESDECLIENTE;
+      RETURN TBRELSDECLIENTE;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         CERRARCURSOR;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         CERRARCURSOR;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+   FUNCTION FTBDETALLESDERELACION( INUIDRELACION IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE, IDTFECHA IN CC_COMM_RELATION.INITIAL_DATE%TYPE )
+    RETURN DACC_DETAIL_COM_RELA.TYTBCC_DETAIL_COM_RELA
+    IS
+      TBDETRELACION DACC_DETAIL_COM_RELA.TYTBCC_DETAIL_COM_RELA;
+      CURSOR CUDETRELACION IS
+SELECT a.*, a.rowid
+            FROM cc_detail_com_rela a
+            WHERE a.comm_relation_id = inuIdRelacion
+            AND idtFecha BETWEEN a.initial_date AND a.final_date;
+      PROCEDURE CERRARCURSOR
+       IS
+       BEGIN
+         IF ( CUDETRELACION%ISOPEN ) THEN
+            CLOSE CUDETRELACION;
+         END IF;
+      END;
+    BEGIN
+      CERRARCURSOR;
+      OPEN CUDETRELACION;
+      FETCH CUDETRELACION
+         BULK COLLECT INTO TBDETRELACION;
+      CLOSE CUDETRELACION;
+      RETURN TBDETRELACION;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         CERRARCURSOR;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         CERRARCURSOR;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+   FUNCTION FRCOBTRELCLIENTES( INUIDCLIEAMPARADOR IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE, INUIDCLIEAMPARADO IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE, INUIDTIPORELACION IN CC_RELATION_TYPE.RELATION_TYPE_ID%TYPE, IDTFECHA IN CC_COMM_RELATION.INITIAL_DATE%TYPE )
+    RETURN DACC_COMM_RELATION.STYCC_COMM_RELATION
+    IS
+      RCRELACIONCOM DACC_COMM_RELATION.STYCC_COMM_RELATION;
+      CURSOR CURELACIONCOM IS
+SELECT a.*, a.rowid
+            FROM cc_comm_relation a
+            WHERE a.sp_subscriber_id = inuIdClieAmparador
+            AND a.cv_subscriber_id   = inuIdClieAmparado
+            AND a.relation_type_id   = inuIdTipoRelacion
+            AND idtFecha BETWEEN a.initial_date AND a.final_date;
+      PROCEDURE CERRARCURSOR
+       IS
+       BEGIN
+         IF ( CURELACIONCOM%ISOPEN ) THEN
+            CLOSE CURELACIONCOM;
+         END IF;
+      END;
+    BEGIN
+      CERRARCURSOR;
+      OPEN CURELACIONCOM;
+      FETCH CURELACIONCOM
+         INTO RCRELACIONCOM;
+      CLOSE CURELACIONCOM;
+      RETURN RCRELACIONCOM;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         CERRARCURSOR;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         CERRARCURSOR;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+   FUNCTION FRCOBTINFOCLIENAMP( INUIDPRODAMPARADO IN CC_DETAIL_COM_RELA.CV_PRODUCT_ID%TYPE )
+    RETURN STYINFCLIEAMPARADOR
+    IS
+      RCINFCLIENTEAMP STYINFCLIEAMPARADOR;
+      PROCEDURE CERRARCURSOR
+       IS
+       BEGIN
+         IF ( CUINFOCLIENTEAMP%ISOPEN ) THEN
+            CLOSE CUINFOCLIENTEAMP;
+         END IF;
+      END;
+    BEGIN
+      CERRARCURSOR;
+      OPEN CUINFOCLIENTEAMP( INUIDPRODAMPARADO );
+      FETCH CUINFOCLIENTEAMP
+         INTO RCINFCLIENTEAMP;
+      IF CUINFOCLIENTEAMP%NOTFOUND THEN
+         RCINFCLIENTEAMP.CV_PRODUCT_ID := INUIDPRODAMPARADO;
+      END IF;
+      CLOSE CUINFOCLIENTEAMP;
+      RETURN RCINFCLIENTEAMP;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         CERRARCURSOR;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         CERRARCURSOR;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+   FUNCTION FTBOBTRELSAMPARADAS( INUIDCLIENTE IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE, IDTFECHA IN CC_COMM_RELATION.INITIAL_DATE%TYPE )
+    RETURN DACC_COMM_RELATION.TYTBCC_COMM_RELATION
+    IS
+      TBRELSAMPARADAS DACC_COMM_RELATION.TYTBCC_COMM_RELATION;
+      CURSOR CURELACIONESAMPARADAS IS
+SELECT a.*, a.rowid
+            FROM cc_comm_relation a
+            WHERE a.sp_subscriber_id = inuIdCliente
+            AND idtFecha BETWEEN a.initial_date AND a.final_date;
+      PROCEDURE CERRARCURSOR
+       IS
+       BEGIN
+         IF ( CURELACIONESAMPARADAS%ISOPEN ) THEN
+            CLOSE CURELACIONESAMPARADAS;
+         END IF;
+      END;
+    BEGIN
+      CERRARCURSOR;
+      OPEN CURELACIONESAMPARADAS;
+      FETCH CURELACIONESAMPARADAS
+         BULK COLLECT INTO TBRELSAMPARADAS;
+      CLOSE CURELACIONESAMPARADAS;
+      RETURN TBRELSAMPARADAS;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         CERRARCURSOR;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         CERRARCURSOR;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+   FUNCTION FRCOBTTIPORELCOMERCIAL( INUIDRELCOMERCIAL IN CC_COMM_RELATION.COMM_RELATION_ID%TYPE )
+    RETURN DACC_RELATION_TYPE.STYCC_RELATION_TYPE
+    IS
+      CURSOR CUTIPORELCOMERCIAL IS
+SELECT  a.*,
+                    a.rowid
+            FROM    cc_relation_type a,
+                    cc_comm_relation b
+            WHERE   a.relation_type_id = b.relation_type_id
+            AND     b.comm_relation_id = inuIdRelComercial;
+      RCTIPORELCOMERCIAL DACC_RELATION_TYPE.STYCC_RELATION_TYPE;
+      PROCEDURE CERRARCURSOR
+       IS
+       BEGIN
+         IF ( CUTIPORELCOMERCIAL%ISOPEN ) THEN
+            CLOSE CUTIPORELCOMERCIAL;
+         END IF;
+      END;
+    BEGIN
+      UT_TRACE.TRACE( 'Inicio: [CC_BCRelacionComercial.frcObtTipoRelComercial]', 7 );
+      CERRARCURSOR;
+      OPEN CUTIPORELCOMERCIAL;
+      FETCH CUTIPORELCOMERCIAL
+         INTO RCTIPORELCOMERCIAL;
+      CLOSE CUTIPORELCOMERCIAL;
+      UT_TRACE.TRACE( 'Fin: [CC_BCRelacionComercial.frcObtTipoRelComercial]', 7 );
+      RETURN ( RCTIPORELCOMERCIAL );
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         CERRARCURSOR;
+         UT_TRACE.TRACE( 'Error: [CC_BCRelacionComercial.frcObtTipoRelComercial]', 7 );
+         RAISE;
+      WHEN OTHERS THEN
+         CERRARCURSOR;
+         ERRORS.SETERROR;
+         UT_TRACE.TRACE( 'Error: [CC_BCRelacionComercial.frcObtTipoRelComercial]', 7 );
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+   FUNCTION FTBAMPARADORESXTIPO( INUIDCLIAMPARADO IN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE, INUIDTIPORELACION IN CC_RELATION_TYPE.RELATION_TYPE_ID%TYPE, IDTFECHA IN CC_COMM_RELATION.INITIAL_DATE%TYPE )
+    RETURN DACC_COMM_RELATION.TYTBCC_COMM_RELATION
+    IS
+      TBRELACIONES DACC_COMM_RELATION.TYTBCC_COMM_RELATION;
+      CURSOR CUAMPARADORES IS
+SELECT a.*, a.rowid
+            FROM cc_comm_relation a
+            WHERE a.cv_subscriber_id = inuIdCliAmparado
+            AND a.relation_type_id = inuIdTipoRelacion
+            AND idtFecha BETWEEN a.initial_date AND a.final_date;
+      PROCEDURE CERRARCURSOR
+       IS
+       BEGIN
+         IF ( CUAMPARADORES%ISOPEN ) THEN
+            CLOSE CUAMPARADORES;
+         END IF;
+      END;
+    BEGIN
+      CERRARCURSOR;
+      OPEN CUAMPARADORES;
+      FETCH CUAMPARADORES
+         BULK COLLECT INTO TBRELACIONES;
+      CLOSE CUAMPARADORES;
+      RETURN TBRELACIONES;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         CERRARCURSOR;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         CERRARCURSOR;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+   FUNCTION FRCINFORELATBYPACKAGE( INUPACKAGEID IN MO_DATA_COMM_RELA.PACKAGE_ID%TYPE )
+    RETURN DACC_COMM_RELATION.STYCC_COMM_RELATION
+    IS
+      CURSOR CUCOMMRELATION IS
+SELECT      /*+ leading(cc_comm_relation)
+                            use_nl(cc_comm_relation mo_data_comm_rela)
+                            use_nl(cc_comm_relation cc_status)
+                            index(mo_data_comm_rela IDX_MO_DATA_COMM_RELA04)
+                       */
+                        a.*, a.rowid
+            FROM        cc_comm_relation a,
+                        mo_data_comm_rela b,
+                        cc_status c/*+ cc_bcRelacionComercial.frcInfoRelatByPackage*/
+            WHERE       b.comm_relation_id=a.comm_relation_id
+            AND         b.package_id=inuPackageId
+            AND         a.status_id=c.status_id
+            AND         sysdate between a.initial_date AND a.final_date
+            AND         c.is_final_status = ge_boconstants.csbNO;
+      RCCOMMRELATION DACC_COMM_RELATION.STYCC_COMM_RELATION;
+    BEGIN
+      UT_TRACE.TRACE( 'INICIO cc_bcRelacionComercial.frcInfoRelatByPackage', 11 );
+      IF ( CUCOMMRELATION%ISOPEN ) THEN
+         CLOSE CUCOMMRELATION;
+      END IF;
+      OPEN CUCOMMRELATION;
+      FETCH CUCOMMRELATION
+         INTO RCCOMMRELATION;
+      CLOSE CUCOMMRELATION;
+      UT_TRACE.TRACE( 'FIN cc_bcRelacionComercial.frcInfoRelatByPackage CommRela [' || RCCOMMRELATION.COMM_RELATION_ID || ']', 11 );
+      RETURN ( RCCOMMRELATION );
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         IF CUCOMMRELATION%ISOPEN THEN
+            CLOSE CUCOMMRELATION;
+         END IF;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         IF CUCOMMRELATION%ISOPEN THEN
+            CLOSE CUCOMMRELATION;
+         END IF;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END FRCINFORELATBYPACKAGE;
+   FUNCTION FRFGETDATARELATION( INUREALPRODUCT IN CC_DETAIL_COM_RELA.CV_PRODUCT_ID%TYPE )
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+      CURFDATARELCOM CONSTANTS.TYREFCURSOR;
+    BEGIN
+      OPEN CURFDATARELCOM FOR SELECT    /*+ leading (a)
+                      use_nl(a b)*/
+                      a.*, a.rowid
+            FROM      cc_detail_com_rela a,
+                      cc_comm_relation b,
+                      cc_status c /*+ cc_bcRelacionComercial.frfGetDataRelation */
+            WHERE     a.cv_product_id   = inuRealProduct
+            AND       a.comm_relation_id = b.comm_relation_id
+            AND       b.status_id = c.status_id
+            AND       c.is_final_status  = ge_boconstants.csbNO
+            AND       sysdate between b.initial_date AND b.final_date;
+      RETURN CURFDATARELCOM;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END FRFGETDATARELATION;
+   FUNCTION FBLCOMMRELAEXISTGARAN( INUCOMMRELAID IN CC_DETAIL_COM_RELA.COMM_RELATION_ID%TYPE )
+    RETURN BOOLEAN
+    IS
+      CURSOR CUWARRANTYBYCOMMRELA IS
+SELECT  /*+ leading (cc_detail_com_rela)
+                    use_nl(a b)
+                    index (a IDX_CC_DETAIL_COM_RELA_02)
+                    index (b IDX_PR_WARRANTY_01)
+                */
+                count(*) /*+ cc_bcRelacionComercial.cuWarrantyByCommRela*/
+        FROM    cc_detail_com_rela a,
+                pr_warranty b
+        WHERE   a.comm_relation_id=inuCommRelaId
+        AND     a.sp_product_id=b.guarantee_product_id
+        AND     a.cv_product_id=b.product_id;
+      NUTOTALGARANTIES NUMBER( 4 );
+    BEGIN
+      UT_TRACE.TRACE( 'INICIO cc_bcRelacionComercial.fblCommRelaExistGaran', 11 );
+      IF ( CUWARRANTYBYCOMMRELA%ISOPEN ) THEN
+         CLOSE CUWARRANTYBYCOMMRELA;
+      END IF;
+      OPEN CUWARRANTYBYCOMMRELA;
+      FETCH CUWARRANTYBYCOMMRELA
+         INTO NUTOTALGARANTIES;
+      CLOSE CUWARRANTYBYCOMMRELA;
+      UT_TRACE.TRACE( 'FIN cc_bcRelacionComercial.fblCommRelaExistGaran Total Garantias [' || NUTOTALGARANTIES || ']', 11 );
+      RETURN NUTOTALGARANTIES != 0;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         IF CUWARRANTYBYCOMMRELA%ISOPEN THEN
+            CLOSE CUWARRANTYBYCOMMRELA;
+         END IF;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         IF CUWARRANTYBYCOMMRELA%ISOPEN THEN
+            CLOSE CUWARRANTYBYCOMMRELA;
+         END IF;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END FBLCOMMRELAEXISTGARAN;
+   FUNCTION FBLCOMMRELASUBSCRIBERS( INUTYPERELATION IN CC_COMM_RELATION.RELATION_TYPE_ID%TYPE, INUSPSUBSCRIBERID IN CC_COMM_RELATION.SP_SUBSCRIBER_ID%TYPE, INUCVSUBSCRIBERID IN CC_COMM_RELATION.CV_SUBSCRIBER_ID%TYPE, INUADDRESS IN CC_COMM_RELATION.ADDRESS_ID%TYPE, IDTINITIAL_DATE IN CC_COMM_RELATION.INITIAL_DATE%TYPE, IDTFINAL_DATE IN CC_COMM_RELATION.FINAL_DATE%TYPE )
+    RETURN BOOLEAN
+    IS
+      CURSOR CUCOMMRELASUBSCRIBERS IS
+SELECT  /*+ index (a IDX_CC_COMM_RELATION_01)*/
+                a.comm_relation_id
+                /*+ cc_bcRelacionComercial.cuCommRelaSubscribers*/
+        FROM    cc_comm_relation a
+        WHERE   a.relation_type_id=inuTypeRelation
+        AND     a.sp_subscriber_id=inuSPSubscriberId
+        AND     a.cv_subscriber_id=inuCVSubscriberId
+        AND     a.address_id= inuAddress
+        AND     (a.initial_date BETWEEN idtInitial_Date AND idtFinal_Date
+        OR      a.final_date BETWEEN idtInitial_Date AND idtFinal_Date);
+      NUCOMMRELATIONID CC_COMM_RELATION.COMM_RELATION_ID%TYPE;
+    BEGIN
+      UT_TRACE.TRACE( 'INICIO cc_bcRelacionComercial.fblCommRelaSubscribers', 11 );
+      IF ( CUCOMMRELASUBSCRIBERS%ISOPEN ) THEN
+         CLOSE CUCOMMRELASUBSCRIBERS;
+      END IF;
+      OPEN CUCOMMRELASUBSCRIBERS;
+      FETCH CUCOMMRELASUBSCRIBERS
+         INTO NUCOMMRELATIONID;
+      CLOSE CUCOMMRELASUBSCRIBERS;
+      UT_TRACE.TRACE( 'FIN cc_bcRelacionComercial.fblCommRelaSubscribers Relacion Comercial [' || NUCOMMRELATIONID || ']', 11 );
+      RETURN NUCOMMRELATIONID IS NOT NULL;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         IF CUCOMMRELASUBSCRIBERS%ISOPEN THEN
+            CLOSE CUCOMMRELASUBSCRIBERS;
+         END IF;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         IF CUCOMMRELASUBSCRIBERS%ISOPEN THEN
+            CLOSE CUCOMMRELASUBSCRIBERS;
+         END IF;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END FBLCOMMRELASUBSCRIBERS;
+   FUNCTION FBLPRODUCTINCOMMRELA( INUPRODUCTID IN PR_PRODUCT.PRODUCT_ID%TYPE, INUCOMMRELAID IN CC_COMM_RELATION.COMM_RELATION_ID%TYPE )
+    RETURN BOOLEAN
+    IS
+      CURSOR CUPRODUCTINCOMMRELA IS
+SELECT  /*+ leading(b)
+                    use_nl(b a)
+                    index(b IDX_CC_COMM_RELATION_01)
+                    index(a IDX_PR_PRODUCT_09)*/
+                a.product_id
+                /*+ cc_bcRelacionComercial.fblProductInCommRela*/
+        FROM    pr_product a,
+                cc_comm_relation b
+        WHERE   a.product_id = inuProductId
+        AND     a.address_id = b.address_id
+        AND     b.comm_relation_id=inuCommRelaId;
+      NUPRODUCTID CC_COMM_RELATION.COMM_RELATION_ID%TYPE;
+    BEGIN
+      UT_TRACE.TRACE( 'INICIO cc_bcRelacionComercial.fblProductInCommRela', 11 );
+      IF ( CUPRODUCTINCOMMRELA%ISOPEN ) THEN
+         CLOSE CUPRODUCTINCOMMRELA;
+      END IF;
+      OPEN CUPRODUCTINCOMMRELA;
+      FETCH CUPRODUCTINCOMMRELA
+         INTO NUPRODUCTID;
+      CLOSE CUPRODUCTINCOMMRELA;
+      UT_TRACE.TRACE( 'FIN cc_bcRelacionComercial.fblProductInCommRela Producto [' || NUPRODUCTID || ']', 11 );
+      RETURN NUPRODUCTID IS NOT NULL;
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         IF CUPRODUCTINCOMMRELA%ISOPEN THEN
+            CLOSE CUPRODUCTINCOMMRELA;
+         END IF;
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         IF CUPRODUCTINCOMMRELA%ISOPEN THEN
+            CLOSE CUPRODUCTINCOMMRELA;
+         END IF;
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END FBLPRODUCTINCOMMRELA;
+END CC_BCRELACIONCOMERCIAL;
+/
+
+

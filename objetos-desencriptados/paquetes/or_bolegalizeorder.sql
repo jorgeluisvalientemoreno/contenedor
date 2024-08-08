@@ -1,0 +1,1485 @@
+PACKAGE BODY Or_BOLegalizeOrder
+AS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    CSBVERSION   CONSTANT VARCHAR2(20)            := 'SAO208017';
+    
+    
+    GNUORDERID            OR_ORDER.ORDER_ID%TYPE;           
+    GNUORDERMODULE        GE_MODULE.MODULE_ID%TYPE;         
+    GNUGENERALMODULE      GE_MODULE.MODULE_ID%TYPE;         
+    GNUACCOCAUSALTYPE     GE_CAUSAL.CAUSAL_TYPE_ID%TYPE;    
+    GNUNONACCOCAUSTYPE    GE_CAUSAL.CAUSAL_TYPE_ID%TYPE;    
+
+    
+    
+    
+
+    
+    ERROR3320       CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 3320;
+    
+    
+    CNUERR_900877   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 900877;
+    
+    CNUERR_119001   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 119001;
+    
+    CNUERR_452      CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 452;
+
+
+    
+    
+    
+    PROCEDURE LOADPARAMETERS
+    IS
+       
+       
+       
+        CSBACCOCAUSTYPE      CONSTANT VARCHAR2(40) := 'ACCOM_CAUSE_TYPE';
+        CSBNONACCOCAUSTYPE   CONSTANT VARCHAR2(40) := 'NON_ACCOM_CAUSE_TYPE';
+        CSBORDERS_MODULE     CONSTANT VARCHAR2(40) := 'ORDERS_MODULE';
+    BEGIN
+        
+        GNUGENERALMODULE := GE_BOPARAMETER.FNUGET('GENERAL_MODULE');
+
+        
+        GNUORDERMODULE := GE_BOPARAMETER.FNUGET(CSBORDERS_MODULE);
+        
+        
+        GNUACCOCAUSALTYPE := GE_BOPARAMETER.FNUGET(CSBACCOCAUSTYPE);
+
+        
+        GNUNONACCOCAUSTYPE := GE_BOPARAMETER.FNUGET(CSBNONACCOCAUSTYPE);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END LOADPARAMETERS;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INSERTPERSONINCHARGE
+    (
+        INUORDER  IN OR_ORDER.ORDER_ID%TYPE,
+        INUPERSON IN GE_PERSON.PERSON_ID%TYPE
+    )
+    IS
+        
+        
+        
+        NUOPERATINGUNIT   OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE;
+        RCOR_ORDER_PERSON DAOR_ORDER_PERSON.STYOR_ORDER_PERSON;
+    BEGIN
+        IF (INUPERSON IS NOT NULL) THEN
+            NUOPERATINGUNIT := DAOR_ORDER.FNUGETOPERATING_UNIT_ID(INUORDER);
+            
+            
+            DAOR_OPER_UNIT_PERSONS.ACCKEY(NUOPERATINGUNIT, INUPERSON);
+            
+            RCOR_ORDER_PERSON.OPERATING_UNIT_ID := NUOPERATINGUNIT;
+            RCOR_ORDER_PERSON.ORDER_ID          := INUORDER;
+            RCOR_ORDER_PERSON.PERSON_ID         := INUPERSON;
+            DAOR_ORDER_PERSON.INSRECORD(RCOR_ORDER_PERSON);
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INSERTPERSONINCHARGE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FBLEXIATTNAMORDISNAMINTEMTAB
+    (
+        ITBSETATTRIB          IN OR_BCORDERATTRIBUTES.TBTASK_TYPE_ADD_DATA,
+        ISBATTRNAMEORDISPNAME IN  VARCHAR2,
+        ONUATTRIBUTESET       OUT GE_ATTRIBUTES_SET.ATTRIBUTE_SET_ID%TYPE,
+        ONUATTRIBUTE          OUT GE_ATTRIBUTES.ATTRIBUTE_ID%TYPE,
+        IBLONLYMANUAL         IN  BOOLEAN DEFAULT FALSE
+    )
+    RETURN BOOLEAN
+    IS
+       
+       
+       
+       NUINDEX   BINARY_INTEGER;
+       RFCURSOR  CONSTANTS.TYREFCURSOR;
+       RCATTRIBUTE GE_ATTRIBUTES%ROWTYPE;
+    BEGIN
+        UT_TRACE.TRACE('==>Begin Or_BoLegalize.fblExiAttNamOrDisNamInTemTab',4);
+        UT_TRACE.TRACE('==>Parametro entrada:Nombre del atributo:' || ISBATTRNAMEORDISPNAME,5);
+        IF  IBLONLYMANUAL THEN
+            UT_TRACE.TRACE('==>Parametro entrada:Proceso solo manual : True',5);
+        ELSE
+            UT_TRACE.TRACE('==>Parametro entrada:Proceso solo manual : False',5);
+        END IF;
+        IF (ITBSETATTRIB.COUNT = 0) THEN
+            RETURN FALSE;
+        END IF;
+        NUINDEX := ITBSETATTRIB.FIRST;
+        UT_TRACE.TRACE('Proceso: Primero del nuIndex: ' || TO_CHAR(NUINDEX), 6);
+        WHILE NUINDEX IS NOT NULL LOOP
+            UT_TRACE.TRACE('Proceso: Grupo de atributos:'||TO_CHAR(ITBSETATTRIB(NUINDEX)),6);
+            
+            
+            IF  NOT (OR_BOORDERATTRIBUTESET.FBLHASAUTOMATICRETRIEVE(
+                                        ITBSETATTRIB(NUINDEX))
+            AND  IBLONLYMANUAL)
+            THEN
+                
+                RFCURSOR := GE_BOATTRIBUTES_SET.FRFGETADITIONALDATA(ITBSETATTRIB(NUINDEX));
+                
+                FETCH RFCURSOR INTO RCATTRIBUTE;
+                WHILE (RFCURSOR%FOUND) LOOP
+                    UT_TRACE.TRACE('Proceso: Nombre del atributo del CURSOR: ' || RCATTRIBUTE.NAME_ATTRIBUTE, 7);
+                    IF (UPPER(TRIM(RCATTRIBUTE.NAME_ATTRIBUTE)) = UPPER(TRIM(ISBATTRNAMEORDISPNAME))) OR
+                       (UPPER(TRIM(RCATTRIBUTE.DISPLAY_NAME)) = UPPER(TRIM(ISBATTRNAMEORDISPNAME))) THEN
+                        ONUATTRIBUTESET := ITBSETATTRIB(NUINDEX);
+                        ONUATTRIBUTE := RCATTRIBUTE.ATTRIBUTE_ID;
+                        UT_TRACE.TRACE('==>Parametro salida:Grupo de atributo:' || TO_CHAR(ONUATTRIBUTESET),5);
+                        UT_TRACE.TRACE('==>Parametro salida:Identificador Atributo:' || TO_CHAR(ONUATTRIBUTE),5);
+                        UT_TRACE.TRACE('Proceso: Devuelve verdadero ', 6);
+                        UT_TRACE.TRACE('==>END Or_BoLegalize.fblExiAttNamOrDisNamInTemTab (return)',4);
+                        IF (RFCURSOR%ISOPEN) THEN
+                            CLOSE RFCURSOR;
+                        END IF;
+                        RETURN TRUE;
+                    END IF;
+                    FETCH RFCURSOR INTO RCATTRIBUTE;
+                END LOOP;
+            END IF;
+            NUINDEX := ITBSETATTRIB.NEXT(NUINDEX);
+            UT_TRACE.TRACE('Proceso: Siguiente del nuIndex: ' || TO_CHAR(NUINDEX), 6);
+        END LOOP;
+        UT_TRACE.TRACE('==>END Or_BoLegalize.fblExiAttNamOrDisNamInTemTab',4);
+        IF (RFCURSOR%ISOPEN) THEN
+            CLOSE RFCURSOR;
+        END IF;
+        RETURN FALSE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF (RFCURSOR%ISOPEN) THEN
+                CLOSE RFCURSOR;
+            END IF;
+            UT_TRACE.TRACE('==>EXCEPTION CONTROLLED_ERROR Or_BoLegalize.fblExiAttNamOrDisNamInTemTab',4);
+            RAISE;
+        WHEN OTHERS THEN
+            IF (RFCURSOR%ISOPEN) THEN
+                CLOSE RFCURSOR;
+            END IF;
+            UT_TRACE.TRACE('==>EXCEPTION OTHERS Or_BoLegalize.fblExiAttNamOrDisNamInTemTab',4);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FBLEXIATTNAMORDISNAMINTEMTAB;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INSERTINADDITIONALDATA
+    (
+        INUORDER          IN OR_ORDER.ORDER_ID%TYPE,
+        INUCAUSAL         IN OR_ORDER.CAUSAL_ID%TYPE,
+        ISBADDITIONALDATA IN VARCHAR2
+    )
+    IS
+        
+        
+        
+        NUINDEX          BINARY_INTEGER;
+        TBSETATTRIB      OR_BCORDERATTRIBUTES.TBTASK_TYPE_ADD_DATA;
+        TBRECDATAVALUES  UT_STRING.TYTB_STRING;
+        TBDATAVALUE      UT_STRING.TYTB_STRING;
+        TBDATAVALUENULL  UT_STRING.TYTB_STRING;
+        NUATTRIBUTESET   GE_ATTRIBUTES_SET.ATTRIBUTE_SET_ID%TYPE;
+        NUATTRIBUTE      GE_ATTRIBUTES.ATTRIBUTE_ID%TYPE;
+        NUCOUNTER        NUMBER := 0; 
+        NUACTION         GE_ACTION_MODULE.ACTION_ID%TYPE;
+        
+        
+        
+        
+        
+        CNU_ERR_DO_NOT_EXIST_ATT    CONSTANT NUMBER := 625;
+        
+        
+        CNU_ERR_ATT_AMOU_DO_NOT_EQU CONSTANT NUMBER := 627;
+    BEGIN
+        
+        
+        
+        
+        
+        UT_TRACE.TRACE('==>Begin Or_BoLegalize.InsertInAdditionalData',4);
+        UT_TRACE.TRACE('==>Parametro entrada:Causal:' || TO_CHAR(INUCAUSAL),5);
+        UT_TRACE.TRACE('==>Parametro entrada:Orden:' || TO_CHAR(INUORDER),5);
+        UT_TRACE.TRACE('==>Parametro entrada:Datos adicionales:' || ISBADDITIONALDATA,5);
+
+        NUACTION := OR_BOCONSTANTS.CNUORDER_ACTION_CLOSE;
+        OR_BOORDERATTRIBUTES.LOADDATATOTEMPTABLE(INUORDER, INUCAUSAL, NUACTION, FALSE);
+
+        
+        OR_BCORDERATTRIBUTES.GETSETATTBYTASTYP(INUORDER, INUCAUSAL, TBSETATTRIB);
+
+        
+        
+        IF  ISBADDITIONALDATA IS NOT NULL THEN
+            UT_STRING.EXTSTRING(ISBADDITIONALDATA, ';', TBRECDATAVALUES);
+        END IF;
+        
+        
+        IF (OR_BOORDERATTRIBUTESET.FNUGETATTAMOUNTFROMTEMPTABLE(INUORDER) <>
+            TBRECDATAVALUES.COUNT) THEN
+            ERRORS.SETERROR(CNU_ERR_ATT_AMOU_DO_NOT_EQU,
+                            OR_BOORDERATTRIBUTESET.FNUGETATTAMOUNTFROMTEMPTABLE(INUORDER)
+                            ||'|'||TBRECDATAVALUES.COUNT||'|'||INUORDER);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+        NUINDEX := TBRECDATAVALUES.FIRST;
+        UT_TRACE.TRACE('Proceso: EL valor del indice inicial es : ' || TO_CHAR(NUINDEX),6);
+        WHILE NUINDEX IS NOT NULL LOOP
+            
+            
+            
+            TBDATAVALUE := TBDATAVALUENULL;
+            
+            UT_STRING.EXTSTRING(TBRECDATAVALUES(NUINDEX), '=', TBDATAVALUE);
+            
+            
+            
+            
+            UT_TRACE.TRACE('Proceso: Atributo: ' || TBDATAVALUE(1),6);
+            UT_TRACE.TRACE('Proceso: Valor: ' || TBDATAVALUE(2),6);
+            
+            IF (FBLEXIATTNAMORDISNAMINTEMTAB(TBSETATTRIB, TBDATAVALUE(1),
+                                             NUATTRIBUTESET, NUATTRIBUTE, TRUE))
+            THEN
+                
+                
+                UT_TRACE.TRACE('Proceso: Grupo de atributos ' || TO_CHAR(NUATTRIBUTESET),6);
+                UT_TRACE.TRACE('Proceso: Identificador del atributo: ' ||TO_CHAR(NUATTRIBUTE),6);
+                OR_BOORDERATTRIBUTESET.SETATTRVALUEINTEMPTABLE(INUORDER,
+                                                               NUATTRIBUTESET,
+                                                               NUATTRIBUTE,
+                                                               TBDATAVALUE(2));
+            ELSE
+                
+                
+                ERRORS.SETERROR(CNU_ERR_DO_NOT_EXIST_ATT, TBDATAVALUE(1)||'|'||
+                                INUORDER);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            NUINDEX := TBRECDATAVALUES.NEXT(NUINDEX);
+        END LOOP;
+
+        UT_TRACE.TRACE('==>END Or_BoLegalize.InsertInAdditionalData',4);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('==>EXCEPTION CONTROLLED_ERROR Or_BoLegalize.InsertInAdditionalData',4);
+            RAISE;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('==>EXCEPTION OTHERS Or_BoLegalize.InsertInAdditionalData',4);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INSERTINADDITIONALDATA;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FNUGETACTIONFORCAUSAL
+    (
+        INUCAUSAL IN  OR_ORDER.CAUSAL_ID%TYPE,
+        INUORDER  IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    RETURN NUMBER
+    IS
+        
+        
+        
+        NUCAUSALTYPE    GE_CAUSAL_TYPE.CAUSAL_TYPE_ID%TYPE;
+        SBCOMERR        VARCHAR2(2000);
+        NUACTITOEXEC    OR_TRANSITION.ACTION_ID%TYPE;
+        
+        
+        
+        CNUNOESCUMPNIINCUM CONSTANT NUMBER := 2567;
+    BEGIN
+        
+        
+        NUCAUSALTYPE := DAGE_CAUSAL.FNUGETCLASS_CAUSAL_ID(INUCAUSAL);
+
+        
+        IF (NUCAUSALTYPE <> GNUACCOCAUSALTYPE AND
+            NUCAUSALTYPE <> GNUNONACCOCAUSTYPE) THEN
+            
+            OR_BOORDER.GETSBNUMERATORANDSEQUENCE(INUORDER, SBCOMERR);
+            ERRORS.SETERROR(CNUNOESCUMPNIINCUM, SBCOMERR);
+            RAISE EX.CONTROLLED_ERROR;
+        ELSE
+            IF (NUCAUSALTYPE = GNUACCOCAUSALTYPE) THEN
+                
+                NUACTITOEXEC := OR_BOCONSTANTS.CNUACCOM_ORDER_ACTION;
+            ELSE
+                
+                NUACTITOEXEC := OR_BOCONSTANTS.CNUNONACCO_ORDER_ACTION;
+            END IF;
+        END IF;
+        RETURN (NUACTITOEXEC);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUGETACTIONFORCAUSAL;
+    
+
+    PROCEDURE GETTASKTYPECAUSAL
+    (
+        INUTASKTYPE     IN  OR_TASK_TYPE.TASK_TYPE_ID%TYPE,
+        OTBCAUSTASKTYPE OUT DAGE_CAUSAL.TYTBCAUSAL_ID
+    )
+    IS
+        CURSOR CU_TASK_TYPE_CAUSAL
+        IS
+        SELECT CAUSAL_ID
+          FROM OR_TASK_TYPE_CAUSAL
+         WHERE TASK_TYPE_ID = INUTASKTYPE;
+    BEGIN
+        OPEN CU_TASK_TYPE_CAUSAL;
+        FETCH CU_TASK_TYPE_CAUSAL BULK COLLECT INTO OTBCAUSTASKTYPE;
+        CLOSE CU_TASK_TYPE_CAUSAL;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF (CU_TASK_TYPE_CAUSAL%ISOPEN) THEN
+                CLOSE CU_TASK_TYPE_CAUSAL;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF (CU_TASK_TYPE_CAUSAL%ISOPEN) THEN
+                CLOSE CU_TASK_TYPE_CAUSAL;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+    FUNCTION FTBGETVALIDCAUSALBYORDERLEG
+    (
+        INUORDER         IN  OR_ORDER.ORDER_ID%TYPE
+    )
+    RETURN DAGE_CAUSAL.TYTBCAUSAL_ID
+    IS
+        
+        
+        
+        NUTASKTYPE      OR_ORDER.TASK_TYPE_ID%TYPE;
+        NUTASKCODE      OR_WF_INTERFACE.WF_TASK_TYPE_ID%TYPE;
+        TBCAUSALRESUL   DAGE_CAUSAL.TYTBCAUSAL_ID;
+        
+        CNUSUCCESS              CONSTANT    NUMBER(1) := 1;
+        
+        SBISCOUNTERMAND OR_ORDER.IS_COUNTERMAND%TYPE;
+        
+        PROCEDURE DELCAUSGROUPORDERSFAIL (ITBCAUSAL IN OUT DAGE_CAUSAL.TYTBCAUSAL_ID)
+        IS
+        BEGIN
+            IF (ITBCAUSAL.COUNT <> 0) THEN
+                FOR NUINDEX IN ITBCAUSAL.FIRST .. ITBCAUSAL.LAST LOOP
+                    IF (ITBCAUSAL(NUINDEX) = OR_BOCONSTANTS.CNUGROUPORDERSFAILCAUS) THEN
+                        ITBCAUSAL.DELETE(NUINDEX);
+                        RETURN;
+                    END IF;
+                END LOOP;
+            END IF;
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END;
+    BEGIN
+        UT_TRACE.TRACE('Or_BOLegalizeOrder.ftbGetValidCausalByOrderLeg INICIO ',2);
+        
+        NUTASKTYPE := DAOR_ORDER.FNUGETTASK_TYPE_ID(INUORDER);
+
+        
+        IF NOT DAOR_WF_INTERFACE.FBLEXIST(INUORDER) THEN
+            UT_TRACE.TRACE('nuTaskType:'||NUTASKTYPE,2);
+            UT_TRACE.TRACE('inuOrder:'||INUORDER,2);
+            
+            UT_TRACE.TRACE('Obtiene las C. por tipode Trabajo y regeneraci�n',2);
+            OR_BCORDERCAUSAL.CAUSALBYORDERANDTASK(NUTASKTYPE,INUORDER,TBCAUSALRESUL);
+            UT_TRACE.TRACE('causales:'||'['||TBCAUSALRESUL.COUNT||']',2);
+
+            IF (TBCAUSALRESUL.COUNT = 0) THEN
+                
+                
+                UT_TRACE.TRACE('1 NO tiene causal por tipo de trabajo y causales de regeneraci�n retorna las de general y ordenes:',2);
+                
+                OR_BCORDERCAUSAL.GETCAUSAL(TBCAUSALRESUL);
+            END IF;
+            DELCAUSGROUPORDERSFAIL(TBCAUSALRESUL);
+            UT_TRACE.TRACE('Or_BOLegalizeOrder.ftbGetValidCausalByOrderLeg FIN ',2);
+            RETURN (TBCAUSALRESUL);
+        END IF;
+
+        
+        UT_TRACE.TRACE('2 Orden de WorkFlow T.T.:'||NUTASKTYPE,2);
+           
+        
+        SBISCOUNTERMAND := DAOR_ORDER.FSBGETIS_COUNTERMAND(INUORDER);
+        IF  SBISCOUNTERMAND = GE_BOCONSTANTS.CSBYES THEN           
+            UT_TRACE.TRACE('2 La oden es contraorden',2);
+            TBCAUSALRESUL(1) := CNUSUCCESS;
+            DELCAUSGROUPORDERSFAIL(TBCAUSALRESUL);
+            UT_TRACE.TRACE('Or_BOLegalizeOrder.ftbGetValidCausalByOrderLeg FIN ',2);
+            RETURN (TBCAUSALRESUL);
+        END IF;
+
+        
+        OR_BCORDERCAUSAL.CAUSALBYORDERANDTASK(NUTASKTYPE,INUORDER,TBCAUSALRESUL);
+        UT_TRACE.TRACE('causales de regeneracion:'||'['||TBCAUSALRESUL.COUNT||']',2);
+        IF (TBCAUSALRESUL.COUNT = 0) THEN
+            
+            
+            UT_TRACE.TRACE('2 NO tiene causal por tipo de trabajo y causales de regeneraci�n retorna las de WorkFlow:',2);
+            NUTASKCODE := DAOR_WF_INTERFACE.FNUGETWF_TASK_TYPE_ID(INUORDER);   
+            UT_TRACE.TRACE('2 WorkFLow nuTaskCode:'||NUTASKCODE,2);
+            OR_BCORDERCAUSAL.GETCAUSALUNITTYPE (NUTASKCODE, TBCAUSALRESUL);
+        END IF;
+        DELCAUSGROUPORDERSFAIL(TBCAUSALRESUL);
+        UT_TRACE.TRACE('Or_BOLegalizeOrder.ftbGetValidCausalByOrderLeg FIN ',2);
+        RETURN (TBCAUSALRESUL);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+    
+    
+    PROCEDURE FINISHLEGALIZE
+    (
+        INUORDER      IN  OR_ORDER.ORDER_ID%TYPE,
+        INUCAUSAL     IN  OR_ORDER.CAUSAL_ID%TYPE,
+        IDTEXEINIDAT  IN  OR_ORDER.EXEC_INITIAL_DATE%TYPE,
+        IDTEXEFINDAT  IN  OR_ORDER.EXECUTION_FINAL_DATE%TYPE,
+        ITBACTIVITYITEMS IN OR_BCORDERACTIVITIES.TYTBACTIVITYITEMS,
+        IDTCHANGEDATE IN OR_ORDER_STAT_CHANGE.STAT_CHG_DATE%TYPE DEFAULT NULL
+    )
+    IS
+        
+        
+        
+        RCORDER         DAOR_ORDER.STYOR_ORDER;
+        SBCHARGESTATUS  OR_ORDER.CHARGE_STATUS%TYPE;
+        NUESTADOINICIAL OR_ORDER.ORDER_STATUS_ID%TYPE;
+
+        PROCEDURE UPDATELEGALIZEDATAIL (
+                                            INUCAUSAL     IN  OR_ORDER.CAUSAL_ID%TYPE,
+                                            IDTEXEINIDAT  IN  OR_ORDER.EXEC_INITIAL_DATE%TYPE,
+                                            IDTEXEFINDAT  IN  OR_ORDER.EXECUTION_FINAL_DATE%TYPE,
+                                            IORCORDER     IN OUT DAOR_ORDER.STYOR_ORDER
+                                       )
+        IS
+        BEGIN
+            UT_TRACE.TRACE('INICIO Or_BOLegalizeOrder.FinishLegalize.updateLegalizeDatail',1);
+            IORCORDER.EXEC_INITIAL_DATE     := IDTEXEINIDAT;
+            IORCORDER.EXECUTION_FINAL_DATE  := IDTEXEFINDAT;
+            IORCORDER.LEGALIZATION_DATE     := SYSDATE;
+            IORCORDER.CAUSAL_ID             := INUCAUSAL;
+            UT_TRACE.TRACE('[package.metodo] order_cost_average:['|| IORCORDER.ORDER_COST_AVERAGE ||'] order_cost_by_list:['|| IORCORDER.ORDER_COST_BY_LIST ||']',3);
+            UT_TRACE.TRACE('[package.metodo] operative_aiu_value:['|| IORCORDER.OPERATIVE_AIU_VALUE ||'] admin_aiu_value:['|| IORCORDER.ADMIN_AIU_VALUE ||']',3);
+            UT_TRACE.TRACE('FIN Or_BOLegalizeOrder.FinishLegalize.updateLegalizeDatail',1);
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END;
+    BEGIN
+
+        
+        RCORDER := DAOR_ORDER.FRCGETRECORD(INUORDER);
+        
+        UPDATELEGALIZEDATAIL(INUCAUSAL, IDTEXEINIDAT, IDTEXEFINDAT, RCORDER);
+
+        
+        OR_BOORDERCOST.GETORDERCOST (RCORDER);
+
+        
+        OR_BOCHARGESGENERATE.GENCHARGESBYORDER(RCORDER);
+
+        
+        NUESTADOINICIAL := RCORDER.ORDER_STATUS_ID;
+
+        
+        OR_BOUPDORDERCONTROLLER.CLOSEORDER(RCORDER,IDTCHANGEDATE);
+
+        
+        DAOR_ORDER.UPDRECORD(RCORDER);
+        
+        
+        GE_BONOTIFMESGALERT.PROCSTAORDERFORALERT(RCORDER, NUESTADOINICIAL);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FINISHLEGALIZE ;
+
+    
+
+
+
+
+
+
+    FUNCTION FTBGETTASKCODECAUSAL
+    (
+        INUTASKCODE IN OR_WF_INTERFACE.WF_TASK_TYPE_ID%TYPE
+    )
+    RETURN DAGE_CAUSAL.TYTBCAUSAL_ID
+    IS
+        
+        
+        
+        TBOBCAUSTASTYPE GE_TYTBNUMBER; 
+        TBCAUSAL        DAGE_CAUSAL.TYTBCAUSAL_ID;
+        NUINDEX         BINARY_INTEGER := 0;
+        NUINDEX2         BINARY_INTEGER := 0;
+        NUCAUSAL        GE_CAUSAL.CAUSAL_ID%TYPE;
+
+    BEGIN
+        
+        
+        TBOBCAUSTASTYPE := GE_BOINT_WORKFLOW.FTBGETCAUSALUNITTYPEBYMODULE
+                               (INUTASKCODE ,GNUORDERMODULE, GNUGENERALMODULE);
+
+        IF (TBOBCAUSTASTYPE.COUNT = 0) THEN
+            RETURN TBCAUSAL;
+        END IF;
+
+        NUINDEX := TBOBCAUSTASTYPE.FIRST;
+
+        WHILE NUINDEX IS NOT NULL
+        LOOP
+            NUINDEX2 := NUINDEX2 + 1;
+
+            TBCAUSAL(NUINDEX2) := TBOBCAUSTASTYPE(NUINDEX).ID;
+
+            UT_TRACE.TRACE('nuCausal:'||TBCAUSAL(NUINDEX2), 5);
+
+            NUINDEX := TBOBCAUSTASTYPE.NEXT(NUINDEX);
+        END LOOP;
+
+        RETURN (TBCAUSAL);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FTBGETTASKCODECAUSAL;
+
+
+    
+
+    FUNCTION FNUGETCURRENTORDER
+    RETURN NUMBER IS
+    BEGIN
+        RETURN (GNUORDERID);
+    EXCEPTION
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUGETCURRENTORDER;
+    
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2 IS
+    BEGIN
+    
+        RETURN CSBVERSION;
+    
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INSNETWORKELEMOPER
+    (
+        INUORDERID          IN  OR_ORDER.ORDER_ID%TYPE,
+        INUMOTIVEID         IN  MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUCOMPONENTTYPEID  IN  MO_COMPONENT.COMPONENT_TYPE_ID%TYPE,
+        INUELEMENTTYPEID    IN  IF_ELEMENT_TYPE.ELEMENT_TYPE_ID%TYPE
+    )
+    IS
+
+        NUCOMPONENTID      MO_COMPONENT.COMPONENT_ID%TYPE;
+        ONUNETELEMOPID     PR_NETWORK_ELEM_OPER.NETWORK_ELEM_OPER_ID%TYPE;
+        NUCATEGORYID       PR_NETWORK_ELEM_OPER.CATEGORY_ID%TYPE;
+        NUACTIVITY         OR_ORDER_ACTIVITY.ORDER_ACTIVITY_ID%TYPE;
+        TBELEMSBYACTIVITY  OR_BCORDERACTIVITIES.TYTBACTIVITYITEMS;
+        
+        
+        PROCEDURE INSNETELEMOPER
+        (
+        INUCOMPONENTID      IN      MO_COMPONENT.COMPONENT_ID%TYPE,
+        ISBCODE             IN      IF_NODE.CODE%TYPE,
+        INUELEMENT_TYPE_ID  IN      IF_ELEMENT_TYPE.ELEMENT_TYPE_ID%TYPE,
+        INUCATEGORY         IN      GE_ELE_CATEGORY_TYPE.CATEGORY_ID%TYPE,
+        ONUNETELEMOPID      OUT     PR_NETWORK_ELEM_OPER.NETWORK_ELEM_OPER_ID%TYPE,
+        INUSEQUENCE         IN      PR_NETWORK_ELEM_OPER.SEQUENCE_ELEMENT%TYPE DEFAULT 1
+        )
+    IS
+        RCMOCOMPONENT       DAMO_COMPONENT.STYMO_COMPONENT;
+        RCNETWORKELEMOPER   DAPR_NETWORK_ELEM_OPER.STYPR_NETWORK_ELEM_OPER;
+        TBELEMENTID         IF_BOELEMENT.TYTBNUMBER;
+        NUELEMENTID         PR_NETWORK_ELEM_OPER.ELEMENT_ID%TYPE;
+
+        NUMOTIVEID          MO_MOTIVE.MOTIVE_ID%TYPE;
+
+        EXFOUNDELEMENTCODE  EXCEPTION;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Metodo InsNetElemOper Componente['||INUCOMPONENTID||']',5);
+
+        
+        RCMOCOMPONENT := DAMO_COMPONENT.FRCGETRECORD(INUCOMPONENTID);
+
+        RCNETWORKELEMOPER.COMPONENT_ID := RCMOCOMPONENT.COMPONENT_ID_PROD;
+
+        RCNETWORKELEMOPER.NETWORK_ELEM_OPER_ID := PR_BOSEQUENCE.GETNETWORKELEMOPERID;
+        UT_TRACE.TRACE('Registro Nuevo Elemento:['||RCNETWORKELEMOPER.NETWORK_ELEM_OPER_ID||']',12);
+
+        RCNETWORKELEMOPER.ELEMENT_CODE := ISBCODE;
+        UT_TRACE.TRACE('Code:['||ISBCODE||']',12);
+
+        RCNETWORKELEMOPER.CATEGORY_ID :=  INUCATEGORY;
+        UT_TRACE.TRACE('Category:['||RCNETWORKELEMOPER.CATEGORY_ID||']',12);
+
+        
+        IF_BOELEMENT.GETELEMENTID(INUELEMENT_TYPE_ID,NULL,ISBCODE,NUELEMENTID);
+
+        RCNETWORKELEMOPER.ELEMENT_ID := NUELEMENTID;
+
+        UT_TRACE.TRACE('Tipo Elemento:['||INUELEMENT_TYPE_ID||']Id Elemento a Insertar:['||RCNETWORKELEMOPER.ELEMENT_ID||']',12);
+        RCNETWORKELEMOPER.ELEMENT_TYPE_ID:=INUELEMENT_TYPE_ID;
+
+        RCNETWORKELEMOPER.JUMP_NUM := NULL;
+        RCNETWORKELEMOPER.SEQUENCE_ELEMENT := INUSEQUENCE;
+
+        NUMOTIVEID  := RCMOCOMPONENT.MOTIVE_ID;
+        RCNETWORKELEMOPER.PRODUCT_ID := DAMO_MOTIVE.FNUGETPRODUCT_ID(NUMOTIVEID);
+
+        
+        DAPR_NETWORK_ELEM_OPER.INSRECORD(RCNETWORKELEMOPER);
+        ONUNETELEMOPID := RCNETWORKELEMOPER.NETWORK_ELEM_OPER_ID;
+        UT_TRACE.TRACE('Final Metodo InsNetElemOper',5);
+    EXCEPTION
+        WHEN EXFOUNDELEMENTCODE THEN
+            ERRORS.SETERROR(ERROR3320,ISBCODE);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+
+    BEGIN
+
+        NUCOMPONENTID := MO_BOCOMPONENT.FNUGETCOMPONENTBYTYPE(INUMOTIVEID,INUCOMPONENTTYPEID);
+        NUCATEGORYID  := IM_BOCONSTANTS.CNUCATEGORYINSTALL;
+        NUACTIVITY    := OR_BOLEGALIZEACTIVITIES.FNUGETCURRACTIVITY;
+
+        OR_BCORDERACTIVITIES.GETELEMSBYACTIVITY(NUACTIVITY,OR_BOCONSTANTS.CSBINSTALLACTION,TBELEMSBYACTIVITY);
+
+        IF TBELEMSBYACTIVITY.FIRST IS NOT NULL THEN
+            FOR I IN TBELEMSBYACTIVITY.FIRST ..TBELEMSBYACTIVITY.LAST LOOP
+                IF (TBELEMSBYACTIVITY(I).NUELEMENTTYPEID = INUELEMENTTYPEID)   THEN
+
+                    INSNETELEMOPER
+                    (
+                        NUCOMPONENTID,
+                        TBELEMSBYACTIVITY(I).SBELEMENTCODE,
+                        TBELEMSBYACTIVITY(I).NUELEMENTTYPEID,
+                        NUCATEGORYID,
+                        ONUNETELEMOPID
+                    );
+
+                END IF;
+            END LOOP;
+        END IF;
+        
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INSNETWORKELEMOPER;
+
+	PROCEDURE VALIDCAUSALBYORDER
+    (
+        INUORDERID   IN OR_ORDER.ORDER_ID%TYPE,
+        INUCAUSALID  IN OR_ORDER.CAUSAL_ID%TYPE
+    )
+	IS
+        
+        CNUNOTAVALIDCAUSAL   CONSTANT NUMBER(6) := 112042;
+        TBCAUSAL            DAGE_CAUSAL.TYTBCAUSAL_ID;
+        NUVALCAUSAL         NUMBER := 1;
+        NUTASKTYPEID        OR_TASK_TYPE.TASK_TYPE_ID%TYPE;
+        NUINDEX NUMBER;
+	BEGIN
+		
+        UT_TRACE.TRACE('Or_BOLegalizeOrder.ValidCausalByOrder INICIO ',2);
+        
+        
+        TBCAUSAL:= OR_BOLEGALIZEORDER.FTBGETVALIDCAUSALBYORDERLEG(INUORDERID);
+
+        UT_TRACE.TRACE('Validando Causal['||INUCAUSALID||']',10);
+
+        NUINDEX := TBCAUSAL.FIRST;
+
+        WHILE NUINDEX <= TBCAUSAL.LAST LOOP
+            IF INUCAUSALID = TBCAUSAL(NUINDEX) THEN
+               NUVALCAUSAL := 0;
+            END IF;
+            NUINDEX := TBCAUSAL.NEXT(NUINDEX);
+        END LOOP;
+        
+        IF NUVALCAUSAL <> 0 THEN
+            NUTASKTYPEID := DAOR_ORDER.FNUGETTASK_TYPE_ID(INUORDERID);
+            ERRORS.SETERROR(CNUNOTAVALIDCAUSAL, INUCAUSALID||'|'||NUTASKTYPEID);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        UT_TRACE.TRACE('Or_BOLegalizeOrder.ValidCausalByOrder FIN ',2);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+	PROCEDURE VALIDPERSONBYORDER
+    (
+        INUORDERID   IN OR_ORDER.ORDER_ID%TYPE,
+        INUPERSONID  IN OR_ORDER_PERSON.PERSON_ID %TYPE
+    )
+	IS
+        NUOPERATINGUNITID  OR_ORDER.OPERATING_UNIT_ID%TYPE;
+        
+        CNUERR_7653  CONSTANT NUMBER(4) := 7653;
+        
+        CNUERR_112063 CONSTANT NUMBER(6) := 112063;
+	BEGIN
+		
+        UT_TRACE.TRACE('Or_BOLegalizeOrder.ValidPersonByOrder INICIO ',2);
+
+        IF  INUPERSONID IS NULL THEN
+            ERRORS.SETERROR(CNUERR_112063);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        DAGE_PERSON.ACCKEY(INUPERSONID);
+        NUOPERATINGUNITID := DAOR_ORDER.FNUGETOPERATING_UNIT_ID(INUORDERID);
+
+        IF NOT DAOR_OPER_UNIT_PERSONS.FBLEXIST (NUOPERATINGUNITID, INUPERSONID)  THEN
+            ERRORS.SETERROR(CNUERR_7653, INUPERSONID||'|'||NUOPERATINGUNITID);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        UT_TRACE.TRACE('Or_BOLegalizeOrder.ValidPersonByOrder FIN ',2);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+
+	FUNCTION GETUNIQUECAUSAL
+    (
+        INUORDERID   IN OR_ORDER.ORDER_ID%TYPE
+    ) RETURN GE_CAUSAL.CAUSAL_ID%TYPE
+	IS
+        TBCAUSAL            DAGE_CAUSAL.TYTBCAUSAL_ID;
+        NUCOUNTER NUMBER := 0;
+        NUINDEX  NUMBER;
+	BEGIN
+		
+        UT_TRACE.TRACE('Or_BOLegalizeOrder.GetUniqueCausal INICIO ',2);
+        
+        
+        TBCAUSAL:= OR_BOLEGALIZEORDER.FTBGETVALIDCAUSALBYORDERLEG(INUORDERID);
+         UT_TRACE.TRACE('Contador '||TBCAUSAL.COUNT,2);
+
+        NUCOUNTER := NVL(TBCAUSAL.COUNT, 0);
+
+        IF  NUCOUNTER = 1 THEN
+            NUINDEX := TBCAUSAL.FIRST;
+            RETURN TBCAUSAL(NUINDEX);
+        END IF;
+
+        RETURN NULL;
+
+        UT_TRACE.TRACE('Or_BOLegalizeOrder.GetUniqueCausal FIN ',2);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+        
+    PROCEDURE  SETCURRENTORDER(INUORDERID IN OR_ORDER.ORDER_ID%TYPE)
+    IS
+    BEGIN
+        GNUORDERID := INUORDERID;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END SETCURRENTORDER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE LEGALIZEORDERACTIVITIES
+    (
+        INUORDER        IN  OR_ORDER.ORDER_ID%TYPE,
+        INUOPERUNIT     IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        INUCAUSALID     IN  OR_ORDER.ORDER_ID%TYPE,
+        TBACTIVITYITEMS IN  OR_BCORDERACTIVITIES.TYTBACTIVITYITEMS,
+        INUCONTRACTORID IN  GE_CONTRATO.ID_CONTRATISTA%TYPE DEFAULT NULL,
+        INUCONTRACTID   IN  GE_CONTRATO.ID_CONTRATO%TYPE DEFAULT NULL
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('[OR_BOLegalizeOrder.LegalizeOrder] INICIO',2);
+        
+        
+        
+        GNUORDERID := INUORDER;
+
+        UT_TRACE.TRACE('[OR_BOLegalizeOrder.LegalizeOrder] Gestiona los items de la orden',3);
+        
+        IF (OR_BOORDER.FBLHASITEMSASSIGNED(INUORDER)) THEN
+            
+            OR_BOITEMS.INSERTINTEMTAB(OR_BOCONSTANTS.CNULEGAMOVECAUSE);
+            
+            OR_BOITEMS.UPDITEMBALFROMORDERANDOPEUNI
+                (
+                    INUORDER,
+                    INUOPERUNIT,
+                    TBACTIVITYITEMS,
+                    INUCONTRACTORID,
+                    INUCONTRACTID
+                );
+        END IF;
+
+        UT_TRACE.TRACE('[OR_BOLegalizeOrder.LegalizeOrderActivities] FIN',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END LEGALIZEORDERACTIVITIES;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETISVALTOLEGAL
+    (
+        INUACTIVITYID   IN  OR_ORDER_ACTIVITY.ACTIVITY_ID%TYPE,
+        INUAMOUNTTOLEG  IN  OR_ORDER_ITEMS.LEGAL_ITEM_AMOUNT%TYPE
+    )
+    IS
+
+    BEGIN
+
+        
+        
+        IF (OR_BOANULLORDER.FSBGETISAMOUNTTOANULACT(INUAMOUNTTOLEG)=OR_BOCONSTANTS.CSBSI) THEN
+            IF (OR_BOANULLORDER.FSBGETISANULACT(INUACTIVITYID) = OR_BOCONSTANTS.CSBNO) THEN
+                UT_TRACE.TRACE('La actividad '||INUACTIVITYID||' no es anulable',5);
+                GE_BOERRORS.SETERRORCODEARGUMENT( CNUERR_900877, INUACTIVITYID);
+            END IF;
+        END IF;
+
+        
+        
+        IF (INUAMOUNTTOLEG > 1 ) THEN
+            IF (FSBGETISMULTILEGALACT(INUACTIVITYID) = OR_BOCONSTANTS.CSBNO) THEN
+                UT_TRACE.TRACE('No puede legalizar un actividad con la cantidad '||INUAMOUNTTOLEG, 5);
+                GE_BOERRORS.SETERRORCODEARGUMENT( CNUERR_119001, INUAMOUNTTOLEG);
+            END IF;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETISVALTOLEGAL;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FSBGETISMULTILEGALACT
+    (
+        INUACTIVITYID   IN  OR_ORDER_ACTIVITY.ACTIVITY_ID%TYPE
+    )
+    RETURN VARCHAR2
+    IS
+
+    BEGIN
+        IF(NVL(DAOR_ACTIVIDAD.FSBGETLEGALIZA_MULTIPLE(INUACTIVITYID), OR_BOCONSTANTS.CSBNO)=OR_BOCONSTANTS.CSBLEGALIZEMULTIPLE) THEN
+            RETURN OR_BOCONSTANTS.CSBSI;
+        ELSE
+            RETURN OR_BOCONSTANTS.CSBNO;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FSBGETISMULTILEGALACT;
+
+    
+
+
+
+
+    FUNCTION FNUGETCAUSALLEGORDER
+    (
+        INUCOMPONENTID      IN  MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUACTIVITYID       IN  OR_ORDER_ACTIVITY.ACTIVITY_ID%TYPE
+    )
+    RETURN GE_CAUSAL.CAUSAL_ID%TYPE
+    IS
+        RCORDER     DAOR_ORDER.STYOR_ORDER;
+    BEGIN
+
+        UT_TRACE.TRACE('INICIA Or_BOLegalizeOrder.fnuGetCausalLegOrder - inuComponentId['||INUCOMPONENTID||'] - inuActivityId['||INUACTIVITYID||']',15);
+
+        
+        RCORDER := OR_BCFWLEGALIZEORDER.FRCGETLASTLEGORDERBYCOMP
+                    (
+                        INUCOMPONENTID,
+                        INUACTIVITYID
+                    );
+                    
+        UT_TRACE.TRACE('rcOrder.order_id_id['||RCORDER.ORDER_ID||']',15);
+                    
+        IF(RCORDER.ORDER_ID IS NOT NULL)THEN
+            RETURN RCORDER.CAUSAL_ID;
+        ELSE
+            UT_TRACE.TRACE('FIN Or_BOLegalizeOrder.fnuGetCausalLegOrder - reutrn NULL',15);
+            RETURN NULL;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FNUGETCAUSALLEGORDER;
+
+
+    
+
+
+
+
+
+    PROCEDURE VALIDATESECUENCEBYPRODUCT
+    IS
+        NUELEMENTPOSITION   MO_MOTIVE.ELEMENT_POSITION%TYPE;
+        SBELEMENTPOSITION   GE_ERROR_LOG.DESCRIPTION%TYPE;
+        
+    BEGIN
+
+        UT_TRACE.TRACE('INICIA Or_BOLegalizeOrder.ValidateSecuenceByProduct ',15);
+
+        
+        GE_BOINSTANCECONTROL.GETENTITYATTRIBUTE(SBELEMENTPOSITION);
+        
+        UT_TRACE.TRACE('sbElementPosition ['||SBELEMENTPOSITION||']',15);
+        
+        IF(SBELEMENTPOSITION IS NULL)THEN
+            RETURN;
+        END IF;
+
+        IF(UT_CONVERT.FSBIS_NUMBER(SBELEMENTPOSITION) = OR_BOCONSTANTS.CSBSI)THEN
+            NUELEMENTPOSITION := UT_CONVERT.FNUCHARTONUMBER(SBELEMENTPOSITION);
+        ELSE
+            
+            GE_BOERRORS.SETERRORCODE(CNUERR_452);
+        END IF;
+
+        
+        MO_BOREQUESTADDDATA.VALIDELEMENTPOSITION
+        (
+            OR_BOLEGALIZEACTIVITIES.FNUGETCURRMOTIVE,
+            NUELEMENTPOSITION
+        );
+        
+        UT_TRACE.TRACE('FIN Or_BOLegalizeOrder.ValidateSecuenceByProduct ',15);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END VALIDATESECUENCEBYPRODUCT;
+
+BEGIN
+    LOADPARAMETERS;
+END OR_BOLEGALIZEORDER;

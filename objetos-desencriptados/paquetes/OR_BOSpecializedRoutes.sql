@@ -1,0 +1,744 @@
+PACKAGE BODY OR_BOSpecializedRoutes
+IS
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    GTBROUTEACTIVEUTIL  DAOR_ROUTE.TYTBACTUNTIL;
+
+	
+	
+	
+
+    
+    CSBVERSION              CONSTANT UT_DATATYPES.STYSAOVERSION  := 'SAO582286';
+    
+
+    
+    
+    CNUIS_NOT_SPECIALIZED   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 901630;
+    
+    
+    CNUCONS_MUST_BE_VALID   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 900465;
+    
+    
+    CNUCONSEC_IS_NEGATIVE   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 920618;
+    
+    
+    
+    
+    FUNCTION FSBVERSION  RETURN UT_DATATYPES.STYSAOVERSION IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FDTGETACTUTILOFROUTE
+    (
+        INUROUTEID      IN   OR_ROUTE_PREMISE.ROUTE_ID%TYPE
+    )
+    RETURN OR_ROUTE.ACTUNTIL%TYPE
+    IS
+        DTACTUTIL   OR_ROUTE.ACTUNTIL%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('[BEGIN] OR_BOSpecializedRoutes.fdtGetActUtilOfRoute inuRouteId: '||INUROUTEID,10);
+
+        IF (INUROUTEID IS NULL) THEN
+            UT_TRACE.TRACE('[END] OR_BOSpecializedRoutes.fdtGetActUtilOfRoute',10);
+            RETURN DTACTUTIL;
+        END IF;
+        
+        IF(NOT GTBROUTEACTIVEUTIL.EXISTS(INUROUTEID)) THEN
+            GTBROUTEACTIVEUTIL(INUROUTEID) := DAOR_ROUTE.FDTGETACTUNTIL(INUROUTEID);
+        END IF;
+        
+        DTACTUTIL := GTBROUTEACTIVEUTIL(INUROUTEID);
+        
+        RETURN DTACTUTIL;
+
+        UT_TRACE.TRACE('[END] OR_BOSpecializedRoutes.fdtGetActUtilOfRoute',10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('[ERROR] ex.CONTROLLED_ERROR OR_BOSpecializedRoutes.fdtGetActUtilOfRoute',10);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('[ERROR] others OR_BOSpecializedRoutes.fdtGetActUtilOfRoute',10);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FDTGETACTUTILOFROUTE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALCHILDPREMCONSECUTIVE
+    (
+        INUPREMISEID        IN  AB_PREMISE.PREMISE_ID%TYPE,
+        INUROUTEID          IN  AB_PREMISE.ROUTE_ID%TYPE,
+        INUNEWCONSECUTIVE   IN  AB_PREMISE.CONSECUTIVE%TYPE
+    )
+    IS
+        NUFATHERCONSECUTIVE     AB_PREMISE.CONSECUTIVE%TYPE;
+        NUNEXTCONSECUTIVE       AB_PREMISE.CONSECUTIVE%TYPE;
+        NUADDRESSID             AB_ADDRESS.ADDRESS_ID%TYPE;
+        SBADDRESS               AB_ADDRESS.ADDRESS_PARSED%TYPE;
+    BEGIN
+        UT_TRACE.TRACE
+        (
+            '[BEGIN] OR_BOSpecializedRoutes.ValChildPremConsecutive' || CHR(10) ||
+            'inuPremiseId: ' || INUPREMISEID || CHR(10) ||
+            'inuRouteId: ' || INUROUTEID || CHR(10) ||
+            'inuNewConsecutive: ' || INUNEWCONSECUTIVE || CHR(10),10
+        );
+        
+
+
+        OR_BCSPECIALIZEDROUTES.GETPARENTANDNEXTCONS
+        (
+            INUPREMISEID,
+            INUROUTEID,
+            NUFATHERCONSECUTIVE,
+            NUNEXTCONSECUTIVE
+        );
+
+        IF INUNEWCONSECUTIVE < NUFATHERCONSECUTIVE OR INUNEWCONSECUTIVE > COALESCE(NUNEXTCONSECUTIVE, NUFATHERCONSECUTIVE + OR_BOROUTE.CNUINCREMENT-1) THEN
+            NUADDRESSID := AB_BCADDRESS.FNUGETPREMISEADDRESS(INUPREMISEID, GE_BOCONSTANTS.CSBYES);
+            SBADDRESS   := AB_BOADDRESS.FSBFORMATADDRESSBYID(NUADDRESSID);
+            UT_TRACE.TRACE('sbAddress '||SBADDRESS, 1);
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUCHILD_CONS_ERROR,SBADDRESS);
+        END IF;
+
+        
+        IF (INUNEWCONSECUTIVE > NUFATHERCONSECUTIVE AND (OR_BCROUTEPREMISE.FBOVALCONSINROUTE(INUROUTEID,INUNEWCONSECUTIVE))) THEN
+            
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUCONSE_ALREADY_EXIS,INUNEWCONSECUTIVE);
+        END IF;
+
+        UT_TRACE.TRACE('[END] OR_BOSpecializedRoutes.ValChildPremConsecutive',10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR OR_BOSpecializedRoutes.ValChildPremConsecutive',10);
+                RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS OR_BOSpecializedRoutes.ValChildPremConsecutive',12);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END VALCHILDPREMCONSECUTIVE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALCONSECUTIVE
+    (
+        INUPREMISEID        IN  AB_PREMISE.PREMISE_ID%TYPE,
+        INUROUTEID          IN  AB_PREMISE.ROUTE_ID%TYPE,
+        INUNEWCONSECUTIVE   IN  AB_PREMISE.CONSECUTIVE%TYPE
+    )
+    IS
+        NUFATHERADDRESSID   AB_ADDRESS.FATHER_ADDRESS_ID%TYPE;
+    BEGIN
+
+        UT_TRACE.TRACE
+        (   '[INICIO] OR_BOSpecializedRoutes.ValConsecutive' || CHR(10) ||
+            'inuPremiseId: ' || INUPREMISEID || CHR(10) ||
+            'inuRouteId: ' || INUROUTEID || CHR(10) ||
+            'inuNewConsecutive: ' || INUNEWCONSECUTIVE || CHR(10),10
+        );
+
+        NUFATHERADDRESSID := AB_BCPREMISE.FNUGETPARENTADDRBYPREM(INUPREMISEID);
+
+        IF NUFATHERADDRESSID IS NULL THEN
+            
+            IF (OR_BCROUTEPREMISE.FBOVALCONSINROUTE(INUROUTEID,INUNEWCONSECUTIVE)) THEN
+                
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUCONSE_ALREADY_EXIS,INUNEWCONSECUTIVE);
+            END IF;
+            
+            IF (OR_BCSPECIALIZEDROUTES.FBOISNEXTPREMISECHILD(INUPREMISEID, INUROUTEID, INUNEWCONSECUTIVE)) THEN
+                
+                GE_BOERRORS.SETERRORCODE(OR_BOSPECIALIZEDROUTES.CNUFATHER_BIGGER_PRECHILD);
+            END IF;
+            
+        ELSE
+            VALCHILDPREMCONSECUTIVE(INUPREMISEID, INUROUTEID, INUNEWCONSECUTIVE);
+        END IF;
+
+        UT_TRACE.TRACE('[FIN] OR_BOSpecializedRoutes.ValConsecutive',10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR OR_BOSpecializedRoutes.ValConsecutive',10);
+                RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS OR_BOSpecializedRoutes.ValConsecutive',12);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END VALCONSECUTIVE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE VALSPECIALIZEDROUTE
+    (
+        INUROUTEID      IN   OR_ROUTE_PREMISE.ROUTE_ID%TYPE,
+        INUCONSECUTIVE  IN   OR_ROUTE_PREMISE.CONSECUTIVE%TYPE,
+        INUPREMISEID    IN   OR_ROUTE_PREMISE.PREMISE_ID%TYPE
+    )
+    IS
+        NUROUTEPREMISEID    OR_ROUTE_PREMISE.ROUTE_PREMISE_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('[BEGIN] OR_BOSpecializedRoutes.ValSpecializedRoute' ||CHR(10)||
+                       'inuRouteId: '       ||INUROUTEID                    ||CHR(10)||
+                       'inuConsecutive: '   ||INUCONSECUTIVE                ||CHR(10)||
+                       'inuPremiseId: '     ||INUPREMISEID,10);
+
+        
+        DAOR_ROUTE.ACCKEY(INUROUTEID);
+        
+        
+        IF (DAOR_ROUTE.FSBGETDEDICATED_ROUTE(INUROUTEID) = GE_BOCONSTANTS.CSBNO) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUIS_NOT_SPECIALIZED, INUROUTEID);
+        END IF;
+        
+        
+        GE_BOLOGICALDELETED.VALACTUNTIL
+        (
+            INUROUTEID,
+            OR_BOROUTEPREMISE.CSBOR_ROUTE,
+            FDTGETACTUTILOFROUTE(INUROUTEID)
+        );
+        
+        
+        IF (INUCONSECUTIVE IS NULL) THEN
+            GE_BOERRORS.SETERRORCODE(CNUCONS_MUST_BE_VALID);
+        END IF;
+        
+        
+        IF (INUCONSECUTIVE < 0) THEN
+            GE_BOERRORS.SETERRORCODE(CNUCONSEC_IS_NEGATIVE);
+        END IF;
+        
+        
+        OR_BOSPECIALIZEDROUTES.VALCONSECUTIVE(INUPREMISEID, INUROUTEID, INUCONSECUTIVE);
+
+        UT_TRACE.TRACE('[END] OR_BOSpecializedRoutes.ValSpecializedRoute',10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('[ERROR] ex.CONTROLLED_ERROR OR_BOSpecializedRoutes.ValSpecializedRoute',10);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('[ERROR] others OR_BOSpecializedRoutes.ValSpecializedRoute',10);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END VALSPECIALIZEDROUTE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ADDPREMTOSPECIALROUTES
+    (
+        INUPREMISEID    IN   OR_ROUTE_PREMISE.PREMISE_ID%TYPE,
+        ITBROUTESINFO   IN   OR_BCSPECIALIZEDROUTES.TYTBROUTEINFO
+    )
+    IS
+        NUROUTEINFOIDX      UT_DATATYPES.STYNUMBERINDEX;
+    BEGIN
+        UT_TRACE.TRACE('[BEGIN] OR_BOSpecializedRoutes.AddPremToSpecialRoutes'  ||CHR(10)||
+                       'InuPremiseId: '     ||INUPREMISEID                      ||CHR(10)||
+                       'itbRoutesInfo: '    ||ITBROUTESINFO.COUNT,10);
+
+        NUROUTEINFOIDX := ITBROUTESINFO.FIRST;
+        LOOP
+            EXIT WHEN NUROUTEINFOIDX IS NULL;
+            
+            VALSPECIALIZEDROUTE
+            (
+                ITBROUTESINFO(NUROUTEINFOIDX).NUROUTEID,
+                ITBROUTESINFO(NUROUTEINFOIDX).NUCONSECUTIVE,
+                INUPREMISEID
+            );
+            
+            OR_BOSPECIALIZEDROUTES.INSORUPDPREMINROUWCHIL
+            (
+                INUPREMISEID,
+                ITBROUTESINFO(NUROUTEINFOIDX).NUROUTEID,
+                ITBROUTESINFO(NUROUTEINFOIDX).NUCONSECUTIVE,
+                GE_BOCONSTANTS.GETFALSE,
+                GE_BOCONSTANTS.GETTRUE
+            );
+            NUROUTEINFOIDX := ITBROUTESINFO.NEXT(NUROUTEINFOIDX);
+        END LOOP;
+        
+        
+        OR_BOROUTE.MARKTORECALCULATESHAPE(INUPREMISEID);
+
+        UT_TRACE.TRACE('[END] OR_BOSpecializedRoutes.AddPremToSpecialRoutes',10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR OR_BOSpecializedRoutes.AddPremToSpecialRoutes',10);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS OR_BOSpecializedRoutes.AddPremToSpecialRoutes',10);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ADDPREMTOSPECIALROUTES;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE PROCESSSPECIALROUTES
+    (
+        ISBSEARCHPATH   IN      UT_DATATYPES.STYMAXVARCHAR,
+        ICLINFO         IN      UT_DATATYPES.STYCLOB,
+        INUADDRESSID    IN      AB_ADDRESS.ADDRESS_ID%TYPE,
+        INUPREMISEID    IN      AB_ADDRESS.ESTATE_NUMBER%TYPE DEFAULT NULL
+    )
+    IS
+        NUPREMISEID     OR_ROUTE_PREMISE.PREMISE_ID%TYPE;
+        TBROUTESINFO    OR_BCSPECIALIZEDROUTES.TYTBROUTEINFO;
+    BEGIN
+        UT_TRACE.TRACE('[BEGIN] OR_BOSpecializedRoutes.ProcessSpecialRoutes'||CHR(10)||
+                       'isbSearchPath: '||INUPREMISEID                      ||CHR(10)||
+                       'inuAddressId: ' ||INUADDRESSID                      ||CHR(10)||
+                       'inuPremiseId: ' ||INUPREMISEID,10);
+
+        NUPREMISEID := COALESCE(INUPREMISEID, DAAB_ADDRESS.FNUGETESTATE_NUMBER(INUADDRESSID));
+        
+        TBROUTESINFO := OR_BCSPECIALIZEDROUTES.FTBGETROUTEANDCONSECBYXML
+                        (
+                            ISBSEARCHPATH,
+                            ICLINFO
+                        );
+
+        IF TBROUTESINFO.COUNT > 0 THEN
+            ADDPREMTOSPECIALROUTES
+            (
+                NUPREMISEID,
+                TBROUTESINFO
+            );
+        END IF;
+                        
+        UT_TRACE.TRACE('[END] OR_BOSpecializedRoutes.ProcessSpecialRoutes tbRoutesInfo: '||TBROUTESINFO.COUNT,10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR OR_BOSpecializedRoutes.ProcessSpecialRoutes',10);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS OR_BOSpecializedRoutes.ProcessSpecialRoutes',10);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END PROCESSSPECIALROUTES;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE DELPREMISEFROMROUTE
+    (
+        INUPREMISEID    IN     OR_ROUTE_PREMISE.PREMISE_ID%TYPE,
+        INUROUTEID      IN     OR_ROUTE_PREMISE.ROUTE_ID%TYPE
+    )
+    IS
+        CUPREMISEIDS        CONSTANTS.TYREFCURSOR;
+        TBCHILDPREMISES     DAAB_PREMISE.TYTBPREMISE_ID;
+        NUINDEX             UT_DATATYPES.STYNUMBERINDEX;
+    BEGIN
+        UT_TRACE.TRACE
+        (
+            '[BEGIN] OR_BOSpecializedRoutes.DelPremiseFromRoute' || CHR(10) ||
+            'inuPremiseId :' || INUPREMISEID || CHR(10) ||
+            'inuRouteId :' || INUROUTEID ,10
+        );
+
+        
+        TBCHILDPREMISES := AB_BCPREMISE.FTBGETCHILDRENBYPREM(INUPREMISEID);
+        NUINDEX      := TBCHILDPREMISES.FIRST;
+        
+        LOOP
+            EXIT WHEN NUINDEX IS NULL;
+            OR_BCSPECIALIZEDROUTES.DELPREMISEFROMROUTE(TBCHILDPREMISES(NUINDEX), INUROUTEID);
+            NUINDEX := TBCHILDPREMISES.NEXT(NUINDEX);
+        END LOOP;
+
+        
+        OR_BCSPECIALIZEDROUTES.DELPREMISEFROMROUTE(INUPREMISEID, INUROUTEID);
+
+        UT_TRACE.TRACE('[END] OR_BOSpecializedRoutes.DelPremiseFromRoute',10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR OR_BOSpecializedRoutes.DelPremiseFromRoute',10);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS OR_BOSpecializedRoutes.DelPremiseFromRoute',10);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END DELPREMISEFROMROUTE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INSORUPDPREMISEINROUTE
+    (
+        IORCROUTEPREMISE    IN OUT  DAOR_ROUTE_PREMISE.STYOR_ROUTE_PREMISE,
+        INUPREMISEID        IN      OR_ROUTE_PREMISE.PREMISE_ID%TYPE,
+        INUROUTEID          IN      OR_ROUTE_PREMISE.ROUTE_ID%TYPE,
+        INUCONSECUTIVE      IN      OR_ROUTE_PREMISE.CONSECUTIVE%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE
+        (
+            'BEGIN OR_BOSpecializedRoutes.InsOrUpdPremiseInRoute ' || CHR(10) ||
+            'ROUTE_PREMISE_ID: ' || IORCROUTEPREMISE.ROUTE_PREMISE_ID || CHR(10) ||
+            'inuPremiseId: ' || INUPREMISEID || CHR(10) ||
+            'inuRouteId: ' || INUROUTEID || CHR(10) ||
+            'inuRouteId: ' || INUROUTEID , 1
+        );
+
+        
+        IORCROUTEPREMISE.CONSECUTIVE := INUCONSECUTIVE;
+        IORCROUTEPREMISE.ROUTE_ID    := INUROUTEID;
+        IORCROUTEPREMISE.PREMISE_ID  := INUPREMISEID;
+        
+        IF IORCROUTEPREMISE.ROUTE_PREMISE_ID IS NULL THEN
+            IORCROUTEPREMISE.ROUTE_PREMISE_ID := SEQ_OR_ROUTE_PREMIS_196985.NEXTVAL;
+            DAOR_ROUTE_PREMISE.INSRECORD(IORCROUTEPREMISE);
+        ELSE
+            DAOR_ROUTE_PREMISE.UPDRECORD(IORCROUTEPREMISE);
+        END IF;
+
+        UT_TRACE.TRACE('END OR_BOSpecializedRoutes.InsOrUpdPremiseInRoute', 1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR OR_BOSpecializedRoutes.InsOrUpdPremiseInRoute', 1);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS OR_BOSpecializedRoutes.InsOrUpdPremiseInRoute', 1);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INSORUPDPREMISEINROUTE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INSORUPDPREMINROUWCHIL
+    (
+        INUPREMISEID         IN      AB_PREMISE.PREMISE_ID%TYPE,
+        INUROUTEID           IN      AB_PREMISE.ROUTE_ID%TYPE,
+        INUCONSECUTIVE       IN      AB_PREMISE.CONSECUTIVE%TYPE,
+        IBLMARKTORECALCULATE IN      UT_DATATYPES.STYBOOLEAN,
+        IBLUPDROUTE          IN      UT_DATATYPES.STYBOOLEAN
+    )
+    IS
+        CUPREMISEIDS        CONSTANTS.TYREFCURSOR;
+        TBCHILDPREMISES     DAAB_PREMISE.TYTBPREMISE_ID;
+
+        RCFATHERPREMISE     DAOR_ROUTE_PREMISE.STYOR_ROUTE_PREMISE;
+        RCPREMISE           DAOR_ROUTE_PREMISE.STYOR_ROUTE_PREMISE;
+        NUOLDBASE           OR_ROUTE_PREMISE.CONSECUTIVE%TYPE;
+        NUINDEX             UT_DATATYPES.STYNUMBERINDEX;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN OR_BOSpecializedRoutes.InsOrUpdPremInRouWChil'||CHR(10)||
+                       'PremiseId ['||INUPREMISEID||'] RouteId ['||INUROUTEID||'] Consecutive ['||INUCONSECUTIVE||']', 1);
+
+        
+        RCFATHERPREMISE := OR_BCSPECIALIZEDROUTES.FRCGETSPECROUBYPRANDROU(INUPREMISEID, INUROUTEID);
+        NUOLDBASE       := RCFATHERPREMISE.CONSECUTIVE;
+
+        
+        OR_BOSPECIALIZEDROUTES.INSORUPDPREMISEINROUTE
+        (
+            RCFATHERPREMISE,
+            INUPREMISEID,
+            INUROUTEID,
+            INUCONSECUTIVE
+        );
+
+        
+        TBCHILDPREMISES := AB_BCPREMISE.FTBGETCHILDRENBYPREM(INUPREMISEID);
+        NUINDEX := TBCHILDPREMISES.FIRST;
+        LOOP
+            EXIT WHEN NUINDEX IS NULL;
+
+            
+            RCPREMISE := OR_BCSPECIALIZEDROUTES.FRCGETSPECROUBYPRANDROU(TBCHILDPREMISES(NUINDEX), INUROUTEID);
+
+            
+            OR_BOSPECIALIZEDROUTES.INSORUPDPREMISEINROUTE
+            (
+                RCPREMISE,
+                TBCHILDPREMISES(NUINDEX),
+                INUROUTEID,
+                OR_BOROUTEPREMISE.FNUGETNEWCHILDCONSECUTIVE (NUOLDBASE, INUCONSECUTIVE, RCPREMISE.CONSECUTIVE)
+            );
+
+            RCPREMISE := NULL;
+            NUINDEX := TBCHILDPREMISES.NEXT(NUINDEX);
+        END LOOP;
+
+        
+        PKGENERALSERVICES.COMMITTRANSACTION;
+
+        IF IBLMARKTORECALCULATE THEN
+            
+            OR_BOROUTE.MARKTORECALCULATESHAPE(INUPREMISEID);
+        END IF;
+
+        IF IBLUPDROUTE THEN
+
+            
+            OR_BOROUTE.UPDATEDEDICROUTEORDERS(INUROUTEID);
+
+            
+            OR_BOROUTE.UPDROUTEGEOMETRY(INUROUTEID, GE_BOCONSTANTS.CSBYES);
+
+        END IF;
+        UT_TRACE.TRACE('END OR_BOSpecializedRoutes.InsOrUpdPremInRouWChil', 1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR OR_BOSpecializedRoutes.InsOrUpdPremInRouWChil', 1);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS OR_BOSpecializedRoutes.InsOrUpdPremInRouWChil', 1);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INSORUPDPREMINROUWCHIL;
+
+END OR_BOSPECIALIZEDROUTES;

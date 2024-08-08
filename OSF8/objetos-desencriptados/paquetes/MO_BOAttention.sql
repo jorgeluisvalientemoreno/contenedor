@@ -1,0 +1,6001 @@
+PACKAGE MO_BOAttention AS
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+
+    
+
+
+
+    FUNCTION FSBVERSION  RETURN UT_DATATYPES.STYSAOVERSION;
+
+    
+
+
+
+
+
+    PROCEDURE ATTENDCREATIONPRODBYMOT
+    (
+        INUMOTIVEID           IN    MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUACTIONID           IN    PS_MOTIVE_ACTION.ACTION_ID%TYPE,
+        INUPRODUCTSTATUSID    IN    PR_PRODUCT.PRODUCT_STATUS_ID%TYPE DEFAULT PR_BOPARAMETER.FNUGETPRODACTI,
+        IBLREGISTERINFCOMP    IN    BOOLEAN DEFAULT TRUE
+    );
+
+    
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCREATIONPRODBYCOMP
+    (
+        INUCOMPONENTID    IN    MO_COMPONENT.COMPONENT_ID%TYPE,
+        INUACTIONID       IN    PS_MOTIVE_ACTION.ACTION_ID%TYPE
+    );
+
+    
+
+
+
+
+
+
+    PROCEDURE ATTENDCREATIONPRODBYMOTMASS
+    (
+        INUMOTIVEID           IN    MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUACTIONID           IN    PS_MOTIVE_ACTION.ACTION_ID%TYPE,
+        INUPRODUCTSTATUSID    IN    PR_PRODUCT.PRODUCT_STATUS_ID%TYPE DEFAULT PR_BOPARAMETER.FNUGETPRODACTI
+    );
+
+    
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCREATIONPRODBYPACKMASS
+    (
+        INUPACKAGEID          IN    MO_PACKAGES.PACKAGE_ID%TYPE,
+        INUACTIONID           IN    PS_MOTIVE_ACTION.ACTION_ID%TYPE,
+        INUPRODUCTSTATUSID    IN    PR_PRODUCT.PRODUCT_STATUS_ID%TYPE DEFAULT PR_BOPARAMETER.FNUGETPRODACTI
+    );
+
+	PROCEDURE ATTENDCMPADITIONMOT
+    (
+        INUMOTIVEID     IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    PROCEDURE ACTSUBSCRIPTIONCHANGE
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+
+    
+
+
+
+
+
+    PROCEDURE ATTENDCREDLIMICHANGE
+    (
+        INUMOTIVEID     IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    PROCEDURE RETIREPRODUCTBYMOT
+    (
+        INUMOTIVEID     IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    PROCEDURE CHANGESERVICEATT
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+
+	PROCEDURE ACTCREATEPLANWF;
+
+	PROCEDURE CLASSSERVICECHANGE;
+
+    PROCEDURE CHANGEPLANBILLING
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+
+    PROCEDURE ATTENDADITANDRETCOMP
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+
+    PROCEDURE CHANGEPROVISIONALDATES
+    (
+        INUMOTIVEID     IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    PROCEDURE CHANGESUSPENSIONDATES
+    (
+        INUMOTIVEID     IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    PROCEDURE ANNULCOMPSNOFEASBYTYPANDMOT
+    (
+        INUMOTIVEID             IN    MO_COMPONENT.PACKAGE_ID%TYPE,
+        INUCOMPONENTTYPEID      IN    MO_COMPONENT.COMPONENT_TYPE_ID%TYPE,
+        INUCAUSALID             IN    CC_CAUSAL.CAUSAL_ID%TYPE,
+        ONUERRORCODEANNUL       OUT   GE_MESSAGE.MESSAGE_ID%TYPE,
+    	OSBERRORMESSAGEANNUL    OUT   VARCHAR2
+    ) ;
+
+    PROCEDURE ATTENDCHANGEADDRESSMOTIVE
+    (
+        INUMOTIVEID IN NUMBER
+    ) ;
+
+    PROCEDURE ATTENDCHANGECATEGORY
+    (
+        INUMOTIVEID IN NUMBER
+    ) ;
+
+    PROCEDURE CHANGEUSESTRATUM (
+        INUPACKAGEID IN MO_PACKAGES.PACKAGE_ID%TYPE
+    ) ;
+
+    
+
+
+
+
+
+
+    PROCEDURE UPDINVENTORYBYMOTIVE
+    (
+        INUMOTIVEID     IN MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    
+
+
+
+
+
+    PROCEDURE UPDLOWINVENTORYBYMOT
+    (
+        INUMOTIVEID     IN MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    
+
+
+
+
+
+    PROCEDURE ATTENDCOMPONENT
+    (
+        INUCOMPONENTID      IN  MO_COMPONENT.COMPONENT_ID%TYPE,
+        INUACTIONID         IN  PS_MOTIVE_ACTION.ACTION_ID%TYPE DEFAULT MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+    );
+
+    
+
+
+
+
+
+    PROCEDURE ATTENDMOTIVE
+    (
+        INUMOTIVEID         IN  MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUACTIONID         IN  PS_MOTIVE_ACTION.ACTION_ID%TYPE DEFAULT MO_BOTRANSTATECONS.CNUACTION_ATTEND_MOTV,
+        IBOATTENDCOMPONENTS IN  BOOLEAN DEFAULT TRUE
+    );
+
+    
+
+
+
+
+
+    PROCEDURE ATTENDPACKAGE
+    (
+        INUPACKAGEID        IN  MO_PACKAGES.PACKAGE_ID%TYPE,
+        INUACTIONID         IN  PS_MOTIVE_ACTION.ACTION_ID%TYPE DEFAULT MO_BOTRANSTATECONS.CNUACTION_ATTEND_PACK,
+        IBOATTENDMOTIVES    IN  BOOLEAN DEFAULT TRUE
+    );
+    
+
+
+
+
+
+    PROCEDURE INCLUNITCHANGEBYMOT
+    (
+        INUMOTIVEID     IN      MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    
+
+
+
+    PROCEDURE ATTENDMOTCOMPBYMOT
+    (
+        INUMOTIVEID     IN      MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    
+
+
+
+    PROCEDURE SUBSCRIPTIONCHNGBYMOT
+    (
+        INUMOTIVEID     IN      MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    
+
+
+
+    PROCEDURE CLASSSERVCHANGEBYMOT
+    (
+        INUMOTIVEID         IN          MO_MOTIVE.MOTIVE_ID%TYPE
+    );
+
+    
+
+
+
+    PROCEDURE UPDSERIALITEM
+    (
+        INUIDITEMSERIE IN GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    );
+
+    
+
+
+
+
+
+
+    PROCEDURE  ATTENDASSOREQUEST
+	(
+        INUPACKAGEID     IN    MO_PACKAGES_ASSO.PACKAGE_ID_ASSO%TYPE,
+        ISBTAGNAME       IN    MO_PACKAGES.TAG_NAME%TYPE
+	);
+
+	
+
+
+
+
+
+    PROCEDURE EXECUPDPRODUCTCUSTOM
+    (
+        INUPACKAGEID        IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    );
+
+END MO_BOATTENTION;
+
+PACKAGE BODY MO_BOAttention
+AS
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    CSBVERSION                  CONSTANT UT_DATATYPES.STYSAOVERSION  := 'SAO544732';
+
+    
+    CNUMOTSTATNOVALIDADDCHANG   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE  := 1829;
+    
+    CNUCOMPONENTSTATUSNOVALID   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE  := 1886;
+    
+    CNUMOTSTATNOVALIDFORCHANG   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE  := 2008;
+    
+    CNUACTION_REQ               CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 902715;
+    
+    CNUMOT_REQ                  CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 902706;
+    
+    CNUPROD_STAT_REQ            CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 902703;
+    
+    CNUP_DETENER                CONSTANT UT_DATATYPES.STYNUMBERINDEX := 0;
+
+    CSBPS_MOTIV_CUSTOM          CONSTANT UT_DATATYPES.STYNAME := 'PS_MOTIVE_CUSTOM_INFO';
+    CSBPS_PROD_CUSTOM           CONSTANT UT_DATATYPES.STYNAME := 'PS_PROD_CUSTOM_INFO';
+
+    
+    CNUDATESEQUALS              CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 44;
+
+    
+    
+    
+    TYPE TYTBCOMPONENTID    IS TABLE OF MO_COMPONENT.COMPONENT_ID%TYPE INDEX BY BINARY_INTEGER;
+    TYPE TYTBMOTACTBYPACK   IS TABLE OF MO_BCMOTIVE.CUMOTIVESACTIVESBYPACKAGE%ROWTYPE INDEX BY BINARY_INTEGER;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    CURSOR CUACTIVESMOTIVESBYPACKAGE
+    (
+        INUPACKAGEID    IN MO_MOTIVE.PACKAGE_ID%TYPE
+    )
+    IS
+    SELECT  /*+INDEX (a IDX_MO_MOTIVE_02)*/
+            A.MOTIVE_ID
+    FROM    /*+ MO_BOAttention.cuActivesMotivesByPackage SAO483931*/
+            MO_MOTIVE A
+    WHERE   A.PACKAGE_ID = INUPACKAGEID
+    AND     EXISTS  (
+                        SELECT
+                                'X'
+                        FROM    PS_MOTIVE_STATUS B
+                        WHERE   B.MOTIVE_STATUS_ID = A.MOTIVE_STATUS_ID
+                        AND     B.IS_FINAL_STATUS = GE_BOCONSTANTS.CSBNO
+                    )
+    FOR UPDATE;
+
+    
+    
+    
+    FUNCTION FSBVERSION  RETURN UT_DATATYPES.STYSAOVERSION IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCOMPONENT
+    (
+        INUCOMPONENTID      IN  MO_COMPONENT.COMPONENT_ID%TYPE,
+        INUACTIONID         IN  PS_MOTIVE_ACTION.ACTION_ID%TYPE DEFAULT MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+    )
+    IS
+        RCCOMPONENT         DAMO_COMPONENT.STYMO_COMPONENT;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.AttendComponent['||INUCOMPONENTID||']',2);
+
+        
+        RCCOMPONENT     := DAMO_COMPONENT.FRCGETRECORD(INUCOMPONENTID);
+
+        
+        IF  (RCCOMPONENT.MOTIVE_STATUS_ID != MO_BOCONSTANTS.CNUSTATUS_IN_ANNUL_COMP) AND
+            (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCCOMPONENT.MOTIVE_STATUS_ID))
+        THEN
+            
+            MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORCOMP
+            (
+                RCCOMPONENT.COMPONENT_ID,
+                INUACTIONID
+            );
+        END IF;
+
+        
+        MO_BOATTENTION.ATTENDMOTIVE
+        (
+            INUMOTIVEID=>RCCOMPONENT.MOTIVE_ID,
+            IBOATTENDCOMPONENTS=>FALSE
+        );
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.AttendComponent',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDCOMPONENT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDMOTIVE
+    (
+        INUMOTIVEID         IN  MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUACTIONID         IN  PS_MOTIVE_ACTION.ACTION_ID%TYPE DEFAULT MO_BOTRANSTATECONS.CNUACTION_ATTEND_MOTV,
+        IBOATTENDCOMPONENTS IN  BOOLEAN DEFAULT TRUE
+    )
+    IS
+        RCMOTIVE                DAMO_MOTIVE.STYMO_MOTIVE;
+        TBCOMPONENT             DAMO_COMPONENT.TYTBMO_COMPONENT;
+        BOATTEND                BOOLEAN     := TRUE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.AttendMotive['||INUMOTIVEID||']',2);
+
+        
+        OPEN    MO_BCCOMPONENT.CUACTICOMPSBYMOTI(INUMOTIVEID);
+        FETCH   MO_BCCOMPONENT.CUACTICOMPSBYMOTI BULK COLLECT INTO TBCOMPONENT;
+        CLOSE   MO_BCCOMPONENT.CUACTICOMPSBYMOTI;
+
+        IF  (TBCOMPONENT.COUNT > 0) THEN
+
+            BOATTEND := FALSE;
+
+            
+            IF  (IBOATTENDCOMPONENTS) THEN
+
+                
+                FOR I IN TBCOMPONENT.FIRST .. TBCOMPONENT.LAST LOOP
+
+                    
+                    MO_BOATTENTION.ATTENDCOMPONENT(TBCOMPONENT(I).COMPONENT_ID);
+
+                END LOOP;
+
+            END IF;
+
+        END IF;
+
+        IF  (BOATTEND) THEN
+
+            
+            RCMOTIVE := DAMO_MOTIVE.FRCGETRECORD(INUMOTIVEID);
+
+            
+            IF  (RCMOTIVE.MOTIVE_STATUS_ID != MO_BOCONSTANTS.CNUSTATUS_IN_ANNUL_MOT) AND
+                (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCMOTIVE.MOTIVE_STATUS_ID))
+            THEN
+                
+                MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORMOT
+                (
+                    RCMOTIVE.MOTIVE_ID,
+                    INUACTIONID
+                );
+            END IF;
+
+            
+            MO_BOATTENTION.ATTENDPACKAGE
+            (
+                INUPACKAGEID=>RCMOTIVE.PACKAGE_ID,
+                IBOATTENDMOTIVES=>FALSE
+            );
+
+        END IF;
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.AttendMotive',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF  (MO_BCCOMPONENT.CUACTICOMPSBYMOTI%ISOPEN) THEN
+                CLOSE MO_BCCOMPONENT.CUACTICOMPSBYMOTI;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF  (MO_BCCOMPONENT.CUACTICOMPSBYMOTI%ISOPEN) THEN
+                CLOSE MO_BCCOMPONENT.CUACTICOMPSBYMOTI;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDMOTIVE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDPACKAGE
+    (
+        INUPACKAGEID        IN  MO_PACKAGES.PACKAGE_ID%TYPE,
+        INUACTIONID         IN  PS_MOTIVE_ACTION.ACTION_ID%TYPE DEFAULT MO_BOTRANSTATECONS.CNUACTION_ATTEND_PACK,
+        IBOATTENDMOTIVES    IN  BOOLEAN DEFAULT TRUE
+    )
+    IS
+        NUMOTIVESTATUSID        MO_PACKAGES.MOTIVE_STATUS_ID%TYPE;
+        TBMOTIVE                DAMO_MOTIVE.TYTBMO_MOTIVE;
+        BOATTEND                BOOLEAN     := TRUE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.AttendPackage['||INUPACKAGEID||']',2);
+
+        
+        TBMOTIVE    := MO_BCMOTIVE.FTBMOTIVESBYPACKAGE(INUPACKAGEID);
+
+        
+        IF  (TBMOTIVE.COUNT > 0) THEN
+
+            BOATTEND    := FALSE;
+
+            
+            IF  (IBOATTENDMOTIVES) THEN
+
+                FOR I IN TBMOTIVE.FIRST .. TBMOTIVE.LAST LOOP
+
+                    
+                    MO_BOATTENTION.ATTENDMOTIVE(TBMOTIVE(I).MOTIVE_ID);
+
+                END LOOP;
+
+            END IF;
+
+        END IF;
+
+        IF  (BOATTEND) THEN
+
+            
+            NUMOTIVESTATUSID    := DAMO_PACKAGES.FNUGETMOTIVE_STATUS_ID(INUPACKAGEID);
+
+            
+            IF  (NUMOTIVESTATUSID != MO_BOCONSTANTS.CNUSTATUS_IN_ANNUL_PACK) AND
+                (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(NUMOTIVESTATUSID))
+            THEN
+                
+                MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORPACK(INUPACKAGEID, INUACTIONID);
+            END IF;
+
+        END IF;
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.AttendPackage',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDPACKAGE;
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE EXECUPDPRODUCTCUSTOM
+    (
+        INUPACKAGEID        IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        TBNEWATTRIBVALUES  GE_BOQUERYCUSTATTR.TYTBCUSTOMINFO;
+        NUPRODUCTID        PR_PRODUCT.PRODUCT_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.ExecUpdProductCustom, inuPackageID: '||INUPACKAGEID,3);
+        FOR RCMOTIVE IN MO_BCMOTIVE.CUMOTIVESBYPACKAGE(INUPACKAGEID) LOOP
+           IF (DAPS_MOTIVE_CUSTOM_INFO.FBLEXIST(RCMOTIVE.MOTIVE_ID)) THEN
+                NUPRODUCTID := DAMO_MOTIVE.FNUGETPRODUCT_ID(RCMOTIVE.MOTIVE_ID);
+                TBNEWATTRIBVALUES:= GE_BOQUERYCUSTATTR.FTBREADCUSTOMINFO(RCMOTIVE.MOTIVE_ID,CSBPS_MOTIV_CUSTOM);
+                GE_BOREGISTERCUSTATTR.SAVECUSTOMINFO(NUPRODUCTID, CSBPS_PROD_CUSTOM, TBNEWATTRIBVALUES);
+           END IF;
+
+        END LOOP;
+
+        UT_TRACE.TRACE('END MO_BOAttention.ExecUpdProductCustom ',3);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLER_ERROR MO_BOAttention.ExecUpdProductCustom ',3);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS MO_BOAttention.ExecUpdProductCustom',3);
+            RAISE EX.CONTROLLED_ERROR;
+    END EXECUPDPRODUCTCUSTOM;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATIONPRODUCTCUSTOM
+    (
+        INUMOTIVEID   IN    MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUPRODUCTID  IN    PR_PRODUCT.PRODUCT_ID%TYPE
+    )
+    IS
+        TBNEWATTRIBVALUES  GE_BOQUERYCUSTATTR.TYTBCUSTOMINFO;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.CreationProductCustom, inuMotiveId: '||INUMOTIVEID||
+                                                                 ', inuProductId: '||INUPRODUCTID,3);
+
+        IF (DAPS_MOTIVE_CUSTOM_INFO.FBLEXIST(INUMOTIVEID)) THEN
+            
+            TBNEWATTRIBVALUES:= GE_BOQUERYCUSTATTR.FTBREADCUSTOMINFO(INUMOTIVEID,CSBPS_MOTIV_CUSTOM);
+
+            GE_BOREGISTERCUSTATTR.SAVECUSTOMINFO(INUPRODUCTID, CSBPS_PROD_CUSTOM, TBNEWATTRIBVALUES);
+        END IF;
+
+
+        UT_TRACE.TRACE('END MO_BOAttention.CreationProductCustom ',3);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLER_ERROR MO_BOAttention.CreationProductCustom ',3);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE('OTHERS MO_BOAttention.CreationProductCustom ',3);
+            RAISE EX.CONTROLLED_ERROR;
+    END CREATIONPRODUCTCUSTOM;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCREATIONPRODBYMOT
+    (
+        INUMOTIVEID           IN    MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUACTIONID           IN    PS_MOTIVE_ACTION.ACTION_ID%TYPE,
+        INUPRODUCTSTATUSID    IN    PR_PRODUCT.PRODUCT_STATUS_ID%TYPE DEFAULT PR_BOPARAMETER.FNUGETPRODACTI,
+        IBLREGISTERINFCOMP    IN    BOOLEAN DEFAULT TRUE
+    )
+    IS
+        RCMOTIVE            DAMO_MOTIVE.STYMO_MOTIVE;
+        RCPACKAGE           DAMO_PACKAGES.STYMO_PACKAGES;
+        NUPRODUCTID         PR_PRODUCT.PRODUCT_ID%TYPE;
+        BLATTENDPACKAGE     BOOLEAN := TRUE;
+        DTFECHAINSTALLPROD  SERVSUSC.SESUFEIN%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.AttendCreationProdByMot. Motivo:['||INUMOTIVEID||']',2);
+        UT_TRACE.TRACE('Acci�n:['||INUACTIONID||']Estado Producto:['||INUPRODUCTSTATUSID||']',3);
+
+        
+        RCMOTIVE := DAMO_MOTIVE.FRCGETRECORD(INUMOTIVEID);
+
+        
+        UT_TRACE.TRACE('Creacion producto motivo '||INUMOTIVEID||']',3);
+        PR_BOCREATIONPRODUCT.CREATIONPRODUCT ( INUMOTIVEID,
+                                               NUPRODUCTID,
+                                               INUPRODUCTSTATUSID,
+                                               IBLREGISTERINFCOMP
+                                             );
+        
+        CREATIONPRODUCTCUSTOM(INUMOTIVEID, NUPRODUCTID);
+
+        
+        DTFECHAINSTALLPROD := NULL;
+        IF (PKTBLSERVSUSC.FBLEXIST(NUPRODUCTID)) THEN
+            DTFECHAINSTALLPROD:= PKTBLSERVSUSC.FDTGETINSTALLATIONDATE(NUPRODUCTID);
+        END IF;
+
+        
+        CC_BOASSIGNPROMOTION.UPDATEPROMOTIONDATE
+        (
+            NUPRODUCTID,
+            NULL,
+            DTFECHAINSTALLPROD, 
+            UT_DATE.FDTSYSDATE
+        );
+
+        
+        DAMO_MOTIVE.UPDPRODUCT_ID(INUMOTIVEID,NUPRODUCTID);
+
+        
+        LE_BOINCLUDEUNITSATTENTION.ATTENTIONINCLUNIT(RCMOTIVE.PACKAGE_ID,RCMOTIVE.MOTIVE_ID);
+
+        
+        IF  (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCMOTIVE.MOTIVE_STATUS_ID)) AND
+            (RCMOTIVE.MOTIVE_STATUS_ID != MO_BOCONSTANTS.CNUSTATUS_IN_ANNUL_MOT)
+        THEN
+            
+            MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORMOT
+            (
+                INUMOTIVEID,
+                INUACTIONID
+            );
+        END IF;
+
+        
+
+
+        FOR REC IN MO_BCMOTIVE.CUMOTIVESACTIVESBYPACKAGE(RCMOTIVE.PACKAGE_ID) LOOP
+            UT_TRACE.TRACE('Motivo Activo:['||REC.MOTIVE_ID||']',3);
+            BLATTENDPACKAGE := FALSE;
+            EXIT;
+        END LOOP;
+
+        IF (BLATTENDPACKAGE) THEN
+            
+            DAMO_PACKAGES.GETRECORD(RCMOTIVE.PACKAGE_ID, RCPACKAGE);
+            
+            IF  (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCPACKAGE.MOTIVE_STATUS_ID)) AND
+                (RCPACKAGE.MOTIVE_STATUS_ID != MO_BOCONSTANTS.CNUSTATUS_IN_ANNUL_PACK)
+            THEN
+                
+                MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORPACK
+                (
+                    RCPACKAGE.PACKAGE_ID,
+                    INUACTIONID
+                );
+            END IF;
+        END IF;
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.AttendCreationProdByMot',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDCREATIONPRODBYMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCREATIONPRODBYCOMP
+    (
+        INUCOMPONENTID    IN    MO_COMPONENT.COMPONENT_ID%TYPE,
+        INUACTIONID       IN    PS_MOTIVE_ACTION.ACTION_ID%TYPE
+    )
+    IS
+        RCCOMPONENT                DAMO_COMPONENT.STYMO_COMPONENT;
+        RCMOTIVE                   DAMO_MOTIVE.STYMO_MOTIVE;
+        RCPACKAGE                  DAMO_PACKAGES.STYMO_PACKAGES;
+        NUMOTIVEPROVISION          MO_MOTIVE.MOTIVE_ID%TYPE;
+        RCMOTIVEPROVISION          DAMO_MOTIVE.STYMO_MOTIVE;
+        NUFATHERCOMPONENTID        MO_COMP_LINK.FATHER_COMPONENT_ID%TYPE := NULL;
+        NUCOMPONENTIDPROD          PR_COMPONENT.COMPONENT_ID%TYPE := NULL;
+        NUFATHERCOMPONENTIDPROD    PR_COMPONENT.COMPONENT_ID%TYPE := NULL;
+        BLATTENDMOTIVE             BOOLEAN := TRUE;
+        BLATTENDPACKAGE            BOOLEAN := TRUE;
+        NUPRODUCTID                PR_PRODUCT.PRODUCT_ID%TYPE;
+        DTFECHAINSTALLCOMP        COMPSESU.CMSSFEIN%TYPE;
+
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.AttendCreationProdByComp. Componente:['||INUCOMPONENTID||']Acci�n:['||INUACTIONID||']',5);
+
+        
+        RCCOMPONENT := DAMO_COMPONENT.FRCGETRECORD(INUCOMPONENTID);
+
+        
+        IF (RCCOMPONENT.COMP_MOTIVE_PROV_ID IS NOT NULL) THEN
+            NUMOTIVEPROVISION := DAMO_COMPONENT.FNUGETMOTIVE_ID(RCCOMPONENT.COMP_MOTIVE_PROV_ID);
+            RCMOTIVEPROVISION := DAMO_MOTIVE.FRCGETRECORD(NUMOTIVEPROVISION);
+            
+            UT_TRACE.TRACE('Tiene Motivo de provisionamiento :['||RCMOTIVEPROVISION.MOTIVE_ID||']',6);
+            IF (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCMOTIVEPROVISION.MOTIVE_STATUS_ID)) THEN
+                UT_TRACE.TRACE('El Motivo de provisionamiento :['||RCMOTIVEPROVISION.MOTIVE_ID||'] no esta en estado final',6);
+                ERRORS.SETERROR ( 113224,
+                                  RCCOMPONENT.MOTIVE_ID || '|' || NUMOTIVEPROVISION
+                                );
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+        END IF;
+
+        
+        NUFATHERCOMPONENTID := DAMO_COMP_LINK.FNUGETFATHER_COMPONENT_ID(INUCOMPONENTID);
+        UT_TRACE.TRACE('Componente de Motivo Padre:['||NUFATHERCOMPONENTID||']',6);
+
+        IF (NUFATHERCOMPONENTID IS NOT NULL) THEN
+            NUFATHERCOMPONENTIDPROD := DAMO_COMPONENT.FNUGETCOMPONENT_ID_PROD(NUFATHERCOMPONENTID);
+        END IF;
+        UT_TRACE.TRACE('Componente de Producto Padre:['||NUFATHERCOMPONENTIDPROD||']',6);
+
+        
+        NUPRODUCTID := DAMO_MOTIVE.FNUGETPRODUCT_ID(RCCOMPONENT.MOTIVE_ID);
+        UT_TRACE.TRACE('Invoca  CreationComponent:['||NUPRODUCTID||']',6);
+
+        PR_BOCREATIONCOMPONENT.CREATIONCOMPONENT( INUCOMPONENTID,
+                                                  NUPRODUCTID,
+                                                  NUFATHERCOMPONENTIDPROD,
+                                                  NUCOMPONENTIDPROD
+                                                );
+        UT_TRACE.TRACE('Creado  CreationComponent:['||NUCOMPONENTIDPROD||']',6);
+
+        
+        DTFECHAINSTALLCOMP := NULL;
+        IF (PKTBLCOMPSESU.FBLEXIST(NUCOMPONENTIDPROD)) THEN
+
+            DTFECHAINSTALLCOMP:= PKTBLCOMPSESU.FDTGETINSTALATIONDATE(NUCOMPONENTIDPROD);
+        END IF;
+
+        
+        CC_BOASSIGNPROMOTION.UPDATEPROMOTIONDATE
+        (
+            NUPRODUCTID,
+            NUCOMPONENTIDPROD,
+            DTFECHAINSTALLCOMP, 
+            UT_DATE.FDTSYSDATE
+        );
+
+        
+        RCCOMPONENT.COMPONENT_ID_PROD := NUCOMPONENTIDPROD;
+        RCCOMPONENT.PRODUCT_ID := DAMO_MOTIVE.FNUGETPRODUCT_ID(RCCOMPONENT.MOTIVE_ID);
+        UT_TRACE.TRACE('Actualiza Component:['||RCCOMPONENT.COMPONENT_ID||']',6);
+        DAMO_COMPONENT.UPDRECORD(RCCOMPONENT);
+
+        
+        IF  (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCCOMPONENT.MOTIVE_STATUS_ID)) AND
+            (RCCOMPONENT.MOTIVE_STATUS_ID != MO_BOCONSTANTS.CNUSTATUS_IN_ANNUL_COMP)
+        THEN
+            
+            UT_TRACE.TRACE('El componente no esta en un Status final:['||INUCOMPONENTID||']',6);
+            MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORCOMP
+            (
+                INUCOMPONENTID,
+                INUACTIONID
+            );
+        END IF;
+
+        
+
+
+        FOR REC IN MO_BCCOMPONENT.CUCOMPACTIVESBYMOTANDDIFTYPE(RCCOMPONENT.MOTIVE_ID,0) LOOP
+            UT_TRACE.TRACE('Componente Activo:['||REC.COMPONENT_ID||']',7);
+            BLATTENDMOTIVE := FALSE;
+            EXIT;
+        END LOOP;
+
+        IF (BLATTENDMOTIVE) THEN
+            UT_TRACE.TRACE('Motivo no tiene componentes Activo:['||RCMOTIVE.MOTIVE_ID||']',6);
+            DAMO_MOTIVE.GETRECORD(RCCOMPONENT.MOTIVE_ID, RCMOTIVE);
+            
+            IF  (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCMOTIVE.MOTIVE_STATUS_ID)) AND
+                (RCMOTIVE.MOTIVE_STATUS_ID != MO_BOCONSTANTS.CNUSTATUS_IN_ANNUL_MOT)
+            THEN
+                
+                UT_TRACE.TRACE('Motivo no esta en un Status final:['||RCMOTIVE.MOTIVE_ID||']',7);
+                MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORMOT
+                (
+                    RCMOTIVE.MOTIVE_ID,
+                    INUACTIONID
+                );
+            END IF;
+
+            
+
+
+            FOR REC IN MO_BCMOTIVE.CUMOTIVESACTIVESBYPACKAGE(RCCOMPONENT.PACKAGE_ID) LOOP
+                UT_TRACE.TRACE('Motivo Activo:['||REC.MOTIVE_ID||']',7);
+                BLATTENDPACKAGE := FALSE;
+                EXIT;
+            END LOOP;
+
+            IF (BLATTENDPACKAGE) THEN
+                UT_TRACE.TRACE('Paquete no tiene motivos Activo:['||RCMOTIVE.MOTIVE_ID||']',6);
+                
+                DAMO_PACKAGES.GETRECORD(RCMOTIVE.PACKAGE_ID, RCPACKAGE);
+                
+                IF  (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCPACKAGE.MOTIVE_STATUS_ID)) AND
+                    (RCPACKAGE.MOTIVE_STATUS_ID != MO_BOCONSTANTS.CNUSTATUS_IN_ANNUL_PACK)
+                THEN
+                    
+                    UT_TRACE.TRACE('Paquete no esta en un Status final:['||RCPACKAGE.PACKAGE_ID||']',7);
+                    MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORPACK
+                    (
+                        RCPACKAGE.PACKAGE_ID,
+                        INUACTIONID
+                    );
+                END IF;
+            END IF;
+        END IF;
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.AttendCreationProdByComp',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDCREATIONPRODBYCOMP;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCREATIONPRODBYMOTMASS
+    (
+        INUMOTIVEID           IN    MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUACTIONID           IN    PS_MOTIVE_ACTION.ACTION_ID%TYPE,
+        INUPRODUCTSTATUSID    IN    PR_PRODUCT.PRODUCT_STATUS_ID%TYPE DEFAULT PR_BOPARAMETER.FNUGETPRODACTI
+    )
+    IS
+        NUPRODUCTID     MO_MOTIVE.PRODUCT_ID%TYPE;
+        DTSESUFEIN      DATE;
+        TBCOMPONENTID   TYTBCOMPONENTID;
+        BIINDEX         BINARY_INTEGER := 1;
+
+        
+        PROCEDURE VALIDATEDATA IS
+        BEGIN
+
+            
+            IF ( INUMOTIVEID IS NULL ) THEN
+                
+                ERRORS.SETERROR(CNUMOT_REQ);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+
+            
+            DAMO_MOTIVE.ACCKEY(INUMOTIVEID);
+
+            
+            IF ( INUACTIONID IS NULL ) THEN
+                
+                ERRORS.SETERROR(CNUACTION_REQ);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+
+            
+            IF ( INUPRODUCTSTATUSID IS NULL ) THEN
+                
+                ERRORS.SETERROR(CNUPROD_STAT_REQ);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+
+            
+            DAPS_PRODUCT_STATUS.ACCKEY(INUPRODUCTSTATUSID);
+
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END VALIDATEDATA;
+
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.AttendCreationProdByMotMass. Motivo:['||INUMOTIVEID||']',2);
+        UT_TRACE.TRACE('Acci�n:['||INUACTIONID||']Estado Producto:['||INUPRODUCTSTATUSID||']',3);
+
+        
+        VALIDATEDATA;
+
+        
+        ATTENDCREATIONPRODBYMOT
+        (
+            INUMOTIVEID,
+            INUACTIONID,
+            INUPRODUCTSTATUSID
+        );
+
+        UT_TRACE.TRACE('Ya creo producto del motivo '||INUMOTIVEID,3);
+
+        
+        FOR REC IN MO_BCCOMPONENT.CUCOMPACTHIERARCHYBYMOT(INUMOTIVEID) LOOP
+            TBCOMPONENTID(BIINDEX) := REC.COMPONENT_ID;
+            BIINDEX := BIINDEX + 1;
+        END LOOP;
+
+        
+        BIINDEX := TBCOMPONENTID.FIRST;
+        WHILE ( BIINDEX <= TBCOMPONENTID.LAST ) LOOP
+            UT_TRACE.TRACE('Envio creacion componente '||TBCOMPONENTID(BIINDEX),3);
+            
+            ATTENDCREATIONPRODBYCOMP
+            (
+                TBCOMPONENTID(BIINDEX),
+                INUACTIONID
+            );
+
+            BIINDEX := TBCOMPONENTID.NEXT(BIINDEX);
+        END LOOP;
+
+        
+        
+        
+        
+        NUPRODUCTID := DAMO_MOTIVE.FNUGETPRODUCT_ID(INUMOTIVEID);
+        
+        DTSESUFEIN := PKTBLSERVSUSC.FDTGETINSTALLATIONDATE(NUPRODUCTID,0);
+        
+        CC_BOBUNDLINGPROCESS.UPDBUNDLINGDATE(NUPRODUCTID, DTSESUFEIN);
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.AttendCreationProdByMotMass',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDCREATIONPRODBYMOTMASS;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCREATIONPRODBYPACKMASS
+    (
+        INUPACKAGEID          IN    MO_PACKAGES.PACKAGE_ID%TYPE,
+        INUACTIONID           IN    PS_MOTIVE_ACTION.ACTION_ID%TYPE,
+        INUPRODUCTSTATUSID    IN    PR_PRODUCT.PRODUCT_STATUS_ID%TYPE DEFAULT PR_BOPARAMETER.FNUGETPRODACTI
+    )
+    IS
+        TBMOTACTBYPACK        TYTBMOTACTBYPACK;
+        BIINDEXMOT            BINARY_INTEGER := 1;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.AttendCreationProdByPackMass Solicitud:['||INUPACKAGEID||']',2);
+        UT_TRACE.TRACE('Acci�n:['||INUACTIONID||']Estado Producto:['||INUPRODUCTSTATUSID||']',3);
+
+        
+        FOR REC IN MO_BCMOTIVE.CUMOTIVESACTIVESBYPACKAGE(INUPACKAGEID) LOOP
+            TBMOTACTBYPACK(BIINDEXMOT) := REC;
+            BIINDEXMOT := BIINDEXMOT + 1;
+        END LOOP;
+
+        
+        BIINDEXMOT := TBMOTACTBYPACK.FIRST;
+        WHILE BIINDEXMOT <= TBMOTACTBYPACK.LAST LOOP
+
+            
+            ATTENDCREATIONPRODBYMOTMASS
+            (
+                TBMOTACTBYPACK(BIINDEXMOT).MOTIVE_ID,
+                INUACTIONID,
+                INUPRODUCTSTATUSID
+            );
+
+            BIINDEXMOT := TBMOTACTBYPACK.NEXT(BIINDEXMOT);
+        END LOOP;
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.AttendCreationProdByPackMass',2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDCREATIONPRODBYPACKMASS;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	PROCEDURE ATTENDCMPADITIONMOT
+    (
+        INUMOTIVEID     IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        RCMODATACONNECTION   DAMO_DATA_CONNECTION.STYMO_DATA_CONNECTION;
+        NUCOMPONENTIDPROD    MO_COMPONENT.COMPONENT_ID_PROD%TYPE;
+        RCCOMPONENT          DAMO_COMPONENT.STYMO_COMPONENT;
+        RCMOTIVE             DAMO_MOTIVE.STYMO_MOTIVE;
+
+        BLATTENDPACKAGE      BOOLEAN := GE_BOCONSTANTS.GETTRUE;
+    BEGIN
+
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.AttendCmpAditionMot motivo [ '||INUMOTIVEID||' ] ',5);
+
+         FOR RCCOMPACTHIERACHY IN MO_BCCOMPONENT.CUCOMPACTHIERARCHYBYMOT(INUMOTIVEID) LOOP
+            UT_TRACE.TRACE('Proceso componentes del motivo [ '||INUMOTIVEID||' ] ',6);
+            DAMO_COMPONENT.GETRECORD(RCCOMPACTHIERACHY.COMPONENT_ID, RCCOMPONENT);
+
+            IF (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCCOMPONENT.MOTIVE_STATUS_ID)
+                AND RCCOMPONENT.MOTIVE_STATUS_ID != MO_BOSTATUSPARAMETER.FNUGETSTATUS_IN_ANNUL_COMP) THEN
+
+                UT_TRACE.TRACE(' Atendiendo componente '||RCCOMPONENT.COMPONENT_ID||
+                               ' component_type_id '||RCCOMPONENT.COMPONENT_TYPE_ID,7);
+
+                MO_BOATTENTION.ATTENDCREATIONPRODBYCOMP
+                (
+                    RCCOMPONENT.COMPONENT_ID,
+                    MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+                );
+
+                NUCOMPONENTIDPROD := DAMO_COMPONENT.FNUGETCOMPONENT_ID_PROD(RCCOMPONENT.COMPONENT_ID);
+
+                UT_TRACE.TRACE(' rcComponent.component_id_prod '||NUCOMPONENTIDPROD,7);
+
+            END IF;
+            
+            
+            IF(DAMO_DATA_CONNECTION.FBLEXIST(RCCOMPONENT.COMPONENT_ID)) THEN
+                
+                DAMO_DATA_CONNECTION.GETRECORD(RCCOMPONENT.COMPONENT_ID,RCMODATACONNECTION);
+
+                
+                IF(RCMODATACONNECTION.QUANTITY > 0)THEN
+
+                    
+                    PR_BODATACONNECTION.COMPONENTDATACONNECT( RCCOMPONENT.COMPONENT_ID_PROD,
+                                                              RCMODATACONNECTION.QUANTITY,
+                                                              RCMODATACONNECTION.COMMENT_,
+                                                              RCCOMPONENT.COMPONENT_ID,
+                                                              GE_BOCONSTANTS.GETYES
+                                                            );
+                END IF;
+            END IF;
+        END LOOP;
+
+        UT_TRACE.TRACE('Termino Proceso componentes del motivo [ '||INUMOTIVEID||' ] ',6);
+
+        
+        RCMOTIVE    := DAMO_MOTIVE.FRCGETRECORD(INUMOTIVEID);
+
+        UT_TRACE.TRACE('Producto [ '||RCMOTIVE.PRODUCT_ID||' ]',6);
+        UT_TRACE.TRACE('nuMotivoStatus [ '||RCMOTIVE.MOTIVE_STATUS_ID||' ]',6);
+
+        IF  (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCMOTIVE.MOTIVE_STATUS_ID)) THEN
+            UT_TRACE.TRACE('Motivo no esta en un Status final ',7);
+            MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORMOT
+            (
+                INUMOTIVEID,
+                MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+
+            );
+        END IF;
+
+        
+
+
+        FOR REC IN CUACTIVESMOTIVESBYPACKAGE(RCMOTIVE.PACKAGE_ID) LOOP
+            UT_TRACE.TRACE('Motivo Activo:['||REC.MOTIVE_ID||']',3);
+            BLATTENDPACKAGE := FALSE;
+            EXIT;
+        END LOOP;
+
+        IF (BLATTENDPACKAGE) THEN
+            IF (NOT(PS_BOMOTIVESTATUS.FBLISFINALSTATUS(DAMO_PACKAGES.FNUGETMOTIVE_STATUS_ID(RCMOTIVE.PACKAGE_ID)))) THEN
+                
+                MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORPACK
+                (
+                    RCMOTIVE.PACKAGE_ID,
+                    MO_BOTRANSTATECONS.CNUACTION_ATTEND_PACK
+                );
+            END IF;
+        END IF;
+
+        UT_TRACE.TRACE('END MO_BOAttention.AttendCmpAditionMot',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR MO_BOAttention.AttendCmpAditionMot',5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('others MO_BOAttention.AttendCmpAditionMot',5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDCMPADITIONMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SUBSCRIPTIONCHNGBYMOT
+    (
+        INUMOTIVEID     IN      MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        RCMOTIVE                DAMO_MOTIVE.STYMO_MOTIVE;
+        RCPRODUCT               DAPR_PRODUCT.STYPR_PRODUCT;
+
+        NUNEWSUBSCRIBERID       GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE;
+        NUOLDSUBSCRIBERID       GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE;
+
+        NUNEWSUBSCRIPTION       PR_PRODUCT.SUBSCRIPTION_ID%TYPE;
+        NUOLDSUBSCRIPTION       PR_PRODUCT.SUBSCRIPTION_ID%TYPE;
+
+        NUERRORCODE             GE_MESSAGE.MESSAGE_ID%TYPE;
+        SBERRORMESSAGE          GE_ERROR_LOG.DESCRIPTION%TYPE;
+    BEGIN
+        
+        RCMOTIVE := DAMO_MOTIVE.FRCGETRECORD(INUMOTIVEID);
+        RCPRODUCT := DAPR_PRODUCT.FRCGETRECORD(RCMOTIVE.PRODUCT_ID);
+        UT_TRACE.TRACE('Inicia MO_BOAttention.SubscriptionChngByMot ['||RCMOTIVE.MOTIVE_ID||']['||RCPRODUCT.PRODUCT_ID||']',8);
+        UT_TRACE.TRACE('       MO_BOAttention.SubscriptionChngByMot ['||RCPRODUCT.SUBSCRIPTION_ID||'] -> ['||RCMOTIVE.SUBSCRIPTION_ID||']',8);
+
+        
+        MO_BOMOTIVE.UPDSUBSCRIPTION_ID(RCPRODUCT.SUBSCRIPTION_ID, RCPRODUCT.PRODUCT_ID, RCMOTIVE.SUBSCRIPTION_ID);
+
+        
+        NUNEWSUBSCRIPTION := RCMOTIVE.SUBSCRIPTION_ID;
+        NUNEWSUBSCRIBERID := PKTBLSUSCRIPC.FNUGETCUSTOMER(RCMOTIVE.SUBSCRIPTION_ID);
+
+        
+        NUOLDSUBSCRIPTION := RCPRODUCT.SUBSCRIPTION_ID;
+        NUOLDSUBSCRIBERID := PKTBLSUSCRIPC.FNUGETCUSTOMER(RCPRODUCT.SUBSCRIPTION_ID);
+
+        
+        DAPR_PRODUCT.UPDSUBSCRIPTION_ID(RCMOTIVE.PRODUCT_ID, RCMOTIVE.SUBSCRIPTION_ID);
+
+        PR_BOPRODUCTLOG.SAVESUBSCRIPTIONLOG
+        (
+            INUPRODUCTID        => RCMOTIVE.PRODUCT_ID,
+            INUOLDSUBSCRIPTID   => NUOLDSUBSCRIPTION,
+            INUNEWSUBSCRIPTID   => NUNEWSUBSCRIPTION,
+            INUPACKAGEID        => RCMOTIVE.PACKAGE_ID
+        );
+
+        
+        IF  (NUOLDSUBSCRIBERID <> NUNEWSUBSCRIBERID) THEN
+
+            
+            GE_BOSUBSCRIBER.SETSUBSCRIBERSTATUS(NUOLDSUBSCRIBERID, RCMOTIVE.PACKAGE_ID);
+
+            
+            GE_BOSUBSCRIBER.SETSUBSCRIBERSTATUS(NUNEWSUBSCRIBERID, RCMOTIVE.PACKAGE_ID);
+
+        END IF;
+
+        
+        NUOLDSUBSCRIBERID := PR_BOSUBSBYPRODUCT.FNUGETPRODUCTUSER(RCMOTIVE.PRODUCT_ID);
+
+        IF  (NUOLDSUBSCRIBERID IS NOT NULL) THEN
+        
+            
+            NUNEWSUBSCRIBERID := PKTBLSUSCRIPC.FNUGETCUSTOMER(RCMOTIVE.SUBSCRIPTION_ID);
+
+            UT_TRACE.TRACE('Nuevo cliente ['||NUNEWSUBSCRIBERID||']', 5 );
+
+            PR_BOSUBSBYPRODUCT.UPDPRODUSER( RCMOTIVE.PRODUCT_ID,
+                                            NUNEWSUBSCRIBERID,
+                                            RCMOTIVE.MOTIV_RECORDING_DATE,
+                                            RCMOTIVE.PACKAGE_ID
+                                          );
+        
+        END IF;
+
+        
+        MO_BOUTILITIES.INITIALIZEOUTPUT(NUERRORCODE,SBERRORMESSAGE);
+
+        PKBSS_CHANGECONTRACT.CHANGECONTRACT
+        (
+            RCMOTIVE.PRODUCT_ID,
+            RCMOTIVE.SUBSCRIPTION_ID,
+            RCMOTIVE.PACKAGE_ID,
+            NUERRORCODE,
+            SBERRORMESSAGE
+        );
+
+        GW_BOERRORS.CHECKERROR(NUERRORCODE,SBERRORMESSAGE);
+
+        
+        MO_BOATTENTION.ATTENDMOTIVE(RCMOTIVE.MOTIVE_ID);
+
+        UT_TRACE.TRACE('Termina MO_BOAttention.SubscriptionChngByMot',8);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END SUBSCRIPTIONCHNGBYMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ACTSUBSCRIPTIONCHANGE
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        NUNEWSUBSCRIPID     SUSCRIPC.SUSCCODI%TYPE;
+        NUOLDSUBSCRIPID     SUSCRIPC.SUSCCODI%TYPE;
+        NUERRORCODE         GE_ERROR_LOG.ERROR_LOG_ID%TYPE;
+        SBERRORMESSAGE      GE_ERROR_LOG.DESCRIPTION%TYPE;
+
+        NUCOMPANYID         MO_PACKAGES.COMPANY_ID%TYPE;
+        NUOLDSUBSCRIBERID   GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE;
+        NUNEWSUBSCRIBERID   GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.ActSubscriptionChange',5);
+
+        UT_TRACE.TRACE('Paquete:['||INUPACKAGEID||']',6);
+
+        
+        FOR REC IN MO_BCBILL_DATA_CHANGE.CUBILLDATACHANGEBYPACK(INUPACKAGEID) LOOP
+            
+            NUNEWSUBSCRIPID := REC.NEW_SUBSCRIPTION;
+            UT_TRACE.TRACE('Nueva Suscripcion:['||NUNEWSUBSCRIPID||']',6);
+            
+            NUOLDSUBSCRIPID := REC.OLD_SUBSCRIPTION;
+            UT_TRACE.TRACE('Actual Suscripcion:['||NUOLDSUBSCRIPID||']',6);
+        END LOOP;
+
+        
+        NUCOMPANYID := DAMO_PACKAGES.FNUGETCOMPANY_ID(INUPACKAGEID);
+
+        
+        CC_BOEMPRESA.SETSUBSCRIPTIONCOMPANY(NUNEWSUBSCRIPID, NUCOMPANYID, INUPACKAGEID);
+
+        
+        FOR RCMOTIVE IN MO_BCMOTIVE.CUMOTIVESBYPACKAGE(INUPACKAGEID) LOOP
+
+            
+            MO_BOMOTIVE.UPDSUBSCRIPTION_ID(NUOLDSUBSCRIPID,RCMOTIVE.PRODUCT_ID,NUNEWSUBSCRIPID);
+
+            
+            NUNEWSUBSCRIBERID := PKTBLSUSCRIPC.FNUGETCUSTOMER(NUNEWSUBSCRIPID);
+
+            
+            NUOLDSUBSCRIBERID := PKTBLSUSCRIPC.FNUGETCUSTOMER(NUOLDSUBSCRIPID);
+
+            
+            DAPR_PRODUCT.UPDSUBSCRIPTION_ID(RCMOTIVE.PRODUCT_ID,NUNEWSUBSCRIPID);
+
+            PR_BOPRODUCTLOG.SAVESUBSCRIPTIONLOG
+            (
+                INUPRODUCTID        => RCMOTIVE.PRODUCT_ID,
+                INUOLDSUBSCRIPTID   => NUOLDSUBSCRIPID,
+                INUNEWSUBSCRIPTID   => NUNEWSUBSCRIPID,
+                INUPACKAGEID        => INUPACKAGEID
+            );
+
+            
+            IF  (NUOLDSUBSCRIBERID <> NUNEWSUBSCRIBERID) THEN
+
+                
+                GE_BOSUBSCRIBER.SETSUBSCRIBERSTATUS(NUOLDSUBSCRIBERID, INUPACKAGEID);
+
+                
+                GE_BOSUBSCRIBER.SETSUBSCRIBERSTATUS(NUNEWSUBSCRIBERID, INUPACKAGEID);
+
+            END IF;
+
+            
+            NUOLDSUBSCRIBERID := PR_BOSUBSBYPRODUCT.FNUGETPRODUCTUSER(RCMOTIVE.PRODUCT_ID);
+
+            IF  (NUOLDSUBSCRIBERID IS NOT NULL) THEN
+            
+                
+                NUNEWSUBSCRIBERID := PKTBLSUSCRIPC.FNUGETCUSTOMER(NUNEWSUBSCRIPID);
+
+                UT_TRACE.TRACE('Producto ['||RCMOTIVE.PRODUCT_ID||'] Nuevo cliente ['||NUNEWSUBSCRIBERID||']', 5 );
+
+                PR_BOSUBSBYPRODUCT.UPDPRODUSER( RCMOTIVE.PRODUCT_ID,
+                                                NUNEWSUBSCRIBERID,
+                                                RCMOTIVE.MOTIV_RECORDING_DATE,
+                                                INUPACKAGEID
+                                              );
+            
+            END IF;
+
+            
+            MO_BOUTILITIES.INITIALIZEOUTPUT(NUERRORCODE,SBERRORMESSAGE);
+
+            PKBSS_CHANGECONTRACT.CHANGECONTRACT
+            (
+                RCMOTIVE.PRODUCT_ID,
+                NUNEWSUBSCRIPID,
+                INUPACKAGEID,
+                NUERRORCODE,
+                SBERRORMESSAGE
+            );
+
+            GW_BOERRORS.CHECKERROR(NUERRORCODE,SBERRORMESSAGE);
+
+        END LOOP;
+
+        
+        MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORREQU
+        (
+            INUPACKAGEID,
+            MO_BOTRANSTATECONS.CNUACTION_ATTEND_MOTV
+        );
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.ActSubscriptionChange',5);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+	END ACTSUBSCRIPTIONCHANGE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCREDLIMICHANGE
+    (
+        INUMOTIVEID     IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        NUPACKAGEID     MO_PACKAGES.PACKAGE_ID%TYPE;
+        NUCREDITLIMIT   MO_MOTIVE.CREDIT_LIMIT%TYPE;
+        NUPRODUCTID     MO_MOTIVE.PRODUCT_ID%TYPE;
+        RCMOTIVE        DAMO_MOTIVE.STYMO_MOTIVE;
+        NUORDEN         SM_INTERFACE.ORDER_ID%TYPE;
+
+        DTSYSDATE       DATE := UT_DATE.FDTSYSDATE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.AttendCredLimiChange ['||INUMOTIVEID||']', 5);
+
+        
+        NUPACKAGEID := DAMO_MOTIVE.FNUGETPACKAGE_ID(INUMOTIVEID);
+
+        
+        RCMOTIVE    := DAMO_MOTIVE.FRCGETRECORD(INUMOTIVEID);
+
+        
+        LE_BOLIMITEDECREDITO.ACTUALIZARLIMITECREDITO
+        (
+            RCMOTIVE.PRODUCT_ID,
+            RCMOTIVE.CREDIT_LIMIT,
+            NUPACKAGEID,
+            NUORDEN,
+            LE_BCHISTCALC.CSBTIPOCAMBIOCL
+        );
+
+        
+        FOR RCMOCOM IN MO_BCCOMPONENT.CUCOMPONENTSBYMOT(INUMOTIVEID) LOOP
+            
+            DAMO_COMPONENT.UPDATTENTION_DATE(RCMOCOM.COMPONENT_ID, DTSYSDATE);
+            
+            MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORCOMP
+            (
+                RCMOCOM.COMPONENT_ID,
+                MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+            );
+        END LOOP;
+
+        
+        DAMO_MOTIVE.UPDATTENTION_DATE(INUMOTIVEID, DTSYSDATE);
+        
+        MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORMOT
+        (
+            INUMOTIVEID,
+            MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+        );
+
+        
+        DAMO_PACKAGES.UPDATTENTION_DATE(NUPACKAGEID, DTSYSDATE);
+        
+        MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORPACK
+        (
+            NUPACKAGEID,
+            MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+        );
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.AttendCredLimiChange ', 5);
+    EXCEPTION
+		  WHEN EX.CONTROLLED_ERROR THEN
+            IF (MO_BCCOMPONENT.CUCOMPONENTSBYMOT%ISOPEN) THEN
+                CLOSE MO_BCCOMPONENT.CUCOMPONENTSBYMOT;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+		  WHEN OTHERS THEN
+            IF (MO_BCCOMPONENT.CUCOMPONENTSBYMOT%ISOPEN) THEN
+                CLOSE MO_BCCOMPONENT.CUCOMPONENTSBYMOT;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDCREDLIMICHANGE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FBLVALIDATETRANSFER
+    (
+        ITBPACKAGES        IN       DAMO_PACKAGES.TYTBMO_PACKAGES
+    )
+    RETURN UT_DATATYPES.STYBOOLEAN
+    IS
+        NUPACKIDX           UT_DATATYPES.STYNUMBERINDEX;
+        NUSTOPPACKTYPE      PS_PACKAGE_TYPE.PACKAGE_TYPE_ID%TYPE;
+        NUMOVEPACKTYPE      PS_PACKAGE_TYPE.PACKAGE_TYPE_ID%TYPE;
+        BLVALIDATETRANSFER  UT_DATATYPES.STYBOOLEAN := GE_BOCONSTANTS.GETTRUE;
+    BEGIN
+        UT_TRACE.TRACE( '[BEGIN] MO_BOAttention.fblValidateTransfer itbPackages [ '||ITBPACKAGES.COUNT||' ]', 6 );
+
+        NUSTOPPACKTYPE  :=  PS_BOPACKAGETYPE.FNUGETPACKTYPEBYTAGNAME( PS_BOPACKAGETYPE.CSBMOVEPRODUCT );
+        NUMOVEPACKTYPE  :=  PS_BOPACKAGETYPE.FNUGETPACKTYPEBYTAGNAME( CC_BCUTILITIESSALE.CSBP_DETENER );
+
+        NUPACKIDX  := ITBPACKAGES.FIRST;
+        WHILE NUPACKIDX IS NOT NULL LOOP
+            IF ((NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(ITBPACKAGES(NUPACKIDX).MOTIVE_STATUS_ID)) AND
+                (ITBPACKAGES(NUPACKIDX).PACKAGE_TYPE_ID IN
+                    (
+                        NUSTOPPACKTYPE,
+                        NUMOVEPACKTYPE
+                    )
+                )) THEN
+                UT_TRACE.TRACE('Solicitud en estado no final [ '||ITBPACKAGES(NUPACKIDX).PACKAGE_ID||' ]',14);
+                BLVALIDATETRANSFER := GE_BOCONSTANTS.GETFALSE;
+                EXIT;
+            END IF;
+            NUPACKIDX := ITBPACKAGES.NEXT(NUPACKIDX);
+        END LOOP;
+
+        UT_TRACE.TRACE( '[END] MO_BOAttention.fblValidateTransfer', 6 );
+        RETURN BLVALIDATETRANSFER;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE( 'Error [CONTROLLED_ERROR] MO_BOAttention.fblValidateTransfer', 6 );
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE( 'Error [OTHERS] MO_BOAttention.fblValidateTransfer', 6 );
+            RAISE EX.CONTROLLED_ERROR;
+    END FBLVALIDATETRANSFER;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETTELCOTRANSFERMOT
+    (
+        INUPACKAGEID        IN          MO_PACKAGES.PACKAGE_ID%TYPE,
+        ONUTRANSFERPACK     OUT NOCOPY  MO_PACKAGES.PACKAGE_ID%TYPE,
+        ONUSUBSCRIPTION     OUT NOCOPY  MO_MOTIVE.SUBSCRIPTION_ID%TYPE
+    )
+    IS
+        NUMOVEPRODPKG       MO_PACKAGES.PACKAGE_ID%TYPE;
+        NUMOTIVE_ID         MO_MOTIVE.MOTIVE_ID%TYPE;
+        RCFATHERPKG         DAMO_PACKAGES.STYMO_PACKAGES;
+        RCMOVEPRODPKG       DAMO_PACKAGES.STYMO_PACKAGES;
+        RCMOVEMOTIVE        DAMO_MOTIVE.STYMO_MOTIVE;
+    BEGIN
+        UT_TRACE.TRACE( '[BEGIN] MO_BOAttention.GetTelcoTransferMot inuPackageId [ '||INUPACKAGEID||' ]', 6 );
+
+        
+        RCFATHERPKG := MO_BOPACKAGES_ASSO.FRCGETFATHERPKGASSO(INUPACKAGEID);
+        
+        IF (RCFATHERPKG.TAG_NAME = PS_BOPACKAGETYPE.CSBTAGPEDIDO) THEN
+
+             
+             ONUTRANSFERPACK := MO_BOPACKAGES_ASSO.FNUGETPACKAGECHILD(RCFATHERPKG.PACKAGE_ID, PS_BOPACKAGETYPE.CSBMOVEPRODUCT);
+             UT_TRACE.TRACE('Solicitud de traslado asociada [ '||ONUTRANSFERPACK||']', 4);
+
+             
+             IF(ONUTRANSFERPACK IS NOT NULL) THEN
+
+                
+                RCMOVEMOTIVE  := MO_BCMOTIVE.FRCMAINMOTIVE(ONUTRANSFERPACK);
+                ONUSUBSCRIPTION := RCMOVEMOTIVE.SUBSCRIPTION_ID;
+
+             END IF;
+        END IF;
+
+        UT_TRACE.TRACE( '[END] MO_BOAttention.GetTelcoTransferMot', 6 );
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE( 'Error [CONTROLLED_ERROR] MO_BOAttention.GetTelcoTransferMot', 6 );
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE( 'Error [OTHERS] MO_BOAttention.GetTelcoTransferMot', 6 );
+            RAISE EX.CONTROLLED_ERROR;
+    END GETTELCOTRANSFERMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETUTILTRANSFERMOT
+    (
+        INUPACKAGEID        IN          MO_PACKAGES.PACKAGE_ID%TYPE,
+        IRCRETMOTIVE        IN          DAMO_MOTIVE.STYMO_MOTIVE,
+        ITBPACKAGES         IN          DAMO_PACKAGES.TYTBMO_PACKAGES,
+        ONUSTOPPACKAGE      OUT NOCOPY  MO_PACKAGES.PACKAGE_ID%TYPE,
+        ONUSUBSCRIPTION     OUT NOCOPY  MO_MOTIVE.SUBSCRIPTION_ID%TYPE
+    )
+    IS
+        NUPACKIDX           UT_DATATYPES.STYNUMBERINDEX;
+        RCRETPACKAGE        DAMO_PACKAGES.STYMO_PACKAGES;
+        RCSTARTMOTIVE       DAMO_MOTIVE.STYMO_MOTIVE;
+        RCSTOPMOTIVE        DAMO_MOTIVE.STYMO_MOTIVE;
+        NUSTOPPACKAGETYPE   MO_PACKAGES.PACKAGE_TYPE_ID%TYPE;
+        NUMOADDRESSID       MO_ADDRESS.PARSER_ADDRESS_ID%TYPE;
+        NUPACKAGESTART      MO_PACKAGES.PACKAGE_ID%TYPE;
+        NUNEWADDRESS        MO_ADDRESS.ADDRESS_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE( '[BEGIN] MO_BOAttention.GetUtilTransferMot inuPackageId [ '||INUPACKAGEID||' ]', 6 );
+
+         
+         NUSTOPPACKAGETYPE := PS_BOPACKAGETYPE.FNUGETPACKTYPEBYTAGNAME( CC_BCUTILITIESSALE.CSBP_DETENER );
+
+         
+         RCRETPACKAGE := DAMO_PACKAGES.FRCGETRECORD(INUPACKAGEID);
+
+         
+         
+         NUMOADDRESSID := CC_BCUTILITIESSALE.FNUGETADDRESBYMOTIVE(IRCRETMOTIVE.MOTIVE_ID);
+
+         
+         IF(NUMOADDRESSID <> DAPR_PRODUCT.FNUGETADDRESS_ID(IRCRETMOTIVE.PRODUCT_ID)) THEN
+
+             UT_TRACE.TRACE('mo_addres diferente a la direcci�n del producto', 7);
+
+             
+             NUPACKIDX := ITBPACKAGES.FIRST;
+             WHILE NUPACKIDX IS NOT NULL LOOP
+
+                
+                
+                IF(ITBPACKAGES(NUPACKIDX).PACKAGE_TYPE_ID = NUSTOPPACKAGETYPE AND
+                    TRUNC(ITBPACKAGES(NUPACKIDX).REQUEST_DATE) = TRUNC(RCRETPACKAGE.REQUEST_DATE)) THEN
+
+                    UT_TRACE.TRACE('Solicitud de stop y retiro el mismo d�a: '||TRUNC(RCRETPACKAGE.REQUEST_DATE), 7);
+
+                    
+                    NUPACKAGESTART := MO_BOPACKAGES_ASSO.FNUGETFIRSTPACKAGEASSO( ITBPACKAGES(NUPACKIDX).PACKAGE_ID, CC_BCUTILITIESSALE.CSBP_INICIAR );
+                    UT_TRACE.TRACE('Solicitud de iniciar: '||NUPACKAGESTART, 7);
+
+                    IF ( NUPACKAGESTART IS NOT NULL ) THEN
+
+                        
+                        NUNEWADDRESS := DAMO_PACKAGES.FNUGETADDRESS_ID(NUPACKAGESTART);
+
+                        
+                        RCSTARTMOTIVE := MO_BCMOTIVE.FRCMAINMOTIVE(NUPACKAGESTART);
+
+                        
+                        RCSTOPMOTIVE  := MO_BCMOTIVE.FRCMAINMOTIVE(ITBPACKAGES(NUPACKIDX).PACKAGE_ID);
+
+                        
+                        
+                        IF(NUNEWADDRESS = NUMOADDRESSID AND
+                            IRCRETMOTIVE.SUBSCRIPTION_ID <> RCSTARTMOTIVE.SUBSCRIPTION_ID) THEN
+                                UT_TRACE.TRACE('Direcci�n de retiro y start iguales y las cuentas diferentes', 7);
+                                ONUSTOPPACKAGE   := ITBPACKAGES(NUPACKIDX).PACKAGE_ID;
+                                ONUSUBSCRIPTION  := RCSTOPMOTIVE.SUBSCRIPTION_ID;
+                            EXIT;
+                        END IF;
+                    END IF;
+                END IF;
+
+                NUPACKIDX := ITBPACKAGES.NEXT(NUPACKIDX);
+             END LOOP;
+         END IF;
+
+        UT_TRACE.TRACE( '[END] MO_BOAttention.GetUtilTransferMot', 6 );
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE( 'Error [CONTROLLED_ERROR] MO_BOAttention.GetUtilTransferMot', 6 );
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE( 'Error [OTHERS] MO_BOAttention.GetUtilTransferMot', 6 );
+            RAISE EX.CONTROLLED_ERROR;
+    END GETUTILTRANSFERMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDBILLADDRESSINMOVE
+    (
+        INUPACKAGEID        IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        NUMOVEPRODPKG       MO_PACKAGES.PACKAGE_ID%TYPE;
+        NUSTOPPACKAGE       MO_PACKAGES.PACKAGE_ID%TYPE;
+        RCFATHERPKG         DAMO_PACKAGES.STYMO_PACKAGES;
+        RCRETMOTIVE         DAMO_MOTIVE.STYMO_MOTIVE;
+        NUSUBSCRIPTIONID    MO_MOTIVE.SUBSCRIPTION_ID%TYPE;
+        TBPACKAGES          DAMO_PACKAGES.TYTBMO_PACKAGES;
+    BEGIN
+        UT_TRACE.TRACE( '[BEGIN] MO_BOAttention.updBillAddressInMove inuPackageId [ '||INUPACKAGEID||' ]', 6 );
+
+        IF(DAMO_PACKAGES.FNUGETPACKAGE_TYPE_ID(INUPACKAGEID) =
+            PS_BOPACKAGETYPE.FNUGETPACKTYPEBYTAGNAME(PS_BOPACKAGETYPE.CSBRETIREPRODUCT)) THEN
+            UT_TRACE.TRACE('Solicitud de retiro de producto', 4);
+
+            
+            RCRETMOTIVE := MO_BOPACKAGES.FRCGETMOTIBYMOTITYPE(INUPACKAGEID, PS_BOMOTIVETYPE.CNURETIRE);
+
+            
+            TBPACKAGES  := MO_BCPACKAGES.FTBSUBSCRIPTIONPACKS(RCRETMOTIVE.SUBSCRIPTION_ID);
+
+            
+            IF(FBLVALIDATETRANSFER(TBPACKAGES)) THEN
+
+                UT_TRACE.TRACE('Cuenta sin solicitudes de traslado o telco abiertas', 4);
+
+                
+                RCFATHERPKG := MO_BOPACKAGES_ASSO.FRCGETFATHERPKGASSO(INUPACKAGEID);
+
+                
+                IF (RCFATHERPKG.TAG_NAME = PS_BOPACKAGETYPE.CSBTAGPEDIDO) THEN
+
+                    
+                    GETTELCOTRANSFERMOT (INUPACKAGEID, NUMOVEPRODPKG, NUSUBSCRIPTIONID);
+
+                    IF(NUMOVEPRODPKG IS NOT NULL AND NUSUBSCRIPTIONID IS NOT NULL) THEN
+
+                        UT_TRACE.TRACE('Se evalua cambio de direcci�n con traslado telco hermano: '||NUMOVEPRODPKG, 4);
+                        
+                        MO_BOMOVE.UPDBILLADDRESSINMOVE
+                        (
+                            NUMOVEPRODPKG,
+                            NUSUBSCRIPTIONID
+                        );
+                    ELSE
+
+                        
+                        GETUTILTRANSFERMOT (INUPACKAGEID, RCRETMOTIVE, TBPACKAGES, NUSTOPPACKAGE, NUSUBSCRIPTIONID);
+
+                        IF(NUSTOPPACKAGE IS NOT NULL AND NUSUBSCRIPTIONID IS NOT NULL) THEN
+
+                            UT_TRACE.TRACE('Se evalua cambio de direcci�n con traslado utilities: '||NUSTOPPACKAGE, 4);
+                            
+                            CC_BOENERGYSALES.UPDSUBSCADDRESS
+                            (
+                                NUSUBSCRIPTIONID,
+                                NUSTOPPACKAGE,
+                                NULL
+                            );
+                        END IF;
+
+                    END IF;
+                END IF;
+
+            END IF;
+
+        END IF;
+
+        UT_TRACE.TRACE( '[END] MO_BOAttention.updBillAddressInMove', 6 );
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE( 'Error [CONTROLLED_ERROR] MO_BOAttention.updBillAddressInMove', 6 );
+            RAISE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            UT_TRACE.TRACE( 'Error [OTHERS] MO_BOAttention.updBillAddressInMove', 6 );
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDBILLADDRESSINMOVE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE RETIREPRODUCTBYMOT
+    (
+        INUMOTIVEID     IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        RCMOTIVE              DAMO_MOTIVE.STYMO_MOTIVE;
+        NUPRODUCTID           PR_PRODUCT.PRODUCT_ID%TYPE;
+        NUPRODUCTSATUSID      PS_PRODUCT_STATUS.PRODUCT_STATUS_ID%TYPE;
+        NUPACKAGEID           MO_PACKAGES.PACKAGE_ID%TYPE;
+        CNUINULOCK            CONSTANT NUMBER := 0;
+        CNURETTYPESOLCLI      CONSTANT NUMBER := GC_BCCONSTANTS.CNURETTYPECUSTOMREQUEST;
+
+        RCCOMBO             DAPR_COMPONENT.STYPR_COMPONENT;
+        TBBUNDLEDCOMP       DACC_BUNDLED_COMP.TYTBCC_BUNDLED_COMP;
+        DTSYSDATE           CC_BUNDLED_COMP.FINAL_DATE%TYPE := UT_DATE.FDTSYSDATE;
+        NULANDPREMISEID     PR_LANDLORD_PREMISE.LANDLORD_PREMISE_ID%TYPE;
+        NUPRODUCTOWNER      PR_LANDLORD_SERVICES.OWNER_PRODUCT_ID%TYPE;
+        SBREQUIRELANDACT    UT_DATATYPES.STYYESORNO;
+        SBSAMELANDLORD      UT_DATATYPES.STYYESORNO;
+
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.RetireProductByMot ['||INUMOTIVEID||']',5);
+
+        
+        RCMOTIVE := DAMO_MOTIVE.FRCGETRECORD(INUMOTIVEID);
+
+        
+        NUPRODUCTID := RCMOTIVE.PRODUCT_ID;
+        
+        NUPACKAGEID := RCMOTIVE.PACKAGE_ID;
+         
+        NUPRODUCTSATUSID:=DAPR_PRODUCT.FNUGETPRODUCT_STATUS_ID(NUPRODUCTID);
+
+        
+        CC_BOBUNDLE.UPDFINALDATEBUNDLED(NUPACKAGEID, NUPRODUCTID, DTSYSDATE);
+
+        
+
+        RCCOMBO := PR_BCCOMPONENT.FRCGETCOMBOBYPRODUCT(NUPRODUCTID);
+
+        
+        OPEN  CC_BCBUNDLEDCOMP.CUBUNDLEDCOMP(RCCOMBO.COMPONENT_ID);
+        FETCH CC_BCBUNDLEDCOMP.CUBUNDLEDCOMP BULK COLLECT INTO TBBUNDLEDCOMP;
+        CLOSE CC_BCBUNDLEDCOMP.CUBUNDLEDCOMP;
+
+        
+        IF(TBBUNDLEDCOMP.COUNT > 0) THEN
+            FOR IDX IN TBBUNDLEDCOMP.FIRST .. TBBUNDLEDCOMP.LAST LOOP
+                IF (TBBUNDLEDCOMP(IDX).INITIAL_DATE < DTSYSDATE) THEN
+                    DACC_BUNDLED_COMP.UPDFINAL_DATE(TBBUNDLEDCOMP(IDX).BUNDLED_COMP_ID, DTSYSDATE);
+                END IF;
+            END LOOP;
+        END IF;
+
+
+        IF(RCCOMBO.COMPONENT_ID IS NOT NULL)THEN
+            
+            PR_BORETIRE.RETICOMPWITHOUTCHILDS
+            (
+                RCCOMBO.COMPONENT_ID,
+                GE_BOPARAMETER.FNUGET('RETIRETYPESC'),
+                DTSYSDATE,
+                DTSYSDATE,
+                RCMOTIVE.MOTIVE_ID
+            );
+        END IF;
+
+        
+        IF ( NUPRODUCTSATUSID = PR_BOCONSTANTS.CNUPRODUCT_INSTALL_PENDING ) THEN
+
+            
+            PR_BORETIRE.RETIREPRODUCT(NUPRODUCTID, CNURETTYPESOLCLI, UT_DATE.FDTSYSDATE, UT_DATE.FDTSYSDATE, INUMOTIVEID, TRUE);
+
+            
+            DAMO_MOTIVE.UPDATTENTION_DATE(INUMOTIVEID, UT_DATE.FDTSYSDATE, CNUINULOCK);
+
+            
+            MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORREQU
+            (
+                NUPACKAGEID,
+                MO_BOTRANSTATECONS.CNUACTION_ATTEND_MOTV
+            );
+        END IF;
+
+        
+        IF ( NUPRODUCTSATUSID != PR_BOCONSTANTS.CNUPRODUCT_RETIRE AND  NUPRODUCTSATUSID != PR_BOCONSTANTS.CNUPRODUCT_INSTALL_PENDING ) THEN
+
+            
+            PS_BOLANDATTENTION.VALREQUIRELANDACTI
+            (
+                NUPRODUCTID,        
+                NUPACKAGEID,        
+                NULANDPREMISEID,    
+                NUPRODUCTOWNER,     
+                SBREQUIRELANDACT,   
+                SBSAMELANDLORD      
+            );
+
+            
+            MO_BORETIRE.RETIREPRODATTENTION(INUMOTIVEID);
+
+            
+            PS_BOLANDATTENTION.LANDACTIVE
+            (
+                SBREQUIRELANDACT,   
+                SBSAMELANDLORD,     
+                NUPRODUCTID,        
+                NUPRODUCTOWNER,     
+                NULANDPREMISEID,    
+                NUPACKAGEID         
+            );
+
+        END IF;
+
+        UT_TRACE.TRACE('END MO_BOAttention.RetireProductByMot ',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR MO_BOAttention.RetireProductByMot ',5);
+            
+            CM_BOSERVICESORDERS.SETEQUIPS(NULL, NULL, NULL);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('others MO_BOAttention.RetireProductByMot ',5);
+            
+            CM_BOSERVICESORDERS.SETEQUIPS(NULL, NULL, NULL);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END RETIREPRODUCTBYMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CLASSSERVCHANGEBYMOT
+    (
+        INUMOTIVEID         IN          MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicio MO_BOAttention.ClassServChangeByMot ',5);
+        DAMO_MOTIVE.ACCKEY(INUMOTIVEID);
+
+        
+        FOR RCCOMPONENT IN MO_BCMOTIVE.CUCOMPONENTSBYMOTIVE(INUMOTIVEID) LOOP
+            IF (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCCOMPONENT.MOTIVE_STATUS_ID)
+                AND RCCOMPONENT.MOTIVE_STATUS_ID != MO_BOSTATUSPARAMETER.FNUGETSTATUS_IN_ANNUL_COMP )  THEN
+                MO_BOCNFCOMPONENT.CHANGECLASSSERVCOMP( RCCOMPONENT.COMPONENT_ID );
+            END IF;
+        END LOOP;
+
+        UT_TRACE.TRACE('Fin MO_BOAttention.ClassServChangeByMot ',5);
+    EXCEPTION
+	  WHEN EX.CONTROLLED_ERROR THEN
+        RAISE EX.CONTROLLED_ERROR;
+	  WHEN OTHERS THEN
+        ERRORS.SETERROR;
+        RAISE EX.CONTROLLED_ERROR;
+    END CLASSSERVCHANGEBYMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INCLUNITCHANGEBYMOT
+    (
+        INUMOTIVEID     IN      MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        RCMOTIVE        DAMO_MOTIVE.STYMO_MOTIVE;
+    BEGIN
+        UT_TRACE.TRACE('Inicio MO_BOAttention.InclUnitChangeByMot ',5);
+        
+        RCMOTIVE := DAMO_MOTIVE.FRCGETRECORD(INUMOTIVEID);
+        
+        LE_BOINCLUDEUNITSATTENTION.ATTENTIONINCLUNIT(RCMOTIVE.PACKAGE_ID,RCMOTIVE.MOTIVE_ID);
+        
+        MO_BOATTENTION.ATTENDMOTIVE(INUMOTIVEID);
+        UT_TRACE.TRACE('Fin MO_BOAttention.InclUnitChangeByMot ',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INCLUNITCHANGEBYMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDMOTCOMPBYMOT
+    (
+        INUMOTIVEID     IN      MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        RCMOTIVE        DAMO_MOTIVE.STYMO_MOTIVE;
+    BEGIN
+        UT_TRACE.TRACE('Inicio MO_BOAttention.AttendMotCompByMot ',5);
+
+        MO_BOATTENTION.ATTENDMOTIVE(INUMOTIVEID);
+
+        UT_TRACE.TRACE('Fin MO_BOAttention.AttendMotCompByMot ',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDMOTCOMPBYMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDSTARTSERVICE
+    (
+        INUMOTIVEID IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.AttendStartService', 5);
+        UT_TRACE.TRACE('Motivo: '||INUMOTIVEID, 5);
+
+        
+        MO_BOATTENTION.ATTENDCREATIONPRODBYMOTMASS
+        (
+            INUMOTIVEID,
+            MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+        );
+
+        UT_TRACE.TRACE('END MO_BOAttention.AttendStartService', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDSTARTSERVICE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDSTOPSERVICE
+    (
+        INUMOTIVEID IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        NUPRODUCTID         MO_MOTIVE.PRODUCT_ID%TYPE;
+        NUACCOUNTID         SUSCRIPC.SUSCCODI%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.AttendStopService', 5);
+        UT_TRACE.TRACE('Motivo: '||INUMOTIVEID, 5);
+
+        
+        NUPRODUCTID := DAMO_MOTIVE.FNUGETPRODUCT_ID(INUMOTIVEID);
+
+        
+        NUACCOUNTID := PKTBLSERVSUSC.FNUGETSESUSUSC(NUPRODUCTID);
+
+        UT_TRACE.TRACE('Producto a retirar: '||NUPRODUCTID, 5);
+
+        
+        RC_BODEPOSITAPPLICATOR.APPLYDEPOSIT
+        (
+            NUACCOUNTID,
+            NUPRODUCTID,
+            RC_BCDEPOSITMOVEMENTS.CNUTERMINATION_APPL
+        );
+
+        
+        CC_BOUTILITIESSALE.RETIREPRODUCT(INUMOTIVEID);
+
+        UT_TRACE.TRACE('END MO_BOAttention.AttendStopService', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDSTOPSERVICE;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INSDATACONECCTION
+    (
+        INUMOTIVEID IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        TBCOMPONENTID   TYTBCOMPONENTID;
+        BIINDEX         BINARY_INTEGER := 1;
+        NUPRCOMID       PR_COMPONENT.COMPONENT_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.InsDataConecction motivo: ['||INUMOTIVEID||']', 5);
+
+        
+        FOR REC IN MO_BCCOMPONENT.CUCOMPACTHIERARCHYBYMOT(INUMOTIVEID) LOOP
+            TBCOMPONENTID(BIINDEX) := REC.COMPONENT_ID;
+            BIINDEX := BIINDEX + 1;
+        END LOOP;
+
+        
+        BIINDEX := TBCOMPONENTID.FIRST;
+        WHILE ( BIINDEX <= TBCOMPONENTID.LAST ) LOOP
+            UT_TRACE.TRACE('Componente del motivo: '||TBCOMPONENTID(BIINDEX),3);
+            NUPRCOMID := DAMO_COMPONENT.FNUGETCOMPONENT_ID_PROD(TBCOMPONENTID(BIINDEX));
+
+            IF(NUPRCOMID IS NOT NULL)THEN
+                IF(DAPR_DATA_CONNECTION.FBLEXIST(NUPRCOMID))THEN
+                    
+                    PR_BODATACONNECTION.UPDPRDATACONNECTION(TBCOMPONENTID(BIINDEX));
+                ELSE
+                    
+                    PR_BODATACONNECTION.INSDATACONNECTION(TBCOMPONENTID(BIINDEX), NUPRCOMID);
+                END IF;
+            END IF;
+
+            BIINDEX := TBCOMPONENTID.NEXT(BIINDEX);
+        END LOOP;
+
+        UT_TRACE.TRACE('END MO_BOAttention.InsDataConecction', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR MO_BOAttention.InsDataConecction', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('others MO_BOAttention.InsDataConecction', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INSDATACONECCTION;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDTRANSFERSERVICE
+    (
+        INUMOTIVEID IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        RCMOTIVE    DAMO_MOTIVE.STYMO_MOTIVE;
+        RCMOADDRES  DAMO_ADDRESS.STYMO_ADDRESS;
+        NUEMSSPUME  ELMESESU.EMSSPUME%TYPE;
+        RCSERVSUSC  SERVSUSC%ROWTYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.AttendTransferService', 5);
+        UT_TRACE.TRACE('Motivo: '||INUMOTIVEID, 5);
+
+        
+        RCMOTIVE := DAMO_MOTIVE.FRCGETRECORD(INUMOTIVEID);
+        
+
+
+        RCMOADDRES := MO_BCADDRESS.FRCGETADDRESSBYMOTIVE(RCMOTIVE.MOTIVE_ID, 'Y');
+        UT_TRACE.TRACE('Direcci�n de la solicitud: '||RCMOADDRES.PARSER_ADDRESS_ID, 5);
+        UT_TRACE.TRACE('Producto solicitante: '||RCMOTIVE.PRODUCT_ID, 5);
+        UT_TRACE.TRACE('Solicitud: '||RCMOTIVE.PACKAGE_ID, 5);
+
+        RCSERVSUSC := PKTBLSERVSUSC.FRCGETRECORD(RCMOTIVE.PRODUCT_ID);
+
+        
+        IF (CC_BOUTILITIESSALEMGR.FSBISCHANGECYCLE(RCMOADDRES.PARSER_ADDRESS_ID, RCSERVSUSC.SESUCICL) = GE_BOCONSTANTS.CSBYES) THEN
+            UT_TRACE.TRACE('Se presenta un cambio de ciclo de facturaci�n', 5);
+            CC_BOUTILITIESSALEMGR.UPDDATAPRODCYCLECHANGE
+            (
+                RCMOTIVE.MOTIVE_ID,
+                RCMOADDRES.ADDRESS_ID
+            );
+        END IF;
+
+        
+        CC_BOENERGYSALES.UPDATEPRODUCTADDRESS(RCMOTIVE.PACKAGE_ID, RCMOTIVE.PRODUCT_ID, RCMOADDRES.PARSER_ADDRESS_ID);
+        UT_TRACE.TRACE('Contrato del solicitante: '||RCMOTIVE.SUBSCRIPTION_ID, 5);
+        
+        CC_BOENERGYSALES.UPDSUBSCADDRESS(RCMOTIVE.SUBSCRIPTION_ID, RCMOTIVE.PACKAGE_ID, RCMOADDRES.PARSER_ADDRESS_ID);
+
+        
+        CC_BOUTILITIESSALEMGR.INSDATAUTILITIES(INUMOTIVEID);
+
+        
+        MO_BOATTENTION.INSDATACONECCTION(INUMOTIVEID);
+
+        
+        MO_BOATTENTION.ATTENDMOTIVE(INUMOTIVEID);
+
+        UT_TRACE.TRACE('END MO_BOAttention.AttendTransferService', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDTRANSFERSERVICE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGECOMPONENTSSTATE
+    (
+        INUMOTIVE   IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        TBCOMPONENT     DAMO_COMPONENT.TYTBMO_COMPONENT;
+        NUINDEX         UT_DATATYPES.STYNUMBERINDEX;
+    BEGIN
+        UT_TRACE.TRACE('END MO_BOAttention.ChangeComponentsState', 5);
+        
+        OPEN    MO_BCCOMPONENT.CUACTICOMPSBYMOTI(INUMOTIVE);
+        FETCH   MO_BCCOMPONENT.CUACTICOMPSBYMOTI BULK COLLECT INTO TBCOMPONENT;
+        CLOSE   MO_BCCOMPONENT.CUACTICOMPSBYMOTI;
+
+        NUINDEX := TBCOMPONENT.FIRST;
+        LOOP
+            EXIT WHEN(NUINDEX IS NULL);
+
+            MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORCOMP
+            (
+                TBCOMPONENT(NUINDEX).COMPONENT_ID,
+                MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+            );
+
+            NUINDEX := TBCOMPONENT.NEXT(NUINDEX);
+        END LOOP;
+
+        UT_TRACE.TRACE('END MO_BOAttention.ChangeComponentsState', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR MO_BOAttention.ChangeComponentsState', 5);
+            IF  (MO_BCCOMPONENT.CUACTICOMPSBYMOTI%ISOPEN) THEN
+                CLOSE MO_BCCOMPONENT.CUACTICOMPSBYMOTI;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('others MO_BOAttention.ChangeComponentsState', 5);
+            IF  (MO_BCCOMPONENT.CUACTICOMPSBYMOTI%ISOPEN) THEN
+                CLOSE MO_BCCOMPONENT.CUACTICOMPSBYMOTI;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CHANGECOMPONENTSSTATE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCHANGETECH
+    (
+        INUMOTIVEID IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        NUNEWPRODUCT    PR_PRODUCT.PRODUCT_ID%TYPE;
+        NUOLDPRODUCT    PR_PRODUCT.PRODUCT_ID%TYPE;
+        NUPACKAGESID    MO_PACKAGES.PACKAGE_ID%TYPE;
+        TBMOTIVE        DAMO_MOTIVE.TYTBMO_MOTIVE;
+        NUPACKTYPE      MO_PACKAGES.PACKAGE_TYPE_ID%TYPE;
+        SBPACKTAGNAME   PS_PACKAGE_TYPE.TAG_NAME%TYPE;
+        SBMOTIVETAGNAME PS_PRODUCT_MOTIVE.TAG_NAME%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.AttendChangetech Motivo['||INUMOTIVEID||']', 5);
+
+        
+
+        NUOLDPRODUCT := DAMO_MOTIVE.FNUGETPRODUCT_ID(INUMOTIVEID);
+
+        UT_TRACE.TRACE('Producto anterior: '||NUOLDPRODUCT, 5);
+
+        
+
+        NUPACKAGESID := DAMO_MOTIVE.FNUGETPACKAGE_ID(INUMOTIVEID);
+
+        UT_TRACE.TRACE('Solicitud: '||NUPACKAGESID, 5);
+
+        
+        MO_BCPACKAGES.GETMOTISBYMOTITYPE(NUPACKAGESID, MO_BOCONSTANTS.CNUINSTAL_MOTI_TYPE, TBMOTIVE);
+
+        NUNEWPRODUCT := TBMOTIVE(TBMOTIVE.FIRST).PRODUCT_ID;
+
+        UT_TRACE.TRACE('Producto nuevo: '||NUNEWPRODUCT, 5);
+
+        
+        FA_BOBILLDISTRICONFIGURATION.UPDATEPRODUCTDISTFACT(NUOLDPRODUCT, NUNEWPRODUCT);
+
+        
+
+
+
+
+
+
+        
+        NUPACKTYPE := DAMO_PACKAGES.FNUGETPACKAGE_TYPE_ID(NUPACKAGESID);
+        SBPACKTAGNAME := DAPS_PACKAGE_TYPE.FSBGETTAG_NAME(NUPACKTYPE);
+
+        
+        SBMOTIVETAGNAME := PS_BCPRODUCTMOTIVE.FSBTAGBYPACKMOTITYPE(NUPACKTYPE, DAMO_MOTIVE.FNUGETMOTIVE_TYPE_ID(INUMOTIVEID));
+
+        PR_BOLANDLORD.VALIDPREMISEISINLA(NUOLDPRODUCT, NUNEWPRODUCT, SBPACKTAGNAME, SBMOTIVETAGNAME);
+
+
+        
+        
+        DAMO_MOTIVE.UPDATTENTION_DATE(INUMOTIVEID, UT_DATE.FDTSYSDATE);
+
+        CHANGECOMPONENTSSTATE(INUMOTIVEID);
+
+        
+        MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORMOT
+        (
+            INUMOTIVEID,
+            MO_BOTRANSTATECONS.CNUACTION_ATTEND_MOTV
+        );
+
+        
+        MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORPACK
+        (
+            NUPACKAGESID,
+            MO_BOTRANSTATECONS.CNUACTION_ATTEND_PACK
+        );
+
+        UT_TRACE.TRACE('END MO_BOAttention.AttendChangetech', 5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR MO_BOAttention.AttendChangetech', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('others MO_BOAttention.AttendChangetech', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDCHANGETECH;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INDCHANGESERVICEATT
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        TBMOTIVES           DAMO_MOTIVE.TYTBMO_MOTIVE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.IndChangeServiceAtt'||CHR(10)||
+                       'PackageId ['||INUPACKAGEID||']', 9);
+
+        
+        MO_BOCOMPONENT.SETSERVDATETOCOMP(INUPACKAGEID);
+
+        
+        TBMOTIVES := MO_BCMOTIVE.FTBMOTIVESBYPACKAGE(INUPACKAGEID);
+
+        
+        IF (TBMOTIVES.COUNT > 0) THEN
+            
+            FOR NUMOTIVEIDX IN TBMOTIVES.FIRST .. TBMOTIVES.LAST LOOP
+
+                
+                IF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = PS_BOMOTIVETYPE.CNUINSTALL) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Instalaci�n '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    MO_BOATTENTION.ATTENDCREATIONPRODBYMOTMASS
+                    (
+                        TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,
+                        MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+                    );
+                    CC_BOUTILITIESSALEMGR.UPDATEHOUSINGUNITS(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID IN (PS_BOMOTIVETYPE.CNURETIRE, PS_BOMOTIVETYPE.CNURETIRE_NOPAY)) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Retiro de Producto '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    RETIREPRODUCTBYMOT(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+                    NV_BOATTENTION.ATTENDRETIREPRODUCT(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = PS_BOMOTIVETYPE.CNURETIRE_COMP) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Retiro de Componentes '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    MO_BORETIRE.RETIRECOMPATTENTION(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = PS_BOMOTIVETYPE.CNUADD_COMP) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Adici�n de Componentes '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    ATTENDCMPADITIONMOT(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = PS_BOMOTIVETYPE.CNUCHANGE_CLASS) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Cambio de Clase '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    CLASSSERVCHANGEBYMOT(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = PS_BOMOTIVETYPE.CNUCHANGE_EQUIP) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Cambio de Equipo '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    MO_BOEQUIPMENTATTENTION.EQUIPMENTCHANGEBYMOT(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = PS_BOMOTIVETYPE.CNUCHANGE_SUBSCRIP) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Cambio de Contrato '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    SUBSCRIPTIONCHNGBYMOT(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = PS_BOMOTIVETYPE.CNUMOVE) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Traslado '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    MO_BOMOVE.MOVEATTENTBYMOT(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = PS_BOMOTIVETYPE.CNUCHANGE_PLAN) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Cambio de Plan '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    GE_BOINSTANCE.SETVALUE(
+                        MO_BOCONSTANTS.CSBMO_MOTIVE,
+                        MO_BOCONSTANTS.CSBMOTIVE_ID,
+                        TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,
+                        1
+                    );
+                    CF_BOACTIONS.COMMPLANCHANGEBYMOT;
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = CC_BCENERGYSALES.FNUGETPACKTYPEBYTAGNAME(CC_BCENERGYSALES.CSBMOTI_START))THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de start '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    PS_BOLANDATTENTION.ATTENDSTARTSERVICE(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+                    MO_BOATTENTION.ATTENDSTARTSERVICE(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+                    CM_BOSERVICESORDERS.INSTALLPRODUCTBYMOTI(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = CC_BCENERGYSALES.FNUGETPACKTYPEBYTAGNAME(CC_BCENERGYSALES.CSBMOTI_STOP))THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de stop '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    PS_BOLANDATTENTION.ATTENDSTOPSERVICE(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+                    MO_BOATTENTION.ATTENDSTOPSERVICE(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+                    CM_BOSERVICESORDERS.UNISTALLPRODUCTBYMOTI(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = CC_BCENERGYSALES.FNUGETPACKTYPEBYTAGNAME(CC_BCENERGYSALES.CSBMOTI_TRANSFER))THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de transfer '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    CM_BOSERVICESORDERS.UNISTALLPRODUCTBYMOTI(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+                    PS_BOLANDATTENTION.ATTENDTRANSFERSERVICE(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+                    MO_BOATTENTION.ATTENDTRANSFERSERVICE(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+                    CM_BOSERVICESORDERS.INSTALLPRODUCTBYMOTI(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = CC_BCENERGYSALES.FNUGETPACKTYPEBYTAGNAME(CC_BCENERGYSALES.CSBMOTI_CHANGE_TECH))THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de cambio de tecnolog�a '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    MO_BOATTENTION.ATTENDCHANGETECH(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = CC_BCUTILITIESSALE.CNUCHANGE_CONDITIONS )THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de cambio de condiciones '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    MO_BOATTENTION.ATTENDMOTIVE(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = PS_BOMOTIVETYPE.CNUCHANGE_INCLUNIT) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Cambio de Unidades Incluidas '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    INCLUNITCHANGEBYMOT(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+
+                
+                ELSIF (TBMOTIVES(NUMOTIVEIDX).MOTIVE_TYPE_ID = PS_BOMOTIVETYPE.CNUASSIGN_PROMO) THEN
+                    UT_TRACE.TRACE('ChangeServiceAtt: Motivo de Asignaci�n de Promoci�n '||TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID,8);
+                    ATTENDMOTCOMPBYMOT(TBMOTIVES(NUMOTIVEIDX).MOTIVE_ID);
+                END IF;
+
+            END LOOP;
+
+        END IF;
+
+        
+        CF_BOBUNDLINGRULES.RETIREBUNDLEDCOMPATTENTION(INUPACKAGEID);
+        CF_BOBUNDLINGRULES.CREATEBUNDLEDCOMPATTENTION(INUPACKAGEID);
+
+
+        
+
+
+        TBMOTIVES := MO_BCMOTIVE.FTBMOTIVESBYPACKAGE(INUPACKAGEID);
+
+        
+        IF (TBMOTIVES.COUNT = 0 AND
+            NOT(PS_BOMOTIVESTATUS.FBLISFINALSTATUS(DAMO_PACKAGES.FNUGETMOTIVE_STATUS_ID(INUPACKAGEID)))) THEN
+            
+            MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORPACK
+            (
+                INUPACKAGEID,
+                MO_BOTRANSTATECONS.CNUACTION_ATTEND_PACK
+            );
+        END IF;
+
+        
+            
+        UPDBILLADDRESSINMOVE(INUPACKAGEID);
+
+        
+        PKBOSUSPENSIONRETIRO.FINALIZERETIRONOPAY(INUPACKAGEID);
+
+        
+        PS_BOLANDATTENTION.FINALLANDATTENTION(INUPACKAGEID);
+
+        UT_TRACE.TRACE('END MO_BOAttention.IndChangeServiceAtt', 9);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR MO_BOAttention.IndChangeServiceAtt', 5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('ex.CONTROLLED_ERROR MO_BOAttention.IndChangeServiceAtt', 5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INDCHANGESERVICEATT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGESERVICEATT
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        BLATTENDREQUEST     BOOLEAN := TRUE;
+        RCPACKAGE           DAMO_PACKAGES.STYMO_PACKAGES;
+        TBASSOPACKS         DAMO_PACKAGES_ASSO.TYTBMO_PACKAGES_ASSO;
+        NUPACKSTATUSID      MO_PACKAGES.MOTIVE_STATUS_ID%TYPE;
+        NUINDX              BINARY_INTEGER;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.ChangeServiceAtt ['||INUPACKAGEID||']',8);
+
+        
+        CC_BOBILLING.CLEARMEMTOAPPROV;
+
+        
+        PKBILLINGNOTEMGR.SETNULLTONOTENUMBER;
+
+        
+        RCPACKAGE := DAMO_PACKAGES.FRCGETRECORD(INUPACKAGEID);
+
+        
+        IF ( RCPACKAGE.TAG_NAME NOT IN (PS_BOPACKAGETYPE.CSBTAGPEDIDO, PS_BOPACKAGETYPE.CSBTAGRECUPERO)) THEN
+            
+            INDCHANGESERVICEATT(INUPACKAGEID);
+        ELSE
+            
+            TBASSOPACKS := MO_BCPACKAGES_ASSO.FTBPACKAGESBYPACKASSO(INUPACKAGEID);
+
+            
+            NUINDX := TBASSOPACKS.FIRST;
+            WHILE (NUINDX IS NOT NULL) LOOP
+                INDCHANGESERVICEATT(TBASSOPACKS(NUINDX).PACKAGE_ID);
+
+                
+                NUPACKSTATUSID := DAMO_PACKAGES.FNUGETMOTIVE_STATUS_ID(TBASSOPACKS(NUINDX).PACKAGE_ID);
+                IF NOT(PS_BOMOTIVESTATUS.FBLISFINALSTATUS(NUPACKSTATUSID)) THEN
+                    BLATTENDREQUEST := FALSE;
+                END IF;
+
+                NUINDX := TBASSOPACKS.NEXT(NUINDX);
+            END LOOP;
+
+            
+            IF (BLATTENDREQUEST AND
+                NOT(PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCPACKAGE.MOTIVE_STATUS_ID))) THEN
+                MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORPACK
+                (
+                    INUPACKAGEID,
+                    MO_BOTRANSTATECONS.CNUACTION_ATTEND_PACK
+                );
+            END IF;
+        END IF;
+
+        
+        PKBILLINGNOTEMGR.SETNULLTONOTENUMBER;
+
+        
+        CC_BOBILLING.EXECUTEVALELECTRONIC(NULL);
+
+        UT_TRACE.TRACE('Termina MO_BOAttention.ChangeServiceAtt',8);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            CC_BOBILLING.CLEARMEMTOAPPROV;
+            PKBILLINGNOTEMGR.SETNULLTONOTENUMBER;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            CC_BOBILLING.CLEARMEMTOAPPROV;
+            PKBILLINGNOTEMGR.SETNULLTONOTENUMBER;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CHANGESERVICEATT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ACTCREATEPLANWF
+    IS
+        NUPACKAGEID     MO_PACKAGES.PACKAGE_ID%TYPE;
+        NUMOTIVEID      MO_MOTIVE.MOTIVE_ID%TYPE;
+        NUMOTITYPEID    MO_MOTIVE.MOTIVE_TYPE_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.ActCreatePlanWf',5);
+
+        
+        GE_BOINSTANCE.GETVALUE
+        (
+            MO_BOCONSTANTS.CSBMO_PACKAGES,
+            MO_BOCONSTANTS.CSBPACKAGE_ID,
+            NUPACKAGEID
+        );
+
+        
+        GE_BOINSTANCE.GETVALUE
+        (
+            MO_BOCONSTANTS.CSBMO_MOTIVE,
+            MO_BOCONSTANTS.CSBMOTIVE_ID,
+            NUMOTIVEID
+        );
+
+        
+        IF  DAMO_PACKAGES.FSBGETTAG_NAME(NUPACKAGEID) = PS_BOPACKAGETYPE.CSBTAGVENTA THEN
+             PR_BOCREATIONPRODUCT.INITIALCREATIONPRODUCT(NUPACKAGEID);
+        END IF;
+
+        
+        MO_BOACTIONCREATEPLANWF.PROCESSACTION;
+
+        UT_TRACE.TRACE('END MO_BOAttention.ActCreatePlanWf',5);
+
+    EXCEPTION
+		WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR MO_BOAttention.ActCreatePlanWf',5);
+            RAISE EX.CONTROLLED_ERROR;
+		WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS MO_BOAttention.ActCreatePlanWf',5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ACTCREATEPLANWF;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CLASSSERVICECHANGE
+    IS
+        NUPACKAGEID     MO_PACKAGES.PACKAGE_ID%TYPE;
+        NUMOTIVEID      MO_MOTIVE.MOTIVE_ID%TYPE;
+        NUCOMPONENTID   MO_COMPONENT.COMPONENT_ID%TYPE;
+        RCCOMPONENT     DAMO_COMPONENT.STYMO_COMPONENT;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.ClassServiceChange',5);
+        
+        GE_BOINSTANCE.GETVALUE
+        (
+            MO_BOCONSTANTS.CSBMO_COMPONENT,
+            MO_BOCONSTANTS.CSBCOMPONENT_ID,
+            NUCOMPONENTID
+        );
+
+        UT_TRACE.TRACE('Componente:['||NUCOMPONENTID||']',6);
+        
+        IF NUCOMPONENTID IS NOT NULL THEN
+            DAMO_COMPONENT.GETRECORD(NUCOMPONENTID , RCCOMPONENT );
+            MO_BOCNFCOMPONENT.CHANGECLASSSERVCOMP(NUCOMPONENTID);
+        ELSE
+            
+            GE_BOINSTANCE.GETVALUE
+            (
+                MO_BOCONSTANTS.CSBMO_MOTIVE,
+                MO_BOCONSTANTS.CSBMOTIVE_ID,
+                NUMOTIVEID
+            );
+
+            UT_TRACE.TRACE('Motivo:['||NUMOTIVEID||']',6);
+            
+            IF NUMOTIVEID IS NOT NULL THEN
+                CLASSSERVCHANGEBYMOT(NUMOTIVEID);
+            ELSE
+                
+                GE_BOINSTANCE.GETVALUE
+                (
+                    MO_BOCONSTANTS.CSBMO_PACKAGES,
+                    MO_BOCONSTANTS.CSBPACKAGE_ID,
+                    NUPACKAGEID
+                );
+
+                UT_TRACE.TRACE('Paquete:['||NUPACKAGEID||']',6);
+                DAMO_PACKAGES.ACCKEY(NUPACKAGEID);
+                FOR RCMOTIVE IN MO_BCMOTIVE.CUMOTIVESBYPACKAGE(NUPACKAGEID) LOOP
+                    FOR RCCOMPONENT IN MO_BCCOMPONENT.CUCOMPONENTSBYMOT(RCMOTIVE.MOTIVE_ID) LOOP
+                        IF  (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCCOMPONENT.MOTIVE_STATUS_ID)
+                             AND RCCOMPONENT.MOTIVE_STATUS_ID != MO_BOSTATUSPARAMETER.FNUGETSTATUS_IN_ANNUL_COMP ) THEN
+                            MO_BOCNFCOMPONENT.CHANGECLASSSERVCOMP( RCCOMPONENT.COMPONENT_ID );
+                        END IF;
+                    END LOOP;
+                END LOOP;
+            END IF;
+        END IF;
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.ClassServiceChange',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CLASSSERVICECHANGE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGEPLANBILLING
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+        
+        NUPLANID              MO_MOTIVE.COMMERCIAL_PLAN_ID%TYPE;
+        NUNEWPLANID           MO_MOTIVE.COMMERCIAL_PLAN_ID%TYPE;
+        RCMOTIVE              DAMO_MOTIVE.STYMO_MOTIVE;
+        RCPERICOSE          PERICOSE%ROWTYPE;
+        DTGENDATE           PERIFACT.PEFAFIMO%TYPE;
+        NUBILLINGPLAN       CC_COMMERCIAL_PLAN.BILLING_PLAN%TYPE;
+        NURATINGPLAN        CC_COMMERCIAL_PLAN.RATING_PLAN%TYPE;
+        NUPRERATINGPLAN     CC_COMMERCIAL_PLAN.PRERATING_PLAN%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.ChangePlanBilling PackageId ['||INUPACKAGEID||']',5);
+
+        
+        MO_BOBILLINGDATACHANGE.GETPLANESBYPACKID(INUPACKAGEID, NUNEWPLANID);
+
+        
+        RCMOTIVE    := MO_BOPACKAGES.FRCGETINITIALMOTIVE(INUPACKAGEID);
+
+        
+        IF
+            RCMOTIVE.IS_IMMEDIATE_ATTENT = 'N'
+        THEN
+            PKBCPERICOSE.GETLASTPREVCONSPERIOD(
+                RCMOTIVE.PRODUCT_ID,
+                RCPERICOSE
+            );
+
+            DTGENDATE := RCPERICOSE.PECSFECF;
+        ELSE
+            DTGENDATE := UT_DATE.FDTSYSDATE;
+        END IF;
+
+        
+        LE_BOINCLUDEUNITSATTENTION.ATTENTIONINCLUNIT(
+            RCMOTIVE.PACKAGE_ID,
+            RCMOTIVE.MOTIVE_ID,
+            DTGENDATE,
+            RCMOTIVE.IS_IMMEDIATE_ATTENT = 'N'
+        );
+
+        
+        MO_BOBILLINGDATACHANGE.GETDATACOMMPLANPACKAGEID(
+            INUPACKAGEID,
+            NUBILLINGPLAN,
+            NURATINGPLAN,
+            NUPRERATINGPLAN
+        );
+
+        
+        FA_BOCHANGEBILLPLAN.LIQUIDATECHANGEPLAN(
+            RCMOTIVE.PRODUCT_ID,
+            DTGENDATE,
+            NUBILLINGPLAN,
+            RCMOTIVE.IS_IMMEDIATE_ATTENT = 'Y'
+        );
+
+        
+        PR_BOPRODUCT.UPDPLANPRODUCT
+        (
+            RCMOTIVE.PRODUCT_ID,
+            NUNEWPLANID,
+            DTGENDATE + 1/24/60/60,
+            RCMOTIVE.MOTIVE_ID
+        );
+
+        
+        MO_BOATTENTION.ATTENDPACKAGE(INUPACKAGEID);
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.ChangePlanBilling',5);
+
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+    END CHANGEPLANBILLING;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDADITANDRETCOMP
+    (
+        INUPACKAGEID    IN  MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.AttendAditAndRetComp. Paquete['||INUPACKAGEID||']',10);
+
+        
+        FOR RCMOTIVE IN MO_BCMOTIVE.CUMOTBYPACKANDMOTTY(INUPACKAGEID, MO_BOCONSTANTS.CNUSERVADD_MOTIVE_TYPE) LOOP
+            IF (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCMOTIVE.MOTIVE_STATUS_ID)) THEN
+                
+                ATTENDCMPADITIONMOT(RCMOTIVE.MOTIVE_ID);
+            END IF;
+        END LOOP;
+
+        
+        FOR RCMOTIVE IN MO_BCMOTIVE.CUMOTBYPACKANDMOTTY(INUPACKAGEID, MO_BOCONSTANTS.CNURETIRECOMP_MOTI_TYPE) LOOP
+            IF (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCMOTIVE.MOTIVE_STATUS_ID)) THEN
+                
+                MO_BORETIRE.RETIRECOMPATTENTION(RCMOTIVE.MOTIVE_ID);
+            END IF;
+        END LOOP;
+
+        
+        IF (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(DAMO_PACKAGES.FNUGETMOTIVE_STATUS_ID(INUPACKAGEID))) THEN
+               MO_BOMOTIVEACTIONUTIL.EXECTRANSTATUSFORPACK
+               (
+                    INUPACKAGEID,
+                    MO_BOTRANSTATECONS.CNUACTION_ATTEND_COMP
+               );
+        END IF;
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.AttendAditAndRetComp',10);
+
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+
+    END ATTENDADITANDRETCOMP;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGEPROVDATESBYMOT
+    (
+        INUPACKAGEID        IN  MO_PACKAGES.PACKAGE_ID%TYPE,
+        INUMOTIVEID         IN  MO_MOTIVE.MOTIVE_ID%TYPE,
+        IDTPROVINITIALDATE  IN  MO_MOTIVE.PROV_INITIAL_DATE%TYPE,
+        IDTPROVFINALDATE    IN  MO_MOTIVE.PROV_FINAL_DATE%TYPE
+    )
+    IS
+        RCMOTIVE                DAMO_MOTIVE.STYMO_MOTIVE;
+        DTNEWDATEINI            MO_MOTIVE.PROV_INITIAL_DATE%TYPE;
+        DTNEWDATEFIN            MO_MOTIVE.PROV_FINAL_DATE%TYPE;
+
+        DTPROVINITIALDATEOLD    MO_MOTIVE.PROV_INITIAL_DATE%TYPE;
+        DTPROVFINALDATEOLD      MO_MOTIVE.PROV_FINAL_DATE%TYPE;
+
+        NUERRORCODE             GE_MESSAGE.MESSAGE_ID%TYPE;
+        SBERRORMESSAGE          GE_ERROR_LOG.DESCRIPTION%TYPE;
+        EXUPDATEACTIVITYDELAY   EXCEPTION;
+
+    BEGIN
+    
+        UT_TRACE.TRACE( 'BEGIN Metodo MO_BOAttention.ChangeProvDatesByMot'  ||CHR(10)||
+                        'inuPackageId: '        ||INUPACKAGEID              ||CHR(10)||
+                        'inuMotiveId: '         ||INUMOTIVEID               ||CHR(10)||
+                        'idtProvInitialDate: '  ||IDTPROVINITIALDATE        ||CHR(10)||
+                        'idtProvFinalDate: '    ||IDTPROVFINALDATE ,5);
+
+        
+        DAMO_MOTIVE.LOCKBYPK(INUMOTIVEID,RCMOTIVE);
+
+        UT_TRACE.TRACE('Fecha de Inicio   : ['||RCMOTIVE.PROV_INITIAL_DATE||']',6);
+        UT_TRACE.TRACE('Fecha de fin   : ['||RCMOTIVE.PROV_FINAL_DATE||']',6);
+        
+        IF  (NVL(IDTPROVINITIALDATE, RCMOTIVE.PROV_INITIAL_DATE) = RCMOTIVE.PROV_INITIAL_DATE) AND
+            (NVL(IDTPROVFINALDATE, RCMOTIVE.PROV_FINAL_DATE) = RCMOTIVE.PROV_FINAL_DATE)
+        THEN
+            
+            ERRORS.SETERROR(CNUDATESEQUALS);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        IF (IDTPROVINITIALDATE IS NOT NULL AND IDTPROVINITIALDATE <> RCMOTIVE.PROV_INITIAL_DATE) THEN
+        
+            
+            RCMOTIVE.PROV_INITIAL_DATE := IDTPROVINITIALDATE;
+            
+            RCMOTIVE.ESTIMATED_INST_DATE := IDTPROVINITIALDATE;
+            
+            RCMOTIVE.EXECUTION_MAX_DATE := IDTPROVINITIALDATE;
+            
+            MO_BOCOMPONENT.CHANGEESTIMINSTDATEBYMOT(INUMOTIVEID,IDTPROVINITIALDATE);
+            
+
+            IF (RCMOTIVE.PRODUCT_ID IS NOT NULL) THEN
+            
+                DTPROVINITIALDATEOLD := DAPR_PRODUCT.FDTGETPROVISIONAL_BEG_DATE(RCMOTIVE.PRODUCT_ID);
+
+                
+                DAPR_PRODUCT.UPDPROVISIONAL_BEG_DATE(RCMOTIVE.PRODUCT_ID, IDTPROVINITIALDATE);
+
+                PR_BOPRODUCTLOG.SAVEPROVBEGDATELOG
+                (
+                    INUPRODUCTID    => RCMOTIVE.PRODUCT_ID,
+                    IDTOLDBEGINDATE => DTPROVINITIALDATEOLD,
+                    IDTNEWBEGINDATE => IDTPROVINITIALDATE,
+                    INUPACKAGEID    => INUPACKAGEID
+                );
+            
+            END IF;
+
+            
+            DTNEWDATEINI := RCMOTIVE.PROV_INITIAL_DATE -
+                            (
+                                PS_BOPRODMOTIPARAM.FNUGETPROVISIONALWAIT
+                                (
+                                    DAMO_PACKAGES.FSBGETTAG_NAME(RCMOTIVE.PACKAGE_ID),
+                                    RCMOTIVE.TAG_NAME
+                                ) * UT_DATE.CNUFACTOR_MINUTE_DATE
+                            );
+            UT_TRACE.TRACE('Nueva Fecha de Inicio   : ['||DTNEWDATEINI||']',6);
+            UT_TRACE.TRACE('Inicia Servicio de WF para Cambiar Fecha de Inicio',6);
+            MO_BOUTILITIES.INITIALIZEOUTPUT(NUERRORCODE,SBERRORMESSAGE);
+            GE_BOINT_WORKFLOW.UPDATEACTIVITYDELAY
+                (
+                INUMOTIVEID,
+                MO_BOPARAMETER.FNUGETENTITY_MOTIVE,
+                NULL,
+                DTNEWDATEINI,
+                NUERRORCODE,
+                SBERRORMESSAGE,
+                WF_BOCONSTANTS.CNUW_WAITING_ACTIVITY
+                );
+            IF (NUERRORCODE <> MO_BOCONSTANTS.CNUOK) THEN
+            
+                RAISE EXUPDATEACTIVITYDELAY;
+            
+            END IF;
+
+        
+        END IF;
+
+        
+        IF (IDTPROVFINALDATE IS NOT NULL AND IDTPROVFINALDATE <> RCMOTIVE.PROV_FINAL_DATE) THEN
+        
+            
+            RCMOTIVE.PROV_FINAL_DATE := IDTPROVFINALDATE;
+            
+            IF (RCMOTIVE.PRODUCT_ID IS NOT NULL) THEN
+            
+                DTPROVFINALDATEOLD := DAPR_PRODUCT.FDTGETPROVISIONAL_END_DATE(RCMOTIVE.PRODUCT_ID);
+
+                
+                DAPR_PRODUCT.UPDPROVISIONAL_END_DATE(RCMOTIVE.PRODUCT_ID, IDTPROVFINALDATE);
+
+                PR_BOPRODUCTLOG.SAVEPROVENDDATELOG
+                (
+                    INUPRODUCTID    => RCMOTIVE.PRODUCT_ID,
+                    IDTOLDENDDATE   => DTPROVFINALDATEOLD,
+                    IDTNEWENDDATE   => IDTPROVFINALDATE,
+                    INUPACKAGEID    => INUPACKAGEID
+                );
+            
+            END IF;
+        
+        END IF;
+
+        
+        DAMO_MOTIVE.UPDRECORD(RCMOTIVE);
+        UT_TRACE.TRACE('END MO_BOAttention.ChangeProvDatesByMot',5);
+    
+    EXCEPTION
+        WHEN EXUPDATEACTIVITYDELAY THEN
+            UT_TRACE.TRACE('exUpdateActivityDelay MO_BOAttention.ChangeProvDatesByMot',5);
+            ERRORS.SETERROR
+                (
+                MO_BOCONSTERROR.CNUERRCALLSERVICE,
+                'GE_BOInt_Workflow.UpdateActivityDelay' || '|' ||
+                TO_CHAR(NUERRORCODE) || ' - ' || SBERRORMESSAGE
+                );
+            RAISE  EX.CONTROLLED_ERROR;
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR MO_BOAttention.ChangeProvDatesByMot',5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('others MO_BOAttention.ChangeProvDatesByMot',5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CHANGEPROVDATESBYMOT;
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGEPROVISIONALDATES
+    (
+        INUMOTIVEID     IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        RCMOTIVEASSO    DAMO_MOTIVE_ASSO.STYMO_MOTIVE_ASSO;
+        RCMOTIVE        DAMO_MOTIVE.STYMO_MOTIVE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.ChangeProvisionalDates['||INUMOTIVEID||']', 1);
+
+        
+        DAMO_MOTIVE.LOCKBYPK(INUMOTIVEID, RCMOTIVE);
+
+        
+        RCMOTIVEASSO := MO_BCMOTIVE_ASSO.FRCMOTIASSOBYMOTIID(INUMOTIVEID);
+
+        IF (RCMOTIVEASSO.MOTIVE_ID_ASSO) IS NOT NULL THEN
+
+            
+            MO_BOATTENTION.CHANGEPROVDATESBYMOT
+            (
+                RCMOTIVE.PACKAGE_ID,
+                RCMOTIVEASSO.MOTIVE_ID_ASSO,
+                RCMOTIVE.PROV_INITIAL_DATE,
+                RCMOTIVE.PROV_FINAL_DATE
+            );
+
+        END IF;
+
+        
+        MO_BOATTENTION.ATTENDMOTIVE(INUMOTIVEID);
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.ChangeProvisionalDates',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CHANGEPROVISIONALDATES;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGESUSPENSIONINIDATEONWF
+        (
+        INUCOMPONENTID      IN MO_COMPONENT.COMPONENT_ID%TYPE,
+        IDTAPLICATIONDATE   IN MO_SUSPENSION.APLICATION_DATE%TYPE,
+        IDTNEWDATEINI       IN DATE,
+        INUUNITTYPEINI      IN NUMBER
+        )
+    IS
+        NUERRORCODE         GE_MESSAGE.MESSAGE_ID%TYPE;
+        SBERRORMESSAGE      VARCHAR2(2000);
+
+        EXUPDATEACTIVITYDELAY   EXCEPTION;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.ChangeSuspensionIniDateOnWf [Componente:' || INUCOMPONENTID || ']'||
+                           '[idtAplicationDate:' || IDTAPLICATIONDATE || '][Tipo Unidad:' || INUUNITTYPEINI || '][Fecha: ' || IDTNEWDATEINI || ']',5);
+        
+        IF (IDTAPLICATIONDATE IS NOT NULL) THEN
+            MO_BOUTILITIES.INITIALIZEOUTPUT(NUERRORCODE,SBERRORMESSAGE);
+            GE_BOINT_WORKFLOW.UPDATEACTIVITYDELAY
+                (
+                INUCOMPONENTID,
+                MO_BOPARAMETER.FNUGETENTITY_COMPONENT,
+                NULL,
+                IDTNEWDATEINI,
+                NUERRORCODE,
+                SBERRORMESSAGE,
+                WF_BOCONSTANTS.CNUW_SUSPEN_ACTIVITY
+                );
+            IF (NUERRORCODE <> MO_BOCONSTANTS.CNUOK) THEN
+                RAISE EXUPDATEACTIVITYDELAY;
+            END IF;
+        END IF;
+        UT_TRACE.TRACE('END MO_BOAttention.ChangeSuspensionIniDateOnWf',5);
+    EXCEPTION
+        WHEN EXUPDATEACTIVITYDELAY THEN
+            UT_TRACE.TRACE('exUpdateActivityDelay MO_BOAttention.ChangeSuspensionIniDateOnWf',5);
+            ERRORS.SETERROR
+                (
+                MO_BOCONSTERROR.CNUERRCALLSERVICE,
+                'GE_BOInt_Workflow.UpdateActivityDelay' || '|' ||
+                TO_CHAR(NUERRORCODE) || ' - ' || SBERRORMESSAGE
+                );
+            RAISE  EX.CONTROLLED_ERROR;
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR MO_BOAttention.ChangeSuspensionIniDateOnWf',5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('others MO_BOAttention.ChangeSuspensionIniDateOnWf',5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CHANGESUSPENSIONINIDATEONWF;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGESUSPENSIONFINDATEONWF
+        (
+        INUMOTIVEID         IN MO_MOTIVE.MOTIVE_ID%TYPE,
+        IDTENDINGDATE       IN MO_SUSPENSION.ENDING_DATE%TYPE,
+        IDTNEWDATEFIN       IN DATE,
+        INUUNITTYPEFIN      IN NUMBER
+        )
+    IS
+        NUERRORCODE         GE_MESSAGE.MESSAGE_ID%TYPE;
+        SBERRORMESSAGE      VARCHAR2(2000);
+
+        EXUPDATEACTIVITYDELAY   EXCEPTION;
+    BEGIN
+        UT_TRACE.TRACE('BEGIN MO_BOAttention.ChangeSuspensionFinDateOnWf [Motivo:'||INUMOTIVEID||'][Tipo Unidad:'||INUUNITTYPEFIN||']'||
+                       '[idtEndingDate:' || IDTENDINGDATE || '][Fecha:' || IDTNEWDATEFIN || ']',5);
+        
+        IF (IDTENDINGDATE IS NOT NULL) THEN
+
+            MO_BOUTILITIES.INITIALIZEOUTPUT(NUERRORCODE,SBERRORMESSAGE);
+            GE_BOINT_WORKFLOW.UPDATEACTIVITYDELAY
+                (
+                INUMOTIVEID,
+                MO_BOPARAMETER.FNUGETENTITY_MOTIVE,
+                NULL,
+                IDTNEWDATEFIN,
+                NUERRORCODE,
+                SBERRORMESSAGE,
+                WF_BOCONSTANTS.CNUW_WAITING_ACTIVITY
+                );
+            IF (NUERRORCODE <> MO_BOCONSTANTS.CNUOK) THEN
+                RAISE EXUPDATEACTIVITYDELAY;
+            END IF;
+        END IF;
+        UT_TRACE.TRACE('END MO_BOAttention.ChangeSuspensionFinDateOnWf',5);
+    EXCEPTION
+        WHEN EXUPDATEACTIVITYDELAY THEN
+            UT_TRACE.TRACE('exUpdateActivityDelay MO_BOAttention.ChangeSuspensionFinDateOnWf',5);
+            ERRORS.SETERROR
+                (
+                MO_BOCONSTERROR.CNUERRCALLSERVICE,
+                'GE_BOInt_Workflow.UpdateActivityDelay' || '|' ||
+                TO_CHAR(NUERRORCODE) || ' - ' || SBERRORMESSAGE
+                );
+            RAISE  EX.CONTROLLED_ERROR;
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR MO_BOAttention.ChangeSuspensionFinDateOnWf',5);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('others MO_BOAttention.ChangeSuspensionFinDateOnWf',5);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CHANGESUSPENSIONFINDATEONWF;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGESUSPENSIONDATESBYCOMP
+    (
+        INUCOMPONENTID      IN MO_COMPONENT.COMPONENT_ID%TYPE,
+        IDTAPLICATIONDATE   IN MO_SUSPENSION.APLICATION_DATE%TYPE,
+        IDTENDINGDATE       IN MO_SUSPENSION.ENDING_DATE%TYPE,
+        IDTNEWDATEINI       IN DATE,
+        IDTNEWDATEFIN       IN DATE,
+        INUUNITTYPEINI      IN NUMBER,
+        INUUNITTYPEFIN      IN NUMBER
+    )
+    IS
+        RCCOMPONENT         DAMO_COMPONENT.STYMO_COMPONENT;
+        RCSUSPENSIONCOMP    DAMO_SUSPENSION_COMP.STYMO_SUSPENSION_COMP;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.ChangeSuspensionDatesByComp',4);
+        
+        DAMO_COMPONENT.LOCKBYPK(INUCOMPONENTID,RCCOMPONENT);
+        
+        DAMO_SUSPENSION_COMP.LOCKBYPK(INUCOMPONENTID,RCSUSPENSIONCOMP);
+
+        
+        IF (IDTAPLICATIONDATE IS NOT NULL) THEN
+            
+            CHANGESUSPENSIONINIDATEONWF
+                (
+                INUCOMPONENTID,
+                IDTAPLICATIONDATE,
+                IDTNEWDATEINI,
+                INUUNITTYPEINI
+                );
+            
+            RCSUSPENSIONCOMP.APLICATION_DATE := IDTAPLICATIONDATE;
+        END IF;
+
+        
+        IF (IDTENDINGDATE IS NOT NULL) THEN
+            
+            CHANGESUSPENSIONFINDATEONWF
+                (
+                RCCOMPONENT.MOTIVE_ID,
+                IDTENDINGDATE,
+                IDTNEWDATEFIN,
+                INUUNITTYPEFIN
+                );
+            
+            RCSUSPENSIONCOMP.ENDING_DATE := IDTENDINGDATE;
+        END IF;
+
+        UT_TRACE.TRACE('Fecha de Inicio a Actualizar en el Componente       : [' || RCSUSPENSIONCOMP.APLICATION_DATE || ']',5);
+        UT_TRACE.TRACE('Fecha de Finalizaci�n a Actualizar en el Componente : [' || RCSUSPENSIONCOMP.ENDING_DATE || ']',5);
+        
+        DAMO_SUSPENSION_COMP.UPDRECORD(RCSUSPENSIONCOMP);
+        UT_TRACE.TRACE('Finaliza Metodo MO_BOAttention.ChangeSuspensionDatesByComp',4);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CHANGESUSPENSIONDATESBYCOMP;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGESUSPENSIONDATESBYMOT
+    (
+        INUMOTIVEID         IN MO_MOTIVE.MOTIVE_ID%TYPE,
+        IDTAPLICATIONDATE   IN MO_SUSPENSION.APLICATION_DATE%TYPE,
+        IDTENDINGDATE       IN MO_SUSPENSION.ENDING_DATE%TYPE,
+        IDTNEWDATEINI       IN DATE,
+        IDTNEWDATEFIN       IN DATE,
+        INUUNITTYPEINI      IN NUMBER,
+        INUUNITTYPEFIN      IN NUMBER
+    )
+    IS
+        CURFCOMPONENTSBYMOTIVE  CONSTANTS.TYREFCURSOR;
+        RCCOMPONENTSBYMOTIVE    DAMO_COMPONENT.STYMO_COMPONENT;
+        RCSUSPENSIONCOMP        DAMO_SUSPENSION_COMP.STYMO_SUSPENSION_COMP;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.ChangeSuspensionDatesByMot',4);
+        
+        CURFCOMPONENTSBYMOTIVE := MO_BCCOMPONENT.FRFCOMPONENTSBYMOTIVE(INUMOTIVEID);
+        FETCH CURFCOMPONENTSBYMOTIVE INTO RCCOMPONENTSBYMOTIVE;
+        WHILE CURFCOMPONENTSBYMOTIVE%FOUND LOOP
+            UT_TRACE.TRACE('Componente a Actualizar : [' || RCCOMPONENTSBYMOTIVE.COMPONENT_ID || ']',5);
+            IF (DAMO_SUSPENSION_COMP.FBLEXIST(RCCOMPONENTSBYMOTIVE.COMPONENT_ID))
+            THEN
+                
+                DAMO_SUSPENSION_COMP.LOCKBYPK(RCCOMPONENTSBYMOTIVE.COMPONENT_ID,RCSUSPENSIONCOMP);
+
+                
+                IF (IDTAPLICATIONDATE IS NOT NULL) THEN
+                    
+                    CHANGESUSPENSIONINIDATEONWF
+                        (
+                        RCCOMPONENTSBYMOTIVE.COMPONENT_ID,
+                        IDTAPLICATIONDATE,
+                        IDTNEWDATEINI,
+                        INUUNITTYPEINI
+                        );
+                    
+                    RCSUSPENSIONCOMP.APLICATION_DATE := IDTAPLICATIONDATE;
+                END IF;
+                
+                IF (IDTENDINGDATE IS NOT NULL) THEN
+                    
+                    RCSUSPENSIONCOMP.ENDING_DATE := IDTENDINGDATE;
+                END IF;
+                UT_TRACE.TRACE('Fecha de Inicio a Actualizar en el Componente       : [' || RCSUSPENSIONCOMP.APLICATION_DATE || ']',5);
+                UT_TRACE.TRACE('Fecha de Finalizaci�n a Actualizar en el Componente : [' || RCSUSPENSIONCOMP.ENDING_DATE || ']',5);
+                
+                DAMO_SUSPENSION_COMP.UPDRECORD(RCSUSPENSIONCOMP);
+            END IF;
+
+            FETCH CURFCOMPONENTSBYMOTIVE INTO RCCOMPONENTSBYMOTIVE;
+        END LOOP;
+        CLOSE CURFCOMPONENTSBYMOTIVE;
+
+        
+        IF (IDTENDINGDATE IS NOT NULL) THEN
+            
+            CHANGESUSPENSIONFINDATEONWF
+                (
+                INUMOTIVEID,
+                IDTENDINGDATE,
+                IDTNEWDATEFIN,
+                INUUNITTYPEFIN
+                );
+        END IF;
+        UT_TRACE.TRACE('Finaliza Metodo MO_BOAttention.ChangeSuspensionDatesByMot',4);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(CURFCOMPONENTSBYMOTIVE);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(CURFCOMPONENTSBYMOTIVE);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CHANGESUSPENSIONDATESBYMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDMOTIVESUSPENSION
+        (
+        INUMOTIVEID         IN MO_MOTIVE.MOTIVE_ID%TYPE,
+        IDTAPLICATIONDATE   IN MO_SUSPENSION.APLICATION_DATE%TYPE,
+        IDTENDINGDATE       IN MO_SUSPENSION.ENDING_DATE%TYPE
+        )
+    IS
+        RCSUSPENSION    DAMO_SUSPENSION.STYMO_SUSPENSION;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.UpdMotiveSuspension',4);
+        UT_TRACE.TRACE('Motivo  : ['||INUMOTIVEID||']',5);
+        UT_TRACE.TRACE('Nueva Fecha de IniciO de Suspensi�n     : ['||IDTAPLICATIONDATE||']',5);
+        UT_TRACE.TRACE('Nueva Fecha de Finalizaci�n de Suspensi�n   : ['||IDTENDINGDATE||']',5);
+        
+        IF (NOT DAMO_SUSPENSION.FBLEXIST(INUMOTIVEID)) THEN
+            UT_TRACE.TRACE('Registro No Existe',5);
+            UT_TRACE.TRACE('Finaliza Metodo MO_BOAttention.UpdMotiveSuspension',4);
+            RETURN;
+        END IF;
+        
+        RCSUSPENSION := DAMO_SUSPENSION.FRCGETRECORD(INUMOTIVEID);
+        IF (IDTAPLICATIONDATE IS NOT NULL) THEN
+            RCSUSPENSION.APLICATION_DATE := IDTAPLICATIONDATE;
+        END IF;
+        IF (IDTENDINGDATE IS NOT NULL) THEN
+            RCSUSPENSION.ENDING_DATE := IDTENDINGDATE;
+        END IF;
+        
+        DAMO_SUSPENSION.UPDRECORD(RCSUSPENSION);
+        UT_TRACE.TRACE('Finaliza Metodo MO_BOAttention.UpdMotiveSuspension',4);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDMOTIVESUSPENSION;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGESUSPENSIONDATES
+    (
+        INUMOTIVEID     IN  MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+        RCMOTIVEASSO        DAMO_MOTIVE_ASSO.STYMO_MOTIVE_ASSO;
+        RCMOTIVEASSOCIATE   DAMO_MOTIVE.STYMO_MOTIVE;
+        RCMOTIVE            DAMO_MOTIVE.STYMO_MOTIVE;
+        RCSUSPENSION        DAMO_SUSPENSION.STYMO_SUSPENSION;
+        DTAPLICATIONDATE    MO_SUSPENSION.APLICATION_DATE%TYPE;
+        DTENDINGDATE        MO_SUSPENSION.ENDING_DATE%TYPE;
+
+        DTNEWDATEINI        MO_MOTIVE.PROV_INITIAL_DATE%TYPE;
+        DTNEWDATEFIN        MO_MOTIVE.PROV_FINAL_DATE%TYPE;
+
+    BEGIN
+        UT_TRACE.TRACE( 'BEGIN MO_BOAttention.ChangeSuspensionDates [inuMotiveId :' || INUMOTIVEID || ']',2);
+
+        
+        RCMOTIVEASSO := MO_BCMOTIVE_ASSO.FRCMOTIASSOBYMOTIID(INUMOTIVEID);
+        
+        DAMO_MOTIVE.LOCKBYPK(INUMOTIVEID,RCMOTIVE);
+        
+        DAMO_MOTIVE.LOCKBYPK(RCMOTIVEASSO.MOTIVE_ID_ASSO,RCMOTIVEASSOCIATE);
+
+        
+        RCSUSPENSION := DAMO_SUSPENSION.FRCGETRECORD(INUMOTIVEID);
+        DTAPLICATIONDATE := RCSUSPENSION.APLICATION_DATE;
+        UT_TRACE.TRACE('Nueva Fecha de Inicio de Suspensi�n         : ['||DTAPLICATIONDATE||']',3);
+        DTENDINGDATE := RCSUSPENSION.ENDING_DATE;
+        UT_TRACE.TRACE('Nueva Fecha de Finalizaci�n de Suspensi�n   : ['||DTENDINGDATE||']',3);
+
+        IF (DTAPLICATIONDATE IS NOT NULL) THEN
+            
+            DTNEWDATEINI := DTAPLICATIONDATE -
+                            (
+                                PS_BOPRODMOTIPARAM.FNUGETPROVISIONALWAIT
+                                (
+                                    DAMO_PACKAGES.FSBGETTAG_NAME(RCMOTIVEASSOCIATE.PACKAGE_ID),
+                                    RCMOTIVEASSOCIATE.TAG_NAME
+                                ) * UT_DATE.CNUFACTOR_MINUTE_DATE
+                            );
+            UT_TRACE.TRACE('Nueva Fecha de Inicio   : [' || DTNEWDATEINI || ']',3);
+        END IF;
+
+        IF (DTENDINGDATE IS NOT NULL) THEN
+            
+            DTNEWDATEFIN := DTENDINGDATE -
+                            (
+                                PS_BOPRODMOTIPARAM.FNUGETPROVISIONALWAIT
+                                (
+                                    DAMO_PACKAGES.FSBGETTAG_NAME(RCMOTIVEASSOCIATE.PACKAGE_ID),
+                                    RCMOTIVEASSOCIATE.TAG_NAME
+                                ) * UT_DATE.CNUFACTOR_MINUTE_DATE
+                            );
+            UT_TRACE.TRACE('Nueva Fecha de Finalizaci�n    : [' || DTNEWDATEFIN || ']',3);
+        END IF;
+
+        IF (RCMOTIVEASSO.COMPONENT_ID_ASSO IS NOT NULL) THEN
+            UT_TRACE.TRACE('Inicio Actualizaci�n por Componente: [' || RCMOTIVEASSO.COMPONENT_ID_ASSO || ']',3);
+            
+            DAMO_SUSPENSION_COMP.ACCKEY(RCMOTIVEASSO.COMPONENT_ID_ASSO);
+            
+            CHANGESUSPENSIONDATESBYCOMP
+                (
+                RCMOTIVEASSO.COMPONENT_ID_ASSO,
+                DTAPLICATIONDATE,
+                DTENDINGDATE,
+                DTNEWDATEINI,
+                DTNEWDATEFIN,
+                NULL,
+                NULL
+                );
+        ELSE
+            UT_TRACE.TRACE('Inicio Actualizaci�n por Motivo: [' || RCMOTIVEASSO.MOTIVE_ID_ASSO || ']',3);
+            
+            CHANGESUSPENSIONDATESBYMOT
+                (
+                RCMOTIVEASSO.MOTIVE_ID_ASSO,
+                DTAPLICATIONDATE,
+                DTENDINGDATE,
+                DTNEWDATEINI,
+                DTNEWDATEFIN,
+                NULL,
+                NULL
+                );
+            
+            UPDMOTIVESUSPENSION(RCMOTIVEASSO.MOTIVE_ID_ASSO,DTAPLICATIONDATE,DTENDINGDATE);
+        END IF;
+        
+        UT_TRACE.TRACE('Inici� La Atenci�n del Motivo de Cambio de Fecha de Suspensi�n',1);
+        MO_BOATTENTION.ATTENDMOTIVE
+        (
+            INUMOTIVEID,
+            MO_BOTRANSTATECONS.CNUACTION_ATTEND_MOTV
+        );
+
+        UT_TRACE.TRACE('END MO_BOAttention.ChangeSuspensionDates',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('CONTROLLED_ERROR MO_BOAttention.ChangeSuspensionDates',1);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('OTHERS MO_BOAttention.ChangeSuspensionDates',1);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CHANGESUSPENSIONDATES;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ANNULCOMPSNOFEASBYTYPANDMOT
+    (
+        INUMOTIVEID             IN    MO_COMPONENT.PACKAGE_ID%TYPE,
+        INUCOMPONENTTYPEID      IN    MO_COMPONENT.COMPONENT_TYPE_ID%TYPE,
+        INUCAUSALID             IN    CC_CAUSAL.CAUSAL_ID%TYPE,
+        ONUERRORCODEANNUL       OUT   GE_MESSAGE.MESSAGE_ID%TYPE,
+    	OSBERRORMESSAGEANNUL    OUT   VARCHAR2
+    )
+    IS
+        NUINDEX             BINARY_INTEGER;
+        RCCOMPONENT         DAMO_COMPONENT.STYMO_COMPONENT;
+        TBCOMPONENT         DAMO_COMPONENT.TYTBMO_COMPONENT;
+
+        
+        PROCEDURE CLOSECURSORS
+        IS
+        BEGIN
+            IF  (MO_BCCOMPONENT.CUCOMPSBYMOTIANDTYPE%ISOPEN) THEN
+                CLOSE MO_BCCOMPONENT.CUCOMPSBYMOTIANDTYPE;
+            END IF;
+        END CLOSECURSORS;
+
+    BEGIN
+        UT_TRACE.TRACE('Begin MO_BOAttention.AnnulCompsNoFeasByTypAndMot', 5);
+        UT_TRACE.TRACE('MotiveID[' || INUMOTIVEID || ']', 10);
+        UT_TRACE.TRACE('ComponentTypeID[' || INUCOMPONENTTYPEID || ']', 10);
+        UT_TRACE.TRACE('CausalID[' || INUCAUSALID || ']', 10);
+
+        CLOSECURSORS;
+
+        
+        GE_BOUTILITIES.INITIALIZEOUTPUT(ONUERRORCODEANNUL, OSBERRORMESSAGEANNUL);
+
+        
+        OPEN  MO_BCCOMPONENT.CUCOMPSBYMOTIANDTYPE(INUMOTIVEID, INUCOMPONENTTYPEID);
+        FETCH MO_BCCOMPONENT.CUCOMPSBYMOTIANDTYPE BULK COLLECT INTO TBCOMPONENT;
+        CLOSE MO_BCCOMPONENT.CUCOMPSBYMOTIANDTYPE;
+
+        
+        NUINDEX := TBCOMPONENT.FIRST;
+
+        WHILE (NUINDEX IS NOT NULL) LOOP
+            
+            RCCOMPONENT := TBCOMPONENT(NUINDEX);
+
+            
+            RCCOMPONENT.MOTIVE_STATUS_ID := DAMO_COMPONENT.FNUGETMOTIVE_STATUS_ID(RCCOMPONENT.COMPONENT_ID);
+
+            
+                
+            IF  (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCCOMPONENT.MOTIVE_STATUS_ID)) AND
+                
+                (RCCOMPONENT.MOTIVE_STATUS_ID != MO_BOSTATUSPARAMETER.FNUGETSTATUS_IN_ANNUL_COMP) AND
+                
+                (NOT MO_BOPROVISIONING.FBLISVALIDSERVSUPL(RCCOMPONENT.COMPONENT_ID))
+            THEN
+
+                BEGIN
+                    
+                    CC_BOANULASOLICITUD.ANULASCCOMPONENTE
+                    (
+                        RCCOMPONENT.COMPONENT_ID,
+                        INUCAUSALID,
+                        NULL
+                    );
+                EXCEPTION
+                    WHEN EX.CONTROLLED_ERROR  THEN
+                    ERRORS.GETERROR(ONUERRORCODEANNUL,OSBERRORMESSAGEANNUL);
+
+                    WHEN OTHERS THEN
+                    ERRORS.SETERROR;
+    	            ERRORS.GETERROR(ONUERRORCODEANNUL, OSBERRORMESSAGEANNUL);
+                END;
+
+            END IF;
+
+            
+            NUINDEX := TBCOMPONENT.NEXT(NUINDEX);
+        END LOOP;
+
+        UT_TRACE.TRACE('End MO_BOAttention.AnnulCompsNoFeasByTypAndMot - OK', 5);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            CLOSECURSORS;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            CLOSECURSORS;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ANNULCOMPSNOFEASBYTYPANDMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDADDRESSANDPREMISEMOT
+        (
+        INUMOTIVEID IN MO_MOTIVE.MOTIVE_ID%TYPE,
+        IRCADDRESS  IN DAMO_ADDRESS.STYMO_ADDRESS
+        )
+    IS
+        RCMOTIVE        DAMO_MOTIVE.STYMO_MOTIVE;
+        RCADDRESS       DAMO_ADDRESS.STYMO_ADDRESS;
+        TBSTATUS        UT_STRING.TYTB_STRING;
+        NUCOUNTER       NUMBER;
+        BLSTATUSISVALID BOOLEAN := FALSE;
+
+        EXMOTIVESTATUSNOVALID   EXCEPTION;
+
+        PROCEDURE INSADDRESSMOT
+            (
+            INUMOTIVEID IN MO_MOTIVE.MOTIVE_ID%TYPE,
+            IRCADDRESS  IN DAMO_ADDRESS.STYMO_ADDRESS
+            )
+        IS
+            RCADDRESS   DAMO_ADDRESS.STYMO_ADDRESS;
+        BEGIN
+            UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.InsAddressMot',9);
+
+            
+            RCADDRESS.ADDRESS_ID := MO_BOSEQUENCES.FNUGETADDRESSID;
+            RCADDRESS.MOTIVE_ID := INUMOTIVEID;
+            RCADDRESS.ADDRESS := IRCADDRESS.ADDRESS;
+            RCADDRESS.PARSER_ADDRESS_ID := IRCADDRESS.PARSER_ADDRESS_ID;
+            RCADDRESS.GEOGRAP_LOCATION_ID := IRCADDRESS.GEOGRAP_LOCATION_ID;
+            RCADDRESS.ADDRESS_TYPE_ID := IRCADDRESS.ADDRESS_TYPE_ID;
+            RCADDRESS.PARSER_ADDR_ALTER_ID := IRCADDRESS.PARSER_ADDR_ALTER_ID;
+            RCADDRESS.AUX_ADDRESS := IRCADDRESS.AUX_ADDRESS;
+            RCADDRESS.AUX_PHONE := IRCADDRESS.AUX_PHONE;
+            RCADDRESS.IS_ADDRESS_MAIN := IRCADDRESS.IS_ADDRESS_MAIN;
+
+            
+            DAMO_ADDRESS.INSRECORD(RCADDRESS);
+
+            UT_TRACE.TRACE('Finaliza Metodo MO_BOAttention.InsAddressMot',9);
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END;
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        PROCEDURE UPDADDRESSMOT
+            (
+            INUMOTIVEID     IN MO_MOTIVE.MOTIVE_ID%TYPE,
+            IRCNEWADDRESS   IN DAMO_ADDRESS.STYMO_ADDRESS,
+            IRCOLDADDRESS   IN DAMO_ADDRESS.STYMO_ADDRESS
+            )
+        IS
+            RCADDRESS   DAMO_ADDRESS.STYMO_ADDRESS;
+        BEGIN
+            UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.UpdAddressMot',9);
+
+            RCADDRESS := IRCOLDADDRESS;
+
+            
+            RCADDRESS.ADDRESS := IRCNEWADDRESS.ADDRESS;
+            RCADDRESS.PARSER_ADDRESS_ID := IRCNEWADDRESS.PARSER_ADDRESS_ID;
+            RCADDRESS.GEOGRAP_LOCATION_ID := IRCNEWADDRESS.GEOGRAP_LOCATION_ID;
+            RCADDRESS.ADDRESS_TYPE_ID := IRCNEWADDRESS.ADDRESS_TYPE_ID;
+            RCADDRESS.PARSER_ADDR_ALTER_ID := IRCNEWADDRESS.PARSER_ADDR_ALTER_ID;
+            RCADDRESS.AUX_ADDRESS := IRCNEWADDRESS.AUX_ADDRESS;
+            RCADDRESS.AUX_PHONE := IRCNEWADDRESS.AUX_PHONE;
+            RCADDRESS.IS_ADDRESS_MAIN := IRCNEWADDRESS.IS_ADDRESS_MAIN;
+
+            
+            DAMO_ADDRESS.UPDRECORD(RCADDRESS);
+
+            UT_TRACE.TRACE('Finaliza Metodo MO_BOAttention.UpdAddressMot',9);
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END;
+
+    BEGIN
+        UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.UpdAddressAndPremiseMot',7);
+
+        
+        DAMO_MOTIVE.LOCKBYPK(INUMOTIVEID,RCMOTIVE);
+
+        
+        IF (IRCADDRESS.ADDRESS_ID IS NOT NULL) THEN
+
+            
+            RCMOTIVE.GEOGRAP_LOCATION_ID := IRCADDRESS.GEOGRAP_LOCATION_ID;
+
+            
+            RCADDRESS := MO_BOADDRESS.FRCADDRESSBYTYPE(INUMOTIVEID);
+
+            
+            IF (RCADDRESS.ADDRESS_ID IS NULL) THEN
+
+                
+                INSADDRESSMOT(INUMOTIVEID,IRCADDRESS);
+            ELSE
+
+                
+                UPDADDRESSMOT(INUMOTIVEID,IRCADDRESS,RCADDRESS);
+            END IF;
+        END IF;
+
+        UT_TRACE.TRACE('Nueva Ubicaci�n Geogr�fica Motivo:['||RCMOTIVE.GEOGRAP_LOCATION_ID||']',8);
+        
+        DAMO_MOTIVE.UPDRECORD(RCMOTIVE);
+
+        UT_TRACE.TRACE('Finaliza Metodo MO_BOCnf_Attention.UpdAddressAndPremiseMot',7);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCHANGEADDRESSMOTIVE
+        (
+        INUMOTIVEID IN NUMBER
+        )
+    IS
+        RCNEWADDRESS    DAMO_ADDRESS.STYMO_ADDRESS;
+        RCMOTIVEASSO    DAMO_MOTIVE_ASSO.STYMO_MOTIVE_ASSO;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.AttendChangeAddressMotive. Motivo:['||INUMOTIVEID||']',5);
+
+        
+        DAMO_MOTIVE.ACCKEY(INUMOTIVEID);
+
+        
+        RCNEWADDRESS := MO_BOADDRESS.FRCADDRESSBYTYPE(INUMOTIVEID);
+
+        
+        IF RCNEWADDRESS.ADDRESS_ID IS NULL THEN
+            UT_TRACE.TRACE('No Existe ni Direcci�n',6);
+            RETURN;
+        END IF;
+
+        
+        RCMOTIVEASSO := MO_BCMOTIVE_ASSO.FRCMOTIASSOBYMOTIID(INUMOTIVEID);
+        UT_TRACE.TRACE('Paq:['||RCMOTIVEASSO.CUS_CAR_REQ_NUM_ASSO||']Mot:['||RCMOTIVEASSO.MOTIVE_ID_ASSO||']Comp:['||RCMOTIVEASSO.COMPONENT_ID_ASSO||']',6);
+
+        
+        UPDADDRESSANDPREMISEMOT(RCMOTIVEASSO.MOTIVE_ID_ASSO,RCNEWADDRESS);
+
+        UT_TRACE.TRACE('Finaliza Metodo MO_BOAttention.AttendChangeAddressMotive',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDCHANGEADDRESSMOTIVE;
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDATESTRATUMCOMP
+        (
+        INUMOTIVEID             IN MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUCATEGORYID           IN MO_MOTIVE.CATEGORY_ID%TYPE,
+        INUSUBCATEGORYID        IN MO_MOTIVE.SUBCATEGORY_ID%TYPE
+         )
+    IS
+        CURFCOMPONENT   CONSTANTS.TYREFCURSOR;
+        RCCOMPONENT     DAMO_COMPONENT.STYMO_COMPONENT;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.UpdateStratumComp',10);
+
+        
+        CURFCOMPONENT := MO_BCCOMPONENT.FRFCOMPONENTSBYMOTIVE(INUMOTIVEID);
+        LOOP
+            FETCH CURFCOMPONENT INTO RCCOMPONENT;
+            EXIT WHEN CURFCOMPONENT%NOTFOUND;
+            UT_TRACE.TRACE('Componente:['||RCCOMPONENT.COMPONENT_ID||']',12);
+
+            RCCOMPONENT.CATEGORY_ID :=  INUCATEGORYID;
+            RCCOMPONENT.SUBCATEGORY_ID :=  INUSUBCATEGORYID;
+            DAMO_COMPONENT.UPDRECORD(RCCOMPONENT);
+
+        END LOOP;
+        CLOSE CURFCOMPONENT;
+
+        UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.UpdateStratumComp',10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(CURFCOMPONENT);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(CURFCOMPONENT);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDATESTRATUMCOMP;
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE MOTIVECHANGECATEGORY
+        (
+        INUMOTIVEID             IN MO_MOTIVE.MOTIVE_ID%TYPE,
+        INUCATEGORYID           IN MO_MOTIVE.CATEGORY_ID%TYPE,
+        INUSUBCATEGORYID        IN MO_MOTIVE.SUBCATEGORY_ID%TYPE
+        )
+    IS
+        RCMOTIVE        DAMO_MOTIVE.STYMO_MOTIVE;
+        TBSTATUS        UT_STRING.TYTB_STRING;
+        NUCOUNTER       NUMBER;
+        BLSTATUSISVALID BOOLEAN := FALSE;
+
+        EXMOTIVESTATUSNOVALID   EXCEPTION;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.MotiveChangeCategory',7);
+        UT_TRACE.TRACE('Motivo:['||INUMOTIVEID||']Categoria:['||INUCATEGORYID||']Subcategoria:['||INUSUBCATEGORYID||']',8);
+
+        
+        DAMO_MOTIVE.LOCKBYPK(INUMOTIVEID,RCMOTIVE);
+
+        
+        RCMOTIVE.CATEGORY_ID := INUCATEGORYID;
+        RCMOTIVE.SUBCATEGORY_ID := INUSUBCATEGORYID;
+
+        DAMO_MOTIVE.UPDRECORD(RCMOTIVE);
+
+        
+        UPDATESTRATUMCOMP(INUMOTIVEID,INUCATEGORYID,INUSUBCATEGORYID);
+
+        UT_TRACE.TRACE('Finaliza Metodo MO_BOAttention.MotiveChangeCategory',7);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END MOTIVECHANGECATEGORY;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ATTENDCHANGECATEGORY
+        (
+        INUMOTIVEID IN NUMBER
+        )
+   IS
+        RCMOTIVE            DAMO_MOTIVE.STYMO_MOTIVE;
+        CURFMOTIVE          CONSTANTS.TYREFCURSOR;
+        RCMOTIVEASSO        DAMO_MOTIVE_ASSO.STYMO_MOTIVE_ASSO;
+        NUCATEGORIAID       MO_MOTIVE.CATEGORY_ID%TYPE;
+        NUSUBCATEGORIAID    MO_MOTIVE.SUBCATEGORY_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('Inicia Metodo MO_BOAttention.AttendChangeCategory. Motivo:['||INUMOTIVEID||']',5);
+
+        
+        RCMOTIVE := DAMO_MOTIVE.FRCGETRECORD(INUMOTIVEID);
+        NUCATEGORIAID := RCMOTIVE.CATEGORY_ID;
+        NUSUBCATEGORIAID := RCMOTIVE.SUBCATEGORY_ID;
+
+        
+        RCMOTIVEASSO := MO_BCMOTIVE_ASSO.FRCMOTIASSOBYMOTIID(INUMOTIVEID);
+        UT_TRACE.TRACE('Paq:['||RCMOTIVEASSO.CUS_CAR_REQ_NUM_ASSO||']Mot:['||RCMOTIVEASSO.MOTIVE_ID_ASSO||']Comp:['||RCMOTIVEASSO.COMPONENT_ID_ASSO||']',6);
+
+        IF (RCMOTIVEASSO.MOTIVE_ID_ASSO IS NOT NULL) THEN
+
+            
+            MOTIVECHANGECATEGORY(RCMOTIVEASSO.MOTIVE_ID_ASSO,NUCATEGORIAID,NUSUBCATEGORIAID);
+        ELSE
+
+            
+            CURFMOTIVE := MO_BCMOTIVE.FRFMOTIVESBYCUSTCAREREQNUM(RCMOTIVEASSO.CUS_CAR_REQ_NUM_ASSO);
+            FETCH CURFMOTIVE INTO RCMOTIVE;
+            WHILE CURFMOTIVE%FOUND LOOP
+
+                
+                MOTIVECHANGECATEGORY(RCMOTIVE.MOTIVE_ID,NUCATEGORIAID,NUSUBCATEGORIAID);
+
+                FETCH CURFMOTIVE INTO RCMOTIVE;
+            END LOOP;
+            CLOSE CURFMOTIVE;
+        END IF;
+
+        UT_TRACE.TRACE('Finaliza Metodo MO_BOAttention.AttendChangeCategory',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(CURFMOTIVE);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            GE_BOGENERALUTIL.CLOSE_REFCURSOR(CURFMOTIVE);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDCHANGECATEGORY;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	PROCEDURE CHANGEUSESTRATUM (
+        INUPACKAGEID IN MO_PACKAGES.PACKAGE_ID%TYPE
+    )
+	IS
+		
+		NUPRODUCTID                 PR_PRODUCT.PRODUCT_ID%TYPE;
+		NUCATEGORYID                MO_MOTIVE.CATEGORY_ID%TYPE;
+		NUSUBCATEGID                MO_MOTIVE.SUBCATEGORY_ID%TYPE;
+		CURFGETRECORDSBYPACKAGEID   CONSTANTS.TYREFCURSOR;
+        RCGETRECORDSBYPACKAGEID     DAMO_BILL_DATA_CHANGE.STYMO_BILL_DATA_CHANGE;
+
+
+    BEGIN
+        UT_TRACE.TRACE('Inicia MO_BOAttention.ChangeUseStratum',5);
+
+          
+        NUPRODUCTID := MO_BOPACKAGES.FNUFINDPRODUCTID(INUPACKAGEID);
+
+        
+        CURFGETRECORDSBYPACKAGEID := MO_BCBILL_DATA_CHANGE.FRFGETRECORDSBYPACKAGEID(INUPACKAGEID);
+        FETCH CURFGETRECORDSBYPACKAGEID INTO RCGETRECORDSBYPACKAGEID;
+        WHILE CURFGETRECORDSBYPACKAGEID%FOUND LOOP
+            UT_TRACE.TRACE('Id Registro:['||RCGETRECORDSBYPACKAGEID.BILL_DATA_CHANGE_ID||']',6);
+
+            NUCATEGORYID    :=  RCGETRECORDSBYPACKAGEID.NEW_CATEGORY_ID;
+            NUSUBCATEGID    :=  RCGETRECORDSBYPACKAGEID.NEW_SUBCATEGORY_ID;
+
+            FETCH CURFGETRECORDSBYPACKAGEID INTO RCGETRECORDSBYPACKAGEID;
+        END LOOP;
+        CLOSE CURFGETRECORDSBYPACKAGEID;
+
+        PR_BOPRODUCT.UPDSOCIOECONOSTRAT
+        (
+            INUPRODUCTID     => NUPRODUCTID,
+            INUCATEGORYID    => NUCATEGORYID,
+            INUSUBCATEGORYID => NUSUBCATEGID,
+            INUPACKAGEID     => INUPACKAGEID,
+            IBOVALEQUALS     => TRUE
+        );
+
+        
+        MO_BOATTENTION.ATTENDPACKAGE(INUPACKAGEID);
+
+        UT_TRACE.TRACE('Finaliza MO_BOAttention.ChangeUseStratum',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+           RAISE EX.CONTROLLED_ERROR;
+    END CHANGEUSESTRATUM;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDSERIALITEM
+    (
+        INUIDITEMSERIE IN GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE
+    )
+    IS
+
+        RCITEM              DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+    BEGIN
+        UT_TRACE.TRACE('Inicia UpdSerialItem', 5);
+
+        UT_TRACE.TRACE('inuIdItemSerie'||INUIDITEMSERIE, 7);
+
+        
+        DAGE_ITEMS_SERIADO.GETRECORD(INUIDITEMSERIE, RCITEM);
+
+        
+        RCITEM.FECHA_GARANTIA := NULL;
+
+        
+        RCITEM.FECHA_SALIDA := NULL;
+
+        
+        RCITEM.OPERATING_UNIT_ID := NULL;
+
+        
+        RCITEM.SUBSCRIBER_ID := NULL;
+
+        
+        RCITEM.ID_ITEMS_ESTADO_INV := GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE;
+
+        
+        DAGE_ITEMS_SERIADO.UPDRECORD(RCITEM);
+
+        
+        IF_BOPREVMAINTENANCE.UPDATESERIALITEM(RCITEM.ID_ITEMS_SERIADO, RCITEM.ITEMS_ID, NULL);
+
+        UT_TRACE.TRACE('Finaliza UpdSerialItem',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDSERIALITEM;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDINVENTORYBYMOTIVE
+    (
+        INUMOTIVEID     IN MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia el metodo MO_BOAttention.UpdInventoryByMotive inuMotiveID['||INUMOTIVEID||']',1);
+
+        CC_BOPRODMGTEQUIPMENT.UPDINVENTORYBYMOTIVE(INUMOTIVEID);
+
+        UT_TRACE.TRACE('Inicia el metodo MO_BOAttention.UpdInventoryByMotive ',1);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDINVENTORYBYMOTIVE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE UPDLOWINVENTORYBYMOT
+    (
+        INUMOTIVEID     IN MO_MOTIVE.MOTIVE_ID%TYPE
+    )
+    IS
+    BEGIN
+        UT_TRACE.TRACE('Inicia el metodo MO_BOAttention.UpdLowInventoryByMot inuMotiveID['||INUMOTIVEID||']',5);
+
+        CC_BOPRODMGTEQUIPMENT.UPDLOWINVENTORYBYMOT(INUMOTIVEID);
+
+        UT_TRACE.TRACE('Finaliza el metodo MO_BOAttention.UpdLowInventoryByMot',5);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END UPDLOWINVENTORYBYMOT;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE  ATTENDASSOREQUEST
+	(
+        INUPACKAGEID     IN    MO_PACKAGES_ASSO.PACKAGE_ID_ASSO%TYPE,
+        ISBTAGNAME       IN    MO_PACKAGES.TAG_NAME%TYPE
+	)
+    IS
+        
+        TBPACKAGESASSO        DAMO_PACKAGES_ASSO.TYTBMO_PACKAGES_ASSO;
+        
+        NUINDEXPACKAGEASSO    NUMBER;
+        
+        RCPACKAGES            DAMO_PACKAGES.STYMO_PACKAGES;
+    BEGIN
+        UT_TRACE.TRACE('Inicio MO_BOAttention.AttendAssoRequest',10);
+        UT_TRACE.TRACE('Solicitud Base['||INUPACKAGEID||'] TagName['||ISBTAGNAME||']',12);
+
+        MO_BOPACKAGES_ASSO.VALIDATEDATA(INUPACKAGEID,ISBTAGNAME,MO_BOPACKAGES_ASSO.CNUPACK_REQ);
+        
+        TBPACKAGESASSO:= MO_BCPACKAGES_ASSO.FTBPACKAGESBYPACKASSO(INUPACKAGEID);
+
+        
+        NUINDEXPACKAGEASSO := TBPACKAGESASSO.FIRST;
+        WHILE (NUINDEXPACKAGEASSO IS NOT NULL) LOOP
+            
+            RCPACKAGES := DAMO_PACKAGES.FRCGETRECORD (TBPACKAGESASSO(NUINDEXPACKAGEASSO).PACKAGE_ID);
+            UT_TRACE.TRACE('Solicitud Asociada['||RCPACKAGES.PACKAGE_ID||']',12);
+
+            IF (RCPACKAGES.TAG_NAME = ISBTAGNAME) AND
+               (NOT PS_BOMOTIVESTATUS.FBLISFINALSTATUS(RCPACKAGES.MOTIVE_STATUS_ID)) THEN
+               CF_BOACTIONS.ATTENDREQUEST(RCPACKAGES.PACKAGE_ID);
+               UT_TRACE.TRACE('MO_BOAttention.AttendAssoRequest. Solicitud atendida: '||RCPACKAGES.PACKAGE_ID,10);
+            END IF;
+            
+            NUINDEXPACKAGEASSO := TBPACKAGESASSO.NEXT(NUINDEXPACKAGEASSO);
+        END LOOP;
+        UT_TRACE.TRACE('Fin MO_BOAttention.AttendAssoRequest sin solicitud asociada',10);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ATTENDASSOREQUEST;
+
+END MO_BOATTENTION;

@@ -1,0 +1,2020 @@
+PACKAGE BODY or_boItemsMove
+IS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    CSBVERSION  CONSTANT VARCHAR2(250)  := 'SAO423380';
+    
+    CNULOCK_NOWAIT      CONSTANT NUMBER(1) := 1;
+    
+	
+    CNUINVALIDTRANSITDOC    CONSTANT    GE_MESSAGE.MESSAGE_ID%TYPE := 143924;
+    CNUINVALIDAMOUNT        CONSTANT    GE_MESSAGE.MESSAGE_ID%TYPE := 143923;
+
+    
+    CNUERR_114643  CONSTANT NUMBER(6) := 114643;
+    
+    CNUERR_114653  CONSTANT NUMBER(6) := 114653 ;
+
+    
+    CNUERR_114655  CONSTANT NUMBER(6) := 114655 ;
+
+    
+    CNUERR_114654   CONSTANT NUMBER(6) := 114654 ;
+
+    
+    CNUERRITEMSEROPEUNI CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 7614;
+
+    
+    CNUNOACTIVBYOPERUNIT CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 901171;
+    
+    
+    CNUREQUIRED_FIELD       CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 116082;
+    
+    
+    CNUINVALID_FIELD       CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 14982;
+
+    
+    CNUINVALID_CLASS        CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143788;
+
+    
+    CNUNOMEASURABLETASKTYPE        CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 901431;
+
+
+    
+    
+    GNUBALAMOVEID       OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE;
+    
+    GNUIDITEMSDOC       OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO%TYPE;
+    GNUIDITEMSSERIADO   OR_UNI_ITEM_BALA_MOV.ID_ITEMS_SERIADO%TYPE;
+    GSBESTADOINV        OR_UNI_ITEM_BALA_MOV.ID_ITEMS_ESTADO_INV%TYPE;
+    GNUVALORVENTA       OR_UNI_ITEM_BALA_MOV.VALOR_VENTA%TYPE;
+    GNUUNIDADDESTINO    OR_UNI_ITEM_BALA_MOV.TARGET_OPER_UNIT_ID%TYPE;
+    GNUINITSTATUS       OR_UNI_ITEM_BALA_MOV.INIT_INV_STAT_ITEMS%TYPE;
+    GTBDOCSLEGALIZE     UT_STRING.TYTB_STRING;
+
+    
+
+	
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+	
+	
+	
+	
+	FUNCTION FNUGETBALAMOVEID
+	RETURN NUMBER
+    IS
+    BEGIN
+        RETURN GNUBALAMOVEID;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+	
+	
+	
+    PROCEDURE SETBALAMOVEID (INUBALAMOVEID  IN OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE)
+    IS
+    BEGIN
+        GNUBALAMOVEID := INUBALAMOVEID;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+
+
+
+    PROCEDURE UPDSUPPORTDOC (
+                                INUBALAMOVEID  IN OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE,
+                                ISBDOC         IN OR_UNI_ITEM_BALA_MOV.SUPPORT_DOCUMENT%TYPE
+                            )
+    IS
+    BEGIN
+        IF  ISBDOC IS NOT NULL THEN
+            DAOR_UNI_ITEM_BALA_MOV.UPDSUPPORT_DOCUMENT(INUBALAMOVEID,ISBDOC);
+        END IF;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    PROCEDURE ADDORRETIREITEMS
+    (
+        INUOPERATINGUNITID IN OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID%TYPE,
+        INUITEMSID         IN OR_UNI_ITEM_BALA_MOV.ITEMS_ID%TYPE,
+        INUQUANTITY        IN OR_UNI_ITEM_BALA_MOV.AMOUNT%TYPE,
+        INUPRICEQUANTITY   IN OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE
+    )
+    IS
+        NUBALANCE         OR_OPE_UNI_ITEM_BALA.BALANCE%TYPE;
+        NUBALANCEPRICE    OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE;
+        NUPRICEQUANTITY   OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE;
+        
+    BEGIN
+        UT_TRACE.TRACE('[or_boItemsMove.AddOrRetireItems] INICIO',3);
+
+        IF INUQUANTITY < 0 THEN
+            OR_BOOPEUNIITEMBALA .GETDATAITEMSFORRETIRE
+            (
+                INUOPERATINGUNITID ,
+                INUITEMSID         ,
+                ABS(INUQUANTITY) , 
+                INUPRICEQUANTITY   ,
+                NUBALANCE          ,
+                NUBALANCEPRICE     ,
+                NUPRICEQUANTITY
+            );
+            
+            
+
+
+
+
+
+
+
+            
+            IF NUBALANCE = 0 THEN
+                GTBTEMPVALUE(INUITEMSID).ITEMS_ID := INUITEMSID;
+                GTBTEMPVALUE(INUITEMSID).TOTAL_VALUE := NUPRICEQUANTITY / ABS(INUQUANTITY);
+            END IF;
+            
+            
+            
+        ELSE
+            OR_BOOPEUNIITEMBALA.GETDATAITEMSFORADD
+            (
+                INUOPERATINGUNITID ,
+                INUITEMSID,
+                INUQUANTITY,
+                INUPRICEQUANTITY,
+                NUBALANCE,
+                NUBALANCEPRICE
+            );
+        END IF;
+        
+
+        OR_BOOPEUNIITEMBALA.SETBALANANDPRICETOOPEUNIITEM
+        (
+            INUOPERATINGUNITID,
+            INUITEMSID,
+            NUBALANCE,
+            NUBALANCEPRICE
+        );
+
+
+        UT_TRACE.TRACE('[or_boItemsMove.AddOrRetireItems] FIN',3);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    PROCEDURE VALIDNULLDATAOFPROCESS
+    (
+        INUOPERATINGUNITID IN OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID%TYPE,
+        INUITEMSID         IN OR_UNI_ITEM_BALA_MOV.ITEMS_ID%TYPE,
+        INUQUANTITY        IN OR_UNI_ITEM_BALA_MOV.AMOUNT%TYPE,
+        INUPRICEQUANTITY   IN OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE
+    )
+    IS
+        NUBALANCE         OR_OPE_UNI_ITEM_BALA.BALANCE%TYPE;
+        NUBALANCEPRICE    OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE;
+        NUPRICEQUANTITY   OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE;
+
+    BEGIN
+        UT_TRACE.TRACE('[or_boItemsMove.ValidNullDataOfProcess] INICIO',3);
+
+        IF INUOPERATINGUNITID IS NULL THEN
+            
+            GE_BOERRORS.SETERRORCODE(CNUERR_114643);
+        END IF;
+
+
+        IF INUITEMSID IS NULL THEN
+            
+            GE_BOERRORS.SETERRORCODE(CNUERR_114653);
+        END IF;
+
+
+        IF INUQUANTITY IS NULL THEN
+            
+            GE_BOERRORS.SETERRORCODE(CNUERR_114655); 
+
+        END IF;
+
+        IF INUPRICEQUANTITY IS NULL OR INUPRICEQUANTITY < 0 THEN
+            
+            GE_BOERRORS.SETERRORCODE(CNUERR_114654);
+        END IF;
+
+       UT_TRACE.TRACE('[or_boItemsMove.ValidNullDataOfProcess] FIN',3);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ITEMMOVEOPERUNIT
+    (
+        INUOPERATINGUNITID IN OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID%TYPE,
+        INUITEMSID         IN OR_UNI_ITEM_BALA_MOV.ITEMS_ID%TYPE,
+        INUQUANTITY        IN OR_UNI_ITEM_BALA_MOV.AMOUNT%TYPE,
+        INUPRICEQUANTITY   IN OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE,
+        INUITEMMOVEMECAUSID IN  OR_UNI_ITEM_BALA_MOV.ITEM_MOVEME_CAUS_ID%TYPE
+    )
+    IS
+        NUBALANCE         OR_OPE_UNI_ITEM_BALA.BALANCE%TYPE;
+        NUBALANCEPRICE    OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE;
+        NUPRICEQUANTITY   OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE;
+
+    BEGIN
+        UT_TRACE.TRACE('[or_boItemsMove.ItemMoveOperUnit] INICIO',3);
+
+        
+        OR_BOITEMS.INSERTINTEMTAB(INUITEMMOVEMECAUSID);
+
+        
+        IF (DAOR_OPERATING_UNIT.FNUGETOPER_UNIT_CLASSIF_ID(INUOPERATINGUNITID) <>
+            GE_BOITEMSCONSTANTS.CNUUNID_OP_PROVEEDORA )  THEN
+            
+            OR_BOOPEUNIITEMBALA.ADDITEMBALANOTEXIST(INUOPERATINGUNITID,INUITEMSID);
+
+            
+            ADDORRETIREITEMS(INUOPERATINGUNITID,INUITEMSID,INUQUANTITY,INUPRICEQUANTITY);
+        END IF;
+
+        UT_TRACE.TRACE('[or_boItemsMove.ItemMoveOperUnit] FIN',3);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END ITEMMOVEOPERUNIT;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETTEMPVALUES
+    (
+        ONUIDITEMSDOC       OUT OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO%TYPE,
+        ONUIDITEMSSERIADO   OUT OR_UNI_ITEM_BALA_MOV.ID_ITEMS_SERIADO%TYPE,
+        OSBESTADOINV        OUT OR_UNI_ITEM_BALA_MOV.ID_ITEMS_ESTADO_INV%TYPE,
+        ONUVALORVENTA       OUT OR_UNI_ITEM_BALA_MOV.VALOR_VENTA%TYPE,
+        ONUUNIDADDESTINO    OUT OR_UNI_ITEM_BALA_MOV.TARGET_OPER_UNIT_ID%TYPE,
+        ONUINITSTATUS       OUT OR_UNI_ITEM_BALA_MOV.INIT_INV_STAT_ITEMS%TYPE
+    )
+    IS
+    BEGIN
+        ONUIDITEMSDOC       := GNUIDITEMSDOC;
+        ONUIDITEMSSERIADO   := GNUIDITEMSSERIADO;
+        OSBESTADOINV        := GSBESTADOINV;
+        ONUVALORVENTA       := GNUVALORVENTA;
+        ONUUNIDADDESTINO    := GNUUNIDADDESTINO;
+        ONUINITSTATUS       := GNUINITSTATUS;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETTEMPVALUES
+    (
+        INUIDITEMSDOC       IN  OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO%TYPE,
+        INUIDITEMSSERIADO   IN  OR_UNI_ITEM_BALA_MOV.ID_ITEMS_SERIADO%TYPE,
+        ISBESTADOINV        IN  OR_UNI_ITEM_BALA_MOV.ID_ITEMS_ESTADO_INV%TYPE,
+        INUVALORVENTA       IN  OR_UNI_ITEM_BALA_MOV.VALOR_VENTA%TYPE,
+        INUUNIDADDESTINO    IN  OR_UNI_ITEM_BALA_MOV.TARGET_OPER_UNIT_ID%TYPE,
+        INUINITSTATUS       IN  OR_UNI_ITEM_BALA_MOV.INIT_INV_STAT_ITEMS%TYPE
+    )
+    IS
+    BEGIN
+        GNUIDITEMSDOC       := INUIDITEMSDOC;
+        GNUIDITEMSSERIADO   := INUIDITEMSSERIADO;
+        GSBESTADOINV        := ISBESTADOINV;
+        GNUVALORVENTA       := INUVALORVENTA;
+        GNUUNIDADDESTINO    := INUUNIDADDESTINO;
+        GNUINITSTATUS       := INUINITSTATUS;
+    END;
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CLOSETRANSITMOVE
+    (
+        INUITEMBALMOVID IN  OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE,
+        INUREFITEMMOVID IN  OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO%TYPE
+    )
+    IS
+        RCITEMBALMOV        DAOR_UNI_ITEM_BALA_MOV.STYOR_UNI_ITEM_BALA_MOV;
+        NUDEFAULTTRANSITIN  OR_OPE_UNI_ITEM_BALA.TRANSIT_IN%TYPE := 0;
+        NUDEFAULTTRANSITOUT OR_OPE_UNI_ITEM_BALA.TRANSIT_IN%TYPE := 0;
+        NUCANTIDAD          OR_UNI_ITEM_BALA_MOV.AMOUNT%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('[or_boItemsMove.closeTransitMove] Init['||INUITEMBALMOVID||']',15);
+
+        DAOR_UNI_ITEM_BALA_MOV.GETRECORD(INUITEMBALMOVID, RCITEMBALMOV);
+        
+        
+        IF  NVL(RCITEMBALMOV.MOVEMENT_TYPE, -1) <> CSBNEUTRALMOVETYPE OR
+            RCITEMBALMOV.ITEM_MOVEME_CAUS_ID NOT IN
+                            (
+                             GE_BOITEMSCONSTANTS.CNUCAUSALENTFACTCOMPRA,
+                             GE_BOITEMSCONSTANTS.CNUCAUSALTRANSLATE,
+                             GE_BOITEMSCONSTANTS.CNUMOVCAUSETRANS
+                            ) OR
+            NVL(RCITEMBALMOV.SUPPORT_DOCUMENT,'X') <> ' '
+        THEN
+            
+            GE_BOERRORS.SETERRORCODE(CNUINVALIDTRANSITDOC);
+        END IF;
+
+
+        NUCANTIDAD := RCITEMBALMOV.AMOUNT*-1;
+        UT_TRACE.TRACE('or_boItemsMove.closeTransitMove AMOUNT='||NUCANTIDAD,15);
+
+        
+        OR_BCOPERUNITITEMS.UPDATETRANSIT
+        (
+            RCITEMBALMOV.ITEMS_ID,
+            RCITEMBALMOV.OPERATING_UNIT_ID,
+            NUCANTIDAD,
+            NUDEFAULTTRANSITOUT
+        );
+
+        IF NUCANTIDAD < 0 THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT
+            (
+            CNUINVALIDAMOUNT,
+            DAGE_ITEMS.FSBGETDESCRIPTION(RCITEMBALMOV.ITEMS_ID)||'|'||
+            DAOR_OPERATING_UNIT.FSBGETNAME(RCITEMBALMOV.OPERATING_UNIT_ID)
+            );
+        END IF;
+        
+        NUCANTIDAD := RCITEMBALMOV.AMOUNT*-1;
+        
+        OR_BCOPERUNITITEMS.UPDATETRANSIT
+        (
+            RCITEMBALMOV.ITEMS_ID,
+            RCITEMBALMOV.TARGET_OPER_UNIT_ID,
+            NUDEFAULTTRANSITIN,
+            NUCANTIDAD
+        );
+        
+        IF NUCANTIDAD < 0 THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT
+            (
+            CNUINVALIDAMOUNT,
+            DAGE_ITEMS.FSBGETDESCRIPTION(RCITEMBALMOV.ITEMS_ID)||'|'||
+            DAOR_OPERATING_UNIT.FSBGETNAME(RCITEMBALMOV.TARGET_OPER_UNIT_ID)
+            );
+        END IF;
+
+        IF INUREFITEMMOVID IS NOT NULL THEN
+            UT_TRACE.TRACE('UpdMov['||INUITEMBALMOVID||']REF_MOV=['|| INUREFITEMMOVID||']', 15);
+            DAOR_UNI_ITEM_BALA_MOV.UPDSUPPORT_DOCUMENT(INUITEMBALMOVID,INUREFITEMMOVID);
+        END IF;
+        
+        UT_TRACE.TRACE('[or_boItemsMove.closeTransitMove] FIN',15);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CLOSETRANSITMOVE;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE REGISTERITEMSMOVE
+    (
+        INUOPERATINGUNITID  IN  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID%TYPE,
+        INUTARGETOPERUNITID IN  OR_UNI_ITEM_BALA_MOV.TARGET_OPER_UNIT_ID%TYPE,
+        INUITEMSID          IN  OR_UNI_ITEM_BALA_MOV.ITEMS_ID%TYPE,
+        IRCITEMSSERIADO     IN  DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO,
+        ISBMOVEMENTTYPE     IN  OR_UNI_ITEM_BALA_MOV.MOVEMENT_TYPE%TYPE,
+        INUMOVECAUSE        IN  OR_UNI_ITEM_BALA_MOV.ITEM_MOVEME_CAUS_ID%TYPE,
+        INUIDITEMSDOC       IN  OR_UNI_ITEM_BALA_MOV.ID_ITEMS_DOCUMENTO%TYPE,
+        INUCANTIDAD         IN  OR_UNI_ITEM_BALA_MOV.AMOUNT%TYPE,
+        INUCOSTO            IN  OR_UNI_ITEM_BALA_MOV.TOTAL_VALUE%TYPE,
+        INUVALORVENTA       IN  OR_UNI_ITEM_BALA_MOV.VALOR_VENTA%TYPE,
+        INUNEWSTATEITEMID   IN  GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV%TYPE,
+        ONUUNIITEMMOVID     OUT OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE
+    )
+    IS
+
+        CNUINVALID_QUANTITY CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 116184;
+        NUMOVECAUSE         OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE;
+        NUCOSTO             OR_UNI_ITEM_BALA_MOV.TOTAL_VALUE%TYPE;
+        SBESTADOINV         OR_UNI_ITEM_BALA_MOV.ID_ITEMS_ESTADO_INV%TYPE;
+        SBESTADOANT         OR_UNI_ITEM_BALA_MOV.ID_ITEMS_ESTADO_INV%TYPE;
+        NUCANTIDAD          OR_UNI_ITEM_BALA_MOV.AMOUNT%TYPE;
+        NUTMPAMOUNT         OR_UNI_ITEM_BALA_MOV.AMOUNT%TYPE;
+        
+        RCUNIITEMMOV        DAOR_UNI_ITEM_BALA_MOV.STYOR_UNI_ITEM_BALA_MOV;
+        RCITEMSSERIADO      DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUDEFAULTTRANSITIN  OR_OPE_UNI_ITEM_BALA.TRANSIT_IN%TYPE := 0;
+        NUDEFAULTTRANSITOUT OR_OPE_UNI_ITEM_BALA.TRANSIT_IN%TYPE := 0;
+        
+        NUDOCUMENTTYPE      GE_ITEMS_DOCUMENTO.DOCUMENT_TYPE_ID%TYPE;
+        NUCAUSAL            GE_ITEMS_DOCUMENTO.CAUSAL_ID%TYPE;
+        
+        NUORDERID           OR_ORDER.ORDER_ID%TYPE;
+        NUUNDCOSTO          OR_UNI_ITEM_BALA_MOV.TOTAL_VALUE%TYPE;
+        NUREALRETIREAMOUNT  NUMBER;
+        NUITEMSID           OR_UNI_ITEM_BALA_MOV.ITEMS_ID%TYPE;
+        SBQUOTA             GE_ITEM_CLASSIF.QUOTA%TYPE;
+
+    BEGIN
+        UT_TRACE.TRACE('[or_boItemsMove.RegisterItemsMove] Init',15);
+        UT_TRACE.TRACE('    ORI_OPERUNIT['||INUOPERATINGUNITID||'TAR_OPERUNIT['||
+                            INUTARGETOPERUNITID||']ITEM['||INUITEMSID||']',15);
+        UT_TRACE.TRACE('    ITEM_SERIADO['||IRCITEMSSERIADO.ID_ITEMS_SERIADO||']',15);
+        UT_TRACE.TRACE('    DOC['||INUIDITEMSDOC||']CAUSE['||INUMOVECAUSE||']',15);
+        
+        RCITEMSSERIADO := IRCITEMSSERIADO;
+        
+        DAOR_OPERATING_UNIT.ACCKEY(INUOPERATINGUNITID);
+        
+        SETBALAMOVEID(NULL);
+        NUCOSTO     := INUCOSTO;
+        NUCANTIDAD  := NVL(INUCANTIDAD,0);
+        NUMOVECAUSE := INUMOVECAUSE;
+        NUITEMSID   := INUITEMSID;
+
+        IF RCITEMSSERIADO.ID_ITEMS_SERIADO IS NOT NULL THEN
+        
+            IF NUCANTIDAD <> 1 THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT
+                (
+                    CNUINVALID_QUANTITY,
+                    DAGE_ITEMS.FSBGETDESCRIPTION(NUITEMSID)||'|'||NUCANTIDAD
+                );
+            END IF;
+            
+
+            NUCOSTO             :=  NVL(NVL(NUCOSTO,RCITEMSSERIADO.COSTO),0);
+            
+            NUDOCUMENTTYPE := DAGE_ITEMS_DOCUMENTO.FNUGETDOCUMENT_TYPE_ID(INUIDITEMSDOC,0);
+            
+            SBESTADOINV := NVL (INUNEWSTATEITEMID, RCITEMSSERIADO.ID_ITEMS_ESTADO_INV);
+            SBESTADOANT         :=  RCITEMSSERIADO.ID_ITEMS_ESTADO_INV;
+            RCITEMSSERIADO.OPERATING_UNIT_ID :=  NVL(INUOPERATINGUNITID, RCITEMSSERIADO.OPERATING_UNIT_ID) ;
+            
+            IF ( NUMOVECAUSE = OR_BOCONSTANTS.CNULEGAMOVECAUSE) THEN
+                IF (ISBMOVEMENTTYPE = CSBINCREASEMOVETYPE) THEN
+                    SBESTADOINV := GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPERADO;
+                    RCITEMSSERIADO.PROPIEDAD := GE_BOITEMSCONSTANTS.CSBEMPRESA;
+                    RCITEMSSERIADO.SUBSCRIBER_ID := NULL;
+                    
+                    
+                ELSIF (ISBMOVEMENTTYPE = CSBDECREASEMOVETYPE) THEN
+                    SBESTADOINV := GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO;
+                    RCITEMSSERIADO.FECHA_SALIDA := UT_DATE.FDTSYSDATE;
+                    RCITEMSSERIADO.OPERATING_UNIT_ID := NULL;
+                ELSE
+                    SBESTADOINV := NVL(INUNEWSTATEITEMID, GE_BOITEMSCONSTANTS.CNUSTATUS_CHATARRA);
+                    RCITEMSSERIADO.OPERATING_UNIT_ID := NULL;
+                    RCITEMSSERIADO.SUBSCRIBER_ID := NULL;
+                END IF;
+            ELSIF (NUMOVECAUSE = GE_BOITEMSCONSTANTS.CNUMOVCAUSASALDEVOL) THEN
+                SBESTADOINV:= GE_BOITEMSCONSTANTS.CNUSTATUS_DEVUELTO_A_ERP;
+                RCITEMSSERIADO.PROPIEDAD := GE_BOITEMSCONSTANTS.CSBTERCEROS;
+                RCITEMSSERIADO.FECHA_SALIDA := UT_DATE.FDTSYSDATE;
+                RCITEMSSERIADO.OPERATING_UNIT_ID := NULL;
+            END IF;
+
+
+
+        END IF;
+
+        IF INUMOVECAUSE IS NULL THEN
+            NUMOVECAUSE := GE_BOPARAMETER.FNUGET(OR_BOCONSTANTS.CSBUNKNOWNMOVECAUSE);
+        END IF;
+
+        
+        IF ISBMOVEMENTTYPE = CSBNEUTRALMOVETYPE THEN
+        
+            
+            OR_BOOPEUNIITEMBALA.ADDITEMBALANOTEXIST
+            (
+                INUOPERATINGUNITID,
+                NUITEMSID
+            );
+            OR_BOOPEUNIITEMBALA.ADDITEMBALANOTEXIST
+            (
+                INUTARGETOPERUNITID,
+                NUITEMSID
+            );
+            
+
+            
+            IF NUMOVECAUSE IN
+                            (GE_BOITEMSCONSTANTS.CNUCAUSALENTFACTCOMPRA,
+                            GE_BOITEMSCONSTANTS.CNUCAUSALTRANSLATE,
+                             GE_BOITEMSCONSTANTS.CNUMOVCAUSETRANS) THEN
+
+                NUTMPAMOUNT := NUCANTIDAD;
+                OR_BCOPERUNITITEMS.UPDATETRANSIT(NUITEMSID,INUOPERATINGUNITID,NUTMPAMOUNT,NUDEFAULTTRANSITOUT);
+                NUTMPAMOUNT := NUCANTIDAD;
+                OR_BCOPERUNITITEMS.UPDATETRANSIT(NUITEMSID,INUTARGETOPERUNITID,NUDEFAULTTRANSITIN,NUTMPAMOUNT);
+
+                
+                SBESTADOINV := GE_BOITEMSCONSTANTS.CNUSTATUS_TRANSITO;
+                UT_TRACE.TRACE('->Item en transito',15);
+
+            END IF;
+
+            
+            RCUNIITEMMOV.ITEMS_ID               := NUITEMSID;
+            RCUNIITEMMOV.OPERATING_UNIT_ID      := INUOPERATINGUNITID;
+            RCUNIITEMMOV.ITEM_MOVEME_CAUS_ID    := NUMOVECAUSE;
+            RCUNIITEMMOV.MOVEMENT_TYPE          := ISBMOVEMENTTYPE;
+            RCUNIITEMMOV.AMOUNT                 := NUCANTIDAD;
+            RCUNIITEMMOV.COMMENTS               := ' ';
+            RCUNIITEMMOV.MOVE_DATE              := SYSDATE;
+            RCUNIITEMMOV.SUPPORT_DOCUMENT       := ' ';
+            RCUNIITEMMOV.TARGET_OPER_UNIT_ID    := INUTARGETOPERUNITID;
+            RCUNIITEMMOV.TOTAL_VALUE            := NVL(NUCOSTO,0);
+            
+            RCUNIITEMMOV.ID_ITEMS_DOCUMENTO     := INUIDITEMSDOC;
+            RCUNIITEMMOV.ID_ITEMS_SERIADO       := RCITEMSSERIADO.ID_ITEMS_SERIADO;
+            RCUNIITEMMOV.INIT_INV_STAT_ITEMS    := SBESTADOANT;
+            RCUNIITEMMOV.ID_ITEMS_ESTADO_INV    := SBESTADOINV;
+            RCUNIITEMMOV.VALOR_VENTA            := INUVALORVENTA;
+
+            RCUNIITEMMOV.TERMINAL               := UT_SESSION.GETTERMINAL;
+            RCUNIITEMMOV.USER_ID                := UT_SESSION.GETUSER;
+
+            ONUUNIITEMMOVID :=  OR_BOSEQUENCES.FNUNEXTOR_UNI_ITEM_BALA_MOV;
+            RCUNIITEMMOV.UNI_ITEM_BALA_MOV_ID   := ONUUNIITEMMOVID;
+            
+            
+            DAOR_UNI_ITEM_BALA_MOV.INSRECORD(RCUNIITEMMOV);
+
+        ELSE
+
+            IF ISBMOVEMENTTYPE = CSBDECREASEMOVETYPE THEN
+                IF NUCANTIDAD >0 THEN
+                    NUCANTIDAD := NUCANTIDAD * -1;
+                END IF;
+                
+                
+                IF DAGE_ITEMS.FNUGETITEM_CLASSIF_ID(NUITEMSID) = GE_BOITEMSCONSTANTS.CNUCLASIFICACION_EQUIPO THEN
+                    NUCOSTO := NULL;
+                END IF;
+                
+            ELSE
+
+                 
+                 IF (ISBMOVEMENTTYPE = CSBINCREASEMOVETYPE) THEN
+                 
+                    IF (DAOR_OPERATING_UNIT.FNUGETOPER_UNIT_CLASSIF_ID(INUOPERATINGUNITID)
+                        = GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA) THEN
+
+                         
+                         
+                         SBESTADOINV := GE_BOITEMSCONSTANTS.CNUSTATUS_EN_REPARA;
+                    ELSIF (DAOR_OPERATING_UNIT.FNUGETOPER_UNIT_CLASSIF_ID(INUTARGETOPERUNITID)
+                         = GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA) THEN
+
+                         
+                         
+                         SBESTADOINV := GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE;
+                    END IF;
+                    
+                    IF ((NUMOVECAUSE = GE_BOITEMSCONSTANTS.CNUCAUSALENTFACTCOMPRA) OR
+                        (NUMOVECAUSE = GE_BOITEMSCONSTANTS.CNUMOVCAUSEINGACEPT)) THEN
+
+                        
+                        GE_BOITEMSCONSIGNMT.RETIREITEMCONSIGNMT(
+                            INUTARGETOPERUNITID,      
+                            NUITEMSID,
+                            UT_DATE.FDTSYSDATE,
+                            NUCANTIDAD,
+                            NUREALRETIREAMOUNT,
+                            TRUE
+                        );
+                        
+                        
+                        IF (CT_BOCONTRACTOR.FBLITEMCONSIGCTRL( 
+                                                              INUOPERATINGUNITID,
+                                                              NUITEMSID))
+                        THEN
+                            GE_BOITEMSCONSIGNMT.ADDITEMCONSIGNMT(
+                                INUOPERATINGUNITID,     
+                                NUITEMSID,
+                                NUCANTIDAD
+                            );
+                        ELSE
+
+                            IF (DAOR_OPERATING_UNIT.FNUGETCONTRACTOR_ID(INUOPERATINGUNITID) IS NOT NULL) THEN
+                                
+                                GE_BOITEMSCARGUE.CREATEMOVEMENTORDER(
+                                    INUOPERATINGUNITID,
+                                    NUORDERID
+                                );
+
+                                
+                                IF (NUCANTIDAD <> 0) THEN
+                                    NUUNDCOSTO := NUCOSTO / NUCANTIDAD;
+                                ELSE
+                                    NUUNDCOSTO := 0;
+                                END IF;
+
+                                
+                                GE_BOITEMSCARGUE.ADDITEMTOORDER(
+                                    NUORDERID,
+                                    NUITEMSID,
+                                    NUCANTIDAD,
+                                    NUUNDCOSTO
+                                );
+                            END IF;
+                            
+                            IF (NUMOVECAUSE = GE_BOITEMSCONSTANTS.CNUCAUSALENTFACTCOMPRA) THEN
+                                
+                                GE_BOITEMSREQUEST.UPDREQACCEPTEDAMOUNT(
+                                    INUIDITEMSDOC,          
+                                    INUOPERATINGUNITID,    
+                                    NUITEMSID,
+                                    NUCANTIDAD
+                                );
+                            END IF;
+                        END IF;
+                    END IF;
+
+                END IF;
+            END IF;
+            
+            
+            SETTEMPVALUES(INUIDITEMSDOC,RCITEMSSERIADO.ID_ITEMS_SERIADO,SBESTADOINV, INUVALORVENTA, INUTARGETOPERUNITID,SBESTADOANT);
+            
+            
+            
+            SBQUOTA := DAGE_ITEM_CLASSIF.FSBGETQUOTA(DAGE_ITEMS.FNUGETITEM_CLASSIF_ID(NUITEMSID));
+
+            
+            IF (SBQUOTA = GE_BOCONSTANTS.CSBYES ) THEN
+                
+                ITEMMOVEOPERUNIT(INUOPERATINGUNITID,NUITEMSID,NUCANTIDAD,NUCOSTO,NUMOVECAUSE);
+            END IF;
+
+            ONUUNIITEMMOVID := FNUGETBALAMOVEID;
+            
+            
+            SETBALAMOVEID(NULL);
+            SETTEMPVALUES(NULL, NULL,NULL, NULL, NULL,NULL);
+            OR_BOITEMS.INSERTINTEMTAB(NULL);
+
+        END IF;
+        
+        
+        IF NUDOCUMENTTYPE IS NOT NULL THEN
+            IF ( NUDOCUMENTTYPE IN (GE_BOITEMSCONSTANTS.CNUTIPOAJUSTESALIDA,
+                                  GE_BOITEMSCONSTANTS.CNUTIPOAJUSTERECLASIFICACION))THEN
+
+                UT_TRACE.TRACE('[or_boItemsMove.RegisterItemsMove] FIN onuUniItemMovId='||ONUUNIITEMMOVID,15);
+                RETURN;
+            END IF;
+        END IF;
+
+        
+        IF RCITEMSSERIADO.ID_ITEMS_SERIADO IS NOT NULL THEN
+            RCITEMSSERIADO.ID_ITEMS_ESTADO_INV := SBESTADOINV;
+            DAGE_ITEMS_SERIADO.UPDRECORD(RCITEMSSERIADO, CNULOCK_NOWAIT);
+        END IF;
+        
+        UT_TRACE.TRACE('[or_boItemsMove.RegisterItemsMove] FIN onuUniItemMovId='||ONUUNIITEMMOVID,15);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END REGISTERITEMSMOVE;
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATEMOVBYLEGALIZE
+    (
+        INUORDERID          IN  OR_ORDER.ORDER_ID%TYPE,
+        INUOPERATINGUNITID  IN  OR_ORDER.OPERATING_UNIT_ID%TYPE,
+        INUITEMSID          IN  GE_ITEMS_SERIADO.ITEMS_ID%TYPE,
+        IRCITEMSSERIADO     IN  DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO,
+        ISBMOVETYPE         IN  OR_UNI_ITEM_BALA_MOV.MOVEMENT_TYPE%TYPE,
+        INUAMOUNT           IN  OR_UNI_ITEM_BALA_MOV.AMOUNT%TYPE,
+        INUCOST             IN  GE_ITEMS_SERIADO.COSTO%TYPE,
+        ONUITEMMOVID        OUT OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE,
+        ISBFINALITEMSTAT    IN  GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV%TYPE DEFAULT NULL
+    )
+    IS
+        NUOPEUNIMOV OR_ORDER.OPERATING_UNIT_ID%TYPE;
+        NUIDITEMSDOCUMENTO  GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE;
+        RCOPEUNIITEMBALA    DAOR_OPE_UNI_ITEM_BALA.STYOR_OPE_UNI_ITEM_BALA;
+        NUREALCOST           GE_ITEMS_SERIADO.COSTO%TYPE;
+    BEGIN
+        NUOPEUNIMOV := NVL(DAOR_OPERATING_UNIT.FNUGETASSO_OPER_UNIT(INUOPERATINGUNITID), INUOPERATINGUNITID );
+        NUREALCOST := INUCOST;
+        
+        IF  NOT (GTBDOCSLEGALIZE.EXISTS(INUORDERID)) THEN
+            GE_BOITEMSDOCUMENTO.CREATEDOCUMENT(
+                                            GE_BOITEMSCONSTANTS.CNUTIPOPORLEGALIZACION,
+                                            NUOPEUNIMOV,
+                                            NUOPEUNIMOV,
+                                            SYSDATE,
+                                            INUORDERID,
+                                            GE_BOITEMSCONSTANTS.CSBESTADOCERRADO,
+                                            'ORPLO:['||INUORDERID||']',
+                                            NULL,
+                                            NUIDITEMSDOCUMENTO
+                                            );
+                                            
+            GTBDOCSLEGALIZE(INUORDERID) := NUIDITEMSDOCUMENTO;
+        ELSE
+            NUIDITEMSDOCUMENTO := GTBDOCSLEGALIZE(INUORDERID);
+            IF NOT DAGE_ITEMS_DOCUMENTO.FBLEXIST(NUIDITEMSDOCUMENTO) THEN
+                
+                GE_BOITEMSDOCUMENTO.CREATEDOCUMENT
+                (
+                    GE_BOITEMSCONSTANTS.CNUTIPOPORLEGALIZACION,
+                    NUOPEUNIMOV,
+                    NUOPEUNIMOV,
+                    SYSDATE,
+                    INUORDERID,
+                    GE_BOITEMSCONSTANTS.CSBESTADOCERRADO,
+                    'ORPLO:['||INUORDERID||']',
+                    NULL,
+                    NUIDITEMSDOCUMENTO
+                );
+                GTBDOCSLEGALIZE(INUORDERID) := NUIDITEMSDOCUMENTO;
+            END IF;
+        END IF;
+        
+        
+        IF ISBMOVETYPE = OR_BOITEMSMOVE.CSBINCREASEMOVETYPE AND NUREALCOST IS NULL THEN
+            IF DAOR_OPE_UNI_ITEM_BALA.FBLEXIST(INUITEMSID, NUOPEUNIMOV) THEN
+                
+                DAOR_OPE_UNI_ITEM_BALA.GETRECORD(INUITEMSID, NUOPEUNIMOV, RCOPEUNIITEMBALA);
+            
+                IF RCOPEUNIITEMBALA.BALANCE = 0 THEN
+                    NUREALCOST := RCOPEUNIITEMBALA.TOTAL_COSTS * INUAMOUNT;
+                ELSE
+                    NUREALCOST := RCOPEUNIITEMBALA.TOTAL_COSTS * INUAMOUNT / RCOPEUNIITEMBALA.BALANCE;
+                END IF;
+            END IF;
+        END IF;
+        
+        OR_BOITEMSMOVE.REGISTERITEMSMOVE(
+                                    NUOPEUNIMOV,
+                                    NUOPEUNIMOV,
+                                    INUITEMSID,
+                                    IRCITEMSSERIADO,
+                                    ISBMOVETYPE,
+                                    OR_BOCONSTANTS.CNULEGAMOVECAUSE,
+                                    NUIDITEMSDOCUMENTO,
+                                    INUAMOUNT,
+                                    NUREALCOST,
+                                    0,
+                                    ISBFINALITEMSTAT,
+                                    ONUITEMMOVID );
+                                    
+        
+        IF ( IRCITEMSSERIADO.ID_ITEMS_SERIADO IS NOT NULL ) THEN
+            IF_BOPREVMAINTENANCE.UPDATESERIALITEM( IRCITEMSSERIADO.ID_ITEMS_SERIADO,IRCITEMSSERIADO.ITEMS_ID);
+        END IF;
+        
+    
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CREATEMOVBYLEGALIZE;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE LOCKMOVEITEM
+    (
+        INUOPERATINGUNITID      IN  OR_UNI_ITEM_BALA_MOV.OPERATING_UNIT_ID%TYPE,
+        INUITEMSID              IN  OR_UNI_ITEM_BALA_MOV.ITEMS_ID%TYPE,
+        INUITEMSSERIADO         IN  OR_UNI_ITEM_BALA_MOV.ID_ITEMS_SERIADO%TYPE DEFAULT NULL
+    )
+    IS
+        RCOR_OPE_UNI_ITEM_BALA  DAOR_OPE_UNI_ITEM_BALA.STYOR_OPE_UNI_ITEM_BALA;
+        RCGE_ITEMS_SERIADO      DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+    BEGIN
+        UT_TRACE.TRACE('--[INICIO] OR_BOItemsMove.LockMoveItem', 6);
+        UT_TRACE.TRACE('-- inuOperatingUnitId: ['||INUOPERATINGUNITID||'] - '
+            || '-- inuItemsId: ['||INUITEMSID||'] - '
+            || '-- inuItemsSeriado: ['||INUITEMSSERIADO||'] - ', 7);
+
+        
+        IF (DAOR_OPE_UNI_ITEM_BALA.FBLEXIST(INUITEMSID, INUOPERATINGUNITID)) THEN
+            DAOR_OPE_UNI_ITEM_BALA.LOCKBYPK(INUITEMSID, INUOPERATINGUNITID, RCOR_OPE_UNI_ITEM_BALA);
+        END IF;
+
+        IF (INUITEMSSERIADO IS NOT NULL) AND (DAGE_ITEMS_SERIADO.FBLEXIST(INUITEMSSERIADO)) THEN
+            
+            DAGE_ITEMS_SERIADO.LOCKBYPK(INUITEMSSERIADO, RCGE_ITEMS_SERIADO);
+            IF (RCGE_ITEMS_SERIADO.OPERATING_UNIT_ID != INUOPERATINGUNITID ) THEN
+
+                GE_BOERRORS.SETERRORCODEARGUMENT
+                (
+                    CNUERRITEMSEROPEUNI,
+                    RCGE_ITEMS_SERIADO.SERIE || '|' ||
+                    RCGE_ITEMS_SERIADO.OPERATING_UNIT_ID || ' - ' ||
+                    DAOR_OPERATING_UNIT.FSBGETNAME(RCGE_ITEMS_SERIADO.OPERATING_UNIT_ID)
+                );
+            END IF;
+
+        END IF;
+
+        UT_TRACE.TRACE('--[FIN] OR_BOItemsMove.LockMoveItem', 6);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END LOCKMOVEITEM;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE LENDITEM
+    (
+        INUPACKAGEID    IN  GE_ITEMS_DOCUMENTO.DOCUMENTO_EXTERNO%TYPE,
+        INUCAUSALID     IN  GE_CAUSAL.CAUSAL_ID%TYPE,
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        INUMOVECAUSE    IN  OR_UNI_ITEM_BALA_MOV.ITEM_MOVEME_CAUS_ID%TYPE DEFAULT CNUCAUSALSALIDAPORVENTA
+    )
+    IS
+        RCITEMSSERIADO      DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUITEMSDOCUMENTOID  GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE;
+        NUUNIITEMMOVID      OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE;
+        DTWARRANTYDATE      GE_ITEMS_SERIADO.FECHA_GARANTIA%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('[INICIO] OR_BOItemsMove.lendItem inuPackageId['||INUPACKAGEID||'] inuCausalId['||INUCAUSALID||'] isbSerie['||ISBSERIE||'] inuMoveCause ['||INUMOVECAUSE||']', 5);
+        
+        RCITEMSSERIADO := GE_BCITEMSSERIADO.FRCSERIALITEMBYSERIE(ISBSERIE);
+
+        
+        GE_BOITEMSDOCUMENTO.CREATEDOCUMENT(
+                                              GE_BOITEMSCONSTANTS.CNUTIPOAJUSTESALIDA,
+                                              RCITEMSSERIADO.OPERATING_UNIT_ID,
+                                              RCITEMSSERIADO.OPERATING_UNIT_ID,
+                                              SYSDATE,
+                                              INUPACKAGEID,
+                                              GE_BOITEMSCONSTANTS.CSBESTADOCERRADO,
+                                              NULL, 
+                                              INUCAUSALID,
+                                              NUITEMSDOCUMENTOID,
+                                              INUPACKAGEID
+                                           );
+
+        
+        REGISTERITEMSMOVE(
+                            RCITEMSSERIADO.OPERATING_UNIT_ID,
+                            RCITEMSSERIADO.OPERATING_UNIT_ID,
+                            RCITEMSSERIADO.ITEMS_ID,
+                            RCITEMSSERIADO,
+                            CSBDECREASEMOVETYPE,
+                            INUMOVECAUSE,
+                            NUITEMSDOCUMENTOID,
+                            1,
+                            RCITEMSSERIADO.COSTO,
+                            0, 
+                            NULL,
+                            NUUNIITEMMOVID
+                         );
+
+        
+        DTWARRANTYDATE := SYSDATE + DAGE_ITEMS.FNUGETWARRANTY_DAYS(RCITEMSSERIADO.ITEMS_ID);
+        UT_TRACE.TRACE('dtWarrantyDate ['||DTWARRANTYDATE||']', 6);
+        
+        
+        RCITEMSSERIADO.ID_ITEMS_ESTADO_INV := GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO;
+        RCITEMSSERIADO.PROPIEDAD           := GE_BOITEMSCONSTANTS.CSBEMPRESA;
+        RCITEMSSERIADO.SUBSCRIBER_ID       := DAMO_PACKAGES.FNUGETSUBSCRIBER_ID(INUPACKAGEID);
+        RCITEMSSERIADO.FECHA_GARANTIA      := DTWARRANTYDATE;
+        RCITEMSSERIADO.FECHA_SALIDA        := UT_DATE.FDTSYSDATE;
+        
+        DAGE_ITEMS_SERIADO.UPDRECORD(RCITEMSSERIADO);
+        
+        UT_TRACE.TRACE('[FIN] OR_BOItemsMove.lendItem', 5);
+
+	EXCEPTION
+		WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('[CONTROLLED_ERROR] OR_BOItemsMove.lendItem', 5);
+            RAISE  EX.CONTROLLED_ERROR;
+		WHEN OTHERS THEN
+            UT_TRACE.TRACE('[OTHERS] OR_BOItemsMove.lendItem', 5);
+    		ERRORS.SETERROR;
+            RAISE  EX.CONTROLLED_ERROR;
+	END LENDITEM;
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE SETITEMPROPERTY
+    (
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        ISBPROPERTY     IN  GE_ITEMS_SERIADO.PROPIEDAD%TYPE
+    )
+    IS
+        NUSERIALITEMID      GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('[INICIO] OR_BOItemsMove.setItemProperty isbSerie['||ISBSERIE||'] isbProperty['||ISBPROPERTY||']', 5);
+        
+        GE_BOITEMSSERIADO.GETIDBYSERIE(ISBSERIE, NUSERIALITEMID);
+
+        
+        DAGE_ITEMS_SERIADO.UPDPROPIEDAD(NUSERIALITEMID, ISBPROPERTY);
+        UT_TRACE.TRACE('[FIN] OR_BOItemsMove.setItemProperty', 5);
+	EXCEPTION
+		WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('[CONTROLLED_ERROR] OR_BOItemsMove.lendItem', 5);
+            RAISE  EX.CONTROLLED_ERROR;
+		WHEN OTHERS THEN
+            UT_TRACE.TRACE('[OTHERS] OR_BOItemsMove.lendItem', 5);
+    		ERRORS.SETERROR;
+            RAISE  EX.CONTROLLED_ERROR;
+	END SETITEMPROPERTY;
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE RECOVERITEM
+    (
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        INUPERSONID     IN  GE_PERSON.PERSON_ID%TYPE,
+        INUPACKAGEID    IN  GE_ITEMS_DOCUMENTO.DOCUMENTO_EXTERNO%TYPE
+    )
+    IS
+        RCITEMSSERIADO      DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUOPERATINGUNITID   OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE;
+        NUITEMSDOCUMENTOID  GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE;
+        NUUNIITEMMOVID      OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('[INICIO] OR_BOItemsMove.recoverItem isbSerie['||ISBSERIE||'] inuPersonId['||INUPERSONID||']inuPackageId['||INUPACKAGEID||']', 5);
+        
+        RCITEMSSERIADO := GE_BCITEMSSERIADO.FRCSERIALITEMBYSERIE(ISBSERIE);
+
+        
+        NUOPERATINGUNITID := OR_BOOPERUNITPERSON.FNUMAINOPERUNITBYPERSON(INUPERSONID);
+
+        
+        GE_BOITEMSDOCUMENTO.CREATEDOCAJUSTE(
+                                                NUOPERATINGUNITID,
+                                                GE_BOITEMSCONSTANTS.CNUTIPOAJUSTEENTRADA,
+                                                INUPACKAGEID,
+                                                SYSDATE,
+                                                NULL, 
+                                                NULL,
+                                                NUITEMSDOCUMENTOID
+                                            );
+
+        
+        REGISTERITEMSMOVE(
+                            RCITEMSSERIADO.OPERATING_UNIT_ID,
+                            RCITEMSSERIADO.OPERATING_UNIT_ID,
+                            RCITEMSSERIADO.ITEMS_ID,
+                            RCITEMSSERIADO,
+                            CSBINCREASEMOVETYPE,
+                            GE_BOITEMSCONSTANTS.CNUMOVCAUSAINGCAMBEQUI,         
+                            NUITEMSDOCUMENTOID,
+                            1,
+                            NVL(RCITEMSSERIADO.COSTO, 0),
+                            0, 
+                            NULL,
+                            NUUNIITEMMOVID
+                         );
+
+        
+        GE_BCITEMSSERIADO.UPDPROPERTYSTATUS(RCITEMSSERIADO.ID_ITEMS_SERIADO, GE_BOITEMSCONSTANTS.CNUSTATUS_RECUPERADO, GE_BOITEMSCONSTANTS.CSBEMPRESA, NULL);
+
+        UT_TRACE.TRACE('[FIN] OR_BOItemsMove.recoverItem', 5);
+	EXCEPTION
+		WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('[CONTROLLED_ERROR] OR_BOItemsMove.lendItem', 5);
+            RAISE  EX.CONTROLLED_ERROR;
+		WHEN OTHERS THEN
+            UT_TRACE.TRACE('[OTHERS] OR_BOItemsMove.lendItem', 5);
+			ERRORS.SETERROR;
+            RAISE  EX.CONTROLLED_ERROR;
+	END RECOVERITEM;
+	
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE MOVEITEM
+    (
+        ISBSERIE        IN  GE_ITEMS_SERIADO.SERIE%TYPE,
+        INUTARGETOPEUNI IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        ISBDOCREFERENCE IN  GE_ITEMS_DOCUMENTO.DOCUMENTO_EXTERNO%TYPE,
+        ONUTIPOITEMID   OUT GE_ITEMS_TIPO.ID_ITEMS_TIPO%TYPE,
+        ONUITEMSGAMAID  OUT GE_ITEMS_GAMA.ID_ITEMS_GAMA%TYPE
+    )
+    IS
+        RCITEMSERIADO       DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUITEMSDOCUMENTO    GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE;
+        NUPROCESSID         GE_TMP_MESSAGE_PROC.PROCESS_ID%TYPE;
+    BEGIN
+
+        GE_BCITEMSSERIADO.GETIDBYSERIE(ISBSERIE, RCITEMSERIADO.ID_ITEMS_SERIADO);
+
+        GE_BOBAJAEQUIPOS.VAL_EXISTEQUIPOLISTANEGRA(ISBSERIE);
+
+        IF (NOT DAGE_ITEMS_SERIADO.FBLEXIST(RCITEMSERIADO.ID_ITEMS_SERIADO)) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(7613, ISBSERIE);
+        END IF;
+
+        RCITEMSERIADO := DAGE_ITEMS_SERIADO.FRCGETRECORD(RCITEMSERIADO.ID_ITEMS_SERIADO);
+
+        IF (NOT DAOR_OPERATING_UNIT.FBLEXIST(RCITEMSERIADO.OPERATING_UNIT_ID)) THEN
+            GE_BOERRORS.SETERRORCODE(6703);
+        END IF;
+
+
+        IF (RCITEMSERIADO.ID_ITEMS_ESTADO_INV = GE_BOITEMSCONSTANTS.CNUSTATUS_ENUSO) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(13746, ISBSERIE);
+        END IF;
+
+        
+        GE_BOTMP_MESSAGE_PROC.GETPROCESSID(NUPROCESSID);
+        GE_BOTMP_MESSAGE_PROC.INSERTINMESSAGETEMPTABLE(NUPROCESSID, RCITEMSERIADO.ITEMS_ID);
+
+        
+        GE_BOITEMSDOCUMENTO.CREATEDOCTRANSLATE
+        (
+            RCITEMSERIADO.OPERATING_UNIT_ID,
+            INUTARGETOPEUNI,
+            ISBDOCREFERENCE,
+            NULL,
+            GE_BOCONSTANTS.CSBNO,
+            NUITEMSDOCUMENTO
+        );
+
+        
+        OR_BOFWITEMSMOVE.MOVEITEMBYAPI
+        (
+            RCITEMSERIADO.OPERATING_UNIT_ID,
+            INUTARGETOPEUNI,
+            NUITEMSDOCUMENTO,
+            RCITEMSERIADO.ITEMS_ID,
+            1,
+            GE_BOCONSTANTS.CSBNO,
+            RCITEMSERIADO.ID_ITEMS_SERIADO
+        );
+
+        ONUTIPOITEMID := DAGE_ITEMS.FNUGETID_ITEMS_TIPO(RCITEMSERIADO.ITEMS_ID);
+
+        GE_BCITEMS_GAMA_ITEM.GETITEMGAMABYITEM(RCITEMSERIADO.ITEMS_ID, ONUITEMSGAMAID);
+
+        
+        GE_BOTMP_MESSAGE_PROC.DELPROCESSID(NUPROCESSID);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            
+            GE_BOTMP_MESSAGE_PROC.DELPROCESSID(NUPROCESSID);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            
+            GE_BOTMP_MESSAGE_PROC.DELPROCESSID(NUPROCESSID);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END MOVEITEM;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CHANGEITEMSTATUS
+    (
+        ISBSERIE        IN GE_ITEMS_SERIADO.SERIE%TYPE,
+        INUCAUSAL       IN GE_CAUSAL.CAUSAL_ID%TYPE,
+        ISBDOCREFERENCE IN GE_ITEMS_DOCUMENTO.DOCUMENTO_EXTERNO%TYPE
+    )
+    IS
+        RCITEMSERIADO       DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUITEMSDOCUMENTO    GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE;
+
+        NUERRORCODE         GE_MESSAGE.MESSAGE_ID%TYPE;
+        SBERRORMESSAGE      GE_ERROR_LOG.DESCRIPTION%TYPE;
+    BEGIN
+        GE_BCITEMSSERIADO.GETIDBYSERIE(ISBSERIE, RCITEMSERIADO.ID_ITEMS_SERIADO);
+
+        IF (NOT DAGE_ITEMS_SERIADO.FBLEXIST(RCITEMSERIADO.ID_ITEMS_SERIADO)) THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(7613,ISBSERIE);
+        END IF;
+
+        RCITEMSERIADO := DAGE_ITEMS_SERIADO.FRCGETRECORD(RCITEMSERIADO.ID_ITEMS_SERIADO);
+
+        DAGE_CAUSAL.ACCKEY(INUCAUSAL);
+        
+        
+        GE_BOITEMSDOCUMENTO.CREATEDOCAJUSTE
+        (
+            RCITEMSERIADO.OPERATING_UNIT_ID,
+            GE_BOITEMSCONSTANTS.CNUTIPOAJUSTERECLASIFICACION,
+            ISBDOCREFERENCE,
+            UT_DATE.FDTSYSDATE,
+            NULL,
+            INUCAUSAL,
+            NUITEMSDOCUMENTO
+        );
+
+        
+        OR_BOFWITEMSMOVE.TOGENERARAJUSTE
+        (
+            RCITEMSERIADO.OPERATING_UNIT_ID,
+            NUITEMSDOCUMENTO,
+            RCITEMSERIADO.ITEMS_ID,
+            1,
+            NULL,
+            RCITEMSERIADO.ID_ITEMS_SERIADO,
+            NUERRORCODE,
+            SBERRORMESSAGE
+        );
+
+        IF (NUERRORCODE <> GE_BOCONSTANTS.CNUSUCCESS) THEN
+            ERRORS.SETERROR(NUERRORCODE);
+            ERRORS.SETMESSAGE(SBERRORMESSAGE);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CHANGEITEMSTATUS;
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE GETINFORMATIONMOV
+    (
+        ICLSERIALSACT       IN  CLOB,
+        INUPACKAGEID        IN  MO_PACKAGES.PACKAGE_ID%TYPE,
+        INUOPERATINGUNITID  IN  GE_ITEMS_SERIADO.OPERATING_UNIT_ID%TYPE,
+        ORFCURSOR               OUT CONSTANTS.TYREFCURSOR
+    )
+    IS
+        TBACTSERIAL         UT_STRING.TYTB_STRING;
+        TBSERIALS           UT_STRING.TYTB_STRING;
+        RCSERIALITEM        DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        NUIDX               BINARY_INTEGER;
+        RCMOVEMENT          DAOR_UNI_ITEM_BALA_MOV.STYOR_UNI_ITEM_BALA_MOV;
+
+    BEGIN
+
+        UT_TRACE.TRACE('--[INICIO] or_boItemsMove.GetInformationMov', 7);
+
+        
+
+
+
+        UT_STRING.EXTSTRING(ICLSERIALSACT, '|', TBACTSERIAL);
+        NUIDX := TBACTSERIAL.FIRST;
+        UT_STRING.EXTSTRING(TBACTSERIAL(NUIDX), ';', TBSERIALS);
+        RCSERIALITEM := DAGE_ITEMS_SERIADO.FRCGETRECORD(TBSERIALS(2));
+
+        UT_TRACE.TRACE('Solicitud [' || INUPACKAGEID || '],
+           Item seriado [' || RCSERIALITEM.ID_ITEMS_SERIADO || '],
+           Unidad Operativa ['||INUOPERATINGUNITID||']', 7);
+
+        
+        RCMOVEMENT := OR_BCITEMSMOVE.FRCGETMOVBYPACKAGE(INUPACKAGEID,RCSERIALITEM.ID_ITEMS_SERIADO);
+
+        UT_TRACE.TRACE('Documento [' || RCMOVEMENT.ID_ITEMS_DOCUMENTO || ']', 7);
+
+        
+        ORFCURSOR := OR_BCITEMSMOVE.FRFGETITEMSTRANSLATE(RCMOVEMENT.ID_ITEMS_DOCUMENTO);
+        UT_TRACE.TRACE('--[FIN] or_boItemsMove.GetInformationMov', 7);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END GETINFORMATIONMOV;
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE MOVEITEMTOLABXML
+    (
+        OSBITEMLOAD	    IN  VARCHAR2
+    )
+    IS
+        CSBACTIVITY_NODE        CONSTANT VARCHAR2(15) := 'ACTIVITY_ID';
+        CSBOPERUNIT_TARGET_ID   CONSTANT VARCHAR2(20) := 'OPERUNIT_TARGET_ID';
+        CSBSERIE                CONSTANT VARCHAR2(20) := 'SERIE';
+        CSBITEM_CODE            CONSTANT VARCHAR2(20) := 'ITEM_CODE';
+        CSBSRC_OPER_UNIT        CONSTANT VARCHAR2(20) := 'OPERUNIT_ORIGIN_ID';
+
+        NUACTIVITYID        GE_ITEMS.ITEMS_ID%TYPE;
+        RCACTIVITY          DAGE_ITEMS.STYGE_ITEMS;
+        
+        SBSERIE             GE_ITEMS_SERIADO.SERIE%TYPE;
+        NUSERIALITEMID      GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        
+        NUORDERID           OR_ORDER.ORDER_ID%TYPE;
+
+        SBITEM_CODE         GE_ITEMS.CODE%TYPE;
+        NUITEM_ID           GE_ITEMS.ITEMS_ID%TYPE;
+
+        NUITEMTYPEID        GE_ITEMS.ID_ITEMS_TIPO%TYPE;
+
+        NULABUNIT           OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE;
+        RCLABUNIT           DAOR_OPERATING_UNIT.STYOR_OPERATING_UNIT;
+
+        SBXMLTMP            VARCHAR2(32767);
+        
+        
+        NUSRCUNIT           OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE;
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        FUNCTION FSBGETNODEVALUE(
+                                    NDDOMNODE XMLDOM.DOMNODE
+        )
+        RETURN VARCHAR2
+        IS
+        BEGIN
+            UT_TRACE.TRACE('BEGIN OR_BoItemsMove.MoveItemToLabXML.fsbGetNodeValue',3);
+            UT_TRACE.TRACE('END   OR_BoItemsMove.MoveItemToLabXML.fsbGetNodeValue',3);
+            RETURN XMLDOM.GETNODEVALUE(NDDOMNODE);
+        EXCEPTION
+            WHEN OTHERS THEN
+                UT_TRACE.TRACE('OTHERS OR_BoItemsMove.MoveItemToLabXML.fsbGetNodeValue',3);
+                GE_BOERRORS.SETERRORCODE(6213);
+                RAISE EX.CONTROLLED_ERROR;
+        END;
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        FUNCTION FNLGETNODESBYTAGNAME(
+                                    DMDOM XMLDOM.DOMDOCUMENT,
+                                    SBTAGNAME VARCHAR2
+        )
+        RETURN XMLDOM.DOMNODELIST
+        IS
+            NLNODES XMLDOM.DOMNODELIST;
+        BEGIN
+            UT_TRACE.TRACE('BEGIN OR_BoItemsMove.MoveItemToLabXML.fnlGetNodesByTagName sbtagname['||SBTAGNAME||']',3);
+            NLNODES := XMLDOM.GETELEMENTSBYTAGNAME(DMDOM, SBTAGNAME);
+            UT_TRACE.TRACE('END   OR_BoItemsMove.MoveItemToLabXML.fnlGetNodesByTagName',3);
+            RETURN NLNODES;
+        EXCEPTION
+            WHEN OTHERS THEN
+                UT_TRACE.TRACE('OTHERS OR_BoItemsMove.MoveItemToLabXML.fnlGetNodesByTagName',3);
+                GE_BOERRORS.SETERRORCODE(6213);
+                RAISE EX.CONTROLLED_ERROR;
+        END;
+        
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        PROCEDURE VALIDDATAACTIVITY
+        IS
+            DMDOCUMENT  XMLDOM.DOMDOCUMENT;
+            NDNODESLIST XMLDOM.DOMNODELIST;
+            NDNODE      XMLDOM.DOMNODE;
+
+            CSBNO_NUMBER_FIELD  CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 6881;
+
+        BEGIN
+            UT_TRACE.TRACE('BEGIN OR_BoItemsMove.MoveItemToLabXML.ValidDataActivity',3);
+
+            DMDOCUMENT := UT_XMLPARSE.PARSE(OSBITEMLOAD);
+            
+            NDNODESLIST := FNLGETNODESBYTAGNAME(DMDOCUMENT, CSBACTIVITY_NODE);
+            
+            UT_TRACE.TRACE('Validando etiqueta '||CSBACTIVITY_NODE, 4);
+            IF XMLDOM.GETLENGTH(NDNODESLIST) > 0 THEN
+                NDNODE := XMLDOM.ITEM(NDNODESLIST, 0);
+
+                NDNODE := XMLDOM.GETFIRSTCHILD(NDNODE);
+
+                IF UT_CONVERT.IS_NUMBER(FSBGETNODEVALUE(NDNODE)) THEN
+                    NUACTIVITYID := TO_NUMBER(FSBGETNODEVALUE(NDNODE));
+                ELSE
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CSBNO_NUMBER_FIELD, CSBACTIVITY_NODE);
+                END IF;
+
+                UT_TRACE.TRACE(CSBACTIVITY_NODE||' = '||NUACTIVITYID, 3);
+            ELSE
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBACTIVITY_NODE);
+            END IF;
+
+            IF NUACTIVITYID IS NULL THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBACTIVITY_NODE);
+            END IF;
+
+
+            UT_TRACE.TRACE('Validando etiqueta '||CSBOPERUNIT_TARGET_ID, 4);
+            
+            NDNODESLIST := FNLGETNODESBYTAGNAME(DMDOCUMENT, CSBOPERUNIT_TARGET_ID);
+
+            IF XMLDOM.GETLENGTH(NDNODESLIST) > 0 THEN
+                NDNODE := XMLDOM.ITEM(NDNODESLIST, 0);
+
+                NDNODE := XMLDOM.GETFIRSTCHILD(NDNODE);
+
+                IF UT_CONVERT.IS_NUMBER(FSBGETNODEVALUE(NDNODE)) THEN
+                    NULABUNIT := TO_NUMBER(FSBGETNODEVALUE(NDNODE));
+                ELSE
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CSBNO_NUMBER_FIELD, CSBOPERUNIT_TARGET_ID);
+                END IF;
+
+                UT_TRACE.TRACE(CSBOPERUNIT_TARGET_ID||' = '||NULABUNIT, 3);
+            ELSE
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBOPERUNIT_TARGET_ID);
+            END IF;
+
+
+            UT_TRACE.TRACE('Validando etiqueta '||CSBITEM_CODE, 4);
+            
+            NDNODESLIST := FNLGETNODESBYTAGNAME(DMDOCUMENT, CSBITEM_CODE);
+
+            IF XMLDOM.GETLENGTH(NDNODESLIST) > 0 THEN
+                NDNODE := XMLDOM.ITEM(NDNODESLIST, 0);
+
+                NDNODE := XMLDOM.GETFIRSTCHILD(NDNODE);
+
+                SBITEM_CODE := FSBGETNODEVALUE(NDNODE);
+                NUITEM_ID := GE_BOITEMS.FNUGETITEMSID(SBITEM_CODE);
+
+                UT_TRACE.TRACE(CSBITEM_CODE||' = '||SBITEM_CODE, 3);
+                UT_TRACE.TRACE('nuItem_Id = '||NUITEM_ID, 3);
+                
+                IF (GE_BOITEMS.FSBGETISITEMSERIADO(NUITEM_ID) = GE_BOCONSTANTS.CSBNO) THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CNUINVALID_FIELD, CSBITEM_CODE);
+                END IF;
+            ELSE
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBITEM_CODE);
+            END IF;
+            
+
+            UT_TRACE.TRACE('Validando etiqueta '||CSBSERIE, 4);
+            
+            NDNODESLIST := FNLGETNODESBYTAGNAME(DMDOCUMENT, CSBSERIE);
+
+            IF XMLDOM.GETLENGTH(NDNODESLIST) > 0 THEN
+                NDNODE := XMLDOM.ITEM(NDNODESLIST, 0);
+
+                NDNODE := XMLDOM.GETFIRSTCHILD(NDNODE);
+
+                SBSERIE := FSBGETNODEVALUE(NDNODE);
+
+                UT_TRACE.TRACE(CSBSERIE||' = '||SBSERIE, 3);
+            ELSE
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBSERIE);
+            END IF;
+
+            
+            
+            NDNODESLIST := FNLGETNODESBYTAGNAME(DMDOCUMENT, CSBSRC_OPER_UNIT);
+
+            IF XMLDOM.GETLENGTH(NDNODESLIST) > 0 THEN
+            
+                NDNODE := XMLDOM.ITEM(NDNODESLIST, 0);
+
+                NDNODE := XMLDOM.GETFIRSTCHILD(NDNODE);
+
+                IF UT_CONVERT.IS_NUMBER(FSBGETNODEVALUE(NDNODE)) THEN
+                    NUSRCUNIT := TO_NUMBER(FSBGETNODEVALUE(NDNODE));
+                ELSE
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CSBNO_NUMBER_FIELD, CSBSRC_OPER_UNIT);
+                END IF;
+
+                UT_TRACE.TRACE(CSBSRC_OPER_UNIT||' = '||NUSRCUNIT, 3);
+            END IF;
+
+
+            
+            DAGE_ITEMS.GETRECORD(NUACTIVITYID, RCACTIVITY);
+
+            
+            DAOR_OPERATING_UNIT.GETRECORD(NULABUNIT, RCLABUNIT);
+
+            
+            IF RCLABUNIT.OPER_UNIT_CLASSIF_ID <> OR_BOCONSTANTS.CNULABORATORYCLASSIF THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUINVALID_CLASS, RCLABUNIT.NAME );
+            END IF;
+
+            
+            IF OR_BCSCHED.FSBISVALIDACTIVITY('N', NULL, RCACTIVITY.ITEMS_ID, NULABUNIT) = GE_BOCONSTANTS.GETNO THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUNOACTIVBYOPERUNIT, RCLABUNIT.NAME);
+            END IF;
+
+            UT_TRACE.TRACE('END   OR_BoItemsMove.MoveItemToLabXML.ValidDataActivity',3);
+
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                UT_TRACE.TRACE('CONTROLLED_ERROR OR_BoItemsMove.MoveItemToLabXML.ValidDataActivity',3);
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                UT_TRACE.TRACE('OTHERS OR_BoItemsMove.MoveItemToLabXML.ValidDataActivity',3);
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END VALIDDATAACTIVITY;
+        
+    BEGIN
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        UT_TRACE.TRACE('BEGIN OR_BoItemsMove.MoveItemToLabXML',2);
+
+        VALIDDATAACTIVITY;
+
+        SBXMLTMP := OSBITEMLOAD;
+        GE_BOITEMSCARGUE.LOADITEMSFROMXML(SBXMLTMP);
+
+        GE_BOITEMSSERIADO.GETIDBYSERIE(SBSERIE, NUSERIALITEMID);
+
+        OR_BOLABORDERS.GENERATELABORDER(NULL, NUSRCUNIT, NUACTIVITYID, NUSERIALITEMID, NUORDERID);
+
+        UT_TRACE.TRACE('END   OR_BoItemsMove.MoveItemToLabXML',2);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END MOVEITEMTOLABXML;
+	
+END OR_BOITEMSMOVE;

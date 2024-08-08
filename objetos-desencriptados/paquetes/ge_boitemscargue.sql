@@ -1,0 +1,1856 @@
+PACKAGE BODY GE_BOItemsCargue
+IS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    CSBVERSION          CONSTANT VARCHAR2(20)   := 'SAO387112';
+    
+    
+    CSBFILE_SEPARATOR   CONSTANT VARCHAR2(1)    := '/';
+    CSBFIELD_SEPARATOR  CONSTANT VARCHAR2(1)    := '|';
+    CSBIGUAL            CONSTANT VARCHAR2(1)    := '=';
+    CNUMIN_ITEMS_COLUMN CONSTANT NUMBER         := 8;
+    CNUMIN_SERIE_COL    CONSTANT NUMBER         := 12;
+
+    CNUFILE_NOT_EXISTS  CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 1062;
+    CNUINVALID_FORMAT   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 112804;
+    CNUINVALID_QUANTITY CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 116184;
+    CNUREQUIRED_FIELD   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 116082;
+    CNUINVALID_SERIE    CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143738;
+    CNUNO_EXISTS_SERIE  CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143751;
+    CNUBAD_ITM_TYPE     CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 300233;
+    CNUINVALID_ADD_DATA CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143743;
+    CNUERROR_FILE       CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 120982;
+    CNUNO_DATA          CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 4705;
+    CNUITEM_BLACKLIST   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 6243;
+    CNUINVALID_UNIOP    CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143784;
+    CNUEQUI_NO_UNIOPE   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143785;
+    CNUINVALID_STATUS   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143787;
+    CNUINVALID_CLASS    CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 143788;
+    CNUDAMAGE_STATUS    CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 5127;
+    CNUWRONGSTATUS      CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 9762;
+    CNUDEVERPERROR      CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 902077;
+    
+    CNUNEGATIVE_VALUE   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 3305;
+    
+    CNUINVALID_ACT      CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 5544;
+
+    CNUINVALID_XML      CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 6192;
+    CNUXML_PROC_ERROR   CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 6213;
+
+    CNUNEGATIVEERROR    CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 9722;
+
+    CNUERROR_LOADITEMGROUP  CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 300162;
+    
+    CNUNOT_EXIST_SERIE      CONSTANT GE_MESSAGE.MESSAGE_ID%TYPE := 300262;
+    
+    CSBFWINSTANCENAME   CONSTANT GE_BOINSTANCECONTROL.STYSBNAME := 'FW_DEF_ITEMS_SERIADOS';
+    CSBITEMSERIENTITY   CONSTANT GE_BOINSTANCECONTROL.STYSBNAME := 'GE_ITEMS_SERIADO';
+    GBLSTOPINSTANCE     BOOLEAN := FALSE;
+    
+    CSBQUANTITY             CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'QUANTITY';
+    CSBCOST                 CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'COST';
+    CSBITEM_CODE            CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'ITEM_CODE';
+    CSBDATE                 CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'DATE';
+    CSBOPERUNIT_ORIGIN_ID   CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'OPERUNIT_ORIGIN_ID';
+    CSBOPERUNIT_TARGET_ID   CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'OPERUNIT_TARGET_ID';
+    CSBDOCUMENT             CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'DOCUMENT';
+    CSBREFERENCE            CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'REFERENCE';
+    CSBATTRIBUTES           CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'ATTRIBUTES';
+    CSBSERIE                CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'SERIE';
+    CSBSTATUS               CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'STATUS';
+    CSBSUBSIDY              CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'SUBSIDY';
+    CSBASSO_SERIE           CONSTANT GE_BOITEMSREQUEST.STYTAGNAME := 'ASSO_SERIE';
+
+    
+    GTBDOCUMENTS        TYTBDOCUMENTS;
+
+    GBLWARNIGN          BOOLEAN := FALSE;
+    
+    
+    GNUDOCUMENT         GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE;
+
+    GBLDEV              BOOLEAN := FALSE;
+    GBLDESTEXTERNA      BOOLEAN := FALSE;
+	
+
+    
+	
+    
+    
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CREATEMOVEMENTORDER
+    (
+        INUOPERATINGUNITID  IN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE,
+        ONUORDERID          OUT OR_ORDER.ORDER_ID%TYPE
+    )
+    IS
+        NUBILLINGACT    GE_ITEMS.ITEMS_ID%TYPE;
+        RCNEWORDER      DAOR_ORDER.STYOR_ORDER;
+        NUORDERACTIVITY OR_ORDER_ACTIVITY.ORDER_ACTIVITY_ID%TYPE;
+        TBORDERITEMS    CONSTANTS.TY_TBNUMBER;
+        NUINDEX         BINARY_INTEGER;
+    BEGIN
+        NUBILLINGACT := GE_BOITEMSCONSTANTS.CNUBILLINGACTIVITY;
+
+        
+        DAGE_ITEMS.ACCKEY(NUBILLINGACT);
+
+        
+        IF DAGE_ITEMS.FNUGETITEM_CLASSIF_ID(NUBILLINGACT) <> OR_BOORDERACTIVITIES.CNUACTIVITYTYPE THEN
+            ERRORS.SETERROR ( CNUINVALID_ACT, NUBILLINGACT );
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        ONUORDERID := GE_BCITEMSREQUEST.FNUGETBILLINGORDERID(INUOPERATINGUNITID, NUBILLINGACT);
+
+        
+        IF ONUORDERID IS NOT NULL THEN
+            RETURN;
+        END IF;
+
+        
+        OR_BOORDERACTIVITIES.CREATEACTIVITY
+        (
+            NUBILLINGACT, 
+            NULL, 
+            NULL, 
+            NULL, 
+            NULL, 
+            NULL, 
+            NULL, 
+            NULL, 
+            NULL, 
+            NULL, 
+            NULL, 
+            INUOPERATINGUNITID, 
+            SYSDATE, 
+            NULL, 
+            '', 
+            FALSE, 
+            NULL, 
+            ONUORDERID, 
+            NUORDERACTIVITY, 
+            NULL, 
+            GE_BOCONSTANTS.CSBNO 
+        );
+
+        
+        RCNEWORDER := DAOR_ORDER.FRCGETRECORD(ONUORDERID);
+
+        RCNEWORDER.ORDER_STATUS_ID := OR_BOCONSTANTS.CNUORDER_STAT_CLOSED;
+        RCNEWORDER.LEGALIZATION_DATE := SYSDATE;
+        RCNEWORDER.OPERATING_UNIT_ID := INUOPERATINGUNITID;
+        
+        
+        DAOR_ORDER.UPDRECORD(RCNEWORDER);
+
+        
+        DAOR_ORDER_ACTIVITY.UPDSTATUS(NUORDERACTIVITY, OR_BOCONSTANTS.CSBFINISHSTATUS);
+        
+        OR_BCORDERITEMS.GETORDERITEMSBYORDER(ONUORDERID, NUBILLINGACT, TBORDERITEMS);
+        
+        NUINDEX := TBORDERITEMS.FIRST;
+        
+        IF NUINDEX IS NOT NULL THEN
+            
+            DAOR_ORDER_ITEMS.UPDLEGAL_ITEM_AMOUNT(TBORDERITEMS(NUINDEX), 1);
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CREATEMOVEMENTORDER;
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE ADDITEMTOORDER
+    (
+        INUORDERID  IN  OR_ORDER.ORDER_ID%TYPE,
+        INUITEMSID  IN  GE_ITEMS.ITEMS_ID%TYPE,
+        INUAMOUNT   IN  OR_ORDER_ITEMS.LEGAL_ITEM_AMOUNT%TYPE,
+        INUVALUE    IN  OR_ORDER_ITEMS.VALUE%TYPE,
+        IBLVALITEM  IN  BOOLEAN DEFAULT TRUE
+    )
+    IS
+        TBORDERITEMS        OR_BCORDERITEMS.TYTBORDERITEMS;
+        SBINDEX             VARCHAR2(32);
+        NUORDERITEMID       OR_ORDER_ITEMS.ORDER_ITEMS_ID%TYPE;
+        RCORDERITEMS        DAOR_ORDER_ITEMS.STYOR_ORDER_ITEMS;
+        RCORDER             DAOR_ORDER.STYOR_ORDER;
+        NUTOTALITEMVALUE    OR_ORDER.ORDER_VALUE%TYPE;
+    BEGIN
+        IF (INUAMOUNT IS NULL OR INUAMOUNT <= 0) THEN
+            
+            GE_BOERRORS.SETERRORCODE(CNUNEGATIVE_VALUE);
+        END IF;
+
+        IF (INUVALUE IS NULL OR INUVALUE < 0) THEN
+            
+            GE_BOERRORS.SETERRORCODE(CNUNEGATIVE_VALUE);
+        END IF;
+
+        OR_BCORDERITEMS.GETORDERITEMBYORDER(INUORDERID, TBORDERITEMS);
+
+        SBINDEX :=  INUORDERID||'-'||INUITEMSID;
+
+        IF   TBORDERITEMS.EXISTS(SBINDEX) AND IBLVALITEM THEN
+
+            
+            DAOR_ORDER_ITEMS.UPDLEGAL_ITEM_AMOUNT(TBORDERITEMS(SBINDEX).NUORDERITEMSID, TBORDERITEMS(SBINDEX).NULEGALITEMAMOUNT + INUAMOUNT);
+        ELSE
+            RCORDERITEMS.ORDER_ITEMS_ID := OR_BOSEQUENCES.FNUNEXTOR_ORDER_ITEMS;
+            RCORDERITEMS.ORDER_ID := INUORDERID;
+            RCORDERITEMS.ITEMS_ID := INUITEMSID;
+            RCORDERITEMS.ASSIGNED_ITEM_AMOUNT := 1;
+            RCORDERITEMS.LEGAL_ITEM_AMOUNT := INUAMOUNT;
+            RCORDERITEMS.TOTAL_PRICE := INUVALUE;
+            RCORDERITEMS.VALUE := INUVALUE;
+            DAOR_ORDER_ITEMS.INSRECORD(RCORDERITEMS);
+        END IF;
+
+        RCORDER := DAOR_ORDER.FRCGETRECORD(INUORDERID);
+
+        NUTOTALITEMVALUE := INUAMOUNT * INUVALUE;
+
+        RCORDER.ORDER_COST_BY_LIST := NVL(RCORDER.ORDER_COST_BY_LIST, 0) + NUTOTALITEMVALUE;
+        RCORDER.ORDER_VALUE := NVL(RCORDER.ORDER_VALUE, 0) + NUTOTALITEMVALUE;
+
+        
+        DAOR_ORDER.UPDRECORD(RCORDER);
+
+    EXCEPTION
+    	WHEN EX.CONTROLLED_ERROR THEN
+    		RAISE;
+    	WHEN OTHERS THEN
+    		ERRORS.SETERROR;
+    		RAISE EX.CONTROLLED_ERROR;
+    END ADDITEMTOORDER;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	FUNCTION FBLCARGAREQUIPO
+    (
+        INULINENUMBER   IN  NUMBER,
+        ISBLINE         IN  CLOB,
+        IFERRORFILE     IN  UTL_FILE.FILE_TYPE,
+        IBLISXML        IN  BOOLEAN DEFAULT FALSE
+    )
+    RETURN BOOLEAN
+    IS
+        NUERROR         NUMBER;
+        SBERROR         VARCHAR2(2000);
+        NUIDXATRIBUTO   NUMBER;
+        NUIDXGENERAL    NUMBER;
+        
+        SBLINE          CLOB; 
+
+        TBLINEDATA      UT_STRING.TYTB_STRING;
+        TBATRIBUTOS     GE_BCITEMSTIPO.TYTBATRIBUTOS;
+        
+        TBXMLDATA       TYTBHASHTABLE;
+
+        
+        
+        
+        SBESSERIADO     GE_ITEMS_TIPO.SERIADO%TYPE := GE_BOCONSTANTS.CSBNO;
+        NUITEMTIPO      GE_ITEMS_TIPO.ID_ITEMS_TIPO%TYPE;
+
+        NUEXTERNCODE    GE_ITEMS.CODE%TYPE;
+        NUITEMID        GE_ITEMS_SERIADO.ITEMS_ID%TYPE;
+        SBSERIE         GE_ITEMS_SERIADO.SERIE%TYPE;
+        SBPROPIEDAD     GE_ITEMS_SERIADO.PROPIEDAD%TYPE;
+        SBESTADOTECNICO GE_ITEMS_SERIADO.ESTADO_TECNICO%TYPE;
+        NUIDITEMSERIADO GE_ITEMS_SERIADO.ID_ITEMS_SERIADO%TYPE;
+        NUESTADOINV     GE_ITEMS_SERIADO.ID_ITEMS_ESTADO_INV%TYPE;
+        SBASSOCIATEITEM GE_ITEMS_SERIADO.SERIE%TYPE;
+        NUASSOCIATEITEMID GE_ASSO_SERIAL_ITEMS.SERIAL_ITEMS_ID%TYPE;
+        RCASSOCIATEITEM   DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        
+        SBESEXTERNA     OR_OPERATING_UNIT.ES_EXTERNA%TYPE;
+        SBESORIGEXTERNA OR_OPERATING_UNIT.ES_EXTERNA%TYPE;
+        NUUNIDADDESTINO OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE;
+        NUUNIDADORIGEN  OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE;
+        NUCLASEORIG     OR_OPERATING_UNIT.OPER_UNIT_CLASSIF_ID%TYPE;
+        NUCLASEDEST     OR_OPERATING_UNIT.OPER_UNIT_CLASSIF_ID%TYPE;
+        
+        NUCOSTO         OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE;
+        NUSUBSIDIO      OR_OPE_UNI_ITEM_BALA.TOTAL_COSTS%TYPE;
+        NUCANTIDAD      OR_OPE_UNI_ITEM_BALA.BALANCE%TYPE;
+
+        DTFECHA         GE_ITEMS_DOCUMENTO.FECHA%TYPE;
+        SBDOCUMENTO     GE_ITEMS_DOCUMENTO.DOCUMENTO_EXTERNO%TYPE;
+        SBREFERENCIA    GE_ITEMS_DOCUMENTO.DOCUMENTO_EXTERNO%TYPE;
+        NUFACTURACOMPRA GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE;
+        NUORDENCOMPRA   GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE;
+
+        NUATRIBUTOITEM  GE_ITEMS_TIPO_AT_VAL.ID_ITEMS_TIPO_AT_VAL%TYPE;
+        SBVALORATRIBUTO GE_ITEMS_TIPO_AT_VAL.VALOR%TYPE;
+        
+        SBTIPOMOVIMIENTO    OR_UNI_ITEM_BALA_MOV.MOVEMENT_TYPE%TYPE;
+        NUUNIITEMMOVID      OR_UNI_ITEM_BALA_MOV.UNI_ITEM_BALA_MOV_ID%TYPE;
+        NUCAUSALMOV         OR_ITEM_MOVEME_CAUS.ITEM_MOVEME_CAUS_ID%TYPE;
+        
+        SBDOCUMENTSTATUS    GE_ITEMS_DOCUMENTO.ESTADO%TYPE := GE_BOITEMSCONSTANTS.CSBESTADOABIERTO;
+        SBCONTEXTO          GE_BOINSTANCECONTROL.STYSBSQL;
+        
+        RCITEMSSERIADO      DAGE_ITEMS_SERIADO.STYGE_ITEMS_SERIADO;
+        
+        NUORDERID           OR_ORDER.ORDER_ID%TYPE;
+        
+        NDXMLADDATTS        XMLDOM.DOMNODE;
+
+        
+        
+        
+        PROCEDURE WRITEERROR
+        IS
+        BEGIN
+        
+            ERRORS.GETERROR (NUERROR, SBERROR);
+            GE_BOFILEMANAGER.FILEWRITE
+            (
+                IFERRORFILE,
+                '['|| LPAD (INULINENUMBER, 6, ' ') ||']['|| NUERROR ||'-'|| SBERROR ||']'|| CHR (13)
+            );
+        
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END;
+        
+        
+        
+        
+        PROCEDURE VALBASICDATA IS
+        BEGIN
+        
+            
+            IF NUUNIDADORIGEN = NUUNIDADDESTINO THEN
+                GE_BOERRORS.SETERRORCODE(CNUINVALID_UNIOP);
+            END IF;
+
+            SBESEXTERNA     :=  NVL(DAOR_OPERATING_UNIT.FSBGETES_EXTERNA(NUUNIDADDESTINO), GE_BOCONSTANTS.GETNO);
+            GBLDESTEXTERNA  :=  FALSE;
+            GBLDESTEXTERNA  :=  SBESEXTERNA = GE_BOCONSTANTS.GETYES;
+            SBESORIGEXTERNA :=  NVL(DAOR_OPERATING_UNIT.FSBGETES_EXTERNA(NUUNIDADORIGEN), GE_BOCONSTANTS.GETNO);
+            NUCLASEORIG     :=  DAOR_OPERATING_UNIT.FNUGETOPER_UNIT_CLASSIF_ID(NUUNIDADORIGEN);
+            NUCLASEDEST     :=  DAOR_OPERATING_UNIT.FNUGETOPER_UNIT_CLASSIF_ID(NUUNIDADDESTINO);
+
+            
+            NUITEMTIPO  := DAGE_ITEMS.FNUGETID_ITEMS_TIPO(NUITEMID);
+            IF NUITEMTIPO IS NOT NULL THEN
+                SBESSERIADO := DAGE_ITEMS_TIPO.FSBGETSERIADO(NUITEMTIPO);
+                
+                
+                IF (NUITEMTIPO = GE_BOITEMSCONSTANTS.CNUGROUP_TYPEITEMS ) THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CNUERROR_LOADITEMGROUP,
+                                                     NUITEMTIPO ||' - ' || DAGE_ITEMS_TIPO.FSBGETDESCRIPCION(NUITEMTIPO));
+                END IF;
+            END IF;
+            
+            
+            IF NUCLASEORIG NOT IN
+                (GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA,
+                GE_BOITEMSCONSTANTS.CNUUNID_OP_PROVEEDORA)
+            THEN
+                   GE_BOERRORS.SETERRORCODEARGUMENT(CNUINVALID_CLASS, DAOR_OPERATING_UNIT.FSBGETNAME(NUUNIDADORIGEN));
+            END IF;
+            
+            GBLDEV := FALSE;
+            
+            IF (NUCANTIDAD < 0) THEN
+                GBLDEV := TRUE;
+                IF (NUCLASEORIG <> GE_BOITEMSCONSTANTS.CNUUNID_OP_PROVEEDORA) THEN
+                    GE_BOERRORS.SETERRORCODE(CNUDEVERPERROR);
+                END IF;
+            END IF;
+
+        
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END VALBASICDATA;
+        
+        
+        
+        
+        PROCEDURE GETBASICDATA
+        IS
+            CNUUNIDADORIGENCOL  CONSTANT NUMBER := 1;
+            CNUUNIDADDESTINOCOL CONSTANT NUMBER := 2;
+            CNUFECHACOL         CONSTANT NUMBER := 3;
+            CNUDOCUMENTOCOL     CONSTANT NUMBER := 4;
+            CNUREFERENCIACOL    CONSTANT NUMBER := 5;
+            CNUEXTERNCODECOL    CONSTANT NUMBER := 6;
+            CNUCANTIDADCOL      CONSTANT NUMBER := 7;
+            CNUCOSTOCOL         CONSTANT NUMBER := 8;
+        BEGIN
+        
+            IF TBLINEDATA.COUNT < CNUMIN_ITEMS_COLUMN THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUINVALID_FORMAT,INULINENUMBER);
+            END IF;
+
+            NUUNIDADORIGEN  :=  TBLINEDATA(CNUUNIDADORIGENCOL);
+            NUUNIDADDESTINO :=  TBLINEDATA(CNUUNIDADDESTINOCOL);
+            DTFECHA         :=  UT_DATE.FDTDATEWITHFORMAT(TBLINEDATA(CNUFECHACOL));
+            SBDOCUMENTO     :=  TBLINEDATA(CNUDOCUMENTOCOL);
+            SBREFERENCIA    :=  TBLINEDATA(CNUREFERENCIACOL);
+            NUEXTERNCODE    :=  TBLINEDATA(CNUEXTERNCODECOL);
+            NUITEMID        :=  GE_BOITEMS.FNUGETITEMSID(NUEXTERNCODE);
+            NUCANTIDAD      :=  NVL(TBLINEDATA(CNUCANTIDADCOL),0);
+            NUCOSTO         :=  TBLINEDATA(CNUCOSTOCOL);
+
+            
+            VALBASICDATA;
+        
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END GETBASICDATA;
+        
+        
+        
+        
+        
+        PROCEDURE LOADXMLDATA
+        IS
+            DMDOCUMENT  XMLDOM.DOMDOCUMENT;
+            NDNODE      XMLDOM.DOMNODE;
+            NDPREV      XMLDOM.DOMNODE;
+            SBNODENAME  GE_BOITEMSREQUEST.STYTAGNAME; 
+        BEGIN
+        
+            
+            DMDOCUMENT := UT_XMLPARSE.PARSE(ISBLINE);
+            NDNODE.ID := DMDOCUMENT.ID;
+
+            NDNODE := XMLDOM.GETFIRSTCHILD (NDNODE); 
+
+            NDNODE := XMLDOM.GETFIRSTCHILD (NDNODE); 
+
+            WHILE NDNODE.ID != -1 LOOP
+
+                
+                NDPREV := NDNODE;
+                
+                
+                SBNODENAME := UPPER(XMLDOM.GETNODENAME(NDNODE));
+                
+                IF SBNODENAME = CSBATTRIBUTES THEN
+                    
+                    NDXMLADDATTS := NDNODE;
+                ELSE
+                    
+                    NDNODE := XMLDOM.GETFIRSTCHILD (NDNODE);
+
+                    IF NOT XMLDOM.ISNULL(NDNODE) THEN
+                        TBXMLDATA(SBNODENAME) := XMLDOM.GETNODEVALUE(NDNODE);
+                    END IF;
+                END IF;
+                
+                NDNODE := XMLDOM.GETNEXTSIBLING (NDPREV);
+
+            END LOOP;
+        
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END LOADXMLDATA;
+        
+        
+        
+        
+        PROCEDURE GETBASICXMLDATA
+        IS
+        BEGIN
+        
+
+            IF NOT TBXMLDATA.EXISTS(CSBOPERUNIT_ORIGIN_ID) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBOPERUNIT_ORIGIN_ID);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            IF NOT TBXMLDATA.EXISTS(CSBOPERUNIT_TARGET_ID) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBOPERUNIT_TARGET_ID);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            IF NOT TBXMLDATA.EXISTS(CSBDATE) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBDATE);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            IF NOT TBXMLDATA.EXISTS(CSBDOCUMENT) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBDOCUMENT);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            IF NOT TBXMLDATA.EXISTS(CSBITEM_CODE) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBITEM_CODE);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            IF NOT TBXMLDATA.EXISTS(CSBQUANTITY) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBQUANTITY);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            IF NOT TBXMLDATA.EXISTS(CSBCOST) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBCOST);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+
+            NUUNIDADORIGEN  :=  TO_NUMBER(TBXMLDATA(CSBOPERUNIT_ORIGIN_ID));
+            NUUNIDADDESTINO :=  TO_NUMBER(TBXMLDATA(CSBOPERUNIT_TARGET_ID));
+            DTFECHA         :=  TO_DATE(TBXMLDATA(CSBDATE), UT_DATE.FSBSHORT_DATE_FORMAT);
+            UT_TRACE.TRACE('dtFecha: '||DTFECHA,15);
+            SBDOCUMENTO     :=  TBXMLDATA(CSBDOCUMENT);
+            NUEXTERNCODE    :=  TBXMLDATA(CSBITEM_CODE);
+            NUITEMID        :=  GE_BOITEMS.FNUGETITEMSID(NUEXTERNCODE);
+            NUCANTIDAD      :=  TO_NUMBER(TBXMLDATA(CSBQUANTITY));
+            NUCOSTO         :=  TO_NUMBER(TBXMLDATA(CSBCOST));
+            
+            IF TBXMLDATA.EXISTS(CSBREFERENCE) THEN
+                SBREFERENCIA    :=  TBXMLDATA(CSBREFERENCE);
+            END IF;
+
+            IF NUCOSTO < 0 THEN
+                ERRORS.SETERROR (CNUNEGATIVEERROR, CSBCOST);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+
+            
+            VALBASICDATA;
+        
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END GETBASICXMLDATA;
+
+        
+        
+        
+        PROCEDURE VALITEMSERIEDATA
+        IS
+            CNUSUBSIDIOCOL      CONSTANT NUMBER := 9;
+            CNUESTADOITEMCOL    CONSTANT NUMBER := 10;
+            CNUSERIECOL         CONSTANT NUMBER := 11;
+            CNUASSOSERIECOL     CONSTANT NUMBER := 12;
+        BEGIN
+        
+        
+            IF ((NUCANTIDAD <> 1) AND (NUCANTIDAD <> -1)) THEN
+                
+                GE_BOERRORS.SETERRORCODEARGUMENT
+                (
+                    CNUINVALID_QUANTITY,
+                    DAGE_ITEMS.FSBGETDESCRIPTION(NUITEMID)||'|'||NUCANTIDAD
+                );
+            END IF;
+
+            IF TBLINEDATA.EXISTS(CNUSUBSIDIOCOL) THEN
+                NUSUBSIDIO :=  TBLINEDATA(CNUSUBSIDIOCOL);
+            END IF;
+
+            IF TBLINEDATA.EXISTS(CNUESTADOITEMCOL) THEN
+                SBESTADOTECNICO :=  TBLINEDATA(CNUESTADOITEMCOL);
+            END IF;
+
+            IF TBLINEDATA.EXISTS(CNUSERIECOL) THEN
+                SBSERIE :=  TBLINEDATA(CNUSERIECOL);
+            END IF;
+
+            IF SBSERIE IS NULL THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBSERIE);
+            END IF;
+            
+            IF TBLINEDATA.EXISTS(CNUASSOSERIECOL) THEN
+                SBASSOCIATEITEM := TBLINEDATA(CNUASSOSERIECOL);
+            END IF;
+
+        
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END  VALITEMSERIEDATA;
+        
+        
+        
+        
+        PROCEDURE VALITEMSERIEXMLDATA
+        IS
+        BEGIN
+        
+
+            IF ((NUCANTIDAD <> 1) AND (NUCANTIDAD <> -1)) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT
+                (
+                    CNUINVALID_QUANTITY,
+                    DAGE_ITEMS.FSBGETDESCRIPTION(NUITEMID)||'|'||NUCANTIDAD
+                );
+            END IF;
+
+            IF NOT TBXMLDATA.EXISTS(CSBSERIE) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBSERIE);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+
+            IF (NUCANTIDAD = 1) THEN
+
+                IF NOT TBXMLDATA.EXISTS(CSBSTATUS) THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, CSBSTATUS);
+                    RAISE EX.CONTROLLED_ERROR;
+                END IF;
+
+                IF TBXMLDATA.EXISTS(CSBSUBSIDY) THEN
+                    NUSUBSIDIO := TBXMLDATA(CSBSUBSIDY);
+                ELSE
+                    NUSUBSIDIO := 0;
+                END IF;
+
+                IF NUSUBSIDIO < 0 THEN
+                    ERRORS.SETERROR (CNUNEGATIVEERROR, CSBSUBSIDY);
+                    RAISE EX.CONTROLLED_ERROR;
+                END IF;
+
+                SBESTADOTECNICO := TBXMLDATA(CSBSTATUS);
+
+
+                IF TBXMLDATA.EXISTS(CSBASSO_SERIE) THEN
+                    SBASSOCIATEITEM := TBXMLDATA (CSBASSO_SERIE);
+                END IF;
+            END IF;
+            
+            SBSERIE         := TBXMLDATA(CSBSERIE);
+
+        
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END  VALITEMSERIEXMLDATA;
+        
+        
+        
+        
+        PROCEDURE GETITEMSERIEDATA
+        IS
+            NUOPERUNITID    GE_ITEMS_SERIADO.OPERATING_UNIT_ID%TYPE;
+        BEGIN
+        
+            
+            IF IBLISXML THEN
+                VALITEMSERIEXMLDATA;
+            ELSE
+                VALITEMSERIEDATA;
+            END IF;
+            
+            
+            SBPROPIEDAD := GE_BOITEMSCONSTANTS.CSBEMPRESA;
+            
+            IF NUCLASEDEST = GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA THEN
+                
+                NUESTADOINV := GE_BOITEMSCONSTANTS.CNUSTATUS_EN_REPARA;
+            
+            ELSIF NUCLASEORIG = GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA THEN
+                
+                NUESTADOINV := GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE;
+            ELSIF ((NUCLASEORIG = GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA) AND
+                   (NUCANTIDAD = -1)) THEN
+                NUESTADOINV := GE_BOITEMSCONSTANTS.CNUSTATUS_DEVUELTO_A_ERP;
+            ELSE
+                NUESTADOINV := NVL( DAGE_ITEMS.FNUGETINIT_INV_STATUS_ID(NUITEMID),GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE);
+            END IF;
+            
+            IF  NUCLASEORIG = GE_BOITEMSCONSTANTS.CNUUNID_OP_CENTRO_REPARA THEN
+                NUSUBSIDIO := 0;
+                IF SBESEXTERNA = GE_BOCONSTANTS.GETYES THEN
+                    SBPROPIEDAD := GE_BOITEMSCONSTANTS.CSBTERCEROS;
+                END IF;
+            ELSIF  ((NUCLASEORIG = GE_BOITEMSCONSTANTS.CNUUNID_OP_PROVEEDORA) AND
+                    (NUCANTIDAD = -1)) THEN
+                NUSUBSIDIO := 0;
+                SBPROPIEDAD := GE_BOITEMSCONSTANTS.CSBTERCEROS;
+            ELSE
+                IF SBESTADOTECNICO = GE_BOITEMSCONSTANTS.CSBSTATUS_DAMAGE THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CNUDAMAGE_STATUS, SBSERIE);
+                END IF;
+
+                IF SBESEXTERNA = GE_BOCONSTANTS.GETYES THEN
+                    SBPROPIEDAD := GE_BOITEMSCONSTANTS.CSBTERCEROS;
+                END IF;
+            END IF;
+            
+            GE_BCITEMSSERIADO.GETIDBYSERIE(SBSERIE, NUIDITEMSERIADO);
+            
+            
+            IF SBESTADOTECNICO NOT IN (GE_BOITEMSCONSTANTS.CSBSTATUS_NUEVO,
+                                       GE_BOITEMSCONSTANTS.CSBSTATUS_REACON,
+                                       GE_BOITEMSCONSTANTS.CSBSTATUS_DAMAGE) THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUWRONGSTATUS, SBESTADOTECNICO);
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+
+            IF  NUIDITEMSERIADO IS NOT NULL THEN
+            
+                RCITEMSSERIADO := DAGE_ITEMS_SERIADO.FRCGETRECORD(NUIDITEMSERIADO);
+                
+                
+                IF ((NUCLASEORIG != GE_BOITEMSCONSTANTS.CNUUNID_OP_PROVEEDORA) AND
+                    (NUCANTIDAD <> -1) AND
+                    (SBESTADOTECNICO = GE_BOITEMSCONSTANTS.CSBSTATUS_NUEVO))
+                THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CNUINVALID_SERIE, SBSERIE);
+                END IF;
+
+                NUOPERUNITID := RCITEMSSERIADO.OPERATING_UNIT_ID;
+                
+                IF (GBLDEV) THEN
+                    IF (NVL(NUOPERUNITID, NUUNIDADORIGEN) <>  NUUNIDADDESTINO) THEN
+                        GE_BOERRORS.SETERRORCODEARGUMENT
+                        (
+                            CNUEQUI_NO_UNIOPE, SBSERIE||'|'||
+                            DAOR_OPERATING_UNIT.FSBGETNAME(NUUNIDADDESTINO, 0)
+                        );
+                    END IF;
+                ELSE
+                    IF (NVL(NUOPERUNITID, NUUNIDADORIGEN) <>  NUUNIDADORIGEN) THEN
+                        GE_BOERRORS.SETERRORCODEARGUMENT
+                        (
+                            CNUEQUI_NO_UNIOPE, SBSERIE||'|'||
+                            DAOR_OPERATING_UNIT.FSBGETNAME(NUUNIDADORIGEN, 0)
+                        );
+                    END IF;
+                END IF;
+                
+                
+                IF RCITEMSSERIADO.ID_ITEMS_ESTADO_INV = GE_BOITEMSCONSTANTS.CNUSTATUS_TRANSITO THEN
+                        GE_BOERRORS.SETERRORCODEARGUMENT
+                        (
+                            CNUINVALID_STATUS,
+                            DAGE_ITEMS_ESTADO_INV.FSBGETDESCRIPCION(GE_BOITEMSCONSTANTS.CNUSTATUS_TRANSITO)
+                            ||'|'||SBSERIE
+                        );
+                END IF;
+            END IF;
+            
+            IF SBASSOCIATEITEM IS NOT NULL THEN
+
+                
+                IF NUITEMTIPO <> GE_BOITEMSCONSTANTS.CNUTYPE_SEAL THEN
+
+                    GE_BOERRORS.SETERRORCODEARGUMENT
+                    (
+                        CNUBAD_ITM_TYPE,
+                        SBSERIE||'|'||DAGE_ITEMS_TIPO.FSBGETDESCRIPCION(GE_BOITEMSCONSTANTS.CNUTYPE_SEAL)
+                    );
+                END IF;
+
+                
+                
+                GE_BOITEMSSERIADO.GETITEMSERBYSERIE(SBASSOCIATEITEM, RCASSOCIATEITEM);
+
+                
+                IF (RCASSOCIATEITEM.ID_ITEMS_SERIADO IS NULL) THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CNUNOT_EXIST_SERIE, SBASSOCIATEITEM);
+                END IF;
+
+                
+                IF DAGE_ITEMS.FNUGETID_ITEMS_TIPO(RCASSOCIATEITEM.ITEMS_ID) NOT IN (
+                    GE_BOITEMSCONSTANTS.CNUTYPE_GAS_METER,
+                    GE_BOITEMSCONSTANTS.CNUTYPE_POWER_METER,
+                    GE_BOITEMSCONSTANTS.CNUTYPE_WATER_METER) THEN
+
+                    GE_BOERRORS.SETERRORCODEARGUMENT
+                    (
+                        CNUBAD_ITM_TYPE,
+                        RCASSOCIATEITEM.SERIE||'|'||
+                          DAGE_ITEMS_TIPO.FSBGETDESCRIPCION(GE_BOITEMSCONSTANTS.CNUTYPE_GAS_METER)||' o '||
+                          DAGE_ITEMS_TIPO.FSBGETDESCRIPCION(GE_BOITEMSCONSTANTS.CNUTYPE_POWER_METER)||' o '||
+                          DAGE_ITEMS_TIPO.FSBGETDESCRIPCION(GE_BOITEMSCONSTANTS.CNUTYPE_WATER_METER)
+                    );
+                END IF;
+        
+                
+                IF NVL(RCASSOCIATEITEM.OPERATING_UNIT_ID, NUUNIDADDESTINO) <> NUUNIDADDESTINO THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT
+                    (
+                        CNUEQUI_NO_UNIOPE,
+                        RCASSOCIATEITEM.SERIE||'|'||
+                        DAOR_OPERATING_UNIT.FSBGETNAME(NUUNIDADDESTINO, 0)
+                    );
+                END IF;
+                
+                
+                IF RCASSOCIATEITEM.ID_ITEMS_ESTADO_INV <> GE_BOITEMSCONSTANTS.CNUSTATUS_DISPONIBLE THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT
+                    (
+                            CNUINVALID_STATUS,
+                            DAGE_ITEMS_ESTADO_INV.FSBGETDESCRIPCION(RCASSOCIATEITEM.ID_ITEMS_ESTADO_INV)
+                            ||'|'||RCASSOCIATEITEM.SERIE
+                    );
+                END IF;
+                
+                NUASSOCIATEITEMID := RCASSOCIATEITEM.ID_ITEMS_SERIADO;
+
+            END IF;
+
+        
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END GETITEMSERIEDATA;
+        
+        
+        
+        
+        PROCEDURE GENDOCUMENTS
+        IS
+            NUDOCRELACION   GE_ITEMS_DOC_REL.ID_ITEMS_DOC_RELACION%TYPE;
+        BEGIN
+        
+        
+        
+        GNUDOCUMENT := NULL;
+        
+            IF (NUCAUSALMOV = GE_BOITEMSCONSTANTS.CNUCAUSALENTFACTCOMPRA) THEN
+                NUFACTURACOMPRA := GE_BCITEMSDOCUMENTO.FNUGETITEMSDOCBYDOCEXT
+                                    (
+                                        GE_BOITEMSCONSTANTS.CNUTIPOFACTURACOMPRA,
+                                        NUUNIDADORIGEN,
+                                        SBDOCUMENTO
+                                    );
+
+                IF NUFACTURACOMPRA IS NULL THEN
+                    
+                    GE_BOITEMSDOCUMENTO.REGISTRARDOCUMENTO(
+                                                            GE_BOITEMSCONSTANTS.CNUTIPOFACTURACOMPRA,
+                                                            NUUNIDADORIGEN,
+                                                            NUUNIDADDESTINO,
+                                                            DTFECHA,
+                                                            SBDOCUMENTO,
+                                                            GE_BOITEMSCONSTANTS.CSBESTADOCERRADO,
+                                                            NULL,
+                                                            NUFACTURACOMPRA
+                                                           );
+                END IF;
+
+                NUORDENCOMPRA := GE_BCITEMSDOCUMENTO.FNUGETITEMSDOCBYDOCEXT
+                                    (
+                                        GE_BOITEMSCONSTANTS.CNUTIPOORDENCOMPRA,
+                                        NUUNIDADDESTINO,
+                                        SBREFERENCIA
+                                    );
+
+                
+                
+                IF (SBESEXTERNA <> GE_BOCONSTANTS.GETYES) AND
+                   (NUORDENCOMPRA IS NOT NULL) AND
+                   (DAGE_ITEMS_DOCUMENTO.FSBGETESTADO(NUORDENCOMPRA) = GE_BOITEMSCONSTANTS.CSBESTADOCERRADO) THEN
+
+                    GE_BOERRORS.SETERRORCODE(5984);
+
+                ELSIF NUORDENCOMPRA IS NULL THEN
+                    
+                    GE_BOITEMSDOCUMENTO.REGISTRARDOCUMENTO(
+                                                            GE_BOITEMSCONSTANTS.CNUTIPOORDENCOMPRA,
+                                                            NUUNIDADDESTINO,
+                                                            NUUNIDADORIGEN,
+                                                            DTFECHA,
+                                                            SBREFERENCIA,
+                                                            SBDOCUMENTSTATUS,
+                                                            NULL,
+                                                            NUORDENCOMPRA
+                                                           );
+                    UT_TRACE.TRACE('Orden compra nula sbDocumentStatus: '||SBDOCUMENTSTATUS, 10);
+
+                
+                ELSIF  SBDOCUMENTSTATUS  = GE_BOITEMSCONSTANTS.CSBESTADOABIERTO THEN
+                    DAGE_ITEMS_DOCUMENTO.UPDESTADO(NUORDENCOMPRA,GE_BOITEMSCONSTANTS.CSBESTADOABIERTO);
+                    UT_TRACE.TRACE('Abierto sbDocumentStatus: '||SBDOCUMENTSTATUS, 10);
+                ELSIF  SBDOCUMENTSTATUS  = GE_BOITEMSCONSTANTS.CSBESTADOCERRADO THEN
+                    UT_TRACE.TRACE('Cerrado sbDocumentStatus: '||SBDOCUMENTSTATUS, 10);
+                    DAGE_ITEMS_DOCUMENTO.UPDESTADO(NUORDENCOMPRA,GE_BOITEMSCONSTANTS.CSBESTADOCERRADO);
+                END IF;
+
+                
+                IF NUORDENCOMPRA IS NOT NULL THEN
+                    GTBDOCUMENTS(NUORDENCOMPRA).NUIDDOCUMENTO  := NUORDENCOMPRA;
+                    GTBDOCUMENTS(NUORDENCOMPRA).NUIDUNIDAD     := NUUNIDADDESTINO;
+                    GTBDOCUMENTS(NUORDENCOMPRA).SBDOCUMENTO    := SBREFERENCIA;
+                END IF;
+
+                
+                GE_BOITEMSDOCUMENTO.RELACIONARDOCUMENTO(NUFACTURACOMPRA, NUORDENCOMPRA, NUDOCRELACION);
+            ELSE
+                
+                NUFACTURACOMPRA := GE_BCITEMSDOCUMENTO.FNUGETITEMSDOCBYDOCEXT
+                                            (
+                                                GE_BOITEMSCONSTANTS.CNUTIPORECLAMOAPROVE,
+                                                NUUNIDADDESTINO,
+                                                SBREFERENCIA
+                                            );
+                UT_TRACE.TRACE('Existente nuFacturaCompra := '||NUFACTURACOMPRA,10);
+
+                
+                IF NUFACTURACOMPRA IS NULL THEN
+
+                    UT_TRACE.TRACE('--Se registra el documento ',10);
+
+                    
+                    GE_BOITEMSDOCUMENTO.CREATEDOCRECLAMO(NUUNIDADDESTINO, NUUNIDADORIGEN, NULL,  NUFACTURACOMPRA, NULL, SBREFERENCIA);
+                    UT_TRACE.TRACE('Existente nuFacturaCompra := '||NUFACTURACOMPRA,10);
+
+                END IF;
+            END IF;
+
+        
+        GNUDOCUMENT := NUFACTURACOMPRA;
+
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END GENDOCUMENTS;
+        
+        
+        
+        
+        PROCEDURE VALIDARQUOTA
+        IS
+            RCOPEUNIITEMBALA   DAOR_OPE_UNI_ITEM_BALA.STYOR_OPE_UNI_ITEM_BALA;
+        BEGIN
+        
+            DAOR_OPE_UNI_ITEM_BALA.GETRECORD(NUITEMID, NUUNIDADDESTINO, RCOPEUNIITEMBALA);
+            
+            IF RCOPEUNIITEMBALA.BALANCE > RCOPEUNIITEMBALA.QUOTA THEN
+                IF NOT IBLISXML THEN
+                    GE_BOFILEMANAGER.FILEWRITE
+                    (
+                        IFERRORFILE,
+                        '['|| LPAD (INULINENUMBER, 6, ' ') ||'][WARNING]saldo de item ['||
+                        DAGE_ITEMS.FSBGETDESCRIPTION(NUITEMID)||
+                        '] es mayor al cupo de la unidad operativa ['||
+                        DAOR_OPERATING_UNIT.FSBGETNAME(NUUNIDADDESTINO)||
+                        ']'|| CHR (13)
+                    );
+                    GBLWARNIGN := TRUE;
+                END IF;
+            END IF;
+        
+        EXCEPTION
+            WHEN EX.CONTROLLED_ERROR THEN
+                RAISE EX.CONTROLLED_ERROR;
+            WHEN OTHERS THEN
+                ERRORS.SETERROR;
+                RAISE EX.CONTROLLED_ERROR;
+        END VALIDARQUOTA;
+
+    BEGIN
+
+        SAVEPOINT ITEMSAVEPOINT;
+
+        
+        IF IBLISXML THEN
+            LOADXMLDATA;
+            GETBASICXMLDATA;
+        ELSE
+            SBLINE := REPLACE(ISBLINE,CHR(13),'');
+            UT_STRING.EXTSTRING(SBLINE, CSBFIELD_SEPARATOR, TBLINEDATA);
+            GETBASICDATA;
+        END IF;
+
+        
+        
+        
+        IF SBESSERIADO = GE_BOCONSTANTS.GETYES THEN
+
+            
+            GETITEMSERIEDATA;
+            
+
+            IF  NUIDITEMSERIADO IS NULL THEN
+                IF (NUCANTIDAD = -1) THEN
+                    GE_BOERRORS.SETERRORCODEARGUMENT(CNUNO_EXISTS_SERIE,SBSERIE);
+                END IF;
+                GE_BOITEMSSERIADO.REGISTRARITEM(
+                                                    NUITEMID,
+                                                    SBSERIE,
+                                                    SBESTADOTECNICO,
+                                                    NUESTADOINV,
+                                                    NUCOSTO,
+                                                    NUSUBSIDIO,
+                                                    SBPROPIEDAD,
+                                                    UT_DATE.FDTSYSDATE ,
+                                                    NUIDITEMSERIADO
+                                                );
+                
+            ELSE
+            
+                
+                IF (GE_BCITEMSSERIADO.FBLITEMBLACKLIST(SBSERIE)) THEN
+                    GE_BOERRORS.SETERRORCODE(CNUITEM_BLACKLIST);
+                END IF;
+                
+                GE_BOITEMSSERIADO.ACTUALIZARITEM(
+                                                    NUIDITEMSERIADO,
+                                                    SBESTADOTECNICO,
+                                                    NUESTADOINV,
+                                                    NUCOSTO,
+                                                    NUSUBSIDIO,
+                                                    SBPROPIEDAD
+                                                 );
+            END IF;
+            
+            RCITEMSSERIADO := DAGE_ITEMS_SERIADO.FRCGETRECORD(NUIDITEMSERIADO);
+            
+            
+            
+
+            
+            GE_BOITEMSSERIADO.CREATEBILLINGITEM(RCITEMSSERIADO.ID_ITEMS_SERIADO);
+
+            
+            GE_BCITEMSTIPO.OBTENERATRIBUTOS(NUITEMTIPO, TBATRIBUTOS);
+
+            IF TBLINEDATA.COUNT < CNUMIN_SERIE_COL + TBATRIBUTOS.COUNT AND NOT IBLISXML THEN
+                GE_BOERRORS.SETERRORCODEARGUMENT(CNUINVALID_ADD_DATA,SBSERIE);
+            END IF;
+            
+            
+            SBCONTEXTO :=
+                   'ID_ITEMS_TIPO'          || CSBIGUAL || NUITEMTIPO       || CSBFIELD_SEPARATOR
+                || 'ITEMS_ID'               || CSBIGUAL || NUITEMID         || CSBFIELD_SEPARATOR
+                || 'SERIE'                  || CSBIGUAL || SBSERIE          || CSBFIELD_SEPARATOR
+                || 'ESTADO_TECNICO'         || CSBIGUAL || SBESTADOTECNICO  || CSBFIELD_SEPARATOR
+                || 'ID_ITEMS_ESTADO_INV'    || CSBIGUAL || NUESTADOINV      || CSBFIELD_SEPARATOR
+                || 'PROPIEDAD'              || CSBIGUAL || SBPROPIEDAD      || CSBFIELD_SEPARATOR
+                || 'COSTO'                  || CSBIGUAL || NUCOSTO          || CSBFIELD_SEPARATOR
+                || 'SUBSIDIO'               || CSBIGUAL || NUSUBSIDIO       || CSBFIELD_SEPARATOR
+                || 'PROPIEDAD'              || CSBIGUAL || SBPROPIEDAD      || CSBFIELD_SEPARATOR
+                || 'FECHA_INGRESO'          || CSBIGUAL || UT_DATE.FSBSTR_SYSDATE;
+
+
+            
+            IF TBATRIBUTOS.COUNT > 0 THEN
+            
+                NUIDXATRIBUTO   := TBATRIBUTOS.FIRST;
+                NUIDXGENERAL    := CNUMIN_SERIE_COL + 1;
+                
+                WHILE (NUIDXATRIBUTO IS NOT NULL) LOOP
+
+                    
+                    
+                    IF IBLISXML THEN
+                        SBVALORATRIBUTO := UT_XPATH.VALUEOF(NDXMLADDATTS, TBATRIBUTOS(NUIDXATRIBUTO).TECHNICAL_NAME);
+                    ELSE
+                        SBVALORATRIBUTO := TBLINEDATA(NUIDXGENERAL);
+                    END IF;
+
+                    SBCONTEXTO := SBCONTEXTO ||  CSBFIELD_SEPARATOR
+                        || TBATRIBUTOS(NUIDXATRIBUTO).TECHNICAL_NAME  || CSBIGUAL || SBVALORATRIBUTO;
+                        
+                    
+                    IF SBVALORATRIBUTO IS NOT NULL THEN
+                    
+                        GE_BOITEMSSERIADO.ACTUALIZARATRIBUTO(
+                                                            TBATRIBUTOS(NUIDXATRIBUTO).ID_ITEMS_TIPO_ATR,
+                                                            NUIDITEMSERIADO,
+                                                            SBVALORATRIBUTO,
+                                                            NUATRIBUTOITEM
+                                                            );
+                                                            
+                    ELSIF  TBATRIBUTOS(NUIDXATRIBUTO).REQUERIDO = GE_BOCONSTANTS.GETYES THEN
+                        GE_BOERRORS.SETERRORCODEARGUMENT(CNUREQUIRED_FIELD, TBATRIBUTOS(NUIDXATRIBUTO).DISPLAY_NAME);
+                    END IF;
+
+                    NUIDXGENERAL := NUIDXGENERAL + 1;
+                    NUIDXATRIBUTO := TBATRIBUTOS.NEXT(NUIDXATRIBUTO);
+                END LOOP;
+
+                
+                
+                NUIDXATRIBUTO   := TBATRIBUTOS.FIRST;
+                NUIDXGENERAL    := CNUMIN_SERIE_COL + 1;
+                WHILE NUIDXATRIBUTO IS NOT NULL LOOP
+                
+                    IF IBLISXML THEN
+                        SBVALORATRIBUTO := UT_XPATH.VALUEOF(NDXMLADDATTS, TBATRIBUTOS(NUIDXATRIBUTO).TECHNICAL_NAME);
+                    ELSE
+                        SBVALORATRIBUTO := TBLINEDATA(NUIDXGENERAL);
+                    END IF;
+                    
+                    IF SBVALORATRIBUTO IS NOT NULL THEN
+                        
+                        
+                        GE_BOITEMSSERIADO.VALIDARATRIBUTO
+                        (
+                            TBATRIBUTOS(NUIDXATRIBUTO).ID_ITEMS_TIPO_ATR,
+                            SBVALORATRIBUTO,
+                            SBCONTEXTO
+                        );
+                    END IF;
+
+                    NUIDXGENERAL := NUIDXGENERAL + 1;
+                    NUIDXATRIBUTO := TBATRIBUTOS.NEXT(NUIDXATRIBUTO);
+                END LOOP;
+
+            END IF;
+
+            
+            IF_BOPREVMAINTENANCE.UPDATESERIALITEM(RCITEMSSERIADO.ID_ITEMS_SERIADO,RCITEMSSERIADO.ITEMS_ID,NULL);
+
+            
+            IF NUASSOCIATEITEMID IS NOT NULL THEN
+                GE_BOITEMSSERIADO.SEALASSOCIATION(NUIDITEMSERIADO, NUASSOCIATEITEMID, NULL, NULL);
+            END IF;
+
+        END IF;
+        
+
+        SBTIPOMOVIMIENTO    := OR_BOITEMSMOVE.CSBNEUTRALMOVETYPE;
+        SBDOCUMENTSTATUS    := GE_BOITEMSCONSTANTS.CSBESTADOABIERTO;
+        NUCAUSALMOV         := GE_BOITEMSCONSTANTS.CNUCAUSALENTFACTCOMPRA;
+
+        UT_TRACE.TRACE('sbDocumentStatus: '||SBDOCUMENTSTATUS, 10);
+        IF SBESEXTERNA = GE_BOCONSTANTS.GETYES THEN
+            UT_TRACE.TRACE('Es externa!', 10);
+            SBTIPOMOVIMIENTO    := OR_BOITEMSMOVE.CSBINCREASEMOVETYPE;
+            SBDOCUMENTSTATUS    := GE_BOITEMSCONSTANTS.CSBESTADOCERRADO;
+        END IF;
+        UT_TRACE.TRACE('sbDocumentStatus: '||SBDOCUMENTSTATUS, 10);
+
+        IF (NUCANTIDAD < 0) THEN
+            SBTIPOMOVIMIENTO    := OR_BOITEMSMOVE.CSBDECREASEMOVETYPE;
+            SBDOCUMENTSTATUS    := GE_BOITEMSCONSTANTS.CSBESTADOCERRADO;
+            NUCAUSALMOV         := GE_BOITEMSCONSTANTS.CNUMOVCAUSASALDEVOL;
+            NUCANTIDAD          := ABS(NUCANTIDAD);
+        END IF;
+        
+        
+        GENDOCUMENTS;
+
+        
+        
+        
+        
+        OR_BOITEMSMOVE.REGISTERITEMSMOVE
+        (
+            NUUNIDADDESTINO,
+            NUUNIDADORIGEN,
+            NUITEMID,
+            RCITEMSSERIADO,
+            SBTIPOMOVIMIENTO,
+            NUCAUSALMOV,
+            NUFACTURACOMPRA,
+            NUCANTIDAD,
+            NUCOSTO,
+            0, 
+            NULL,
+            NUUNIITEMMOVID
+        );
+
+        
+        IF (NUCANTIDAD > 0) THEN
+            VALIDARQUOTA;
+        END IF;
+        
+        RETURN TRUE;
+        
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            ROLLBACK TO ITEMSAVEPOINT;
+            IF IBLISXML THEN
+                RAISE EX.CONTROLLED_ERROR;
+            END IF;
+            WRITEERROR;
+            RETURN FALSE;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            ROLLBACK TO ITEMSAVEPOINT;
+            WRITEERROR;
+            RETURN FALSE;
+    END FBLCARGAREQUIPO;
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE INICIALIZARINSTANCIA
+    IS
+        NUINSTANCE              GE_BOINSTANCECONTROL.STYNUINDEX;
+    BEGIN
+
+        IF ( NOT GE_BOINSTANCECONTROL.FBLISINITINSTANCECONTROL ) THEN
+            
+            GE_BOINSTANCECONTROL.INITINSTANCEMANAGER;
+            GBLSTOPINSTANCE := TRUE;
+        END IF;
+
+        IF ( GE_BOINSTANCECONTROL.FBLACCKEYINSTANCESTACK (CSBFWINSTANCENAME, NUINSTANCE) ) THEN
+            
+            GE_BOINSTANCECONTROL.CLEARINSTANCE( CSBFWINSTANCENAME );
+        ELSE
+            
+            GE_BOINSTANCECONTROL.CREATEINSTANCE ( CSBFWINSTANCENAME, NULL );
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END INICIALIZARINSTANCIA;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE CERRARINSTANCIA
+    IS
+    BEGIN
+
+        IF ( GBLSTOPINSTANCE ) THEN
+            
+            GE_BOINSTANCECONTROL.STOPINSTANCEMANAGER;
+        ELSE
+            GE_BOINSTANCECONTROL.DESTROYINSTANCE(CSBFWINSTANCENAME, TRUE);
+        END IF;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END CERRARINSTANCIA;
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	PROCEDURE PROCESARCARGUE
+    (
+        ISBDIRECTORIO   IN  GE_DIRECTORY.PATH%TYPE,
+		  ISBARCHIVO          IN  VARCHAR2,
+		  OSBINCONSISTENCIA   OUT VARCHAR2
+    )
+	IS
+        
+        FDATAFILE       UTL_FILE.FILE_TYPE;
+        FERRORFILE      UTL_FILE.FILE_TYPE;
+        
+        SBLINE          VARCHAR2(4000);
+        NURECORD        NUMBER := 0;
+        
+        SBARCHIVOERROR  VARCHAR2(100);
+
+        PROCEDURE CLOSEFILES
+        IS
+        BEGIN
+            GE_BOFILEMANAGER.FILECLOSE (FDATAFILE);
+            GE_BOFILEMANAGER.FILECLOSE (FERRORFILE);
+        END;
+        
+	BEGIN
+
+        UT_TRACE.TRACE('INIT=>GE_BOItemsCargue.ProcesarCargue',15);
+        GBLWARNIGN := FALSE;
+        OSBINCONSISTENCIA := GE_BOCONSTANTS.CSBNO;
+
+        LIMPIARDOCSCARGA;
+        
+        IF ISBARCHIVO IS NULL THEN
+            GE_BOERRORS.SETERRORCODEARGUMENT(CNUFILE_NOT_EXISTS, ISBARCHIVO);
+        END IF;
+
+        
+        GE_BOFILEMANAGER.CHECKFILEISEXISTING (ISBDIRECTORIO || CSBFILE_SEPARATOR || ISBARCHIVO);
+
+        
+        GE_BOFILEMANAGER.FILEOPEN(
+                                    FDATAFILE,
+                                    ISBDIRECTORIO,
+                                    ISBARCHIVO,
+                                    GE_BOFILEMANAGER.CSBREAD_OPEN_FILE
+                                 );
+
+        
+        SBARCHIVOERROR := SUBSTR(ISBARCHIVO,1, INSTR(ISBARCHIVO, '.',-1)-1);
+        SBARCHIVOERROR := NVL(SBARCHIVOERROR, ISBARCHIVO)||'.err' ;
+        
+        
+        GE_BOFILEMANAGER.FILEOPEN(
+                                    FERRORFILE,
+                                    ISBDIRECTORIO,
+                                    SBARCHIVOERROR,
+                                    GE_BOFILEMANAGER.CSBWRITE_OPEN_FILE
+                                 );
+        
+        
+        
+        INICIALIZARINSTANCIA;
+        
+        
+        WHILE TRUE LOOP
+            GE_BOFILEMANAGER.FILEREAD (FDATAFILE, SBLINE);
+            EXIT WHEN SBLINE IS NULL;
+            NURECORD := NURECORD + 1;
+            
+            IF NOT FBLCARGAREQUIPO (NURECORD, SBLINE, FERRORFILE) THEN
+                GBLWARNIGN := TRUE;
+            END IF;
+            SBLINE := NULL ;
+        END LOOP;
+        
+        
+        CERRARINSTANCIA;
+        
+        
+        IF NURECORD < 1 THEN
+            UT_TRACE.TRACE('GE_BOItemsCargue.ProcesarCargue : No se encontraron datos ',15);
+            GE_BOERRORS.SETERRORCODE(CNUNO_DATA);
+        END IF;
+        
+        IF GBLWARNIGN THEN
+            OSBINCONSISTENCIA := GE_BOCONSTANTS.CSBYES;
+        END IF;
+        
+        IF GE_BOFILEMANAGER.ISFILEEXISTING(ISBDIRECTORIO || CSBFILE_SEPARATOR || SBARCHIVOERROR) AND NOT GBLWARNIGN THEN
+            NURECORD := GE_BOFILEMANAGER.DELETEFILE(ISBDIRECTORIO || CSBFILE_SEPARATOR || SBARCHIVOERROR);
+        END IF;
+
+        
+        CLOSEFILES;
+        UT_TRACE.TRACE('END=>GE_BOItemsCargue.ProcesarCargue',15);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            ROLLBACK;
+            CLOSEFILES;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ROLLBACK;
+            ERRORS.SETERROR;
+            CLOSEFILES;
+            RAISE EX.CONTROLLED_ERROR;
+    END PROCESARCARGUE;
+    
+    
+    
+    
+    PROCEDURE LIMPIARDOCSCARGA
+    IS
+    BEGIN
+        GTBDOCUMENTS.DELETE;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END LIMPIARDOCSCARGA;
+    
+    
+    
+    
+    PROCEDURE OBTENERDOCSCARGA(OTBDOCUMENTS OUT TYTBDOCUMENTS)
+    IS
+    BEGIN
+        OTBDOCUMENTS := GTBDOCUMENTS;
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END OBTENERDOCSCARGA;
+    
+    PROCEDURE DECUPXML
+    (
+        IOSBREQUESTCONFIRM  IN OUT CLOB
+    )
+    IS
+        NUPOS   NUMBER;
+    BEGIN
+    
+        NUPOS := INSTR(IOSBREQUESTCONFIRM, '?xml',1);
+        IF NUPOS = 0 THEN
+            
+            ERRORS.SETERROR ( CNUINVALID_XML);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        NUPOS := INSTR(IOSBREQUESTCONFIRM, '?>',1)+2;
+
+        IOSBREQUESTCONFIRM := SUBSTR(IOSBREQUESTCONFIRM, NUPOS, LENGTH(IOSBREQUESTCONFIRM)-NUPOS+1);
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END DECUPXML;
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE LOADITEMSFROMXML
+    (
+        IOSBREQUESTCONFIRM  IN OUT CLOB
+    )
+	IS
+	BEGIN
+
+        LIMPIARDOCSCARGA;
+
+        
+        
+        DECUPXML(IOSBREQUESTCONFIRM);
+
+        
+        
+        INICIALIZARINSTANCIA;
+
+        IF NOT FBLCARGAREQUIPO(NULL, IOSBREQUESTCONFIRM, NULL, TRUE) THEN
+            ERRORS.SETERROR (CNUXML_PROC_ERROR);
+            RAISE EX.CONTROLLED_ERROR;
+        END IF;
+
+        
+        CERRARINSTANCIA;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END LOADITEMSFROMXML;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    PROCEDURE LOADACCEPTITEM
+    (
+        ICLXMLLOADACCEPTITEMS IN CLOB
+    )
+    IS
+        CLXMLLOADACCEPTITEMS CLOB;
+        CLXMLACCEPTITEMS     CLOB;
+        DMDOCUMENT           XMLDOM.DOMDOCUMENT;
+        NDNODE               XMLDOM.DOMNODE;
+        SBNODENAME           VARCHAR2(100);
+        SBNODEVALUE          VARCHAR2(100);
+        NUDOCUMENT           GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE;
+    BEGIN
+        UT_TRACE.TRACE('INICIO GE_BOItemsCargue.LoadAcceptItem', 2);
+
+        
+        CLXMLLOADACCEPTITEMS := ICLXMLLOADACCEPTITEMS;
+
+        
+        GE_BOITEMSCARGUE.LOADITEMSFROMXML(CLXMLLOADACCEPTITEMS);
+        
+        UT_TRACE.TRACE('Documento Creado: '||GNUDOCUMENT);
+        
+        IF ((NOT GBLDEV) AND (NOT GBLDESTEXTERNA)) THEN
+
+            
+            DMDOCUMENT := UT_XMLPARSE.PARSE(CLXMLLOADACCEPTITEMS);
+
+            
+            NDNODE.ID := DMDOCUMENT.ID;
+
+            
+            NDNODE := XMLDOM.GETFIRSTCHILD(NDNODE);
+
+            SBNODENAME := XMLDOM.GETNODENAME(NDNODE);
+
+            
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'<?xml version="1.0" encoding="Windows-1252" ?>'||CHR(13);
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'<ACEPT_ITEM>'||CHR(13);
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'  <ITEM>'||CHR(13);
+
+            
+            SBNODEVALUE := MO_BODOM.FSBGETVALTAG(NDNODE, 'OPERUNIT_TARGET_ID');
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'    <OPERATING_UNIT>'||SBNODEVALUE||'</OPERATING_UNIT>'||CHR(13);
+
+            
+            SBNODEVALUE := MO_BODOM.FSBGETVALTAG(NDNODE, 'ITEM_CODE');
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'    <ITEM_CODE>'||SBNODEVALUE||'</ITEM_CODE>'||CHR(13);
+
+            
+            SBNODEVALUE := MO_BODOM.FSBGETVALTAG(NDNODE, 'QUANTITY');
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'    <QUANTITY>'||SBNODEVALUE||'</QUANTITY>'||CHR(13);
+
+            
+            SBNODEVALUE := MO_BODOM.FSBGETVALTAG(NDNODE, 'SERIE');
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'    <SERIE>'||SBNODEVALUE||'</SERIE>'||CHR(13);
+
+            
+            SBNODEVALUE := MO_BODOM.FSBGETVALTAG(NDNODE, 'DOCUMENT');
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'    <SUPPORT_DOCUMENT>AUTO_'||SBNODEVALUE||'</SUPPORT_DOCUMENT>'||CHR(13);
+
+            
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'    <ID_ITEM_DOCUMENTO>'||GNUDOCUMENT||'</ID_ITEM_DOCUMENTO>'||CHR(13);
+
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'  </ITEM>'||CHR(13);
+            CLXMLACCEPTITEMS := CLXMLACCEPTITEMS||'</ACEPT_ITEM>'||CHR(13);
+
+            
+            GE_BOACEPTARITEMS.ACCEPTITEM(CLXMLACCEPTITEMS);
+
+        END IF;
+        
+        UT_TRACE.TRACE('FIN GE_BOItemsCargue.LoadAcceptItem', 2);
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            UT_TRACE.TRACE('EXCEPTION CONTROLLED_ERROR GE_BOItemsCargue.LoadAcceptItem', 2);
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            UT_TRACE.TRACE('EXCEPTION OTHERS ERROR GE_BOItemsCargue.LoadAcceptItem', 2);
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END LOADACCEPTITEM;
+
+END GE_BOITEMSCARGUE;

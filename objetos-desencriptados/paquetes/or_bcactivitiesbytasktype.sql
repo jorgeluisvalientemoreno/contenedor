@@ -1,0 +1,390 @@
+PACKAGE BODY OR_BCActivitiesByTaskType
+AS  
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    CSBVERSION  CONSTANT VARCHAR2(250)  := 'SAO296679';
+
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+    FUNCTION FSBVERSION  RETURN VARCHAR2 IS
+    BEGIN
+        RETURN CSBVERSION;
+    END;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFGETEXISTINGRULES RETURN CONSTANTS.TYREFCURSOR
+    IS
+        REFCURSOR   CONSTANTS.TYREFCURSOR;
+    BEGIN
+
+        OPEN REFCURSOR FOR
+            SELECT DISTINCT A.CONFIG_EXPRESSION_ID CODIGO,
+                   B.DESCRIPTION DESCRIPTION
+            FROM   OR_ACT_BY_TASK_MOD A,
+                   GR_CONFIG_EXPRESSION B
+            WHERE  A.CONFIG_EXPRESSION_ID = B.CONFIG_EXPRESSION_ID
+            AND    A.CONFIG_EXPRESSION_ID IS NOT NULL;
+
+        RETURN REFCURSOR;
+        
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF REFCURSOR%ISOPEN THEN
+                CLOSE REFCURSOR;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF REFCURSOR%ISOPEN THEN
+                CLOSE REFCURSOR;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFGETCAUSALBYUNITTYPE
+    (
+        INUUNITTYPE IN WF_CAUSAL_UNIT_TYPE.UNIT_TYPE_ID%TYPE
+    )
+    RETURN CONSTANTS.TYREFCURSOR
+    IS
+        REFCURSOR CONSTANTS.TYREFCURSOR;
+        CNUORDERMODULE   CONSTANT NUMBER := GE_BOPARAMETER.FNUGET('ORDERS_MODULE');
+        CNUGENERALMODULE CONSTANT NUMBER := GE_BOPARAMETER.FNUGET('GENERAL_MODULE');
+    BEGIN
+    
+        OPEN REFCURSOR FOR
+            SELECT UNIQUE B.CAUSAL_ID||' - '||B.DESCRIPTION CAUSAL_ID,
+                   A.ALIAS ALIAS
+            FROM   WF_CAUSAL_UNIT_TYPE A ,
+                   GE_CAUSAL B
+            WHERE UNIT_TYPE_ID = INUUNITTYPE
+            AND A.CAUSAL_ID = B.CAUSAL_ID
+            AND B.MODULE_ID IN (CNUORDERMODULE, CNUGENERALMODULE);
+        
+        RETURN REFCURSOR;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF REFCURSOR%ISOPEN THEN
+                CLOSE REFCURSOR;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF REFCURSOR%ISOPEN THEN
+                CLOSE REFCURSOR;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    FUNCTION FBLEXIST
+    (
+        INUTASKCODE  IN  OR_ACT_BY_TASK_MOD.TASK_CODE%TYPE,
+        INUITEMSID   IN  OR_ACT_BY_TASK_MOD.ITEMS_ID%TYPE,
+        INUMODULE    IN  OR_ACT_BY_TASK_MOD.MODULE_ID%TYPE
+    )
+    RETURN BOOLEAN
+    IS
+        CURSOR CUACTBYTASKMOD
+        (
+            NUTASK   IN NUMBER,
+            NUITEMS  IN NUMBER,
+            NUMODULE IN NUMBER
+        )IS
+        SELECT 1
+        FROM OR_ACT_BY_TASK_MOD
+        WHERE TASK_CODE = NUTASK
+        AND   ITEMS_ID = NUITEMS
+        AND   MODULE_ID = NUMODULE;
+        
+        NURESULT NUMBER;
+    
+    BEGIN
+    
+        IF CUACTBYTASKMOD%ISOPEN THEN
+            CLOSE CUACTBYTASKMOD;
+        END IF;
+        
+        OPEN CUACTBYTASKMOD(INUTASKCODE, INUITEMSID, INUMODULE);
+        FETCH CUACTBYTASKMOD INTO NURESULT;
+        CLOSE CUACTBYTASKMOD;
+        
+        IF NVL(NURESULT,0) > 0 THEN
+            RETURN TRUE;
+        ELSE
+            RETURN FALSE;
+        END IF;
+        
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF CUACTBYTASKMOD%ISOPEN THEN
+                CLOSE CUACTBYTASKMOD;
+            END IF;
+            RAISE EX.CONTROLLED_ERROR;
+        WHEN OTHERS THEN
+            IF CUACTBYTASKMOD%ISOPEN THEN
+                CLOSE CUACTBYTASKMOD;
+            END IF;
+            ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END;
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRFGETACTBYTASKTYPE
+    (
+        INUTASKTYPE     IN  OR_TASK_TYPE.TASK_TYPE_ID%TYPE,
+        INUPROJECTCLASS IN  PM_PROJECT_CLASS.PROJECT_CLASS_ID%TYPE
+    )
+    RETURN   CONSTANTS.TYREFCURSOR
+    IS
+        RFCUSOR         CONSTANTS.TYREFCURSOR;
+    BEGIN
+        UT_TRACE.TRACE('Inicio: [OR_BCActivitiesByTaskType.frfGetActByTaskType]',15);
+        
+        IF RFCUSOR%ISOPEN THEN
+            CLOSE RFCUSOR;
+        END IF;
+        
+        OPEN
+            RFCUSOR
+        FOR
+            SELECT      GE_ITEMS.ITEMS_ID ID,
+                        GE_ITEMS.CODE||' - '||GE_ITEMS.DESCRIPTION DESCRIPTION,
+                        DECODE
+                            (
+                                GE_ITEMS.ITEM_CLASSIF_ID,
+                                OR_BOCONSTANTS.CNUADMIN_ACTIV_CLASSIF,
+                                1,
+                                OR_BOCONSTANTS.CNUITEMS_CLASS_TO_ACTIVITY,
+                                1,
+                                OR_TASK_TYPES_ITEMS.ITEM_AMOUNT
+                            ) ITEM_AMOUNT,
+                        GE_ITEMS.ITEM_CLASSIF_ID,
+                        GE_MEASURE_UNIT.DESCRIPTION MEASURE_UNIT,
+                        DECODE
+                            (
+                                GE_ITEMS.ITEM_CLASSIF_ID,
+                                OR_BOCONSTANTS.CNUADMIN_ACTIV_CLASSIF,
+                                GE_BOCONSTANTS.CSBNO,
+                                OR_BOCONSTANTS.CNUITEMS_CLASS_TO_ACTIVITY,
+                                GE_BOCONSTANTS.CSBNO,
+                                GE_BOCONSTANTS.CSBYES
+                            ) ENABLED
+            FROM        GE_ITEMS, OR_TASK_TYPES_ITEMS,GE_MEASURE_UNIT,GE_ITEM_CLASSIF
+                        /*+ Ubicaci�n OR_BCActivitiesByTaskType.frfGetActByTaskType */
+            WHERE       GE_ITEMS.ITEMS_ID = OR_TASK_TYPES_ITEMS.ITEMS_ID
+                AND     OR_TASK_TYPES_ITEMS.TASK_TYPE_ID = INUTASKTYPE
+                AND     GE_ITEMS.ITEM_CLASSIF_ID = GE_ITEM_CLASSIF.ITEM_CLASSIF_ID
+                AND     GE_MEASURE_UNIT.MEASURE_UNIT_ID = GE_ITEMS.MEASURE_UNIT_ID
+                AND (
+                        ( GE_ITEM_CLASSIF.USED_IN_LEGALIZE = GE_BOCONSTANTS.CSBYES AND GE_ITEM_CLASSIF.ITEM_CLASSIF_ID <> OR_BOCONSTANTS.CNUADMIN_ACTIV_CLASSIF )
+                        OR ( INUPROJECTCLASS = PM_BOCONSTANTS.CNUCAMPAIGNPROYECLASS AND GE_ITEM_CLASSIF.ITEM_CLASSIF_ID = OR_BOCONSTANTS.CNUADMIN_ACTIV_CLASSIF )
+                    );
+
+    	UT_TRACE.TRACE('Fin: [OR_BCActivitiesByTaskType.frfGetActByTaskType]',15);
+        RETURN RFCUSOR;
+     EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF ( RFCUSOR%ISOPEN ) THEN
+                CLOSE RFCUSOR;
+            END IF;
+        	RAISE;
+        WHEN OTHERS THEN
+            IF ( RFCUSOR%ISOPEN ) THEN
+                CLOSE RFCUSOR;
+            END IF;
+        	ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FRFGETACTBYTASKTYPE;
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    FUNCTION FRCGETRECBYMOTANDPRO
+    (
+        INUMOTIVEID    	IN    	OR_ORDER_ACTIVITY.MOTIVE_ID%TYPE,
+        INUPRODUCTID	IN    	OR_ORDER_ACTIVITY.PRODUCT_ID%TYPE
+    )
+    RETURN DAOR_ORDER_ACTIVITY.STYOR_ORDER_ACTIVITY
+    IS
+        
+        RCRECORD DAOR_ORDER_ACTIVITY.STYOR_ORDER_ACTIVITY;
+
+        CURSOR CUORORDERACTIVITY IS
+        SELECT /*+ index( a IDX_OR_ORDER_ACTIVITY_07 ) */ A.*, A.ROWID
+        FROM  OR_ORDER_ACTIVITY A
+        WHERE A.MOTIVE_ID = INUMOTIVEID
+        AND   A.PRODUCT_ID = INUPRODUCTID
+        AND   A.STATUS ='F'
+        AND   NVL(A.INSTANCE_ID,0)<>0
+        ORDER BY A.ORDER_ACTIVITY_ID DESC;
+
+    BEGIN
+
+      	UT_TRACE.TRACE('Inicio: [OR_BCActivitiesByTaskType.frcGetRecbyMotAndPro]',15);
+
+        
+        OPEN CUORORDERACTIVITY;
+            FETCH CUORORDERACTIVITY INTO RCRECORD;
+        CLOSE CUORORDERACTIVITY;
+
+      	UT_TRACE.TRACE('Fin: [OR_BCActivitiesByTaskType.frcGetRecbyMotAndPro]',15);
+
+        RETURN RCRECORD;
+
+    EXCEPTION
+        WHEN EX.CONTROLLED_ERROR THEN
+            IF ( CUORORDERACTIVITY%ISOPEN ) THEN
+                CLOSE CUORORDERACTIVITY;
+            END IF;
+        	RAISE;
+        WHEN OTHERS THEN
+            IF ( CUORORDERACTIVITY%ISOPEN ) THEN
+                CLOSE CUORORDERACTIVITY;
+            END IF;
+        	ERRORS.SETERROR;
+            RAISE EX.CONTROLLED_ERROR;
+    END FRCGETRECBYMOTANDPRO;
+
+
+END OR_BCACTIVITIESBYTASKTYPE;
