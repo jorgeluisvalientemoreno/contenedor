@@ -1,1 +1,0 @@
-select * from datos_cotizacion_comercial d

@@ -1,6 +1,0 @@
-[Ayer 3:04 p. m.] Diana Saltarin
-LDCMDCAFEC: La debe tener Datos Maestros, y desde allí se definirá que funcionarios podrán registrar cambios de fecha, quienes serán los aprobadores y sobre qué tipos de trabajo.
-(Para esto deben de registrar un caso en GLPI e indicar que funcionario va a poder realizar el cambio de fechas del tipo de trabajo que se requiere y quien lo va a aprobar)
-LDCRECAFEC: Esta forma permite modificar fecha de registro, fecha inicio de ejecución y fecha final de ejecución de una orden de trabajo, la cual después de guardar la transacción pasa al ejecutable LDCPBCAMFEC para la aprobación.
-LDCPBCAMFEC: Este ejecutable entre fechas de registro del cambio, permite buscar las ordenes que se encuentran pendientes por aprobar la modificación de fechas.
-

@@ -1,1 +1,0 @@
-select * from LDC_PECOFACT where pcfapefa = 103900

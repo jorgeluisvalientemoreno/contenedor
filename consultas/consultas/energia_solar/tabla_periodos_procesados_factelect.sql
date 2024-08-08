@@ -1,1 +1,0 @@
-select * from   periodo_factelect

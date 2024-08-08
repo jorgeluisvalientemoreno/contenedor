@@ -1,3 +1,0 @@
-select *
-from gv$session
-where upper(PROGRAM) LIKE '%FIDF%';

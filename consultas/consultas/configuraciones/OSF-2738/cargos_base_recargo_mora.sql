@@ -1,1 +1,0 @@
-select * from cargos where cargcuco =3058437006  and cargconc in ( select coblcoba  from concbali cb where cb.coblconc= 286) and cargnuse = 52130017; 

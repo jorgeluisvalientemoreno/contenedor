@@ -1,3 +1,0 @@
-SELECT 'Consulta', extractvalue(APP_XML, 'APPLICATION/VIEW/GRID/MODEL/PROXY/SOURCE') cONSULTA FROM GE_DISTRIBUTION_FILE  WHERE distribution_file_id = 'ORPAP'
-union
-SELECT 'proceso', extractvalue(APP_XML, 'APPLICATION/CTRL/OBJECT') proceso FROM GE_DISTRIBUTION_FILE  WHERE distribution_file_id = 'ORPAP'

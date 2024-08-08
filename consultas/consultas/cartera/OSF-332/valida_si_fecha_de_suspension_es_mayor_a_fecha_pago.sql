@@ -1,2 +1,0 @@
-select pr_BOProd_Suspension.fnuComSuspDatePaidDate(DAMO_Motive.fnuGetProduct_Id(MO_BOPackages.fnuGetInitialMotive(186545848))) FLAG_VALIDATE 
-from dual

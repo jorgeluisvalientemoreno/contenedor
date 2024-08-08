@@ -1,1 +1,0 @@
-DBMS_LOCK.SLEEP(5);
