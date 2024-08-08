@@ -6,9 +6,16 @@ select distinct oo.order_id Orden,
                   where oos.order_status_id = oo.order_status_id) Estado_Orden,
                 nvl(ooa.subscription_id, mm.subscription_id) Contrato,
                 nvl(ooa.product_id, mm.product_id) Producto,
-                pp.product_type_id || ' - ' || (select s1.servdesc from OPEN.SERVICIO s1 where s1.servcodi = pp.product_type_id) Tipo_Producto,
+                pp.product_type_id || ' - ' ||
+                (select s1.servdesc
+                   from OPEN.SERVICIO s1
+                  where s1.servcodi = pp.product_type_id) Tipo_Producto,
                 DireccionOrden.address_id || ' - ' ||
                 DireccionOrden.address Direccion_Orden,
+                SegmentoDireccion.Category_ || ' - ' ||
+                categoriadireccion.catedesc Categoria_Direccion,
+                SegmentoDireccion.Subcategory_ || ' - ' ||
+                subcategoriadireccion.sucadesc SubCategoria_Direccion,
                 localidad_Orden.geograp_location_id || ' - ' ||
                 localidad_Orden.description Localidad_Orden,
                 departamento_Orden.geograp_location_id || ' - ' ||
@@ -227,7 +234,7 @@ select distinct oo.order_id Orden,
                   where d.motive_status_id = mm.motive_status_id) Estado_Motivo,
                 (select decode(count(1),
                                0,
-                               'No esta gestioanda',
+                               'No esta gestionada',
                                'Esta Gestionada')
                    from open.ldc_otlegalizar lo
                   where lo.order_id = oo.order_id) LEGO,
@@ -236,7 +243,9 @@ select distinct oo.order_id Orden,
                        ooa.status || ' - Finalizado',
                        ooa.status || ' - Registrado') Estado_Actividad,
                 ooa.order_activity_id Actividad_Orden,
-                mp.pos_oper_unit_id Punto_venta
+                mp.pos_oper_unit_id Punto_venta,
+                pp.category_id || ' - ' || categoria.catedesc Categoria_Producto,
+                pp.subcategory_id || ' - ' || Subcategoria.Sucadesc subCategoria_Producto
   from open.or_order_activity ooa
   left join open.or_order oo
     on oo.order_id = ooa.order_id
@@ -283,6 +292,18 @@ select distinct oo.order_id Orden,
     on ott.task_type_id = oo.task_type_id
   left join open.concepto c
     on c.conccodi = ott.concept
+  left join open.categori categoria
+    on categoria.catecodi = pp.category_id
+  left join open.subcateg Subcategoria
+    on Subcategoria.Sucacate = pp.category_id
+   and Subcategoria.Sucacodi = pp.subcategory_id
+  left join open.ab_segments SegmentoDireccion
+    on SegmentoDireccion.Segments_Id = DireccionOrden.Segment_Id
+  left join open.categori categoriadireccion
+    on categoriadireccion.catecodi = pp.category_id
+  left join open.subcateg Subcategoriadireccion
+    on Subcategoriadireccion.Sucacate = pp.category_id
+   and Subcategoriadireccion.Sucacodi = pp.subcategory_id
  where --)select ou.order_id from orden_uobysol ou)
 -- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
 -- and ooa.subscription_id =1041350
@@ -292,21 +313,21 @@ select distinct oo.order_id Orden,
 -- and oo.task_type_id in (12119)
 -- and trunc(mp.request_date) >= '07/07/2024'
 -- and mp.motive_status_id = 14
--- and oo.order_id in (330184691) --(326799133,326799151,326799756)--(328666162)--
+-- and oo.order_id in (332950589)
 -- and ooa.order_activity_id in(4295602)
 -- and mp.cust_care_reques_num in ('212356951', '212681274')
 -- and ooa.order_id in (318396156, 318396150) --(318396156,318396150)
 -- and oo.order_status_id in (5)
 -- and oo.causal_id = 9944--in (8, 12)
---and oo.task_type_id in (10797)
+-- and oo.task_type_id in (10797)
 -- and ooa.activity_id in (100009517)
 -- and mp.package_type_id = 100284
 -- and (mm.subscription_id = 48052064 or mm.product_id = 50062001)
 -- and mp.cust_care_reques_num in ('210494274','207413106')
--- and 
-mp.package_id in (215307341)
+-- and mp.package_id in (215644501)
 -- and pp.product_status_id = 15
 -- and mm.motive_id = 96953319
 -- and oo.operating_unit_id in (1775, 1931, 1773, 3557)
 -- and rownum = 1
+--and DireccionOrden.address like '%KR GENERICA CL GENERICA - 0%'
  order by oo.created_date desc;

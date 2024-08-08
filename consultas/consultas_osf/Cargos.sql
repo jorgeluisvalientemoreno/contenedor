@@ -46,6 +46,7 @@ select sesususc contrato,
     on cc.cucocodi = cargos.cargcuco
   left join open.factura f
     on f.factcodi = cc.cucofact
- where sesususc in (2180666, 38000599, 17171249, 2164166)
-   and trunc(cargfecr) = '12/07/2024' --sysdate - 10
+ where sesususc in (703475
+)
+   and trunc(cargfecr) >= '30/07/2024' --sysdate - 10
  ORDER BY cargfecr DESC;

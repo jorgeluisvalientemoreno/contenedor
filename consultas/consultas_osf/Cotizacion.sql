@@ -1,18 +1,20 @@
 
 --venta cotizada personalizada en estado aprobada y asociada a una venta cotizada
 select /*mpa.package_id, mp.tag_name, mp.motive_status_id, mp.attention_date , */
- cc.*, dcc.*
+ gs.identification, cc.*, dcc.*, mm.subscription_id, mm.product_id
   from open.ldc_cotizacion_comercial cc
- inner join open.DATOS_COTIZACION_COMERCIAL dcc
+  left join open.DATOS_COTIZACION_COMERCIAL dcc
     on cc.id_cot_comercial = dcc.id_cot_comercial
- inner join open.mo_packages_asso mpa
+  left join open.mo_packages_asso mpa
     on mpa.package_id_asso = cc.sol_cotizacion
- inner join open.mo_packages mp
+  left join open.mo_packages mp
     on mp.package_id = mpa.package_id
- inner join open.mo_motive mm
+  left join open.mo_motive mm
     on mm.package_id = mp.package_id
- where cc.estado = 'A'
-   and mp.motive_status_id in (14, 32)
+  left join OPEN.GE_SUBSCRIBER gs
+    on gs.subscriber_id = cc.cliente
+ where cc.estado = 'R'
+--and mp.motive_status_id in (14, 32)
  order by cc.fecha_registro desc;
 
 select (select ab.geograp_location_id || ' - ' || ab.address
@@ -23,7 +25,7 @@ select (select ab.geograp_location_id || ' - ' || ab.address
        co.*
   from open.ldc_cotizacion_comercial co, open.ge_subscriber gs
  where gs.subscriber_id = co.cliente
-   and co.estado in ('A') --('A','E')
+   and co.estado in ('R') --('A','E')
 /*and co.sol_cotizacion =
 (select mp.package_id
    from open.mo_packages mp
@@ -51,7 +53,7 @@ select mp.package_id, mp.tag_name, dcc.iva_porcentaje
  order by cc.fecha_registro desc;
 select *
   from OPEN.LDC_ITEMS_COTIZACION_COM cm, open.ge_items i
- where cm.id_cot_comercial  in (8308, 8316)
+ where cm.id_cot_comercial in (8308, 8316)
    and cm.id_item = i.items_id;
 select (select a.cargconc || ' - ' || a1.concdesc
           from open.concepto a1
@@ -61,16 +63,17 @@ select (select a.cargconc || ' - ' || a1.concdesc
  where a.cargnuse = 52687626
    and a.cargfecr > sysdate - 5
  order by a.cargfecr;
-SELECT * FROM cc_quotation a where a.package_id = 202795;
+SELECT * FROM open.cc_quotation a where a.package_id = 202795;
 SELECT *
   FROM open.cc_quotation_item a
  where a.quotation_id -- in (25113,25128)
-       (SELECT a.quotation_id
+ (SELECT a.quotation_id
           FROM cc_quotation a
          where a.package_id = 192609020);
 select *
   from open.ldc_cotizacion_comercial l
- where l.sol_cotizacion = 192609020;
+ where l.id_cot_comercial = 8147
+ --l.sol_cotizacion = 192609020;
 SELECT /*+ index( a IDX_CC_QUOTATION01 ) */
  a.*, a.rowid
   FROM /*+ CC_BCQuotation.cuAttValidQuotByPack */ cc_quotation a
@@ -121,7 +124,7 @@ select cm.*, ROWID
   from OPEN.LDC_ITEMS_COTIZACION_COM cm
  where cm.id_cot_comercial = &cotizacion;
 select CM.*, ROWID
-  from ldc_tipotrab_coti_com cm
+  from open.ldc_tipotrab_coti_com cm
  where cm.id_cot_comercial = &cotizacion;
 select QW.*, ROWID
   from open.cc_quoted_work qw
@@ -132,16 +135,15 @@ select QW.*, ROWID
                (select co.sol_cotizacion
                   from open.ldc_cotizacion_comercial co
                  where id_cot_comercial = &cotizacion));
-select Q.*, ROWID
-  from open.cc_quotation q
- where q.quotation_id in (25113); q.package_id =
-       (select co.sol_cotizacion
-          from open.ldc_cotizacion_comercial co
-         where id_cot_comercial = &cotizacion);
+select Q.*, ROWID from open.cc_quotation q where q.quotation_id in (25113);
+q.package_id = (
+  select co.sol_cotizacion
+    from open.ldc_cotizacion_comercial co
+   where id_cot_comercial = &cotizacion);
 select QI.*, ROWID
   from open.cc_quotation_item qi
- where qi.quotation_id  in (25113)
-       (select q.quotation_id
+ where qi.quotation_id in (25113)
+ (select q.quotation_id
           from open.cc_quotation q
          where q.package_id =
                (select co.sol_cotizacion
@@ -149,8 +151,8 @@ select QI.*, ROWID
                  where id_cot_comercial = &cotizacion));
 select CC.*, ROWID
   from open.cc_quot_financ_cond cc
- where cc.quotation_id  in (25113,25128)
-       (select q.quotation_id
+ where cc.quotation_id in (25113, 25128)
+ (select q.quotation_id
           from open.cc_quotation q
          where q.package_id =
                (select co.sol_cotizacion
@@ -183,6 +185,7 @@ select *
 select * from open.cc_quotation_item qi where qi.quotation_id = 23374;
 select * from open.cc_quot_financ_cond cc where cc.quotation_id = 23374;
 select * from open.cc_quoted_work qw where qw.quotation_id = 23374;
+
 --Cargos
 select (select a.cargconc || ' - ' || a1.concdesc
           from open.concepto a1

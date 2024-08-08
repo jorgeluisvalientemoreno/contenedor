@@ -8,7 +8,10 @@ select distinct ge.subscriber_id,
                 s.servdesc,
                 --    open.ldc_getedadrp(pr.product_id)edad,
                 pc.is_notif,
-                pr.product_status_id
+                pr.product_status_id,
+                ab.segment_id,
+                as1.category_,
+                as1.subcategory_
   from open.ge_subscriber ge
   left join open.suscripc s
     on s.suscclie = ge.subscriber_id
@@ -22,7 +25,10 @@ select distinct ge.subscriber_id,
     on s.servcodi = pr.product_type_id
   left join open.ldc_plazos_cert pc
     on pc.id_producto = pr.product_id
- where ab.way_number = 87
-   and ab.cross_way_number = 53
-   and ab.house_number = 62
+  left join OPEN.AB_SEGMENTS as1
+    on as1.segments_id = ab.segment_id
+ where ab.address_id = 19676
+--and ab.way_number = 87
+--and ab.cross_way_number = 53
+--and ab.house_number = 62
 --ab.address like '%Calle 87 # 53 - 62%'

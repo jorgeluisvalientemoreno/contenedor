@@ -1,4 +1,4 @@
-select a1.* from open.SA_EXECUTABLE a1 where a1.name = 'CAVSI';
+select a1.* from open.SA_EXECUTABLE a1 where a1.name = upper('Ldcgfv');
 select /*a.executable_id,
        a.name,
        a.description,
@@ -9,7 +9,7 @@ select /*a.executable_id,
   from open.SA_EXECUTABLE a
  inner join open.SA_EXECUTABLE_TYPE b
     on a.executable_type_id = b.executable_type_id
-   and upper(a.description) like upper('%CAVSI%');
+   and upper(a.description) like upper('%Ldcgfv%');
 select a1.*
   from open.SA_EXECUTABLE a1
  where a1.executable_id in
@@ -17,4 +17,4 @@ select a1.*
           from open.SA_EXECUTABLE a
          inner join open.SA_EXECUTABLE_TYPE b
             on a.executable_type_id = b.executable_type_id
-           and a.name = upper('CAVSI'));
+           and a.name = upper('Ldcgfv'));

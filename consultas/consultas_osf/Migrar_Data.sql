@@ -3,21 +3,20 @@
 --Tipo de trabajo
 select ott.*, rowid
   from open.or_task_type ott
- where ott.task_type_id in (11367);
+ where ott.task_type_id in (11260);
 
 ---Items  - Actividad
 select gi.*, rowid
   from open.ge_items gi
- where gi.items_id in (100010365,100010366);
+ where gi.items_id in (100009447);
+
 ---Causal
 select a.*, rowid from OPEN.GE_CAUSAL a where a.causal_id in (3857, 9694);
-
-
 
 --tipo de trabajo por tipo de contrato
 select ctc.*, rowid
   from open.ct_tasktype_contype ctc
- where ctc.task_type_id in (11367);
+ where ctc.task_type_id in (11260);
 --Concepto
 select a.*, rowid from open.concepto a where a.conccodi = 1007;
 
@@ -28,50 +27,54 @@ select a.*, rowid from open.concepto a where a.conccodi = 1007;
 --Tipo trabajo - Causal 
 select a.*, rowid
   from OPEN.OR_TASK_TYPE_CAUSAL a
- where a.task_type_id in (11367);
+ where a.task_type_id in (11260);
 --Tipo trabajo - Actividad
 select otti.*, rowid
   from open.or_task_types_items otti
  where otti.task_type_id in (11368) -- and otti.items_id in (100010374, 100010373)
 ;
 --items para actividad e orden
-select a.*, rowid from OPEN.OR_ACTIVIDAD a where a.id_actividad in (100010365,100010366); 
+select a.*, rowid from OPEN.OR_ACTIVIDAD a where a.id_actividad in (100009447); 
+
 --Actividad - Rol
 select oar.*, rowid
   from open.or_actividades_rol oar
  where oar.id_actividad in
        (select otti.items_id
           from open.or_task_types_items otti
-         where otti.task_type_id in (11367));
+         where otti.task_type_id in (11260,11259));
+
 --ITEMS PERMITIDOS LEGALIZAR LAS UNIDADES OPERATIVAS QUE APLICAN PARA NUEVO ESQUEMA DE LIQUIDACION
 SELECT l.*, ROWID --distinct l.item ||',' --
   FROM open.ldc_item_uo_lr l
  where l.actividad in (select otti.items_id
                          from open.or_task_types_items otti
-                        where otti.task_type_id in (11367))
+                        where otti.task_type_id in (11260))
    AND l.item in (select otti.items_id
                     from open.or_task_types_items otti
-                   where otti.task_type_id in (11367));
+                   where otti.task_type_id in (11260));
 --Maximos y minimos tt e items
 select l.*, rowid
   from open.LDC_CMMITEMSXTT l
- where (l.activity_id in (100010365,100010366) or
-       l.items_id in (100010365,100010366))
-   AND l.task_type_id in (11367)
+ where (l.activity_id in (100009447) or
+       l.items_id in (100009447))
+   AND l.task_type_id in (11260)
  order by l.itemsxtt_id desc;
+ 
 --Configuraci?n de cantidad m?ximas y m?nimas de ?tems por tipos de trabajo
-select l.* from open.LDC_CMMITEMSXTT l where l.task_type_id in (11367);
+select l.* from open.LDC_CMMITEMSXTT l where l.task_type_id in (11260);
 ---Lista de costo
 select a.*, rowid
   from open.GE_LIST_UNITARY_COST a
  where a.list_unitary_cost_id = 1;
+ 
 ---Lista de cosro - Item 
 select b.*, rowid
   from open.GE_UNIT_COST_ITE_LIS b
- where b.items_id in (100010365,100010366)
+ where b.items_id in (100009447)
 /*(select otti.items_id
  from open.or_task_types_items otti
-where otti.task_type_id in (11367))*/
+where otti.task_type_id in (11260))*/
  order by b.last_update_date;
 --unidad operativa
 select oou.*, rowid

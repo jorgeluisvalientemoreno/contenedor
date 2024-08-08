@@ -99,14 +99,27 @@ SELECT s.susccodi Contrato,
        --cc_boOssSubscriberData.fdtGetDescTaxPayerType(a.taxpayer_type) taxpayer_type,
        --cc_boOssSubscriberData.fsbGetScoring(a.subscriber_id) scoring,
         decode(a.Is_Corporative, 'Y', 'Si', 'No') Is_Corporative,
-        s.susccicl Cilo_Facturacion
+       s.susccicl Cilo_Facturacion,
+       s.SUSCIDDI || ' - ' || ab.address Direccion_Cobro,
+       ab.segment_id Segmento,
+       as1.category_ Categoria,
+       as1.subcategory_ Subcategoria,
+       s.SUSCTISU || ' - ' || gst.description Tipo_contrato
 --, cc_boOssSubscriberData.fnuGetOlderClient(a.subscriber_id) older_client
-  FROM open.ge_subscriber        a,
-       open.ge_subscriber        b,
-       open.ge_subs_busines_data c,
-       open.suscripc             s
- WHERE a.subscriber_id = s.suscclie
-   AND b.subscriber_id(+) = a.contact_id
-   AND a.subscriber_id = c.subscriber_id(+)
-   and s.susccodi in (2180666, 38000599, 17171249, 2164166)
---1024801
+  FROM open.ge_subscriber a
+  left join open.ge_subscriber b
+    on b.subscriber_id(+) = a.contact_id
+  left join open.ge_subs_busines_data c
+    on a.subscriber_id = c.subscriber_id
+  left join open.suscripc s
+    on a.subscriber_id = s.suscclie
+  left join open.ab_address ab
+    on ab.address_id = s.SUSCIDDI
+  left join OPEN.AB_SEGMENTS as1
+    on as1.segments_id = ab.segment_id
+  left join OPEN.GE_SUBSCRIPTION_TYPE gst
+    on gst.subscription_type = s.susctisu
+ WHERE
+--and s.susccodi in (67464673, 66572991)
+--and 
+ a.subscriber_id in (2095479, 3220406)

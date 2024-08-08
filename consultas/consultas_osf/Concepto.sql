@@ -1,7 +1,7 @@
 --(Concepto) 
 select *
   from open.CONCEPTO a
- where a.conccodi in (30, 291, 282, 287, 985, 795);
+ where a.conccodi in (30, 291, 282, 287, 985, 795, 202);
 ---Concepto Base 
 select cb.coblconc || ' - ' || cgenerado.concdesc Concepto_generado,
        cb.coblcoba || ' - ' || c.concdesc Concepto_base

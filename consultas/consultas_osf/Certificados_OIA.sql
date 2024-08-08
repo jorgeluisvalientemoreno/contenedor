@@ -1,6 +1,4 @@
 --1701005	1701005
-
-
 SELECT l.*, rowid --l.certificados_oia_id,l.resultado_inspeccion,l.status_certificado
   FROM OPEN.LDC_CERTIFICADOS_OIA L
  WHERE l.status_certificado = 'A'
