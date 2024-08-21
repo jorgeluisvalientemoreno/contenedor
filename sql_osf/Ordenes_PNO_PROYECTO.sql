@@ -8,7 +8,7 @@ declare
 
   nuProducto open.or_order_activity.product_id%TYPE;
 
-  rcFM_Possible_NTL DAFM_Possible_NTL.styFM_Possible_NTL;
+  rcFM_Possible_NTL open.DAFM_Possible_NTL.styFM_Possible_NTL;
 
   CURSOR cuDatosProducto(inuOrden    open.or_order_activity.order_id%TYPE,
                          inuProducto number) IS
@@ -37,63 +37,29 @@ declare
 
   CURSOR cuDATOSOTPNO is
     select OT.orden, OT.producto
-      from (select 261209361 orden, 14512920 producto from dual union all
-            select 261480139 orden, 14521202 producto from dual union all
-            select 262075443 orden, 6634614 producto from dual union all
-            select 265319021 orden, 24000475 producto from dual union all
-            select 265319027 orden, 24000609 producto from dual union all
-            select 267091914 orden, 24000208 producto from dual union all
-            select 267091955 orden, 24000545 producto from dual union all
-            select 267091978 orden, 24000775 producto from dual union all
-            select 267091943 orden, 24000450 producto from dual union all
-            select 267092188 orden, 50186743 producto from dual union all
-            select 267092215 orden, 50784726 producto from dual union all
-            select 267091907 orden, 24000147 producto from dual union all
-            select 267091995 orden, 24000867 producto from dual union all
-            select 267091996 orden, 24000872 producto from dual union all
-            select 267092103 orden, 50000542 producto from dual union all
-            select 267092086 orden, 24001466 producto from dual union all
-            select 267092208 orden, 50549629 producto from dual union all
-            select 267092178 orden, 50107867 producto from dual union all
-            select 267092220 orden, 51302435 producto from dual union all
-            select 267092000 orden, 24000891 producto from dual union all
-            select 267092155 orden, 50094713 producto from dual union all
-            select 267092221 orden, 51458537 producto from dual union all
-            select 267092216 orden, 50918544 producto from dual union all
-            select 267092192 orden, 50192430 producto from dual union all
-            select 267092041 orden, 24001180 producto from dual union all
-            select 267092013 orden, 24000973 producto from dual union all
-            select 267092224 orden, 51486942 producto from dual union all
-            select 267092174 orden, 50100330 producto from dual union all
-            select 267092020 orden, 24001043 producto from dual union all
-            select 267091984 orden, 24000815 producto from dual union all
-            select 267091967 orden, 24000671 producto from dual union all
-            select 267092137 orden, 50045839 producto from dual union all
-            select 267092112 orden, 50005571 producto from dual union all
-            select 267092136 orden, 50041914 producto from dual union all
-            select 267092134 orden, 50040975 producto from dual union all
-            select 267092098 orden, 24001580 producto from dual union all
-            select 267091971 orden, 24000698 producto from dual union all
-            select 267091979 orden, 24000780 producto from dual union all
-            select 267091940 orden, 24000440 producto from dual union all
-            select 267091942 orden, 24000448 producto from dual union all
-            select 267092043 orden, 24001187 producto from dual union all
-            select 267092087 orden, 24001473 producto from dual union all
-            select 267091965 orden, 24000643 producto from dual union all
-            select 267092225 orden, 51486945 producto from dual union all
-            select 267092075 orden, 24001370 producto from dual union all
-            select 267091966 orden, 24000649 producto from dual union all
-            select 267091976 orden, 24000736 producto from dual union all
-            select 267092070 orden, 24001359 producto from dual union all
-            select 267091954 orden, 24000534 producto from dual union all
-            select 267092150 orden, 50089669 producto from dual union all
-            select 267091948 orden, 24000471 producto from dual union all
-            select 297442982 orden, 14521202 producto from dual union all
-            select 290526792 orden, 50315937 producto from dual union all
-            select 291682759 orden, 1074662 producto from dual union all
-            select 292816710 orden, 17009704 producto from dual union all
-            select 303570570 orden, 8085584 producto from dual) OT,
-           or_order_activity ooa
+      from (select 303933435 orden, 1505583 producto from dual union all
+select 264214053 orden, 6087729 producto from dual union all
+select 263966945 orden, 3058954 producto from dual union all
+select 252508179 orden, 52059705 producto from dual union all
+select 251492384 orden, 6126636 producto from dual union all
+select 251492296 orden, 9056128 producto from dual union all
+select 251492221 orden, 1155509 producto from dual union all
+select 249717643 orden, 50257759 producto from dual union all
+select 248383941 orden, 50065345 producto from dual union all
+select 248383783 orden, 50065203 producto from dual union all
+select 247569513 orden, 6506537 producto from dual union all
+select 245635036 orden, 6526573 producto from dual union all
+select 244692470 orden, 52010402 producto from dual union all
+select 244086372 orden, 13002430 producto from dual union all
+select 242363023 orden, 14525754 producto from dual union all
+select 242342774 orden, 50666423 producto from dual union all
+select 236749517 orden, 17121503 producto from dual union all
+select 236302957 orden, 6588448 producto from dual union all
+select 236173449 orden, 6638806 producto from dual union all
+select 231381652 orden, 6522344 producto from dual union all
+select 231036386 orden, 1022740 producto from dual 
+) OT,
+           open.or_order_activity ooa
      where OT.orden = ooa.order_id
        and OT.producto = ooa.product_id;
 

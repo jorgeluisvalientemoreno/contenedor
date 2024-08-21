@@ -1,3 +1,10 @@
+---cliento sin producto
+select *
+  from open.GE_SUBSCRIBER gs
+ where (select count(1)
+          from open.suscripc s
+         where gs.subscriber_id = s.suscclie) = 0;
+
 ---cliento x contrato 
 select *
   from open.GE_SUBSCRIBER gs

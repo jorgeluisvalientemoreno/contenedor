@@ -12,9 +12,9 @@ select distinct oo.order_id Orden,
                   where s1.servcodi = pp.product_type_id) Tipo_Producto,
                 DireccionOrden.address_id || ' - ' ||
                 DireccionOrden.address Direccion_Orden,
-                SegmentoDireccion.Category_ || ' - ' ||
+                categoriadireccion.catecodi || ' - ' ||
                 categoriadireccion.catedesc Categoria_Direccion,
-                SegmentoDireccion.Subcategory_ || ' - ' ||
+                subcategoriadireccion.sucacate || ' - ' ||
                 subcategoriadireccion.sucadesc SubCategoria_Direccion,
                 localidad_Orden.geograp_location_id || ' - ' ||
                 localidad_Orden.description Localidad_Orden,
@@ -26,6 +26,9 @@ select distinct oo.order_id Orden,
                 (select oos.description
                    from open.or_operating_sector oos
                   where oos.operating_sector_id = oo.operating_sector_id) Sector_Operativo,
+                /*(select gsz.id_zona_operativa
+                 from OPEN.GE_SECTOROPE_ZONA gsz
+                where gsz.id_sector_operativo = oo.operating_sector_id) Zona_Operativa,*/
                 ooa.activity_id || ' - ' ||
                 (select gi.description
                    from open.ge_items gi
@@ -245,7 +248,21 @@ select distinct oo.order_id Orden,
                 ooa.order_activity_id Actividad_Orden,
                 mp.pos_oper_unit_id Punto_venta,
                 pp.category_id || ' - ' || categoria.catedesc Categoria_Producto,
-                pp.subcategory_id || ' - ' || Subcategoria.Sucadesc subCategoria_Producto
+                pp.subcategory_id || ' - ' || Subcategoria.Sucadesc subCategoria_Producto,
+                nvl((select decode(nvl(wde.unit_type_id, 0),
+                                  0,
+                                  'No Tiene Flujo',
+                                  'Tiene Flujo')
+                      from OPEN.WF_DATA_EXTERNAL wde
+                     where wde.package_id = mp.package_id
+                       and rownum = 1),
+                    'No Tiene Flujo') Tiene_Flujo,
+                (select decode(nvl(asignacion.order_id, 0),
+                               0,
+                               'No Existe en Asignacion Automatica',
+                               'Existe Asignacion Automatica')
+                   from OPEN.LDC_ORDER asignacion
+                  where asignacion.order_id = oo.order_id) Asignacion_Auomatica
   from open.or_order_activity ooa
   left join open.or_order oo
     on oo.order_id = ooa.order_id
@@ -267,23 +284,23 @@ select distinct oo.order_id Orden,
     on DireccionProducto.Address_Id = pp.address_id
   left join open.or_order_items ooi
     on ooi.order_id = oo.order_id
-   and 'S' in &ConsultaItemLegalizado
+   and 'S' in upper(&ConsultaItemLegalizado)
   left join open.ge_items giooi
     on giooi.items_id = ooi.items_id
   left join open.servsusc s
     on s.sesunuse = ooa.product_id
   left join open.or_order_comment ooc
     on ooc.order_id = oo.order_id
-   and 'S' in &ConsultaComentariosOrden
+   and 'S' in upper(&ConsultaComentariosOrden)
   left join open.or_related_order orden_padre
     on orden_padre.related_order_id = oo.order_id
-   and 'S' in &ConsultaOrdenPadre
+   and 'S' in upper(&ConsultaOrdenPadre)
   left join open.or_related_order orden_hija
     on orden_hija.order_id = oo.order_id
-   and 'S' in &ConsultaOrdenHija
+   and 'S' in upper(&ConsultaOrdenHija)
   left join open.or_requ_data_value ordv
     on ordv.order_id = oo.order_id
-   and 'S' in &ConsultaDatoAdcional
+   and 'S' in upper(&ConsultaDatoAdcional)
   left join OPEN.OR_ORDER_PERSON oop
     on oop.order_id = oo.order_id
   left join OPEN.ge_person gp
@@ -306,28 +323,35 @@ select distinct oo.order_id Orden,
    and Subcategoriadireccion.Sucacodi = pp.subcategory_id
  where --)select ou.order_id from orden_uobysol ou)
 -- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
--- and ooa.subscription_id =1041350
--- and ooa.product_id in (1087616)
--- and trunc(oo.legalization_date) >= '01/06/2024'
+-- and ooa.subscription_id in (67590042,67590561,67590584)
+-- and ooa.product_id in (1017608)
+-- and trunc(oo.legalization_date) >= '01/01/2024'
 --and trunc(oo.created_date) = '08/07/2024'
--- and oo.task_type_id in (12119)
+--and mp.package_type_id = 100210
 -- and trunc(mp.request_date) >= '07/07/2024'
 -- and mp.motive_status_id = 14
--- and oo.order_id in (332950589)
--- and ooa.order_activity_id in(4295602)
+-- and  oo.order_id 
+--in (332088027,319150560,319147256,318001635)
+--in (318001635,319147256,319150560,333737020,324074329,324109462,324110357,324124132,324181928,324265746,324267074,324267333,324270808,324270982,324271223,324302686,324329665,324355478,324527312,324528503,324684540,324687222,324689801,324752212,324763171,324764701,324776244,324776815,324778486,324986189,324987007,325344516,325345418,325352111,325352527,325353292,325364220,325602917,325607864,325619477,325765916,326118270,326556755,326667114,326667706,326669604,326670011,326871443,327122327,327132803,333743342,326670471,326209133,333737072,324521591,324521629,326092744,332088027,335266902,335281288,335282077,335287842,325345568,325346138,333742102,333742114,333742118,333742119,333742124,333742126,326182895,326183158,326357899,326357980,326985665)
+-- and ooa.order_activity_id in(4295152)
 -- and mp.cust_care_reques_num in ('212356951', '212681274')
 -- and ooa.order_id in (318396156, 318396150) --(318396156,318396150)
--- and oo.order_status_id in (5)
+-- and 
+ oo.order_status_id in (0)
 -- and oo.causal_id = 9944--in (8, 12)
--- and oo.task_type_id in (10797)
--- and ooa.activity_id in (100009517)
+ and oo.task_type_id in (10312)
+-- and ooa.activity_id in (4000054)
 -- and mp.package_type_id = 100284
 -- and (mm.subscription_id = 48052064 or mm.product_id = 50062001)
 -- and mp.cust_care_reques_num in ('210494274','207413106')
--- and mp.package_id in (215644501)
+-- and mp.package_id = 217254402
 -- and pp.product_status_id = 15
 -- and mm.motive_id = 96953319
 -- and oo.operating_unit_id in (1775, 1931, 1773, 3557)
 -- and rownum = 1
 --and DireccionOrden.address like '%KR GENERICA CL GENERICA - 0%'
+--and SegmentoDireccion.Category_ in (3,6)
+/* ooa.activity_id = 4295152
+and oo.order_status_id = 8
+and oo.legalization_date >= '01/08/2024'*/
  order by oo.created_date desc;

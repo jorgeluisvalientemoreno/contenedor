@@ -21,10 +21,11 @@ use_nl( g h )
    ELSE
     instancias_flujo.instance_description
  END "Instancia",
- ooa.order_id,
- ooa.task_type_id,
- ooa.activity_id,
- d.instance_status_id || '-' || d.description "Estado",
+ d.instance_status_id || '-' || d.description "Estado Instancia",
+ ooa.order_id "Orden",
+ (select ooa.task_type_id || ' - ' ||ott.description from open.or_task_type ott where ott.task_type_id=ooa.task_type_id ) "Tipo Trabajo",
+ (select ooa.activity_id || ' - ' || gi.description from open.ge_items gi where gi.items_id=ooa.activity_id) "Actividad",
+ (select oo.order_status_id from open.or_order oo where oo.order_id=ooa.order_id) "Estado Orden", 
  '[' || to_char(instancias_flujo.initial_date, 'DD-MM-YYYY HH24:MI:SS') || ']' "Fecha Inicial",
  '[' || to_char(instancias_flujo.final_date, 'DD-MM-YYYY HH24:MI:SS') || ']' "Fecha Final",
  e.name_ || ' [' || instancias_flujo.external_id || ']' "Código Externo",
@@ -57,20 +58,22 @@ use_nl( g h )
                open.wf_unit_type     b,
                open.wf_instance      c,
                open.wf_unit          f
-         WHERE a.package_id = 84236462 --998937 --87772464 --
+         WHERE a.package_id = 216132214 --217619992 --
            AND b.unit_type_id = a.unit_type_id -- 31657381
            AND c.plan_id = a.plan_id
            AND f.unit_id(+) = c.unit_id) instancias_flujo,
        open.wf_instance_status d,
        open.ge_entity e,
        open.ge_action_module g,
-       open.gr_config_expression h,
-       open.or_order_activity ooa
+       open.gr_config_expression h
+       ,open.or_order_activity ooa
+       --,open.or_order oo
  WHERE d.instance_status_id = instancias_flujo.status_id
    AND e.entity_id(+) = instancias_flujo.entity_id
    AND g.action_id(+) = instancias_flujo.action_id
    AND h.config_expression_id(+) = g.config_expression_id
     --  and instancias_flujo.instance_id = 1232914116
-   and ooa.instance_id(+)  = instancias_flujo.instance_id
+   and ooa.instance_id(+) = instancias_flujo.instance_id
+   --and ooa.order_id(+) = oo.order_id
  START WITH instancias_flujo.instance_id = instancias_flujo.plan_id
 CONNECT BY PRIOR instancias_flujo.instance_id = instancias_flujo.parent_id;

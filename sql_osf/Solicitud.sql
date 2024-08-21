@@ -48,17 +48,18 @@ select distinct mp.package_id,
     on MP.PACKAGE_ID = MM.PACKAGE_ID
   left join open.mo_component mc
     on mc.package_id = mp.package_id
-   and 'S' in &ConsultaComponente
+   and 'S' in upper(&ConsultaComponente)
  where
---mp.package_id in (215742401,216635633,215890285,216138880)
---and 
-mp.motive_status_id = 49
+--
+mp.package_id in (216643758)
+--and mp.motive_status_id = 13
 --and (mm.subscription_id = 48052064 or mm.product_id = 50062001)
 -- and mp.cust_care_reques_num = '213303669'   
 --and mm.subscription_id = 66572991
 --   and mm.product_id = 50366875
-and mp.package_type_id = 57
+--and mp.package_type_id = 57
 --and trunc(mp.request_date) >= '01/09/2020'
 --and (select count(1) from open.Or_Order_Activity ooa where ooa.package_id = mp.package_id ) = 0 
 --and mm.CUSTOM_DECISION_FLAG = 'N'
+--and mp.package_type_id = 1000330
  order by MP.REQUEST_DATE desc;
