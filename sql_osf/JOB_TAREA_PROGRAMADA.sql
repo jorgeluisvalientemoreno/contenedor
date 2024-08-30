@@ -1,10 +1,12 @@
 --Objetos de tarea programada
-select * from open.ge_object g where g.object_id = 121721;
+select *
+  from open.ge_object g
+ where --g.object_id = 121721
+ upper(g.description) like upper('%ASIGNACI%AUTOMATICA%');
 --JOB en TAREAS PROGRAMDAS OSF
 select *
   from open.GE_PROCESS_SCHEDULE b
--- where
---b.parameters_ like '%121721%'
+ where b.parameters_ like '%121532%'
 -- b.process_schedule_id = 536553
  ORDER BY B.PROCESS_SCHEDULE_ID DESC;
 --select * from dba_scheduler_job_run_details;

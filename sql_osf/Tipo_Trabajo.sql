@@ -1,3 +1,4 @@
 select ott.*, rowid
   from open.or_task_type ott
- where ott.task_type_id in (10553, 10554, 10555, 10556);
+ where ott.task_type_id in (10450, 12457, 11029, 11022)
+ order by ott.task_type_id;

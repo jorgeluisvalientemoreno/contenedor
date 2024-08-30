@@ -1,127 +1,19 @@
-select oou.*
-  from open.or_operating_unit oou
- where oou.operating_unit_id in (4347, 4348, 3290);
-select a.*, rowid
-  from OPEN.OR_OPERATING_ZONE a
- where a.operating_zone_id in (56, 18, 85);
-SELECT GSZ.ID_SECTOROPE_ZONA,
-       GSZ.ID_ZONA_OPERATIVA || ' - ' || OOZ.DESCRIPTION,
-       GSZ.ID_SECTOR_OPERATIVO || ' - ' || OOS.DESCRIPTION
-  FROM OPEN.GE_SECTOROPE_ZONA   GSZ,
-       OPEN.OR_OPERATING_ZONE   OOZ,
-       OPEN.OR_OPERATING_SECTOR OOS
- WHERE GSZ.ID_ZONA_OPERATIVA in (56, 18, 85)
-   AND GSZ.ID_SECTOR_OPERATIVO IN (354,
-                                   415,
-                                   572,
-                                   581,
-                                   406,
-                                   396,
-                                   344,
-                                   369,
-                                   332,
-                                   614,
-                                   424,
-                                   347,
-                                   399,
-                                   566,
-                                   405,
-                                   761,
-                                   521,
-                                   729,
-                                   363,
-                                   323,
-                                   422,
-                                   497,
-                                   337,
-                                   757,
-                                   388)
-   AND OOZ.OPERATING_ZONE_ID = GSZ.ID_ZONA_OPERATIVA
-   AND OOS.OPERATING_SECTOR_ID = GSZ.ID_SECTOR_OPERATIVO;
-
---DATA Orden
-select distinct oo.order_id Orden,
-                oo.operating_sector_id || ' - ' ||
-                (select oos.description
-                   from open.or_operating_sector oos
-                  where oos.operating_sector_id = oo.operating_sector_id) Sector_Operativo
-  from open.or_order_activity ooa
-  left join open.or_order oo
-    on oo.order_id = ooa.order_id
- where oo.order_id in (318001635,
-                       319147256,
-                       319150560,
-                       333737020,
-                       324074329,
-                       324109462,
-                       324110357,
-                       324124132,
-                       324181928,
-                       324265746,
-                       324267074,
-                       324267333,
-                       324270808,
-                       324270982,
-                       324271223,
-                       324302686,
-                       324329665,
-                       324355478,
-                       324527312,
-                       324528503,
-                       324684540,
-                       324687222,
-                       324689801,
-                       324752212,
-                       324763171,
-                       324764701,
-                       324776244,
-                       324776815,
-                       324778486,
-                       324986189,
-                       324987007,
-                       325344516,
-                       325345418,
-                       325352111,
-                       325352527,
-                       325353292,
-                       325364220,
-                       325602917,
-                       325607864,
-                       325619477,
-                       325765916,
-                       326118270,
-                       326556755,
-                       326667114,
-                       326667706,
-                       326669604,
-                       326670011,
-                       326871443,
-                       327122327,
-                       327132803,
-                       333743342,
-                       326670471,
-                       326209133,
-                       333737072,
-                       324521591,
-                       324521629,
-                       326092744,
-                       332088027,
-                       335266902,
-                       335281288,
-                       335282077,
-                       335287842,
-                       325345568,
-                       325346138,
-                       333742102,
-                       333742114,
-                       333742118,
-                       333742119,
-                       333742124,
-                       333742126,
-                       326182895,
-                       326183158,
-                       326357899,
-                       326357980,
-                       326985665)
-   and oo.order_status_id in (0)
-   and ooa.package_id is null;
+select sz.id_zona_operativa || ' - ' || z.description "Zona",
+       sz.id_sector_operativo || ' - ' || s.description "Sector Operativa",
+       gLocalidad.geograp_location_id || ' - ' || gLocalidad.description "Localidad",
+       gpadre.geograp_location_id || ' - ' || gpadre.description "Departamento",
+       oou.operating_unit_id || ' - ' || oou.name "Unidad Operativa"
+  from open.ge_sectorope_zona sz
+ inner join open.or_operating_zone z
+    on z.operating_zone_id = sz.id_zona_operativa
+ inner join open.or_operating_sector s
+    on s.operating_sector_id = sz.id_sector_operativo
+ inner join open.ge_geogra_location g
+    on g.operating_sector_id = s.operating_sector_id
+ inner join open.ge_geogra_location gLocalidad
+    on gLocalidad.geograp_location_id = g.geo_loca_father_id
+ inner join open.ge_geogra_location gpadre
+    on gpadre.geograp_location_id = gLocalidad.geo_loca_father_id
+ inner join open.or_operating_unit oou
+    on oou.operating_zone_id = z.operating_zone_id
+   and oou.operating_unit_id = 4348

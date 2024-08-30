@@ -41,8 +41,26 @@ select distinct mp.package_id,
                    from OPEN.WF_DATA_EXTERNAL wde
                   where wde.package_id = mp.package_id
                     and rownum = 1) Existe_Flujo,
-                    (select count(1) from open.Or_Order_Activity ooa where ooa.package_id = mp.package_id ) Cantidad_Ordenes,
-                    mm.CUSTOM_DECISION_FLAG Documentacion_Completa
+                (select count(1)
+                   from open.Or_Order_Activity ooa
+                  where ooa.package_id = mp.package_id) Cantidad_Ordenes,
+                mm.CUSTOM_DECISION_FLAG Documentacion_Completa,
+                nvl((select decode(nvl(wde.unit_type_id, 0),
+                                  0,
+                                  'No Tiene Flujo',
+                                  'Tiene Flujo')
+                      from OPEN.WF_DATA_EXTERNAL wde
+                     where wde.package_id = mp.package_id
+                       and rownum = 1),
+                    'No Tiene Flujo') Tiene_Flujo,
+                nvl((select decode(nvl(count(1), 0),
+                                  0,
+                                  'No Tiene Orden',
+                                  'Tiene Orden')
+                      from OPEN.OR_ORDER_ACTIVITY ooa
+                     where ooa.package_id = mp.package_id
+                       and rownum = 1),
+                    'No Tiene Orden') Tiene_Orden
   from open.mo_packages mp
   left join open.mo_motive mm
     on MP.PACKAGE_ID = MM.PACKAGE_ID
@@ -50,14 +68,15 @@ select distinct mp.package_id,
     on mc.package_id = mp.package_id
    and 'S' in upper(&ConsultaComponente)
  where
---
-mp.package_id in (216643758)
---and mp.motive_status_id = 13
+-- mp.package_id in (215958030, 216672852, 216760946)
+--and 
+mp.motive_status_id = 13
 --and (mm.subscription_id = 48052064 or mm.product_id = 50062001)
 -- and mp.cust_care_reques_num = '213303669'   
---and mm.subscription_id = 66572991
---   and mm.product_id = 50366875
---and mp.package_type_id = 57
+--  
+and mm.subscription_id = 14205304
+-- and mm.product_id = 50366875
+--and mp.package_type_id = 100343
 --and trunc(mp.request_date) >= '01/09/2020'
 --and (select count(1) from open.Or_Order_Activity ooa where ooa.package_id = mp.package_id ) = 0 
 --and mm.CUSTOM_DECISION_FLAG = 'N'

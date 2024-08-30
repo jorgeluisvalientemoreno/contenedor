@@ -1,4 +1,4 @@
-select a1.* from open.SA_EXECUTABLE a1 where a1.name = upper('Ldcgfv');
+select a1.* from open.SA_EXECUTABLE a1 where a1.name like upper('%CI%%');
 select /*a.executable_id,
        a.name,
        a.description,

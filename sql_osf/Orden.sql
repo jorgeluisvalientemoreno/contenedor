@@ -262,7 +262,15 @@ select distinct oo.order_id Orden,
                                'No Existe en Asignacion Automatica',
                                'Existe Asignacion Automatica')
                    from OPEN.LDC_ORDER asignacion
-                  where asignacion.order_id = oo.order_id) Asignacion_Auomatica
+                  where asignacion.order_id = oo.order_id) Asignacion_Auomatica,
+                nvl((select decode(nvl(wde.unit_type_id, 0),
+                                  0,
+                                  'No Tiene Flujo',
+                                  'Tiene Flujo')
+                      from OPEN.WF_DATA_EXTERNAL wde
+                     where wde.package_id = mp.package_id
+                       and rownum = 1),
+                    'No Tiene Flujo') Tiene_Flujo
   from open.or_order_activity ooa
   left join open.or_order oo
     on oo.order_id = ooa.order_id
@@ -336,15 +344,15 @@ select distinct oo.order_id Orden,
 -- and ooa.order_activity_id in(4295152)
 -- and mp.cust_care_reques_num in ('212356951', '212681274')
 -- and ooa.order_id in (318396156, 318396150) --(318396156,318396150)
--- and 
- oo.order_status_id in (0)
+-- and  oo.order_status_id in (0)
 -- and oo.causal_id = 9944--in (8, 12)
- and oo.task_type_id in (10312)
+-- and oo.task_type_id in (10312)
 -- and ooa.activity_id in (4000054)
 -- and mp.package_type_id = 100284
 -- and (mm.subscription_id = 48052064 or mm.product_id = 50062001)
 -- and mp.cust_care_reques_num in ('210494274','207413106')
--- and mp.package_id = 217254402
+-- and 
+ mp.package_id in (215958030, 216672852, 216760946)
 -- and pp.product_status_id = 15
 -- and mm.motive_id = 96953319
 -- and oo.operating_unit_id in (1775, 1931, 1773, 3557)
