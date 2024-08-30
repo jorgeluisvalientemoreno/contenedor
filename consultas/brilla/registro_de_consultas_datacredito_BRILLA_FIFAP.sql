@@ -1,0 +1,1 @@
+select a.*, rowid from OPEN.LD_RESULT_CONSULT a where a.identification ='32740006'; 

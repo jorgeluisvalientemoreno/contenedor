@@ -1,0 +1,4 @@
+select mp.*,rowid from open.mo_packages mp where mp.package_id in (215958030, 216672852, 216760946) and mp.package_type_id = 57;
+select mp.*,rowid from open.mo_motive mp where mp.package_id in (215958030, 216672852, 216760946);
+select mp.*,rowid from open.tt_damage mp where mp.package_id in (215958030, 216672852, 216760946);
+select mp.*,rowid from open.MO_PACKAGE_CHNG_LOG mp where mp.package_id in (215958030, 216672852, 216760946);
