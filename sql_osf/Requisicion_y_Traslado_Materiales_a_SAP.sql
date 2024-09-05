@@ -18,19 +18,6 @@ SELECT b.operating_unit_id Unidad, b.items_id,UO.NAME DESC_UNI,uo.es_externa Ext
        b.balance balance_general,
        b.transit_in transito_entrada,
        b.transit_out transito_salida
-       --,i.total_costs costo_inventario,
-       --i.balance balance_inventario,
-       --i.transit_in transito_entrada_inventario,
-       --i.transit_out transito_salida_inventario,
-       --a.total_costs costo_activo,
-       --a.balance balance_activo,
-       --a.transit_in transito_entrada_activo,
-       --a.transit_out transito_salida_activo,
-       --b.total_costs - NVL(NVL(DECODE(a.total_costs, 0,null,a.total_costs), i.total_costs), b.total_costs) diferencia_costos, b.balance - NVL(NVL(a.balance, i.balance), b.balance) diferencia_balance, b.transit_in - NVL(NVL(a.transit_in, i.transit_in), b.transit_in) diferencia_transito_in, b.transit_out - NVL(NVL(a.transit_out, i.transit_out), b.transit_out) diferencia_transito_out
-       --b.total_costs - NVL(a.total_costs, 0) - NVL(i.total_costs, 0) diferencia_costo,
-       --b.balance - NVL(a.balance, 0) - NVL(i.balance, 0) diferencia_balance,
-       --b.transit_in - NVL(a.transit_in, 0) - NVL(i.transit_in, 0) diferencia_transito_in,
-       --b.transit_out - NVL(a.transit_out, 0) - NVL(i.transit_out, 0) diferencia_transito_salida
   FROM open.OR_OPE_UNI_ITEM_BALA b,
        --open.ldc_inv_ouib         i,
        --open.ldc_act_ouib         a,
@@ -53,6 +40,34 @@ SELECT b.operating_unit_id Unidad, b.items_id,UO.NAME DESC_UNI,uo.es_externa Ext
 --Item a solicitar 10004170 y las cantidad pueden ser de 2 a 10.
 
 --Se procesa la requision del envio de OSF a SAP
+--Original
+/*set serveroutput on*/
+declare
+ osbMesjErr varchar2(3000);
+ ol_Payload CLOB;
+ sesion number;
+begin
+  DBMS_OUTPUT.PUT_LINE('inicia el proceso pl_movimiento_material.sql');
+  
+  --"OPEN".LDCI_PKPEDIDOVENTAMATERIAL.PRONOTIFICASOLICITUDESERP;  -- Envia Solicitudes y Devoluciones de Pedidos de Venta de OSF a SAP
+  --"OPEN".LDCI_PKMOVIVENTMATE.proConfirmarSolicitud(-1);         -- Procesa Movimientos de Pedidos de Venta de SAP en OSF
+  lDCI_PKRESERVAMATERIAL.proNotificaDocumentosERP;       -- Servicio para el Envio relacionado a un despacho y Devoluciones de Reservas de OSF a SAP  
+  /*SELECT SYS_CONTEXT ('USERENV', 'SESSIONID') into sesion FROM DUAL ;
+  ut_trace.setlevel(99);
+  dbms_output.put_line(sesion);
+  LDCI_PKMOVIMATERIAL.proConfirmarSolicitud(25717);         -- Procesa Movimiento de Reservas de SAP en OSF*/
+  
+  DBMS_OUTPUT.PUT_LINE('osbMesjErr: ' || osbMesjErr);     
+  DBMS_OUTPUT.PUT_LINE('termina el proceso pl_movimiento_material.sql');  
+  commit;
+exception
+   when others then
+       DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+       DBMS_OUTPUT.PUT_LINE('Backtrace:' || DBMS_UTILITY.format_error_backtrace);
+end;
+/
+
+--Actualizado
 declare
  osbMesjErr varchar2(3000);
  ol_Payload CLOB;
