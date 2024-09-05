@@ -19,16 +19,10 @@ SELECT b.operating_unit_id Unidad, b.items_id,UO.NAME DESC_UNI,uo.es_externa Ext
        b.transit_in transito_entrada,
        b.transit_out transito_salida
   FROM open.OR_OPE_UNI_ITEM_BALA b,
-       --open.ldc_inv_ouib         i,
-       --open.ldc_act_ouib         a,
        open.ge_items             it,
        open.or_operating_unit    uo
  WHERE b.items_id = it.items_id
    AND uo.operating_unit_id = b.operating_unit_id
-   --AND b.operating_unit_id = i.operating_unit_id(+)
-   --AND i.items_id(+) = b.items_id
-   --AND b.operating_unit_id = a.operating_unit_id(+)
-   --AND a.items_id(+) = b.items_id
    AND b.operating_unit_id = 2680
    AND b.items_id IN (10000088,10004070,10000228,10000345);
 
