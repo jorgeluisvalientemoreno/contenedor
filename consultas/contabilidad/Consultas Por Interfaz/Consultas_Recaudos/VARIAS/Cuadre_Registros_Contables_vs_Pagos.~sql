@@ -1,0 +1,29 @@
+-- Total Pagos
+SELECT trunc(pagofegr), pagobanc banco, b.bancnomb, trunc(pagofegr) fecha, SUM(pagovapa) valor, 'P' tipo
+  FROM open.pagos, open.banco b
+ WHERE trunc(pagofegr) >= '09-02-2015' and trunc(pagofegr) < '10-02-2015' and pagobanc = banccodi 
+ GROUP BY pagobanc, trunc(pagofegr), b.bancnomb;
+-- Total Contable por Entidad 
+SELECT FechaCreacion, to_number(Cod_Entidad) banco, Desc_Entidad, SUM(VALOR) VALOR
+  FROM (SELECT c.ecrcfech FechaCreacion, open.ldci_pkinterfazsap.fvaGetData(7, dcrcinad, '|') Cod_Entidad,
+               open.pktblbanco.fsbgetbancnomb(open.ldci_pkinterfazsap.fvaGetData(7, dcrcinad, '|')) Desc_Entidad,
+               DECODE(dcrcsign, 'D', dcrcvalo, -dcrcvalo) VALOR
+          FROM OPEN.IC_DECORECO,
+               (SELECT * 
+                  FROM OPEN.IC_ENCORECO
+                 WHERE ECRCCOGE IN
+                       (SELECT COGECONS
+                          FROM OPEN.IC_COMPGENE
+                         WHERE COGECOCO IN (SELECT COCOCODI
+                                              FROM OPEN.IC_COMPCONT
+                                             WHERE COCOTCCO = 2)
+                           AND COGEFEIN >= '&FECHA_INICIAL'||' 00:00:00'
+                           AND COGEFEFI <= '&FECHA_FINAL'||' 00:00:00')) C,
+               open.ic_clascore p,
+               open.ic_clascont h
+         WHERE DCRCECRC = C.ECRCCONS
+           AND DCRCCLCR = p.clcrcons
+           AND p.clcrclco = h.clcocodi
+           AND (dcrccuco LIKE '%147065%' OR dcrccuco LIKE '%1110%')
+        )
+ GROUP BY FechaCreacion, Cod_Entidad, Desc_Entidad

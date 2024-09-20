@@ -1,0 +1,16 @@
+-- Pagos vs Pagos Eliminados vs Resumen de Recaudo por día por entidad
+SELECT pagobanc banco, trunc(pagofegr) fecha, /*COUNT(1) cantidad,*/ SUM(pagovapa) valor, 'P' tipo
+  FROM open.pagos 
+ WHERE trunc(pagofegr) >= '09-02-2015' and trunc(pagofegr) < '10-02-2015'
+ GROUP BY pagobanc, trunc(pagofegr)
+UNION 
+SELECT pagobanc banco, paanfech fecha, /*COUNT(1) cantidad,*/ (SUM(pagovapa)*-1) valor, 'PE' tipo
+  FROM open.rc_pagoanul a, open.pagos p
+ WHERE a.paancupo = p.pagocupo
+   AND paanfech >= '09-02-2015' and paanfech < '10-02-2015'
+ GROUP BY pagobanc, paanfech
+UNION 
+SELECT rerebanc banco, rerefegr fecha, /*count(1) cantidad,*/ sum(rerevalo) valor, 'RR' Tipo
+  FROM open.resureca 
+ WHERE rerefegr >= '09-02-2015' and rerefegr < '10-02-2015'
+GROUP BY /*rerecupo,*/ rerebanc, rerefegr, rerefepa; 

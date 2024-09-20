@@ -1,0 +1,28 @@
+-- CARTERA DIFERIDA
+-- SALDO INICIAL
+SELECT caccserv SERVICIO, nvl(sum(decode(caccnaca,'F',caccsape)),0) VALOR, '1_SALDO_INICIAL' TIPO
+  FROM open.ic_cartcoco
+ WHERE caccfege = '31/07/2015'
+   and caccserv = 7056
+ GROUP BY caccserv
+UNION
+-- SALDO FINAL
+SELECT caccserv SERVICIO, NVL((sum(decode(caccnaca,'F',caccsape))* -1),0) VALOR, '3_SALDO_FINAL' TIPO
+  FROM open.ic_cartcoco
+ WHERE caccfege = '31/08/2015'
+   and caccserv = 7056 
+ GROUP BY caccserv
+UNION
+-- MOVIMIENTO DIFERIDOS
+SELECT SERVICIO, (DB - CR) VALOR, '2_MOVIMIENTO_DIFERIDO' TIPO
+  FROM (
+        SELECT  sesuserv SERVICIO, nvl(sum(decode(modisign,'DB',modivacu)),0) DB,
+                nvl(sum(decode(modisign,'CR',modivacu)),0) CR
+        FROM    open.movidife, open.servsusc
+        WHERE   modifech > to_date('01/08/2015 00:00:00','dd/mm/yyyy hh24:mi:ss')
+                AND modifech <= to_date('31/08/2015 23:59:59','dd/mm/yyyy hh24:mi:ss')
+                AND modinuse = sesunuse
+                AND sesuserv = 7056
+                AND modivacu > 0
+        GROUP BY sesuserv
+);

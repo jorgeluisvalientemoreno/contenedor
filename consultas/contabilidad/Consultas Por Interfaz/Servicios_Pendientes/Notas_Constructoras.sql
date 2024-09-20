@@ -1,0 +1,15 @@
+-- Notas Constructoras -- 22-09-2021
+SELECT  cargnuse, cargconc, concdesc, sum(decode(cargsign,'CR',-cargvalo,cargvalo)) Neto_Cargos, cargdoso, cargcaca, cacadesc
+FROM    open.cargos c,  open.servsusc,  open.concepto, open.causcarg ca
+WHERE   cargfecr >= to_Date('01/10/2022 00:00:00', 'dd/mm/yyyy hh24:mi:ss')
+        AND cargfecr <= to_Date('31/10/2022 23:59:59', 'dd/mm/yyyy hh24:mi:ss')
+        AND sesunuse = cargnuse
+        And sesuserv = 6121
+        AND cargcuco > 0
+        AND cargtipr = 'P'
+        and cargcaca not in (20,50,46,84)
+        AND cargsign in ('DB','CR')        
+        and cargconc = conccodi
+        and concclco in (4,19,400)
+        and cargcaca = cacacodi
+group by cargnuse, cargconc, concdesc, cargdoso, cargcaca, cacadesc

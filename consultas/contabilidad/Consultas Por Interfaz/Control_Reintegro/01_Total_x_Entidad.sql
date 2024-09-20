@@ -1,0 +1,32 @@
+-- TOTAL CONTROL REINTEGRO
+select *
+from
+(
+Select t.trbabare banco, b.bancnomb, sum(t.trbavatr) Total, t.trbacuba, bancnit, 'CON_N' tipo
+  from open.tranbanc t, open.banco b
+ where t.trbafere >= '&Fecha_Inicial' and t.trbafere <= '&Fecha_Final 23:59:59' --AND TRBATITB in (1,2)
+   and t.trbabare = b.banccodi
+   and b.banctier = 2
+Group by t.trbabare, b.bancnomb, t.trbacuba, bancnit
+--
+Union All
+-- Transacciones anuladas del dia
+Select tta.tbanbare banco, b.bancnomb, sum(-tta.tbanvatr) total, tta.tbancuba, b.bancnit, 'ANU_C' tipo
+  from open.RC_TRBAANUL tta, open.banco b
+ where tta.tbanfean >= '&Fecha_Inicial' and tta.tbanfean <= '&Fecha_Final 23:59:59'
+   and tta.tbanbare = b.banccodi
+   and b.banctier = 2
+Group by tta.tbanbare, b.bancnomb, tta.tbancuba, b.bancnit
+--
+UNION ALL
+-- Comisiones grabadas
+select g.dosrbanc banco, b.bancnomb, sum(decode(d.tdsrsign, 'DB', g.dosrvdsr, -g.dosrvdsr)) total, null, null, 'COMI' tipo
+  from open.docusore g, OPEN.TIDOSORE d, open.banco b
+ where g.dosrfere >= '&Fecha_Inicial'
+   and g.dosrfere <  '&Fecha_Final 23:59:59'
+   and g.dosrtdsr =  d.tdsrcodi
+   and g.dosrtdsr =  16 -- DOCUMENTO SOPORTE TIPO COMISION
+   and g.dosrbanc =  b.banccodi
+group by g.dosrbanc, b.bancnomb
+)
+order by  banco

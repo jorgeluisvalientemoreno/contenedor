@@ -1,0 +1,27 @@
+select cargnuse, cargconc, cargcaca, cargvalo, substr(cargdoso, 4, 8) SOLICITUD,
+       (select count(*) from open.or_order_activity act
+         where act.package_id = substr(cargdoso, 4, 8)
+           and act.task_type_id in (12150, 12152, 12153)
+           and act.order_id not in (select oro.related_order_id from open.or_related_order oro 
+                                    where oro.related_order_id = act.order_id)) VENTAS,
+       (select count(distinct(act.product_id))
+          from open.or_order_activity act
+         where act.package_id = substr(cargdoso, 4, 8)
+           and act.task_type_id in (12150, 12152, 12153)
+           and act.order_id not in (select oro.related_order_id from open.or_related_order oro 
+                                     where oro.related_order_id = act.order_id)) Productos
+                                    
+from open.cargos, open.servsusc
+where cargcuco != -1
+and cargnuse =  sesunuse
+and sesuserv =  6121
+and cargfecr >= '01-03-2015' --'09-02-2015'
+and cargfecr <= '31-08-2015 23:59:59'
+and substr(cargdoso,1,3) = 'PP-'
+and cargconc in (19,30,674,291)
+and substr(cargdoso, 4, 8) in (select act.package_id
+                                 from open.or_order_activity act, open.mo_packages m
+                                where act.package_id = substr(cargdoso, 4, 8)
+                                  and act.task_type_id  in (12149, 12150, 12152, 12153)
+                                  and act.package_id    =  m.package_id
+                                  and m.package_type_id in (323, 100229))

@@ -1,0 +1,60 @@
+SELECT 'HECHOS' Tipo, trunc(movifeco) FECHA,        
+       (Round(Sum(Decode(MOVISIGN,'D',MOVIVALO,'C',-MOVIVALO)),2) * -1) VALOR
+  FROM OPEN.IC_MOVIMIEN, OPEN.CONCEPTO        
+ WHERE (movitido, movinudo, movifeco) in        
+       (        
+           SELECT dogetido, dogenudo, dogefemo FROM OPEN.ic_docugene        
+                  WHERE dogetido IN (71,73)
+                    AND dogenudo > 0
+                    AND dogefemo BETWEEN '01-05-2016' and '31-05-2016' 
+       )        
+   AND MOVICONC = CONCCODI
+   AND NVL(MOVITIHE, 'X') NOT IN ('CE')
+GROUP BY movifeco
+--
+UNION
+--
+select 'CARGOS' Tipo, fecha, sum(valor) valor
+from (    
+        select trunc(c.cargfecr) fecha,
+               sum(decode(cargsign, 'DB',cargvalo,'AS', cargvalo, 'TS', cargvalo, 'DV', cargvalo, cargvalo*-1)) valor    
+        from open.cargos c,open.SERVSUSC ss, open.CONCEPTO CO,    
+             open.CAUSCARG csc, open.procesos, open.ic_clascont, open.perifact    
+        where c.cargcaca = csc.cacacodi    
+          and c.cargnuse = ss.sesunuse    
+          and c.CARGCONC = CO.CONCCODI    
+          and c.cargfecr between to_date(to_char('01/05/2016 00:00:00'),'dd/mm/yyyy hh24:mi:ss')    
+                             AND to_date(to_char('31/05/2016 23:59:59'),'dd/mm/yyyy hh24:mi:ss')    
+          and cargprog = proccons    
+          and clcocodi(+) = concclco    
+          and cargpefa = pefacodi    
+          AND CARGCUCO > 0    
+          and cargtipr = 'P'    
+          and cargsign NOT IN ('PA','AP')    
+          AND substr(cargdoso,1,2) NOT IN ('PA','AP')    
+        group by  trunc(c.cargfecr) 
+        union all    
+        select trunc(FACTFEGE) fecha,    
+               sum(decode(cargsign, 'DB',cargvalo,'AS', cargvalo, cargvalo*-1)) valor 
+        from open.cargos c,    
+             OPEN.CUENCOBR,    
+             OPEN.FACTURA,    
+             open.CONCEPTO CO,    
+             open.CAUSCARG csc,    
+             open.procesos,    
+             open.ic_clascont, open.perifact, OPEN.SERVSUSC ss    
+        where CARGCUCO = CUCOCODI
+          and c.CARGCONC = CO.CONCCODI
+          and cargsign NOT IN ('PA','AP')              
+          and c.cargcaca = csc.cacacodi
+          and c.cargnuse = ss.sesunuse    
+          AND factcodi = CUCOfact    
+          and clcocodi(+) = concclco    
+          and cargpefa = pefacodi    
+          AND trunc(FACTFEGE) BETWEEN to_date('01/05/2016') -- 00:00:00','dd/mm/yyyy hh24:mi:ss')     
+                                  and to_date('31/05/2016') -- 23:59:59','dd/mm/yyyy hh24:mi:ss')    
+          and cargprog = proccons    
+          and cargtipr = 'A'    
+        group by trunc(FACTFEGE)
+     )    
+Group by fecha

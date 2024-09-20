@@ -1,0 +1,43 @@
+select CEBE, (select g.geo_loca_father_id from open.ge_geogra_location g where g.geograp_location_id = loca) DEPA, 
+       LOCA, (select g.description from open.ge_geogra_location g where g.geograp_location_id = loca) DESCRIPCION,
+       invmsesu NUSE,  sesucate CATE, EST_TECNICO, DES_TECNICO, invmconc CONCEPTO, o.concdesc,
+       invmvain VR_iNGRESO, ING_REPORTADO
+from (
+      select (select l.celocebe 
+                from open.GE_GEOGRA_LOCATION t, open.ldci_centbenelocal l
+              where geograp_location_id = (select GEOGRAP_LOCATION_ID from OPEN.AB_ADDRESS
+                                                    where address_id = susciddi)
+                and t.geo_loca_father_id = l.celodpto 
+                and t.geograp_location_id = celoloca) CEBE, 
+             (select GEOGRAP_LOCATION_ID from OPEN.AB_ADDRESS where address_id = susciddi) LOCA,
+             m.invmsesu, m.invmconc , m.invmvain, sesucate, hi.hcececac EST_TECNICO, st.escodesc DES_TECNICO,
+             decode((SELECT 1
+                       FROM open.OR_related_order, open.OR_order_activity, open.or_order, open.mo_packages
+                      WHERE OR_related_order.rela_order_type_id in (4, 13) -- Tipo de Orden, de Apoyo o Relacionada
+                        AND OR_related_order.related_order_id = OR_order_activity.order_id
+                        AND OR_order_activity.Status = 'F'
+                        AND OR_order_activity.package_id = mo_packages.package_id
+                        AND OR_order_activity.task_type_id in (10622, 10624)
+                        AND mo_packages.package_type_id in (323, 100271, 100229) 
+                        AND OR_order.order_id = OR_related_order.related_order_id
+                        AND OR_order.legalization_date >= '09-02-2015'    AND OR_order.legalization_date < '01-03-2015'                  
+                        AND OR_order_activity.product_id = m.invmsesu
+                        AND m.invmconc = 30
+                        AND ROWNUM = 1), 1, m.invmvain, 0) ING_REPORTADO
+        from open.ldci_ingrevemi m, open.servsusc v, open.suscripc s , open.hicaesco hi, open.estacort st
+             -- open.pr_product pr, OPEN.PS_PRODUCT_STATUS st
+       where m.invmsesu  not in (select h.hcecnuse from open.hicaesco h
+                                 where h.hcececan = 96
+                                   and h.hcececac = 1 and hcecserv = 7014
+                                   and h.hcecfech >= '09-02-2015' and h.hcecfech < '01-03-2015' and h.hcecnuse = m.invmsesu)
+         and m.invmsesu  = v.sesunuse
+         and v.sesususc  = s.susccodi
+         and v.sesunuse  = hi.hcecnuse
+         and hi.hcecfech < '01-03-2015'
+         and hi.hcececac != 1 
+         and hi.hcececac = st.escocodi
+     ), open.concepto o
+WHERE invmconc = o.conccodi     
+order by cebe, invmsesu, sesucate
+-- PENDIENTE FECHA SOLICITUD ( INGRESO) Y ACTIVIDAD PRINCIPAL, PREGUNTAR A FRANCISCO
+-- TIPO DE SOLICITUD Y DESCRIPCIONES 

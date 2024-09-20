@@ -1,0 +1,8 @@
+SELECT distinct moviconc, c.concdesc
+  FROM open.ic_movimien, open.concepto c
+ WHERE movitido = 72
+   AND movifeco >= '&FECHA_INICIAL'
+   AND movifeco <= '&FECHA_FINAL'
+   AND moviconc IS NOT NULL
+   AND moviconc = c.conccodi
+   and c.concclco is null

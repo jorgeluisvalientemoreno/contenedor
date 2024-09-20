@@ -1,0 +1,12 @@
+select l.contratist_code, g.nombre_contratista, cargconc, o.concdesc, sum(decode(cargsign, 'DB', 1, -1) * cargvalo) total
+  from open.cargos, open.concepto o, open.ld_policy l, open.ge_contratista g
+ where cargconc = o.conccodi 
+   and o.concclco = 53
+   and cargfecr >= '09-02-2015'
+   and cargcaca = 72
+   and substr(cargdoso, 4, 10) = l.policy_id
+   and l.contratist_code = g.id_contratista
+group by l.contratist_code, g.nombre_contratista, cargconc, o.concdesc
+order by g.nombre_contratista, o.concdesc
+
+ 

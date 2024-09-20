@@ -1,0 +1,23 @@
+-- Consultas de cruce en Control Reintegro
+select * from open.concilia c where c.conccons = 29817;  -- Numero de Conciliacion
+-- Documeto soporte
+select * from open.docusore d where d.dosrconc = 29817 and d.dosrtdsr = 1; -- Numero de Conciliacion
+-- Transaccion bancaria por documento soporte.
+select * from open.trbadosr t where t.tbdsdosr in (select d.dosrcodi from open.docusore d 
+                                                    where d.dosrconc = 29817 
+                                                      /*and d.dosrtdsr = 1*/); -- Numero de Conciliacion
+-- Transaccion Bancaria
+select * from open.tranbanc t 
+ where t.trbacodi in (select ta.tbdstrba  -- Numero de transaccion bancaria en documento soporte
+                        from open.trbadosr ta
+                       where ta.tbdsdosr in (select d.dosrcodi from open.docusore d 
+                                              where d.dosrconc = 29817 -- Numero de Conciliacion
+                                                and d.dosrtdsr = 1));
+-- Conciliaciones cruzadas en la transaccion bancaria                                                
+select * from open.trbadosr t
+ where t.tbdstrba in (select tr.trbacodi -- numero de Transaccion Bancaria
+                       from open.tranbanc tr 
+                       where tr.trbacodi in (select ta.tbdstrba from open.trbadosr ta
+                                              where ta.tbdsdosr in (select d.dosrcodi from open.docusore d 
+                                                                     where d.dosrconc = 29817 -- Numero de Conciliacion
+                                                                       and d.dosrtdsr = 1)))

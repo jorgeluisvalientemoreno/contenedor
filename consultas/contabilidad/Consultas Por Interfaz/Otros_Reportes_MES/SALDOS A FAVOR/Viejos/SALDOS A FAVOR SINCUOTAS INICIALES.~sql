@@ -1,0 +1,26 @@
+-- SALDOS A FAVOR POR CUOTAS INICIALES
+select servicio, Des_Servicio, producto, nombre, categoria, consecutivo, proceso, total 
+  from (
+        select sesuserv servicio, (select s.servdesc from open.servicio s where s.servcodi = sesuserv) Des_Servicio,
+               mosfsesu producto, s.subscriber_name|| ' ' || s.subs_last_name nombre, sesucate categoria, 
+               (select c.cargconc from open.cargos c
+                 where cargnuse = mosfsesu and cargconc = 301 and cargsign = 'SA'
+                   and cargvalo = total and rownum = 1 and cargfecr < '01-08-2015') inicial,
+               mosfsafa consecutivo, 
+               (select procdesc 
+                  from open.procesos p 
+               where p.proccodi in (select s.safaprog from open.saldfavo s where s.safacons = mosfsafa)) Proceso,
+               Total
+          from (
+                select mosfsesu, m.mosfsafa, sum(mosfvalo) Total
+                  from open.movisafa m
+                 where m.mosffecr < '01-08-2015'
+                group by mosfsesu, m.mosfsafa
+                ), open.servsusc c, open.ge_subscriber s, open.suscripc p
+        where Total > 0
+           and mosfsesu = c.sesunuse
+           and c.sesususc = p.susccodi
+           and p.suscclie = s.subscriber_id
+        order by mosfsesu
+       )
+ where inicial /*is not*/ null

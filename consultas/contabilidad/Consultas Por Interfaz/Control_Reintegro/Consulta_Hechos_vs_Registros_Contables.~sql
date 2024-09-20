@@ -1,0 +1,72 @@
+SELECT a.MOVIFECO FechaContabilizacion,
+       a.MOVIBACO EntidadConciliacion,
+       d.bancnomb Desc_Entidad,
+       NULL Nit_Bancorecauda,
+       (a.MOVIVALO*-1) Valor,
+       'HE' TIPO
+  FROM open.ic_movimien a, open.banco d, open.tipoenre f, open.cuenbanc e, open.ic_tipomovi g
+ WHERE MOVITIDO = 74
+   AND MOVITIMO IN (38, 65)
+   AND a.MOVIFECO >= '&FECHA_INICIAL'
+   AND a.MOVIFECO <= '&FECHA_FINAL'
+   AND a.MOVIBACO = d.banccodi
+   AND a.movitibr = f.tiercodi
+   AND a.movicuba = e.cubacodi
+   AND g.timocodi = a.movitimo
+union all
+SELECT a.MOVIFECO FechaContabilizacion,
+       a.MOVIBACO EntidadConciliacion,
+       d.bancnomb Desc_Entidad,
+       NULL Nit_Bancorecauda,
+       (a.MOVIVALO*-1) Valor,
+       'CO' TIPO
+  FROM open.ic_movimien a, open.banco d, open.ic_tipomovi g
+ WHERE MOVITIDO = 74
+   AND MOVITIMO = (22)
+   AND a.MOVIFECO >= '&FECHA_INICIAL'
+   AND a.MOVIFECO <= '&FECHA_FINAL'
+   AND a.MOVIBACO = d.banccodi
+   AND g.timocodi = a.movitimo
+   and a.movitdsr = 16
+UNION ALL
+SELECT z.FechaContabilizacion,
+       TO_NUMBER(z.Cod_EntidadConciliacion) Cod_EntidadConciliacion,
+       y.bancnomb Desc_Entidad,
+       z.Nit_Bancorecauda,
+       NVL(SUM(DECODE(Z.SIGNO, 'D', VALOR)), 0) valor,
+       'RC' TIPO
+  FROM (SELECT e.tipointerfaz TipoInterfaz,
+               c.ecrcfech FechaContabilizacion,
+               open.ldci_pkinterfazsap.fvaGetData(14, d.dcrcinad, '|') DocumentoSoporte,
+               open.ldci_pkinterfazsap.fvaGetData(30, dcrcinad, '|') FechaTransaccion,
+               d.dcrcsign SIGNO,
+               d.dcrcvalo VALOR,
+               open.ldci_pkinterfazsap.fvaGetData(35, d.dcrcinad, '|') Cod_TipoEntidad,
+               open.ldci_pkinterfazsap.fvaGetData(45, d.dcrcinad, '|') Cod_EntidadConciliacion,
+               open.ldci_pkinterfazsap.fvaGetData(34, d.dcrcinad, '|') Nit_Bancorecauda,
+               open.ldci_pkinterfazsap.fvaGetData(36, d.dcrcinad, '|') Nit_BancoTransaccion,
+               open.ldci_pkinterfazsap.fvaGetData(8, d.dcrcinad, '|') Cod_BancoTransaccion,
+               open.ldci_pkinterfazsap.fvaGetData(13, d.dcrcinad, '|') Conciliacion,
+               DCRCCUCO CuentaContable
+          FROM open.ic_ticocont       a,
+               open.ic_compcont       b,
+               open.ic_encoreco       c,
+               open.ic_decoreco       d,
+               open.ldci_tipointerfaz e,
+               open.ic_confreco       f
+         WHERE trunc(c.ecrcfech) BETWEEN ('&FECHA_INICIAL') AND ('&FECHA_FINAL')
+           AND a.TCCOCODI = b.COCOTCCO
+           AND a.TCCOCODI = 8
+           AND b.COCOCODI = c.ECRCCOCO
+           AND c.ecrccons = d.dcrcecrc
+           AND b.COCOCODI = e.cod_comprobante
+           AND d.dcrccorc = f.corccons        
+        ) z,
+       open.tipoenre x,
+       open.banco y
+ WHERE nvl(Cod_TipoEntidad,2) = x.tiercodi
+   AND z.Cod_EntidadConciliacion = y.banccodi
+ GROUP BY z.Cod_EntidadConciliacion,
+          y.bancnomb,
+          z.FechaContabilizacion,
+          z.Nit_Bancorecauda;

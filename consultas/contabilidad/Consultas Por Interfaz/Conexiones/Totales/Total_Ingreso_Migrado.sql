@@ -1,0 +1,16 @@
+SELECT invmconc, o.concdesc,sum(invmvain) total
+from open.Ldci_Ingrevemi m, open.servsusc s, open.ab_address, open.suscripc, open.ge_subscriber g,
+     open.ldci_centbenelocal l, open.concepto o
+where m.invmsesu in (SELECT distinct hcecnuse
+                       FROM open.hicaesco h
+                      WHERE hcececan = 96
+                        AND hcececac = 1
+                        AND hcecserv = 7014
+                        AND hcecfech >= '01-08-2015' and hcecfech < '01-09-2015')
+AND m.invmsesu = s.sesunuse
+AND sesususc = susccodi
+AND suscclie = g.subscriber_id
+AND g.address_id = ab_address.address_id
+AND ab_address.geograp_location_id = l.celoloca AND invmconc = conccodi
+and m.invmconc in (19,674)
+group by invmconc, o.concdesc

@@ -1,0 +1,9 @@
+-- LOG INTERFACES
+select * --distinct loprmen0-- loprfech, loprmen0
+  from OPEN.LDCI_LOGSPROC
+ where loprproc = 'L1' 
+   and loprfech >= '04-01-2024 00:00:00' --/* 18:22:00*/' --and loprfech < '19-06-2015'   
+   --and loprmen0 like 'No se puede obtener la clave%'   
+   --and substr(loprmen0, 17, 37) != ' No se puede obtener la Orden Interna'
+   --and substr(loprmen0, 1, 31) != 'Ejecutando fnuINSELDCI_INCOLIQU'
+order by loprfech desc --idse desc, loprcodi desc; -- 47 x 13.5 x 2

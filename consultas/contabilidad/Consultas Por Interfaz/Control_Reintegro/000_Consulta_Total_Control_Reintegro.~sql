@@ -1,0 +1,14 @@
+-- CONTROL REINTEGRO
+select t.* from open.tranbanc t, open.banco b
+ where trbafere >= '17-07-2015' and trbafere < '18-07-2015' AND TRBATITB in (1,2)
+   and t.trbabare = b.banccodi
+   and b.banctier = 2;
+ 
+--select * from open.banco
+/*-- Consulta Reintegro en una fecha
+select *
+  from open.trbadosr t, open.tranbanc d
+ where trbafere >= '17-02-2015' and trbafere < '19-02-2015'
+   and tbdstrba  = d.trbacodi;
+--   and d.dosrtdsr = 1; 
+select * from open.docusore*/

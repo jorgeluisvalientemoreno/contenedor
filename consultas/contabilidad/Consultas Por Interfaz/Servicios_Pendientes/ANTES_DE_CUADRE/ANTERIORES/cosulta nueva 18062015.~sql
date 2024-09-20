@@ -1,0 +1,32 @@
+select h.hcecnuse,
+       sum(decode(l.invmconc, 30, l.invmvain)) Interna, 
+       sum(decode(l.invmconc, 19, l.invmvain)) C_X_C, 
+       sum(decode(l.invmconc, 674, l.invmvain)) REV_PER,
+       sum(decode((SELECT 1
+                 FROM open.OR_related_order, open.OR_order_activity, open.or_order, open.mo_packages
+                WHERE OR_related_order.rela_order_type_id in (4, 13) -- Tipo de Orden, de Apoyo o Relacionada
+                  AND OR_related_order.related_order_id = OR_order_activity.order_id
+                  AND OR_order_activity.Status = 'F'
+                  AND OR_order_activity.package_id = mo_packages.package_id
+                  AND OR_order_activity.task_type_id in (10622, 10624)
+                  AND mo_packages.package_type_id in (100271)
+                  AND OR_order.order_id = OR_related_order.related_order_id
+                  AND OR_order.legalization_date < '01-04-2015'
+                  AND OR_order_activity.product_id = h.hcecnuse
+                  AND l.invmconc = 30
+                  AND ROWNUM = 1), 1, l.invmvain, 0)) ING_REPORTADO       
+  from open.hicaesco h, open.ldci_ingrevemi l
+ where h.hcececac = 96
+   and h.hcececan = 1
+   and h.hcecserv = 7014
+   and h.hcecfech < '01-04-2015'
+   and h.hcecnuse not in (select distinct hi.hcecnuse from open.hicaesco hi
+                           where hi.hcececac = 1
+                             and hi.hcececan = 96
+                             and hi.hcecserv = 7014
+                             and hi.hcecfech < '01-04-2015' and hi.hcecnuse = h.hcecnuse)
+   and h.hcecnuse = l.invmsesu
+group by h.hcecnuse  
+
+   
+
