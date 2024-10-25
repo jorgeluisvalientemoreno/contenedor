@@ -55,7 +55,7 @@ select distinct oo.order_id Orden,
                 oo.execution_final_date Fecha_Final_Ejecucion,
                 ooa.comment_ Comentario_Orden,
                 ooa.package_id Solicitud,
-                ooa.instance_id,
+                ooa.instance_id Instancia,
                 mp.package_type_id || ' - ' ||
                 (select b.description
                    from open.ps_package_type b
@@ -70,7 +70,16 @@ select distinct oo.order_id Orden,
                 (select d.description
                    from open.ps_motive_status d
                   where d.motive_status_id = mp.motive_status_id) Estado_Solicitud,
-                mp.comment_ Comentario,
+                mp.comment_ Comentario_Solicitud,
+                (select mp.SUBSCRIBER_ID || ' - ' || gs.subscriber_name || ' ' ||
+                        gs.subs_last_name
+                   from OPEN.GE_SUBSCRIBER gs
+                  where gs.subscriber_id = mp.SUBSCRIBER_ID) Cliente,
+                (select mp.CONTACT_ID || ' - ' || gs.subscriber_name || ' ' ||
+                        gs.subs_last_name
+                   from OPEN.GE_SUBSCRIBER gs
+                  where gs.subscriber_id = mp.CONTACT_ID) Contacto_Solicitante,
+                mp.ADDRESS_ID Direccion_Solicitud,
                 (select a2.user_id || ' - ' ||
                         (select p.name_
                            from open.ge_person p
@@ -93,6 +102,18 @@ select distinct oo.order_id Orden,
                   where a2.order_id = oo.order_id
                     and (a2.initial_status_id = 0 and a2.final_status_id = 5)
                     and rownum = 1) Usuario_Asigna,
+                (select a2.user_id || ' - ' ||
+                        (select p.name_
+                           from open.ge_person p
+                          where p.user_id =
+                                (select a.user_id
+                                   from open.sa_user a
+                                  where a.mask = a2.user_id))
+                   from open.or_order_stat_change a2
+                  where a2.order_id = oo.order_id
+                    and (a2.initial_status_id in (0, 5, 6) and
+                        a2.final_status_id = 7)
+                    and rownum = 1) Usuario_Ejecuta,
                 (select a2.user_id || ' - ' ||
                         (select p.name_
                            from open.ge_person p
@@ -246,31 +267,26 @@ select distinct oo.order_id Orden,
                        ooa.status || ' - Finalizado',
                        ooa.status || ' - Registrado') Estado_Actividad,
                 ooa.order_activity_id Actividad_Orden,
-                mp.pos_oper_unit_id Punto_venta,
+                (select mp.pos_oper_unit_id || ' - ' || oou.name
+                   from open.or_operating_unit oou
+                  where oou.operating_unit_id = mp.pos_oper_unit_id) Punto_venta,
                 pp.category_id || ' - ' || categoria.catedesc Categoria_Producto,
                 pp.subcategory_id || ' - ' || Subcategoria.Sucadesc subCategoria_Producto,
-                nvl((select decode(nvl(wde.unit_type_id, 0),
-                                  0,
-                                  'No Tiene Flujo',
-                                  'Tiene Flujo')
-                      from OPEN.WF_DATA_EXTERNAL wde
-                     where wde.package_id = mp.package_id
-                       and rownum = 1),
-                    'No Tiene Flujo') Tiene_Flujo,
-                (select decode(nvl(asignacion.order_id, 0),
+                (select decode(count(1), 0, 'No Tiene Flujo', 'Tiene Flujo')
+                   from OPEN.WF_DATA_EXTERNAL wde
+                  where wde.package_id = mp.package_id) Tiene_Flujo,
+                (select decode(count(1),
                                0,
                                'No Existe en Asignacion Automatica',
                                'Existe Asignacion Automatica')
                    from OPEN.LDC_ORDER asignacion
                   where asignacion.order_id = oo.order_id) Asignacion_Auomatica,
-                nvl((select decode(nvl(wde.unit_type_id, 0),
-                                  0,
-                                  'No Tiene Flujo',
-                                  'Tiene Flujo')
-                      from OPEN.WF_DATA_EXTERNAL wde
-                     where wde.package_id = mp.package_id
-                       and rownum = 1),
-                    'No Tiene Flujo') Tiene_Flujo
+                (SELECT decode(count(1),
+                               0,
+                               'No legaliza automatica',
+                               'Legaliza automatica')
+                   FROM open.LDC_CONFTITRLEGA lc
+                  where lc.task_type_id = oo.task_type_id) Legaliza_JOB_LDC_CONFTITRLEGA
   from open.or_order_activity ooa
   left join open.or_order oo
     on oo.order_id = ooa.order_id
@@ -329,30 +345,31 @@ select distinct oo.order_id Orden,
   left join open.subcateg Subcategoriadireccion
     on Subcategoriadireccion.Sucacate = pp.category_id
    and Subcategoriadireccion.Sucacodi = pp.subcategory_id
- where --)select ou.order_id from orden_uobysol ou)
--- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
--- and ooa.subscription_id in (67590042,67590561,67590584)
--- and ooa.product_id in (1017608)
--- and trunc(oo.legalization_date) >= '01/01/2024'
---and trunc(oo.created_date) = '08/07/2024'
---and mp.package_type_id = 100210
--- and trunc(mp.request_date) >= '07/07/2024'
--- and mp.motive_status_id = 14
--- and  oo.order_id 
---in (332088027,319150560,319147256,318001635)
---in (318001635,319147256,319150560,333737020,324074329,324109462,324110357,324124132,324181928,324265746,324267074,324267333,324270808,324270982,324271223,324302686,324329665,324355478,324527312,324528503,324684540,324687222,324689801,324752212,324763171,324764701,324776244,324776815,324778486,324986189,324987007,325344516,325345418,325352111,325352527,325353292,325364220,325602917,325607864,325619477,325765916,326118270,326556755,326667114,326667706,326669604,326670011,326871443,327122327,327132803,333743342,326670471,326209133,333737072,324521591,324521629,326092744,332088027,335266902,335281288,335282077,335287842,325345568,325346138,333742102,333742114,333742118,333742119,333742124,333742126,326182895,326183158,326357899,326357980,326985665)
--- and ooa.order_activity_id in(4295152)
--- and mp.cust_care_reques_num in ('212356951', '212681274')
--- and ooa.order_id in (318396156, 318396150) --(318396156,318396150)
--- and  oo.order_status_id in (0)
+ where
+---Orden
+-- 
+ooa.order_id in (340836332)
+-- and oo.task_type_id in (10495)
+-- and ooa.activity_id in (4295751)
+-- and oo.order_status_id not in (8, 12)
 -- and oo.causal_id = 9944--in (8, 12)
--- and oo.task_type_id in (10312)
--- and ooa.activity_id in (4000054)
+-- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
+-- and ooa.subscription_id in (67598638, 67598598, 67598580, 67598382, 67598386)
+-- and ooa.product_id in (14505304)
+-- and ooa.order_activity_id in (322824237)
+-- and trunc(oo.legalization_date) >= '12/08/2024'
+-- and trunc(oo.created_date) = '07/03/2023'
+-- and mp.package_type_id = 100210
+-- and trunc(mp.request_date) >= '07/07/2024'
+-- and mp.motive_status_id = 13
+-- and oo.order_id in (335764490)
+-- in (318001635,319147256,319150560,333737020,324074329,324109462,324110357,324124132,324181928,324265746,324267074,324267333,324270808,324270982,324271223,324302686,324329665,324355478,324527312,324528503,324684540,324687222,324689801,324752212,324763171,324764701,324776244,324776815,324778486,324986189,324987007,325344516,325345418,325352111,325352527,325353292,325364220,325602917,325607864,325619477,325765916,326118270,326556755,326667114,326667706,326669604,326670011,326871443,327122327,327132803,333743342,326670471,326209133,333737072,324521591,324521629,326092744,332088027,335266902,335281288,335282077,335287842,325345568,325346138,333742102,333742114,333742118,333742119,333742124,333742126,326182895,326183158,326357899,326357980,326985665)
+-- and ooa.order_activity_id in(42}95152)
+-- and mp.cust_care_reques_num in ('212356951', '212681274')
 -- and mp.package_type_id = 100284
 -- and (mm.subscription_id = 48052064 or mm.product_id = 50062001)
 -- and mp.cust_care_reques_num in ('210494274','207413106')
--- and 
- mp.package_id in (215958030, 216672852, 216760946)
+-- and  mp.package_id in (340836332)
 -- and pp.product_status_id = 15
 -- and mm.motive_id = 96953319
 -- and oo.operating_unit_id in (1775, 1931, 1773, 3557)

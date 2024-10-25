@@ -1,7 +1,17 @@
-
 --venta cotizada personalizada en estado aprobada y asociada a una venta cotizada
 select /*mpa.package_id, mp.tag_name, mp.motive_status_id, mp.attention_date , */
- gs.identification, cc.*, dcc.*, mm.subscription_id, mm.product_id
+ cc.id_cot_comercial,
+ gg_Localidad.geo_loca_father_id ||' - '|| gg_Departamento.Description departamento,
+ aa.geograp_location_id || ' - ' || gg_Localidad.description Localidad,
+ gs.identification || ' - ' || gs.subscriber_name || ' ' ||
+ gs.subs_last_name Suscriptor,
+ cc.*,
+ --dcc.*,
+ mm.subscription_id Contrato,
+ mm.product_id Producto,
+ aa.address_id || ': ' || aa.address Direccion,
+ ap.category_ Categoria,
+ ap.Subcategory_ SubCategoria
   from open.ldc_cotizacion_comercial cc
   left join open.DATOS_COTIZACION_COMERCIAL dcc
     on cc.id_cot_comercial = dcc.id_cot_comercial
@@ -13,8 +23,21 @@ select /*mpa.package_id, mp.tag_name, mp.motive_status_id, mp.attention_date , *
     on mm.package_id = mp.package_id
   left join OPEN.GE_SUBSCRIBER gs
     on gs.subscriber_id = cc.cliente
- where cc.estado = 'R'
+  left join open.ab_address aa
+    on aa.address_id = cc.id_direccion
+  left join open.ab_premise ap
+    on ap.premise_id = aa.Estate_Number
+  left join open.ge_geogra_location gg_Localidad
+    on gg_Localidad.geograp_location_id = aa.geograp_location_id
+  left join open.ge_geogra_location gg_Departamento
+    on gg_Departamento.geograp_location_id = gg_Localidad.Geo_Loca_Father_Id
+ where
+--cc.estado = 'A'
 --and mp.motive_status_id in (14, 32)
+-- and ap.category_ in (3,6)
+cc.fecha_registro > sysdate -10 
+--and
+-- gs.identification = '72344771'-- '1049536781'
  order by cc.fecha_registro desc;
 
 select (select ab.geograp_location_id || ' - ' || ab.address
@@ -25,14 +48,15 @@ select (select ab.geograp_location_id || ' - ' || ab.address
        co.*
   from open.ldc_cotizacion_comercial co, open.ge_subscriber gs
  where gs.subscriber_id = co.cliente
-   and co.estado in ('R') --('A','E')
-/*and co.sol_cotizacion =
-(select mp.package_id
-   from open.mo_packages mp
-  where mp.package_id = co.sol_cotizacion
-    and mp.motive_status_id = 13)*/
---and gs.identification = '900491486'
+      --and co.estado in ('R') --('A','E')
+      /*and co.sol_cotizacion =
+      (select mp.package_id
+         from open.mo_packages mp
+        where mp.package_id = co.sol_cotizacion
+          and mp.motive_status_id = 13)*/
+   and gs.identification = '72344771'
  order by co.fecha_registro desc;
+
 select t.*, rowid
   from open.DATOS_COTIZACION_COMERCIAL t
  where t.id_cot_comercial in
@@ -73,15 +97,17 @@ SELECT *
 select *
   from open.ldc_cotizacion_comercial l
  where l.id_cot_comercial = 8147
- --l.sol_cotizacion = 192609020;
-SELECT /*+ index( a IDX_CC_QUOTATION01 ) */
- a.*, a.rowid
-  FROM /*+ CC_BCQuotation.cuAttValidQuotByPack */ cc_quotation a
- WHERE
---a.package_id = inuPackageId
---AND     
- a.status = CC_BOQuotationUtil.fsbGetQuotationAttStat
- AND trunc(a.end_date) >= trunc(sysdate);
+--l.sol_cotizacion = 192609020;
+  SELECT /*+ index( a IDX_CC_QUOTATION01 ) */
+         a.*, a.rowid
+          FROM /*+ CC_BCQuotation.cuAttValidQuotByPack */ cc_quotation a
+         WHERE
+        --a.package_id = inuPackageId
+        --AND     
+         a.status = CC_BOQuotationUtil.fsbGetQuotationAttStat
+     AND trunc(a.end_date) >= trunc(sysdate);
+
+
 SELECT /*+ index( a IDX_CC_QUOTATION01 ) */
  a.quotation_id
   FROM /*+ CC_BCQuotation.cuActQuotByPack */ cc_quotation a

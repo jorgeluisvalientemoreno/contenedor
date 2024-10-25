@@ -78,6 +78,18 @@ select distinct oo.order_id, ---||',',
                                   where a.mask = a2.user_id))
                    from open.or_order_stat_change a2
                   where a2.order_id = oo.order_id
+                    and (a2.initial_status_id in (0, 5, 6) and
+                        a2.final_status_id = 7)
+                    and rownum = 1) Usuario_Ejecuta,
+                (select a2.user_id || ' - ' ||
+                        (select p.name_
+                           from open.ge_person p
+                          where p.user_id =
+                                (select a.user_id
+                                   from open.sa_user a
+                                  where a.mask = a2.user_id))
+                   from open.or_order_stat_change a2
+                  where a2.order_id = oo.order_id
                     and a2.final_status_id = 8
                     and rownum = 1) Usuario_Legaliza,
                 oo.defined_contract_id,
@@ -134,9 +146,8 @@ select distinct oo.order_id, ---||',',
        open.ge_geogra_location departamento_Orden,
        open.pr_product         pp
  where ooa.order_id = oo.order_id
-      --and ooa.order_id in (306526899, 304410747)
-   and ooa.comment_ like
-       'Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
+   and ooa.order_id in (340836332)
+      --and ooa.comment_ like 'Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
       --and ooa.product_id in (24000223)
       --and trunc(oo.legalization_date) >= '01/10/2023'
       --and trunc(oo.created_date) >= '01/05/2023'   
@@ -144,7 +155,7 @@ select distinct oo.order_id, ---||',',
       --and oo.order_status_id in (0,5,6,7) 
       --and oo.causal_id = 9944--in (8, 12)
       --and oo.task_type_id = 12149
-   and ooa.activity_id in (4000949)
+      --and ooa.activity_id in (4000949)
       --and oo.order_status_id in (8)
       --and oo.legalization_date > sysdate - 60
       --and pp.product_status_id = 15
@@ -155,9 +166,9 @@ select distinct oo.order_id, ---||',',
        localidad_Orden.geo_loca_father_id
    and pp.product_id(+) = ooa.product_id
    and DireccionProducto.Address_Id(+) = pp.address_id
-   and (SELECT count(1)
+   /*and (SELECT count(1)
           FROM open.fm_possible_ntl fpn
          WHERE fpn.order_id = oo.order_id
            AND (fpn.product_id = ooa.product_id or
-               fpn.address_id = ooa.address_id)) = 0
+               fpn.address_id = ooa.address_id)) = 0*/
  order by oo.created_date desc;

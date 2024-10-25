@@ -31,42 +31,48 @@ BEGIN
   
     --Recorrer DATA de orden 
     for rfcuDataOrden in cuDataOrden(rfcuListadoOrden.Orden) loop
-      if rfcuDataOrden.estado <> 0 then
-        BEGIN
-          -- Anulamos la OT
-          or_boanullorder.anullorderwithoutval(rfcuDataOrden.ORDEN,
-                                               SYSDATE);
-        
-          --/*-- Adicionamos comentario a la OT
-          OS_ADDORDERCOMMENT(rfcuDataOrden.ORDEN,
-                             nuCommentType,
-                             SBCOMMENT,
-                             nuErrorCode,
-                             sbErrorMesse);
-          --*/
-        
-          If nuErrorCode = 0 then
-            commit;
-            dbms_output.put_line('Orden ' || rfcuDataOrden.ORDEN ||
-                                 ' anulada Ok.' || sbErrorMesse);
-          Else
-            rollback;
-            dbms_output.put_line('Error en Orden ' || rfcuDataOrden.ORDEN ||
-                                 ' Error : ' || sbErrorMesse);
-          End if;
-          --
-        EXCEPTION
-          WHEN OTHERS THEN
-            ROLLBACK;
-            dbms_output.put_line('Error en Orden ' || rfcuDataOrden.ORDEN ||
-                                 ' Error : ' || SQLERRM);
-        END;
-        --  
-      else
-        dbms_output.put_line('La Orden ' || rfcuDataOrden.ORDEN ||
-                             ' no se anula debido a que su estado no es 0 sino ' ||
-                             rfcuDataOrden.estado);
-      end if;
+      --if rfcuDataOrden.estado <> 0 then
+      BEGIN
+        -- Anulamos la OT
+        --or_boanullorder.anullorderwithoutval
+        API_ANULLORDER(rfcuDataOrden.ORDEN,
+                       nuCommentType,
+                       SBCOMMENT,
+                       nuErrorCode,
+                       sbErrorMesse);
+      
+        /*-- Adicionamos comentario a la OT
+        --OS_ADDORDERCOMMENT
+        API_ADDORDERCOMMENT(rfcuDataOrden.ORDEN,
+                            nuCommentType,
+                            SBCOMMENT,
+                            nuErrorCode,
+                            sbErrorMesse);
+        --*/
+      
+        If nuErrorCode = 0 then
+          commit;
+          dbms_output.put_line('Orden ' || rfcuDataOrden.ORDEN ||
+                               ' anulada Ok.' || sbErrorMesse);
+        Else
+          rollback;
+          dbms_output.put_line('Error Anlunado la Orden ' ||
+                               rfcuDataOrden.ORDEN || ' Error : ' ||
+                               sbErrorMesse);
+        End if;
+        --
+      EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK;
+          dbms_output.put_line('Error en Orden ' || rfcuDataOrden.ORDEN ||
+                               ' Error : ' || SQLERRM);
+      END;
+      --  
+    /*else
+                dbms_output.put_line('La Orden ' || rfcuDataOrden.ORDEN ||
+                                     ' no se anula debido a que su estado no es 0 sino ' ||
+                                     rfcuDataOrden.estado);
+              end if;--if rfcuDataOrden.estado <> 0 then*/
     end loop;
   end loop;
 

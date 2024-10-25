@@ -24,8 +24,10 @@ select a.cargcuco,
     on c.conccodi = a.cargconc
   left join open.SIGNO s
     on s.signcodi = a.cargsign
- where a.cargnuse in (select s.sesunuse
-                        from open.servsusc s
-                       where s.sesususc in (608234, 703475))
-   and a.cargfecr > '14/08/2024'
+  left join open.cuencobr cc
+    on cc.cucocodi = cc.cucocodi
+   and cc.cucosacu > 0
+ where a.cargnuse in
+       (select s.sesunuse from open.servsusc s where s.sesususc in (39813))
+--and a.cargfecr > '14/08/2024'
  order by a.cargfecr desc;

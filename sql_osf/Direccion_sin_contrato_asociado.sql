@@ -1,4 +1,3 @@
-
   select pr_product.product_id  "Producto",ab_address.address_id,
        case when pr_product.product_id is null then 'Sin ocupar'
             when pr_product.product_id is not null then 'Ocupado' end  "Predio ocupado",
@@ -32,14 +31,16 @@ left join open.ldc_level_risk on ldc_level_risk.nivel_riesgo = ab_info_premise.l
 left join open.pr_product on pr_product.address_id = ab_address.address_id
 where subcateg.sucacodi = ab_premise.subcategory_
 and (select count(1) from open.suscripc where suscripc.susciddi = ab_address.address_id) = 0
-and ab_address.address not in ('KR MTTO CL MTTO - 0', 'RECAUDO PAGO NACIONAL', 'KR GENERICA CL GENERICA - 0')
+and ab_address.address not in ('KR MTTO CL MTTO - 0', 'RECAUDO PAGO NACIONAL', 'KR GENERICA CL GENERICA - 0') and ab_address.address not like '%No existe%'
 and ab_premise.premise_type_id is not null
 and ab_info_premise.is_ring = 'Y'
 and not exists(select null from open.pr_product where pr_product.address_id = ab_address.address_id and pr_product.product_type_id in ('7055','7056'))
 and ldc_info_predio.pno is null
 and ldc_level_risk.es_vendible = 'Y'
 and  pr_product.product_id is null
-and ab_premise.category_ = 1
+and ab_premise.category_ = 3
+and ab_premise.subcategory_ = 1
+and ge_geogra_location.geo_loca_father_id = 2
 --and ab_address.address_id = 181988
 ;
 ---------------------------------------------------------------------------------------------------------

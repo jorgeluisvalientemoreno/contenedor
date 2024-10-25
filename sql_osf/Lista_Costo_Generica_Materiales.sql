@@ -1,3 +1,12 @@
+select l.list_unitary_cost_id, l.description
+  from open.ge_list_unitary_cost l
+ where l.contract_id is null
+   and l.operating_unit_id is null
+   and l.contractor_id is null
+   and l.geograp_location_id is null
+   and description like '%MATERIALES%'
+   and sysdate between l.validity_start_date and l.validity_final_date;
+
 select GE_UNIT_COST_ITE_LIS.items_id || ' - ' || gi.description "Item",
        GE_UNIT_COST_ITE_LIS.list_unitary_cost_id || ' - ' ||
        GE_LIST_UNITARY_COST.DESCRIPTION "Lista Costo",

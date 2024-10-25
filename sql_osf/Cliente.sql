@@ -3,7 +3,8 @@ select *
   from open.GE_SUBSCRIBER gs
  where (select count(1)
           from open.suscripc s
-         where gs.subscriber_id = s.suscclie) = 0;
+         where gs.subscriber_id = s.suscclie) = 0
+   and gs.vinculate_date > sysdate - 350;
 
 ---cliento x contrato 
 select *
@@ -12,10 +13,19 @@ select *
        (select s.suscclie from open.suscripc s where s.susccodi = 67562052);
 
 ---contrato por cliento
+select s.susccodi Contrato,s.susccicl Ciclo_Contrato, ss.sesucicl Ciclo_Servicio--.*
+  from open.GE_SUBSCRIBER gs, open.suscripc s, open.servsusc ss
+ where gs.subscriber_id = s.suscclie
+   and gs.identification = '1131005705'--'1049536781'
+   and ss.sesususc = s.susccodi
+   and ss.sesuserv = 7014; --67595260
+
+
+---contrato por cliento
 select *
   from open.GE_SUBSCRIBER gs, open.suscripc s
  where gs.subscriber_id = s.suscclie
-   and gs.subscriber_id = 2392715;
+   and gs.identification = '72344771';
 
 select s.* from open.suscripc s where s.susccodi = 67562052;
 select a.*, rowid from open.servsusc a where a.sesuSUSC = 67562052;

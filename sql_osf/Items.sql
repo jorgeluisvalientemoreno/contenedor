@@ -50,10 +50,10 @@ select gi.items_id Item,
        gi.shared,
        gi.code Codigo
   from open.ge_items gi
-  left join ge_item_classif gic
+  left join open.ge_item_classif gic
     on gic.item_classif_id = gi.item_classif_id
-  left join ge_items_tipo git
+  left join open.ge_items_tipo git
     on git.id_items_tipo = gi.id_items_tipo
-  left join concepto c
+  left join open.concepto c
     on c.conccodi = gi.concept
 -- where gi.items_id in (10004070)

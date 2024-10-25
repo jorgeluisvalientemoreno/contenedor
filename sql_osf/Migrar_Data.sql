@@ -6,9 +6,7 @@ select ott.*, rowid
  where ott.task_type_id in (11260);
 
 ---Items  - Actividad
-select gi.*, rowid
-  from open.ge_items gi
- where gi.items_id in (100009447);
+select gi.*, rowid from open.ge_items gi where gi.items_id in (100009447);
 
 ---Causal
 select a.*, rowid from OPEN.GE_CAUSAL a where a.causal_id in (3857, 9694);
@@ -23,7 +21,6 @@ select a.*, rowid from open.concepto a where a.conccodi = 1007;
 --Datos adicionales pro tipo de trabajo
 --Tipo comentario pro tipo de trabajo
 
-
 --Tipo trabajo - Causal 
 select a.*, rowid
   from OPEN.OR_TASK_TYPE_CAUSAL a
@@ -34,7 +31,9 @@ select otti.*, rowid
  where otti.task_type_id in (11368) -- and otti.items_id in (100010374, 100010373)
 ;
 --items para actividad e orden
-select a.*, rowid from OPEN.OR_ACTIVIDAD a where a.id_actividad in (100009447); 
+select a.*, rowid
+  from OPEN.OR_ACTIVIDAD a
+ where a.id_actividad in (100009447);
 
 --Actividad - Rol
 select oar.*, rowid
@@ -42,7 +41,7 @@ select oar.*, rowid
  where oar.id_actividad in
        (select otti.items_id
           from open.or_task_types_items otti
-         where otti.task_type_id in (11260,11259));
+         where otti.task_type_id in (11260, 11259));
 
 --ITEMS PERMITIDOS LEGALIZAR LAS UNIDADES OPERATIVAS QUE APLICAN PARA NUEVO ESQUEMA DE LIQUIDACION
 SELECT l.*, ROWID --distinct l.item ||',' --
@@ -56,18 +55,17 @@ SELECT l.*, ROWID --distinct l.item ||',' --
 --Maximos y minimos tt e items
 select l.*, rowid
   from open.LDC_CMMITEMSXTT l
- where (l.activity_id in (100009447) or
-       l.items_id in (100009447))
+ where (l.activity_id in (100009447) or l.items_id in (100009447))
    AND l.task_type_id in (11260)
  order by l.itemsxtt_id desc;
- 
+
 --Configuraci?n de cantidad m?ximas y m?nimas de ?tems por tipos de trabajo
 select l.* from open.LDC_CMMITEMSXTT l where l.task_type_id in (11260);
 ---Lista de costo
 select a.*, rowid
   from open.GE_LIST_UNITARY_COST a
  where a.list_unitary_cost_id = 1;
- 
+
 ---Lista de cosro - Item 
 select b.*, rowid
   from open.GE_UNIT_COST_ITE_LIS b

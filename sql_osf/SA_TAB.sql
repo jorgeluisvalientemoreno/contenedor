@@ -1,5 +1,7 @@
-select *
+select s.*, rowid
   from open.sa_tab s
- where s.tab_name = 'CCCAS'
-    or s.process_name = 'CCCAS'
-    or s.aplica_executable = 'CCCAS'
+ where s.tab_name = 'FMLPN'
+    or s.process_name = 'FMLPN'
+    or s.aplica_executable = 'FMLPN';
+    --:PACKAGE_STATUS: = '13 - REGISTRADO' AND LDC_BOORDENES.FNUCONTROLVISUALANULSOLI(:PACKAGE_TYPE:) IN (1,2,3) AND LDC_BCSALESCOMMISSION.fnuGetPackagesVR(:PACKAGE_ID:)=:PACKAGE_ID:
+--:PACKAGE_STATUS: = '13 - REGISTRADO' select LDC_BOORDENES.FNUCONTROLVISUALANULSOLI(213260380) c1, LDC_BCSALESCOMMISSION.fnuGetPackagesVR(213260380) c2from dual --=:PACKAGE_ID:
