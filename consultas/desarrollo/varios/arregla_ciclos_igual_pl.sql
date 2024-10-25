@@ -120,7 +120,7 @@ begin
  end loop;
   for reg in cuConsumo2 loop
      begin
-       insert into pericose values(reg.PECSCONS,reg.PECSFECI,reg.PECSFECF,reg.PECSPROC,reg.PECSUSER,reg.PECSTERM,reg.PECSPROG,reg.PECSCICO,reg.PECSFLAV,reg.PECSFEAI,reg.PECSFEAF);
+       insert into pericose values(reg.PECSCONS,reg.PECSFECI,reg.PECSFECF,/*reg.PECSPROC*/'N',reg.PECSUSER,reg.PECSTERM,reg.PECSPROG,reg.PECSCICO,/*reg.PECSFLAV*/'N',reg.PECSFEAI,reg.PECSFEAF);
       commit;
      exception
        when others then

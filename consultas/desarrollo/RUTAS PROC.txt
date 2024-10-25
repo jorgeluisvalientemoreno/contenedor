@@ -5,6 +5,7 @@ PL
 
 QH
 /smarfiles/opengdcq/PROC/BSS/server/src/
+/smartfiles/opengdcq/PROC/BSS/server/src
 /smarfiles/opengdcq/bin
 BZ
 /smartfiles/opengdcd/PROC/BSS/server/src
