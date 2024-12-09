@@ -36,7 +36,7 @@ use_nl( g h )
                open.wf_unit_type     b,
                open.wf_instance      c,
                open.wf_unit          f
-         WHERE a.package_id = 84236462 --998937
+         WHERE a.package_id = 218396728 --998937
            AND b.unit_type_id = a.unit_type_id -- 31657381
            AND c.plan_id = a.plan_id
            AND f.unit_id(+) = c.unit_id) instancias_flujo,
@@ -52,7 +52,7 @@ use_nl( g h )
    AND h.config_expression_id(+) = g.config_expression_id
    and WIA.INSTANCE_ID(+) = instancias_flujo.instance_id
    and ooa.instance_id(+) = instancias_flujo.instance_id
-   and ooa.instance_id = 1232914116
-   and ooa.order_id in (165760971,169021889,169224202)
+   --and ooa.instance_id = 1232914116
+   --and ooa.order_id in (165760971,169021889,169224202)
  START WITH instancias_flujo.instance_id = instancias_flujo.plan_id
 CONNECT BY PRIOR instancias_flujo.instance_id = instancias_flujo.parent_id;

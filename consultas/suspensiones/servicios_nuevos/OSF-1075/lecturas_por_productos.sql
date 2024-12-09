@@ -22,5 +22,5 @@ inner join or_order_activity a on a.Order_Activity_Id = l.leemdocu
 inner join ge_items i on i.items_id = a.activity_id
 inner join servsusc ss on ss.sesunuse = l.leemsesu
 left join open.obselect ol on l.leemoble = ol.oblecodi
-where  leemsesu =6588877
+where  leemsesu =2075303
 order by  leemfele desc

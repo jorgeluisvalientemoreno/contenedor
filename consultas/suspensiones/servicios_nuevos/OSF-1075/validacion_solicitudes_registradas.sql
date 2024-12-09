@@ -1,10 +1,10 @@
--- Validaci�n solicitudes registradas
+﻿-- Validaci�n solicitudes registradas
 select  a.sareacor       "Act_persca",
         ac.task_type_id  "tt_susp",
         ac.activity_id   "Act_susp",
        initcap (i.description) "Desc_act_susp",
        count (a.saresesu)
-from ldc_susp_autoreco_sj  a
+from ldc_susp_autoreco  a
 inner join pr_product p on p.product_id = a.saresesu
 left join or_order_activity  ac on ac.order_activity_id = p.suspen_ord_act_id
 left join ge_items  i on i.items_id = ac.activity_id

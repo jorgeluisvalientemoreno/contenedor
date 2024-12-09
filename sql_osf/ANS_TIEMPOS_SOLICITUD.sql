@@ -1,0 +1,5 @@
+--select * from dba_objects do where do.OBJECT_TYPE = 'TABLE' and do.OBJECT_NAME like '%CRITE%' and do.OWNER = 'OPEN';
+select a.*, rowid from OPEN.GE_ANS a;
+select a.*, rowid from OPEN.CC_CRITERIOS_ASIG a;
+select a.*, rowid from OPEN.CC_ASIG_ANS a;
+select a.*, rowid from OPEN.CC_ASIG_PACK_TYPE a;

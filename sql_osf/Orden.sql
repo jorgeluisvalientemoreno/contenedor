@@ -50,9 +50,9 @@ select distinct oo.order_id Orden,
                   where h.operating_unit_id = oo.operating_unit_id) Unidad_Operativa,
                 oo.created_date Fecha_Creacion_Orden,
                 oo.assigned_date Fecha_Asignacion_Orden,
-                oo.legalization_date Fecha_Legalizacion_Orden,
                 oo.exec_initial_date Fecha_Incial_Ejecucion,
                 oo.execution_final_date Fecha_Final_Ejecucion,
+                oo.legalization_date Fecha_Legalizacion_Orden,
                 ooa.comment_ Comentario_Orden,
                 ooa.package_id Solicitud,
                 ooa.instance_id Instancia,
@@ -286,7 +286,19 @@ select distinct oo.order_id Orden,
                                'No legaliza automatica',
                                'Legaliza automatica')
                    FROM open.LDC_CONFTITRLEGA lc
-                  where lc.task_type_id = oo.task_type_id) Legaliza_JOB_LDC_CONFTITRLEGA
+                  where lc.task_type_id = oo.task_type_id) Legaliza_JOB_LDC_CONFTITRLEGA,
+                ('Categoria Anterior: ' || mbdc.old_category_id ||
+                ' - Nueva:' || mbdc.new_category_id) Categoria,
+                ('Categoria Anterior: ' || mbdc.old_subcategory_id ||
+                ' - Nueva:' || mbdc.new_subcategory_id) SubCategoria,
+                SegmentoDireccion.Category_ Categoria_Segmento,
+                SegmentoDireccion.Subcategory_ SubCategoria_Segmento,
+                decode((select count(1)
+                         from OPEN.LDCI_PACKAGE_CAMUNDA_LOG LPCL
+                        where lpcl.package_id = mp.package_id),
+                       1,
+                       'SI',
+                       'NO') Generada_CAMUNDA
   from open.or_order_activity ooa
   left join open.or_order oo
     on oo.order_id = ooa.order_id
@@ -345,34 +357,35 @@ select distinct oo.order_id Orden,
   left join open.subcateg Subcategoriadireccion
     on Subcategoriadireccion.Sucacate = pp.category_id
    and Subcategoriadireccion.Sucacodi = pp.subcategory_id
+  left join OPEN.MO_BILL_DATA_CHANGE mbdc
+    on mbdc.package_id = ooa.package_id
+   and 'S' in upper(&CambioUso)
  where
 ---Orden
--- 
-ooa.order_id in (340836332)
--- and oo.task_type_id in (10495)
--- and ooa.activity_id in (4295751)
--- and oo.order_status_id not in (8, 12)
+-- ooa.order_id in (335764490)
+-- and ooa.order_activity_id in(42}95152)
+-- and oo.task_type_id in (12622)
+-- and oo.order_status_id not in (8, 12, 0, 7, 6)
 -- and oo.causal_id = 9944--in (8, 12)
--- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
--- and ooa.subscription_id in (67598638, 67598598, 67598580, 67598382, 67598386)
--- and ooa.product_id in (14505304)
--- and ooa.order_activity_id in (322824237)
 -- and trunc(oo.legalization_date) >= '12/08/2024'
--- and trunc(oo.created_date) = '07/03/2023'
+-- and trunc(oo.created_date) = '15/01/2024'
+-- and oo.operating_unit_id in (1775, 1931, 1773, 3557)
+-- and ooa.activity_id in (4295751)
+-- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
+-- and 
+ ooa.subscription_id in (67506235)
+-- and ooa.product_id in (52757573)
+-- and ooa.order_activity_id in (322824237)
 -- and mp.package_type_id = 100210
 -- and trunc(mp.request_date) >= '07/07/2024'
 -- and mp.motive_status_id = 13
--- and oo.order_id in (335764490)
--- in (318001635,319147256,319150560,333737020,324074329,324109462,324110357,324124132,324181928,324265746,324267074,324267333,324270808,324270982,324271223,324302686,324329665,324355478,324527312,324528503,324684540,324687222,324689801,324752212,324763171,324764701,324776244,324776815,324778486,324986189,324987007,325344516,325345418,325352111,325352527,325353292,325364220,325602917,325607864,325619477,325765916,326118270,326556755,326667114,326667706,326669604,326670011,326871443,327122327,327132803,333743342,326670471,326209133,333737072,324521591,324521629,326092744,332088027,335266902,335281288,335282077,335287842,325345568,325346138,333742102,333742114,333742118,333742119,333742124,333742126,326182895,326183158,326357899,326357980,326985665)
--- and ooa.order_activity_id in(42}95152)
 -- and mp.cust_care_reques_num in ('212356951', '212681274')
--- and mp.package_type_id = 100284
+-- and mp.package_type_id = 100225
 -- and (mm.subscription_id = 48052064 or mm.product_id = 50062001)
 -- and mp.cust_care_reques_num in ('210494274','207413106')
--- and  mp.package_id in (340836332)
--- and pp.product_status_id = 15
+-- and mp.package_id in (176206149)
 -- and mm.motive_id = 96953319
--- and oo.operating_unit_id in (1775, 1931, 1773, 3557)
+-- and pp.product_status_id = 15
 -- and rownum = 1
 --and DireccionOrden.address like '%KR GENERICA CL GENERICA - 0%'
 --and SegmentoDireccion.Category_ in (3,6)
@@ -380,3 +393,4 @@ ooa.order_id in (340836332)
 and oo.order_status_id = 8
 and oo.legalization_date >= '01/08/2024'*/
  order by oo.created_date desc;
+--305802917

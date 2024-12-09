@@ -2,7 +2,7 @@ with pefaciclo as
     (
         select pf.pefacicl, pf.pefacodi
         from perifact pf
-        where pf.pefacodi = 111493 --inuperiodo
+        where pf.pefacodi = 113347 --inuperiodo
     ) ,
     contratos as
     (
@@ -42,7 +42,7 @@ with pefaciclo as
         from elmesesu es
     )
 
-    select 111493 /*inuperiodo*/ periodo,
+    select 113347 /*inuperiodo*/ periodo,
            pr.sesususc contrato,
            pr.sesunuse producto,
            pr.estprod,

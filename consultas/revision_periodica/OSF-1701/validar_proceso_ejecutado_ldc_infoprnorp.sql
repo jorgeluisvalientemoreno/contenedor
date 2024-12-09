@@ -1,15 +1,15 @@
 --fidf
 select *
 from estaprog  ep
-where esprprog like 'FIDF%'
-and   ep.esprpefa in (111230)
+where esprprog like 'FGCC%'
+and   ep.esprpefa in (113347)
 order by esprfein desc;
 
 --pecofact
-
 select * 
 from open.ldc_pecofact 
-where pcfapefa= 111230;
+where pcfapefa= 113347
+for update;
 
 --programación pecofact
   select  o.object_id, o.name_, o.description, s.status, s.job, s.log_user, s.start_date_, s.process_schedule_id, s.frequency

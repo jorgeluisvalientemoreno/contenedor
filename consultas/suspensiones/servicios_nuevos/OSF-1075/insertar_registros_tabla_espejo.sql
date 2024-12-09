@@ -1,4 +1,5 @@
-insert into ldc_susp_autoreco_pl  (sarecodi,
+--autoreco
+insert into LDC_SUSP_AUTORECO_QH  (sarecodi,
        saresesu,
        saresape,
        sarecons,
@@ -62,7 +63,41 @@ insert into ldc_susp_autoreco_pl  (sarecodi,
        sareproc
    from LDC_SUSP_AUTORECO
    where sareproc = 7
-   where sareproc = 7
+   
+   
+
+insert into LDC_SUSP_PERSECUCION_G  (susp_persec_codi,
+susp_persec_producto,
+susp_persec_salpend,
+susp_persec_consumo,
+susp_persec_activid,
+susp_persec_pervari,
+susp_persec_persec,
+susp_persec_fegeot,
+susp_persec_user_id,
+susp_persec_fejproc,
+susp_persec_ciclcodi,
+susp_persec_order_id,
+susp_persec_act_orig,
+susp_persec_depa,
+susp_persec_loca)
+       select susp_persec_codi,
+susp_persec_producto,
+susp_persec_salpend,
+susp_persec_consumo,
+susp_persec_activid,
+susp_persec_pervari,
+susp_persec_persec,
+susp_persec_fegeot,
+susp_persec_user_id,
+susp_persec_fejproc,
+susp_persec_ciclcodi,
+susp_persec_order_id,
+susp_persec_act_orig,
+susp_persec_depa,
+susp_persec_loca
+   from LDC_SUSP_PERSECUCION
+   
 
 
 

@@ -1,7 +1,7 @@
 --venta cotizada personalizada en estado aprobada y asociada a una venta cotizada
 select /*mpa.package_id, mp.tag_name, mp.motive_status_id, mp.attention_date , */
  cc.id_cot_comercial,
- gg_Localidad.geo_loca_father_id ||' - '|| gg_Departamento.Description departamento,
+ gg_Localidad.geo_loca_father_id || ' - ' || gg_Departamento.Description departamento,
  aa.geograp_location_id || ' - ' || gg_Localidad.description Localidad,
  gs.identification || ' - ' || gs.subscriber_name || ' ' ||
  gs.subs_last_name Suscriptor,
@@ -11,7 +11,8 @@ select /*mpa.package_id, mp.tag_name, mp.motive_status_id, mp.attention_date , *
  mm.product_id Producto,
  aa.address_id || ': ' || aa.address Direccion,
  ap.category_ Categoria,
- ap.Subcategory_ SubCategoria
+ ap.Subcategory_ SubCategoria,
+ (select ss.sesucicl from open.servsusc ss where ss.sesunuse = mm.product_id) Ciclo_Servicio
   from open.ldc_cotizacion_comercial cc
   left join open.DATOS_COTIZACION_COMERCIAL dcc
     on cc.id_cot_comercial = dcc.id_cot_comercial
@@ -30,14 +31,19 @@ select /*mpa.package_id, mp.tag_name, mp.motive_status_id, mp.attention_date , *
   left join open.ge_geogra_location gg_Localidad
     on gg_Localidad.geograp_location_id = aa.geograp_location_id
   left join open.ge_geogra_location gg_Departamento
-    on gg_Departamento.geograp_location_id = gg_Localidad.Geo_Loca_Father_Id
+    on gg_Departamento.geograp_location_id =
+       gg_Localidad.Geo_Loca_Father_Id
  where
 --cc.estado = 'A'
 --and mp.motive_status_id in (14, 32)
 -- and ap.category_ in (3,6)
-cc.fecha_registro > sysdate -10 
---and
--- gs.identification = '72344771'-- '1049536781'
+ cc.fecha_registro > sysdate - 150
+and  cc.estado = 'E'
+and gg_Departamento.Geograp_Location_Id = 3
+and ap.category_ = 3
+and ap.Subcategory_ = 1
+--and gg_Localidad.Geograp_Location_Id = 1
+-- and gs.identification = '1140885674' -- '1049536781'
  order by cc.fecha_registro desc;
 
 select (select ab.geograp_location_id || ' - ' || ab.address

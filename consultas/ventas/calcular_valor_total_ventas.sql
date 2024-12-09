@@ -64,6 +64,23 @@ subsidios as (
      and sucacate = info_dire.category_
      and sucacodi = info_dire.subcate
      and geogra_location_id = info_dire.geograp_location_id
+),
+conceptos_iva_sub as ( 
+  select null as promotion_id,
+         t.cotcconc as concepto_genera,
+         cb.coblcoba as concepto_aplica,
+         (r.ravtporc / 100) * subsidios.valor as valor
+    from open.concbali cb
+   left join open.ta_conftaco t  on cb.coblconc = t.cotcconc
+   left join open.ta_tariconc ta  on cotccons = tacocotc  
+   left join open.ta_vigetaco vi  on tacocons = vitctaco  
+   left join subsidios on concepto_genera = cb.coblcoba
+   left join open.ta_rangvitc r on ravtvitc = vitccons
+   inner join open.concepto c on cotcconc = c.conccodi and c.concticl = 4
+   where cb.coblcoba = subsidios.concepto_genera 
+     and cotcserv = 7014 
+     and cotcvige = 'S' 
+     and sysdate between vitcfein and vitcfefi
 )
 
 select promotion_id, concepto_genera, concepto_aplica, valor
@@ -77,4 +94,7 @@ from promociones
 union all
 select promotion_id, concepto_genera, concepto_aplica, valor
 from subsidios
+union all
+select promotion_id, concepto_genera, concepto_aplica, valor
+from conceptos_iva_sub
 order by concepto_genera,concepto_aplica ;

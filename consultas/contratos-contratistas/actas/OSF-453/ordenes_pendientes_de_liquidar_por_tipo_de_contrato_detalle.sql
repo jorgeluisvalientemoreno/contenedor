@@ -15,7 +15,8 @@ select oo.task_type_id,
   from open.or_operating_unit oou
   inner join open.or_order oo on oo.operating_unit_id = oou.operating_unit_id
   inner join open.or_order_activity ooa on ooa.order_id = oo.order_id
-  inner join ge_contrato  c on c.id_contrato  = oo.defined_contract_id
+  inner join open.ge_contrato  c on c.id_contrato  = oo.defined_contract_id
+  inner join open.ge_causal  ca on ca.causal_id = oo.causal_id
  where oo.order_status_id = 8
    and oo.legalization_date <= '30/08/2022'
    and oo.is_pending_liq = 'Y'

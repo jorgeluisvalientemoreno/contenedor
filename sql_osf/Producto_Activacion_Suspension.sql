@@ -2,39 +2,30 @@
 select *
   from open.pr_product pp
  where pp.product_id in
-       (select a.sesunuse from open.servsusc a where a.sesususc = 14209426);
+       (select a.sesunuse from open.servsusc a where a.sesususc = 67506235);
 
-select *
-  from open.pr_prod_suspension
- where product_id in
-       (select a.sesunuse from open.servsusc a where a.sesususc = 14209426)
- order by register_date desc;
+select pps.prod_suspension_id,
+       pps.product_id,
+       pps.suspension_type_id || ' - ' || ges.description,
+       pps.register_date,
+       pps.aplication_date,
+       pps.inactive_date,
+       pps.active,
+       pps.connection_code
+  from open.pr_prod_suspension pps
+  left join OPEN.GE_SUSPENSION_TYPE ges
+    on ges.suspension_type_id = pps.suspension_type_id
+ where pps.product_id in
+       (select a.sesunuse from open.servsusc a where a.sesususc = 67506235)
+ order by pps.register_date desc;
 
 select *
   from open.hicaespr
  where hcetnuse in
-       (select a.sesunuse from open.servsusc a where a.sesususc = 14209426);
+       (select a.sesunuse from open.servsusc a where a.sesususc = 67506235);
 
 select *
   from open.mo_packages p, open.mo_motive m
  where m.product_id in
-       (select a.sesunuse from open.servsusc a where a.sesususc = 14209426)
+       (select a.sesunuse from open.servsusc a where a.sesususc = 67506235)
    and p.package_id = m.package_id;
-
-select *
-  from open.pr_prod_suspension pps1
- where pps1.prod_suspension_id in (select pps.prod_suspension_id
-                             from open.pr_prod_suspension pps
-                            where pps.suspension_type_id = 5
-                              and pps.inactive_date is null
-                              and pps.active = 'N')
- order by pps1.register_date desc, pps1.product_id desc;
-
-select *
-  from open.pr_prod_suspension pps1
- where pps1.prod_suspension_id in (select pps.prod_suspension_id
-                             from open.pr_prod_suspension pps
-                            where pps.suspension_type_id = 5
-                              and pps.inactive_date is not null
-                              and pps.active = 'N')
- order by pps1.product_id, pps1.register_date desc ;
