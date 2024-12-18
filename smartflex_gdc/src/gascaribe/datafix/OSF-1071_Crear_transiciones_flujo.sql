@@ -1,0 +1,912 @@
+column dt new_value vdt
+column db new_value vdb
+select to_char(sysdate,'yyyymmdd_hh24miss') dt, sys_context('userenv','db_name') db from dual;
+set serveroutput on size unlimited
+execute dbms_application_info.set_action('APLICANDO DATAFIX');
+select to_char(sysdate,'yyyy-mm-dd hh:mi:ss p.m.') fecha_inicio from dual;
+
+begin
+DBMS_OUTPUT.PUT_LINE('Inicia OSF-1071'); 
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757883, 214757885, 0, 0, 
+    1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+    
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+(INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757885, 214757886, 0, 0, 
+    1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+    
+    
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757886, 214757894, 0, 0, 
+    1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+ 
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757894, 214757888, 0, 0, 
+    1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+    
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757896, 214757897, '63'||CHR(10)||'150'||CHR(10)||'662'||CHR(10)||'151', 0, 
+    'FLAG_VALIDATE == 0', 0, 'No se Ingreso Valor Inicial', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+    
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION, 
+    EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757896, 214757898, 0, 'FLAG_VALIDATE == 1', 
+    0, 'Se ingreso Valor Inicial', 1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+           
+    
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION, 
+    EXPRESSION_TYPE, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval,  214757898, 214757899, 0, 'FLAG_VALIDATE == 1', 
+    0, 1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+    
+ BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757898, 214757900, '323'||CHR(10)||'306', 0, 
+    'FLAG_VALIDATE == 0', 0, 'Asesor NO recibi¿ cuota inicial', 1, 'Y', 
+    2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+    
+    
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757899, 214757897, 0, 0, 
+    1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION_TYPE, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757900, 214757897, '661'||CHR(10)||'304', 0, 
+    0, 1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757888, 214757889, 0, 0, 
+    1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+  
+    
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION_TYPE, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762902, 214762908, '58'||CHR(10)||'94', 0, 
+    0, 1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+    
+ BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION_TYPE, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762902, 214762905, '58'||CHR(10)||'278', 0, 
+    0, 1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762908, 214762909, 0, 0, 
+    1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+    
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762909, 214762904, 0, 0, 
+    1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762904, 214762903, 0, 0, 
+    1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762905, 214762903, '198'||CHR(10)||'183'||CHR(10)||'769'||CHR(10)||'183', 0, 
+    'FLAG_VALIDATE == 1', 0, 1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION, 
+    EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762905, 214762906, 0, 'FLAG_VALIDATE == 0', 
+    0, 'Se cumpli¿ la Fecha de Espera', 1, 'Y', 2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+                        
+    
+    
+ BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION, 
+    EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762906, 214762907, 0, 'CAUSAL == FALLO', 
+    0, 'No Instalar', 1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+ 
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762906, 214762903, '572'||CHR(10)||'220'||CHR(10)||'822'||CHR(10)||'220', 0, 
+    'CAUSAL == EXITO', 0, 'Instalaci¿n', 1, 'Y', 
+    2 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+      
+  
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762907, 214762903, 0, 0, 
+    1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+  
+    
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION, 
+    EXPRESSION_TYPE, TRANSITION_TYPE_ID, ORIGINAL, STATUS )
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757889, 214757887, 0, 'STATUS_ID == ESTADO_FINALIZADO', 
+    0, 1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+    
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757887, 214757893, 32889, 0, 
+    1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION, 
+    EXPRESSION_TYPE, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757889, 214757890, 0, 'STATUS_ID == ESTADO_FINALIZADO', 
+    0, 1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+    
+ BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval,214757890 , 214757893, 32889, 0, 
+    1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+  
+    
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval,214757893 , 214757892, 0, 0, 
+    1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+                
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762921, 214762923, 0, 0, 
+    1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+    
+ BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762923, 214762922, 0, 0, 
+    1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+   
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757892, 214757891, '907'||CHR(10)||'51', 0, 
+    'FLAG_VALIDATE == 1 AND STATUS_ID == ESTADO_FINALIZADO', 0, 'Venta CON Financiación', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757891, 214757884, '1151'||CHR(10)||'49', 0, 
+    'FLAG_VALIDATE==0', 0, 'No Ingresa Cuota Inicial', 1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION, 
+    EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757891, 214757882, 0, 'FLAG_VALIDATE==1', 
+    0, 'Ingresa Cuota Inicial', 1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION_TYPE, 
+    TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757882, 214757884, 0, 0, 
+    1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GROUP_ID, EXPRESSION, 
+    EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, STATUS
+    )
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214757892,214757882 , 0, 'FLAG_VALIDATE == 0 AND STATUS_ID == ESTADO_FINALIZADO', 
+    0, 'Venta SIN Financiación', 1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+ 
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762911, 214762912, '76'||CHR(10)||'37'||CHR(10)||'1682'||CHR(10)||'37', 0, 
+    'TYPE_5 ==  0 OR ((FLAG_VALIDATE == SI AND CLIENT_ANSWER == NO) OR VALIDATION_ == SI)', 0, '(Producto Certificado y Motivo No es Revisi¿n)  o  Producto Suspendido', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+    
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762911, 214762913, '76'||CHR(10)||'470'||CHR(10)||'419'||CHR(10)||'469', 0, 
+    'TYPE_5 ==  1 AND ((FLAG_VALIDATE == NO OR CLIENT_ANSWER == SI) AND VALIDATION_ == NO)', 0, '(Producto No Certificado o Motivo es Revisi¿n) y Producto No Suspendido', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+    
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762913, 214762912, '510'||CHR(10)||'783'||CHR(10)||'1681'||CHR(10)||'783', 0, 
+    '((((CAUSAL == CERTIFICAR OR CAUSAL == EXITO) AND VALIDATION_ == NO AND SOME_CHANGE == NO AND FLAG_VALIDATE == SI) OR CAUSAL == FALLO) OR CAUSAL == NO_AUTORIZA_REPARACION) OR (CAUSAL == SUSPENDER OR (VALIDATION_ == SI AND CAUSAL != REPARAR AND CAUSAL != FALLO))', 0, 'Sin Defectos y Producto Certificado y Causal (Certificar o Exito) ', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762913, 214762917, '795'||CHR(10)||'689', 0, 
+    'VALIDATION_ == NO AND SOME_CHANGE == NO AND (FLAG_VALIDATE == NO) AND (CAUSAL == CERTIFICAR OR CAUSAL == EXITO)', 0, 'Sin Defectos y Producto No Certificado y Causal (Certificar o Exito)', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval,214762917 , 214762912, '1497'||CHR(10)||'688', 0, 
+    'CAUSAL == EXITO OR CAUSAL == NO_CERTIFICA', 0, '¿xito', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762913, 214762918, '836'||CHR(10)||'482', 0, 
+    '1 != 1', 0, 'Defectos Cr¿ticos y No Acepta Reparar con la Empresa o Causal Suspender', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval,214762918,214762919, '1252'||CHR(10)||'452', 0, 
+    'FLAG_VALIDATE == SI', 0, 'Producto suspendido', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762919, 214762912, '1576'||CHR(10)||'452'||CHR(10)||'1646'||CHR(10)||'392', 0, 
+    0, '¿xito', 1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762917, 214762918, '1045'||CHR(10)||'581', 0, 
+    '1 != 1', 0, 'No permiti¿ certificar', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762913, 214762916, '391'||CHR(10)||'292'||CHR(10)||'391'||CHR(10)||'230', 0, 
+    'CAUSAL == CLIENTE_REPARA AND VALIDATION_ == NO', 0, 'Defectos No Cr¿ticos y Cliente Repara', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762913, 214762914, '679'||CHR(10)||'370', 0, 
+    '(CAUSAL == REPARAR OR (VALIDATION_ == NO AND SOME_CHANGE == SI AND (CAUSAL == CERTIFICAR OR CAUSAL == EXITO))) OR CAUSAL == AUTORIZA_REPARACION', 0, 'Reparar', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762914, 214762913, '653'||CHR(10)||'300', 0, 
+    '1 != 1', 0, 'Revisar', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION_TYPE, TRANSITION_TYPE_ID, ORIGINAL, STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762916, 214762913, '571'||CHR(10)||'224'||CHR(10)||'570'||CHR(10)||'301', 0, 
+    0, 1, 'Y', 1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762915, 214762913, '676'||CHR(10)||'183', 0, 
+    'CAUSAL == REVISAR AND EXIST_VALUE == SI', 0, 'Revisar', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762915, 214762916, '819'||CHR(10)||'98', 0, 
+    'CAUSAL == CLIENTE_REPARA AND VALIDATION_ == NO AND EXIST_VALUE == NO', 0, 'Defectos No Cr¿ticos y Cliente Repara', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762915, 214762912, '1512'||CHR(10)||'145', 0, 
+    '(CAUSAL == EXITO AND EXIST_VALUE == SI) OR ((CAUSAL == CERTIFICAR OR CAUSAL == EXITO) AND VALIDATION_ == NO AND SOME_CHANGE == NO AND CLIENT_ANSWER == NO AND FLAG_VALIDATE == SI AND EXIST_VALUE == NO)', 0, '¿xito', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762915, 214762914, '956'||CHR(10)||'211', 0, 
+    '(CAUSAL == REPARAR OR (VALIDATION_ == NO AND SOME_CHANGE == SI AND (CAUSAL == CERTIFICAR OR CAUSAL == EXITO))) AND EXIST_VALUE == NO', 0, 'Reparar', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762915,214762917 , '1345'||CHR(10)||'192'||CHR(10)||'1345'||CHR(10)||'579', 0, 
+    'VALIDATION_ == NO AND SOME_CHANGE == NO AND (FLAG_VALIDATE == NO OR CLIENT_ANSWER == SI) AND (CAUSAL == CERTIFICAR OR CAUSAL == EXITO) AND EXIST_VALUE == NO', 0, 'Sin Defectos y (Producto No Certificado o Motivo es Revisi¿n) y Causal (Certificar o Exito)', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762915, 214762918, '1198'||CHR(10)||'305', 0, 
+    '(CAUSAL == SUSPENDER OR (VALIDATION_ == SI AND CAUSAL != REPARAR AND CAUSAL != FALLO)) AND EXIST_VALUE == NO', 0, 'Suspender', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762918, 214762915, '1011'||CHR(10)||'307', 0, 
+    'FLAG_VALIDATE == NO', 0, 'Producto no suspendido', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN 
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762914, 214762912, '1002'||CHR(10)||'257'||CHR(10)||'1422'||CHR(10)||'257', 0, 
+    '((CAUSAL == EXITO AND FLAG_VALIDATE == NO) OR CAUSAL == FALLO ) OR (FLAG_VALIDATE == SI OR CAUSAL == SUSPENDER)', 0, 'Producto Certificado o Cliente Rechaza Certificacion o Cliente Rechaza Reparaci¿n', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+  end; 
+
+
+BEGIN
+ Insert into OPEN.WF_INSTANCE_TRANS
+   (INST_TRAN_ID, ORIGIN_ID, TARGET_ID, GEOMETRY, GROUP_ID, 
+    EXPRESSION, EXPRESSION_TYPE, DESCRIPTION, TRANSITION_TYPE_ID, ORIGINAL, 
+    STATUS)
+ Values
+   (SEQ_WF_INSTANCE_TRANS.nextval, 214762914, 214762918, '910'||CHR(10)||'382'||CHR(10)||'1063'||CHR(10)||'446', 0, 
+    '1 != 1', 0, 'No permiti¿ reparar', 1, 'Y', 
+    1 ); 
+COMMIT; 
+ EXCEPTION
+WHEN OTHERS THEN 
+ rollback; 
+ DBMS_OUTPUT.PUT_LINE('Error no controlado --> '||sqlerrm); 
+ end; 
+DBMS_OUTPUT.PUT_LINE('Termina OSF-1071'); 
+end;
+/
+
+select to_char(sysdate,'yyyy-mm-dd hh:mi:ss p.m.') fecha_fin from dual;
+set serveroutput off
+quit
+/

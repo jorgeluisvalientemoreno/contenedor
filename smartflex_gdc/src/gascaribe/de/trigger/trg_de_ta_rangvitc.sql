@@ -1,0 +1,43 @@
+CREATE OR REPLACE TRIGGER OPEN.TRG_DE_TA_RANGVITC
+    AFTER INSERT OR UPDATE OR DELETE
+    ON OPEN.TA_RANGVITC
+    REFERENCING OLD AS OLD NEW AS NEW
+    FOR EACH ROW
+BEGIN
+
+    DECLARE
+
+    RAVTCONS NUMBER(15);
+    OPERATION VARCHAR2(1);
+
+    BEGIN
+
+    IF INSERTING THEN
+        RAVTCONS := :NEW.RAVTCONS;
+        OPERATION := 'I';
+    ELSIF UPDATING THEN
+        RAVTCONS := :OLD.RAVTCONS;
+        OPERATION := 'U';
+    ELSE
+        RAVTCONS := :OLD.RAVTCONS;
+        OPERATION := 'D';
+    END IF;
+
+    INSERT INTO OPEN.LDCBI_TA_RANGVITC (
+        RAVTCONS,
+        OPERATION
+    )
+    VALUES (
+        RAVTCONS,
+        OPERATION
+    );
+
+    EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20000,
+                                'Error en TRG_DE_TA_RANGVITC por -->' || sqlcode ||
+                                chr(13) || sqlerrm);
+    END;
+
+END;
+/

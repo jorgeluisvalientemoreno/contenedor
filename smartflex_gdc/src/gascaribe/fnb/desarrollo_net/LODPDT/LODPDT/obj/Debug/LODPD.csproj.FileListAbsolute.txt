@@ -1,0 +1,14 @@
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LADPD\obj\Debug\LADPD.UI.FRM_LODPD.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LADPD\obj\Debug\LODPD.csproj.GenerateResource.Cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LADPD\obj\Debug\LODPD.dll.licenses
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LADPD\obj\Debug\LODPD.dll
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LADPD\obj\Debug\LODPD.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\LODPD.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\LODPD.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LODPD\obj\Debug\LODPD.Properties.Resources.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LODPD\obj\Debug\LODPD.UI.FRM_LODPD.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LODPD\obj\Debug\LODPD.UI.frm_texto.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LODPD\obj\Debug\LODPD.csproj.GenerateResource.Cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LODPD\obj\Debug\LODPD.dll.licenses
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LODPD\obj\Debug\LODPD.dll
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPD\LODPD\obj\Debug\LODPD.pdb

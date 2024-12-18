@@ -1,0 +1,5 @@
+PROMPT Crea Sinonimo ADM_PERSON.PKG_BOINTERFAZACTAS
+BEGIN
+  pkg_utilidades.prCrearSinonimos('PKG_BOINTERFAZACTAS', 'ADM_PERSON');
+END;
+/

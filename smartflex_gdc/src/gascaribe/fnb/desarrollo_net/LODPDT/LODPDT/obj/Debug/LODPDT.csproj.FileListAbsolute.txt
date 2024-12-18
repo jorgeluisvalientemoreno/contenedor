@@ -1,0 +1,26 @@
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.Properties.Resources.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.UI.FRM_LODPDT.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.UI.frm_texto.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.csproj.GenerateResource.Cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.dll.licenses
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\LODPDT.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\LODPDT.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.dll
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.csprojResolveAssemblyReference.cache
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.csprojResolveAssemblyReference.cache
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.Properties.Resources.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.UI.FRM_LODPDT.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.UI.frm_texto.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.csproj.GenerateResource.Cache
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.dll.licenses
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.dll
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.pdb
+E:\GDrive JM\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.csprojResolveAssemblyReference.cache
+E:\GDrive JM\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.Properties.Resources.resources
+E:\GDrive JM\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.UI.FRM_LODPDT.resources
+E:\GDrive JM\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.UI.frm_texto.resources
+E:\GDrive JM\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.csproj.GenerateResource.Cache
+E:\GDrive JM\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.dll.licenses
+E:\GDrive JM\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.dll
+E:\GDrive JM\200-1602 (21.03.18) - Comentarios Cotizacion GDC\LODPDT\LODPDT\obj\Debug\LODPDT.pdb

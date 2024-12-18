@@ -1,0 +1,34 @@
+DECLARE
+ nuTab1 number := 0;
+BEGIN
+
+ SELECT COUNT(*) INTO nuTab1
+ FROM DBA_TABLES
+ WHERE TABLE_NAME = 'LDC_CONTTSFAHIST';
+
+ if nuTab1 = 0 then
+	execute IMMEDIATE 'CREATE TABLE  LDC_CONTTSFAHIST(	CONTPADRE NUMBER(15,0), 
+                            DIREPRHI  NUMBER(15,0), 
+                            FECHREGI DATE DEFAULT SYSDATE, 
+                            OPERACION VARCHAR2(2),
+                            USUARIO VARCHAR2(400 BYTE), 
+                            TERMINAL VARCHAR2(400 BYTE) )';
+	execute IMMEDIATE 'create index idxcon01_CONTTSFAh on LDC_CONTTSFAHIST(CONTPADRE, DIREPRHI)';
+	execute IMMEDIATE 'create index idxcon02_CONTTSFAh on LDC_CONTTSFAHIST(CONTPADRE)';
+	execute IMMEDIATE 'create index idxcon03_CONTTSFAh on LDC_CONTTSFAHIST(FECHREGI)';
+	execute IMMEDIATE 'COMMENT ON COLUMN OPEN.LDC_CONTTSFAHIST.CONTPADRE IS ''contrato padre''';
+	execute IMMEDIATE 'COMMENT ON COLUMN OPEN.LDC_CONTTSFAHIST.DIREPRHI IS ''Direccion producto hijo''';
+	execute IMMEDIATE 'COMMENT ON COLUMN OPEN.LDC_CONTTSFAHIST.FECHREGI IS ''FECHA DE REGISTRO''';
+	execute IMMEDIATE 'COMMENT ON COLUMN OPEN.LDC_CONTTSFAHIST.USUARIO IS ''USUARIO''';
+	execute IMMEDIATE 'COMMENT ON COLUMN OPEN.LDC_CONTTSFAHIST.TERMINAL IS ''TERMINAL''';
+	execute IMMEDIATE 'COMMENT ON COLUMN OPEN.LDC_CONTTSFAHIST.OPERACION IS ''OPERACION I-INSERTAR, U - MODIFICAR, D - ELIMINAR''';
+	execute IMMEDIATE 'COMMENT ON TABLE OPEN.LDC_CONTTSFAHIST  IS '' HistoricoContrato para trasladar saldo a favor''';
+	
+	EXECUTE immediate 'grant select, insert, delete, update on LDC_CONTTSFAHIST to SYSTEM_OBJ_PRIVS_ROLE';
+	execute immediate 'grant select on LDC_CONTTSFAHIST to RSELOPEN';
+	execute immediate 'grant select on LDC_CONTTSFAHIST to reportes';
+  end if;
+end;
+/
+
+

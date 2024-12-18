@@ -1,0 +1,237 @@
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.MANOT.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.Resources.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\LUDYCOM.MANOT.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\LUDYCOM.MANOT.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\LUDYCOM.MANOT.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\obj\x86\Debug\ResGen.read.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\MANOTS\obj\x86\Debug\ResGen.write.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.MANOT.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.Resources.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\obj\x86\Debug\ResGen.read.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\obj\x86\Debug\ResGen.write.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\obj\x86\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\obj\x86\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\MANOTS\obj\x86\Debug\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\bin\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\bin\Debug\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\bin\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.MANOT.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\obj\x86\Debug\ResGen.read.1.tlog
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\obj\x86\Debug\ResGen.write.1.tlog
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\obj\x86\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\obj\x86\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\MANOTS\obj\x86\Debug\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.MANOT.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\obj\x86\Debug\MANOT.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\obj\x86\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\obj\x86\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - copia (2)\MANOTS\obj\x86\Debug\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\MANOT.vbprojResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.MANOT.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\MANOT.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\Ludycom.Manot.pdb
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Ludycom.Manot.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Ludycom.Manot.pdb
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Ludycom.Manot.xml
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Shared.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.HelpDesk.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Encoding.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Security.ProtectedData.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Ruler.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\MindFusion.Diagramming.WinForms.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\MindFusion.Diagramming.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\MindFusion.Common.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Appearance.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\SevenZipSharp.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\MANOT.vbprojResolveAssemblyReference.cache
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.MANOT.resources
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.Resources.resources
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\MANOT.vbproj.GenerateResource.Cache
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\Ludycom.Manot.dll
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\Ludycom.Manot.xml
+C:\Users\LUDYCOM PC-99\Desktop\Nueva carpeta (3)\MANOT-Dev - Abril 2017\MANOTS\obj\x86\Debug\Ludycom.Manot.pdb
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Ludycom.Manot.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Ludycom.Manot.pdb
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Ludycom.Manot.xml
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Shared.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Win.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\OpenSystems.HelpDesk.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\OpenSystems.Encoding.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\OpenSystems.Security.ProtectedData.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Ruler.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\MindFusion.Diagramming.WinForms.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\MindFusion.Diagramming.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\MindFusion.Common.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\OpenSystems.Appearance.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\SevenZipSharp.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\obj\x86\Debug\MANOT.vbprojResolveAssemblyReference.cache
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.MANOT.resources
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\obj\x86\Debug\LUDYCOM.MANOT.Resources.resources
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\obj\x86\Debug\MANOT.vbproj.GenerateResource.Cache
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\obj\x86\Debug\Ludycom.Manot.dll
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\obj\x86\Debug\Ludycom.Manot.xml
+C:\Users\LUDYCOM PC-99\Documents\Shak\BD\OSF\MANOT 15082017\MANOT-Dev - Agosto 2017\MANOTS\obj\x86\Debug\Ludycom.Manot.pdb

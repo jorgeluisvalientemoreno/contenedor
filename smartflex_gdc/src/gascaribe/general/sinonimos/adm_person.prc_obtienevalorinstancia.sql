@@ -1,0 +1,5 @@
+PROMPT Crea Sinonimo PRC_OBTIENEVALORINSTANCIA
+BEGIN
+  pkg_utilidades.prCrearSinonimos('PRC_OBTIENEVALORINSTANCIA','ADM_PERSON');
+END;
+/

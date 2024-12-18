@@ -1,0 +1,4 @@
+update LD_PARAMETER set NUMERIC_VALUE = null, VALUE_CHAIN = '832, 895, 936'
+where PARAMETER_ID = 'LDC_CODCONCSEGUPROT';
+commit;
+/

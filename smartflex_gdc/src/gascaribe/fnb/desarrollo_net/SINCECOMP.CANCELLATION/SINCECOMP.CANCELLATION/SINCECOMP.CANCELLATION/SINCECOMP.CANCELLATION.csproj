@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A06F7E84-460C-4A63-8EDE-458B7128E8AB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SINCECOMP.CANCELLATION</RootNamespace>
+    <AssemblyName>SINCECOMP.CANCELLATION</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>C:\DLL\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>C:\Program Files %28x86%29\OpenSystems\OpenSmartFlex\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Infragistics2.Excel.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Excel.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Shared.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Shared.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.Misc.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.Misc.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinChart.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinChart.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinDataSource.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinDataSource.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinDataSource.v5.3.Design, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinDataSource.v5.3.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinEditors.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinEditors.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.ExcelExport.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinGrid.ExcelExport.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinGrid.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v5.3.Design, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinGrid.v5.3.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinMaskedEdit.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinPrintPreviewDialog.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinPrintPreviewDialog.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinSchedule.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinSchedule.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinStatusBar.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinStatusBar.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinTabControl.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinTabControl.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinToolbars.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinToolbars.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinTree.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinTree.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Microsoft.Office.Interop.Word.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Office.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.AddressBank">
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.AddressBank.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Common">
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Component">
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Component.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.EnterpriseLibrary">
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.EnterpriseLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Excel">
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Excel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.ExtractAndMix.Api">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\OpenSystems\OpenSmartFlex\OpenSystems.ExtractAndMix.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.General">
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.General.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Printing">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\..\..\OpenSystems\OpenSmartFlex\OpenSystems.Printing.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Report">
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Report.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Security.ExecutableMgr">
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Security.ExecutableMgr.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Windows">
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Windows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BL\BLConsultas.cs" />
+    <Compile Include="BL\BLFNBCR.cs" />
+    <Compile Include="BL\BLFNBIR.cs" />
+    <Compile Include="BL\BLGENERAL.cs" />
+    <Compile Include="callFNBCR.cs" />
+    <Compile Include="callFNBIR.cs" />
+    <Compile Include="DAL\DALFNBCR.cs" />
+    <Compile Include="DAL\DALFNBIR.cs" />
+    <Compile Include="DAL\DALGENERAL.cs" />
+    <Compile Include="Entities\ArticleSaleCancelation.cs" />
+    <Compile Include="Entities\BasicDataFNBCR.cs" />
+    <Compile Include="Entities\DataFIFAP.cs" />
+    <Compile Include="Entities\GridDetailOneFNBIR.cs" />
+    <Compile Include="Entities\GridDetailTwoFNBIR.cs" />
+    <Compile Include="Entities\ListSN.cs" />
+    <Compile Include="Entities\RequestFBNCR.cs" />
+    <Compile Include="Entities\ResgisterFNBCR.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource.Designer.cs" />
+    <Compile Include="UI\FNBCR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FNBCR.designer.cs">
+      <DependentUpon>FNBCR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FNBIR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FNBIR.designer.cs">
+      <DependentUpon>FNBIR.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Report\Report1.rdlc" />
+    <EmbeddedResource Include="Report\rptBineOlimpica.rdlc" />
+    <EmbeddedResource Include="Report\rptDetailPagare.rdlc" />
+    <EmbeddedResource Include="Report\rptPagare.rdlc" />
+    <EmbeddedResource Include="Report\rptSaleFNB.rdlc" />
+    <EmbeddedResource Include="Resource.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FNBCR.resx">
+      <DependentUpon>FNBCR.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FNBIR.resx">
+      <DependentUpon>FNBIR.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\LOGOBRILLA.png" />
+    <Content Include="Report\Resources\asterisc.png" />
+    <Content Include="Report\Resources\f1fd4.png" />
+    <Content Include="Report\Resources\imgQuery.png" />
+    <Content Include="Report\Resources\open.png" />
+    <Content Include="Report\Resources\search.png" />
+    <Content Include="Resources\asterisc.png" />
+    <Content Include="Resources\f1fd4.png" />
+    <Content Include="Resources\imgQuery.png" />
+    <Content Include="Resources\open.png" />
+    <Content Include="Resources\search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\DataSources\SINCECOMP.FNB.Entities.GridDetailOneFNBIR.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.FNB.Entities.GridDetailTwoFNBIR.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.FNB.Entities.ResgisterFNBCR.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.FNB.Entities.ResgisterFNBCR1.datasource" />
+    <None Include="Report\Resources\Thumbs.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\Controls\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

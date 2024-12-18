@@ -1,0 +1,40 @@
+set serveroutput on;
+PROMPT BORRAR SYNONYM DE ADM_PERSON
+DECLARE
+  nuConta NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'LDC_PRVALEGAORDENPERSEC'
+   AND OWNER = 'ADM_PERSON'
+   AND OBJECT_TYPE = 'SYNONYM';
+   
+  IF nuConta > 0 THEN 
+    EXECUTE IMMEDIATE 'DROP SYNONYM ADM_PERSON.LDC_PRVALEGAORDENPERSEC';
+    dbms_output.put_line('SYNONYM LDC_PRVALEGAORDENPERSEC BORRADO ');
+  END IF;
+EXCEPTION
+    WHEN OTHERS THEN 
+        dbms_output.put_line('No se pudo borrar el procedimiento LDC_PRVALEGAORDENPERSEC, '||sqlerrm);
+END;
+/
+set serveroutput on;
+PROMPT BORRAR PROCEDIMIENTO LDC_PRVALEGAORDENPERSEC
+DECLARE
+  nuConta NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'LDC_PRVALEGAORDENPERSEC'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE <> 'SYNONYM';
+   
+  IF nuConta > 0 THEN 
+    EXECUTE IMMEDIATE 'DROP PROCEDURE LDC_PRVALEGAORDENPERSEC';
+    dbms_output.put_line('PROCEDURE LDC_PRVALEGAORDENPERSEC BORRADO ');
+  END IF;
+EXCEPTION
+    WHEN OTHERS THEN 
+        dbms_output.put_line('No se pudo borrar la procedimiento LDC_PRVALEGAORDENPERSEC, '||sqlerrm); 
+END;
+/

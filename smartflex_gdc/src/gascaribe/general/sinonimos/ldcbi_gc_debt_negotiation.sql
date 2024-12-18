@@ -1,0 +1,6 @@
+Prompt Creando sinonimos privados para ADM_PERSON sobre OPEN.LDCBI_GC_DEBT_NEGOTIATION
+BEGIN
+    -- OSF-3451
+    pkg_Utilidades.prCrearSinonimos('LDCBI_GC_DEBT_NEGOTIATION', 'OPEN');
+END;
+/

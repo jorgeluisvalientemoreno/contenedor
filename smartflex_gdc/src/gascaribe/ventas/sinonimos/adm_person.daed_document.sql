@@ -1,0 +1,5 @@
+PROMPT Crea Sinonimo a Paquete DAED_DOCUMENT
+BEGIN
+    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.daed_document FOR daed_document';
+END;
+/

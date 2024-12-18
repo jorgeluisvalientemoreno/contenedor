@@ -1,0 +1,4 @@
+BEGIN
+  execute immediate 'CREATE OR REPLACE SYNONYM adm_person.ED_FORMATO FOR OPEN.ED_FORMATO';
+END;
+/

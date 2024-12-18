@@ -1,0 +1,181 @@
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Ruler.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Release\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Release\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Release\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Release\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Release\GenerateResource.read.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Release\GenerateResource.write.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Release\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Release\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Release\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Release\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Release\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Release\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Ruler.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Release\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Release\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Release\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Release\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Release\GenerateResource.read.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Release\GenerateResource.write.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Release\ResGen.read.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Release\ResGen.write.1.tlog
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Release\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Release\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Release\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Release\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Release\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Release\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Release\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Release\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Release\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Release\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Release\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Release\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Release\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Release\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Release\ResGen.read.1.tlog
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Release\ResGen.write.1.tlog
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\PruebaDLL.exe.config
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\PruebaDLL.exe
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\PruebaDLL.pdb
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\PruebaDLL.xml
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Ludycom.Manot.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\OpenSystems.Windows.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Oracle.DataAccess.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.Misc.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\OpenSystems.HelpDesk.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinEditors.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinGrid.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinTree.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Shared.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Ruler.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\MindFusion.Diagramming.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinDock.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\MindFusion.Common.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\OpenSystems.Appearance.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\SevenZipSharp.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Ludycom.Manot.pdb
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\bin\Release\Ludycom.Manot.xml
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\obj\x86\Release\PruebaDLL.vbprojResolveAssemblyReference.cache
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\obj\x86\Release\PruebaDLL.PruebaMANOT.resources
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\obj\x86\Release\PruebaDLL.Resources.resources
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\obj\x86\Release\PruebaDLL.vbproj.GenerateResource.Cache
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\obj\x86\Release\PruebaDLL.exe
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\obj\x86\Release\PruebaDLL.xml
+C:\Users\Ludycom\Desktop\Ludycom\MANOT 15082017\MANOT 15082017\MANOT-Dev - Agosto 2017\PruebaDLL\obj\x86\Release\PruebaDLL.pdb
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\PruebaDLL.exe.config
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\PruebaDLL.exe
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\PruebaDLL.pdb
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\PruebaDLL.xml
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\Ludycom.Manot.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\OpenSystems.Windows.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\Oracle.DataAccess.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\OpenSystems.EnterpriseLibrary.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\OpenSystems.HelpDesk.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\OpenSystems.Security.ProtectedData.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\Ruler.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\MindFusion.Diagramming.WinForms.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\MindFusion.Diagramming.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\MindFusion.Common.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\OpenSystems.Appearance.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\SevenZipSharp.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\Ludycom.Manot.pdb
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\bin\Release\Ludycom.Manot.xml
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\obj\x86\Release\PruebaDLL.vbprojResolveAssemblyReference.cache
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\obj\x86\Release\PruebaDLL.PruebaMANOT.resources
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\obj\x86\Release\PruebaDLL.Resources.resources
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\obj\x86\Release\PruebaDLL.vbproj.GenerateResource.Cache
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\obj\x86\Release\PruebaDLL.exe
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\obj\x86\Release\PruebaDLL.xml
+D:\Gdrive JM\200-1650 (05.04.18) - Pruebas Diagnostico Inicial de FAJU\E 12.05.19\PruebaDLL\obj\x86\Release\PruebaDLL.pdb

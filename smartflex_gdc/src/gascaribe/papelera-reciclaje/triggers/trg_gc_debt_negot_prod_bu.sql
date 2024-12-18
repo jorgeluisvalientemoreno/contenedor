@@ -1,0 +1,15 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'TRG_GC_DEBT_NEGOT_PROD_BU'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE = 'TRIGGER';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP TRIGGER OPEN.TRG_GC_DEBT_NEGOT_PROD_BU';
+  END IF;  
+END;
+/

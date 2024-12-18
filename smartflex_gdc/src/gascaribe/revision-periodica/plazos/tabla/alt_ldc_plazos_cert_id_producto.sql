@@ -1,0 +1,19 @@
+DECLARE
+    nuContador  NUMBER;
+BEGIN
+
+    SELECT  COUNT(1) 
+    INTO    nuContador
+    FROM 	all_constraints
+	WHERE 	owner = 'OPEN'
+	AND		table_name = 'LDC_PLAZOS_CERT'
+	AND 	constraint_name = 'UK_LDC_PLAZOS_CERT_PRODUCTO';
+	
+	IF (nuContador = 0) THEN
+  
+		EXECUTE IMMEDIATE 'ALTER TABLE LDC_PLAZOS_CERT ADD CONSTRAINT UK_LDC_PLAZOS_CERT_PRODUCTO UNIQUE(ID_PRODUCTO)';
+		
+    COMMIT;
+  END IF;
+END;
+/

@@ -1,0 +1,14 @@
+UPDATE OPEN.LD_PARAMETER
+SET VALUE_CHAIN = 'Hola {{1}}, tu numero de telefono ha sido asociado en Gascaribe{{2}}si esto es un error, por favor comunicate a la linea 3227000. #EstamosContigo'
+WHERE PARAMETER_ID = 'TRG_SUBSCRIBER_SMS_MSG';
+
+UPDATE OPEN.LDCI_CARASEWE
+SET CASEVALO = 'transaction'
+WHERE CASEDESE = 'WS_ENVIA_SMS'
+      AND CASECODI = 'ORIGINATOR';
+	  
+UPDATE OPEN.LD_PARAMETER
+SET NUMERIC_VALUE = 1
+WHERE PARAMETER_ID IN('TRG_SUBSCRIBER_SMS','TRG_SUBSCRIBER_WA');
+
+COMMIT;

@@ -1,0 +1,30 @@
+declare
+ nuConta  NUMBER;
+ 
+ CURSOR cuExiste(fsbObjeto VARCHAR2) IS
+  SELECT COUNT(1)
+  FROM HOMOLOGACION_SERVICIOS
+  WHERE SERVICIO_ORIGEN = fsbObjeto; 
+  
+BEGIN
+
+	dbms_output.put_line('---- Inicio Insert HOMOLOGACION_SERVICIOS ----');
+
+	OPEN cuExiste('PKGENERALSERVICES.FDTGETSYSTEMDATE');
+	FETCH cuExiste INTO nuConta; 
+	CLOSE cuExiste; 
+	
+	IF nuConta = 0 THEN	
+		Insert into HOMOLOGACION_SERVICIOS
+		   (ESQUEMA_ORIGEN, SERVICIO_ORIGEN, DESCRIPCION_ORIGEN, ESQUEMA_DESTINO, SERVICIO_DESTINO, 
+			DESCRIPCION_DESTINO)
+		 Values
+		   ('OPEN', 'PKGENERALSERVICES.FDTGETSYSTEMDATE', 'Retorna la fecha del sistema', 'PERSONALIZACIONES', 'LDC_BOCONSGENERALES.FDTGETSYSDATE', 
+			'Retorna la fecha del sistema');
+		COMMIT;
+	END IF;
+  
+	dbms_output.put_line('---- Fin Insert HOMOLOGACION_SERVICIOS ----');
+	
+end;
+/

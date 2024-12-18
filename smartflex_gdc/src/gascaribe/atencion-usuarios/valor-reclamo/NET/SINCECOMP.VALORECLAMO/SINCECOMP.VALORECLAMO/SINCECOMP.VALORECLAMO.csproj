@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AB507F4C-5F0A-450F-BC8E-A210FAD12A76}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SINCECOMP.VALORECLAMO</RootNamespace>
+    <AssemblyName>SINCECOMP.VALORECLAMO</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Infragistics2.Shared.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.Misc.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinEditors.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinSchedule.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office12\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="OpenSystems.AddressBank">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.AddressBank.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Common, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Component, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Component.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.EnterpriseLibrary, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.EnterpriseLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.General, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.General.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Security, Version=0.0.2.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Security.ExecutableMgr, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Security.ExecutableMgr.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Windows">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BL\BLConsultas.cs" />
+    <Compile Include="BL\BLGENERAL.cs" />
+    <Compile Include="BL\BLLDCAVR.cs" />
+    <Compile Include="BL\BLLDVALREC.cs" />
+    <Compile Include="CALLLDCAVR.cs" />
+    <Compile Include="CALLLDRECUS.cs" />
+    <Compile Include="CALLLDREGREC.cs" />
+    <Compile Include="CALLLDSUBSI.cs" />
+    <Compile Include="CALLLDVALREC.cs" />
+    <Compile Include="DAL\DALGENERAL.cs" />
+    <Compile Include="DAL\DALLDCAVR.cs" />
+    <Compile Include="DAL\DALLDVALREC.cs" />
+    <Compile Include="Entities\dataCUENCOBR.cs" />
+    <Compile Include="Entities\dataLDREGREC.cs" />
+    <Compile Include="Entities\LDCAVRReclamos.cs" />
+    <Compile Include="Entities\LDVALREC_cuencobr.cs" />
+    <Compile Include="Entities\LDVALREC_factura.cs" />
+    <Compile Include="Entities\dataLDVALREC.cs" />
+    <Compile Include="Entities\LDVALREC_cargos.cs" />
+    <Compile Include="Entities\LDVALREC_proyectar.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDCAVR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDCAVR.Designer.cs">
+      <DependentUpon>LDCAVR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDREGREC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDREGREC.Designer.cs">
+      <DependentUpon>LDREGREC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDSOLICITANTE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDSOLICITANTE.Designer.cs">
+      <DependentUpon>LDSOLICITANTE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDSUBSI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDSUBSI.Designer.cs">
+      <DependentUpon>LDSUBSI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDRECUS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDRECUS.Designer.cs">
+      <DependentUpon>LDRECUS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frm_proyectar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frm_proyectar.Designer.cs">
+      <DependentUpon>frm_proyectar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDVALREC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDVALREC.Designer.cs">
+      <DependentUpon>LDVALREC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Question.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Question.Designer.cs">
+      <DependentUpon>Question.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDCAVR.resx">
+      <DependentUpon>LDCAVR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDREGREC.resx">
+      <DependentUpon>LDREGREC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDSOLICITANTE.resx">
+      <DependentUpon>LDSOLICITANTE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDSUBSI.resx">
+      <DependentUpon>LDSUBSI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDRECUS.resx">
+      <DependentUpon>LDRECUS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frm_proyectar.resx">
+      <DependentUpon>frm_proyectar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDVALREC.resx">
+      <DependentUpon>LDVALREC.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\qUESTION.resx">
+      <DependentUpon>Question.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SINCECOMP.VALORECLAMO.Entities.dataLDREGREC.datasource" />
+    <None Include="SINCECOMP.VALORECLAMO.Entities.LDCAVRReclamos.datasource" />
+    <None Include="SINCECOMP.VALORECLAMO.Entities.LDVALREC_cargos.datasource" />
+    <None Include="SINCECOMP.VALORECLAMO.Entities.LDVALREC_cargos1.datasource" />
+    <None Include="SINCECOMP.VALORECLAMO.Entities.LDVALREC_cuencobr.datasource" />
+    <None Include="SINCECOMP.VALORECLAMO.Entities.LDVALREC_factura.datasource" />
+    <None Include="SINCECOMP.VALORECLAMO.Entities.LDVALREC_proyectar.datasource" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

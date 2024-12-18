@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A8BF41E7-90A1-4BB4-9FE8-5C6409210A43}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KIOSKO</RootNamespace>
+    <AssemblyName>KIOSKO</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="Infragistics2.Shared.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Infragistics\NetAdvantage 2005 Volume 3 CLR 2.0\Windows Forms\Bin\Infragistics2.Shared.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.Misc.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Infragistics\NetAdvantage 2005 Volume 3 CLR 2.0\Windows Forms\Bin\Infragistics2.Win.Misc.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Infragistics\NetAdvantage 2005 Volume 3 CLR 2.0\Windows Forms\Bin\Infragistics2.Win.UltraWinGrid.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Infragistics\NetAdvantage 2005 Volume 3 CLR 2.0\Windows Forms\Bin\Infragistics2.Win.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenSystems.AddressBank, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.AddressBank.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Common, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Component, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Component.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.EnterpriseLibrary, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.EnterpriseLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.General, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.General.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Security, Version=0.0.2.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Security.ExecutableMgr, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Security.ExecutableMgr.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Windows, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BL\BLCONSULTAS.cs" />
+    <Compile Include="BL\BLGENERAL.cs" />
+    <Compile Include="BLLDFACTDUP.cs" />
+    <Compile Include="CALLLDFACTDUP.cs" />
+    <Compile Include="DAL\DALGENERAL.cs" />
+    <Compile Include="DAL\DALLDFACTDUP.cs" />
+    <Compile Include="Entities\codigos.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>codigos.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\factura.cs">
+      <DependentUpon>factura.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\factura.designer.cs">
+      <DependentUpon>factura.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\fact_datosBasicos.cs" />
+    <Compile Include="Entities\fact_historico.cs" />
+    <Compile Include="Entities\fact_lecturas.cs" />
+    <Compile Include="Entities\fact_revision.cs" />
+    <Compile Include="Entities\ldfactdup_mensajes.cs" />
+    <Compile Include="Entities\resp_facturacion.cs" />
+    <Compile Include="Entities\Valida_rp.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\cr_factura.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cr_factura.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\cr_facturadetail.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cr_facturadetail.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\cr_graph.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cr_graph.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\cr_rangos.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cr_rangos.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\frm_impresion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frm_impresion.Designer.cs">
+      <DependentUpon>frm_impresion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frm_reporte.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frm_reporte.Designer.cs">
+      <DependentUpon>frm_reporte.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDFACTDUP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDFACTDUP.designer.cs">
+      <DependentUpon>LDFACTDUP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDKIOSKO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDKIOSKO.designer.cs">
+      <DependentUpon>LDKIOSKO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Question.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Question.designer.cs">
+      <DependentUpon>Question.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Telefono.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Telefono.Designer.cs">
+      <DependentUpon>Telefono.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Entities\codigos.xsc">
+      <DependentUpon>codigos.xsd</DependentUpon>
+    </None>
+    <None Include="Entities\codigos.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>codigos.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Entities\codigos.xss">
+      <DependentUpon>codigos.xsd</DependentUpon>
+    </None>
+    <None Include="Resources\BC128CT.TTF" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Entities\factura.xsc">
+      <DependentUpon>factura.xsd</DependentUpon>
+    </None>
+    <None Include="Entities\factura.xsd" />
+    <None Include="Entities\factura.xss">
+      <DependentUpon>factura.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\cr_factura.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>cr_factura.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\cr_facturadetail.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>cr_facturadetail.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\cr_graph.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>cr_graph.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\cr_rangos.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>cr_rangos.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frm_impresion.resx">
+      <DependentUpon>frm_impresion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frm_reporte.resx">
+      <DependentUpon>frm_reporte.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDFACTDUP.resx">
+      <DependentUpon>LDFACTDUP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\qUESTION.resx">
+      <DependentUpon>Question.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Telefono.resx">
+      <DependentUpon>Telefono.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

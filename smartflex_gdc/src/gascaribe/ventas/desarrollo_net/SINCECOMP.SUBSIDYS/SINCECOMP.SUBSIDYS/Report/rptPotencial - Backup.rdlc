@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DummyDataSource">
+      <ConnectionProperties>
+        <ConnectString />
+        <DataProvider>SQL</DataProvider>
+      </ConnectionProperties>
+      <rd:DataSourceID>0fdf40a7-f6df-4745-b8ba-3ada88a0a65b</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <BottomMargin>2.5cm</BottomMargin>
+  <RightMargin>2.5cm</RightMargin>
+  <PageWidth>21cm</PageWidth>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>21cm</InteractiveWidth>
+  <rd:GridSpacing>0.25cm</rd:GridSpacing>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <Body>
+    <ColumnSpacing>1cm</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="textbox8">
+        <Left>0.25cm</Left>
+        <Top>10.5cm</Top>
+        <ZIndex>7</ZIndex>
+        <Width>14.25cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>2cm</Height>
+        <Value>= "Para mayor información comunicarse con la compañía distribuidora y comercializadora de gas natural " + Fields!Ldcname.Value + " a la línea gratuita " + Fields!Companytels.Value + ". Con la finalidad de informarle sobre los requisitos necesarios para la obtención del subsidio."</Value>
+      </Textbox>
+      <Textbox Name="textbox7">
+        <Left>0.25cm</Left>
+        <Top>8cm</Top>
+        <ZIndex>6</ZIndex>
+        <Width>14.25cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>2cm</Height>
+        <Value>= "Por medio de la presente le notificamos que usted podría obtener un beneficio por un valor estimado de $ " + Fields!SubsidyValue.Value + ", sobre el valor de de la red de gas natural de su predio, generado por el subsidio " + Fields!SubsidyDesc.Value + "."</Value>
+      </Textbox>
+      <Textbox Name="textbox6">
+        <Left>0.25cm</Left>
+        <Top>6.15476cm</Top>
+        <ZIndex>5</ZIndex>
+        <Width>14.25cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!Geoubication.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox5">
+        <Left>0.25cm</Left>
+        <Top>5.51984cm</Top>
+        <ZIndex>4</ZIndex>
+        <Width>14.25cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.63492cm</Height>
+        <Value>= "Teléfono: "+ Fields!Tels.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox4">
+        <Left>0.25cm</Left>
+        <Top>4.88492cm</Top>
+        <ZIndex>3</ZIndex>
+        <Width>14.25cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!ClientName.Value + " " + Fields!LastName.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox3">
+        <Left>0.25cm</Left>
+        <Top>4.25cm</Top>
+        <ZIndex>2</ZIndex>
+        <Width>14.25cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.63492cm</Height>
+        <Value>= "Cliente " + Fields!Client.Value</Value>
+      </Textbox>
+      <Textbox Name="textbox2">
+        <Left>0.25cm</Left>
+        <Top>2.75cm</Top>
+        <ZIndex>1</ZIndex>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.63492cm</Height>
+        <Value>= "Señor(a):"</Value>
+      </Textbox>
+      <Textbox Name="textbox1">
+        <Left>0.25cm</Left>
+        <Top>0.25cm</Top>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Width>14.25cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.63492cm</Height>
+        <Value>=Fields!Location.Value +", " + Format ((Now), "dd' de 'MMMM' del 'yyyy") + "."</Value>
+      </Textbox>
+    </ReportItems>
+    <Height>16.75cm</Height>
+  </Body>
+  <rd:ReportID>ee8acf6a-1128-4dae-a563-87800d461b05</rd:ReportID>
+  <LeftMargin>2.5cm</LeftMargin>
+  <DataSets>
+    <DataSet Name="POTENCIALES">
+      <rd:DataSetInfo>
+        <rd:DataSetName>SINCECOMP.SUBSIDYS.Entities</rd:DataSetName>
+        <rd:ObjectDataSourceType>SINCECOMP.SUBSIDYS.Entities.potenciales, SINCECOMP.SUBSIDYS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:TableName>potenciales</rd:TableName>
+      </rd:DataSetInfo>
+      <Query>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <CommandText />
+        <DataSourceName>DummyDataSource</DataSourceName>
+      </Query>
+      <Fields>
+        <Field Name="Client">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>Client</DataField>
+        </Field>
+        <Field Name="ClientName">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>ClientName</DataField>
+        </Field>
+        <Field Name="Companytels">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Companytels</DataField>
+        </Field>
+        <Field Name="Geoubication">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Geoubication</DataField>
+        </Field>
+        <Field Name="LastName">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>LastName</DataField>
+        </Field>
+        <Field Name="Ldcname">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Ldcname</DataField>
+        </Field>
+        <Field Name="Location">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Location</DataField>
+        </Field>
+        <Field Name="SubsidyDesc">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>SubsidyDesc</DataField>
+        </Field>
+        <Field Name="SubsidyValue">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>SubsidyValue</DataField>
+        </Field>
+        <Field Name="Tels">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Tels</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <Width>14.75cm</Width>
+  <InteractiveHeight>29.7cm</InteractiveHeight>
+  <Language>es-ES</Language>
+  <TopMargin>2.5cm</TopMargin>
+  <PageHeight>29.7cm</PageHeight>
+</Report>

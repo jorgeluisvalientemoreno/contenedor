@@ -1,0 +1,25 @@
+DECLARE
+ nuConta NUMBER;
+BEGIN
+
+ SELECT COUNT(*) INTO nuConta
+ FROM dba_objects
+ WHERE object_name = 'UT_EAN'
+  AND OWNER = 'ADM_PERSON'
+  AND OBJECT_TYPE = 'SYNONYM';
+  
+ IF nuConta > 0 then
+  EXECUTE IMMEDIATE 'DROP SYNONYM ADM_PERSON.UT_EAN';
+ END IF; 
+
+ SELECT COUNT(*) INTO nuConta
+ FROM dba_objects
+ WHERE object_name = 'UT_EAN'
+  AND OWNER = 'OPEN'
+  AND OBJECT_TYPE = 'PACKAGE';
+  
+ IF nuConta > 0 then
+  EXECUTE IMMEDIATE 'DROP PACKAGE OPEN.UT_EAN';
+ END IF; 
+END;
+/

@@ -1,0 +1,16 @@
+ DECLARE
+  nuConta number;
+BEGIN 
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE OBJECT_NAME = 'PKG_PARAMETROS' 
+  AND OWNER = 'PERSONALIZACIONES'
+  AND OBJECT_TYPE = 'PACKAGE';
+
+  IF nuConta > 0 THEN
+    --se borra paquete
+    EXECUTE IMMEDIATE 'DROP PACKAGE PERSONALIZACIONES.pkg_parametros';
+  END IF;  
+  
+END;
+/

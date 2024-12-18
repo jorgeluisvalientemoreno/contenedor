@@ -1,0 +1,25 @@
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\VENTACUPONESMAS.dll
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1483 (17.11.17) -Generación masiva de cupones\VENTACUPONES\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.UI.LDIMPMAS.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1483 (17.11.17) -Generación masiva de cupones\VENTACUPONES\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.csproj.GenerateResource.Cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1483 (17.11.17) -Generación masiva de cupones\VENTACUPONES\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.dll.licenses
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1483 (17.11.17) -Generación masiva de cupones\VENTACUPONES\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.dll
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1483 (17.11.17) -Generación masiva de cupones\VENTACUPONES\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.pdb
+C:\Users\Daniel Valiente\Desktop\VENTACUPONESMAS.dll
+C:\Users\Daniel Valiente\Desktop\VENTACUPONESMAS.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\VENTACUPONESMAS.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1483 (17.11.17) -Generación masiva de cupones\VENTACUPONES\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.Properties.Resources.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\200-2022 desarrollo\Unificado\NET\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.csprojResolveAssemblyReference.cache
+C:\Users\HORBATH\Desktop\caso 200-2022\200-2022 desarrollo\Unificado\NET\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.Properties.Resources.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\200-2022 desarrollo\Unificado\NET\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.UI.LDIMPMAS.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\200-2022 desarrollo\Unificado\NET\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.csproj.GenerateResource.Cache
+C:\Users\HORBATH\Desktop\caso 200-2022\200-2022 desarrollo\Unificado\NET\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.dll.licenses
+C:\Users\HORBATH\Desktop\caso 200-2022\200-2022 desarrollo\Unificado\NET\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\200-2022 desarrollo\Unificado\NET\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\VENTACUPONESMAS.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\VENTACUPONESMAS.pdb
+C:\Users\HORBATH\Desktop\caso 200-2022\Entrega\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.Properties.Resources.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Entrega\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.UI.LDIMPMAS.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Entrega\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.csproj.GenerateResource.Cache
+C:\Users\HORBATH\Desktop\caso 200-2022\Entrega\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.dll.licenses
+C:\Users\HORBATH\Desktop\caso 200-2022\Entrega\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Entrega\VENTACUPONESMAS\VENTACUPONESMAS\obj\Debug\VENTACUPONESMAS.pdb

@@ -1,0 +1,22 @@
+column dt new_value vdt
+column db new_value vdb
+select to_char(sysdate,'yyyymmdd_hh24miss') dt, sys_context('userenv','db_name') db from dual;
+set serveroutput on size unlimited
+execute dbms_application_info.set_action('APLICANDO DATAFIX OSF-988');
+select to_char(sysdate,'yyyy-mm-dd hh:mi:ss p.m.') fecha_inicio from dual;
+
+prompt "------------------------------------------------------"
+prompt "Aplicando Entrega V1.0"
+prompt "------------------------------------------------------"
+
+prompt "Aplicando src/gascaribe/facturacion/consumos/Actualizacion/Marzo2023_prompers.sql"
+@src/gascaribe/facturacion/consumos/Actualizacion/Marzo2023_prompers.sql
+
+prompt "Aplicando src/gascaribe/facturacion/consumos/Actualizacion/Marzo2023_promopen.sql"
+@src/gascaribe/facturacion/consumos/Actualizacion/Marzo2023_promopen.sql
+
+
+select to_char(sysdate,'yyyy-mm-dd hh:mi:ss p.m.') fecha_fin from dual;
+set serveroutput off
+quit
+/

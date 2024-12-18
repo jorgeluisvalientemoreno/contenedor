@@ -1,0 +1,42 @@
+CREATE OR REPLACE TRIGGER OPEN.TRG_DO_GE_ITEMS_TIPO_AT_VAL
+    AFTER INSERT OR UPDATE OR DELETE
+    ON OPEN.GE_ITEMS_TIPO_AT_VAL
+    REFERENCING OLD AS OLD NEW AS NEW
+    FOR EACH ROW
+BEGIN
+
+    DECLARE
+    ID_ITEMS_TIPO_AT_VAL NUMBER(10);
+    OPERATION VARCHAR2(1);
+
+    BEGIN
+
+    IF INSERTING THEN
+        ID_ITEMS_TIPO_AT_VAL := :new.ID_ITEMS_TIPO_AT_VAL;
+        OPERATION := 'I';
+    ELSIF UPDATING THEN
+        ID_ITEMS_TIPO_AT_VAL := :new.ID_ITEMS_TIPO_AT_VAL;
+        OPERATION := 'U';
+    ELSE
+        ID_ITEMS_TIPO_AT_VAL := :old.ID_ITEMS_TIPO_AT_VAL;
+        OPERATION := 'D';
+    END IF;
+
+    INSERT INTO OPEN.LDCBI_GE_ITEMS_TIPO_AT_VAL (
+        ID_ITEMS_TIPO_AT_VAL,
+        OPERATION
+    )
+    VALUES (
+        ID_ITEMS_TIPO_AT_VAL,
+        OPERATION
+    );
+
+    EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20000,
+                                'Error en TRG_DO_GE_ITEMS_TIPO_AT_VAL por -->' || sqlcode ||
+                                chr(13) || sqlerrm);
+    END;
+
+END;
+/

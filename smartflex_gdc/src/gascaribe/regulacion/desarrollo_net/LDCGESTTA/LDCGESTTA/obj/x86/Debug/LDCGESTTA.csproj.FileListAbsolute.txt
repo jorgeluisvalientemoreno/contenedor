@@ -1,0 +1,166 @@
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\LDCGESTTA.dll.config
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\LDCGESTTA.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\LDCGESTTA.pdb
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.AddressBank.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.AddressBank.Premise.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Common.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Component.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.EnterpriseLibrary.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Printing.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Security.ExecutableMgr.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Windows.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\NetTopologySuite.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.OracleCustomTypes.Geom.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Oracle.DataAccess.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.HelpDesk.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Encoding.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Security.ProtectedData.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Apps.ValidateVersion.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Assembly.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Infraestructure.Icons.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Framework.Component.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Printing.BL.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Printing.Entities.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.ExtractAndMix.Api.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\MindFusion.Diagramming.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\MindFusion.Diagramming.WinForms.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Ruler.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\MindFusion.Common.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Appearance.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Apps.ExceptionHelper.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\GeoAPI.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.OracleCustomTypes.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\SevenZipSharp.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Apps.UpdaterHelper.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Apps.ConnectionHelper.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Printing.DAL.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.PS.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Microsoft.ReportViewer.WinForms.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Report.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.CommercialPlan.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.DataBaseObject.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Statement.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Configuration.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.DataModel.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Billing.Configurator.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Microsoft.ReportViewer.Common.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Neodynamic.WinControls.BarcodeProfessional.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Framework.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.MasterDetail.Executor.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.DataBaseObject.Base.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\AxInterop.RULECONSTRUCTORLib.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Framework.Security.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.UI.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Statement.Base.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.SqlParser.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.LoadDemmand.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Microsoft.ReportViewer.ProcessingObjectModel.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Excel.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Report.Executor.Link.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.DataBaseObject.Link.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Framework.Base.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Interop.RULECONSTRUCTORLib.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.Resources.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.Entities.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.BL.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Aspose.Cells.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Report.Base.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Report.Executor.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.Define.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.DAL.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Mapviewer.Base.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.OfficeAddIns.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.MapViewer.Controller.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Microsoft.Office.Interop.Excel.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Microsoft.Office.Interop.Word.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.MapViewer.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.GeographicLayerViewer.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\office.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Microsoft.Vbe.Interop.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\ProjNet.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.csproj.ResolveComReference.cache
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.Properties.Resources.resources
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.UI.LDC_GESTTA.resources
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.csproj.GenerateResource.Cache
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.dll.licenses
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.dll
+E:\DOCUMENTOS OLSOFTWARE\Mis Entregas\Caso 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.pdb
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\LDCGESTTA.dll.config
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\LDCGESTTA.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\LDCGESTTA.pdb
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\NetTopologySuite.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.OracleCustomTypes.Geom.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Oracle.DataAccess.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.HelpDesk.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Encoding.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Security.ProtectedData.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Apps.ValidateVersion.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Assembly.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Infraestructure.Icons.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Framework.Component.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Printing.BL.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Printing.Entities.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.ExtractAndMix.Api.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\MindFusion.Diagramming.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\MindFusion.Diagramming.WinForms.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Ruler.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\MindFusion.Common.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Appearance.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Apps.ExceptionHelper.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\GeoAPI.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.OracleCustomTypes.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\SevenZipSharp.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Apps.UpdaterHelper.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Apps.ConnectionHelper.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Printing.DAL.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.PS.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Report.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.CommercialPlan.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.DataBaseObject.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Statement.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Configuration.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.DataModel.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Billing.Configurator.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Neodynamic.WinControls.BarcodeProfessional.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Framework.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.MasterDetail.Executor.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.DataBaseObject.Base.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\AxInterop.RULECONSTRUCTORLib.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Framework.Security.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.UI.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Statement.Base.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.SqlParser.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.LoadDemmand.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Excel.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Report.Executor.Link.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.DataBaseObject.Link.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Framework.Base.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Interop.RULECONSTRUCTORLib.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.Resources.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.Entities.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.BL.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Aspose.Cells.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Report.Base.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Report.Executor.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.Define.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.WebServicesGenerator.DAL.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.Mapviewer.Base.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.OfficeAddIns.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.MapViewer.Controller.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Microsoft.Office.Interop.Excel.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Microsoft.Office.Interop.Word.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.MapViewer.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\OpenSystems.GeographicLayerViewer.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\office.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\Microsoft.Vbe.Interop.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\bin\x86\Debug\ProjNet.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.csprojResolveAssemblyReference.cache
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.csproj.ResolveComReference.cache
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.Properties.Resources.resources
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.UI.LDC_GESTTA.resources
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.csproj.GenerateResource.Cache
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.dll.licenses
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.dll
+E:\casos_osf\ca 583\BSS_OL_0000583_1\LDCGESTTA\LDCGESTTA\obj\x86\Debug\LDCGESTTA.pdb

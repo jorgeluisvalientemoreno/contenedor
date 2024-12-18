@@ -1,0 +1,5 @@
+PROMPT Crea Sinonimo PRC_ACTASFNB_CONTABILIZA_SAP
+BEGIN
+  pkg_utilidades.prCrearSinonimos('PRC_ACTASFNB_CONTABILIZA_SAP', 'OPEN');
+END;
+/

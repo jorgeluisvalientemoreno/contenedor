@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1EDB94E8-37DF-4E80-891B-1F7F4F923034}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ludycom.Constructoras</RootNamespace>
+    <AssemblyName>Ludycom.Constructoras</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\..\..\..\..\Program Files %28x86%29\OpenSystems\OpenSmartFlex\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Infragistics2.Excel.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Excel.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Shared.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Shared.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.Misc.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.Misc.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinCalcManager.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinCalcManager.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinCalcManager.v5.3.FormulaBuilder, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinCalcManager.v5.3.FormulaBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinChart.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinChart.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinDataSource.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinDataSource.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinDataSource.v5.3.Design, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinDataSource.v5.3.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinDock.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_B-Z\Infragistics2.Win.UltraWinDock.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinEditors.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinEditors.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.ExcelExport.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinGrid.ExcelExport.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinGrid.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v5.3.Design, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinGrid.v5.3.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinMaskedEdit.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinPrintPreviewDialog.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinPrintPreviewDialog.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinSchedule.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinSchedule.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinStatusBar.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinStatusBar.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinTabControl.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_B-Z\Infragistics2.Win.UltraWinTabControl.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinToolbars.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinToolbars.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinTree.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_BZGDC\Infragistics2.Win.UltraWinTree.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\OpenSmartflex_B-Z\Infragistics2.Win.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.10.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.AddressBank, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.AddressBank.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.AddressBank.Premise, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.AddressBank.Premise.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Common">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.EnterpriseLibrary">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.EnterpriseLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Printing, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Printing.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Security.ExecutableMgr, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Security.ExecutableMgr.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Windows">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Windows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BL\BLFCUAD.cs" />
+    <Compile Include="BL\BLFDCPC.cs" />
+    <Compile Include="BL\BLFDMPC.cs" />
+    <Compile Include="BL\BLFDRCC.cs" />
+    <Compile Include="BL\BLFEQUC.cs.cs" />
+    <Compile Include="BL\BLFGCHC.cs" />
+    <Compile Include="BL\BLFGCPC.cs" />
+    <Compile Include="BL\BLFGCPCM.cs" />
+    <Compile Include="BL\BLFRVAD.cs" />
+    <Compile Include="BL\BLGeneralQueries.cs" />
+    <Compile Include="BL\BLLDCMDOINT.cs" />
+    <Compile Include="BL\BLLDCMOPL.cs" />
+    <Compile Include="BL\BLUtilities.cs" />
+    <Compile Include="BL\BLGENERAL.cs" />
+    <Compile Include="BL\GeneralVariables.cs" />
+    <Compile Include="callFCUAD.cs" />
+    <Compile Include="callFDCPC.cs" />
+    <Compile Include="callFDMPC.cs" />
+    <Compile Include="callFDRCC.cs" />
+    <Compile Include="callFEQUC.cs" />
+    <Compile Include="callFGCHC.cs" />
+    <Compile Include="callFGCPC.cs" />
+    <Compile Include="callFIAC.cs" />
+    <Compile Include="callFRVAD.cs" />
+    <Compile Include="callFGCPCM.cs" />
+    <Compile Include="callLDCMDOINT.cs" />
+    <Compile Include="callLDCMOPL.cs" />
+    <Compile Include="DAL\DALDCMDOINT.cs" />
+    <Compile Include="DAL\DALDCMOPL.cs" />
+    <Compile Include="DAL\DALFCUAD.cs" />
+    <Compile Include="DAL\DALFDCPC.cs" />
+    <Compile Include="DAL\DALFDMPC.cs" />
+    <Compile Include="DAL\DALFDRCC.cs" />
+    <Compile Include="DAL\DALFEQUC.cs" />
+    <Compile Include="DAL\DALFGCHC.cs" />
+    <Compile Include="DAL\DALFGCPC.cs" />
+    <Compile Include="DAL\DALFRVAD.cs" />
+    <Compile Include="DAL\DALGENERAL.cs" />
+    <Compile Include="DAL\DALUtilities.cs" />
+    <Compile Include="DAL\DALFGCPCM.cs" />
+    <Compile Include="ENTITIES\ActividadesPlanEsp.cs" />
+    <Compile Include="ENTITIES\CheckConcept.cs" />
+    <Compile Include="ENTITIES\Constants.cs" />
+    <Compile Include="ENTITIES\Cupones.cs" />
+    <Compile Include="ENTITIES\ListadoInternas.cs" />
+    <Compile Include="ENTITIES\MonthlyFeeM.cs" />
+    <Compile Include="ENTITIES\OrdenesInternas.cs" />
+    <Compile Include="ENTITIES\WorkProgressFee.cs" />
+    <Compile Include="ENTITIES\Check.cs" />
+    <Compile Include="ENTITIES\ConsolidatedQuotation.cs" />
+    <Compile Include="ENTITIES\CustomerBasicData.cs" />
+    <Compile Include="ENTITIES\FixedValues.cs" />
+    <Compile Include="ENTITIES\FloorPropUnitType.cs" />
+    <Compile Include="ENTITIES\ItemsPerLength.cs" />
+    <Compile Include="ENTITIES\itemTaskType.cs" />
+    <Compile Include="ENTITIES\LengthPerFloorPerPropUnitType.cs" />
+    <Compile Include="ENTITIES\LovItem.cs" />
+    <Compile Include="ENTITIES\LengthPerFloor.cs" />
+    <Compile Include="ENTITIES\LengthPerPropUnitType.cs" />
+    <Compile Include="ENTITIES\ListOfValues.cs" />
+    <Compile Include="ENTITIES\MonthlyFee.cs" />
+    <Compile Include="ENTITIES\ProjectBasicData.cs" />
+    <Compile Include="ENTITIES\PropPerFloorAndUnitType.cs" />
+    <Compile Include="ENTITIES\PropUnit.cs" />
+    <Compile Include="ENTITIES\PropUnitEquivalence.cs" />
+    <Compile Include="ENTITIES\QuotationBasicData.cs" />
+    <Compile Include="ENTITIES\QuotationItem.cs" />
+    <Compile Include="ENTITIES\QuotationTaskType.cs" />
+    <Compile Include="ENTITIES\RequestBasicData.cs" />
+    <Compile Include="ENUMS\ENUMS.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\FGCPCM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FGCPCM.Designer.cs">
+      <DependentUpon>FGCPCM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FCCH.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FCCH.Designer.cs">
+      <DependentUpon>FCCH.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FCUAD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FCUAD.Designer.cs">
+      <DependentUpon>FCUAD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FDMPC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FDMPC.Designer.cs">
+      <DependentUpon>FDMPC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FDCPC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FDCPC.Designer.cs">
+      <DependentUpon>FDCPC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FDRCC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FDRCC.Designer.cs">
+      <DependentUpon>FDRCC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FEQUC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FEQUC.Designer.cs">
+      <DependentUpon>FEQUC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FGCHC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FGCHC.Designer.cs">
+      <DependentUpon>FGCHC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FGCPC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FGCPC.Designer.cs">
+      <DependentUpon>FGCPC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FRVAD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FRVAD.Designer.cs">
+      <DependentUpon>FRVAD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FRNC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FRNC.Designer.cs">
+      <DependentUpon>FRNC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FIAC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FIAC.Designer.cs">
+      <DependentUpon>FIAC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\GridViewRow.cs" />
+    <Compile Include="UI\LDCMDOINT.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDCMDOINT.Designer.cs">
+      <DependentUpon>LDCMDOINT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDCMOPL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDCMOPL.Designer.cs">
+      <DependentUpon>LDCMOPL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\POCI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\POCI.Designer.cs">
+      <DependentUpon>POCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Question.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Question.designer.cs">
+      <DependentUpon>Question.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="UI\FGCPCM.resx">
+      <DependentUpon>FGCPCM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FCCH.resx">
+      <DependentUpon>FCCH.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FCUAD.resx">
+      <DependentUpon>FCUAD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FDMPC.resx">
+      <DependentUpon>FDMPC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FDCPC.resx">
+      <DependentUpon>FDCPC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FDRCC.resx">
+      <DependentUpon>FDRCC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FEQUC.resx">
+      <DependentUpon>FEQUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FGCHC.resx">
+      <DependentUpon>FGCHC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FGCPC.resx">
+      <DependentUpon>FGCPC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FRVAD.resx">
+      <DependentUpon>FRVAD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FRNC.resx">
+      <DependentUpon>FRNC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FIAC.resx">
+      <DependentUpon>FIAC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDCMDOINT.resx">
+      <DependentUpon>LDCMDOINT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDCMOPL.resx">
+      <DependentUpon>LDCMOPL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\POCI.resx">
+      <DependentUpon>POCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\qUESTION.resx">
+      <DependentUpon>Question.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.Check.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.CheckConcept.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.CheckFrvad1.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.ConsolidatedQuotation.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.FixedValues.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.ItemsPerLength.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.LengthPerFloor.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.LengthPerFloorPerPropUnitType.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.LengthPerPropUnitType.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.ListadoInternas.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.MonthlyFee.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.MonthlyFeeM.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.OrdenesInternas.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.PropPerFloorAndUnitType.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.PropUnitEquivalences.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.QuotationItem.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.QuotationItems.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.QuotationTaskType.datasource" />
+    <None Include="Properties\DataSources\Ludycom.Constructoras.ENTITIES.WorkProgressFee.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

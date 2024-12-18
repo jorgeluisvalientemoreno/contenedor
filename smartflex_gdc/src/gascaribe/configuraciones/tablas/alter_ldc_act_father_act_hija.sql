@@ -1,0 +1,2 @@
+alter table LDC_ACT_FATHER_ACT_HIJA
+  add constraint PK_ACT_FATHER_ACT_HIJA primary key (ACTIVIDAD_PADRE, ACTIVIDAD_HIJA);

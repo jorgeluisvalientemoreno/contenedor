@@ -1,0 +1,4 @@
+BEGIN
+ pkg_utilidades.prCrearSinonimos('FSBVALIUSUSINLECTPROMEDIADO', 'PERSONALIZACIONES');
+END;
+/

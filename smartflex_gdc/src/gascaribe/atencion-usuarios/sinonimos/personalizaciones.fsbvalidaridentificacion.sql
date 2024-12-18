@@ -1,0 +1,5 @@
+PROMPT Crea sinonimo objeto FSBVALIDARIDENTIFICACION
+BEGIN
+    pkg_utilidades.prcrearsinonimos('FSBVALIDARIDENTIFICACION', 'PERSONALIZACIONES');
+END;
+/

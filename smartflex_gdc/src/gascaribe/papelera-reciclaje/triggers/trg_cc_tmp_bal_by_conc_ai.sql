@@ -1,0 +1,15 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'TRG_CC_TMP_BAL_BY_CONC_AI'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE = 'TRIGGER';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP TRIGGER OPEN.TRG_CC_TMP_BAL_BY_CONC_AI';
+  END IF;  
+END;
+/

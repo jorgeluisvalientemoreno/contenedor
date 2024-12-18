@@ -1,0 +1,1171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DummyDataSource">
+      <rd:DataSourceID>b6d29170-3f17-4873-9f76-5abecd818d75</rd:DataSourceID>
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+    </DataSource>
+  </DataSources>
+  <InteractiveHeight>29.7cm</InteractiveHeight>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>21cm</InteractiveWidth>
+  <rd:GridSpacing>0.25cm</rd:GridSpacing>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <RightMargin>1cm</RightMargin>
+  <LeftMargin>1cm</LeftMargin>
+  <BottomMargin>1cm</BottomMargin>
+  <rd:ReportID>eb6ef5fa-e6b6-4c98-97e2-d3e04e4f2e9d</rd:ReportID>
+  <EmbeddedImages>
+    <EmbeddedImage Name="brilla">
+      <MIMEType>image/jpeg</MIMEType>
+      <ImageData>/9j/4AAQSkZJRgABAQEARwBHAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCABkALQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6nooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAKep39rplm1zezrDBH1dq8t1n4wxJceVo9jvjH/La443fQCsL4yeIZNQ146bC/+h2XBVf4pf8A61dV4N+GGmx6dBc65H9p
+vHXdsJ+SPPavOqVqlWbpUtLHv0cHhsJRjXxl25bIydL+MM6zf8TXTYzB/ft25X8DXqmha3Y69YrdabMs0R/NfqK4jxX8L9KurB5NGj+yXaKWAX7r+xFcB8KtVl0nxjDBI/lwXX7mVP8Aa7VEatahNRq6pl1MHhMbQlWwicXHdH0TRRRXqHzoUUUUAeOfEjxvruieK5NP024ijtwIyo8oMeevWrPxQ8Za1oGo6dBpk6RLNaiZ90QfnNcp8Zzjx2//AFzj/lU/xvO/VtH/AOvFP5mvHnVknU12sfW4fA0JPDpw+KLv56I9n8K3kuoeG9Purhg00sKs5X1rXrB8Cf8AIn6R/wBe6VvV6lJ3gn5Hy1VJVJJd2FFFFaGYUUUUAFFFFABRRRQAUUUUAFFFFAHyzq8huPGN00n3mvTn/vuvqBZY1X76V8r+IkP/AAkOoKPv+e2PxNbC+B/FTL/yDrz/AL+V4WGrypSk0r3Pts0wMMTGlzVFCy6nunirxRp3h/TJri4uYjKF/dxBtzMe3FeG/D+zuNY8c2TbflST7VKf7oqnf+CvEVpbtcXGmziNev8AGa3fhN4tg0HUDY3VvEILt9puf41PYN7VVWu604+0VkY0cHHCYSr9Xl7STXQ901rVLTRtOmvr+QR28S/M1eIa98Uta1KdotIH2KHdtQBd0jVd+OepTTazZaceLaOPzf8AeY/4V3Hw18J2Oj6JbXckaTX9zGsskzD15AGfSuqpOdep7ODsluebQpYfBYaOJrx5nLZHmmjap4zn1zTftMuqGF7hN6srBcbuc1bfxLrS/Es2P9p3P2P+0vL8rf8ALs3dK95r5y1q3WH4umOPp/aCN+bA1jWougl7zd2dWCxFLGzqN0krRf8Aw5J8Z2/4r2Uf9M4/5Vc+N/8AyFdF/wCvFf51n/G5Svjq4b+9FH+i1c+NgP2/QSrc/wBnr/OorK7q+q/M78M7Swv+F/kj1jw7qNrpfgHTr29nWO2itVZ
+3b6V5P4k+K2salceXoQ+xW/RcLvlaq3jzVm/4Q7wrpK/da3+0yf7XYZr0D4S+ELXT9Gg1W6jWTULlfMBbny17AVvzVKtqVN20R5aoYfCU5YrELmbk7I8yXWvG0f7zz9a+9ydrYrofCPxavrW5EPiEfaLbdt84Lh0+te7V4x8bfDEEMcet2Uflsz+Xcbf0NFTD1KEeeErjoYzDY+aoVaSjfZo9gtLmK8tori2cPFIu5G/vCp686+COpPeeFJLab71nMyKO+w8ivRa76U/aQUjwcRRdCrKm+jCiiitDEKKKKACiiigAooooA+X/ABaqQ+NdREf8N2f/AEKvpyD/AFEf+7XzB43+Xxtqp2/KLo/+hV6vD8XNBWCNWiu923+5XkYWrCnUk5ux9Vm+Fq16dF04301/A9Mr5t+LOmQaX4tultV8tZVE20dMmvRLz4vaSkDNa2l3LN2RlCj868xjh1Px/wCLf3i/vrhv3m37sMQ7VWMrQrRUYasjJ8JWws5Vq65YJdSf4jTS3F3o8kn3n02Fj/3zX0H4c/5F7S/+vSL/ANAFeHfGK3S28TW8EI2xw2aRr+Fe4+G/+Rd0v/r1j/8AQBV4OLjUkmc2ayU8LQa63/Q0q+dfEhA+MTf9hCP+Yr6Kr5z8Uru+L7f9hCE/qK0x3wx9Sck+Kr/hZL8bP+R2uP8Arin/AKDVn4zjMvh//rwWqvxw/wCR4f8A690/lVz40/8AH1oI9LEfSuKp/wAvPU9vC6vCf4X+SMHxuH/szww/dtNVc/R2r234X6nFqvgzT3j+9CnkuvoVrlpfCx8TfCrSBAP9Ogt/MgPr7fjXmfhHxNqXgzU5SkXyM224tpOOnpWkG8PUUns0cVWmsxwvs6b9+m3p82fUVcN8Z/8AkRLr/rrH/Osay+MujyD/AEmyvIeP4RvrnPiF8RdP8RaLNplha3AyVYSycdOvFddXE0nTaTPMweXYmOIg5QdkzY/Z+ObbW/8Afi5/Bq9drx
+/9nn/j21v/AH4v/Z69gqsH/BRlm7vjKnqFFFFdR5oUUUUAFFFFABRRRQB5frHwqTVNVur1tVZPtEhk2eR93P41R/4U1H/0Gm/8Bv8A7KvXqK5ng6Ld2j0o5xjIJRjPT0X+R5ND8HLYOpn1eVo+6rEF/XJr0Lw94f03w/amHS7dYgfvN1Zvqa16KqGHp03eK1MK+OxGIVqsro4Pxj8PofEmrfbnvngYoqbVTd0/Guy0+2Wzsbe2X5lhjVPyGKtUVcKUYNyS1ZlUxFSpCNObuo7BXnmq+ALCXxK/iK71B41SVbl1IAVdvvn2r0OuD8dxzyxXyBdVkiewZbVLQOVaY79wkC9seX97/a71GIjFxvJXsbYGU1U5YS5b6P0Dxd8O7LxLrA1C4vJoSVCsigdqg8c+FdE1u+sIL7V1sLmOHyYIfMQFufQ9atab/bH/AAlrfaZLvyvOm3J5UnleTz5fzFvL/u/dG71pniFJo77Uvs9rdNLcqn7n7J9pt7vA43ED5PTlh61i1Czko77nZCVaNSEXU+FaW6Xf9f8AAWp1eh6amk6Ra2EbtJHBHs3N1asXxX4V8P60/m6rHGk3H70Nsbrgc/Wsu8vNW2yW0Ueo/aY5LwkiJ9m0xyGLDdDztxikvrG4sdUgktjqUkj2sabt0kvzecpcE844q5Si48vLoZ0qE4VOf2lm+xnSfBzR9+Yrm4VP7p5/qKb/AMKb0n/n8m/L/wCvVu6uruLWFdTqsl4by7Xy0ZvIeNYpjGq5ym7hfx3ZqtbHWPsV6rPqyx+ZAVPl3Tdm3dcS4yFzt/LFc7p0X9n8TtVbG2u63bp52/4budb4N8J2Pha3njsy7tOwaRm9uldJWX4ead9CsjdRyx3BiXesjZfp3PrWpXfTioxSirI8OtOU6knN3fcKKKKsyCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAKEel2Ed+19HZ263b/emCjefxq/RRSSS2G5OW
+7CiiimIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/2Q==</ImageData>
+    </EmbeddedImage>
+  </EmbeddedImages>
+  <PageWidth>21cm</PageWidth>
+  <DataSets>
+    <DataSet Name="EXTRA_BARCODE_">
+      <Fields>
+        <Field Name="CODE">
+          <DataField>CODE</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="IMAGE">
+          <DataField>IMAGE</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DummyDataSource</DataSourceName>
+        <CommandText />
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <rd:DataSetInfo>
+        <rd:DataSetName>BinEan</rd:DataSetName>
+        <rd:TableName>EXTRA_BARCODE_</rd:TableName>
+      </rd:DataSetInfo>
+    </DataSet>
+    <DataSet Name="BineOlimpica">
+      <Fields>
+        <Field Name="Nombre">
+          <DataField>Nombre</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CodigoSusc">
+          <DataField>CodigoSusc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Direccion">
+          <DataField>Direccion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Ciudad">
+          <DataField>Ciudad</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Telefono">
+          <DataField>Telefono</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Proveedor">
+          <DataField>Proveedor</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Sucursal">
+          <DataField>Sucursal</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Asesor">
+          <DataField>Asesor</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Solucitud">
+          <DataField>Solucitud</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ArticuloCodigo">
+          <DataField>ArticuloCodigo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ArticuloDescripcion">
+          <DataField>ArticuloDescripcion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ArticuloCantidad">
+          <DataField>ArticuloCantidad</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ArticuloValor">
+          <DataField>ArticuloValor</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FinanciacionValor">
+          <DataField>FinanciacionValor</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FinanciacionTasa">
+          <DataField>FinanciacionTasa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FinanciacionCuotas">
+          <DataField>FinanciacionCuotas</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FinanciacionValorCuota">
+          <DataField>FinanciacionValorCuota</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ImpCodigoBarras">
+          <DataField>ImpCodigoBarras</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DummyDataSource</DataSourceName>
+        <CommandText />
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <rd:DataSetInfo>
+        <rd:DataSetName>BinEan</rd:DataSetName>
+        <rd:TableName>BineOlimpica</rd:TableName>
+      </rd:DataSetInfo>
+    </DataSet>
+  </DataSets>
+  <Code />
+  <Width>19cm</Width>
+  <Body>
+    <ColumnSpacing>1cm</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="textbox43">
+        <Top>15.86971cm</Top>
+        <Width>3.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Right</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>39</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>4.50265cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!FinanciacionTasa.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox44">
+        <Top>16.36971cm</Top>
+        <Width>3.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Right</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>38</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>4.50265cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!FinanciacionCuotas.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox45">
+        <Top>16.86971cm</Top>
+        <Width>3.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Right</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>37</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>4.50265cm</Left>
+        <Height>0.75cm</Height>
+        <Value />
+      </Textbox>
+      <Textbox Name="textbox46">
+        <Top>15.36971cm</Top>
+        <Width>3.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Right</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>36</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>4.50265cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!FinanciacionValor.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox47">
+        <Top>15.86971cm</Top>
+        <Width>3.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>35</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.50265cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Tasa de Interés:</Value>
+      </Textbox>
+      <Textbox Name="textbox48">
+        <Top>16.36971cm</Top>
+        <Width>3.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>34</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.50265cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Número de Cuotas:</Value>
+      </Textbox>
+      <Textbox Name="textbox49">
+        <Top>16.86971cm</Top>
+        <Width>3.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>33</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.50265cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Valor Aprox de Cuota:</Value>
+      </Textbox>
+      <Textbox Name="textbox50">
+        <Top>15.36971cm</Top>
+        <Width>3.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>32</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.50265cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Valor a Financiar:</Value>
+      </Textbox>
+      <Textbox Name="textbox51">
+        <Top>14.61971cm</Top>
+        <Width>5.50265cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <FontWeight>700</FontWeight>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>31</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.50265cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Detalle de Financiación</Value>
+      </Textbox>
+      <Textbox Name="textbox32">
+        <Top>8.75cm</Top>
+        <Width>7cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>30</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>2.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!Sucursal.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox54">
+        <Top>9.25cm</Top>
+        <Width>7cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>29</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>2.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!Asesor.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox55">
+        <Top>8.25cm</Top>
+        <Width>7cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>28</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>2.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!Proveedor.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox56">
+        <Top>8.75cm</Top>
+        <Width>1.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>27</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Sucursal:</Value>
+      </Textbox>
+      <Textbox Name="textbox57">
+        <Top>9.25cm</Top>
+        <Width>1.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>26</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Asesor:</Value>
+      </Textbox>
+      <Textbox Name="textbox58">
+        <Top>8.25cm</Top>
+        <Width>1.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>25</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Proveedor:</Value>
+      </Textbox>
+      <Textbox Name="textbox59">
+        <Top>7.5cm</Top>
+        <Width>5.50265cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <FontWeight>700</FontWeight>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>24</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Datos del Proveedor</Value>
+      </Textbox>
+      <Textbox Name="textbox60">
+        <Top>4.5cm</Top>
+        <Width>3.25cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>23</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>15.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!Solucitud.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox61">
+        <Top>5.5cm</Top>
+        <Width>6.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>22</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>12cm</Left>
+        <Height>0.75cm</Height>
+        <Value />
+      </Textbox>
+      <Textbox Name="textbox62">
+        <Top>6cm</Top>
+        <Width>6.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>21</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>12cm</Left>
+        <Height>0.75cm</Height>
+        <Value />
+      </Textbox>
+      <Textbox Name="textbox63">
+        <Top>4.5cm</Top>
+        <Width>3.25cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>20</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>12cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Código de la Venta:</Value>
+      </Textbox>
+      <Textbox Name="textbox64">
+        <Top>3.75cm</Top>
+        <Width>6.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <FontWeight>700</FontWeight>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>19</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>12cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Datos Registro</Value>
+      </Textbox>
+      <Textbox Name="textbox69">
+        <Top>4.5cm</Top>
+        <Width>8.5cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>18</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>2.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!Nombre.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox74">
+        <Top>4.5cm</Top>
+        <Width>1.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>17</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Nombre:</Value>
+      </Textbox>
+      <Textbox Name="textbox75">
+        <Top>3.75cm</Top>
+        <Width>5.50265cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <FontWeight>700</FontWeight>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>16</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Datos del Usuario</Value>
+      </Textbox>
+      <Rectangle Name="rectangle1">
+        <Left>0.25cm</Left>
+        <ZIndex>15</ZIndex>
+        <ReportItems>
+          <Line Name="line2">
+            <Top>2.75cm</Top>
+            <Width>7.99206cm</Width>
+            <Style>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>3</ZIndex>
+            <Left>10.25cm</Left>
+            <Height>0cm</Height>
+          </Line>
+          <Line Name="line1">
+            <Top>2.75cm</Top>
+            <Width>8cm</Width>
+            <Style>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>2</ZIndex>
+            <Left>0.25cm</Left>
+            <Height>0cm</Height>
+          </Line>
+          <Textbox Name="textbox53">
+            <Top>0.5cm</Top>
+            <Width>5.50265cm</Width>
+            <Style>
+              <FontSize>9pt</FontSize>
+              <FontWeight>700</FontWeight>
+              <TextAlign>Left</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <ZIndex>1</ZIndex>
+            <CanGrow>true</CanGrow>
+            <Left>10.25cm</Left>
+            <Height>0.75cm</Height>
+            <Value>FIRMA VENDEDOR</Value>
+          </Textbox>
+          <Textbox Name="textbox52">
+            <Top>0.5cm</Top>
+            <Width>5.50265cm</Width>
+            <Style>
+              <FontSize>9pt</FontSize>
+              <FontWeight>700</FontWeight>
+              <TextAlign>Left</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Left>0.25cm</Left>
+            <Height>0.75cm</Height>
+            <Value>FIRMA CLIENTE</Value>
+          </Textbox>
+        </ReportItems>
+        <Top>17.875cm</Top>
+        <Width>18.5cm</Width>
+        <Height>3cm</Height>
+      </Rectangle>
+      <Table Name="table1">
+        <ZIndex>14</ZIndex>
+        <DataSetName>BineOlimpica</DataSetName>
+        <Top>11.875cm</Top>
+        <Width>17.99864cm</Width>
+        <Details>
+          <TableRows>
+            <TableRow>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox31">
+                      <rd:DefaultName>textbox31</rd:DefaultName>
+                      <Style>
+                        <TextAlign>Left</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>4</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!ArticuloCodigo.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="Articulo">
+                      <rd:DefaultName>Articulo</rd:DefaultName>
+                      <Style>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>3</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!ArticuloDescripcion.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox33">
+                      <rd:DefaultName>textbox33</rd:DefaultName>
+                      <Style>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>2</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!ArticuloCantidad.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox41">
+                      <rd:DefaultName>textbox41</rd:DefaultName>
+                      <Style>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>1</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!ArticuloValor.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox38">
+                      <rd:DefaultName>textbox38</rd:DefaultName>
+                      <Style>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!ArticuloCantidad.Value*Fields!ArticuloValor.Value</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+              <Height>0.7cm</Height>
+            </TableRow>
+          </TableRows>
+        </Details>
+        <Header>
+          <TableRows>
+            <TableRow>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox28">
+                      <rd:DefaultName>textbox28</rd:DefaultName>
+                      <Style>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>14</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Código</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox29">
+                      <rd:DefaultName>textbox29</rd:DefaultName>
+                      <Style>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>13</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Descripción</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox30">
+                      <rd:DefaultName>textbox30</rd:DefaultName>
+                      <Style>
+                        <FontWeight>700</FontWeight>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>12</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Cantidad</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox40">
+                      <rd:DefaultName>textbox40</rd:DefaultName>
+                      <Style>
+                        <FontWeight>700</FontWeight>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>11</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Valor</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox37">
+                      <rd:DefaultName>textbox37</rd:DefaultName>
+                      <Style>
+                        <FontWeight>700</FontWeight>
+                        <TextAlign>Right</TextAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>10</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Total</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+              <Height>0.83774cm</Height>
+            </TableRow>
+          </TableRows>
+        </Header>
+        <TableColumns>
+          <TableColumn>
+            <Width>2.66712cm</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>7.25cm</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>2.66576cm</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>2.66576cm</Width>
+          </TableColumn>
+          <TableColumn>
+            <Width>2.75cm</Width>
+          </TableColumn>
+        </TableColumns>
+        <Height>2.37548cm</Height>
+        <Footer>
+          <TableRows>
+            <TableRow>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox34">
+                      <rd:DefaultName>textbox34</rd:DefaultName>
+                      <Style>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>9</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>Subtotal:</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox35">
+                      <rd:DefaultName>textbox35</rd:DefaultName>
+                      <Style>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>8</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value />
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox36">
+                      <rd:DefaultName>textbox36</rd:DefaultName>
+                      <Style>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>7</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value />
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox42">
+                      <rd:DefaultName>textbox42</rd:DefaultName>
+                      <Style>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>6</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value />
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox39">
+                      <rd:DefaultName>textbox39</rd:DefaultName>
+                      <Style>
+                        <FontWeight>700</FontWeight>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                      <ZIndex>5</ZIndex>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Sum(Fields!ArticuloCantidad.Value*Fields!ArticuloValor.Value)</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+              <Height>0.83774cm</Height>
+            </TableRow>
+          </TableRows>
+        </Footer>
+        <Left>0.5cm</Left>
+      </Table>
+      <Textbox Name="textbox27">
+        <Top>10.625cm</Top>
+        <Width>10.25728cm</Width>
+        <Style>
+          <FontSize>14pt</FontSize>
+          <FontWeight>700</FontWeight>
+          <TextAlign>Center</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>13</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>4.37136cm</Left>
+        <Height>0.75cm</Height>
+        <Value>***VALIDO SOLO POR HOY***</Value>
+      </Textbox>
+      <Textbox Name="textbox3">
+        <rd:DefaultName>textbox3</rd:DefaultName>
+        <Top>2.5cm</Top>
+        <Width>5.5cm</Width>
+        <Style>
+          <FontSize>8pt</FontSize>
+          <TextAlign>Center</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>12</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.74074cm</Height>
+        <Value>=First(Fields!ImpCodigoBarras.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Image Name="image2">
+        <Sizing>Fit</Sizing>
+        <Top>1cm</Top>
+        <Width>5.5cm</Width>
+        <MIMEType>image/jpeg</MIMEType>
+        <Source>Database</Source>
+        <Style />
+        <ZIndex>11</ZIndex>
+        <Left>0.5cm</Left>
+        <Height>1.3cm</Height>
+        <Value>=First(Fields!IMAGE.Value, "EXTRA_BARCODE_")</Value>
+      </Image>
+      <Textbox Name="textbox2">
+        <rd:DefaultName>textbox2</rd:DefaultName>
+        <Top>1.75cm</Top>
+        <Width>5.50265cm</Width>
+        <Style>
+          <FontSize>14pt</FontSize>
+          <FontWeight>700</FontWeight>
+          <TextAlign>Center</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>10</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>6.74867cm</Left>
+        <Height>0.74074cm</Height>
+        <Value>=Day(Now).ToString()+"/"+Month(Now).ToString()+"/"+Year(Now).ToString()</Value>
+      </Textbox>
+      <Textbox Name="textbox1">
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Top>1cm</Top>
+        <Width>5.50265cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Center</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>9</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>6.74867cm</Left>
+        <Height>0.5cm</Height>
+        <Value>Fecha de Venta</Value>
+      </Textbox>
+      <Image Name="image1">
+        <Sizing>AutoSize</Sizing>
+        <Top>0.25cm</Top>
+        <Width>4.7619cm</Width>
+        <MIMEType>image/jpeg</MIMEType>
+        <Source>Embedded</Source>
+        <Style />
+        <ZIndex>8</ZIndex>
+        <Left>13.75cm</Left>
+        <Height>2.6455cm</Height>
+        <Value>brilla</Value>
+      </Image>
+      <Textbox Name="textbox65">
+        <Top>5cm</Top>
+        <Width>8.5cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>7</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>2.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!CodigoSusc.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox70">
+        <Top>5cm</Top>
+        <Width>1.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>6</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Código:</Value>
+      </Textbox>
+      <Textbox Name="textbox68">
+        <Top>5.5cm</Top>
+        <Width>8.5cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>5</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>2.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!Telefono.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox73">
+        <Top>5.5cm</Top>
+        <Width>1.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>4</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Teléfono:</Value>
+      </Textbox>
+      <Textbox Name="textbox67">
+        <Top>6cm</Top>
+        <Width>8.5cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>3</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>2.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!Ciudad.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox72">
+        <Top>6cm</Top>
+        <Width>1.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>2</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Ciudad:</Value>
+      </Textbox>
+      <Textbox Name="textbox66">
+        <Top>6.5cm</Top>
+        <Width>8.5cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <ZIndex>1</ZIndex>
+        <CanGrow>true</CanGrow>
+        <Left>2.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>=First(Fields!Direccion.Value, "BineOlimpica")</Value>
+      </Textbox>
+      <Textbox Name="textbox71">
+        <Top>6.5cm</Top>
+        <Width>1.75cm</Width>
+        <Style>
+          <FontSize>9pt</FontSize>
+          <TextAlign>Left</TextAlign>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Left>0.5cm</Left>
+        <Height>0.75cm</Height>
+        <Value>Dirección:</Value>
+      </Textbox>
+    </ReportItems>
+    <Height>25cm</Height>
+  </Body>
+  <Language>es-ES</Language>
+  <TopMargin>1cm</TopMargin>
+  <PageHeight>27cm</PageHeight>
+</Report>

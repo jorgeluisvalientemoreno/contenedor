@@ -1,0 +1,4 @@
+BEGIN
+  pkg_utilidades.prCrearSinonimos('HOMOLOGACION_SERVICIOS','PERSONALIZACIONES');
+END;
+/

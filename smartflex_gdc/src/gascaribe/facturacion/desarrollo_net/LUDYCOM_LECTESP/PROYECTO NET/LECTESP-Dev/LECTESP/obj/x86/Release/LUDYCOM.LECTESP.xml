@@ -1,0 +1,247 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+LUDYCOM.LECTESP
+</name>
+</assembly>
+<members>
+<<<<<<< HEAD
+<member name="M:LUDYCOM.LECTESP.BLTBLEXCEL.ImportarExcel">
+	<summary>
+ Realiza el proceso de inicializar la tablas internas, leer/extraer los datos de excel 
+ y Se renombran las columnas del DataTable con los encabezados de la plantilla
+ </summary>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.BLTBLEXCEL.ValidarEstructura(System.Data.DataTable@)">
+	<summary>
+ Valida la estructura de los datos extraidos de la plantilla Excel
+ </summary>
+	<param name="DT"></param>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.BLTBLEXCEL.ValidarDatos(System.Data.DataTable@)">
+	<summary>
+ Valida la integridad de datos (FK) contra las tablas maestras y setea los errores en las celdas con inconsistencias
+ Realiza acciones diferentes de acuerdo a la tabla que se este validando
+ </summary>
+	<param name="DT">La tabla que se esta validando</param>
+	<returns>True/False</returns>
+	<remarks>Cuando por lo menos se haya encontrado un error el proceso devolverara false</remarks>
+=======
+<member name="M:LUDYCOM.LECTESP.LECTESP.Grid_MouseUp(System.Object,System.Windows.Forms.MouseEventArgs)">
+	<summary>
+ Valida las acciones de activacion/inactivacion de Menus Contextuales
+ </summary>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.LECTESP.MenuGuardarConfigGrid_Click(System.Object,System.EventArgs)">
+	<summary>
+ 'CA 200-856
+ Guardar Configuracion del Grid (Orden de lso registros)
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.LECTESP.CargarGrids">
+	<summary>
+ Asigna a cada Grid su correspondiente DataTable
+ </summary>
+</member><member name="T:LUDYCOM.LECTESP.DAL.Oracle">
+	<summary>
+ Conexion Local (Desarrollo)
+ </summary>
+	<remarks></remarks>
+</member><member name="T:LUDYCOM.LECTESP.ENTITIES.TBLEXCEL">
+	<summary>
+ Definicion de Plantilla de Importación
+ </summary>
+	<remarks></remarks>
+>>>>>>> d058013e (OSF-1144: ajuste de lectespcrit)
+</member><member name="M:LUDYCOM.LECTESP.DALLECTESP.#ctor">
+	<summary>
+ Constructor
+ </summary>
+</member><member name="M:LUDYCOM.LECTESP.DALLECTESP.ExportarGridAExcel(System.Windows.Forms.DataGridView,System.String,System.String@)">
+	<summary>
+	</summary>
+	<param name="Grid"></param>
+	<param name="RutaArchivo"></param>
+	<param name="osbMensajeError"></param>
+	<returns></returns>
+	<remarks>
+ See more at: http://www.visual-basic-tutorials.com/export-datagridview-to-excel-in-visual-basic.html#sthash.h477cGnj.dpuf 
+ https://social.msdn.microsoft.com/Forums/es-ES/a34cae9a-0d22-472b-a022-26f544881826/exportar-de-datagridview-a-excel-con-formato-en-visual-basic?forum=dotnetes
+ </remarks>
+</member><member name="F:LUDYCOM.LECTESP.DAL.DALTBLEXCEL.Fn_ObtenerEstructuraTablas">
+	<summary>
+ Definicion de Procesos y funciones de BDD
+ </summary>
+</member><member name="M:LUDYCOM.LECTESP.DAL.DALTBLEXCEL.CheckConnection">
+	<summary>
+ Valida la conexion que se esta utilizando. OPEN
+ </summary>
+	<returns>String con el nombre de la conexion ( LOCAL &gt;&gt; "ORACLE" | INTEGRADO OSF &gt;&gt; "OPEN" )</returns>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.DAL.DALTBLEXCEL.ObtenerDatosValidacion(System.Data.DataSet@,System.Int64@,System.String@)">
+	<summary>
+ Obtiene los datos de las tablas vinculadas (Fk) para validacion de datos local
+ </summary>
+	<param name="Dset"></param>
+	<param name="onuerrorcode"></param>
+	<param name="osberrormessage"></param>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.DAL.DALTBLEXCEL.ResetDataTableImportacion">
+	<summary>
+ Restablece tablas locales y los datos de la aplicacion
+ </summary>
+</member><member name="M:LUDYCOM.LECTESP.DAL.DALTBLEXCEL.FormatearDataTables">
+	<summary>
+ Renombra las columnas del Datatable segun los encabezados importados de la plantilla 
+ o las crea automaticamente con las propiedades de la Clase pasada por Parametro
+ Adicionalmente, borra las filas de encabezados
+ </summary>
+</member><member name="M:LUDYCOM.LECTESP.DAL.DALTBLEXCEL.ProcesarImportacion(System.String@,System.String)">
+	<summary>
+ Procesa los registros importados desde la tabla de excel
+ </summary>
+	<param name="osberrormessage"></param>
+	<remarks></remarks>
+<<<<<<< HEAD
+</member><member name="T:LUDYCOM.LECTESP.DAL.Oracle">
+	<summary>
+ Conexion Local (Desarrollo)
+ </summary>
+	<remarks></remarks>
+=======
+</member><member name="M:LUDYCOM.LECTESP.BLTBLEXCEL.ImportarExcel">
+	<summary>
+ Realiza el proceso de inicializar la tablas internas, leer/extraer los datos de excel 
+ y Se renombran las columnas del DataTable con los encabezados de la plantilla
+ </summary>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.BLTBLEXCEL.ValidarEstructura(System.Data.DataTable@)">
+	<summary>
+ Valida la estructura de los datos extraidos de la plantilla Excel
+ </summary>
+	<param name="DT"></param>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.BLTBLEXCEL.ValidarDatos(System.Data.DataTable@)">
+	<summary>
+ Valida la integridad de datos (FK) contra las tablas maestras y setea los errores en las celdas con inconsistencias
+ Realiza acciones diferentes de acuerdo a la tabla que se este validando
+ </summary>
+	<param name="DT">La tabla que se esta validando</param>
+	<returns>True/False</returns>
+	<remarks>Cuando por lo menos se haya encontrado un error el proceso devolverara false</remarks>
+</member><member name="M:LUDYCOM.LECTESP.callLECTESP.Execute(System.Collections.Generic.Dictionary{System.String,System.Object})">
+	<summary>
+ -- verificar los parametros enviados --
+ Cuando la aplicacion se ejecute "DIRECTAMENTE", validar que los parametros no esten vacios
+ </summary>
+	<param name="parameters">Keys: CallerName, ExecMode, NodeLevel, NodeId, BaseTable, Header, ExecutableName</param>
+</member><member name="M:LUDYCOM.LECTESP.BL.BLLECTESP.ExportarGridAExcel(System.Windows.Forms.DataGridView,System.String@)">
+	<summary>
+ Arma el nombre del archivo y se la anexa al directorio especificado por el usuario. 
+ Llama a la funcion que genera el archivo.
+ </summary>
+	<param name="Grid">Fuente de Datos</param>
+	<param name="RutaArchivo">Ruta donde se guardarà el archivo exportado</param>
+	<returns>True/False como resultado de la operacion</returns>
+</member><member name="M:LUDYCOM.LECTESP.BL.BLLECTESP.BL_CargarCriticas(System.Windows.Forms.DataGridView@,System.String,System.Boolean)">
+	<summary>
+Carga las criticas en la grilla. Si el parametro CargardesdeBDD es true se consultan los datos nuevamente en el servidor si no se usa la informacion
+cargada en una Datatable Local y lo que se haria es un Refresh
+ </summary>
+	<param name="Grid"></param>
+	<param name="filter">El filtro es cargado por los ComboBox</param>
+	<param name="CargardesdeBDD">Indica si se deben buscar datos en la Base de Datos o en el Datatable Local</param>
+</member><member name="M:LUDYCOM.LECTESP.BL.BLLECTESP.BL_CargarCriticaHistorica(System.Windows.Forms.DataGridView@,System.String,System.Boolean)">
+	<summary>
+Carga las criticas Historicas en la grilla. Si el parametro CargardesdeBDD es true se consultan los datos nuevamente en el servidor sino se usa la informacion
+cargada en una Datatable Local haciendo un Refresh
+ </summary>
+	<param name="Grid"></param>
+	<param name="filter">El filtro es cargado por los ComboBox</param>
+	<param name="CargardesdeBDD">Indica si se deben buscar datos en la Base de Datos o en el Datatable Local</param>
+>>>>>>> d058013e (OSF-1144: ajuste de lectespcrit)
+</member><member name="P:LUDYCOM.LECTESP.My.Resources.Resources.ResourceManager">
+	<summary>
+  Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
+</summary>
+</member><member name="P:LUDYCOM.LECTESP.My.Resources.Resources.Culture">
+	<summary>
+  Reemplaza la propiedad CurrentUICulture del subproceso actual para todas las
+  búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
+</summary>
+</member><member name="P:LUDYCOM.LECTESP.My.Resources.Resources.Plantilla_lectespcrit">
+	<summary>
+  Busca un recurso adaptado de tipo System.Byte[].
+</summary>
+</member><member name="T:LUDYCOM.LECTESP.My.Resources.Resources">
+	<summary>
+  Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
+</summary>
+<<<<<<< HEAD
+</member><member name="M:LUDYCOM.LECTESP.callLECTESP.Execute(System.Collections.Generic.Dictionary{System.String,System.Object})">
+	<summary>
+ -- verificar los parametros enviados --
+ Cuando la aplicacion se ejecute "DIRECTAMENTE", validar que los parametros no esten vacios
+ </summary>
+	<param name="parameters">Keys: CallerName, ExecMode, NodeLevel, NodeId, BaseTable, Header, ExecutableName</param>
+</member><member name="M:LUDYCOM.LECTESP.LECTESP.Grid_MouseUp(System.Object,System.Windows.Forms.MouseEventArgs)">
+	<summary>
+ Valida las acciones de activacion/inactivacion de Menus Contextuales
+ </summary>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.LECTESP.MenuGuardarConfigGrid_Click(System.Object,System.EventArgs)">
+	<summary>
+ 'CA 200-856
+ Guardar Configuracion del Grid (Orden de lso registros)
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.LECTESP.CargarGrids">
+	<summary>
+ Asigna a cada Grid su correspondiente DataTable
+ </summary>
+=======
+>>>>>>> d058013e (OSF-1144: ajuste de lectespcrit)
+</member><member name="M:LUDYCOM.LECTESP.ENTITIES.HojasExcel.ColumnasDataTables(System.Data.DataTable@,System.Object)">
+	<summary>
+ Renombra las columnas del Datatable segun los encabezados importados de la plantilla 
+ o las crea automaticamente con las propiedades de la Clase pasada por Parametro
+ </summary>
+	<param name="DT">Datatable al que se le adicionaran las propiedades de la clase como columnas </param>
+	<param name="Clase"></param>
+</member><member name="T:LUDYCOM.LECTESP.ENTITIES.TBLEXCEL">
+	<summary>
+ Definicion de Plantilla de Importación
+ </summary>
+	<remarks></remarks>
+</member><member name="M:LUDYCOM.LECTESP.BL.BLLECTESP.ExportarGridAExcel(System.Windows.Forms.DataGridView,System.String@)">
+	<summary>
+ Arma el nombre del archivo y se la anexa al directorio especificado por el usuario. 
+ Llama a la funcion que genera el archivo.
+ </summary>
+	<param name="Grid">Fuente de Datos</param>
+	<param name="RutaArchivo">Ruta donde se guardarà el archivo exportado</param>
+	<returns>True/False como resultado de la operacion</returns>
+</member><member name="M:LUDYCOM.LECTESP.BL.BLLECTESP.BL_CargarCriticas(System.Windows.Forms.DataGridView@,System.String,System.Boolean)">
+	<summary>
+Carga las criticas en la grilla. Si el parametro CargardesdeBDD es true se consultan los datos nuevamente en el servidor si no se usa la informacion
+cargada en una Datatable Local y lo que se haria es un Refresh
+ </summary>
+	<param name="Grid"></param>
+	<param name="filter">El filtro es cargado por los ComboBox</param>
+	<param name="CargardesdeBDD">Indica si se deben buscar datos en la Base de Datos o en el Datatable Local</param>
+</member><member name="M:LUDYCOM.LECTESP.BL.BLLECTESP.BL_CargarCriticaHistorica(System.Windows.Forms.DataGridView@,System.String,System.Boolean)">
+	<summary>
+Carga las criticas Historicas en la grilla. Si el parametro CargardesdeBDD es true se consultan los datos nuevamente en el servidor sino se usa la informacion
+cargada en una Datatable Local haciendo un Refresh
+ </summary>
+	<param name="Grid"></param>
+	<param name="filter">El filtro es cargado por los ComboBox</param>
+	<param name="CargardesdeBDD">Indica si se deben buscar datos en la Base de Datos o en el Datatable Local</param>
+</member>
+</members>
+</doc>

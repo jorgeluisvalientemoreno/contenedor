@@ -1,0 +1,14 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'LDC_DATO_ADIC_NOTI_VENTAS'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE <> 'SYNONYM';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP FUNCTION LDC_DATO_ADIC_NOTI_VENTAS';
+  END IF;  
+END;
+/

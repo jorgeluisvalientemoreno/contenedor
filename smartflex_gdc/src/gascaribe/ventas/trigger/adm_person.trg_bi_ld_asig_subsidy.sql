@@ -1,0 +1,43 @@
+CREATE OR REPLACE TRIGGER ADM_PERSON.TRG_BI_LD_ASIG_SUBSIDY
+    AFTER INSERT OR UPDATE OR DELETE
+    ON LD_ASIG_SUBSIDY
+    REFERENCING OLD AS OLD NEW AS NEW
+    FOR EACH ROW
+BEGIN
+
+    DECLARE
+
+    ASIG_SUBSIDY_ID NUMBER(15);
+    OPERATION VARCHAR2(1);
+
+    BEGIN
+
+    IF INSERTING THEN
+        ASIG_SUBSIDY_ID := :new.ASIG_SUBSIDY_ID;
+        OPERATION := 'I';
+    ELSIF UPDATING THEN
+        ASIG_SUBSIDY_ID := :old.ASIG_SUBSIDY_ID;
+        OPERATION := 'U';
+    ELSE
+        ASIG_SUBSIDY_ID := :old.ASIG_SUBSIDY_ID;
+        OPERATION := 'D';
+    END IF;
+
+    INSERT INTO LDCBI_LD_ASIG_SUBSIDY (
+        ASIG_SUBSIDY_ID,
+        OPERATION
+    )
+    VALUES (
+        ASIG_SUBSIDY_ID,
+        OPERATION
+    );
+
+    EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20000,
+                                'Error en TRG_DE_LD_ASIG_SUBSIDY por -->' || sqlcode ||
+                                chr(13) || sqlerrm);
+    END;
+
+END;
+/

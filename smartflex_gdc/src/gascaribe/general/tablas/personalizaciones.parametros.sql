@@ -1,0 +1,16 @@
+DECLARE
+  nuConta number;
+BEGIN
+
+ SELECT COUNT(*) INTO nuConta
+ FROM dba_tables
+ WHERE table_name = 'PARAMETROS' 
+    AND OWNER = 'PERSONALIZACIONES';
+  
+  IF nuConta > 0 THEN
+
+    EXECUTE IMMEDIATE 'DROP TABLE PERSONALIZACIONES.PARAMETROS';
+  END IF;
+  
+END;
+/

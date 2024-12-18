@@ -1,0 +1,5 @@
+PROMPT Crea Sinonimo GE_BODATABASECONNECTION
+BEGIN
+  pkg_utilidades.prCrearSinonimos('GE_BODATABASECONNECTION', 'OPEN');
+END;
+/

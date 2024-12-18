@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ECDC8606-4124-4329-BC2C-7434DBE8D864}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SINCECOMP.CONSTRUCTIONUNITS</RootNamespace>
+    <AssemblyName>SINCECOMP.CONSTRUCTIONUNITS</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>F:\OpenSmartflex\$(username)\OpenSmartflex\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Infragistics2.Shared.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Shared.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.Misc.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.Misc.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinCalcManager.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinCalcManager.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinEditors.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinEditors.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinGrid.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinTabControl.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.UltraWinTabControl.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Infragistics2.Win.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Common">
+      <HintPath>F:\Opensmartflex\$(username)\OpenSmartflex\OpenSystems.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.DataBaseObject, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\Opensmartflex\$(username)\OpenSmartflex\OpenSystems.DataBaseObject.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.EnterpriseLibrary, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\Opensmartflex\$(username)\OpenSmartflex\OpenSystems.EnterpriseLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Security.ExecutableMgr, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\Opensmartflex\$(username)\OpenSmartflex\OpenSystems.Security.ExecutableMgr.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Windows, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\Opensmartflex\$(username)\OpenSmartflex\OpenSystems.Windows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BL\BLLDBEX.cs" />
+    <Compile Include="BL\BLLDEFC.cs" />
+    <Compile Include="CALLLDBEX.cs" />
+    <Compile Include="CALLLDEFC.cs" />
+    <Compile Include="Controls\DetailConsUnitValue.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DetailConsUnitValue.designer.cs">
+      <DependentUpon>DetailConsUnitValue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GasDemandServiceDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GasDemandServiceDetail.designer.cs">
+      <DependentUpon>GasDemandServiceDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DetailConsUnitAmount.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DetailConsUnitAmount.designer.cs">
+      <DependentUpon>DetailConsUnitAmount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\DALLDBEX.cs" />
+    <Compile Include="DAL\DALLDEFC.cs" />
+    <Compile Include="Entity\ContructionUnitsAmount.cs" />
+    <Compile Include="Entity\ContructionUnitsValue.cs" />
+    <Compile Include="Entity\ContructionUnitsLocationAmount.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entity\ContructionUnitsLocationValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entity\GasDemandServiceDetails.cs" />
+    <Compile Include="Entity\GasDemandService.cs" />
+    <Compile Include="Entity\LdCreg.cs" />
+    <Compile Include="Entity\MarketingDistributionExpenses.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\LDBEX_DETAIL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDBEX_DETAIL.designer.cs">
+      <DependentUpon>LDBEX_DETAIL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDBEX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDBEX.designer.cs">
+      <DependentUpon>LDBEX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDEFC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDEFC.designer.cs">
+      <DependentUpon>LDEFC.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\DetailConsUnitValue.resx">
+      <DependentUpon>DetailConsUnitValue.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GasDemandServiceDetail.resx">
+      <DependentUpon>GasDemandServiceDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DetailConsUnitAmount.resx">
+      <DependentUpon>DetailConsUnitAmount.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="UI\LDBEX_DETAIL.resx">
+      <DependentUpon>LDBEX_DETAIL.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDBEX.resx">
+      <DependentUpon>LDBEX.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDEFC.resx">
+      <DependentUpon>LDEFC.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\SINCECOMP.CONSTRUCTIONUNITS.Entity.ConsUnitByLocaBudg.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.CONSTRUCTIONUNITS.Entity.ConsUnitByLocaNoBudg.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

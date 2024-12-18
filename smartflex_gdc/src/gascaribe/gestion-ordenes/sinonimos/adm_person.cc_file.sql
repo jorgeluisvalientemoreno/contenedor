@@ -1,0 +1,5 @@
+PROMPT Crea Sinonimo a tabla cc_file
+BEGIN
+    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.cc_file FOR cc_file';
+END;
+/

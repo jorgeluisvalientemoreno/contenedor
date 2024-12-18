@@ -1,0 +1,15 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'TRGBUR_LD_FA_PARAGENE'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE = 'TRIGGER';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP TRIGGER OPEN.TRGBUR_LD_FA_PARAGENE';
+  END IF;  
+END;
+/

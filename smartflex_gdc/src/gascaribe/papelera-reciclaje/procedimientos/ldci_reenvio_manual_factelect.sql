@@ -1,0 +1,20 @@
+set serveroutput on;
+PROMPT BORRAR PROCEDIMIENTO LDCI_REENVIO_MANUAL_FACTELECT
+DECLARE
+  nuConta NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'LDCI_REENVIO_MANUAL_FACTELECT'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE <> 'SYNONYM';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP PROCEDURE LDCI_REENVIO_MANUAL_FACTELECT';
+    dbms_output.put_line('PROCEDURE LDCI_REENVIO_MANUAL_FACTELECT BORRADO');
+  END IF;
+EXCEPTION
+    WHEN OTHERS THEN 
+        dbms_output.put_line('No se pudo borrar la procedimiento LDCI_REENVIO_MANUAL_FACTELECT, '||sqlerrm); 
+END;
+/

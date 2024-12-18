@@ -1,0 +1,14 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'LDC_DSOR_ORDER_STATUS'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE = 'PACKAGE';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP PACKAGE OPEN.LDC_DSOR_ORDER_STATUS';
+  END IF;  
+END;
+/

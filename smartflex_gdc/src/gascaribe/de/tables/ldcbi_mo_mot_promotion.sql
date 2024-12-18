@@ -1,0 +1,14 @@
+create table OPEN.LDCBI_MO_MOT_PROMOTION
+(
+    MOT_PROMOTION_ID       NUMBER(15)  not null,
+    OPERATION      VARCHAR2(1) not null,
+    PROCESS_STATUS NUMBER(3) default -1,
+    CREATED_DATE   DATE      default SYSDATE
+)
+/
+
+create index IDX_LDCBI_MO_MOT_PROMOTION on OPEN.LDCBI_MO_MOT_PROMOTION (PROCESS_STATUS, OPERATION);
+create index IDX_LDCBI_MO_MOT_PROMOT_PRST on OPEN.LDCBI_MO_MOT_PROMOTION (PROCESS_STATUS);
+
+grant select, insert, update, delete on OPEN.LDCBI_MO_MOT_PROMOTION to INNOVACIONBI;
+grant select, insert, update, delete on OPEN.LDCBI_MO_MOT_PROMOTION to INNOVACION;

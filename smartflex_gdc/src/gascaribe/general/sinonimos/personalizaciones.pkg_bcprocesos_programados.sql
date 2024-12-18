@@ -1,0 +1,4 @@
+BEGIN
+ pkg_utilidades.prCrearSinonimos('PKG_BCPROCESOS_PROGRAMADOS', 'PERSONALIZACIONES');
+END;
+/

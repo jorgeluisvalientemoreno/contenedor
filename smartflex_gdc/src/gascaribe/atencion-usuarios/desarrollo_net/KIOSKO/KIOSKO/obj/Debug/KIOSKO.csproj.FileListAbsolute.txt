@@ -1,0 +1,394 @@
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\KIOSKO.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\KIOSKO.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\PC_200-1427-Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\PC_200-1427-Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\PC_200-1427-Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\PC_200-1427-Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\PC_200-1427-Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\PC_200-1427-Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1427 (27.10.17) - Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1427 (27.10.17) - Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1427 (27.10.17) - Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1427 (27.10.17) - Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1427 (27.10.17) - Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1427 (27.10.17) - Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1427 (27.10.17) - Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1427 (27.10.17) - Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1427 (27.10.17) - Forma OSF Comunicación Kiosko Sevidores\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex_BD\Resources\ajax-loader.gif
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex_BD\Resources\ean128.ttf
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex_BD\KIOSKO.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\KIOSKO.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\KIOSKO.pdb
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\Microsoft.VisualBasic.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\Microsoft.VisualBasic.PowerPacks.Vs.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.AddressBank.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Common.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Component.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.General.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.ExecutableMgr.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Windows.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\NetTopologySuite.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OracleCustomTypes.Geom.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\Oracle.DataAccess.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.HelpDesk.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Encoding.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.ProtectedData.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Assembly.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Infraestructure.Icons.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Component.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Statement.Base.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MasterDetail.Executor.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Executor.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\MindFusion.Diagramming.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\MindFusion.Diagramming.WinForms.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\Ruler.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\MindFusion.Common.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Appearance.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\GeoAPI.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OracleCustomTypes.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\SevenZipSharp.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.Base.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Excel.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Executor.Link.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.Link.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Base.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Mapviewer.Base.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OfficeAddIns.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MapViewer.Controller.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Base.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\Aspose.Cells.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\Microsoft.Office.Interop.Word.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MapViewer.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.GeographicLayerViewer.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\AxInterop.RULECONSTRUCTORLib.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Security.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.UI.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\office.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\Microsoft.Vbe.Interop.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\ProjNet.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\Interop.RULECONSTRUCTORLib.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Resources.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Entities.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.BL.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Define.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1427_LDFACTDUP_NUEVO_KISOKO\NET\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Users\Daniel Valiente\Desktop\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csprojResolveAssemblyReference.cache
+C:\Users\Daniel Valiente\Desktop\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+C:\Users\Daniel Valiente\Desktop\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+C:\Users\Daniel Valiente\Desktop\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+C:\Users\Daniel Valiente\Desktop\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+C:\Users\Daniel Valiente\Desktop\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+C:\Users\Daniel Valiente\Desktop\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+C:\Users\Daniel Valiente\Desktop\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+C:\Users\Daniel Valiente\Desktop\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+C:\Users\Daniel Valiente\Desktop\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+C:\_OSF_2016\CA_DESARROLLOS\Program Files (x86)\OpenSystems\OpenSmartFlex\KIOSKO.dll
+C:\_OSF_2016\CA_DESARROLLOS\Program Files (x86)\OpenSystems\OpenSmartFlex\KIOSKO.pdb
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\bin\Debug\KIOSKO.dll
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\bin\Debug\KIOSKO.pdb
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\bin\Debug\Microsoft.VisualBasic.dll
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\bin\Debug\Microsoft.VisualBasic.PowerPacks.Vs.dll
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\bin\Debug\es\Microsoft.VisualBasic.PowerPacks.Vs.resources.dll
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+E:\GDrive JM\Caso X\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\KIOSKO.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\KIOSKO.pdb
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\Microsoft.VisualBasic.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\Microsoft.VisualBasic.PowerPacks.Vs.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.AddressBank.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Common.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Component.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.General.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.ExecutableMgr.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Windows.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\NetTopologySuite.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OracleCustomTypes.Geom.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\Oracle.DataAccess.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.HelpDesk.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Encoding.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.ProtectedData.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Assembly.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Infraestructure.Icons.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Component.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Statement.Base.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MasterDetail.Executor.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Executor.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\MindFusion.Diagramming.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\MindFusion.Diagramming.WinForms.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\Ruler.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\MindFusion.Common.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Appearance.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\GeoAPI.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OracleCustomTypes.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\SevenZipSharp.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.Base.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Excel.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Executor.Link.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.Link.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Base.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Mapviewer.Base.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OfficeAddIns.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MapViewer.Controller.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Base.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\Aspose.Cells.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\Microsoft.Office.Interop.Word.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MapViewer.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.GeographicLayerViewer.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\AxInterop.RULECONSTRUCTORLib.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Security.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.UI.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\office.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\Microsoft.Vbe.Interop.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\ProjNet.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\Interop.RULECONSTRUCTORLib.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Resources.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Entities.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.BL.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Define.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.DAL.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csprojResolveAssemblyReference.cache
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+C:\_OSF_2016\CA_DESARROLLOS\PC\200-1899_Reclasificacion_conceptos_IVA_SPOOL_NO_REGULADOS\DESARROLLO\DANIEL\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+D:\Gdrive JM\200-2574 (22.04.19) - Incidentes y Cambios\Desarrollo\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csprojResolveAssemblyReference.cache
+D:\Gdrive JM\200-2574 (22.04.19) - Incidentes y Cambios\Desarrollo\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+D:\Gdrive JM\200-2574 (22.04.19) - Incidentes y Cambios\Desarrollo\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+D:\Gdrive JM\200-2574 (22.04.19) - Incidentes y Cambios\Desarrollo\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+D:\Gdrive JM\200-2574 (22.04.19) - Incidentes y Cambios\Desarrollo\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+D:\Gdrive JM\200-2574 (22.04.19) - Incidentes y Cambios\Desarrollo\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+D:\Gdrive JM\200-2574 (22.04.19) - Incidentes y Cambios\Desarrollo\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+D:\Gdrive JM\200-2574 (22.04.19) - Incidentes y Cambios\Desarrollo\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+D:\Gdrive JM\200-2574 (22.04.19) - Incidentes y Cambios\Desarrollo\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+D:\Gdrive JM\200-2574 (22.04.19) - Incidentes y Cambios\Desarrollo\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csprojResolveAssemblyReference.cache
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\KIOSKO.dll
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\BSS_FACT_ELAL_2002032_3\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csprojResolveAssemblyReference.cache
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\BSS_FACT_ELAL_2002032_3\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\BSS_FACT_ELAL_2002032_3\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\BSS_FACT_ELAL_2002032_3\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\BSS_FACT_ELAL_2002032_3\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\BSS_FACT_ELAL_2002032_3\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\BSS_FACT_ELAL_2002032_3\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\BSS_FACT_ELAL_2002032_3\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\BSS_FACT_ELAL_2002032_3\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+C:\Horbarth\Desarrollos por hora\CASO 200-2032\BSS_FACT_ELAL_2002032_3\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+C:\Horbarth\Pruebas de Casos GDC\CRM_OL_0000086_1\86\Consulta\Unificado\Desarrollo NET\GDC\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csprojResolveAssemblyReference.cache
+C:\Horbarth\Pruebas de Casos GDC\CRM_OL_0000086_1\86\Consulta\Unificado\Desarrollo NET\GDC\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_OL_0000086_1\86\Consulta\Unificado\Desarrollo NET\GDC\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_OL_0000086_1\86\Consulta\Unificado\Desarrollo NET\GDC\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_OL_0000086_1\86\Consulta\Unificado\Desarrollo NET\GDC\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_OL_0000086_1\86\Consulta\Unificado\Desarrollo NET\GDC\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_OL_0000086_1\86\Consulta\Unificado\Desarrollo NET\GDC\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+C:\Horbarth\Pruebas de Casos GDC\CRM_OL_0000086_1\86\Consulta\Unificado\Desarrollo NET\GDC\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+C:\Horbarth\Pruebas de Casos GDC\CRM_OL_0000086_1\86\Consulta\Unificado\Desarrollo NET\GDC\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_OL_0000086_1\86\Consulta\Unificado\Desarrollo NET\GDC\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexQH\KIOSKO.dll
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csprojResolveAssemblyReference.cache
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Telefono.resources
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+C:\Users\Horbath\Desktop\234\.net\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\KIOSKO.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\KIOSKO.pdb
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Microsoft.VisualBasic.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Microsoft.VisualBasic.PowerPacks.Vs.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.AddressBank.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Common.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Component.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.General.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Windows.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\NetTopologySuite.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Oracle.DataAccess.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.HelpDesk.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Encoding.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.ProtectedData.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Assembly.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Infraestructure.Icons.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Component.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Statement.Base.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MasterDetail.Executor.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Executor.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\MindFusion.Diagramming.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\MindFusion.Diagramming.WinForms.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Ruler.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\MindFusion.Common.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Appearance.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\GeoAPI.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OracleCustomTypes.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\SevenZipSharp.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.Base.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Excel.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Executor.Link.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.Link.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Base.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Mapviewer.Base.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OfficeAddIns.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MapViewer.Controller.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Base.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Aspose.Cells.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Microsoft.Office.Interop.Word.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MapViewer.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.GeographicLayerViewer.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\AxInterop.RULECONSTRUCTORLib.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Security.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.UI.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\office.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Microsoft.Vbe.Interop.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\ProjNet.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Interop.RULECONSTRUCTORLib.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.BL.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Define.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Telefono.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_1\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\KIOSKO.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\KIOSKO.pdb
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Microsoft.VisualBasic.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Microsoft.VisualBasic.PowerPacks.Vs.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.AddressBank.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Common.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Component.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.General.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Windows.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\NetTopologySuite.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Oracle.DataAccess.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.HelpDesk.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Encoding.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Security.ProtectedData.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Assembly.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Infraestructure.Icons.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Component.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Statement.Base.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MasterDetail.Executor.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Executor.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\MindFusion.Diagramming.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\MindFusion.Diagramming.WinForms.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Ruler.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\MindFusion.Common.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Appearance.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\GeoAPI.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OracleCustomTypes.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\SevenZipSharp.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.Base.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Excel.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Executor.Link.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.Link.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Report.Base.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Mapviewer.Base.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.OfficeAddIns.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MapViewer.Controller.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Base.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Aspose.Cells.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.DataBaseObject.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Microsoft.Office.Interop.Word.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.MapViewer.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.GeographicLayerViewer.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\AxInterop.RULECONSTRUCTORLib.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.Framework.Security.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.UI.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\office.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Microsoft.Vbe.Interop.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\ProjNet.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\Interop.RULECONSTRUCTORLib.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.BL.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.Define.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\bin\Debug\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.Properties.Resources.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_impresion.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.frm_reporte.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.LDFACTDUP.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Question.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.UI.Telefono.resources
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.csproj.GenerateResource.Cache
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll.licenses
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.dll
+C:\Users\Horbath\Desktop\234\OSS_HT_0000234_2\KIOSKO\KIOSKO\KIOSKO\obj\Debug\KIOSKO.pdb

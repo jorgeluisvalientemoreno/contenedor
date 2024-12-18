@@ -1,0 +1,5 @@
+PROMPT CREA SINONIMO PKG_TRAZA
+BEGIN
+  pkg_utilidades.prCrearSinonimos('PKG_TRAZA','ADM_PERSON');
+END;
+/

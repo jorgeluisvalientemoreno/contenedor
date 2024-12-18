@@ -1,0 +1,5 @@
+PROMPT Crea Sinonimo a tabla cc_role
+BEGIN
+    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.cc_role FOR cc_role';
+END;
+/

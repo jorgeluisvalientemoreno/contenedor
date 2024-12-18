@@ -1,0 +1,14 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'LD_FA_REPORTGRAFICCR'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE = 'PACKAGE';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP PACKAGE OPEN.LD_FA_REPORTGRAFICCR';
+  END IF;  
+END;
+/

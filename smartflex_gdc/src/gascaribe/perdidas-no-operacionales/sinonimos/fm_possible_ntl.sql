@@ -1,0 +1,4 @@
+BEGIN
+  execute immediate 'CREATE OR REPLACE SYNONYM adm_person.FM_POSSIBLE_NTL FOR OPEN.FM_POSSIBLE_NTL';
+END;
+/

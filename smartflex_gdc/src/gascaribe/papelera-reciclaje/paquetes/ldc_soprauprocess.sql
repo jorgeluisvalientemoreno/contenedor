@@ -1,0 +1,15 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+SELECT COUNT(1) INTO nuConta
+  FROM DBA_OBJECTS
+  WHERE OBJECT_NAME = UPPER('ldc_soprauprocess')
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE='PACKAGE';
+
+  IF nuConta >=1 THEN
+      EXECUTE IMMEDIATE 'DROP PACKAGE OPEN.ldc_soprauprocess';
+  END IF;
+END;
+/
+

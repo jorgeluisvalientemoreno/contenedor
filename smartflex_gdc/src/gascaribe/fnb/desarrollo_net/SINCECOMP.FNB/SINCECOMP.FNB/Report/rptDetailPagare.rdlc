@@ -1,0 +1,1063 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DummyDataSource">
+      <rd:DataSourceID>9f99ce73-90a6-4a61-bf0b-f0993d2c8249</rd:DataSourceID>
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+    </DataSource>
+  </DataSources>
+  <InteractiveHeight>29.7cm</InteractiveHeight>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>21cm</InteractiveWidth>
+  <rd:GridSpacing>0.25cm</rd:GridSpacing>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <RightMargin>2.5cm</RightMargin>
+  <LeftMargin>2.5cm</LeftMargin>
+  <BottomMargin>2.5cm</BottomMargin>
+  <rd:ReportID>9fab2ed3-f6f3-473a-9b16-57ade1a9896f</rd:ReportID>
+  <PageWidth>21cm</PageWidth>
+  <DataSets>
+    <DataSet Name="SINCECOMP_FNB_Entities_PromissoryPagare">
+      <Fields>
+        <Field Name="Activity">
+          <DataField>Activity</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Address_id">
+          <DataField>Address_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Addresscommrefe">
+          <DataField>Addresscommrefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Addressfamirefe">
+          <DataField>Addressfamirefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Amount">
+          <DataField>Amount</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Article_id">
+          <DataField>Article_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Birthdaydate">
+          <DataField>Birthdaydate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="City">
+          <DataField>City</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Civil_state_id">
+          <DataField>Civil_state_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Commerreference">
+          <DataField>Commerreference</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Companyaddress_id">
+          <DataField>Companyaddress_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Companyname">
+          <DataField>Companyname</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_activity">
+          <DataField>Cosigner_activity</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_address_id">
+          <DataField>Cosigner_address_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_addresscommrefe">
+          <DataField>Cosigner_addresscommrefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_addressfamirefe">
+          <DataField>Cosigner_addressfamirefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_birthdaydate">
+          <DataField>Cosigner_birthdaydate</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_city">
+          <DataField>Cosigner_city</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_civil_state_id">
+          <DataField>Cosigner_civil_state_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_commerreference">
+          <DataField>Cosigner_commerreference</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_companyaddress_id">
+          <DataField>Cosigner_companyaddress_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_companyname">
+          <DataField>Cosigner_companyname</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_debtorname">
+          <DataField>Cosigner_debtorname</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_department">
+          <DataField>Cosigner_department</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_dependentsnumber">
+          <DataField>Cosigner_dependentsnumber</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_expensesincome">
+          <DataField>Cosigner_expensesincome</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_familiarreference">
+          <DataField>Cosigner_familiarreference</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_forwardingdate">
+          <DataField>Cosigner_forwardingdate</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_forwardingplace">
+          <DataField>Cosigner_forwardingplace</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_gender">
+          <DataField>Cosigner_gender</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_holder_bill">
+          <DataField>Cosigner_holder_bill</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_holderrelation">
+          <DataField>Cosigner_holderrelation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_housingmonth">
+          <DataField>Cosigner_housingmonth</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_housingtype">
+          <DataField>Cosigner_housingtype</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_identification">
+          <DataField>Cosigner_identification</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_monthlyincome">
+          <DataField>Cosigner_monthlyincome</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_movilphocommrefe">
+          <DataField>Cosigner_movilphocommrefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_movilphofamirefe">
+          <DataField>Cosigner_movilphofamirefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_movilphone_id">
+          <DataField>Cosigner_movilphone_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_neighborthood_id">
+          <DataField>Cosigner_neighborthood_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_occupation">
+          <DataField>Cosigner_occupation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_oldlabor">
+          <DataField>Cosigner_oldlabor</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_phone1_id">
+          <DataField>Cosigner_phone1_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_phonecommrefe">
+          <DataField>Cosigner_phonecommrefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_phonefamirefe">
+          <DataField>Cosigner_phonefamirefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_promissory_id">
+          <DataField>Cosigner_promissory_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_propertyphone_id">
+          <DataField>Cosigner_propertyphone_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Cosigner_school_degree_">
+          <DataField>Cosigner_school_degree_</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Debtorname">
+          <DataField>Debtorname</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Department">
+          <DataField>Department</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Dependentsnumber">
+          <DataField>Dependentsnumber</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Digital_prom_note_cons">
+          <DataField>Digital_prom_note_cons</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Discount">
+          <DataField>Discount</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Effective_date">
+          <DataField>Effective_date</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Expensesincome">
+          <DataField>Expensesincome</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="Familiarreference">
+          <DataField>Familiarreference</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Forwardingdate">
+          <DataField>Forwardingdate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Forwardingplace">
+          <DataField>Forwardingplace</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Full_article">
+          <DataField>Full_article</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Fund_value">
+          <DataField>Fund_value</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Gender">
+          <DataField>Gender</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Holder_bill">
+          <DataField>Holder_bill</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Holderrelation">
+          <DataField>Holderrelation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Housingmonth">
+          <DataField>Housingmonth</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="Housingtype">
+          <DataField>Housingtype</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Identification">
+          <DataField>Identification</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Monthlyincome">
+          <DataField>Monthlyincome</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="Movilphocommrefe">
+          <DataField>Movilphocommrefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Movilphofamirefe">
+          <DataField>Movilphofamirefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Movilphone_id">
+          <DataField>Movilphone_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Neighborthood_id">
+          <DataField>Neighborthood_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Number_shares">
+          <DataField>Number_shares</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Occupation">
+          <DataField>Occupation</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Oldlabor">
+          <DataField>Oldlabor</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="Payment">
+          <DataField>Payment</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Person_id">
+          <DataField>Person_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Phone1_id">
+          <DataField>Phone1_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Phonecommrefe">
+          <DataField>Phonecommrefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Phonefamirefe">
+          <DataField>Phonefamirefe</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Promissory_id">
+          <DataField>Promissory_id</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="Propertyphone_id">
+          <DataField>Propertyphone_id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Reference">
+          <DataField>Reference</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Request_date_dd">
+          <DataField>Request_date_dd</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Request_date_mm">
+          <DataField>Request_date_mm</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Request_date_yyyy">
+          <DataField>Request_date_yyyy</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="School_degree_">
+          <DataField>School_degree_</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Subscriber_name">
+          <DataField>Subscriber_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Subtotal">
+          <DataField>Subtotal</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TypePrint">
+          <DataField>TypePrint</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Unit_value">
+          <DataField>Unit_value</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DummyDataSource</DataSourceName>
+        <CommandText />
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <rd:DataSetInfo>
+        <rd:DataSetName>SINCECOMP.FNB.Entities</rd:DataSetName>
+        <rd:TableName>PromissoryPagare</rd:TableName>
+        <rd:ObjectDataSourceType>SINCECOMP.FNB.Entities.PromissoryPagare, SINCECOMP.FNB, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+      </rd:DataSetInfo>
+    </DataSet>
+  </DataSets>
+  <Width>24cm</Width>
+  <Body>
+    <ColumnSpacing>1cm</ColumnSpacing>
+    <ReportItems>
+      <Rectangle Name="rectangle22">
+        <Left>1.52381cm</Left>
+        <ZIndex>5</ZIndex>
+        <ReportItems>
+          <Line Name="line72">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>5</ZIndex>
+            <Left>16.25cm</Left>
+          </Line>
+          <Line Name="line73">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>4</ZIndex>
+            <Left>12.44709cm</Left>
+          </Line>
+          <Line Name="line74">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>3</ZIndex>
+            <Left>11.34127cm</Left>
+          </Line>
+          <Line Name="line75">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>2</ZIndex>
+            <Left>3.75cm</Left>
+          </Line>
+          <Line Name="line76">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>1</ZIndex>
+            <Left>1.75cm</Left>
+          </Line>
+          <Line Name="line124">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <Left>19.10661cm</Left>
+          </Line>
+        </ReportItems>
+        <Top>2.24998cm</Top>
+        <Width>20.7cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>#0000c0</Default>
+          </BorderColor>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+        </Style>
+        <Height>0.5cm</Height>
+      </Rectangle>
+      <Rectangle Name="rectangle24">
+        <Left>1.52381cm</Left>
+        <ZIndex>4</ZIndex>
+        <ReportItems>
+          <Line Name="line122">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>5</ZIndex>
+            <Left>19.09127cm</Left>
+          </Line>
+          <Line Name="line82">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>4</ZIndex>
+            <Left>16.25cm</Left>
+          </Line>
+          <Line Name="line83">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>3</ZIndex>
+            <Left>12.44709cm</Left>
+          </Line>
+          <Line Name="line84">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>2</ZIndex>
+            <Left>11.35582cm</Left>
+          </Line>
+          <Line Name="line85">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>1</ZIndex>
+            <Left>3.75cm</Left>
+          </Line>
+          <Line Name="line86">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <Left>1.75cm</Left>
+          </Line>
+        </ReportItems>
+        <Top>3.22619cm</Top>
+        <Width>20.7cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>#0000c0</Default>
+          </BorderColor>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+        </Style>
+        <Height>0.5cm</Height>
+      </Rectangle>
+      <Rectangle Name="rectangle23">
+        <Left>1.52381cm</Left>
+        <ZIndex>3</ZIndex>
+        <ReportItems>
+          <Line Name="line77">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>5</ZIndex>
+            <Left>16.25cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+          <Line Name="line78">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>4</ZIndex>
+            <Left>12.44709cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+          <Line Name="line79">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>3</ZIndex>
+            <Left>11.34788cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+          <Line Name="line80">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>2</ZIndex>
+            <Left>3.75cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+          <Line Name="line81">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>1</ZIndex>
+            <Left>1.75cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+          <Line Name="line123">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <Left>19.10661cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+        </ReportItems>
+        <Top>2.72619cm</Top>
+        <Width>20.71429cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>#0000c0</Default>
+          </BorderColor>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+        </Style>
+        <Height>0.58202cm</Height>
+      </Rectangle>
+      <Rectangle Name="rectangle19">
+        <Left>1.52381cm</Left>
+        <ZIndex>2</ZIndex>
+        <ReportItems>
+          <Textbox Name="textbox86">
+            <Width>1.37963cm</Width>
+            <Style>
+              <Color>White</Color>
+              <BackgroundColor>#0000c0</BackgroundColor>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <FontSize>6pt</FontSize>
+              <FontWeight>800</FontWeight>
+              <TextAlign>Center</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <ZIndex>12</ZIndex>
+            <CanGrow>true</CanGrow>
+            <Left>19.19974cm</Left>
+            <Value># Cuotas</Value>
+          </Textbox>
+          <Line Name="line127">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>White</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>11</ZIndex>
+            <Left>19.09127cm</Left>
+          </Line>
+          <Line Name="line61">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>White</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>10</ZIndex>
+            <Left>16.25cm</Left>
+          </Line>
+          <Line Name="line60">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>White</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>9</ZIndex>
+            <Left>12.43518cm</Left>
+          </Line>
+          <Line Name="line59">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>White</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>8</ZIndex>
+            <Left>11.31481cm</Left>
+          </Line>
+          <Line Name="line58">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>White</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>7</ZIndex>
+            <Left>3.75cm</Left>
+          </Line>
+          <Line Name="line57">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>White</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>6</ZIndex>
+            <Left>1.75cm</Left>
+          </Line>
+          <Textbox Name="textbox79">
+            <Width>2.98836cm</Width>
+            <Style>
+              <Color>White</Color>
+              <BackgroundColor>#0000c0</BackgroundColor>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <FontSize>6pt</FontSize>
+              <FontWeight>800</FontWeight>
+              <TextAlign>Center</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <ZIndex>5</ZIndex>
+            <CanGrow>true</CanGrow>
+            <Left>16.25cm</Left>
+            <Value>VR. TOTAL</Value>
+          </Textbox>
+          <Textbox Name="textbox80">
+            <Width>3.75cm</Width>
+            <Style>
+              <Color>White</Color>
+              <BackgroundColor>#0000c0</BackgroundColor>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <FontSize>6pt</FontSize>
+              <FontWeight>800</FontWeight>
+              <TextAlign>Center</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <ZIndex>4</ZIndex>
+            <CanGrow>true</CanGrow>
+            <Left>12.50661cm</Left>
+            <Value>VR. UNITARIO</Value>
+          </Textbox>
+          <Textbox Name="textbox81">
+            <Width>1cm</Width>
+            <Style>
+              <Color>White</Color>
+              <BackgroundColor>#0000c0</BackgroundColor>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <FontSize>6pt</FontSize>
+              <FontWeight>800</FontWeight>
+              <TextAlign>Center</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <ZIndex>3</ZIndex>
+            <CanGrow>true</CanGrow>
+            <Left>11.39418cm</Left>
+            <Value>CANT.</Value>
+          </Textbox>
+          <Textbox Name="textbox82">
+            <Width>7.55688cm</Width>
+            <Style>
+              <Color>White</Color>
+              <BackgroundColor>#0000c0</BackgroundColor>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <FontSize>6pt</FontSize>
+              <FontWeight>800</FontWeight>
+              <TextAlign>Center</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <ZIndex>2</ZIndex>
+            <CanGrow>true</CanGrow>
+            <Left>3.75cm</Left>
+            <Value>DESCRIPCION</Value>
+          </Textbox>
+          <Textbox Name="textbox83">
+            <Width>2cm</Width>
+            <Style>
+              <Color>White</Color>
+              <BackgroundColor>#0000c0</BackgroundColor>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <FontSize>6pt</FontSize>
+              <FontWeight>800</FontWeight>
+              <TextAlign>Center</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <ZIndex>1</ZIndex>
+            <CanGrow>true</CanGrow>
+            <Left>1.75cm</Left>
+            <Value>REFERENCIA</Value>
+          </Textbox>
+          <Textbox Name="textbox84">
+            <Width>1.75cm</Width>
+            <Style>
+              <Color>White</Color>
+              <BackgroundColor>#0000c0</BackgroundColor>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <FontSize>6pt</FontSize>
+              <FontWeight>800</FontWeight>
+              <TextAlign>Center</TextAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Value>CODIGO</Value>
+          </Textbox>
+        </ReportItems>
+        <Top>1.48809cm</Top>
+        <Width>20.7cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>#0000c0</Default>
+          </BorderColor>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+        </Style>
+        <Height>0.25cm</Height>
+      </Rectangle>
+      <Rectangle Name="rectangle20">
+        <Left>1.52381cm</Left>
+        <ZIndex>1</ZIndex>
+        <ReportItems>
+          <Line Name="line126">
+            <Top>0.05291cm</Top>
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>5</ZIndex>
+            <Left>19.10661cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+          <Line Name="line62">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>4</ZIndex>
+            <Left>16.25cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+          <Line Name="line63">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>3</ZIndex>
+            <Left>12.42063cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+          <Line Name="line64">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>2</ZIndex>
+            <Left>11.34127cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+          <Line Name="line65">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <ZIndex>1</ZIndex>
+            <Left>3.75cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+          <Line Name="line66">
+            <Width>0cm</Width>
+            <Style>
+              <BorderColor>
+                <Default>#0000c0</Default>
+              </BorderColor>
+              <BorderStyle>
+                <Default>Solid</Default>
+              </BorderStyle>
+            </Style>
+            <Left>1.75cm</Left>
+            <Height>0.5cm</Height>
+          </Line>
+        </ReportItems>
+        <Top>1.75cm</Top>
+        <Width>20.7cm</Width>
+        <Style>
+          <BorderColor>
+            <Default>#0000c0</Default>
+          </BorderColor>
+          <BorderStyle>
+            <Default>Solid</Default>
+          </BorderStyle>
+        </Style>
+        <Height>0.95238cm</Height>
+      </Rectangle>
+      <List Name="list1">
+        <Left>1.57672cm</Left>
+        <ReportItems>
+          <Textbox Name="Description_1">
+            <rd:DefaultName>Description_1</rd:DefaultName>
+            <Top>0.25cm</Top>
+            <Width>2.53968cm</Width>
+            <Style>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+            <CanGrow>true</CanGrow>
+            <Left>6.5cm</Left>
+            <Value>=First(Fields!Description.Value)</Value>
+          </Textbox>
+        </ReportItems>
+        <Top>0.25cm</Top>
+        <Width>20.89947cm</Width>
+        <Height>0.88492cm</Height>
+      </List>
+    </ReportItems>
+    <Height>4.25cm</Height>
+  </Body>
+  <Language>es-AR</Language>
+  <TopMargin>2.5cm</TopMargin>
+  <PageHeight>29.7cm</PageHeight>
+</Report>

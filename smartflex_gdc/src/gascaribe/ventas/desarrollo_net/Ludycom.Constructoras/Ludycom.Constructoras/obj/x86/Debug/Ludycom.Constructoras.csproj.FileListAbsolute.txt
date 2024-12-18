@@ -1,0 +1,344 @@
+c:\users\bb\documents\visual studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\bin\Debug\Ludycom.Constructoras.dll.config
+c:\users\bb\documents\visual studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\bin\Debug\Ludycom.Constructoras.dll
+c:\users\bb\documents\visual studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\bin\Debug\Ludycom.Constructoras.pdb
+c:\users\bb\documents\visual studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.prueba.resources
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.exe.licenses
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.exe
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.prueba.resources
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\Users\Kath\Documents\Ludycom\LUDYCOM\CONSTRUCTORAS\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.prueba.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras2\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Backup ants de max\backup2\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras - copia\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\Users\BB\Documents\Visual Studio 2010\Projects\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+D:\OpenSmartflex_BZGDC\Ludycom.Constructoras.dll.config
+D:\OpenSmartflex_BZGDC\Ludycom.Constructoras.dll
+D:\OpenSmartflex_BZGDC\Ludycom.Constructoras.pdb
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-473 Contratos VIPA\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+D:\OpenSmartflex_BZ\Ludycom.Constructoras.dll
+D:\OpenSmartflex_BZ\Ludycom.Constructoras.pdb
+D:\OpenSmartflex_BZ\Ludycom.Constructoras.dll.config
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\GASCARIBE DESARROLLO\CA Gascaribe\N1\200-1309 - Venta de Red Matriz centros comerciales\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Net\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBZ\Ludycom.Constructoras.dll.config
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBZ\Ludycom.Constructoras.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBZ\Ludycom.Constructoras.pdb
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+E:\SINCECOMP\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.Question.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.Question.resources
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+E:\GDrive ingvaliente\Sincecomp\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.Question.resources
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+E:\GDrive ingvaliente\JM - Sincecomp\Casos\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.Question.resources
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\Ludycom.Constructoras.dll.config
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\Ludycom.Constructoras.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\Ludycom.Constructoras.pdb
+E:\GDrive JM\200-1640 (12.01.18) - Cotizacion de Ventas Comerciales\Desarrollo\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.Question.resources
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\Users\HORBATH\Desktop\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Users\Miguel Ballesteros\Documents\Program Files (x86)\OpenSystems\OpenSmartFlex\Ludycom.Constructoras.dll.config
+C:\Users\Miguel Ballesteros\Documents\Program Files (x86)\OpenSystems\OpenSmartFlex\Ludycom.Constructoras.dll
+C:\Users\Miguel Ballesteros\Documents\Program Files (x86)\OpenSystems\OpenSmartFlex\Ludycom.Constructoras.pdb
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll.config
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.pdb
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Component.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\NetTopologySuite.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Assembly.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\GeoAPI.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\Ludycom.Constructoras.dll.config
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\Ludycom.Constructoras.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\Ludycom.Constructoras.pdb
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.Question.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.Question.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\CRM_VEN_JGBA_2002022_1_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.Question.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.Properties.Resources.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCCH.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDMPC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.FDCPC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FRNC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.FIAC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.POCI.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.UI.Question.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll.licenses
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Debug\Ludycom.Constructoras.pdb

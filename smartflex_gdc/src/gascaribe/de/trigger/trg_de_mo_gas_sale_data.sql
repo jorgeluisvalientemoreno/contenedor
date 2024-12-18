@@ -1,0 +1,43 @@
+CREATE OR REPLACE TRIGGER OPEN.TRG_BI_MO_GAS_SALE_DATA
+    AFTER INSERT OR UPDATE OR DELETE
+    ON OPEN.MO_GAS_SALE_DATA
+    REFERENCING OLD AS OLD NEW AS NEW
+    FOR EACH ROW
+BEGIN
+
+    DECLARE
+
+    PACKAGE_ID NUMBER(15);
+    OPERATION VARCHAR2(1);
+
+    BEGIN
+
+    IF INSERTING THEN
+        PACKAGE_ID := :new.PACKAGE_ID;
+        OPERATION := 'I';
+    ELSIF UPDATING THEN
+        PACKAGE_ID := :old.PACKAGE_ID;
+        OPERATION := 'U';
+    ELSE
+        PACKAGE_ID := :old.PACKAGE_ID;
+        OPERATION := 'D';
+    END IF;
+
+    INSERT INTO OPEN.LDCBI_MO_GAS_SALE_DATA (
+        PACKAGE_ID,
+        OPERATION
+    )
+    VALUES (
+        PACKAGE_ID,
+        OPERATION
+    );
+
+    EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20000,
+                                'Error en TRG_DE_MO_GAS_SALE_DATA por -->' || sqlcode ||
+                                chr(13) || sqlerrm);
+    END;
+
+END;
+/

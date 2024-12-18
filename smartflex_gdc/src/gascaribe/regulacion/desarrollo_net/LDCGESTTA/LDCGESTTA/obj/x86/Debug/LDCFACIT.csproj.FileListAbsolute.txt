@@ -1,0 +1,40 @@
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM_8\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\horbath.LDCACTUCOSTINCREM.Properties.Resources.resources
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM_8\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\LDCFACIT.UI.LDC_FACIT.resources
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM_8\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\LDCFACIT.csproj.GenerateResource.Cache
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM_8\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\horbath.LDCACTUCOSTINCREM.dll.licenses
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM_8\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\horbath.LDCACTUCOSTINCREM.dll
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM_8\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\horbath.LDCACTUCOSTINCREM.pdb
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\horbath.LDCACTUCOSTINCREM.Properties.Resources.resources
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\LDCFACIT.UI.LDC_FACIT.resources
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\LDCFACIT.csproj.GenerateResource.Cache
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\horbath.LDCACTUCOSTINCREM.dll.licenses
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\horbath.LDCACTUCOSTINCREM.dll
+C:\Prueba .NET\Horbath.LDCACTUCOSTINCREM\Horbath.LDCACTUCOSTINCREM\obj\x86\Debug\horbath.LDCACTUCOSTINCREM.pdb
+C:\Prueba .NET\LDCFACIT\obj\x86\Debug\LDCFACIT.Properties.Resources.resources
+C:\Prueba .NET\LDCFACIT\obj\x86\Debug\LDCFACIT.UI.LDC_FACIT.resources
+C:\Prueba .NET\LDCFACIT\obj\x86\Debug\LDCFACIT.csproj.GenerateResource.Cache
+C:\Prueba .NET\LDCFACIT\obj\x86\Debug\LDCFACIT.dll.licenses
+C:\Prueba .NET\LDCFACIT\obj\x86\Debug\LDCFACIT.dll
+C:\Prueba .NET\LDCFACIT\obj\x86\Debug\LDCFACIT.pdb
+C:\Prueba .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.Properties.Resources.resources
+C:\Prueba .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.UI.LDC_FACIT.resources
+C:\Prueba .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.csproj.GenerateResource.Cache
+C:\Prueba .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.dll.licenses
+C:\Prueba .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.dll
+C:\Prueba .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.pdb
+C:\CASO 200-2433 .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.Properties.Resources.resources
+C:\CASO 200-2433 .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.UI.LDC_FACIT.resources
+C:\CASO 200-2433 .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.csproj.GenerateResource.Cache
+C:\CASO 200-2433 .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.dll.licenses
+C:\CASO 200-2433 .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.dll
+C:\CASO 200-2433 .NET\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\LDCFACIT.dll.config
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\LDCFACIT.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\LDCFACIT.pdb
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\Mis entregas\Caso 200-2433.NET\OSS_CON_VHMR_2002433_2\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.csprojResolveAssemblyReference.cache
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\Mis entregas\Caso 200-2433.NET\OSS_CON_VHMR_2002433_2\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.Properties.Resources.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\Mis entregas\Caso 200-2433.NET\OSS_CON_VHMR_2002433_2\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.UI.LDC_FACIT.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\Mis entregas\Caso 200-2433.NET\OSS_CON_VHMR_2002433_2\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.csproj.GenerateResource.Cache
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\Mis entregas\Caso 200-2433.NET\OSS_CON_VHMR_2002433_2\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.dll.licenses
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\Mis entregas\Caso 200-2433.NET\OSS_CON_VHMR_2002433_2\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\Mis entregas\Caso 200-2433.NET\OSS_CON_VHMR_2002433_2\LDCFACIT\LDCFACIT\obj\x86\Debug\LDCFACIT.pdb

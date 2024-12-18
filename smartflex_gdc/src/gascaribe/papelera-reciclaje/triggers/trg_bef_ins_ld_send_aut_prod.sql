@@ -1,0 +1,15 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'TRG_BEF_INS_LD_SEND_AUT_PROD'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE = 'TRIGGER';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP TRIGGER OPEN.TRG_BEF_INS_LD_SEND_AUT_PROD';
+  END IF;  
+END;
+/

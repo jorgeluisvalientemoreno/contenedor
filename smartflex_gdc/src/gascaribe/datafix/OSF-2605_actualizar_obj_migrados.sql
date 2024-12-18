@@ -1,0 +1,32 @@
+BEGIN
+
+    -- OSF-2605
+    update  master_personalizaciones set COMENTARIO = 'BORRADO'
+    where  NOMBRE in ('AOPCA');
+
+    update  master_personalizaciones set COMENTARIO = 'BORRADO'
+    where  NOMBRE in ('LDCGENCOMASE');
+
+    update  master_personalizaciones set COMENTARIO = 'BORRADO'
+    where  NOMBRE in ('PGPPC');
+    
+    MERGE INTO PERSONALIZACIONES.MASTER_PERSONALIZACIONES A USING
+     (SELECT
+      'OPEN' as ESQUEMA,
+      'LDCPROCENVIAMAILPERSONDESTINO' as NOMBRE,
+      'PROCEDURE' as TIPO_OBJETO,
+      'BORRADO' as COMENTARIO
+      FROM DUAL) B
+    ON (A.ESQUEMA = B.ESQUEMA and A.NOMBRE = B.NOMBRE and A.TIPO_OBJETO = B.TIPO_OBJETO)
+    WHEN NOT MATCHED THEN 
+    INSERT (
+      ESQUEMA, NOMBRE, TIPO_OBJETO, COMENTARIO)
+    VALUES (
+      B.ESQUEMA, B.NOMBRE, B.TIPO_OBJETO, B.COMENTARIO)
+    WHEN MATCHED THEN
+    UPDATE SET 
+      A.COMENTARIO = B.COMENTARIO;
+
+    commit;
+END;
+/

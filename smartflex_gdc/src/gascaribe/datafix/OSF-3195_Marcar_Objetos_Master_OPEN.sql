@@ -1,0 +1,27 @@
+column dt new_value vdt
+column db new_value vdb
+select to_char(sysdate,'yyyymmdd_hh24miss') dt, sys_context('userenv','db_name') db from dual;
+set serveroutput on size unlimited
+execute dbms_application_info.set_action('APLICANDO DATAFIX');
+select to_char(sysdate,'yyyy-mm-dd hh:mi:ss p.m.') fecha_inicio from dual;
+
+begin
+  insert into master_open select object_type TIPO_OPEN, object_name nombre, object_type, 'IDENTIFICADO POR CARLOS,ENTREGADO 23/08/2024'
+from dba_objects
+where object_name in ('AS_READ_XLSX','CC_BCCHANGEINTERACTION','CC_BCCOUPON','CC_BCSUBSCRIBERDATA','CC_BCSUSCRIPTIONDATA','CC_BOCOUPON','CC_BOSUBSIDYPROMOTION','CO_BOCONTROLVERSION','DL_BOPARAMETRIZACION','FA_BOPRINTCOSTCOMPRULES','FA_BOREQUESTLIQSERVICES','GC_BCOPERUNIPORASIG','GC_BOOPERUNIPORASIG','IC_BCCOMPLETSERVICEINT','IC_BOROLLBACKCOMPLSERV','OR_BCDATASERVERORDERSCAROUSEL','OR_BCTASKTYPEVALIDATED','PKTBLCRSUCOPA','SO_539657','SO_BCCONTROLLER','SO_BCERRORS','SO_BCEXECUTION_LOG','SO_BCEXECUTION_STATUS','SO_BOCONTROLLER','SO_BOERRORS','SO_BOEXECUTION_LOG','SO_BOEXECUTION_STATUS')
+ and object_type in ('PACKAGE')
+ and not exists(select null from open.master_open where nombre=object_name);
+
+  commit;
+  
+  
+  delete open.master_personalizaciones
+    where nombre in ('AS_READ_XLSX','CC_BCCHANGEINTERACTION','CC_BCCOUPON','CC_BCSUBSCRIBERDATA','CC_BCSUSCRIPTIONDATA','CC_BOCOUPON','CC_BOSUBSIDYPROMOTION','CO_BOCONTROLVERSION','DL_BOPARAMETRIZACION','FA_BOPRINTCOSTCOMPRULES','FA_BOREQUESTLIQSERVICES','GC_BCOPERUNIPORASIG','GC_BOOPERUNIPORASIG','IC_BCCOMPLETSERVICEINT','IC_BOROLLBACKCOMPLSERV','OR_BCDATASERVERORDERSCAROUSEL','OR_BCTASKTYPEVALIDATED','PKTBLCRSUCOPA','SO_539657','SO_BCCONTROLLER','SO_BCERRORS','SO_BCEXECUTION_LOG','SO_BCEXECUTION_STATUS','SO_BOCONTROLLER','SO_BOERRORS','SO_BOEXECUTION_LOG','SO_BOEXECUTION_STATUS');
+  commit;
+end;
+/
+
+select to_char(sysdate,'yyyy-mm-dd hh:mi:ss p.m.') fecha_fin from dual;
+set serveroutput off
+quit
+/

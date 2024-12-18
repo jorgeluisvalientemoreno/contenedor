@@ -1,0 +1,14 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'LDCI_VALID_METRAJE'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE = 'PROCEDURE';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP PROCEDURE OPEN.LDCI_VALID_METRAJE';
+  END IF;  
+END;
+/

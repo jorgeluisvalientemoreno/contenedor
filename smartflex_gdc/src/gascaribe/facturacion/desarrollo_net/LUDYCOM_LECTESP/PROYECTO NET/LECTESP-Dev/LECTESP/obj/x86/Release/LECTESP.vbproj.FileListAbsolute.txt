@@ -1,0 +1,414 @@
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Ruler.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Ruler.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\obj\x86\Release\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\obj\x86\Release\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+D:\OpenSmartflex - bz\LUDYCOM.LECTESP.dll.config
+D:\OpenSmartflex - bz\LUDYCOM.LECTESP.dll
+D:\OpenSmartflex - bz\LUDYCOM.LECTESP.pdb
+D:\OpenSmartflex - bz\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\bin\Release\office.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\LECTESP\bin\Release\office.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\office.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\office.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\bin\Release\office.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\bin\Release\office.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\office.dll
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\office.xml
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbprojResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN COTIZACION\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\office.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\bin\Release\office.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+D:\OpenSmartflex_QH\LUDYCOM.LECTESP.dll.config
+D:\OpenSmartflex_QH\LUDYCOM.LECTESP.dll
+D:\OpenSmartflex_QH\LUDYCOM.LECTESP.pdb
+D:\OpenSmartflex_QH\LUDYCOM.LECTESP.xml
+C:\OpenSmartflex_QH\LUDYCOM.LECTESP.dll.config
+C:\OpenSmartflex_QH\LUDYCOM.LECTESP.dll
+C:\OpenSmartflex_QH\LUDYCOM.LECTESP.pdb
+C:\OpenSmartflex_QH\LUDYCOM.LECTESP.xml
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Component.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Windows.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\office.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinTree.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinDock.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Assembly.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Ruler.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Common.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Appearance.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\office.xml
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbprojResolveAssemblyReference.cache
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbprojResolveAssemblyReference.cache
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Component.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Windows.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinTree.v5.3.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinDock.v5.3.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Assembly.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Ruler.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Common.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Appearance.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\HORBATH\Desktop\caso 200-1983\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\office.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\office.xml
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll.licenses
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\office.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\office.xml
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll.licenses
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\entregables\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Component.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Windows.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\office.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Assembly.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Framework.Component.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Ruler.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Common.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Appearance.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\office.xml
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll.licenses
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+C:\Horbarth\Casos Giras\OSF-75\BSS_HT_0000869_1\NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+<<<<<<< HEAD
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbprojResolveAssemblyReference.cache
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll.licenses
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Component.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Windows.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\office.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Assembly.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\Ruler.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Common.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Appearance.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+C:\Users\Luis Javier Lopez\Documents\LECTESP-Dev\LECTESP\bin\Release\office.xml
+=======
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll.config
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.pdb
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\LUDYCOM.LECTESP.xml
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Component.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Windows.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Oracle.DataAccess.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\office.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Assembly.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Ruler.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\MindFusion.Common.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Appearance.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\Microsoft.Office.Interop.Excel.xml
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\bin\Release\office.xml
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbprojResolveAssemblyReference.cache
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.Resources.resources
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.LECTESP.resources
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LECTESP.vbproj.GenerateResource.Cache
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll.licenses
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.dll
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.xml
+C:\Users\Luis Javier Lopez\Documents\GitHub\smartflex\src\gascaribe\facturacion\desarrollo_net\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\LECTESP\obj\x86\Release\LUDYCOM.LECTESP.pdb
+>>>>>>> d058013e (OSF-1144: ajuste de lectespcrit)

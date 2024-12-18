@@ -1,0 +1,200 @@
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.pdb
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\itextsharp.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Common.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Component.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Windows.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Oracle.DataAccess.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.Misc.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinEditors.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinGrid.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.HelpDesk.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Encoding.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinTree.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinDock.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Assembly.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Shared.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Report.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Diagramming.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Ruler.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Common.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Appearance.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\SevenZipSharp.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinChart.v5.3.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\itextsharp.xml
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Form1.resources
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Properties.Resources.resources
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.csproj.GenerateResource.Cache
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.dll
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.pdb
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.dll.config
+C:\Users\SASO\Documents\Visual Studio 2010\Projects\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.csprojResolveAssemblyReference.cache
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\LDCDUPLIFACT.dll.config
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\LDCDUPLIFACT.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\LDCDUPLIFACT.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\BSS_FAC_EDCE_2001515_6\LDCDUPLIFACT\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Form1.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\BSS_FAC_EDCE_2001515_6\LDCDUPLIFACT\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Properties.Resources.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\BSS_FAC_EDCE_2001515_6\LDCDUPLIFACT\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.csproj.GenerateResource.Cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\BSS_FAC_EDCE_2001515_6\LDCDUPLIFACT\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.dll
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\BSS_FAC_EDCE_2001515_6\LDCDUPLIFACT\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\LDCDUPLIFACT.dll.config
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\LDCDUPLIFACT.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\LDCDUPLIFACT.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\BSS_FAC_EDCE_2001515_6\LDCDUPLIFACT\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.csprojResolveAssemblyReference.cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Form1.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Properties.Resources.resources
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.csproj.GenerateResource.Cache
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.dll
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.pdb
+D:\Gdrive ingvaliente\Sincecomp\Proyecto SINCECOMP\200-1515 (10.01.18) - Inconveniente en duplicados Meses Anteriores - GIRAS\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.csprojResolveAssemblyReference.cache
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.dll.config
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.pdb
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\itextsharp.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Common.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Component.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Windows.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Oracle.DataAccess.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.Misc.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinEditors.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinGrid.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.HelpDesk.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Encoding.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinTree.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinDock.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Assembly.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Shared.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Report.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Diagramming.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Ruler.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Common.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Appearance.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\SevenZipSharp.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinChart.v5.3.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Form1.resources
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Properties.Resources.resources
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.csproj.GenerateResource.Cache
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.dll
+C:\Users\SASO\Desktop\161\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.pdb
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Form1.resources
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Properties.Resources.resources
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.csproj.GenerateResource.Cache
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.dll.config
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.pdb
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\itextsharp.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Common.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Component.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.EnterpriseLibrary.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Windows.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Oracle.DataAccess.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.Misc.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.HelpDesk.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Encoding.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Security.ProtectedData.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Assembly.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Shared.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Infraestructure.Icons.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Framework.Component.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Report.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Diagramming.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Diagramming.WinForms.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Ruler.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Common.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Appearance.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\SevenZipSharp.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Infragistics2.Win.UltraWinChart.v5.3.dll
+D:\Entregas\61\BSS_HT_0000161_1\BSS0000161\4.NET\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.pdb
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.dll.config
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\LDCDUPLIFACT.pdb
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\itextsharp.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Common.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Component.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Windows.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Oracle.DataAccess.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.HelpDesk.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Encoding.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Assembly.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Framework.Component.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Report.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Diagramming.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Ruler.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\MindFusion.Common.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Appearance.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\SevenZipSharp.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\bin\Release\itextsharp.xml
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Form1.resources
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.Properties.Resources.resources
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.csproj.GenerateResource.Cache
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.dll
+C:\_ACTIVIDADES\_0_GDC_SOPORTE\CAMBIO\910_LDCDUPLIFACT\versionador\Unificado\.NET\GDC\LDCDUPLIFACT\LDCDUPLIFACT\obj\Release\LDCDUPLIFACT.pdb

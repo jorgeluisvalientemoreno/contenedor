@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{337C15EA-2C5C-4079-A386-8150D5664466}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SINCECOMP.SUBSIDYS</RootNamespace>
+    <AssemblyName>SINCECOMP.SUBSIDYS</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>F:\OpenSmartflex\$(username)\OpenSmartflex\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Infragistics2.Excel.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Shared.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.Misc.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinEditors.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinGrid.ExcelExport.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="Infragistics2.Win.UltraWinPrintPreviewDialog.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinStatusBar.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.UltraWinToolbars.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics2.Win.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="OpenSystems.Common">
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\OpenSystems.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.DataBaseObject, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\OpenSystems.DataBaseObject.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.EnterpriseLibrary, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\OpenSystems.EnterpriseLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.ExtractAndMix.Api, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\OpenSystems.ExtractAndMix.Api.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Printing, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\OpenSystems.Printing.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Report, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\OpenSystems.Report.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Security.ExecutableMgr, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\OpenSystems.Security.ExecutableMgr.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Windows, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\OpenSystems.Windows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Oracle.DataAccess, Version=2.112.1.2, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\OpenSmartflex\$(username)\OpenSmartflex\Oracle.DataAccess.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BL\BLGENERAL.cs" />
+    <Compile Include="BL\blLDASR.cs" />
+    <Compile Include="BL\blLDDRC.cs" />
+    <Compile Include="BL\blLDGDB.cs" />
+    <Compile Include="BL\blLDGRC.cs" />
+    <Compile Include="BL\BLLDISU.cs" />
+    <Compile Include="BL\BLLDLTP.cs" />
+    <Compile Include="BL\blLDREM.cs" />
+    <Compile Include="BL\BLLDSRC.cs" />
+    <Compile Include="BL\blLDTRS.cs" />
+    <Compile Include="callLDASR.cs" />
+    <Compile Include="callLDDRC.cs" />
+    <Compile Include="callLDGDB.cs" />
+    <Compile Include="callLDGRC.cs" />
+    <Compile Include="callLDISU.cs" />
+    <Compile Include="callLDLRA.cs" />
+    <Compile Include="callLDLTP.cs" />
+    <Compile Include="callLDREM.cs" />
+    <Compile Include="callLDSRC.cs" />
+    <Compile Include="callLDTRS.cs" />
+    <Compile Include="DAL\DALGENERAL.cs" />
+    <Compile Include="DAL\dalLDASR.cs" />
+    <Compile Include="DAL\dalLDDRC.cs" />
+    <Compile Include="DAL\dalLDGDB.cs" />
+    <Compile Include="DAL\dalLDGRC.cs" />
+    <Compile Include="DAL\DALLDISU.cs" />
+    <Compile Include="DAL\DALLDLTP.cs" />
+    <Compile Include="DAL\dalLDREM.cs" />
+    <Compile Include="DAL\dalLDTRS.cs" />
+    <Compile Include="Entities\acta.cs" />
+    <Compile Include="Entities\cartaspotenciales.cs" />
+    <Compile Include="Entities\ge_subscriber.cs" />
+    <Compile Include="Entities\potenciales.cs" />
+    <Compile Include="Entities\reportContract.cs" />
+    <Compile Include="Entities\retroactivo.cs" />
+    <Compile Include="Entities\totalesActa.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDrptActa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDrptActa.Designer.cs">
+      <DependentUpon>LDrptActa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDSRC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDSRC.Designer.cs">
+      <DependentUpon>LDSRC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDLRA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDLRA.Designer.cs">
+      <DependentUpon>LDLRA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDASR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDASR.Designer.cs">
+      <DependentUpon>LDASR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDDRC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDDRC.Designer.cs">
+      <DependentUpon>LDDRC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDGDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDGDB.Designer.cs">
+      <DependentUpon>LDGDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDGRC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDGRC.Designer.cs">
+      <DependentUpon>LDGRC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDISU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDISU.Designer.cs">
+      <DependentUpon>LDISU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDLTP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDLTP.Designer.cs">
+      <DependentUpon>LDLTP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LDTRS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDTRS.Designer.cs">
+      <DependentUpon>LDTRS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\concept.cs" />
+    <Compile Include="Entities\subsidy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\LDREM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LDREM.Designer.cs">
+      <DependentUpon>LDREM.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\rptActa.rdlc" />
+    <EmbeddedResource Include="Report\rptActadeCobro.rdlc" />
+    <EmbeddedResource Include="Report\rptPotencial.rdlc" />
+    <EmbeddedResource Include="Report\rptPotential.rdlc" />
+    <EmbeddedResource Include="Report\rptRetroactivo.rdlc" />
+    <EmbeddedResource Include="Report\rptTemporal.rdlc" />
+    <EmbeddedResource Include="UI\LDrptActa.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LDrptActa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDSRC.resx">
+      <DependentUpon>LDSRC.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDLRA.resx">
+      <DependentUpon>LDLRA.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDASR.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LDASR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDDRC.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LDDRC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDGDB.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LDGDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDGRC.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LDGRC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDISU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LDISU.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDLTP.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LDLTP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LDTRS.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LDTRS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="UI\LDREM.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LDREM.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Properties\DataSources\SINCECOMP.SUBSIDYS.Entities.acta.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.SUBSIDYS.Entities.concept.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.SUBSIDYS.Entities.ge_subscriber.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.SUBSIDYS.Entities.potenciales1.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.SUBSIDYS.Entities.reportContract.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.SUBSIDYS.Entities.retroactivo.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.SUBSIDYS.Entities.subsidy.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.SUBSIDYS.Entities.totalesActa.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

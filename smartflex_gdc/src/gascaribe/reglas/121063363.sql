@@ -1,0 +1,255 @@
+/******************************************************************
+Propiedad intelectual de Open International Systems Copyright 2001
+Archivo     insGR_CONFIG_EXPRESSION_<AAAAMMDD>.sql
+Autor       <Nombre autor>
+Fecha       <AAAAMMDD>
+
+Descripción
+Observaciones
+
+Historia de Modificaciones
+Fecha         Autor               Modificación
+<AAAAMMDD>  <Nombre Autor>              Creación
+******************************************************************/
+declare
+    CURSOR cuData(nuIdConfExpre in gr_config_expression.config_expression_id%type) is
+    -- Se obtiene la lista de expresiones a regenerar
+    SELECT rowid,config_expression_id, configura_type_id, object_name, expression, object_type,
+           description, status
+    FROM gr_config_expression
+    WHERE config_expression_id in (nuIdConfExpre);
+
+    onuExprId gr_config_expression.config_expression_id%type := NULL;
+
+    nuCountErr number := 0;
+    nuProc number := 0;
+    nuErrorCode          NUMBER(15);
+    sbErrorMsg           VARCHAR2(2000);
+
+    IdConfExpre GR_CONFIG_EXPRESSION.config_expression_id%type;
+
+    	CURSOR cuRef is
+		SELECT a.table_name, b.column_name
+		from   all_constraints a, all_cons_columns b
+		where  R_CONSTRAINT_NAME = (
+								   SELECT unique(f.constraint_name)
+								   FROM   all_constraints f, all_cons_columns s
+								   WHERE  f.constraint_name = s.constraint_name
+									 AND  f.constraint_type = 'P'
+									 AND  f.table_name      = 'GR_CONFIG_EXPRESSION'
+	   )
+	   AND  a.constraint_name = b.constraint_name
+	   AND  a.owner           = b.owner
+	   AND  a.table_name      = b.table_name;
+
+	  sbStatement  varchar2(2000);
+	  blExiste    boolean := FALSE;
+	  nuCant      number;
+	  nuCodigo    number:=1296;
+	  sbTabla     varchar2(50);
+	  sbCampo     varchar2(50);
+
+
+	  CURSOR cuNum ( inuConfExpreID IN gr_config_expression.config_expression_id%type ) IS
+	  SELECT CONFIG_EXPRESSION_ID codigo, object_name objeto
+	  FROM gr_config_expression WHERE config_expression_id in (inuConfExpreID);
+
+	  CURSOR cuTipoObjeto ( isbNomObj IN gr_config_expression.object_name%type ) IS
+	  SELECT  object_type
+	  FROM    DBA_OBJECTS
+	  WHERE   OBJECT_NAME = isbNomObj;
+    sbObjetoEliminar gr_config_expression.object_name%type;
+    sbObjeto 		 gr_config_expression.object_name%type;
+    sbtipo			 dba_objects.object_type%type;
+
+BEGIN
+
+  dbms_output.put_line('Inicia Proceso '||sysdate);
+  IdConfExpre := 121063363;
+
+  dbms_output.put_line('Insertando Regla: '||IdConfExpre);
+
+  --INICIO Busca regla para realizar los ajustes correspondientes¿
+  dbms_output.put_line('Inicia Proceso ajustes regla');  
+	open cuNum(IdConfExpre);
+	  loop
+		fetch cuNum INTO nuCodigo, sbObjeto;
+		exit when cuNum%NOTFOUND;
+		dbms_output.put_line('Registro --> '||nuCodigo);
+
+		blExiste := FALSE;
+		open cuRef;
+		loop
+		  fetch cuRef INTO sbTabla, sbCampo;
+		  exit when cuRef%NOTFOUND ;
+
+		  sbStatement := ' Begin SELECT count(1) INTO :x FROM '||sbTabla||
+						 ' Where '||sbCampo ||'='||nuCodigo ||' AND ROWNUM=1;End;';
+
+		  execute immediate sbStatement using out nuCant;
+		  if ( nuCant > 0 ) then
+			dbms_output.put_line(' ['||nuCodigo ||'] Existe  en ['||sbTabla ||'] '||sbCampo);
+			blExiste  := true;
+		  END if;
+		END loop;
+		close cuRef;
+		if blExiste then
+		  BEGIN
+			sbObjetoEliminar := dagr_config_expression.fsbGetobject_name(nuCodigo);
+			dbms_output.put_line('drop objeto '||sbObjetoEliminar||';');
+			if(sbObjeto = sbObjetoEliminar) then
+				--cursor que busca el tipo de objeto
+				Open cuTipoObjeto(sbObjetoEliminar);
+				  fetch cuTipoObjeto
+					into sbTipo;
+				close cuTipoObjeto;
+
+				--tipo = procedure o function
+				sbStatement := ' drop ' || sbTipo || ' ' || sbObjetoEliminar;
+
+				dbms_output.put_line(sbStatement);
+				execute immediate (sbStatement);
+			end if;	
+		  Exception
+			When Others then
+			  dbms_output.put_line('-- No Existe registro en gr_config_expression para '||nuCodigo);
+		  End;
+		END if;
+
+	  END loop;
+	close cuNum;
+	dbms_output.put_line('Termine Proceso ajustes regla');
+
+	--FIN Busca regla para realizar los ajustes correspondientes
+
+
+    UPDATE GR_CONFIG_EXPRESSION
+	set expression = '
+
+PKINSTANCEDATAMGR.GETCG_SUBSSERVICE(nuProductId);sbPorc = LDC_BOUTILITIES.FSBGETVALORCAMPOTABLA("LD_PARAMETER", "PARAMETER_ID",'||
+' "NUMERIC_VALUE",'||
+' "INSURANCE_RATE");nuPorc = UT_CONVERT.FNUCHARTONUMBER(sbPorc);nuSaldoDifProd = GC_BODEBTMANAGEMENT.FNUGETDEFDEBTBYPROD(nuProductId);nuPRORECACT = LDC_FNUPROCESORECLAMOACTIVO(nuProductId);nuValorCarterasinRecl = LDC_FNUVALORDEBTSINRECL(nuProductId);nuValorDeudaTotal = nuPRORECACT + nuValorCarterasinRecl;if (nuValorDeudaTotal > 0,'||
+'nuValor = nuValorDeudaTotal * (nuPorc / 100);,'||
+'nuValor = 0;)', author = 'JULGON',
+generation_date = to_date ('08/06/22','DD/MM/YYYY HH24:MI:SS'),
+last_modifi_date = to_date ('08/06/22','DD/MM/YYYY HH24:MI:SS'),
+object_type = 'PF',
+code = 'CREATE OR REPLACE FUNCTION FABCCT14E"||IdConfExpre||"
+RETURN NUMBER IS
+-- Generated by Code Generator (PVCS Version 1.5)
+ -- Open Systems Ltd, Copyright 2003.
+V0 NUMBER;
+nuProductId NUMBER;
+V1 VARCHAR2(4000);
+V2 VARCHAR2(4000);
+V3 VARCHAR2(4000);
+V4 VARCHAR2(4000);
+V5 VARCHAR2(4000);
+sbPorc VARCHAR2(4000);
+V6 NUMBER;
+nuPorc NUMBER;
+V7 NUMBER;
+nuSaldoDifProd NUMBER;
+V8 NUMBER;
+nuPRORECACT NUMBER;
+V9 NUMBER;
+nuValorCarterasinRecl NUMBER;
+V10 NUMBER;
+nuValorDeudaTotal NUMBER;
+V11 NUMBER;
+V12 NUMBER;
+V13 NUMBER;
+V14 NUMBER;
+nuValor NUMBER;
+V15 NUMBER;
+V16 NUMBER;
+
+BEGIN
+PKINSTANCEDATAMGR.GETCG_SUBSSERVICE(nuProductId);
+V0:= 0;
+V2 := "LD_PARAMETER";
+V3 := "PARAMETER_ID";
+V4 := "NUMERIC_VALUE";
+V5 := "INSURANCE_RATE";
+V1:=LDC_BOUTILITIES.FSBGETVALORCAMPOTABLA(V2, V3, V4, V5);
+sbPorc:=V1;
+V6:=UT_CONVERT.FNUCHARTONUMBER(sbPorc);
+nuPorc:=V6;
+V7:=GC_BODEBTMANAGEMENT.FNUGETDEFDEBTBYPROD(nuProductId);
+nuSaldoDifProd:=V7;
+V8:=LDC_FNUPROCESORECLAMOACTIVO(nuProductId);
+nuPRORECACT:=V8;
+V9:=LDC_FNUVALORDEBTSINRECL(nuProductId);
+nuValorCarterasinRecl:=V9;
+V10:=nuPRORECACT + nuValorCarterasinRecl;
+nuValorDeudaTotal:=V10;
+V11 := 0;
+IF ( nuValorDeudaTotal > V11 )
+THEN
+V12 := 100;
+V13:=nuPorc / V12;
+V14:=nuValorDeudaTotal * V13;
+nuValor:=V14;
+V15:=V14;
+ELSE
+V16 := 0;
+nuValor:=V16;
+V15:=V16;
+END IF;
+RETURN V15;
+END;
+'
+ where config_expression_id = 121063363;
+
+    dbms_output.put_line('Regenerando Regla: '||IdConfExpre);
+
+    -- Recorre la regla insertada para regenerarla
+    for reg in cuData(IdConfExpre) loop
+    BEGIN
+
+        GR_BOINTERFACE_BODY.GenerateRule (reg.expression, reg.configura_type_id,
+                            reg.description, reg.config_expression_id, onuExprId, reg.object_type);
+        GR_BOINTERFACE_BODY.CreateStprByConfExpreId(onuExprId);
+        dbms_output.put_line('Expresion Generada = '||onuExprId);
+
+        nuProc := nuProc + 1;
+
+        EXCEPTION
+            when ex.CONTROLLED_ERROR then
+                 nuCountErr := nuCountErr + 1;
+                 Errors.getError(nuErrorCode,sbErrorMsg);
+                 dbms_output.put_line(substr('ExprId = '||reg.config_expression_id||', Err : '||nuErrorCode||', '||sbErrorMsg,1,250));
+
+            when others then
+                 nuCountErr := nuCountErr + 1;
+                 Errors.setError;
+                        Errors.getError(nuErrorCode,sbErrorMsg);
+                 dbms_output.put_line(substr('ExprId = '||reg.config_expression_id||', Err : '||nuErrorCode||', '||sbErrorMsg,1,250));
+
+    END;
+
+    END loop;
+    dbms_output.put_line('Termina regenerar Regla: '||IdConfExpre);
+
+    --<INSERT_TABLA> o <UPDATE_TABLA>
+
+    commit;
+
+    dbms_output.put_line('Fin Proceso '||sysdate);
+EXCEPTION
+    when ex.CONTROLLED_ERROR  then
+        rollback;
+        Errors.getError(nuErrorCode, sbErrorMsg);
+        dbms_output.put_line('ERROR CONTROLLED ');
+        dbms_output.put_line('error onuErrorCode: '||nuErrorCode);
+        dbms_output.put_line('error osbErrorMess: '||sbErrorMsg);
+
+    when OTHERS then
+        rollback;
+        Errors.setError;
+        Errors.getError(nuErrorCode, sbErrorMsg);
+        dbms_output.put_line('ERROR OTHERS ');
+        dbms_output.put_line('error onuErrorCode: '||nuErrorCode);
+        dbms_output.put_line('error osbErrorMess: '||sbErrorMsg);
+END;
+/

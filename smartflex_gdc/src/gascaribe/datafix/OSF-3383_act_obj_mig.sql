@@ -1,0 +1,71 @@
+BEGIN
+	-- OSF-3383
+    UPDATE  master_personalizaciones 
+    SET comentario = 'MIGRADO ADM_PERSON'
+    WHERE  nombre IN
+    (   
+        'LDC_TRG_MARCA_PRODUCTO_GDC',
+        'TRG_BI_LDC_PROTECCION_DATOS',
+        'TRG_DE_LDC_PROTECCION_DATOS',
+        'LDC_TRAISOLABOFNB',
+        'LDCTRG_CONFIREPSUIA',
+        'LDC_TRGB_TEMPLOCFACO',
+        'TRG_LDC_ORMUGENE',
+        'TRG_BI_LDC_OSF_COSTINGR',
+        'TRG_BI_LDC_OSF_LDCRBAI',
+        'TRG_BI_LDC_OTLEGALIZAR',
+        'TRG_BI_LDC_PAGUNIDAT',
+        'TRG_BI_LDC_PKG_OR_ITEM',
+        'LDC_TRGINSLDC_PLANDIFE',
+        'LDC_TRG_BIU_PLAZO_CERT',
+        'LDC_TRGGEHISTCERT',
+        'LDC_TRG_MARCA_PRODUCTO',
+        'TRG_BI_LDC_PLAZOS_CERT',
+        'LDC_TGACTUALIZAVIGENCIAFIN',
+        'LDC_TRGBPROCACTI_ACTIVIDAD',
+        'TRG_BI_LDC_PROD_COM_SECTOR',
+        'LDC_TRGHISTPRODEX',
+        'TRG_BI_LDC_PRODTATT',
+        'LDC_TRG_UPSERT_LDC_PROMO_FNB',
+        'TRG_BF_PROVSINCODE',
+        'LDC_TRGGENARCINFAUD',
+        'TRGLDC_RESOGURE',
+        'LDC_TRGRGCOMAAI',
+        'LDC_TRGRGCOMABI',
+        'TRG_BI_LDC_SEGMENT_SUSC',
+        'TRG_BI_LDC_SEGUROVOLUNTARIO',
+        'TRG_LDC_SIMPLE_COND_ITEMS',
+        'LDC_TRGB_SOLASIAUTPOR',
+        'TRG_BI_LDC_SOLCAUFNB',
+        'LDC_TRGALDC_SOLUNIOPEAAP',
+        'TRG_SPECIALS_PLAN',
+        'LDCTRG_LDC_SUI_ESTSOL',
+        'LDCTRG_LDC_SUI_TIPSOL',
+        'LDCTRG_LDCRESOLSUI',
+        'TRG_LDC_TARIFAS_GESTCART',
+        'TRG_AUD_LDC_TARIFAS_OTGEPACONT',
+        'LDC_TRG_LDC_TASKACTCOSTPROM',
+        'TRG_AUD_LDC_TASKACTCOSTPROM',
+        'LDC_DETRGB_TEMPLOCFACO',
+        'LDC_TRGA_TEMPLOCFACO',
+        'LDC_UPTRGB_TEMPLOCFACO',
+        'LDC_TRGUPTIPOENER',
+        'LDC_TRG_TTNOVOFERTADOS'		
+    );
+
+    UPDATE  master_personalizaciones 
+    SET comentario = 'OPEN'
+    WHERE  nombre IN
+    (   
+		'TRG_AU_AI_LDC_PACKAG_208_366',
+		'TRG_AU_AI_LDC_PACKAG_207_364',
+		'TRG_AU_AI_LDC_SIMPLE_188_329'
+	);
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        dbms_output.put_line('No se pudieron actualizar los registros  en master_personalizaciones, '||sqlerrm);
+END;
+/    

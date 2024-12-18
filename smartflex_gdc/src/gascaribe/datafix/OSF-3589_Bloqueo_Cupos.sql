@@ -1,0 +1,72 @@
+column dt new_value vdt
+column db new_value vdb
+select to_char(sysdate,'yyyymmdd_hh24miss') dt, sys_context('userenv','db_name') db from dual;
+set serveroutput on size unlimited
+execute dbms_application_info.set_action('APLICANDO DATAFIX');
+select to_char(sysdate,'yyyy-mm-dd hh:mi:ss p.m.') fecha_inicio from dual;
+
+declare
+
+	sbCaso				VARCHAR2(30) := 'OSF-3589';
+	rcContratosBloqueo	DALD_quota_block.styLD_quota_block;
+	
+	CURSOR cuContratos
+	IS
+		SELECT susccodi
+		FROM suscripc  
+		WHERE susccodi in (17162024, 17162025, 17162026, 17162101, 17162105, 17162036, 17162038, 17162039, 17162040, 
+						   17162052, 17162067, 17162097, 17162118, 17162058, 17162077, 17162099, 17162113, 17162068, 
+						   17162042, 17162049, 17162081, 17153156, 17162027, 17162084, 17162030, 17162032, 17162032,
+						   17162036, 17162037, 17162039, 17162046, 17162064, 17162114, 17162080, 17162095, 17162109,
+							17162033, 17162023, 17162123, 17162110, 17162115, 17162029, 17162030, 17162034, 17162037, 
+							17162045, 17162047, 17162054, 17162065, 17162078, 17162050, 17162083, 17162100, 17162031,
+							17162061, 17162102, 17162069, 17162124, 17162119, 17162112, 17162036, 17162037, 17162038,
+							17162038, 17162039, 17162066, 17162090, 17162063, 17162070, 17162074, 17162088, 17162116, 
+							17162122, 17162089, 17162108, 17162030, 17162043, 17162055, 17162072, 17162104, 17162076,
+							17162048, 17162056, 17162025, 17162121, 17162087, 17162096, 17162028, 17162032, 17162036,
+							17162038, 17162035, 17162051, 17162082, 17162093, 17162107, 17162031, 17162060, 17162079,
+							17162025, 17162120, 17162085, 17162030, 17162032, 17162041, 17162044, 17162057, 17162071,
+							17162092, 17162062, 17162025, 17162091, 17162094, 17162098, 17162103, 17162117, 17162037,
+							17162039, 17162059, 17162111, 17162086, 17162106, 17162053, 17162073, 17162075, 17162125,
+							17173029, 17173030, 17173039, 17173045, 17173047, 17173049, 17173063, 17173064, 17173033,
+							17173038, 17173042, 17173045, 17173053, 17173055, 17173056, 17173065, 17173066, 17173066,
+							17173036, 17173037, 17173037, 17173043, 17173057, 17173058, 17173059, 17173060, 17173061,
+							17173062, 17173066, 17172764, 17172764, 17173032, 17173039, 17173046, 17173051, 17173052,
+							17173057, 17173063, 17173066, 17173496, 17172764, 17172764, 17173040, 17173054, 17173066,
+							17173031, 17173035, 17173038, 17173044, 17173048, 17173057, 17173067, 17172764, 17173037,
+							17173037, 17173039, 17173041, 17173050, 17173066, 17172764, 17173034, 17173039, 17173056,
+							17173057, 17173068, 17172764);
+
+BEGIN
+
+	dbms_output.put_line('Inicio Datafix OSF-3589');
+	
+	FOR rcContratos IN cuContratos LOOP
+		
+		dbms_output.put_line('Creando bloqueo del contrato: ' || rcContratos.susccodi);
+			
+		-- Llena el registro de los contratos
+		rcContratosBloqueo.Quota_Block_Id 	:= SEQ_LD_QUOTA_BLOCK.NEXTVAL;
+		rcContratosBloqueo.Block 			:= 'Y';
+		rcContratosBloqueo.Subscription_Id 	:= rcContratos.susccodi;
+		rcContratosBloqueo.Causal_Id 		:= 130;
+		rcContratosBloqueo.Register_Date 	:= LDC_BOCONSGENERALES.FDTGETSYSDATE;
+		rcContratosBloqueo.Observation 		:= 'Bloqueo de cupo por indicación de auditoria interna';
+		rcContratosBloqueo.Username			:= PKG_SESSION.GETUSER;
+		rcContratosBloqueo.Terminal			:= PKG_SESSION.FSBGETTERMINAL;
+		
+		DALD_quota_block.insRecord(rcContratosBloqueo);
+		
+		COMMIT;		
+		
+	END LOOP;	
+	
+	dbms_output.put_line('FIN Datafix OSF-3589');
+	
+END;
+/
+
+select to_char(sysdate,'yyyy-mm-dd hh:mi:ss p.m.') fecha_fin from dual;
+set serveroutput off
+quit
+/

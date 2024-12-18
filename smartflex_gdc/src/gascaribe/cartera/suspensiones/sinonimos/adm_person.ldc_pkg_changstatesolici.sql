@@ -1,0 +1,19 @@
+PROMPT Crea sinonimo objeto dependiente LDC_PKG_CHANGSTATESOLICI
+DECLARE
+    nuExist NUMBER;
+BEGIN    
+    SELECT COUNT(*)
+    INTO nuExist
+    FROM
+        dba_objects
+    WHERE
+        UPPER(object_name) = 'LDC_PKG_CHANGSTATESOLICI'
+        AND OWNER = 'ADM_PERSON';
+    
+    IF nuExist = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.LDC_PKG_CHANGSTATESOLICI FOR LDC_PKG_CHANGSTATESOLICI';
+    END IF;
+
+    
+END;
+/

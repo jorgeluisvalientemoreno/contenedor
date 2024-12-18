@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9E73AB30-94B0-4506-9D19-93EE9B3844F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SINCECOMP.GESTIONORDENES</RootNamespace>
+    <AssemblyName>SINCECOMP.GESTIONORDENES</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Infragistics2.Shared.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Shared.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.Misc.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.Misc.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinCalcManager.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.UltraWinCalcManager.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinEditors.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.UltraWinEditors.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.UltraWinGrid.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinTabControl.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.UltraWinTabControl.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinTree.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex_BD\Infragistics2.Win.UltraWinTree.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="ldrpass">
+      <HintPath>..\..\..\..\Program Files\OpenSystems\OpenSmartFlex\ldrpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="OpenSystems.Common, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.EnterpriseLibrary, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.EnterpriseLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenSystems.Windows, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartFlex\OpenSystems.Windows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC_MSIL\System.Web.Services\2.0.0.0__b03f5f7f11d50a3a\System.Web.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BL\BLGENERAL.cs" />
+    <Compile Include="BL\BLLEGO.cs" />
+    <Compile Include="callLEGO.cs" />
+    <Compile Include="Control\LDCCONFIRMACION.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\LDCCONFIRMACION.Designer.cs">
+      <DependentUpon>LDCCONFIRMACION.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\LDCEDITARGESTION.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\LDCEDITARGESTION.Designer.cs">
+      <DependentUpon>LDCEDITARGESTION.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\LDCGESTION.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\LDCGESTION.Designer.cs">
+      <DependentUpon>LDCGESTION.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\LDCGESTIONEXCEL.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\LDCGESTIONEXCEL.Designer.cs">
+      <DependentUpon>LDCGESTIONEXCEL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\LDCHISTORIAL.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\LDCHISTORIAL.Designer.cs">
+      <DependentUpon>LDCHISTORIAL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\DALGENERAL.cs" />
+    <Compile Include="DAL\DALLEGO.cs" />
+    <Compile Include="Entities\ItemOrdenGestion.cs" />
+    <Compile Include="Entities\ItemWarranty.cs" />
+    <Compile Include="Entities\OrdenGestionada.cs" />
+    <Compile Include="Entities\OrdenTrabajo.cs" />
+    <Compile Include="Entities\TrabajoAdicional.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LEGO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LEGO.Designer.cs">
+      <DependentUpon>LEGO.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Control\LDCCONFIRMACION.resx">
+      <DependentUpon>LDCCONFIRMACION.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\LDCEDITARGESTION.resx">
+      <DependentUpon>LDCEDITARGESTION.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\LDCGESTION.resx">
+      <DependentUpon>LDCGESTION.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\LDCGESTIONEXCEL.resx">
+      <DependentUpon>LDCGESTIONEXCEL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\LDCHISTORIAL.resx">
+      <DependentUpon>LDCHISTORIAL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LEGO.resx">
+      <DependentUpon>LEGO.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\SINCECOMP.GESTIONORDENES.Entities.ItemOrdenGestion.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.GESTIONORDENES.Entities.ItemWarranty.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.GESTIONORDENES.Entities.OrdenGestionada.datasource" />
+    <None Include="Properties\DataSources\SINCECOMP.GESTIONORDENES.Entities.TrabajoAdicional.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

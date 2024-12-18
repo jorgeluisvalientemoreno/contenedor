@@ -1,0 +1,20 @@
+set serveroutput on;
+PROMPT BORRAR PROCEDIMIENTO LDC_PRUSUARIOS_SUSP_CART
+DECLARE
+  nuConta NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'LDC_PRUSUARIOS_SUSP_CART'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE <> 'SYNONYM';
+   
+  IF nuConta > 0 THEN
+    EXECUTE IMMEDIATE 'DROP PROCEDURE LDC_PRUSUARIOS_SUSP_CART';
+    dbms_output.put_line('PROCEDURE LDC_PRUSUARIOS_SUSP_CART BORRADO');
+  END IF;
+EXCEPTION
+    WHEN OTHERS THEN 
+        dbms_output.put_line('No se pudo borrar la procedimiento LDC_PRUSUARIOS_SUSP_CART, '||sqlerrm); 
+END;
+/

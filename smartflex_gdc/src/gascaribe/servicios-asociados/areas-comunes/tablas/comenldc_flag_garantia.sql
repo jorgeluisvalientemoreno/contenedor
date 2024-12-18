@@ -1,0 +1,4 @@
+COMMENT ON TABLE LDC_FLAG_GARANTIA IS 'Almacena si la orden aplica garantia';
+COMMENT ON COLUMN LDC_FLAG_GARANTIA.ORDER_ID IS 'Codigo de la orden';
+COMMENT ON COLUMN LDC_FLAG_GARANTIA.FLAG_GARANT IS 'Aplica garantia (Y/N)';
+/

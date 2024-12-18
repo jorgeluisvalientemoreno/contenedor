@@ -1,0 +1,43 @@
+CREATE OR REPLACE TRIGGER ADM_PERSON.TRG_BI_WF_INSTANCE
+    AFTER INSERT OR UPDATE OR DELETE
+    ON OPEN.WF_INSTANCE
+    REFERENCING OLD AS OLD NEW AS NEW
+    FOR EACH ROW
+BEGIN
+
+    DECLARE
+
+    INSTANCE_ID NUMBER(15);
+    OPERATION VARCHAR2(1);
+
+    BEGIN
+
+    IF INSERTING THEN
+        INSTANCE_ID := :new.INSTANCE_ID;
+        OPERATION := 'I';
+    ELSIF UPDATING THEN
+        INSTANCE_ID := :old.INSTANCE_ID;
+        OPERATION := 'U';
+    ELSE
+        INSTANCE_ID := :old.INSTANCE_ID;
+        OPERATION := 'D';
+    END IF;
+
+    INSERT INTO OPEN.LDCBI_WF_INSTANCE (
+        INSTANCE_ID,
+        OPERATION
+    )
+    VALUES (
+        INSTANCE_ID,
+        OPERATION
+    );
+
+    EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20000,
+                                'Error en TRG_DE_WF_INSTANCE por -->' || sqlcode ||
+                                chr(13) || sqlerrm);
+    END;
+
+END;
+/

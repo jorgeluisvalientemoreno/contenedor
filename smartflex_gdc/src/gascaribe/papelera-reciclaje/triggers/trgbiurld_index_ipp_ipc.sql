@@ -1,0 +1,15 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'TRGBIURLD_INDEX_IPP_IPC'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE = 'TRIGGER';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP TRIGGER OPEN.TRGBIURLD_INDEX_IPP_IPC';
+  END IF;  
+END;
+/

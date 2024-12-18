@@ -1,0 +1,41 @@
+set serveroutput on;
+PROMPT BORRAR synonym LDC_CREATRAMITEREPARACIONRP EN PERSONALIZACIONES y crearlo para ADM_PERSON
+DECLARE
+  nuConta       NUMBER;
+BEGIN
+    BEGIN
+      SELECT COUNT(*) INTO nuConta
+        FROM ALL_SYNONYMS
+       WHERE SYNONYM_NAME = 'LDC_CREATRAMITEREPARACIONRP'
+         AND OWNER = 'PERSONALIZACIONES' ;
+    EXCEPTION WHEN OTHERS THEN
+        nuConta:= 0;
+        dbms_output.put_Line('PERSONALIZACIONES.LDC_CREATRAMITEREPARACIONRP para OPEN no existe o fue borrado');
+    END;
+       dbms_output.put_line('nuConta '||nuConta);
+      IF nuConta > 0 THEN        
+		EXECUTE IMMEDIATE 'DROP SYNONYM PERSONALIZACIONES.LDC_CREATRAMITEREPARACIONRP';
+        dbms_output.put_line('SYNONYM PERSONALIZACIONES.LDC_CREATRAMITEREPARACIONRP Borrado para OPEN');
+      END IF;
+--
+    BEGIN
+      SELECT COUNT(*) INTO nuConta
+        FROM ALL_SYNONYMS
+       WHERE SYNONYM_NAME = 'LDC_CREATRAMITEREPARACIONRP'
+         AND OWNER = 'PERSONALIZACIONES' ;
+    EXCEPTION WHEN OTHERS THEN
+        nuConta:= 0;
+        dbms_output.put_Line('PERSONALIZACIONES.LDC_CREATRAMITEREPARACIONRP para ADM_PERSON no existe o fue borrado');
+    END;
+       dbms_output.put_line('nuConta '||nuConta);
+      IF nuConta = 0 THEN        
+        EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM PERSONALIZACIONES.LDC_CREATRAMITEREPARACIONRP FOR ADM_PERSON.LDC_CREATRAMITEREPARACIONRP';
+        dbms_output.put_line('SYNONYM PERSONALIZACIONES.LDC_CREATRAMITEREPARACIONRP Creado para ADM_PERSON ');
+      END IF; 
+      
+EXCEPTION
+    WHEN OTHERS THEN 
+        dbms_output.put_line('Error: LDC_CREATRAMITEREPARACIONRP , '||sqlerrm); 
+ 
+END;
+/

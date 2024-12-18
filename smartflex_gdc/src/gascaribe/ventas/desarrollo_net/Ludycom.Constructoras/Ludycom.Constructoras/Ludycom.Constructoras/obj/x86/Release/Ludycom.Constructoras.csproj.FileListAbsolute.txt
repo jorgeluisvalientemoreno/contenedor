@@ -1,0 +1,676 @@
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll.config
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.pdb
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Component.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\NetTopologySuite.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.BL.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Assembly.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Component.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\GeoAPI.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.PS.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.WinForms.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Report.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Configuration.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.DataModel.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.Common.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Security.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.Base.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.SqlParser.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Excel.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Base.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Aspose.Cells.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Base.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\office.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\bin\Release\ProjNet.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.Properties.Resources.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCCH.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDMPC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDCPC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRNC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FIAC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.POCI.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.Question.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll.licenses
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002022_6_GDC\CRM_VEN_JGBA_2002022_6_GDC\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.pdb
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPCM.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCCH.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDMPC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDCPC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRNC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FIAC.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.POCI.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.Question.resources
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll.licenses
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll.config
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.pdb
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\itextsharp.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Component.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\NetTopologySuite.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.BL.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Assembly.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\GeoAPI.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.PS.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Configuration.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataModel.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Security.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.SqlParser.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Excel.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Aspose.Cells.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\office.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\ProjNet.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\itextsharp.xml
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll
+C:\Users\HORBATH\Desktop\caso 200-2022\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.pdb
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll.config
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.pdb
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\itextsharp.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Component.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\NetTopologySuite.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.BL.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Assembly.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Component.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\GeoAPI.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.PS.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.WinForms.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Configuration.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataModel.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.Common.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Security.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.Base.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.SqlParser.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Excel.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Base.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Aspose.Cells.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Base.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\office.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\ProjNet.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.Properties.Resources.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPCM.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCCH.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDMPC.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDCPC.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRNC.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FIAC.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.POCI.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.Question.resources
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll.licenses
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll
+C:\Horhbath\Desarrollos por hora\CASO 200-2022\CRM_VEN_JGBA_2002022_9_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.pdb
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll.config
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.pdb
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\itextsharp.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Component.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\NetTopologySuite.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.BL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Assembly.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Component.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\GeoAPI.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.PS.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.WinForms.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Configuration.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataModel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.Common.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Security.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.SqlParser.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Excel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Aspose.Cells.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\office.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\ProjNet.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.Properties.Resources.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPCM.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCCH.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDMPC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDCPC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRNC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FIAC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.POCI.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.Question.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll.licenses
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_11_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.pdb
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll.config
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.pdb
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\itextsharp.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Component.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\NetTopologySuite.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.BL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Assembly.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Component.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\GeoAPI.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.PS.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.WinForms.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Configuration.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataModel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.Common.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Security.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.SqlParser.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Excel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Aspose.Cells.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\office.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\ProjNet.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.Properties.Resources.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPCM.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCCH.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDMPC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDCPC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRNC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FIAC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.POCI.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.Question.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll.licenses
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.pdb
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_12_GDC\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll.config
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.pdb
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\itextsharp.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Component.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\NetTopologySuite.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.BL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Assembly.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Component.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\GeoAPI.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.PS.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.WinForms.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Configuration.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataModel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.Common.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Security.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.SqlParser.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Excel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Aspose.Cells.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\office.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\ProjNet.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.Properties.Resources.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPCM.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCCH.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDMPC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDCPC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRNC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FIAC.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.POCI.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.Question.resources
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll.licenses
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll
+C:\Horbarth\Desarrollos por hora\CA 200-2022\CRM_VEN_JGBA_2002022_17_GDC\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.pdb
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll.config
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.pdb
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\itextsharp.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Component.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\NetTopologySuite.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.BL.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Assembly.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Component.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\GeoAPI.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.PS.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.WinForms.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Configuration.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataModel.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.Common.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Security.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.Base.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.SqlParser.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Excel.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Base.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Aspose.Cells.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Base.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\office.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\ProjNet.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.Properties.Resources.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPCM.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCCH.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDMPC.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDCPC.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRNC.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FIAC.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.POCI.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.Question.resources
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll.licenses
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.pdb
+C:\Horhbath\Desarrollos por hora\OSS_HT_0000153_1\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.LDCMOPL.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csprojResolveAssemblyReference.cache
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.Properties.Resources.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPCM.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCCH.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FCUAD.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDMPC.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.FDCPC.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FDRCC.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FEQUC.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCHC.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FGCPC.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRVAD.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FRNC.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.FIAC.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.LDCMOPL.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.POCI.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.UI.Question.resources
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.csproj.GenerateResource.Cache
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll.licenses
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.pdb
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll.config
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Ludycom.Constructoras.pdb
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\itextsharp.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Component.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\NetTopologySuite.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.BL.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Assembly.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\GeoAPI.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.PS.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.WinForms.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Configuration.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataModel.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.Common.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Security.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Statement.Base.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.SqlParser.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Excel.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Framework.Base.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Aspose.Cells.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Base.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Report.Executor.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.MapViewer.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\office.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\bin\Release\ProjNet.dll
+C:\Users\HORBATH-17\Downloads\Ludycom.Constructoras\Ludycom.Constructoras\Ludycom.Constructoras\obj\x86\Release\Ludycom.Constructoras.dll

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DummyDataSource">
+      <ConnectionProperties>
+        <ConnectString />
+        <DataProvider>SQL</DataProvider>
+      </ConnectionProperties>
+      <rd:DataSourceID>a8d9ed78-c401-4b68-aa39-af41f3b7779c</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <BottomMargin>2.5cm</BottomMargin>
+  <RightMargin>2.5cm</RightMargin>
+  <PageWidth>21cm</PageWidth>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>21cm</InteractiveWidth>
+  <rd:GridSpacing>0.25cm</rd:GridSpacing>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <Body>
+    <ColumnSpacing>1cm</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="Cliente">
+        <Left>2.75cm</Left>
+        <Top>1.75cm</Top>
+        <rd:DefaultName>Cliente</rd:DefaultName>
+        <Width>2.53968cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.63492cm</Height>
+        <Value>=First(Fields!Cliente.Value)</Value>
+      </Textbox>
+    </ReportItems>
+    <Height>10.75cm</Height>
+  </Body>
+  <rd:ReportID>ee470655-a497-4a7e-91aa-63bd314bb48a</rd:ReportID>
+  <LeftMargin>2.5cm</LeftMargin>
+  <DataSets>
+    <DataSet Name="SINCECOMP_SUBSIDYS_Entities_acta">
+      <rd:DataSetInfo>
+        <rd:DataSetName>SINCECOMP.SUBSIDYS.Entities</rd:DataSetName>
+        <rd:ObjectDataSourceType>SINCECOMP.SUBSIDYS.Entities.acta, SINCECOMP.SUBSIDYS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:TableName>acta</rd:TableName>
+      </rd:DataSetInfo>
+      <Query>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <CommandText />
+        <DataSourceName>DummyDataSource</DataSourceName>
+      </Query>
+      <Fields>
+        <Field Name="Asig_subsidy_id">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>Asig_subsidy_id</DataField>
+        </Field>
+        <Field Name="Cliente">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Cliente</DataField>
+        </Field>
+        <Field Name="Consecute">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>Consecute</DataField>
+        </Field>
+        <Field Name="Ente">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Ente</DataField>
+        </Field>
+        <Field Name="Estrato">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Estrato</DataField>
+        </Field>
+        <Field Name="Subsidy_id">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>Subsidy_id</DataField>
+        </Field>
+        <Field Name="Subsidy_Value">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>Subsidy_Value</DataField>
+        </Field>
+        <Field Name="Susccodi">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>Susccodi</DataField>
+        </Field>
+        <Field Name="Ubicacion">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Ubicacion</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <Width>16cm</Width>
+  <InteractiveHeight>29.7cm</InteractiveHeight>
+  <Language>es-CO</Language>
+  <TopMargin>2.5cm</TopMargin>
+  <PageHeight>29.7cm</PageHeight>
+</Report>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DummyDataSource">
+      <ConnectionProperties>
+        <ConnectString />
+        <DataProvider>SQL</DataProvider>
+      </ConnectionProperties>
+      <rd:DataSourceID>4bc11d74-3cc3-4a7b-b802-59df508d1605</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <BottomMargin>2.5cm</BottomMargin>
+  <RightMargin>2.5cm</RightMargin>
+  <PageWidth>21cm</PageWidth>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>21cm</InteractiveWidth>
+  <rd:GridSpacing>0.25cm</rd:GridSpacing>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <Body>
+    <ColumnSpacing>1cm</ColumnSpacing>
+    <ReportItems>
+      <Table Name="table1">
+        <Left>0.25cm</Left>
+        <Top>0.25cm</Top>
+        <Width>15.75cm</Width>
+        <Details>
+          <TableRows>
+            <TableRow>
+              <TableCells>
+                <TableCell>
+                  <ReportItems>
+                    <Textbox Name="textbox5">
+                      <rd:DefaultName>textbox5</rd:DefaultName>
+                      <Style>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <FontSize>14pt</FontSize>
+                        <Direction>RTL</Direction>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                      </Style>
+                      <CanGrow>true</CanGrow>
+                      <Value>=Fields!Location.Value + ", " + Fields!GenDate.Value + "
+
+
+Señor(a):
+
+" + Fields!NameClient.Value + "
+Suscriptor " +  Fields!Contract.Value + "
+" + Fields!InstAddress.Value + "
+Teléfono: " + Fields!Tels.Value + " 
+" + Fields!UbicationGeo.Value + "
+
+
+
+El " + Fields!NameSubsidy.Value + " a través del convenio " + Fields!DescAgreement.Value + ", le ha destinado un subsidio para el servicio de gas natural en el estrato " + Fields!Stratum.Value + " al cual usted pertenece por un valor estimado de $ " + Fields!SubsidyValue.Value + ", sobre el valor del concepto de " + Fields!NameConcept.Value + "  de la red de gas natural de su predio.
+
+Es importante que el suscriptor " + Fields!Contract.Value + "-" + Fields!NameClient.Value + "  del predio en referencia, informe si dará uso a este beneficio en los próximos " + Fields!DaysParameter.Value + " días hábiles, contados a partir de la fecha de elaboración de la presente comunicación. 
+
+Si el suscriptor del predio no hace uso de este beneficio dentro del plazo notificado, éste será asignado a otro predio de acuerdo con los requisitos definidos por la compañía distribuidora y comercializadora de gas natural.
+
+Para mayor información comunicarse con la compañía distribuidora y comercializadora de gas natural " + Fields!NameLDC.Value + "  a la línea gratuita " + Fields!CompanyTels.Value + ". Con la finalidad de informarle sobre los requisitos necesarios para la obtención del subsidio.
+
+"</Value>
+                    </Textbox>
+                  </ReportItems>
+                </TableCell>
+              </TableCells>
+              <Height>23.25cm</Height>
+            </TableRow>
+          </TableRows>
+        </Details>
+        <Style>
+          <TextAlign>Center</TextAlign>
+        </Style>
+        <TableColumns>
+          <TableColumn>
+            <Width>15.75cm</Width>
+          </TableColumn>
+        </TableColumns>
+        <Height>23.25cm</Height>
+      </Table>
+    </ReportItems>
+    <Height>23.75cm</Height>
+  </Body>
+  <rd:ReportID>1061a866-4b7f-4e77-a7ad-16d412f83219</rd:ReportID>
+  <LeftMargin>2.5cm</LeftMargin>
+  <DataSets>
+    <DataSet Name="SINCECOMP_SUBSIDYS_Entities_reportContract">
+      <rd:DataSetInfo>
+        <rd:DataSetName>SINCECOMP.SUBSIDYS.Entities</rd:DataSetName>
+        <rd:ObjectDataSourceType>SINCECOMP.SUBSIDYS.Entities.reportContract, SINCECOMP.SUBSIDYS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:TableName>reportContract</rd:TableName>
+      </rd:DataSetInfo>
+      <Query>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <CommandText />
+        <DataSourceName>DummyDataSource</DataSourceName>
+      </Query>
+      <Fields>
+        <Field Name="CompanyTels">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>CompanyTels</DataField>
+        </Field>
+        <Field Name="Contract">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Contract</DataField>
+        </Field>
+        <Field Name="DaysParameter">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>DaysParameter</DataField>
+        </Field>
+        <Field Name="DescAgreement">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>DescAgreement</DataField>
+        </Field>
+        <Field Name="GenDate">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>GenDate</DataField>
+        </Field>
+        <Field Name="InstAddress">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>InstAddress</DataField>
+        </Field>
+        <Field Name="Location">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Location</DataField>
+        </Field>
+        <Field Name="NameClient">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>NameClient</DataField>
+        </Field>
+        <Field Name="NameConcept">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>NameConcept</DataField>
+        </Field>
+        <Field Name="NameLDC">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>NameLDC</DataField>
+        </Field>
+        <Field Name="NameSubsidy">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>NameSubsidy</DataField>
+        </Field>
+        <Field Name="Stratum">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Stratum</DataField>
+        </Field>
+        <Field Name="SubsidyValue">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>SubsidyValue</DataField>
+        </Field>
+        <Field Name="Tels">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Tels</DataField>
+        </Field>
+        <Field Name="UbicationGeo">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>UbicationGeo</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <Width>16.25cm</Width>
+  <InteractiveHeight>29.7cm</InteractiveHeight>
+  <Language>es-ES</Language>
+  <TopMargin>2.5cm</TopMargin>
+  <PageHeight>29.7cm</PageHeight>
+</Report>

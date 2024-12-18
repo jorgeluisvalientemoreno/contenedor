@@ -1,0 +1,162 @@
+CREATE OR REPLACE TRIGGER ADM_PERSON.TRG_RESTRICT_LEGALIZA_SERVNUEV
+AFTER UPDATE ON OR_ORDER
+REFERENCING OLD AS OLD NEW AS NEW
+FOR EACH ROW
+DECLARE
+  PRAGMA AUTONOMOUS_TRANSACTION;
+  USR_INNOVACION VARCHAR2(10) := 'INNOVACION';
+  NUNUMERIC_VALUE  NUMBER(16);
+  NUPACKAGE_ID     NUMBER(15);
+  NUPACKAGE_CAMUNDA NUMBER(15);
+  NUCOMMERCIAL_PLAN_ID   NUMBER := 0;
+  ACCION_ VARCHAR(1);
+  COUNT_COMMENT    NUMBER := 0;
+  COUNT_CXC        NUMBER := 0;
+  COUNT_EXEC_OTS   NUMBER := 0;
+ BEGIN
+
+  /*
+  Validamos que el trigger se encuentre activo
+  1=ACTIVO | 0=INACTIVO
+  */
+
+  SELECT NUMERIC_VALUE
+  INTO NUNUMERIC_VALUE
+  FROM OPEN.LD_PARAMETER
+  WHERE PARAMETER_ID = 'TRG_RESTRICT_LEGALIZA_SERVNUEV';
+
+  IF (NUNUMERIC_VALUE <> 1) THEN
+    RETURN;
+  END IF;
+
+
+  /*
+    Excluimos los tipos de ordenes que no son de construcciones
+    12149 - CONSTRUCCION DE INSTALACION INTERNA RESIDENCIAL
+    12150 - CARGO POR CONEXION RESIDENCIAL
+    10273 - VERIFICAR/REALIZAR ACOMETIDA X CONTRATISTA
+  */
+  IF :OLD.TASK_TYPE_ID NOT IN (12149,12150,10273) THEN
+    RETURN;
+  END IF;
+
+  IF :OLD.ORDER_STATUS_ID = :NEW.ORDER_STATUS_ID THEN
+    RETURN;
+  END IF;
+
+  -- Se permite la anulación de órdenes (SOSF-1164)
+  IF :NEW.ORDER_STATUS_ID = 12 THEN
+    RETURN;
+  END IF;
+
+  --Se busca el numero de la solicitud asociado la orden
+  BEGIN
+    SELECT ooa.PACKAGE_ID, pp.COMMERCIAL_PLAN_ID
+      INTO NUPACKAGE_ID, NUCOMMERCIAL_PLAN_ID
+      FROM OPEN.OR_ORDER_ACTIVITY ooa
+      INNER JOIN "OPEN".PR_PRODUCT pp ON pp.PRODUCT_ID = ooa.PRODUCT_ID
+    WHERE ORDER_ID = :NEW.ORDER_ID
+      AND ROWNUM = 1;
+  EXCEPTION
+    WHEN OTHERS THEN
+      RETURN;
+  END;
+
+  /* Se permiten solicitudes no gestionadas desde Camunda */
+  BEGIN
+    SELECT PACKAGE_ID
+    INTO NUPACKAGE_CAMUNDA
+    FROM OPEN.LDCI_PACKAGE_CAMUNDA_LOG
+    WHERE PACKAGE_ID = NUPACKAGE_ID;
+
+    EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      ROLLBACK;
+      RETURN;
+  END;
+
+  --Excluimos los planes de trabajo para los que no aplica el piloto
+  IF NUCOMMERCIAL_PLAN_ID NOT IN (4,36) THEN
+    RETURN;
+  END IF;
+
+
+  SELECT COUNT(1)
+    INTO COUNT_COMMENT
+    FROM "OPEN".MO_COMMENT mc
+  WHERE mc.PACKAGE_ID = NUPACKAGE_ID
+    AND mc.COMMENT_TYPE_ID = 2
+    AND mc.COMMENT_ LIKE '%PLAN_PILOTO_2_VISITAS_V2%';
+
+  IF COUNT_COMMENT = 0 THEN
+    RETURN;
+  END IF;
+
+  /*
+  Se permite la legalizacion unicamente con causal de exito y cuando todas
+  las demas ordenes de construcciones esten cerradas
+  */
+  IF :OLD.ORDER_STATUS_ID IN (5,6,7) AND :NEW.ORDER_STATUS_ID = 8 AND :NEW.CAUSAL_ID IN (9944, 3675) THEN
+    --Solo se pueden legalizar una orden de CxC si todas las demas ordenes de construccion estan legalizadas con exito
+    IF :OLD.TASK_TYPE_ID IN (12150) THEN
+      SELECT COUNT(1)
+        INTO COUNT_CXC
+        FROM "OPEN".OR_ORDER_ACTIVITY ooa
+        INNER JOIN "OPEN".OR_ORDER oo ON oo.ORDER_ID = ooa.ORDER_ID
+      WHERE ooa.PACKAGE_ID = NUPACKAGE_ID
+        AND oo.ORDER_STATUS_ID = 8
+        AND oo.CAUSAL_ID IN (9944,3675,9865)
+        AND oo.TASK_TYPE_ID IN (12149,10273,10762)
+        AND ooa.SUBSCRIPTION_ID IS NOT NULL;
+
+      IF NUCOMMERCIAL_PLAN_ID = 4 AND COUNT_CXC >= 3 THEN
+        RETURN;
+      ELSIF NUCOMMERCIAL_PLAN_ID = 36 AND COUNT_CXC >= 1 THEN
+        RETURN;
+      END IF;
+    END IF;
+
+    --Solo se pueden legalizar una orden de construccion si todas las demas estan al menos ejecutadas
+    IF :OLD.TASK_TYPE_ID IN (12149,10273) THEN
+      SELECT COUNT(1)
+        INTO COUNT_EXEC_OTS
+        FROM "OPEN".OR_ORDER_ACTIVITY ooa
+        INNER JOIN "OPEN".OR_ORDER oo ON oo.ORDER_ID = ooa.ORDER_ID
+      WHERE ooa.PACKAGE_ID = NUPACKAGE_ID
+        AND oo.ORDER_STATUS_ID IN (8,7)
+        AND oo.CAUSAL_ID IN (9944,3675)
+        AND oo.TASK_TYPE_ID IN (12149,10273,12150)
+        AND ooa.SUBSCRIPTION_ID IS NOT NULL;
+
+      IF NUCOMMERCIAL_PLAN_ID = 4 AND COUNT_EXEC_OTS >= 3 THEN
+        RETURN;
+      ELSIF NUCOMMERCIAL_PLAN_ID = 36 AND COUNT_EXEC_OTS >= 2 THEN
+        RETURN;
+      END IF;
+    END IF;
+  ELSE
+    RETURN;
+  END IF;
+
+  /* Restringimos el usuario de BD para que unicamente el usuario de INNOVACION pueda realizar esta accion */
+  IF USER = USR_INNOVACION THEN
+    RETURN;
+  END IF;
+
+  ACCION_ := 'C';
+
+  insert into OPEN.LDCI_SERVNUEV_LOG_OR_ORDER ( ORDER_ID, ACCION, TASK_TYPE_ID_OLD, TASK_TYPE_ID_NEW, ORDER_STATUS_ID_OLD, ORDER_STATUS_ID_NEW, CAUSAL_ID_OLD, CAUSAL_ID_NEW, SYSDATE_, USERMASK, USER_)
+  values ( :NEW.ORDER_ID, ACCION_, :OLD.TASK_TYPE_ID, :NEW.TASK_TYPE_ID, :OLD.ORDER_STATUS_ID, :NEW.ORDER_STATUS_ID, :OLD.CAUSAL_ID, :NEW.CAUSAL_ID, SYSDATE, AU_BOSystem.getSystemUserMask, USER);
+  commit;
+
+  ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error,
+  'Esta accion no esta permitida en Smartflex. Las ordenes de 12149,10273,12150,10762 no se encuentran en un estado valido para el proceso');
+  raise ex.CONTROLLED_ERROR;
+EXCEPTION
+  WHEN EX.CONTROLLED_ERROR THEN
+    RAISE;
+  WHEN OTHERS THEN
+    ERRORS.SETERROR();
+    RAISE EX.CONTROLLED_ERROR;
+END;
+/

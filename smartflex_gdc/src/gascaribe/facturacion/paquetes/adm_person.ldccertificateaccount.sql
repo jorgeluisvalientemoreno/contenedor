@@ -1,0 +1,620 @@
+create or replace PACKAGE adm_person.LDCCERTIFICATEACCOUNT IS
+    /***************************************************************
+    Propiedad intelectual de Sincecomp Ltda.
+    
+    Unidad	     : 
+    Descripcion	 : 
+    
+    Parametro	    Descripcion
+    ============	==============================
+    
+    Historia de Modificaciones
+    Fecha   	           Autor            Modificacion
+    ====================   =========        ====================
+    23/07/2024              PAcosta         OSF-2952: Cambio de esquema ADM_PERSON                              
+    ****************************************************************/    
+SBCHARGESQL VARCHAR2( 8000 );
+
+TYPE TYRCBALANCESDISTR IS RECORD
+    (
+        NUCONCEPTO      CARGOS.CARGCONC%TYPE,
+        SBDESCCONCEPT   CONCEPTO.CONCDESC%TYPE,
+        NUSALDO         CARGOS.CARGVALO%TYPE,
+        NUAJUSTE        CARGOS.CARGVALO%TYPE,
+        NULIQFIN        CARGOS.CARGVALO%TYPE,
+        NUDIFERIDO      CARGOS.CARGVALO%TYPE
+
+    );
+    TYPE TYTBBALANCESDISTR IS TABLE OF TYRCBALANCESDISTR INDEX BY BINARY_INTEGER;
+
+    TYPE TYTBPRODUCTS IS TABLE OF SERVSUSC.SESUNUSE%TYPE INDEX BY VARCHAR2(20);
+
+/*PROCEDURE FILLCHARGEATTRIBUTES;*/
+PROCEDURE GetStatusAccount( ORFCURSOR OUT CONSTANTS.TYREFCURSOR);
+
+PROCEDURE GETACCOUNTSTATEMENTS
+    (
+        INUCONTRACTID          IN   SUSCRIPC.SUSCCODI%TYPE,
+        ITBPRODUCTS            IN   DAPR_PRODUCT.TYTBPRODUCT_ID,
+        IDTINITDATE            IN   DATE,
+        IDTENDDATE             IN   DATE,
+        ORFACCOUNTSTATEMENTS   OUT  NOCOPY PKCONSTANTE.TYREFCURSOR
+    );
+
+END LDCCERTIFICATEACCOUNT;
+/
+create or replace PACKAGE BODY adm_person.LDCCERTIFICATEACCOUNT IS
+TBCHARGEATTRIBUTES CC_TYTBATTRIBUTE;
+GNUPACKAGESID MO_PACKAGES.PACKAGE_ID%TYPE;
+CSBPAGO       CONSTANT VARCHAR2(2) := PKBILLCONST.PAGO;
+CSBAPLSALDFAV CONSTANT VARCHAR2(2) := PKBILLCONST.APLSALDFAV;
+SBERRMSG GE_MESSAGE.DESCRIPTION%TYPE;
+CNUTRACE_LEVEL CONSTANT NUMBER := 4;
+GRCMOTIVE DAMO_MOTIVE.STYMO_MOTIVE;
+
+TYPE TYRCRESUMEDETAIL IS RECORD
+    (
+        NUCONCCODI    NUMBER,
+        SBCONCDESC    VARCHAR2(50),
+        NUSALDACTU    NUMBER,
+        NUSALDVENC    NUMBER,
+        NUSALDDIFE    NUMBER
+
+    );
+    TYPE TYTBRESUMEDETAIL IS TABLE OF TYRCRESUMEDETAIL INDEX BY BINARY_INTEGER;
+
+TYPE TYTBPRODUCTREINDEX IS TABLE OF SERVICIO.SERVDESC%TYPE INDEX BY LONG;
+/*
+PROCEDURE FILLCHARGEATTRIBUTES
+    IS
+      SBATTRIBUTES VARCHAR2( 4000 );
+      SBROWID VARCHAR2( 300 );
+      SBCONCEPT VARCHAR2( 300 );
+      SBCONCEPTTYPE VARCHAR2( 300 );
+      SBSTATE VARCHAR2( 300 );
+      SBCITY VARCHAR2( 300 );
+      SBCATEGORY VARCHAR2( 300 );
+      SBSUBCATEGORY VARCHAR2( 300 );
+      SBCICLE VARCHAR2( 300 );
+      SBSERVICETYPE VARCHAR2( 300 );
+      SBINVOICEPERIOD VARCHAR2( 300 );
+      SBCAUSE VARCHAR2( 300 );
+      SBORIGEN VARCHAR2( 300 );
+      SBAUTOMAT VARCHAR2( 1 ) := PKBILLCONST.AUTOMATICO;
+      SBPOSTFACT VARCHAR2( 1 ) := PKBILLCONST.POST_FACTURACION;
+      SBDIFERIDO VARCHAR2( 3 ) := PKBILLCONST.CSBTOKEN_DIFERIDO;
+      SBCUOTAEXTRA VARCHAR2( 3 ) := PKBILLCONST.CSBTOKEN_CUOTA_EXTRA;
+    BEGIN
+      IF SBCHARGESQL IS NOT NULL THEN
+         RETURN;
+      END IF;
+      SBROWID := 'rowidtochar (cargos.rowid)';
+      SBCONCEPT := 'cargos.cargconc' || CC_BOBOSSUTIL.CSBSEPARATOR || 'concepto.concdesc';
+      SBCONCEPTTYPE := 'concepto.conctico' || CC_BOBOSSUTIL.CSBSEPARATOR || 'tipoconc.ticodesc';
+      SBINVOICEPERIOD := 'cargos.cargpefa' || CC_BOBOSSUTIL.CSBSEPARATOR || 'cc_boBssDescription.fsbInvoicePeriod (cargos.cargpefa)';
+      SBCAUSE := 'cargos.cargcaca' || CC_BOBOSSUTIL.CSBSEPARATOR || 'cc_boBssDescription.fsbChargeCause   (cargos.cargcaca)';
+      SBORIGEN := 'decode(cargtipr,''' || SBAUTOMAT || ''', decode(substr(cargdoso,1,3),''' || SBCUOTAEXTRA || ''',''' || SBPOSTFACT || ''',''' || SBDIFERIDO || ''',''' || SBPOSTFACT || ''', ''F''),  ''M'',''F'',  ''' || SBPOSTFACT || ''')';
+      CC_BOBOSSUTIL.ADDATTRIBUTE( SBROWID, 'rowid_', CC_BOBOSSUTIL.CNUVARCHAR2, SBATTRIBUTES, TBCHARGEATTRIBUTES, TRUE );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( 'cargos.cargnuse', 'cargnuse', CC_BOBOSSUTIL.CNUNUMBER, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( 'servicio.servdesc', 'servdesc', CC_BOBOSSUTIL.CNUVARCHAR2, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( SBCONCEPT, 'concept', CC_BOBOSSUTIL.CNUVARCHAR2, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( SBCONCEPTTYPE, 'conceptType', CC_BOBOSSUTIL.CNUVARCHAR2, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( 'cargos.cargsign', 'cargsign', CC_BOBOSSUTIL.CNUVARCHAR2, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( 'cargos.cargfecr', 'cargfecr', CC_BOBOSSUTIL.CNUDATE, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( 'cargos.cargvalo', 'cargvalo', CC_BOBOSSUTIL.CNUCURRENCY, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( 'factura.factcodi', 'factcodi', CC_BOBOSSUTIL.CNUVARCHAR2, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( 'factura.factfege', 'factfege', CC_BOBOSSUTIL.CNUDATE, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( 'factura.factvcae', 'factvcae', CC_BOBOSSUTIL.CNUDATE, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      CC_BOBOSSUTIL.ADDATTRIBUTE( 'perifact.pefames', 'pefames', CC_BOBOSSUTIL.CNUVARCHAR2, SBATTRIBUTES, TBCHARGEATTRIBUTES );
+      SBCHARGESQL := 'select ' || SBATTRIBUTES || CHR( 10 ) || 'from cargos, concepto, procesos, sa_user, ta_tariconc, tipoconc, cuencobr, factura, perifact, plansusc, pr_product, servicio' || CHR( 10 ) || 'where product_id = cargnuse and product_type_id = servcodi  and concepto.conccodi = cargos.cargconc' || CHR( 10 ) || 'and cargos.cargprog = procesos.proccons' || CHR( 10 ) || 'and cargos.cargusua = sa_user.user_id' || CHR( 10 ) || 'and cargos.cargtaco = ta_tariconc.tacocons(+)' || CHR( 10 ) || 'and concepto.conctico = tipoconc.ticocodi(+) and factcodi = cucofact AND pefacodi = factpefa' || CHR( 10 ) || 'and plsucodi = cucoplsu and cargcuco = cucocodi';
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END;
+*/
+
+    PROCEDURE FILLCHARGESTODISTRIB
+    (
+        ITBCHARGES        IN  PKBCCARGOS.TYTBRCCARGOS,
+        OTBRCCHARGETODIST OUT NOCOPY PKCONCEPTVALUESMGR.TYTBCARGOSDIST
+    )
+    IS
+        NUCURRIDX      NUMBER;
+        SBMARCA        VARCHAR2(1);
+        NUINDICE       NUMBER := 1;
+        SBKEY          VARCHAR2(2000);
+    BEGIN
+        PKERRORS.PUSH('LDCCERTIFICATEACCOUNT.FillChargesToDistrib');
+
+        NUCURRIDX :=  ITBCHARGES.FIRST;
+
+        LOOP
+            EXIT WHEN NUCURRIDX IS NULL;
+
+            IF (ITBCHARGES(NUCURRIDX).CARGSIGN IN (CSBAPLSALDFAV, CSBPAGO)) THEN
+                SBMARCA := 'S';
+            ELSE
+                SBMARCA := 'N';
+            END IF;
+
+            SBKEY := PKCONCEPTVALUESMGR.FSBKEY (
+                            NULL, NULL, NULL, NULL, NULL, ITBCHARGES(NUCURRIDX).CARGCONC,
+                            NULL, NULL, NULL, NULL, NULL, 1, 0 );
+
+
+          OTBRCCHARGETODIST(NUINDICE).CARGTERM := SBKEY;
+          OTBRCCHARGETODIST(NUINDICE).CARGSIGN := ITBCHARGES(NUCURRIDX).CARGSIGN;
+          OTBRCCHARGETODIST(NUINDICE).CARGVALO := ITBCHARGES(NUCURRIDX).CARGVALO;
+          OTBRCCHARGETODIST(NUINDICE).CARGFLFA := SBMARCA;
+          OTBRCCHARGETODIST(NUINDICE).CARGFECR := ITBCHARGES(NUCURRIDX).CARGFECR;
+          OTBRCCHARGETODIST(NUINDICE).CARGUNID := ITBCHARGES(NUCURRIDX).CARGUNID;
+          OTBRCCHARGETODIST(NUINDICE).CARGDOSO := ITBCHARGES(NUCURRIDX).CARGDOSO;
+          OTBRCCHARGETODIST(NUINDICE).CARGCODO := ITBCHARGES(NUCURRIDX).CARGCODO;
+
+            UT_TRACE.TRACE('Conc: '|| SBKEY|| ' - Valor: '|| ITBCHARGES(NUCURRIDX).CARGVALO, 5);
+
+            NUINDICE := NUINDICE + 1;
+
+            NUCURRIDX := ITBCHARGES.NEXT(NUCURRIDX);
+        END LOOP;
+
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+      WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END FILLCHARGESTODISTRIB;
+
+
+
+    PROCEDURE DISTRIBUTECHARGES
+    (
+        INUPRODUCTID      IN  SERVSUSC.SESUNUSE%TYPE,
+        ITBCHARGES        IN  PKBCCARGOS.TYTBRCCARGOS,
+        OTBBALANCESDISTR  OUT NOCOPY TYTBBALANCESDISTR
+    )
+    IS
+        NUCURRIDX      NUMBER;
+        SBMARCA        VARCHAR2(1);
+        NUINDICE       NUMBER := 1;
+        SBKEY          VARCHAR2(2000);
+        SBIND          VARCHAR2(100);
+        RCKEY          PKCONCEPTVALUESMGR.RTYDATAKEY;
+        TBKEYS         PKCONCEPTVALUESMGR.TYSTRING;
+        TBVABL         PKCONCEPTVALUESMGR.TYNUMBER;
+        TBPAGO         PKCONCEPTVALUESMGR.TYNUMBER;
+
+        TBCHARGESTODIST PKCONCEPTVALUESMGR.TYTBCARGOSDIST;
+    BEGIN
+        PKERRORS.PUSH('LDCCERTIFICATEACCOUNT.DistributeCharges');
+
+
+        IF (ITBCHARGES.COUNT > 0 ) THEN
+
+            FILLCHARGESTODISTRIB (ITBCHARGES, TBCHARGESTODIST);
+
+
+            PKCONCEPTVALUESMGR.GETBALANCEBYCONC (
+                INUPRODUCTID,
+                TBCHARGESTODIST,
+                TBKEYS,
+                TBPAGO,
+                TBVABL,
+                1,
+                0,
+                TRUE
+            );
+
+
+            SBIND := TBKEYS.FIRST;
+            IF ( SBIND IS NOT NULL ) THEN
+                LOOP
+                    PKCONCEPTVALUESMGR.DECODEKEY(TBKEYS(SBIND), RCKEY, 1, 0);
+
+                    IF  TBPAGO(SBIND) <> 0 THEN
+                        OTBBALANCESDISTR(RCKEY.CARGDEPA).NUCONCEPTO := RCKEY.CARGDEPA;
+                        OTBBALANCESDISTR(RCKEY.CARGDEPA).SBDESCCONCEPT := PKTBLCONCEPTO.FSBGETCONCDESC(RCKEY.CARGDEPA);
+                        OTBBALANCESDISTR(RCKEY.CARGDEPA).NUSALDO    := TBPAGO(SBIND);
+                        OTBBALANCESDISTR(RCKEY.CARGDEPA).NUAJUSTE   := 0;
+                        OTBBALANCESDISTR(RCKEY.CARGDEPA).NULIQFIN   := TBPAGO(SBIND);
+                        OTBBALANCESDISTR(RCKEY.CARGDEPA).NUDIFERIDO := 0;
+                    END IF;
+
+                    EXIT WHEN SBIND = TBKEYS.LAST;
+                    SBIND := TBKEYS.NEXT(SBIND);
+                END LOOP;
+            END IF;
+
+        END IF;
+
+        PKERRORS.POP;
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 OR EX.CONTROLLED_ERROR THEN
+            PKERRORS.POP;
+            RAISE;
+      WHEN OTHERS THEN
+            PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+            PKERRORS.POP;
+            RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2, SBERRMSG);
+    END DISTRIBUTECHARGES;
+
+
+
+
+    PROCEDURE GETACCOUNTSTATEMENTS
+    (
+        INUCONTRACTID          IN   SUSCRIPC.SUSCCODI%TYPE,
+        ITBPRODUCTS            IN   DAPR_PRODUCT.TYTBPRODUCT_ID,
+        IDTINITDATE            IN   DATE,
+        IDTENDDATE             IN   DATE,
+        ORFACCOUNTSTATEMENTS   OUT  NOCOPY PKCONSTANTE.TYREFCURSOR
+    )
+    IS
+        TBFACTURAS          FA_BCCERTIFICATES.TYTBFACTURAS;
+        TBCHARGES           PKBCCARGOS.TYTBRCCARGOS;
+        TBCHARGESTODIST     PKCONCEPTVALUESMGR.TYTBCARGOSDIST;
+        TBBALANCESBYCONCEPT TYTBBALANCESDISTR;
+        TBADJUSTBALANCES    TYTBBALANCESDISTR;
+        NUCURRIDX           NUMBER;
+        NUPRODSIDX          NUMBER;
+        NUADJUIDX           NUMBER;
+        TBPRODUCTREINDEX    TYTBPRODUCTREINDEX;
+        DTFECHAVEN          DATE;
+        DTFECHAGEN          DATE;
+
+
+
+        NUCURRACCOUNTTOTAL     NUMBER;
+        NUDEFERREDTOTAL        NUMBER;
+        NUCREDITBALANCE        NUMBER;
+        NUCLAIMVALUE           NUMBER;
+        NUDEFCLAIMVALUE        NUMBER;
+        RFRESUMEDETAIL         PKCONSTANTE.TYREFCURSOR;
+        RFACCOUNTDETAIL        PKCONSTANTE.TYREFCURSOR;
+        TBRESUMEDETAIL         TYTBRESUMEDETAIL;
+        NUDEFIDX               NUMBER;
+        NUTRANSIDX             NUMBER;
+        TBCERTIFICATESTATEMEN  LDCFA_TYTBCERTSTATEMENT;
+        OBCERTSTATEMEN         LDCFA_TYOBCERTSTATEMENT;
+        NUIDXTBOB              NUMBER;
+
+        nuPefacodi             perifact.pefacodi%type;
+
+        FUNCTION fnuGetMonthByPeriod(inuPefacodi    perifact.pefacodi%type)
+        RETURN perifact.pefames%type
+        IS
+            nuMes perifact.pefames%type;
+
+            cursor cuPeriod
+            is
+                select  perifact.pefames
+                from    perifact
+                where   perifact.pefacodi = inuPefacodi;
+
+        BEGIN
+
+            IF cuPeriod%ISOPEN THEN
+                CLOSE cuPeriod;
+            END IF;
+
+            OPEN cuPeriod;
+            FETCH cuPeriod  INTO nuMes;
+            CLOSE cuPeriod;
+
+            RETURN nuMes;
+
+        EXCEPTION
+            WHEN OTHERS THEN
+                RETURN 1;
+        END fnuGetMonthByPeriod;
+
+
+    BEGIN
+
+        PKERRORS.PUSH ('LDCCERTIFICATEACCOUNT.GetAccountStatements');
+        UT_TRACE.TRACE('LDCCERTIFICATEACCOUNT.GetAccountStatements',1);
+
+
+
+        TBCERTIFICATESTATEMEN := LDCFA_TYTBCERTSTATEMENT();
+
+
+        FA_BCCERTIFICATES.GETBILLSBYDATE (
+            INUCONTRACTID,
+            IDTINITDATE,
+            IDTENDDATE,
+            TBFACTURAS
+        );
+        UT_TRACE.TRACE('Cantidad facturas contrato: '||TBFACTURAS.COUNT,1);
+
+
+        NUCURRIDX := TBFACTURAS.FIRST;
+        LOOP
+            EXIT WHEN NUCURRIDX IS NULL;
+
+
+            NUPRODSIDX := ITBPRODUCTS.FIRST;
+            LOOP
+                EXIT WHEN NUPRODSIDX IS NULL;
+                UT_TRACE.TRACE('--Procesando Fact:'||TBFACTURAS(NUCURRIDX).FACTCODI
+                               ||';  Prod:'||ITBPRODUCTS(NUPRODSIDX)||'--',1);
+
+
+                TBCHARGES.DELETE;
+                TBBALANCESBYCONCEPT.DELETE;
+                TBADJUSTBALANCES.DELETE;
+                TBRESUMEDETAIL.DELETE;
+
+
+                IF (NOT TBPRODUCTREINDEX.EXISTS(TO_CHAR(ITBPRODUCTS(NUPRODSIDX)))) THEN
+                    TBPRODUCTREINDEX(TO_CHAR(ITBPRODUCTS(NUPRODSIDX))) :=
+                        PKBCBILLINGNOTESCRDB.FSBDESCSERVBYSERVSUSC(ITBPRODUCTS(NUPRODSIDX));
+                END IF;
+
+
+
+                FA_BCCERTIFICATES.GETPREVCHARGESFGCC (
+                    TBFACTURAS(NUCURRIDX).FACTCODI,
+                    ITBPRODUCTS(NUPRODSIDX),
+                    TBCHARGES
+                );
+                UT_TRACE.TRACE('Cantidad cargos previos: '||TBCHARGES.COUNT,1);
+
+
+
+                DISTRIBUTECHARGES (
+                    ITBPRODUCTS(NUPRODSIDX),
+                    TBCHARGES,
+                    TBBALANCESBYCONCEPT
+                );
+
+
+                TBCHARGES.DELETE;
+                FA_BCCERTIFICATES.GETCHARGESFGCC (
+                    TBFACTURAS(NUCURRIDX).FACTCODI,
+                    ITBPRODUCTS(NUPRODSIDX),
+                    TBCHARGES
+                );
+                UT_TRACE.TRACE('Cantidad cargos ajustes: '||TBCHARGES.COUNT,1);
+
+
+                DISTRIBUTECHARGES (
+                    ITBPRODUCTS(NUPRODSIDX),
+                    TBCHARGES,
+                    TBADJUSTBALANCES
+                );
+
+
+                UT_TRACE.TRACE('Calculo Liquidaci?n Final de Factura',1);
+                NUADJUIDX := TBADJUSTBALANCES.FIRST;
+                LOOP
+                    EXIT WHEN NUADJUIDX IS NULL;
+
+
+                    IF (NOT TBBALANCESBYCONCEPT.EXISTS(NUADJUIDX)) THEN
+                        TBBALANCESBYCONCEPT(NUADJUIDX).NUCONCEPTO :=
+                            TBADJUSTBALANCES(NUADJUIDX).NUCONCEPTO;
+
+                        TBBALANCESBYCONCEPT(NUADJUIDX).SBDESCCONCEPT :=
+                            TBADJUSTBALANCES(NUADJUIDX).SBDESCCONCEPT;
+
+                        TBBALANCESBYCONCEPT(NUADJUIDX).NUSALDO := 0;
+                        TBBALANCESBYCONCEPT(NUADJUIDX).NUDIFERIDO := 0;
+                    END IF;
+
+                    TBBALANCESBYCONCEPT(NUADJUIDX).NUAJUSTE :=
+                        TBADJUSTBALANCES(NUADJUIDX).NUSALDO;
+
+                    TBBALANCESBYCONCEPT(NUADJUIDX).NULIQFIN :=
+                        TBBALANCESBYCONCEPT(NUADJUIDX).NUSALDO +
+                        TBBALANCESBYCONCEPT(NUADJUIDX).NUAJUSTE;
+
+                    NUADJUIDX := TBADJUSTBALANCES.NEXT(NUADJUIDX);
+                END LOOP;
+
+                FA_BOACCOUNTSTATUSTODATE.PRODUCTACCOUNTSTATUSTODATE (
+                    ITBPRODUCTS(NUPRODSIDX),
+                    TBFACTURAS(NUCURRIDX).FACTFEGE,
+                    NUCURRACCOUNTTOTAL,
+                    NUDEFERREDTOTAL,
+                    NUCREDITBALANCE,
+                    NUCLAIMVALUE,
+                    NUDEFCLAIMVALUE,
+                    RFRESUMEDETAIL,
+                    RFACCOUNTDETAIL
+                );
+                FETCH RFRESUMEDETAIL BULK COLLECT INTO TBRESUMEDETAIL;
+
+
+
+                NUDEFIDX := TBRESUMEDETAIL.FIRST;
+                LOOP
+                    EXIT WHEN NUDEFIDX IS NULL;
+                    IF (TBBALANCESBYCONCEPT.EXISTS(TBRESUMEDETAIL(NUDEFIDX).NUCONCCODI)) THEN
+
+                        TBBALANCESBYCONCEPT(TBRESUMEDETAIL(NUDEFIDX).NUCONCCODI).NUDIFERIDO :=
+                            TBRESUMEDETAIL(NUDEFIDX).NUSALDDIFE;
+
+                    END IF;
+                    NUDEFIDX := TBRESUMEDETAIL.NEXT(NUDEFIDX);
+                END LOOP;
+                UT_TRACE.TRACE('Saldos por concepto procesados: '||TBBALANCESBYCONCEPT.COUNT,1);
+
+
+                IF TBBALANCESBYCONCEPT.FIRST > 0 THEN
+
+                    NUTRANSIDX := TBBALANCESBYCONCEPT.FIRST;
+                    LOOP
+                        EXIT WHEN NUTRANSIDX IS NULL;
+
+                        begin
+                        select min(cc.cucofeve) into DTFECHAVEN
+                          from cuencobr cc
+                          where cc.cucofact = TBFACTURAS(NUCURRIDX).FACTCODI;
+
+                          select factfege into DTFECHAGEN
+                          from open.factura
+                          where factcodi = TBFACTURAS(NUCURRIDX).FACTCODI;
+
+                          exception
+                            when others then
+                            null;
+                        end;
+
+                        OBCERTSTATEMEN := LDCFA_TYOBCERTSTATEMENT(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+
+                        nuPefacodi := pktblfactura.fnugetfactpefa(TBFACTURAS(NUCURRIDX).FACTCODI);
+                        --OBCERTSTATEMEN.NUMES             := TO_CHAR(TBFACTURAS(NUCURRIDX).FACTFEGE,'mm');
+                        OBCERTSTATEMEN.NUMES             := fnuGetMonthByPeriod(nuPefacodi);
+                        OBCERTSTATEMEN.NUFACTURA         := TBFACTURAS(NUCURRIDX).FACTCODI;
+                        OBCERTSTATEMEN.DTEXPIRATIONDATE  := DTFECHAVEN;
+                        OBCERTSTATEMEN.DTGENERATIONDATE  := DTFECHAGEN; --TBFACTURAS(NUCURRIDX).FACTFEGE;
+                        OBCERTSTATEMEN.NUPRODUCT         := ITBPRODUCTS(NUPRODSIDX);
+                        OBCERTSTATEMEN.SBDESCPRODUCT     := TBPRODUCTREINDEX(TO_CHAR(ITBPRODUCTS(NUPRODSIDX)));
+                        OBCERTSTATEMEN.NUCONCEPT         := TBBALANCESBYCONCEPT(NUTRANSIDX).NUCONCEPTO ;
+                        OBCERTSTATEMEN.SBDESCCONCEPT     := TBBALANCESBYCONCEPT(NUTRANSIDX).SBDESCCONCEPT ;
+                        OBCERTSTATEMEN.NUPREVLIQUID      := TBBALANCESBYCONCEPT(NUTRANSIDX).NUSALDO;
+                        OBCERTSTATEMEN.NUADJUSTMENT      := TBBALANCESBYCONCEPT(NUTRANSIDX).NUAJUSTE;
+                        OBCERTSTATEMEN.NULATELIQUID      := TBBALANCESBYCONCEPT(NUTRANSIDX).NULIQFIN;
+                        OBCERTSTATEMEN.NUDEFEBALANCE     := NVL(TBBALANCESBYCONCEPT(NUTRANSIDX).NUDIFERIDO,0);
+                        OBCERTSTATEMEN.NUCREDBALANCE     := NVL(NUCREDITBALANCE,0);
+
+                        TBCERTIFICATESTATEMEN.EXTEND();
+
+                        NUIDXTBOB := TBCERTIFICATESTATEMEN.LAST();
+
+                        TBCERTIFICATESTATEMEN(NUIDXTBOB) := OBCERTSTATEMEN;
+
+                        NUTRANSIDX := TBBALANCESBYCONCEPT.NEXT(NUTRANSIDX);
+                    END LOOP;
+
+				ELSE
+					NUTRANSIDX := TBADJUSTBALANCES.FIRST;
+					LOOP
+						EXIT WHEN NUTRANSIDX IS NULL;
+
+                        begin
+							select min(cc.cucofeve) into DTFECHAVEN
+							from cuencobr cc
+							where cc.cucofact = TBFACTURAS(NUCURRIDX).FACTCODI;
+
+							select factfege into DTFECHAGEN
+							from open.factura
+							where factcodi = TBFACTURAS(NUCURRIDX).FACTCODI;
+
+							exception
+								when others then
+								null;
+						end;
+
+					OBCERTSTATEMEN := LDCFA_TYOBCERTSTATEMENT(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+
+                    nuPefacodi := pktblfactura.fnugetfactpefa(TBFACTURAS(NUCURRIDX).FACTCODI);
+                    --OBCERTSTATEMEN.NUMES             := TO_CHAR(TBFACTURAS(NUCURRIDX).FACTFEGE,'mm');
+                    OBCERTSTATEMEN.NUMES             := fnuGetMonthByPeriod(nuPefacodi);
+					OBCERTSTATEMEN.NUFACTURA         := TBFACTURAS(NUCURRIDX).FACTCODI;
+					OBCERTSTATEMEN.DTEXPIRATIONDATE  := DTFECHAVEN;
+					OBCERTSTATEMEN.DTGENERATIONDATE  := DTFECHAGEN; --TBFACTURAS(NUCURRIDX).FACTFEGE;
+					OBCERTSTATEMEN.NUPRODUCT         := ITBPRODUCTS(NUPRODSIDX);
+					OBCERTSTATEMEN.SBDESCPRODUCT     := TBPRODUCTREINDEX(TO_CHAR(ITBPRODUCTS(NUPRODSIDX)));
+					OBCERTSTATEMEN.NUCONCEPT         := TBADJUSTBALANCES(NUTRANSIDX).NUCONCEPTO ;
+					OBCERTSTATEMEN.SBDESCCONCEPT     := TBADJUSTBALANCES(NUTRANSIDX).SBDESCCONCEPT ;
+					OBCERTSTATEMEN.NUPREVLIQUID      := TBADJUSTBALANCES(NUTRANSIDX).NUSALDO;
+					OBCERTSTATEMEN.NUADJUSTMENT      := TBADJUSTBALANCES(NUTRANSIDX).NUAJUSTE;
+					OBCERTSTATEMEN.NULATELIQUID      := TBADJUSTBALANCES(NUTRANSIDX).NULIQFIN;
+					OBCERTSTATEMEN.NUDEFEBALANCE     := NVL(TBADJUSTBALANCES(NUTRANSIDX).NUDIFERIDO,0);
+					OBCERTSTATEMEN.NUCREDBALANCE     := NVL(NUCREDITBALANCE,0);
+
+					TBCERTIFICATESTATEMEN.EXTEND();
+
+					NUIDXTBOB := TBCERTIFICATESTATEMEN.LAST();
+
+					TBCERTIFICATESTATEMEN(NUIDXTBOB) := OBCERTSTATEMEN;
+
+					NUTRANSIDX := TBADJUSTBALANCES.NEXT(NUTRANSIDX);
+
+					END LOOP;
+
+                END IF;
+
+                NUPRODSIDX := ITBPRODUCTS.NEXT(NUPRODSIDX);
+            END LOOP;
+
+            NUCURRIDX := TBFACTURAS.NEXT(NUCURRIDX);
+        END LOOP;
+
+
+
+
+
+        OPEN ORFACCOUNTSTATEMENTS FOR
+        SELECT * FROM TABLE(TBCERTIFICATESTATEMEN) ORDER BY NUFACTURA, NUPRODUCT, NUCONCEPT;
+
+        PKERRORS.POP;
+
+    EXCEPTION
+        WHEN LOGIN_DENIED OR PKCONSTANTE.EXERROR_LEVEL2 THEN
+          PKERRORS.POP;
+          RAISE;
+        WHEN OTHERS THEN
+          PKERRORS.NOTIFYERROR(PKERRORS.FSBLASTOBJECT, SQLERRM, SBERRMSG);
+          PKERRORS.POP;
+          RAISE_APPLICATION_ERROR(PKCONSTANTE.NUERROR_LEVEL2,SBERRMSG);
+
+    END GETACCOUNTSTATEMENTS;
+
+
+
+   PROCEDURE GetStatusAccount( ORFCURSOR OUT CONSTANTS.TYREFCURSOR)
+    IS
+      /*****************************************************************
+        Propiedad intelectual de Gases del Caribe.
+
+        Nombre del Paquete: proDatosModifCotizacion
+        Descripcion:        Modifica la fecha y usuario de modificacion de una cotizacion
+
+        Autor    : Miguel Angel Lopez Santos
+        Fecha    : 03-04-2017
+
+        Historia de Modificaciones
+
+        DD-MM-YYYY    <Autor>.              Modificacion
+        -----------  -------------------    -------------------------------------
+        03-04-2017   Miguel Angel Lopez     Creacion
+        ******************************************************************/
+      TBPRODUCTS DAPR_PRODUCT.TYTBPRODUCT_ID;
+    BEGIN
+      UT_TRACE.TRACE( 'INICIO LDCCERTIFICATEACCOUNT.GetStatusAccount', CNUTRACE_LEVEL );
+      CC_BOCERTIFICATE.GetStatusAccount( ORFCURSOR);
+      UT_TRACE.TRACE( 'variable '|| GNUPACKAGESID, CNUTRACE_LEVEL );
+      GNUPACKAGESID := MO_BOINSTANCE_DB.FNUGETPACKIDINSTANCE;
+      UT_TRACE.TRACE( 'variable '|| GNUPACKAGESID, CNUTRACE_LEVEL );
+      GRCMOTIVE := MO_BOPACKAGES.FRCGETINITIALMOTIVE( GNUPACKAGESID, FALSE );
+      OPEN CC_BCCERTIFICATE.CUPRODUCTSBYPACK( GNUPACKAGESID );
+      FETCH CC_BCCERTIFICATE.CUPRODUCTSBYPACK
+         BULK COLLECT INTO TBPRODUCTS;
+      CLOSE CC_BCCERTIFICATE.CUPRODUCTSBYPACK;
+      GETACCOUNTSTATEMENTS( GRCMOTIVE.SUBSCRIPTION_ID, TBPRODUCTS, GRCMOTIVE.PROV_INITIAL_DATE, GRCMOTIVE.PROV_FINAL_DATE, ORFCURSOR );
+      UT_TRACE.TRACE( 'FIN LDCCERTIFICATEACCOUNT.GetStatusAccount', CNUTRACE_LEVEL );
+    EXCEPTION
+      WHEN EX.CONTROLLED_ERROR THEN
+         RAISE EX.CONTROLLED_ERROR;
+      WHEN OTHERS THEN
+         ERRORS.SETERROR;
+         RAISE EX.CONTROLLED_ERROR;
+   END GETSTATUSACCOUNT;
+
+END LDCCERTIFICATEACCOUNT;
+/
+PROMPT Otorgando permisos de ejecucion a LDCCERTIFICATEACCOUNT
+BEGIN
+    pkg_utilidades.praplicarpermisos('LDCCERTIFICATEACCOUNT', 'ADM_PERSON');
+END;
+/

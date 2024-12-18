@@ -1,0 +1,580 @@
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\Ludycom.CommercialSale.dll.config
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\Ludycom.CommercialSale.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\Ludycom.CommercialSale.pdb
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+C:\Users\HORBATH\Desktop\caso 200-2000\fuentes\Unificado\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll.config
+C:\Users\HORBATH\Desktop\caso 200-2000\fuentes\Unificado\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\fuentes\Unificado\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.pdb
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll.config
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.pdb
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Common.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Windows.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Component.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\NetTopologySuite.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Oracle.DataAccess.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.HelpDesk.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Encoding.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.BL.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Assembly.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ruler.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Common.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Appearance.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\GeoAPI.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\SevenZipSharp.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.PS.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Configuration.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataModel.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Security.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.SqlParser.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Excel.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Aspose.Cells.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\office.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\ProjNet.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\objetos\NET\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csprojResolveAssemblyReference.cache
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll.config
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.pdb
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Common.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Windows.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Component.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\NetTopologySuite.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Oracle.DataAccess.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.HelpDesk.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Encoding.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.BL.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Assembly.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ruler.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Common.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Appearance.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\GeoAPI.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\SevenZipSharp.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.PS.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Configuration.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataModel.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Security.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.SqlParser.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Excel.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Aspose.Cells.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\office.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\ProjNet.dll
+C:\Users\HORBATH\Desktop\caso 200-2000\CRM_VEN_JGBA_2002000_1\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csprojResolveAssemblyReference.cache
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll.config
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.pdb
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.Premise.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Common.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.EnterpriseLibrary.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Windows.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Component.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\NetTopologySuite.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Oracle.DataAccess.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.HelpDesk.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Encoding.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.BL.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.Entities.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Assembly.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ProtectedData.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.WinForms.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ruler.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Common.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Appearance.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Infraestructure.Icons.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Component.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\GeoAPI.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\SevenZipSharp.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.DAL.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.PS.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.CommercialPlan.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Configuration.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataModel.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Billing.Configurator.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MasterDetail.Executor.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Base.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Security.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.Base.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.SqlParser.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.LoadDemmand.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Excel.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.Link.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Link.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Base.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Interop.RULECONSTRUCTORLib.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Aspose.Cells.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Base.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Mapviewer.Base.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OfficeAddIns.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.Controller.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Excel.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Word.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.GeographicLayerViewer.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\office.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Vbe.Interop.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\ProjNet.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csprojResolveAssemblyReference.cache
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_3\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csprojResolveAssemblyReference.cache
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+D:\Desarrollos\Entregas\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\caso 200-2000\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\Entrega final\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csprojResolveAssemblyReference.cache
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\Entrega final\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\Entrega final\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\Entrega final\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\Entrega final\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\Entrega final\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\Entrega final\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\PROYECTOS\200-2000\Entrega final\CRM_VEN_JGBA_2002000_4\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+C:\CRM_VEN_JGBA_2002000_5\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+C:\CRM_VEN_JGBA_2002000_5\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+C:\CRM_VEN_JGBA_2002000_5\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+C:\CRM_VEN_JGBA_2002000_5\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+C:\CRM_VEN_JGBA_2002000_5\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+C:\CRM_VEN_JGBA_2002000_5\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+C:\CRM_VEN_JGBA_2002000_5\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\Ludycom.CommercialSale.dll.config
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\Ludycom.CommercialSale.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\Ludycom.CommercialSale.pdb
+C:\Caso 200-2000 ultima entrega\CRM_VEN_JGBA_2002000_6\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+C:\Caso 200-2000 ultima entrega\CRM_VEN_JGBA_2002000_6\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+C:\Caso 200-2000 ultima entrega\CRM_VEN_JGBA_2002000_6\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+C:\Caso 200-2000 ultima entrega\CRM_VEN_JGBA_2002000_6\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+C:\Caso 200-2000 ultima entrega\CRM_VEN_JGBA_2002000_6\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+C:\Caso 200-2000 ultima entrega\CRM_VEN_JGBA_2002000_6\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+C:\Caso 200-2000 ultima entrega\CRM_VEN_JGBA_2002000_6\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\Mis entregas\Caso 200-2000\NUEVA ENTREGA 200-2000\CRM_VEN_JGBA_2002000_7\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+C:\Users\Miguel Ballesteros\Documents\GASES DEL CARIBE-SMARTFLEX - .NET\Mis entregas\Caso 200-2000\NUEVA ENTREGA 200-2000\CRM_VEN_JGBA_2002000_7\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csprojResolveAssemblyReference.cache
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll.config
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.pdb
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Common.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.BL.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Windows.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Component.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\NetTopologySuite.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Oracle.DataAccess.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.HelpDesk.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Encoding.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.PS.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Assembly.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ruler.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Common.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Appearance.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\GeoAPI.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\SevenZipSharp.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.ReportViewer.WinForms.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Configuration.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataModel.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.ReportViewer.Common.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Security.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.Base.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.SqlParser.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Excel.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Base.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Aspose.Cells.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Base.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\office.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\JoshGlen\Documents\Visual Studio 2010\Projects\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\ProjNet.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll.config
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.pdb
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Common.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.BL.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Windows.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Component.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\NetTopologySuite.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Oracle.DataAccess.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.HelpDesk.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Encoding.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.PS.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Assembly.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ruler.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Common.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Appearance.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Component.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\GeoAPI.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\SevenZipSharp.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.ReportViewer.WinForms.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Configuration.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataModel.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.ReportViewer.Common.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Security.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.Base.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.SqlParser.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Excel.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Base.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Aspose.Cells.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Base.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\office.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\ProjNet.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csprojResolveAssemblyReference.cache
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+C:\Horbarth\Pruebas de Casos GDC\CRM_VEN_JGBA_2002000_9\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll.config
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.pdb
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csprojResolveAssemblyReference.cache
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+E:\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll.config
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ludycom.CommercialSale.pdb
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.AddressBank.Premise.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Common.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.EnterpriseLibrary.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.BL.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ExecutableMgr.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Windows.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Component.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\NetTopologySuite.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.Geom.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Oracle.DataAccess.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.HelpDesk.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Encoding.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.Entities.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.ExtractAndMix.Api.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Printing.DAL.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.PS.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Assembly.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Security.ProtectedData.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Diagramming.WinForms.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Ruler.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\MindFusion.Common.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Appearance.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Infraestructure.Icons.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Component.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\GeoAPI.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OracleCustomTypes.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\SevenZipSharp.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.CommercialPlan.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Configuration.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataModel.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Billing.Configurator.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Neodynamic.WinControls.BarcodeProfessional.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MasterDetail.Executor.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Base.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\AxInterop.RULECONSTRUCTORLib.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Security.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.UI.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Statement.Base.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.SqlParser.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.LoadDemmand.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Excel.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.Link.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.DataBaseObject.Link.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Framework.Base.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Interop.RULECONSTRUCTORLib.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Resources.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Entities.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.BL.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Aspose.Cells.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Base.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Report.Executor.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.Define.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.WebServicesGenerator.DAL.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.Mapviewer.Base.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.OfficeAddIns.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.Controller.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Excel.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Office.Interop.Word.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.MapViewer.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\OpenSystems.GeographicLayerViewer.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\office.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\Microsoft.Vbe.Interop.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\bin\Release\ProjNet.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.Properties.Resources.resources
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.LDC_FCVC.resources
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.UI.Question.resources
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.csproj.GenerateResource.Cache
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll.licenses
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.dll
+C:\Users\Horbath\Desktop\88\Nueva carpeta (2)\Ludycom.CommercialSale\Ludycom.CommercialSale\obj\x86\Release\Ludycom.CommercialSale.pdb

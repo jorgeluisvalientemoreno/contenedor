@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectView>ProjectFiles</ProjectView>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ReferencePath>C:\Program Files (x86)\OpenSystems\OpenSmartFlex\;C:\Program Files (x86)\OpenSystems\OpenSmartFlexQH\;C:\Program Files (x86)\OpenSystems\OpenSmartFlexBD\</ReferencePath>
+  </PropertyGroup>
+</Project>

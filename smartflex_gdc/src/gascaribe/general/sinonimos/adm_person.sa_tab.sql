@@ -1,0 +1,5 @@
+PROMPT Crea Sinonimo a tabla sa_tab
+BEGIN
+    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.sa_tab FOR sa_tab';
+END;
+/

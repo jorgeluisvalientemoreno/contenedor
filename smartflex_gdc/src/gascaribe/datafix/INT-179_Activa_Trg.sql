@@ -1,0 +1,1 @@
+alter trigger TRG_AIU_SUBSCRIBER_SMS enable;

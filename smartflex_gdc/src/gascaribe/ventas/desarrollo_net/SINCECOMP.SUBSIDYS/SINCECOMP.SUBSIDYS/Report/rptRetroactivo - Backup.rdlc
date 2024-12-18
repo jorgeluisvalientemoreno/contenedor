@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DummyDataSource">
+      <ConnectionProperties>
+        <ConnectString />
+        <DataProvider>SQL</DataProvider>
+      </ConnectionProperties>
+      <rd:DataSourceID>dd969b9a-510a-4bae-a16d-4948a668636b</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <BottomMargin>2.5cm</BottomMargin>
+  <RightMargin>2.5cm</RightMargin>
+  <PageWidth>21cm</PageWidth>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <InteractiveWidth>21cm</InteractiveWidth>
+  <rd:GridSpacing>0.25cm</rd:GridSpacing>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <Body>
+    <ColumnSpacing>1cm</ColumnSpacing>
+    <ReportItems>
+      <Textbox Name="Letter_s11">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>17.75cm</Top>
+        <ZIndex>10</ZIndex>
+        <Width>14cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>2.25cm</Height>
+        <Value>="Para mayor información comunicarse con la compañía distribuidora y comercializadora de gas natural " + Fields!LDCName.Value + "  a la línea gratuita " + Fields!CompanyTels.Value + ". Con la finalidad de informarle sobre los requisitos necesarios para la obtención del subsidio."</Value>
+      </Textbox>
+      <Textbox Name="Letter_s10">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>15.5cm</Top>
+        <ZIndex>9</ZIndex>
+        <Width>14cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>2cm</Height>
+        <Value>="Si el suscriptor del predio no hace uso de este beneficio dentro del plazo notificado, éste será asignado a otro predio de acuerdo con los requisitos definidos por la compañía distribuidora y comercializadora de gas natural."</Value>
+      </Textbox>
+      <Textbox Name="Letter_s9">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>13cm</Top>
+        <ZIndex>8</ZIndex>
+        <Width>14cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>2.25cm</Height>
+        <Value>="Es importante que el suscriptor " + Fields!Contract.Value + "-" + Fields!ClientName.Value + " " + Fields!LastName.Value + " del predio en referencia, informe si dará uso a este beneficio en los próximos " + Fields!DaysParameter.Value + " días hábiles, contados a partir de la fecha de elaboración de la presente comunicación."</Value>
+      </Textbox>
+      <Textbox Name="Letter_s8">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>9.75cm</Top>
+        <ZIndex>7</ZIndex>
+        <Width>14cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>3cm</Height>
+        <Value>="El " + Fields!SponsorName.Value + " a través del convenio " + Fields!DealName.Value + ", le ha destinado un subsidio para el servicio de gas natural en el estrato " + Fields!SocialStatus.Value + " al cual usted pertenece por un valor estimado de $ " + Fields!SubsidyValue.Value + ", sobre el valor del concepto de " + Fields!ConceptName.Value + "  de la red de gas natural de su predio."</Value>
+      </Textbox>
+      <Textbox Name="Letter_s7">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>6.75cm</Top>
+        <ZIndex>6</ZIndex>
+        <Width>14cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.75cm</Height>
+        <Value>=Fields!GeoUbication.Value</Value>
+      </Textbox>
+      <Textbox Name="Letter_s6">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>6cm</Top>
+        <ZIndex>5</ZIndex>
+        <Width>14cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.75cm</Height>
+        <Value>="Teléfono: " + Fields!Tels.Value</Value>
+      </Textbox>
+      <Textbox Name="Letter_s5">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>5.25cm</Top>
+        <ZIndex>4</ZIndex>
+        <Width>14cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.75cm</Height>
+        <Value>=Fields!InstAddress.Value</Value>
+      </Textbox>
+      <Textbox Name="Letter_s4">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>4.5cm</Top>
+        <ZIndex>3</ZIndex>
+        <Width>14cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.75cm</Height>
+        <Value>="Suscriptor " +  Fields!Contract.Value</Value>
+      </Textbox>
+      <Textbox Name="Letter_s3">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>3.75cm</Top>
+        <ZIndex>2</ZIndex>
+        <Width>14cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.75cm</Height>
+        <Value>=Fields!ClientName.Value + " " + Fields!LastName.Value</Value>
+      </Textbox>
+      <Textbox Name="Letter_s2">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>2cm</Top>
+        <ZIndex>1</ZIndex>
+        <Width>2cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.75cm</Height>
+        <Value>="Señor(a):"</Value>
+      </Textbox>
+      <Textbox Name="Letter_s1">
+        <Left>0.25cm</Left>
+        <ToolTip>Carta de Retroactivo</ToolTip>
+        <Top>0.25cm</Top>
+        <Width>14cm</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+        </Style>
+        <CanGrow>true</CanGrow>
+        <Height>0.75cm</Height>
+        <Value>=Fields!Location.Value + ", " + Format ((Now), "dd' de 'MMMM' del 'yyyy") + "."</Value>
+      </Textbox>
+    </ReportItems>
+    <Height>21.5cm</Height>
+  </Body>
+  <rd:ReportID>9d25d075-90f8-4c0e-a515-a165364c654f</rd:ReportID>
+  <LeftMargin>2.5cm</LeftMargin>
+  <DataSets>
+    <DataSet Name="RETROACTIVO">
+      <rd:DataSetInfo>
+        <rd:DataSetName>SINCECOMP.SUBSIDYS.Entities</rd:DataSetName>
+        <rd:ObjectDataSourceType>SINCECOMP.SUBSIDYS.Entities.retroactivo, SINCECOMP.SUBSIDYS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:TableName>retroactivo</rd:TableName>
+      </rd:DataSetInfo>
+      <Query>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <CommandText />
+        <DataSourceName>DummyDataSource</DataSourceName>
+      </Query>
+      <Fields>
+        <Field Name="ClientName">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>ClientName</DataField>
+        </Field>
+        <Field Name="LastName">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>LastName</DataField>
+        </Field>
+        <Field Name="CompanyTels">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>CompanyTels</DataField>
+        </Field>
+        <Field Name="ConceptName">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>ConceptName</DataField>
+        </Field>
+        <Field Name="Contract">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>Contract</DataField>
+        </Field>
+        <Field Name="DaysParameter">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>DaysParameter</DataField>
+        </Field>
+        <Field Name="DealName">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>DealName</DataField>
+        </Field>
+        <Field Name="GenDate">
+          <rd:TypeName>System.DateTime</rd:TypeName>
+          <DataField>GenDate</DataField>
+        </Field>
+        <Field Name="GeoUbication">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>GeoUbication</DataField>
+        </Field>
+        <Field Name="InstAddress">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>InstAddress</DataField>
+        </Field>
+        <Field Name="LDCName">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>LDCName</DataField>
+        </Field>
+        <Field Name="Location">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Location</DataField>
+        </Field>
+        <Field Name="SocialStatus">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>SocialStatus</DataField>
+        </Field>
+        <Field Name="SponsorName">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>SponsorName</DataField>
+        </Field>
+        <Field Name="SubsidyValue">
+          <rd:TypeName>System.Int64</rd:TypeName>
+          <DataField>SubsidyValue</DataField>
+        </Field>
+        <Field Name="Tels">
+          <rd:TypeName>System.String</rd:TypeName>
+          <DataField>Tels</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <Width>14.5cm</Width>
+  <InteractiveHeight>29.7cm</InteractiveHeight>
+  <Language>es-ES</Language>
+  <TopMargin>2.5cm</TopMargin>
+  <PageHeight>29.7cm</PageHeight>
+</Report>

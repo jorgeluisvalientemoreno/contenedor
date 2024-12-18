@@ -1,0 +1,14 @@
+DECLARE
+  nuConta NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO nuConta
+  FROM dba_objects
+  WHERE object_name = 'LDCI_PKINTEGRAGIS'
+   AND OWNER = 'OPEN'
+   AND OBJECT_TYPE = 'SYNONYM';
+   
+  IF nuConta > 0 then
+    EXECUTE IMMEDIATE 'DROP SYNONYM  OPEN.LDCI_PKINTEGRAGIS';
+  END IF;   
+END;
+/

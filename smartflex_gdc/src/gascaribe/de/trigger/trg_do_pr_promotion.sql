@@ -1,0 +1,43 @@
+CREATE OR REPLACE TRIGGER OPEN.TRG_DO_PR_PROMOTION
+    AFTER INSERT OR UPDATE OR DELETE
+    ON OPEN.PR_PROMOTION
+    REFERENCING OLD AS OLD NEW AS NEW
+    FOR EACH ROW
+BEGIN
+
+    DECLARE
+
+    PROMOTION_ID NUMBER(15);
+    OPERATION VARCHAR2(1);
+
+    BEGIN
+
+    IF INSERTING THEN
+        PROMOTION_ID := :new.PROMOTION_ID;
+        OPERATION := 'I';
+    ELSIF UPDATING THEN
+        PROMOTION_ID := :old.PROMOTION_ID;
+        OPERATION := 'U';
+    ELSE
+        PROMOTION_ID := :old.PROMOTION_ID;
+        OPERATION := 'D';
+    END IF;
+
+    INSERT INTO OPEN.LDCBI_PR_PROMOTION (
+        PROMOTION_ID,
+        OPERATION
+    )
+    VALUES (
+        PROMOTION_ID,
+        OPERATION
+    );
+
+    EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20000,
+                                'Error en TRG_DO_PR_PROMOTION por -->' || sqlcode ||
+                                chr(13) || sqlerrm);
+    END;
+
+END;
+/

@@ -1,0 +1,6 @@
+PROMPT ARCHIVO pkupdaccoreceiv.sql
+PROMPT CREA SINONIMO PAQUETE PKUPDACCORECEIV
+BEGIN
+  pkg_utilidades.prCrearSinonimos('PKUPDACCORECEIV','OPEN');
+END;
+/

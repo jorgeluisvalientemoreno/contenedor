@@ -1,0 +1,11 @@
+C:\Users\Administrator\Downloads\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.csproj.AssemblyReference.cache
+C:\Users\Administrator\Downloads\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.Properties.Resources.resources
+C:\Users\Administrator\Downloads\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.csproj.GenerateResource.cache
+C:\Users\Administrator\Downloads\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.dll.licenses
+C:\Users\Administrator\Downloads\OpenSmartFlex\OpenSmartFlex\LDCAPLAC.dll.config
+C:\Users\Administrator\Downloads\OpenSmartFlex\OpenSmartFlex\LDCAPLAC.dll
+C:\Users\Administrator\Downloads\OpenSmartFlex\OpenSmartFlex\LDCAPLAC.pdb
+C:\Users\Administrator\Downloads\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Downloads\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.csproj.CopyComplete
+C:\Users\Administrator\Downloads\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.dll
+C:\Users\Administrator\Downloads\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.pdb

@@ -1,0 +1,4 @@
+BEGIN
+ pkg_utilidades.prCrearSinonimos('PRC_GENERASOLISUSPENCDM', 'PERSONALIZACIONES');
+END;
+/

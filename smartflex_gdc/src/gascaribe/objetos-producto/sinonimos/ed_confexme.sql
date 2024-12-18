@@ -1,0 +1,4 @@
+BEGIN
+  execute immediate 'CREATE OR REPLACE SYNONYM adm_person.ED_CONFEXME FOR OPEN.ED_CONFEXME';
+END;
+/

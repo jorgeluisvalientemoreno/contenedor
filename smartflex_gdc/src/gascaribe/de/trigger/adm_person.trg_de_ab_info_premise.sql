@@ -1,0 +1,43 @@
+CREATE OR REPLACE TRIGGER ADM_PERSON.TRG_DE_AB_INFO_PREMISE
+    AFTER INSERT OR UPDATE OR DELETE
+    ON OPEN.AB_INFO_PREMISE
+    REFERENCING OLD AS OLD NEW AS NEW
+    FOR EACH ROW
+BEGIN
+
+    DECLARE
+
+    INFO_PREMISE_ID NUMBER(15);
+    OPERATION VARCHAR2(1);
+
+    BEGIN
+
+    IF INSERTING THEN
+        INFO_PREMISE_ID := :new.INFO_PREMISE_ID;
+        OPERATION := 'I';
+    ELSIF UPDATING THEN
+        INFO_PREMISE_ID := :old.INFO_PREMISE_ID;
+        OPERATION := 'U';
+    ELSE
+        INFO_PREMISE_ID := :old.INFO_PREMISE_ID;
+        OPERATION := 'D';
+    END IF;
+
+    INSERT INTO OPEN.LDCBI_AB_INFO_PREMISE (
+        INFO_PREMISE_ID,
+        OPERATION
+    )
+    VALUES (
+        INFO_PREMISE_ID,
+        OPERATION
+    );
+
+    EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20000,
+                                'Error en TRG_DE_AB_INFO_PREMISE por -->' || sqlcode ||
+                                chr(13) || sqlerrm);
+    END;
+
+END;
+/

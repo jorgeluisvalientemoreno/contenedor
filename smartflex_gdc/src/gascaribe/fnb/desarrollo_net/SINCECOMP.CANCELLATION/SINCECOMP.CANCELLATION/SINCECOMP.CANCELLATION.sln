@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SINCECOMP.CANCELLATION", "SINCECOMP.CANCELLATION\SINCECOMP.CANCELLATION.csproj", "{A06F7E84-460C-4A63-8EDE-458B7128E8AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A06F7E84-460C-4A63-8EDE-458B7128E8AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A06F7E84-460C-4A63-8EDE-458B7128E8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A06F7E84-460C-4A63-8EDE-458B7128E8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A06F7E84-460C-4A63-8EDE-458B7128E8AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

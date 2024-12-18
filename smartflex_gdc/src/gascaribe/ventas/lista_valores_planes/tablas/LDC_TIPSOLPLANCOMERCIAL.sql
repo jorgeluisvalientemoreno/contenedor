@@ -1,0 +1,80 @@
+DECLARE
+  CURSOR cuTabla(sbTable VARCHAR2) IS
+    SELECT * FROM all_tables WHERE upper(TABLE_NAME) = upper(sbTable);
+
+  rccuTabla cuTabla%ROWTYPE;
+
+BEGIN
+  Dbms_Output.Put_Line('Inicia Creacion tabla LDC_TIPSOLPLANCOMERCIAL');
+  OPEN cuTabla('LDC_TIPSOLPLANCOMERCIAL');
+  FETCH cuTabla
+    INTO rccuTabla;
+
+  IF (cuTabla%NOTFOUND) THEN
+  
+    Dbms_Output.Put_Line('Inicia Crea LDC_TIPSOLPLANCOMERCIAL');
+  
+    EXECUTE IMMEDIATE 'create table LDC_TIPSOLPLANCOMERCIAL
+                      (
+                        PACKAGE_TYPE_ID NUMBER(15),
+                        COMMERCIAL_PLAN_ID NUMBER(15),
+                        CREATED_TSPC DATE,
+                        USUARIO_CREATED VARCHAR2(50),
+                        UPDATED_TSPC DATE,
+                        USUARIO_UPDATED VARCHAR2(50)
+                      )';
+    --- Comentarios de la tabla.
+    dbms_output.put_line('SCRIPT: Comentarios de la tabla...');
+    EXECUTE IMMEDIATE 'comment on table LDC_TIPSOLPLANCOMERCIAL is ''TIPO SOLICITUD POR PLAN COMERCIAL''';
+    EXECUTE IMMEDIATE 'comment on column LDC_TIPSOLPLANCOMERCIAL.PACKAGE_TYPE_ID is ''CONSECUTIVO DE TIPO DE PAQUETE''';
+    EXECUTE IMMEDIATE 'comment on column LDC_TIPSOLPLANCOMERCIAL.COMMERCIAL_PLAN_ID is ''CONSECUTIVO PLAN COMERCIAL''';
+    EXECUTE IMMEDIATE 'comment on column LDC_TIPSOLPLANCOMERCIAL.CREATED_TSPC is ''FECHA CREACION''';
+    EXECUTE IMMEDIATE 'comment on column LDC_TIPSOLPLANCOMERCIAL.USUARIO_CREATED is ''USUARIO QUE REALIZO LA CREACION''';
+    EXECUTE IMMEDIATE 'comment on column LDC_TIPSOLPLANCOMERCIAL.UPDATED_TSPC is ''FECHA ACTUALIZACION''';
+    EXECUTE IMMEDIATE 'comment on column LDC_TIPSOLPLANCOMERCIAL.USUARIO_UPDATED is ''USUARIO QUE REALIZO LA ACTUALIZACION''';
+  
+    --- Indices
+    dbms_output.put_line('SCRIPT: Indices...');
+    EXECUTE IMMEDIATE 'create index IDX_LDC_TIPSOLPLANCOMERCIAL_0 on LDC_TIPSOLPLANCOMERCIAL (PACKAGE_TYPE_ID)';
+    EXECUTE IMMEDIATE 'create index IDX_LDC_TIPSOLPLANCOMERCIAL_1 on LDC_TIPSOLPLANCOMERCIAL (COMMERCIAL_PLAN_ID)';
+  
+    --- llave primaria
+    BEGIN
+      dbms_output.put_line('SCRIPT: llave primaria...');
+      EXECUTE IMMEDIATE 'alter table LDC_TIPSOLPLANCOMERCIAL add constraint PK_LDC_TIPSOLPLANCOMERCIAL primary key (PACKAGE_TYPE_ID,COMMERCIAL_PLAN_ID)';
+    EXCEPTION
+      WHEN OTHERS THEN
+        dbms_output.put_line('SCRIPT: ERROR CREANDO LLAVE PRIMARI[PK_LDC_TIPSOLPLANCOMERCIAL]');
+    END;
+  
+    --- llave foranea
+    BEGIN
+      dbms_output.put_line('SCRIPT: llave foranea...');
+      EXECUTE IMMEDIATE 'alter table LDC_TIPSOLPLANCOMERCIAL add constraint FK_LDC_TIPSOLPLANCOMERCIAL_0 foreign key (PACKAGE_TYPE_ID) references PS_PACKAGE_TYPE (PACKAGE_TYPE_ID)';
+    EXCEPTION
+      WHEN OTHERS THEN
+        dbms_output.put_line('SCRIPT: ERROR CREANDO LLAVE FORANEA[FK_LDC_TIPSOLPLANCOMERCIAL_0]');
+    END;
+    BEGIN
+      dbms_output.put_line('SCRIPT: llave foranea...');
+      EXECUTE IMMEDIATE 'alter table LDC_TIPSOLPLANCOMERCIAL add constraint FK_LDC_TIPSOLPLANCOMERCIAL_1 foreign key (COMMERCIAL_PLAN_ID) references CC_COMMERCIAL_PLAN (COMMERCIAL_PLAN_ID)';
+    EXCEPTION
+      WHEN OTHERS THEN
+        dbms_output.put_line('SCRIPT: ERROR CREANDO LLAVE FORANEA[FK_LDC_TIPSOLPLANCOMERCIAL_1]');
+    END;
+  
+    dbms_output.put_line('SCRIPT: APLICANDO PERMISOS...');
+    --- Aplica Permisos.
+    EXECUTE IMMEDIATE 'GRANT SELECT,UPDATE,DELETE,INSERT ON LDC_TIPSOLPLANCOMERCIAL TO SYSTEM_OBJ_PRIVS_ROLE';
+    EXECUTE IMMEDIATE 'GRANT SELECT ON LDC_TIPSOLPLANCOMERCIAL TO REPORTES';
+    EXECUTE IMMEDIATE 'GRANT SELECT ON LDC_TIPSOLPLANCOMERCIAL TO RSELOPEN';
+    --- Fin.
+  
+    Dbms_Output.Put_Line('Fin Creacion tabla LDC_TIPSOLPLANCOMERCIAL');
+  ELSE
+    Dbms_Output.Put_Line('***************tabla LDC_TIPSOLPLANCOMERCIAL ya existe');
+  END IF;
+  CLOSE cuTabla;
+
+END;
+/

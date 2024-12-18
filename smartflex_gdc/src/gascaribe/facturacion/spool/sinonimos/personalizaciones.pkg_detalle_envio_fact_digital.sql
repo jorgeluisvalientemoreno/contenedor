@@ -1,0 +1,5 @@
+PROMPT Crea Sinonimo PKG_DETALLE_ENVIO_FACT_DIGITAL.
+BEGIN
+  pkg_utilidades.prCrearSinonimos(upper('PKG_DETALLE_ENVIO_FACT_DIGITAL'),'PERSONALIZACIONES');
+END;
+/

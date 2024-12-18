@@ -1,0 +1,120 @@
+CREATE OR REPLACE TRIGGER ADM_PERSON.TRG_BI_CARGOS 
+AFTER INSERT OR UPDATE OR DELETE ON OPEN.CARGOS
+REFERENCING OLD AS OLD NEW AS NEW
+FOR EACH ROW
+
+DECLARE
+
+   t_ejecucion VARCHAR2(8);
+   i_ejecucion TIMESTAMP(6);
+   f_ejecucion TIMESTAMP(6);
+   d_ejecucion NUMBER;
+
+OPERATION VARCHAR(1) := NULL;
+
+BEGIN
+    i_ejecucion:=systimestamp;
+
+IF INSERTING THEN
+    t_ejecucion := 'INSERT';
+  OPERATION := 'I';
+  INSERT INTO LDCBI_CARGOS (
+    CARGCUCO,
+    CARGCONC,
+    CARGSIGN,
+    CARGDOSO,
+    CARGCODO,
+    OPERATION
+  )
+  VALUES (
+    :new.CARGCUCO,
+    :new.CARGCONC,
+    :new.CARGSIGN,
+    :new.CARGDOSO,
+    :new.CARGCODO,
+    OPERATION
+  );
+ELSIF UPDATING THEN
+    t_ejecucion := 'UPDATE';
+  OPERATION := 'U';
+  INSERT INTO LDCBI_CARGOS (
+    CARGCUCO,
+    CARGCONC,
+    CARGSIGN,
+    CARGDOSO,
+    CARGCODO,
+    CARGCUCO_OLD,
+    CARGCONC_OLD,
+    CARGSIGN_OLD,
+    CARGDOSO_OLD,
+    CARGCODO_OLD,
+    OPERATION
+  )
+  VALUES (
+    :new.CARGCUCO,
+    :new.CARGCONC,
+    :new.CARGSIGN,
+    :new.CARGDOSO,
+    :new.CARGCODO,
+    :old.CARGCUCO,
+    :old.CARGCONC,
+    :old.CARGSIGN,
+    :old.CARGDOSO,
+    :old.CARGCODO,
+    OPERATION
+  );
+ELSIF DELETING THEN
+
+    t_ejecucion := 'DELETE';
+  OPERATION := 'D';
+  INSERT INTO LDCBI_CARGOS (
+    CARGCUCO_OLD,
+    CARGCONC_OLD,
+    CARGSIGN_OLD,
+    CARGDOSO_OLD,
+    CARGCODO_OLD,
+    OPERATION
+  )
+  VALUES (
+    :old.CARGCUCO,
+    :old.CARGCONC,
+    :old.CARGSIGN,
+    :old.CARGDOSO,
+    :old.CARGCODO,
+    OPERATION
+  );
+ELSE
+  OPERATION := 'O';
+  INSERT INTO LDCBI_CARGOS (
+    CARGCUCO,
+    CARGCONC,
+    CARGSIGN,
+    CARGDOSO,
+    CARGCODO,
+    CARGCUCO_OLD,
+    CARGCONC_OLD,
+    CARGSIGN_OLD,
+    CARGDOSO_OLD,
+    CARGCODO_OLD,
+    OPERATION
+  )
+  VALUES (
+    :new.CARGCUCO,
+    :new.CARGCONC,
+    :new.CARGSIGN,
+    :new.CARGDOSO,
+    :new.CARGCODO,
+    :old.CARGCUCO,
+    :old.CARGCONC,
+    :old.CARGSIGN,
+    :old.CARGDOSO,
+    :old.CARGCODO,
+    OPERATION
+  );
+END IF;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    RAISE EX.CONTROLLED_ERROR;
+END;
+/

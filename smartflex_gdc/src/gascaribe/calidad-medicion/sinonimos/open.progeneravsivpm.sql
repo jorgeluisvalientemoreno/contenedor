@@ -1,0 +1,5 @@
+PROMPT CREA SINONIMO PROGENERAVSIVPM
+BEGIN
+  pkg_utilidades.prCrearSinonimos('PROGENERAVSIVPM','OPEN');
+END;
+/

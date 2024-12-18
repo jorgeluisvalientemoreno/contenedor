@@ -1,0 +1,537 @@
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\obj\x86\Debug\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\LUDYCOM.MANOT.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\LUDYCOM.MANOT.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\LUDYCOM.MANOT.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\bin\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Debug\ResGen.read.1.tlog
+D:\Oscar Ospino\Proyectos\160412 - Mantenimiento de Notas\VS\MANOTS-Dev\PruebaDLL\obj\x86\Debug\ResGen.write.1.tlog
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Debug\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\bin\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Debug\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Debug\ResGen.read.1.tlog
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOTS-Dev - copia\PruebaDLL\obj\x86\Debug\ResGen.write.1.tlog
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\bin\Debug\Ludycom.Manot.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\bin\Debug\Ludycom.Manot.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\bin\Debug\Ludycom.Manot.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\obj\x86\Debug\ResGen.read.1.tlog
+D:\Oscar Ospino\Proyectos\ENTREGADOS\160412 - Mantenimiento de Notas\VS\MANOT-Dev\PruebaDLL\obj\x86\Debug\ResGen.write.1.tlog
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Oracle.DataAccess.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-210-Generación de Lecturas a Especiales\VS\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 6\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.PruebaMANOT.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 7 - copia\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.vbprojResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Office.Interop.Excel.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\office.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Vbe.Interop.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Office.Interop.Excel.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\bin\Debug\office.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Prueba.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-210-Generación de Lecturas a Especiales\VS\Entrega 8\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Form1.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Office.Interop.Excel.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\office.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Vbe.Interop.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Office.Interop.Excel.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\office.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.vbprojResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Prueba.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Office.Interop.Excel.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\office.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Vbe.Interop.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Office.Interop.Excel.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\bin\Debug\office.xml
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.vbprojResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Prueba.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\ENTREGADOS\200-856-Mejora en el proceso de critica a industriales\Visual Studio\Entrega 2\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Office.Interop.Excel.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Ruler.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Common.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\office.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Vbe.Interop.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\SevenZipSharp.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.pdb
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Office.Interop.Excel.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\bin\Debug\office.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.vbprojResolveAssemblyReference.cache
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Prueba.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.vbproj.GenerateResource.Cache
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+D:\Oscar Ospino\Proyectos\EN DESARROLLO\200-1105 - Modificaciones Lecturas Complementarias\Visual Studio\Entrega 1\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.pdb
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.xml
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Common.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.EnterpriseLibrary.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Windows.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Oracle.DataAccess.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.Misc.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinEditors.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinGrid.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.HelpDesk.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Encoding.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Security.ProtectedData.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTabControl.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinExplorerBar.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.Instrumentation.Logger.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDataSource.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinTree.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Diagramming.WinForms.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Ruler.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Shared.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinDock.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinSchedule.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\MindFusion.Common.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Appearance.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Infragistics2.Win.UltraWinMaskedEdit.v5.3.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ExceptionHelper.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ValidateVersion.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\office.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Vbe.Interop.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\SevenZipSharp.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.ConnectionHelper.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\OpenSystems.Apps.UpdaterHelper.dll
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.pdb
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\LUDYCOM.LECTESP.xml
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\Microsoft.Office.Interop.Excel.xml
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\office.xml
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.vbprojResolveAssemblyReference.cache
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Prueba.resources
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.Resources.resources
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.vbproj.GenerateResource.Cache
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+C:\Users\luisl\Documents\Visual Studio 2010\Projects\PROYECTO NET\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\PruebaDLL\bin\Debug\PruebaDLL.exe.config
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.exe
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.xml
+C:\Users\ASTRID\Documents\HERNAN\HM SOFTWARE\PROYECTOS\HORBATH\GESTION\GDC\869\insumos\FUENTES -CA869\Unificado\.NET\LUDYCOM_LECTESP\PROYECTO NET\LECTESP-Dev\PruebaDLL\obj\x86\Debug\PruebaDLL.pdb

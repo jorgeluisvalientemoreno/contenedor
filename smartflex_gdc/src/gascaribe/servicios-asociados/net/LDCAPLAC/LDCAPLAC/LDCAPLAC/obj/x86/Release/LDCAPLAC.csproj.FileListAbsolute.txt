@@ -1,0 +1,20 @@
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\LDCAPLAC.dll.config
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\LDCAPLAC.dll
+C:\Program Files (x86)\OpenSystems\OpenSmartFlex\LDCAPLAC.pdb
+C:\Users\Jorge Valiente\Documents\TEMP\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.csprojResolveAssemblyReference.cache
+C:\Users\Jorge Valiente\Documents\TEMP\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.Properties.Resources.resources
+C:\Users\Jorge Valiente\Documents\TEMP\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.UI.LDC_APLAC.resources
+C:\Users\Jorge Valiente\Documents\TEMP\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.csproj.GenerateResource.Cache
+C:\Users\Jorge Valiente\Documents\TEMP\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.dll.licenses
+C:\Users\Jorge Valiente\Documents\TEMP\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.dll
+C:\Users\Jorge Valiente\Documents\TEMP\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.pdb
+C:\_JIRA\Program Files (x86)\OpenSystems\OpenSmartFlex\LDCAPLAC.dll.config
+C:\_JIRA\Program Files (x86)\OpenSystems\OpenSmartFlex\LDCAPLAC.dll
+C:\_JIRA\Program Files (x86)\OpenSystems\OpenSmartFlex\LDCAPLAC.pdb
+C:\_JIRA\_GITHUB\smartflex\src\gascaribe\servicios-asociados\net\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.csprojResolveAssemblyReference.cache
+C:\_JIRA\_GITHUB\smartflex\src\gascaribe\servicios-asociados\net\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.Properties.Resources.resources
+C:\_JIRA\_GITHUB\smartflex\src\gascaribe\servicios-asociados\net\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.UI.LDC_APLAC.resources
+C:\_JIRA\_GITHUB\smartflex\src\gascaribe\servicios-asociados\net\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.csproj.GenerateResource.Cache
+C:\_JIRA\_GITHUB\smartflex\src\gascaribe\servicios-asociados\net\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.dll.licenses
+C:\_JIRA\_GITHUB\smartflex\src\gascaribe\servicios-asociados\net\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.dll
+C:\_JIRA\_GITHUB\smartflex\src\gascaribe\servicios-asociados\net\LDCAPLAC\LDCAPLAC\LDCAPLAC\obj\x86\Release\LDCAPLAC.pdb

@@ -1,0 +1,4 @@
+BEGIN
+  pkg_utilidades.prCrearSinonimos('DATOS_COTIZACION_COMERCIAL','PERSONALIZACIONES');
+END;
+/

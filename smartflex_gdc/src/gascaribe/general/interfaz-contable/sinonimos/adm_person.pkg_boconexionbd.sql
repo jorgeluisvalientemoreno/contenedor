@@ -1,0 +1,5 @@
+PROMPT Crea Sinonimo ADM_PERSON.PKG_BOCONEXIONBD
+BEGIN
+  pkg_utilidades.prCrearSinonimos('PKG_BOCONEXIONBD', 'ADM_PERSON');
+END;
+/
