@@ -17,7 +17,8 @@ inner join open.ldc_info_predio ip on ip.premise_id = ap.premise_id
 inner join open.ge_geogra_location  gl on gl.geograp_location_id = ad.geograp_location_id
 inner join open.servsusc  s on s.sesunuse = p.product_id
 inner join open.estacort  ec on ec.escocodi = s.sesuesco
-where p.product_id in (38000956);
+where p.product_id in (6617211);
 
 
 --update ldc_info_predio ip  set ip.predio_castigado = 'S' where ip.premise_id = 555490
+--update servsusc  set sesuesco = 5 where sesunuse = 6617211

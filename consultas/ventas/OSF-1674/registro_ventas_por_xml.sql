@@ -43,19 +43,19 @@ DECLARE
 
 BEGIN
 
-  ut_trace.Init;
+  --ut_trace.Init;
   ut_trace.SetOutPut(ut_trace.cnuTRACE_DBMS_OUTPUT);
   ut_trace.SetLevel(99);
 
   inufuncionario          := 43046;
   inupuntoatencion        := 4107;
   inutipoformulario       := 1;
-  inunumeroformulario     := 13867;
+  inunumeroformulario     := 13861681;
   isbobservacion          := 'OSF';
-  inudireccionid          := 945970 ;
+  inudireccionid          := 370708 ; --*
   inutipoidentificacion   := 1;
   inuidentificacion       := '1007893260';--1203169900;
-  isbnombre               := 'Andres';
+  isbnombre               := 'Andres'; 
   isbapellido             := 'Cuevas';
   isbnombreempresa        := 'Sun Energy';
   isbcargo                := 'Gerente';
@@ -69,13 +69,14 @@ BEGIN
   inutelefono             := 3002569658;
   inutipopredio           := NULL;
   inuestadoley            := NULL;
-  inupromicion            := NULL; --84;
-  inuplancomercial        := 5;
-  inuvalortotal           := 2849803;
-  inuplanfinanciacion     := 23;
-  inucuotaincial          := 50000;
+  inupromicion            := 469; 
+  inupromicion            := 470;--84, 88 (estufa);  --* depende el escenario
+  inuplancomercial        := 48; --* 48
+  inuvalortotal           := 85305; --*
+  inuplanfinanciacion     := 23; --* null
+  inucuotaincial          := 0; 
   inunumerocuotas         := 12;
-  inucuotamensual         := 274031 ;
+  inucuotamensual         := 7967 ; --*
   inuformapago            := NULL;
   isbcuotainicialrecibida := 'N';
   inutipoinstalacion      := 1;
@@ -114,6 +115,8 @@ BEGIN
                                                                      isbcuotainicialrecibida,
                                                                      inutipoinstalacion,
                                                                      inuUso);
+                                                                     
+DBMS_OUTPUT.PUT_LINE('XML:  ' || isbRequestXML);
 
   "OPEN".OS_RegisterRequestWithXML(isbRequestXML,
                                    onuPackageId,
@@ -124,7 +127,7 @@ BEGIN
   IF (onuErrorCode = 0) THEN
     DBMS_OUTPUT.PUT_LINE('Venta: ' || TO_CHAR(onuPackageId) ||
                          ' - Motivo: ' || TO_CHAR(onuMotiveId));
-    Commit;
+    --Commit;
     --ROLLBACK;
   ELSE
     DBMS_OUTPUT.PUT_LINE('Error:  ' || osbErrorMessage);

@@ -12,4 +12,6 @@ Select p.prpcprca  proyecto,
        p.prpcsare  saldo_reactivado,
        p.prpcreca  resultado_castigo
 from open.gc_prodprca  p
-Where p.prpcnuse = 17145111
+Where p.prpcnuse = 6617211
+order by p.prpcprca desc;
+

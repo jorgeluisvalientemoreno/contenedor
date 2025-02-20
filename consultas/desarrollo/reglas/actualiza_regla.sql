@@ -54,7 +54,7 @@ BEGIN
         sql_lastModif := 'to_date ('''|| rcGetConfExpre.LAST_MODIFI_DATE||''',''DD/MM/YYYY HH24:MI:SS''),';
         sql_objType := rcGetConfExpre.OBJECT_TYPE||''',';
 
-    fileMgr := utl_file.fopen('/smartfiles','ActualizaRegla_'||nuConfExpreId||'.sql','w');
+    fileMgr := utl_file.fopen('/smartfiles/Construcciones/','ActualizaRegla_'||nuConfExpreId||'.sql','w');
 
     ut_string.extstring(sql_expression,',',tbstring);
 
@@ -65,12 +65,12 @@ Archivo     insGR_CONFIG_EXPRESSION_<AAAAMMDD>.sql
 Autor       <Nombre autor>
 Fecha       <AAAAMMDD>
 
-Descripci�n
+Descripción
 Observaciones
 
 Historia de Modificaciones
-Fecha         Autor               Modificaci�n
-<AAAAMMDD>  <Nombre Autor>              Creaci�n
+Fecha         Autor               Modificación
+<AAAAMMDD>  <Nombre Autor>              Creación
 ******************************************************************/
 declare
     CURSOR cuData(nuIdConfExpre in gr_config_expression.config_expression_id%type) is

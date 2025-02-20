@@ -6,10 +6,9 @@ select sesunuse  producto,
 from servsusc
 inner join pr_product  on product_id = sesunuse
 where product_type_id = 7014
-and   sesuesfn = 'D'
-and   sesuesco != 5
-and   product_status_id = 2;
-
+and   sesuesfn = 'C'
+and   sesuesco = 5
+and   product_status_id = 2
 
 
 

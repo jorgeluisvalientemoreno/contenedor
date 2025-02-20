@@ -39,12 +39,23 @@ end;
 /
 --insert lego 
 insert into LDC_USUALEGO select 38963 person_id, 43 agente_id, 38963 tecnico_unidad, 'N' unico_tecnico, null causal_id  from dual where not exists(select null from ldc_usualego where person_id=38963) ;
+update ld_parameter set value_chain ='dsaltarin@gascaribe.com' where parameter_id='LDC_EMAILNOLE';
+
+
+insert into ge_financial_profile values(1200, 1, 99999999999);
+insert into ge_financial_profile values(1200, 2, 99999999999);
+insert into ge_financial_profile values(1200, 3, 99999999999);
+insert into ge_financial_profile values(1200, 4, 99999999999);
+insert into ge_financial_profile values(1200, 5, 99999999999);
+insert into ge_financial_profile values(1200, 6, 99999999999);
+
 
 commit;
 
- begin
+  begin
    CC_BOPlan_Comisiones.InsCanVenVendedor(38963, 64);
    commit;
+ exception
  when others then
    rollback;
  end;

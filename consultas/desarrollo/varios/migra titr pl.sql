@@ -2,9 +2,10 @@ declare
   sbMIgraqh varchar2(1) := 'S';
   nuevoCodigoTitr varchar2(1):='N';
   nuTitr          open.or_task_type.task_type_id%type;
-
+  nuExiste          number;
+  sbContinua        varchar2(1):='N';
   cursor cuTipoTrab is
-    select SEQ_OR_TASK_TYPE_4498.NEXTVAL NUEVO_TITR, TASK_TYPE_ID,DESCRIPTION,SHORT_NAME,IS_ANULL,TRY_AUTOM_ASSIGMENT,USES_OPER_SECTOR,TASK_TYPE_CLASSIF,ADD_ITEMS_ALLOWED,ADD_NET_ALLOWED,COMMENT_REQUIRED,WARRANTY_PERIOD,CONCEPT,SOLD_ENGINEERING_SER,PRIORITY,NODAL_CHANGE,ARRANGED_HOUR_ALLOWED,OBJECT_ID,TASK_TYPE_GROUP_ID,WORK_DAYS,COMPROMISE_CRM,USE_,NOTIFICABLE,GEN_ADMIN_ORDER,UPD_ITEMS_ALLOWED,PRINT_FORMAT_ID
+    select  TASK_TYPE_ID,DESCRIPTION,SHORT_NAME,IS_ANULL,TRY_AUTOM_ASSIGMENT,USES_OPER_SECTOR,TASK_TYPE_CLASSIF,ADD_ITEMS_ALLOWED,ADD_NET_ALLOWED,COMMENT_REQUIRED,WARRANTY_PERIOD,CONCEPT,SOLD_ENGINEERING_SER,PRIORITY,NODAL_CHANGE,ARRANGED_HOUR_ALLOWED,OBJECT_ID,TASK_TYPE_GROUP_ID,WORK_DAYS,COMPROMISE_CRM,USE_,NOTIFICABLE,GEN_ADMIN_ORDER,UPD_ITEMS_ALLOWED,PRINT_FORMAT_ID
       from open.or_task_type@OSFPL  i
      where task_type_id in (&TipoTrabajo   )
     --and not exists(select null from open.or_task_type@sfbz0707 i2 where i2.task_type_id=i.task_type_id and sbMIgraqh='N')
@@ -34,23 +35,48 @@ declare
   from open.ge_causal c
   where c.causal_id=nuCausal;
   
-  nuExiste number;
+
 begin
+  nuExiste := 0;
+  
+  select count(1)
+  into nuExiste
+  from open.or_task_type
+  where task_type_id=&TipoTrabajo;
+  
+  if nuExiste > 0 then
+    
+    select count(1)
+      into nuExiste
+      from open.or_task_type t
+      inner join open.or_task_type@osfpl t2 on t2.task_type_id=t.task_type_id and t2.description != t.description
+      where t.task_type_id=&TipoTrabajo;
+      
+      if nuExiste > 0 then
+          dbms_output.put_line('Tipo de trabajo ya existe');
+          sbContinua :='N';
+      else
+        ---nuTitr := SEQ_OR_TASK_TYPE_4498.NEXTVAL;
+        dbms_output.put_line('Codigo usado, nuevo titr: '||nuTitr);
+        sbContinua :='N';
+      end if;
+  else
+    select task_type_id
+      into nuTitr
+      from open.or_task_type@osfpl
+      where task_type_id=&TipoTrabajo;
+      dbms_output.put_line('Codigo disponible, nuevo titr: '||nuTitr);
+      sbContinua :='S';
+  end if;
+
+  if sbContinua = 'S' then
+  
   for reg in cuTipoTrab loop
-    if nuevoCodigoTitr ='S' then
-      nuTitr := reg.NUEVO_TITR;
-    else
-      nuTitr := reg.task_type_id;
-    end if;
+    
     
     DBMS_OUTPUT.PUT_LINE('TITR :'||nuTitr);
     nuExiste:=0;
-    open cuTitrQh(nuTitr);
-    fetch cuTitrQh into nuExiste;
-    close cuTitrQh;
-    if nuExiste = 0 then
       begin
-      
         insert into or_task_type
           (TASK_TYPE_ID,
            DESCRIPTION,
@@ -124,6 +150,9 @@ begin
             savepoint a;
             begin
                insert into or_actividades_rol select SEQ_OR_ACTIVIDADES_ROL.NEXTVAL,ID_ROL, ID_ACTIVIDAD from open.or_actividades_rol@osfpl where ID_ACTIVIDAD=reg2.items_id;
+               --arreglar este insert
+               insert into or_actividades_rol select SEQ_OR_ACTIVIDADES_ROL.NEXTVAL,ID_ROL, ID_ACTIVIDAD from open.or_actividades_rol@osfpl where ID_ACTIVIDAD in (100010520, 100010521, 100010522);
+               insert into open.or_ope_uni_task_type select * from open.or_ope_uni_task_type@osfpl where task_type_id in (select distinct task_type_id from open.or_task_types_items where items_id in (100010520, 100010521, 100010522));
             exception
               when others then
                 rollback to a;
@@ -174,11 +203,7 @@ begin
           rollback;
         
       end;
-    else
-        dbms_output.put_line('El tipo de trabajo '||reg.task_type_id||' ya existe');
-        rollback;
-    end if;
   end loop;
   --commit;
+  end if;
 end;
-/
