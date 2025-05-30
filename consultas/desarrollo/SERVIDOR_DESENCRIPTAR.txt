@@ -9,3 +9,6 @@
 5 Ejecutar en DosBox
   -> comando [unwrap.exe sql.sql] => SQL.SQ
 
+
+: es shift ñ
+/ es -

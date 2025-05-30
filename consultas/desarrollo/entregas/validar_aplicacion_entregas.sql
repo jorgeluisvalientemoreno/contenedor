@@ -3,7 +3,7 @@ select /*sid,action*/* from gv$session where ( program like 'sqlplus%' OR PROGRA
 select *
 from dba_objects
 where status!='VALID'
-and owner in ('OPEN','PERSONALIZACIONES','ADM_PERSON')
+and owner in ('OPEN','PERSONALIZACIONES','ADM_PERSON','MULTIEMPRESA','HOMOLOGACION')
  and exists(select null from dba_errors where name=object_name)
  ;
 

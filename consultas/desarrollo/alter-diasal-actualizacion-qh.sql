@@ -40,6 +40,29 @@ end;
 --insert lego 
 insert into LDC_USUALEGO select 38963 person_id, 43 agente_id, 38963 tecnico_unidad, 'N' unico_tecnico, null causal_id  from dual where not exists(select null from ldc_usualego where person_id=38963) ;
 update ld_parameter set value_chain ='dsaltarin@gascaribe.com' where parameter_id='LDC_EMAILNOLE';
+update ld_parameter set value_chain ='N' where parameter_id='PRINTER_AUTOMATIC_KIOSCO';
+update  recofael set prefijo = 'SETT' where tipo_documento in (1,2) ;
+update ldc_conftain
+set cotifefi = '31/12/2025'
+where cotitain = 2
+and cotifein = (select cotifein from (
+                    select cotifein 
+                    from ldc_conftain 
+                    where cotitain = 2 
+                    order by cotifein desc
+                ) 
+                where rownum = 1);
+                
+update conftain
+set cotifefi = '31/12/2025'
+where cotitain = 2
+and cotifein = (select cotifein from (
+                    select cotifein 
+                    from conftain 
+                    where cotitain = 2 
+                    order by cotifein desc
+                ) 
+                where rownum = 1);
 
 
 insert into ge_financial_profile values(1200, 1, 99999999999);
@@ -59,4 +82,21 @@ commit;
  when others then
    rollback;
  end;
+/  
+BEGIN
+        execute immediate 'alter trigger CSE.TRG_TIPOSERV DISABLE';
+END;
+/
   
+/
+--Quitar correos de los contratos y guardarlos en tabla dummy
+
+create table contratos_correos as 
+select  susccodi , suscmail   
+from suscripc  ; 
+
+update suscripc
+set suscmail = null
+where suscmail is not null 
+
+commit;

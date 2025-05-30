@@ -9,17 +9,17 @@ where ciclcodi in (201)
 select *
 from open.pericose p
 where p.pecscico=201
- and p.pecsfeci>='01/01/2024'
+ and p.pecsfeci>='01/01/2025'
 for update
 
 ;
 select *
 from open.perifact
-where pefacicl=201
- and pefaano>=2024
+where pefacicl=501
+ and pefaano>=2025
  for update
 
 
 SELECT SESUCICL
 FROM OPEN.SERVSUSC
-WHERE SESUNUSE=1504728;
+WHERE SESUNUSE=1015760;

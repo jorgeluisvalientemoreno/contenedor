@@ -17,3 +17,24 @@ where tda.task_type_id=12155
 ;
 
 --XMLAGG
+--separar varios campos
+WITH datos AS (
+    SELECT '12149|30;12162|674;12150|19;10268|3' AS cadena FROM DUAL
+),
+separados AS (
+    SELECT REGEXP_SUBSTR(cadena, '[^;]+', 1, LEVEL) AS elemento
+    FROM datos
+    CONNECT BY LEVEL <= REGEXP_COUNT(cadena, ';') + 1
+)
+SELECT
+    REGEXP_SUBSTR(elemento, '^[^|]+', 1, 1) AS tipo_trabajo,
+    REGEXP_SUBSTR(elemento, '[^|]+$', 1, 1) AS causal
+FROM separados;
+
+WITH datos AS (      
+SELECT (regexp_substr('12149|30;12162|674;12150|19;10268|3',  '[^;]+',   1, LEVEL)) AS cadena
+FROM dual
+CONNECT BY regexp_substr('12149|30;12162|674;12150|19;10268|3', '[^;]+', 1, LEVEL) IS NOT NULL)
+SELECT substr(cadena, 1, instr(cadena, '|') - 1) tipo_trabajo,
+     substr(cadena, instr(cadena, '|') + 1, LENGTH(cadena)) concepto
+FROM datos;
