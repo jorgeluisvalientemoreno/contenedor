@@ -1,8 +1,9 @@
 select a.package_type_id || ' - ' || a.description
   from open.ps_package_type a
- where
---a.package_type_id in (100335, 100337, 100338)
- upper(a.description) like '%SUSPENS%';
+ where 1=1
+--and a.package_type_id in (288)
+-- and upper(a.description) like upper('%reconexi%')
+;
 
 select *
   from open.sa_tab st
@@ -10,5 +11,6 @@ select *
        (select a.tag_name
           from open.ps_package_type a
          where
-        --a.package_type_id in (100335, 100337, 100338)
-         upper(a.description) like '%SUSPENS%');
+and a.package_type_id in (100343)
+    --     upper(a.description) like '%SUSPENS%')
+    ;

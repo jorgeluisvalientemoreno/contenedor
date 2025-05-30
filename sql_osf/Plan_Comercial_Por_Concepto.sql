@@ -16,9 +16,12 @@ SELECT copsplsu || ' - ' || cc.description Plan_Comercial,
     on c.conccodi = cp.copsconc
  inner join open.servicio o
     on o.servcodi = cp.copsserv
- WHERE copsfufa = 'FABCCT14E121047389'
-    or copsplsu = 38;
+ WHERE --copsfufa = 'FABCCT14E121047389'
+--or 
+ copsplsu in (286, 284, 156);
 
 select a.*, rowid
   from OPEN.CONCSERV a
- where a.cosefufa = 'FABCCT14E121047389'
+ where a.coseconc in (286, 284, 156)
+ and a.coseserv = 7014
+--and a.cosefufa = 'FABCCT14E121047389'

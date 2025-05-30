@@ -1,4 +1,12 @@
-select a.* from ge_entity a where a.name_ = upper('MO_PROCESS');
+select a.*, rowid
+  from ge_entity a
+ where a.name_ = upper('VWM_LV_SUBCATEGORIA_PCFO');
+select a.*, rowid
+  from ge_entity_attributes a
+ where a.entity_id =
+       (select a1.entity_id
+          from ge_entity a1
+         where a1.name_ = upper('VWM_LV_SUBCATEGORIA_PCFO'));
 --BLACK_LIST_PRODUCT
 select (select a.entity_id || ' - ' || a.name_ || ' - display_name: ' ||
                a.display_name || ' - description: ' || a.description
@@ -16,14 +24,12 @@ select (select a.entity_id || ' - ' || a.name_ || ' - display_name: ' ||
   from ge_entity_attributes b
  where b.entity_id in (select a.entity_id
                          from ge_entity a
-                        where 
-                        --a.module_id = 21
+                        where
+                       --a.module_id = 21
                        --and 
-                       a.name_ = upper('MO_PROCESS')
-                       )
-   and 
- b.attribute_type_id = 2
- and b.length = 1
+                        a.name_ = upper('MO_PROCESS'))
+   and b.attribute_type_id = 2
+   and b.length = 1
  ORDER BY B.SECUENCE_;
 
 select b.*, rowid

@@ -13,21 +13,24 @@ SELECT CT_PROCESS_LOG.PROCESS_LOG_ID PROCESS_LOG_ID,
        CT_PROCESS_LOG.ERROR_MESSAGE ERROR_MESSAGE
   FROM open.CT_PROCESS_LOG
  WHERE CT_PROCESS_LOG.Log_Date >
-       to_date('30/05/2024 20:07:36', 'DD/MM/YYYY HH24:MI:SS') --
+       to_date('19/03/2025 08:07:36', 'DD/MM/YYYY HH24:MI:SS') --
    and CT_PROCESS_LOG.Log_Date <
-       to_date('30/05/2024 20:09:36', 'DD/MM/YYYY HH24:MI:SS') --
+       to_date('19/03/2025 15:09:36', 'DD/MM/YYYY HH24:MI:SS') --
 --sysdate -1
  order by CT_PROCESS_LOG.Log_Date desc;
 ---Error OSF
 select gel.*
   from open.ge_error_log gel
- where gel.time_stamp >
-       to_date('30/05/2024 20:07:36', 'DD/MM/YYYY HH24:MI:SS') --
-   and gel.time_stamp <
-       to_date('30/05/2024 20:09:36', 'DD/MM/YYYY HH24:MI:SS') --
-      --and gel.description like '%326247165%'
-   --and upper(gel.db_user) = 'JOBOSFDM' or upper(gel.os_user) = 'JOBOSFDM'
-   --and upper(gel.method) like upper('%LEGALI%')
+ where
+--gel.time_stamp > sysdate - 60
+ gel.time_stamp > to_date('01/01/2025 08:00:36', 'DD/MM/YYYY HH24:MI:SS') --
+--and gel.time_stamp < to_date('20/03/2025 09:00:36', 'DD/MM/YYYY HH24:MI:SS') --
+--and 
+ and upper(gel.call_stack) like upper('%CF_BOActions.AttendRequest%')
+--and gel.application = 'LDFACTDUP'
+--and gel.description like '%326247165%'
+--and upper(gel.db_user) = 'JOBOSFDM' or upper(gel.os_user) = 'JOBOSFDM'
+--and upper(gel.method) like upper('%LEGALI%')
 --gel.time_stamp > sysdate - 1
 ;
 ---Error repoinca

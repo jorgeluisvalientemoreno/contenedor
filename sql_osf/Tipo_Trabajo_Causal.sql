@@ -5,7 +5,7 @@ select ottc.task_type_id || ' - ' || ott.description Tipo_trabajo,
        open.ge_causal           gc,
        open.or_task_type        ott,
        open.ge_class_causal     gcc
- where ottc.task_type_id in (10217, 12622)
+ where ottc.task_type_id in (12150)
       --ottc.causal_id in ()
    and ottc.causal_id = gc.causal_id
    and ottc.task_type_id = ott.task_type_id

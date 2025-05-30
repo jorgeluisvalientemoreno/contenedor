@@ -1,3 +1,17 @@
+--Maestro Detalle Solo Entidad
+select distinct ex.executable_id, ex.name, e.name_, e.display_name
+  from open.gi_attrib_disp_data  d,
+       open.ge_entity_attributes at,
+       open.ge_entity            e,
+       open.sa_executable        ex,
+       open.gi_entity_disp_data  da
+ where d.executable_id = ex.executable_id
+   and (name = upper(&nombre_ejecutable) or e.name_ = upper(&nombre_tabla))
+   and d.entity_attribute_id = at.entity_attribute_id
+   and d.entity_id = e.entity_id
+   and da.executable_id = ex.executable_id;
+
+--Maestro Detalle General
 select distinct ex.executable_id,
                 ex.name,
                 e.name_,
@@ -23,7 +37,7 @@ SELECT DISTINCT EX.EXECUTABLE_ID, EX.NAME, E.NAME_, DA.DEFAULT_WHERE
        OPEN.SA_EXECUTABLE        EX,
        OPEN.GI_ENTITY_DISP_DATA  DA
  WHERE D.EXECUTABLE_ID = EX.EXECUTABLE_ID
-   AND NAME = upper('LDCLEGO')
+   AND NAME = upper('PSMTS')
    AND D.ENTITY_ATTRIBUTE_ID = AT.ENTITY_ATTRIBUTE_ID
    AND D.ENTITY_ID = E.ENTITY_ID
       

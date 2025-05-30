@@ -3,13 +3,13 @@ SELECT * --job_name, owner, enabled
 
 select *
   from open.ge_object g
- where upper(g.name_) like upper('%LDC_PKCRMFINANCIACION.PRFINANCIARDUPLICADO%');
+ where upper(g.name_) like upper('%LDC_BO_GESTIONSUSPSEG.Ldc_job_suspensecleg%');--LDC_BO_GESTIONSUSPSEG.Ldc_job_suspensecleg
 
 select gps.*
   from open.ge_process_schedule gps,
        (select g.object_id
           from open.ge_object g
-         where upper(g.name_) like upper('%LDC_PKCRMFINANCIACION.PRFINANCIARDUPLICADO%')) gobject
+         where upper(g.name_) like upper('%LDC_BO_GESTIONSUSPSEG.Ldc_job_suspensecleg%')) gobject
  where gps.parameters_ like '%OBJECT_ID=' || gobject.object_id || '%'
    --and gps.job != -1
    ;

@@ -12,7 +12,7 @@ end;
 6
 inuCertiOia
 1
-4129601
+4497813
 4
 IsbStatus
 1
@@ -20,11 +20,11 @@ A
 5
 IsbObser
 1
-PRUEBAS AIU
+SE APRUEBA CERTIFICADO DE INSPECCION ANDRES ANGULO
 5
 IdtFechapro
 1
-01/11/2023
+17/12/2024 11:41:55 a. m.
 12
 OnuCodigo
 1
@@ -32,6 +32,6 @@ OnuCodigo
 4
 OsbMensaje
 1
-El estado de la inspecci?n C_299756795 fue cambiado a  APROBADO. 
+El estado de la inspecci?n 1100322700 fue cambiado a  APROBADO. 
 5
 0

@@ -6,10 +6,7 @@ select distinct oo.order_id Orden,
                   where oos.order_status_id = oo.order_status_id) Estado_Orden,
                 nvl(ooa.subscription_id, mm.subscription_id) Contrato,
                 nvl(ooa.product_id, mm.product_id) Producto,
-                pp.product_type_id || ' - ' ||
-                (select s1.servdesc
-                   from OPEN.SERVICIO s1
-                  where s1.servcodi = pp.product_type_id) Tipo_Producto,
+                pp.product_type_id || ' - ' || SERVICIO.SERVDESC Tipo_Producto,
                 DireccionOrden.address_id || ' - ' ||
                 DireccionOrden.address Direccion_Orden,
                 categoriadireccion.catecodi || ' - ' ||
@@ -55,6 +52,7 @@ select distinct oo.order_id Orden,
                 oo.legalization_date Fecha_Legalizacion_Orden,
                 ooa.comment_ Comentario_Orden,
                 ooa.package_id Solicitud,
+                mm.causal_id Causal_Solicitud,
                 ooa.instance_id Instancia,
                 mp.package_type_id || ' - ' ||
                 (select b.description
@@ -79,6 +77,7 @@ select distinct oo.order_id Orden,
                         gs.subs_last_name
                    from OPEN.GE_SUBSCRIBER gs
                   where gs.subscriber_id = mp.CONTACT_ID) Contacto_Solicitante,
+                
                 mp.ADDRESS_ID Direccion_Solicitud,
                 (select a2.user_id || ' - ' ||
                         (select p.name_
@@ -197,7 +196,10 @@ select distinct oo.order_id Orden,
                                'C - CUPO')
                    from open.or_operating_unit oou
                   where oou.operating_unit_id = oo.operating_unit_id) TIPO_ASIGNACION,
-                mm.motive_id Motivo,
+                /*(select mm1.Motive_Id
+                   from open.mo_motive mm1
+                  where mm1.package_id = MP.PACKAGE_ID) Motivo,*/
+                --/*
                 (SELECT min(order_id)
                    FROM open.or_related_order
                   start with related_order_id in oo.order_id
@@ -293,12 +295,16 @@ select distinct oo.order_id Orden,
                 ' - Nueva:' || mbdc.new_subcategory_id) SubCategoria,
                 SegmentoDireccion.Category_ Categoria_Segmento,
                 SegmentoDireccion.Subcategory_ SubCategoria_Segmento,
-                decode((select count(1)
-                         from OPEN.LDCI_PACKAGE_CAMUNDA_LOG LPCL
-                        where lpcl.package_id = mp.package_id),
-                       1,
-                       'SI',
-                       'NO') Generada_CAMUNDA
+                --*/
+                /*decode((select count(1)
+                  from OPEN.LDCI_PACKAGE_CAMUNDA_LOG LPCL
+                 where lpcl.package_id = mp.package_id),
+                1,
+                'SI',
+                'NO') Generada_CAMUNDA,*/
+                CT.CERTIFICATE_ID     ACTA,
+                ga.extern_pay_date    Pago_Acta,
+                ga.extern_invoice_num Factura_Pago_Acta
   from open.or_order_activity ooa
   left join open.or_order oo
     on oo.order_id = ooa.order_id
@@ -315,7 +321,7 @@ select distinct oo.order_id Orden,
     on departamento_Orden.geograp_location_id =
        localidad_Orden.geo_loca_father_id
   left join open.pr_product pp
-    on pp.product_id = ooa.product_id
+    on pp.product_id = nvl(ooa.product_id, mm.product_id)
   left join open.ab_address DireccionProducto
     on DireccionProducto.Address_Id = pp.address_id
   left join open.or_order_items ooi
@@ -360,20 +366,27 @@ select distinct oo.order_id Orden,
   left join OPEN.MO_BILL_DATA_CHANGE mbdc
     on mbdc.package_id = ooa.package_id
    and 'S' in upper(&CambioUso)
- where
+  LEFT JOIN OPEN.CT_ORDER_CERTIFICA CT
+    ON CT.ORDER_ID = OO.ORDER_ID
+  left join open.SERVICIO servicio
+    on servicio.servcodi = pp.product_type_id
+  left join open.ge_acta ga
+    on ga.id_acta = ct.certificate_id
+   and 'S' = &ConsultarActa
+ where 1 = 1 
 ---Orden
--- ooa.order_id in (335764490)
+-- and ooa.order_id in (336812247)
 -- and ooa.order_activity_id in(42}95152)
--- and oo.task_type_id in (12622)
--- and oo.order_status_id not in (8, 12, 0, 7, 6)
+-- and oo.task_type_id in (11029)
+-- and oo.order_status_id = 8--not in (8, 12, 0, 7, 6)
 -- and oo.causal_id = 9944--in (8, 12)
--- and trunc(oo.legalization_date) >= '12/08/2024'
+--and trunc(oo.legalization_date) >= '01/08/2024'
+--and oo.causal_id  =9322
 -- and trunc(oo.created_date) = '15/01/2024'
 -- and oo.operating_unit_id in (1775, 1931, 1773, 3557)
 -- and ooa.activity_id in (4295751)
 -- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
--- and 
- ooa.subscription_id in (67506235)
+-- and ooa.subscription_id in (67550996, 67548410, 67550159, 67546045) --(67550996)
 -- and ooa.product_id in (52757573)
 -- and ooa.order_activity_id in (322824237)
 -- and mp.package_type_id = 100210
@@ -383,7 +396,7 @@ select distinct oo.order_id Orden,
 -- and mp.package_type_id = 100225
 -- and (mm.subscription_id = 48052064 or mm.product_id = 50062001)
 -- and mp.cust_care_reques_num in ('210494274','207413106')
--- and mp.package_id in (176206149)
+-- and mp.package_id in (225034200)
 -- and mm.motive_id = 96953319
 -- and pp.product_status_id = 15
 -- and rownum = 1
@@ -392,5 +405,9 @@ select distinct oo.order_id Orden,
 /* ooa.activity_id = 4295152
 and oo.order_status_id = 8
 and oo.legalization_date >= '01/08/2024'*/
+--and CT.CERTIFICATE_ID is not null
+-- and servicio.servcodi = 7053
+--and ga.estado = 'A'
+-- and ga.id_acta is null
  order by oo.created_date desc;
 --305802917

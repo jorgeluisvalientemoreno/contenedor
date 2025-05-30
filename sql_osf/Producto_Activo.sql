@@ -24,10 +24,9 @@ SELECT pp.subscription_id contrato,
   left join open.subcateg sca
     on sca.sucacodi = pp.subcategory_id
    and sca.sucacate = pp.category_id
- WHERE
---pp.product_status_id = 1
+ WHERE pp.product_status_id = 1
 --and pp.subcategory_id = 6
 --and 
- pp.subscription_id = 
- --67464673 
- 66572991
+ pp.subscription_id =
+      --67464673 
+       66572991

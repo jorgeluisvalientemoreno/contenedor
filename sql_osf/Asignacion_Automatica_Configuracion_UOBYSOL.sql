@@ -55,6 +55,46 @@ select c.package_type_oper_unit_id
   from open.LDC_PACKAGE_TYPE_OPER_UNIT c
  where c.procesopre like '%FSBASIGNAUTOMATICAREVPER%';
 
+---Solicitudes, Tipo de Trabajo, Actividad, Pre, Post
+with solicitud as
+ (select ppt.* from OPEN.PS_PACKAGE_TYPE ppt)
+select distinct PTOU.PACKAGE_TYPE_ASSIGN_ID Codigo_UOBYSOL,
+                PTA.PACKAGE_TYPE_ID || ' - ' ||
+                DECODE(PTA.PACKAGE_TYPE_ID,
+                       -1,
+                       'Orden Autonoma',
+                       s.description) Solicitud,
+                --ott.task_type_id || ' - ' || ott.description Tipo_Trabajo,
+                PTOU.ITEMS_ID || ' - ' || gi.description Actividad,
+                oou.operating_unit_id || ' - ' || oou.name Unidad_Operativa,
+                PTOU.PROCESOPRE        PRE,
+                PTOU.PROCESOPOST       POST,
+                oou.operating_sector_id ||' - '|| oos.description Sector_Operativo_por_unidad,
+                oou.operating_zone_id ||' - '|| ooz.description Zona_Operativo_por_unidad,
+                oos_zone.operating_sector_id Sector_Operativo_por_uo
+                
+  from open.LDC_PACKAGE_TYPE_OPER_UNIT PTOU
+ inner join open.LDC_PACKAGE_TYPE_ASSIGN PTA
+    on PTA.PACKAGE_TYPE_ASSIGN_ID = PTOU.package_type_assign_id
+ inner join open.ge_items gi
+    on gi.items_id = PTOU.items_id
+  left join solicitud s
+    on s.PACKAGE_TYPE_ID = PTA.PACKAGE_TYPE_ID
+LEFT join open.or_operating_unit oou
+   on oou.operating_unit_id = PTOU.Operating_Unit_Id
+left join open. or_operating_sector oos on oos.operating_sector_id = oou.operating_sector_id
+left join open. or_operating_sector oos_zone on oos_zone.operating_zone_id = oou.operating_zone_id
+left join open. or_operating_zone ooz on ooz.operating_zone_id = oou.operating_zone_id
+--leftjoin or_task_types_items otti
+--  on otti.items_id = ptou.items_id
+--left join open.or_task_type ott
+--  on ott.task_type_id = otti.task_type_id
+ where 1 = 1
+      --and (PTOU.PROCESOPRE is not null or PTOU.PROCESOPOST is not null)
+   and ptou.items_id in (4000803)
+   and ptou.operating_unit_id in (4006, 4007, 4008)
+   and ptou.catecodi = 1;
+
 ---Items y Solicitudes
 select distinct PTOU.PACKAGE_TYPE_ASSIGN_ID Codigo_UOBYSOL,
                 ppt.package_type_id || ' - ' || ppt.description Solicitud,
@@ -72,6 +112,7 @@ select distinct PTOU.PACKAGE_TYPE_ASSIGN_ID Codigo_UOBYSOL,
    and 'S' = &ValidaUnidadOperativa
  where PTOU.PROCESOPRE is null
    and PTOU.PROCESOPOST is null
-   and ptou.items_id = 4295105
+   and ptou.items_id = 4000803
+--and ptou.operating_unit_id in ()
  order by ppt.package_type_id || ' - ' || ppt.description,
           PTOU.ITEMS_ID || ' - ' || gi.description

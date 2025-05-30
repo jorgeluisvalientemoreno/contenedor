@@ -13,10 +13,10 @@ select 'ldc_procedimiento_obj',
        activo
   from open.ldc_procedimiento_obj a
  where a.activo = 'S'
-   and a.task_type_id in (12155)
-  -- and (a.causal_id = 3764 or a.causal_id is null)
-and (a.causal_id = 9517 or a.causal_id is null)
---and upper(a.procedimiento) like upper( '%prc_asiglegasuspcdmacom%') --'LDC_BOPROCESAORDVMP.PGENSUSP_USUNOAUTORIZA'
+--   and a.task_type_id in (12622)
+-- and (a.causal_id = 3764 or a.causal_id is null)
+---and (a.causal_id = 9517 or a.causal_id is null)
+-- and upper(a.procedimiento) like upper('%char%') --'LDC_BOPROCESAORDVMP.PGENSUSP_USUNOAUTORIZA'
 --order by a.orden_ejec
 union all
 select 'objetos_accion',
@@ -34,8 +34,30 @@ select 'objetos_accion',
        oa.activo
   from personalizaciones.objetos_accion oa
  where oa.activo = 'S'
-   and oa.tipotrabajo in (12155)
-   and (oa.idcausal = 9517 or oa.idcausal is null)
+--   and oa.tipotrabajo in (12622)
+--   and (oa.idcausal = 9517 or oa.idcausal is null)
 -- order by oa.ordenejecucion
---and upper(oa.nombreobjeto) like  upper('%prc_asiglegasuspcdmacom%') --
+--
+--and upper(oa.nombreobjeto) like  upper('%ldc_plugreconexseg%') --
  order by 1, 5;
+
+select a.*, rowid
+  from open.ldc_procedimiento_obj a
+ where 1= 1
+-- 
+and a.activo = 'S'
+--   
+and a.task_type_id in (11198)
+-- and (a.causal_id = 3764 or a.causal_id is null)
+---and (a.causal_id = 9517 or a.causal_id is null)
+--and upper(a.procedimiento) like upper('%char%') --'LDC_BOPROCESAORDVMP.PGENSUSP_USUNOAUTORIZA'
+ order by a.orden_ejec;
+select oa.*, rowid
+  from personalizaciones.objetos_accion oa
+ where 1=1
+ --and oa.tipotrabajo in (12622)
+--   and (oa.idcausal = 9517 or oa.idcausal is null)
+-- order by oa.ordenejecucion
+--
+--and upper(oa.nombreobjeto) like  upper('%ldc_plugreconexseg%') --
+;

@@ -1,6 +1,6 @@
 --alter session set current_schema = OPEN;
 --select * from wf_unit;
-SELECT /*+ leading( instancias_flujo )
+SELECT distinct /*+ leading( instancias_flujo )
 index( d PK_WF_INSTANCE_STATUS )
 index( e PK_GE_ENTITY )
 index( g PK_GE_ACTION_MODULE )
@@ -23,6 +23,7 @@ use_nl( g h )
  END "Instancia",
  d.instance_status_id || '-' || d.description "Estado Instancia",
  ooa.order_id "Orden",
+ ooa.instance_id Instancia_Orden,
  (select ooa.task_type_id || ' - ' || ott.description
     from open.or_task_type ott
    where ott.task_type_id = ooa.task_type_id) "Tipo Trabajo",
@@ -70,7 +71,7 @@ use_nl( g h )
                open.wf_unit_type     b,
                open.wf_instance      c,
                open.wf_unit          f
-         WHERE a.package_id = 218396728 --217619992 --
+         WHERE a.package_id = 183442782  --217619992 --
            AND b.unit_type_id = a.unit_type_id -- 31657381
            AND c.plan_id = a.plan_id
            AND f.unit_id(+) = c.unit_id) instancias_flujo,

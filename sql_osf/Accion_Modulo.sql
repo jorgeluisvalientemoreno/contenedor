@@ -1,8 +1,32 @@
+--Regla x Accion
+select gce.*, rowid
+  from open.gr_config_expression gce
+ where gce.config_expression_id in (select gam.config_expression_id
+  from open.ge_action_module gam
+ where upper(gam.description) like
+       upper('Realiza la atenci%n de una suspensi%n voluntaria de un producto'));
+
+
+--Regla 
+select gce.*, rowid
+  from open.gr_config_expression gce
+ where upper(gce.description) like
+       upper('%ValidaCausalGeneraOrdenSuspCDMSeguridadMtto%');
+
+--Identificar Accion x Regla
+select gam.*
+  from OPEN.GE_ACTION_MODULE gam
+ where gam.config_expression_id in
+       (select gce.config_expression_id
+          from open.gr_config_expression gce
+         where --gce.config_expression_id = 121329895
+         upper(gce.description) like '%EVE-POST-MOT%');
+
 --Accion(Modulo)
 select gam.*
   from open.ge_action_module gam
  where upper(gam.description) like
-       upper('Atiende la Solicitud de Cambio de Uso del Servicio');
+       upper('Realiza la atenci%n de una suspensi%n voluntaria de un producto');
 
 ---Accion(Modulo) - Regla
 select gce.*, rowid
@@ -54,6 +78,6 @@ select gce.config_expression_id Codig_Regla,
  where gce.config_expression_id in
        (select gam.config_expression_id
           from open.ge_action_module gam
-         where upper(gam.description) like upper('%Registro%Orden%')
+         where upper(gam.description) like upper('%EVE-POST-MOT%')
         --'Generar/Financiar Factura de la Solicitud')
         );

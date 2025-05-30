@@ -26,9 +26,10 @@ select distinct a.package_type_id Tipo_Solicitud,
   left join OPEN.GE_ENTITY_ATTRIBUTES gea
     on gea.entity_id = a.entity_id
    and gea.entity_attribute_id = a.entity_attribute_id
-  left join GE_ATTRIBUTES_TYPE gat
+  left join open.GE_ATTRIBUTES_TYPE gat
     on gat.attribute_type_id = gea.attribute_type_id
  where package_type_id = &solicitud
---and a.required = 'Y'
---and a.tag_name = 'SUSCIDDI'
+      --and a.required = 'Y'
+      --and a.tag_name = 'SUSCIDDI'
+   and a.included_xml = 'Y'
  order by a.process_sequence

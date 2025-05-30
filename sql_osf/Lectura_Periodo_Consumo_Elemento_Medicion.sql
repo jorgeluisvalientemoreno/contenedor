@@ -25,7 +25,8 @@ select lectelme.leemcons leemcons,
  where tipocons.tconcodi = lectelme.leemtcon
    and pericose.pecscons(+) = lectelme.leempecs
    and perifact.pefacodi(+) = lectelme.leempefa
-   and lectelme.leemelme = 786034   
+   --and lectelme.leemelme = 786034   
    --and lectelme.leemtcon = :ConsumptionType
-   and lectelme.leemsesu = 50653529
-   and lectelme.leempecs = 102375;
+   and lectelme.leemsesu = 1062540
+   --and lectelme.leempecs = 102375
+   order by lectelme.leemfele desc;

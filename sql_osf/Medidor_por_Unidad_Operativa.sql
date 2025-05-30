@@ -1,16 +1,22 @@
 SELECT to_char(or_ope_uni_item_bala.operating_unit_id) operating_unit_id,
        to_char(or_ope_uni_item_bala.items_id) items_id,
        ge_items.code || ' - ' || ge_items.description item_description,
+       ge_items_seriado.serie MEDIDOR,
        to_char(or_ope_uni_item_bala.quota) quota,
        to_char(or_ope_uni_item_bala.balance) balance,
        to_char(or_ope_uni_item_bala.total_costs) total_costs,
        to_char(ge_item_classif.cost_method) cost_method,
        TO_char(ge_item_classif.quantity_control) quantity_control,
        to_char(nvl(or_ope_uni_item_bala.occacional_quota, 0)) OCCASIONAL_QUOTA
-  FROM or_ope_uni_item_bala, ge_items, ge_item_classif /*+ OR_BCOperUnit_Admin.frfGetOperUnitItems SAO197153 */
- WHERE or_ope_uni_item_bala.operating_unit_id = &inuOperatingUnitId
+  FROM or_ope_uni_item_bala, ge_items, ge_item_classif, open.ge_items_seriado  /*+ OR_BCOperUnit_Admin.frfGetOperUnitItems SAO197153 */
+ WHERE 1 = 1
+   and or_ope_uni_item_bala.operating_unit_id in (3135)
    AND or_ope_uni_item_bala.items_id = ge_items.items_id
-   AND ge_items.item_classif_id = ge_item_classif.item_classif_id;
+   AND ge_items.item_classif_id = ge_item_classif.item_classif_id
+   and ge_items_seriado.items_id = ge_items.items_id
+   and ge_items.item_classif_id = 21
+   and ge_items.description like '%MEDID%'
+   and ge_items_seriado.id_items_estado_inv = 1;
 
 select s.id_items_seriado,
        s.items_id,
@@ -18,8 +24,21 @@ select s.id_items_seriado,
        s.id_items_estado_inv,
        e.descripcion,
        s.costo,
-       s.fecha_ingreso
+       s.fecha_ingreso,
+       s.operating_unit_id
   from open.ge_items_seriado s
-  inner join ge_items_estado_inv e on e.id_items_estado_inv = s.id_items_estado_inv
- where s.operating_unit_id = &inuOperatingUnitId
-   and s.id_items_estado_inv = 1
+ inner join ge_items_estado_inv e
+    on e.id_items_estado_inv = s.id_items_estado_inv
+ where s.id_items_estado_inv = 17
+      --and s.operating_unit_id = &inuOperatingUnitId
+   and s.items_id = 4001229;
+
+select gis.*, rowid
+  from open.ge_items_seriado gis
+ where gis.items_id = 4001229
+   and gis.id_items_estado_inv = 17;
+
+select gis.*, rowid
+  from open.ge_items_seriado gis
+ where gis.items_id = 4001229
+   and gis.id_items_estado_inv = 1;

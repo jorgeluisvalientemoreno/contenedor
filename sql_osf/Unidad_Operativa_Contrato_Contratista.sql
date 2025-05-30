@@ -5,5 +5,5 @@ select distinct a.operating_unit_id || ' - ' || a.name Unidad_Operativa,
  where a.contractor_id = b.id_contratista
    and b.id_contratista = c.id_contratista
    and c.fecha_inicial > '01/01/2022'
-      --and a.operating_unit_id = 2218
+   and a.operating_unit_id = 1599
    and c.status = 'AB'

@@ -3,6 +3,9 @@
 -----*Validar movimiento en OSF
 -----*Validar Bodega
 select l2.id_items_seriado,
+       (select gi.item_classif_id
+          from open.ge_items gi
+         where gi.items_id = l2.items_id) clasificador,
        l.elmecodi Medidor,
        (select l2.items_id || ' - ' || gi.description
           from open.ge_items gi
@@ -36,16 +39,19 @@ select l2.id_items_seriado,
        (select l2.operating_unit_id || ' - ' || oou.name
           from open.or_operating_unit oou
          where oou.operating_unit_id = l2.operating_unit_id) Unidad_Operativa,
-         l3.*
-  from open.elemmedi l, open.elmesesu l1, open.ge_items_seriado l2, open.or_uni_item_bala_mov l3
+       l3.*
+  from open.elemmedi             l,
+       open.elmesesu             l1,
+       open.ge_items_seriado     l2,
+       open.or_uni_item_bala_mov l3
  where l.elmecodi = l1.emsscoem(+)
    and l.elmecodi = l2.serie
-   and l1.emsssesu = 50062001
+      --and l1.emsssesu = 50062001
    and l2.id_items_seriado = l3.id_items_seriado
-   and l3.id_items_seriado in (1494450) ---in (1494450,2246399)
-   --and l2.serie = 'C-2133362-18'
-   --and l.elmecodi like '%I-13270248W%'
-   order by l3.move_date;
+--and l3.id_items_seriado in (1494450) ---in (1494450,2246399)
+--and l2.serie = 'C-2133362-18'
+--and l.elmecodi like '%I-13270248W%'
+ order by l3.move_date;
 
 --Lista Chequeo Medidor
 -----*Validar existencia SAP (Adriana Pastrana)
