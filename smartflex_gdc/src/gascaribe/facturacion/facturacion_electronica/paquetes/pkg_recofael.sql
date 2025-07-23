@@ -1,17 +1,19 @@
-CREATE OR REPLACE package pkg_recofael is
+create or replace package pkg_recofael is
 
  -- Cursor que obtiene los datos del cliente
- CURSOR cuRecord(inuTipoDocu  IN  recofael.tipo_documento%TYPE,
-                 inuConsetivo IN number,
-                 isbEstado   IN VARCHAR) IS
+ CURSOR cuRecord(inuTipoDocu  	IN 	recofael.tipo_documento%TYPE,
+                 inuConsetivo 	IN 	NUMBER,
+                 isbEstado   	IN 	VARCHAR,
+				 isbEmpresa	 	IN	VARCHAR) IS
  SELECT recofael.*,
 	   recofael.rowid
  FROM recofael
  WHERE recofael.tipo_documento = inuTipoDocu
   AND recofael.estado = decode(isbEstado, 'T',recofael.estado, isbEstado)
   AND inuConsetivo between recofael.CONS_INICIAL AND recofael.CONS_FINAL
-  AND (sysdate BETWEEN recofael.FECHA_INI_VIGENCIA AND recofael.FECHA_FIN_VIGENCIA
+  AND (SYSDATE BETWEEN recofael.FECHA_INI_VIGENCIA AND recofael.FECHA_FIN_VIGENCIA
     OR isbEstado = 'T')
+  AND empresa = isbEmpresa
  ORDER BY recofael.cons_inicial;
 
 
@@ -88,6 +90,7 @@ CREATE OR REPLACE package pkg_recofael is
                                       inuTipoDocu    IN  recofael.tipo_documento%TYPE,
                                       inuConsInicial IN  recofael.cons_inicial%TYPE,
                                       inuConsFinal   IN  recofael.cons_final%TYPE,
+									  isbEmpresa	 IN  VARCHAR2,
                                       onuError       OUT NUMBER,
                                       osbError       OUT VARCHAR2);
   /***************************************************************************
@@ -103,6 +106,7 @@ CREATE OR REPLACE package pkg_recofael is
       inuTipoDocu     tipo de documento
       inuConsInicial  consecutivo inicial
       inuConsFinal    consecutivo final
+	  isbEmpresa	  Empresa
     Parametros de Salida
       onuError        codigo del error
       osbError        mensaje de error
@@ -110,9 +114,11 @@ CREATE OR REPLACE package pkg_recofael is
     =========================================================
     Autor       Fecha       Caso       Descripcion
     LJLB       10-01-2024   OSF-2158    Creacion
+	JSOTO	   14-03-2025   OSF-4104    Se agrega parametro entrada isbEmpresa
   ***************************************************************************/
 
   FUNCTION frcgetRecord	( inuTipoDocu  IN  recofael.tipo_documento%TYPE,
+						  isbEmpresa   IN  VARCHAR2,
 						  inuConsetivo IN  NUMBER,
                           isbEstado    IN  VARCHAR2 DEFAULT 'A',
                           onuError     OUT NUMBER,
@@ -140,13 +146,11 @@ CREATE OR REPLACE package pkg_recofael is
 
 end pkg_recofael;
 /
-
-
-CREATE OR REPLACE package body  pkg_recofael is
+create or replace package body  pkg_recofael is
   -- Constantes para el control de la traza
   csbSP_NAME     CONSTANT VARCHAR2(100):= $$PLSQL_UNIT;
   -- Identificador del ultimo caso que hizo cambios
-  csbVersion     CONSTANT VARCHAR2(15) := 'OSF-2158';
+  csbVersion     CONSTANT VARCHAR2(15) := 'OSF-4104';
 
    FUNCTION fsbVersion RETURN VARCHAR2 IS
   /***************************************************************************
@@ -362,6 +366,7 @@ CREATE OR REPLACE package body  pkg_recofael is
                                       inuTipoDocu    IN  recofael.tipo_documento%TYPE,
                                       inuConsInicial IN  recofael.cons_inicial%TYPE,
                                       inuConsFinal   IN  recofael.cons_final%TYPE,
+									  isbEmpresa	 IN  VARCHAR2,
                                       onuError       OUT NUMBER,
                                       osbError       OUT VARCHAR2) IS
   /***************************************************************************
@@ -377,6 +382,7 @@ CREATE OR REPLACE package body  pkg_recofael is
       inuTipoDocu     tipo de documento
       inuConsInicial  consecutivo inicial
       inuConsFinal    consecutivo final
+	  isbEmpresa	  Código de la empresa
     Parametros de Salida
       onuError        codigo del error
       osbError        mensaje de error
@@ -384,17 +390,19 @@ CREATE OR REPLACE package body  pkg_recofael is
     =========================================================
     Autor       Fecha       Caso       Descripcion
     LJLB       10-01-2024   OSF-2158    Creacion
+	JSOTO	   14-03-2025   OSF-4104    Se agrega parametro entrada isbEmpresa
   ***************************************************************************/
      csbMT_NAME  VARCHAR2(100) := csbSP_NAME || '.prValidaSolapamientoCons';
 
      sbDatos     VARCHAR2(100);
 
      CURSOR cuGetSolapamiento IS
-     SELECT /*+ index(recofael idx_con02recofael) */ recofael.cons_inicial||' - '||recofael.cons_final
+     SELECT /*+ index(recofael IDX_RECOFAEL_01 */ recofael.cons_inicial||' - '||recofael.cons_final
      FROM recofael
      WHERE recofael.tipo_documento = inuTipoDocu
          AND recofael.codigo <> inuCodigo
          AND recofael.estado = 'A'
+		 AND recofael.empresa = isbEmpresa
          AND ( (inuConsInicial BETWEEN recofael.cons_inicial AND recofael.cons_final)
             OR  (inuConsFinal BETWEEN recofael.cons_inicial AND recofael.cons_final)
             OR (recofael.cons_inicial BETWEEN inuConsInicial AND inuConsFinal)
@@ -415,6 +423,7 @@ CREATE OR REPLACE package body  pkg_recofael is
     pkg_traza.trace(' inuTipoDocu => ' || inuTipoDocu, pkg_traza.cnuNivelTrzDef);
     pkg_traza.trace(' inuConsInicial => ' || inuConsInicial, pkg_traza.cnuNivelTrzDef);
     pkg_traza.trace(' inuConsFinal => ' || inuConsFinal, pkg_traza.cnuNivelTrzDef);
+	pkg_traza.trace(' isbEmpresa => ' || isbEmpresa, pkg_traza.cnuNivelTrzDef);
     pkg_error.prinicializaerror(onuError, osbError);
     prCloseCursor;
     OPEN cuGetSolapamiento;
@@ -442,6 +451,7 @@ CREATE OR REPLACE package body  pkg_recofael is
 
 
   FUNCTION frcgetRecord	( inuTipoDocu  IN  recofael.tipo_documento%TYPE,
+						  isbEmpresa   IN  VARCHAR2,
 						  inuConsetivo IN  NUMBER,
                           isbEstado    IN  VARCHAR2 DEFAULT 'A',
                           onuError     OUT NUMBER,
@@ -465,6 +475,7 @@ CREATE OR REPLACE package body  pkg_recofael is
     =========================================================
     Autor       Fecha       Caso       Descripcion
     LJLB       10-01-2024   OSF-2158    Creacion
+	JSOTO	   14-03-2025   OSF-4104    Se agrega parametro entrada isbEmpresa
   ***************************************************************************/
       csbMT_NAME  VARCHAR2(100) := csbSP_NAME || '.frcgetRecord';
 
@@ -486,7 +497,7 @@ CREATE OR REPLACE package body  pkg_recofael is
     pkg_error.prinicializaerror(onuError, osbError);
     prCloseCursor;
 
-	OPEN cuRecord(inuTipoDocu, inuConsetivo,isbEstado);
+	OPEN cuRecord(inuTipoDocu, inuConsetivo,isbEstado,isbEmpresa);
 	FETCH cuRecord INTO V_styConsecutivo;
 	IF cuRecord%NOTFOUND THEN
 		CLOSE cuRecord;
@@ -513,6 +524,7 @@ CREATE OR REPLACE package body  pkg_recofael is
       pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
 	  RETURN V_styConsecutivo;
  END frcgetRecord;
+ 
 end pkg_recofael;
 /
 BEGIN

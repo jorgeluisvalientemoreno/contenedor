@@ -8,7 +8,28 @@ CREATE OR REPLACE PACKAGE adm_person.PKG_LDC_UNI_ACT_OT AS
         Tabla : LDC_UNI_ACT_OT
         Caso  : OSF-2204
         Fecha : 12/07/2024 07:46:16
+        Modificaciones
+        Fecha       Autor       Caso        Descrición
+        17/03/2025  jpinedc     OSF-4123    * Se crea prBorrRegXSesYActa
+                                            * Se modifica prInsRegistro
+                                            * Se borran ftbObtRowIdsxCond,
+                                            ftbObtRegistrosxCond, 
+                                            prBorRegistroxCond
+                                            * Se crea el cursor culdc_uni_act_ot
     ***************************************************************************/
+    CURSOR culdc_uni_act_ot
+    (
+        inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
+    )
+    IS
+        SELECT tb.*
+        FROM LDC_UNI_ACT_OT tb
+        WHERE
+        UNIDAD_OPERATIVA = inuUNIDAD_OPERATIVA AND
+        ORDEN = inuORDEN AND
+        ACTIVIDAD = inuACTIVIDAD AND
+        ITEM = inuITEM;
+        
     CURSOR cuRegistroRId
     (
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
@@ -35,183 +56,137 @@ CREATE OR REPLACE PACKAGE adm_person.PKG_LDC_UNI_ACT_OT AS
         ACTIVIDAD = inuACTIVIDAD AND
         ITEM = inuITEM
         FOR UPDATE NOWAIT;
-     
-    FUNCTION ftbObtRowIdsxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRowIds;
-    FUNCTION ftbObtRegistrosxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRegistros;
+
+    -- Obtiene un registro consultando con el rowid
     FUNCTION frcObtRegistroRId(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER, iblBloquea BOOLEAN DEFAULT FALSE
     ) RETURN cuRegistroRId%ROWTYPE;
  
+    -- Retorna verdadero si existe un registro con la llave primaria
     FUNCTION fblExiste(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
     ) RETURN BOOLEAN;
- 
+
+    -- Eleva un mensaje de error si No existe un registro con la llave primaria 
     PROCEDURE prValExiste(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
     );
  
-    PROCEDURE prinsRegistro( ircRegistro LDC_UNI_ACT_OT%ROWTYPE, oRowId OUT ROWID);
+    -- Inserta un registro en LDC_UNI_ACT_OT
+    PROCEDURE prinsRegistro( ircRegistro LDC_UNI_ACT_OT%ROWTYPE );
  
+    -- Borra el registro que tenga la llave primaria    
     PROCEDURE prBorRegistro(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
     );
- 
+
+    -- Borra el registro que tenga el RowId     
     PROCEDURE prBorRegistroxRowId(
         iRowId ROWID
     );
- 
-    PROCEDURE prBorRegistroxCond(
-        isbCondicion VARCHAR2,
-        inuCantMaxima NUMBER DEFAULT 10
-    );
- 
+  
+    -- Obtiene el valor de la columna NUSSESION
     FUNCTION fnuObtNUSSESION(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.NUSSESION%TYPE;
  
+    -- Obtiene el valor de la columna LIQUIDACION
     FUNCTION fsbObtLIQUIDACION(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.LIQUIDACION%TYPE;
  
+    -- Obtiene el valor de la columna CANTIDAD_ITEM_LEGALIZADA
     FUNCTION fnuObtCANTIDAD_ITEM_LEGALIZADA(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.CANTIDAD_ITEM_LEGALIZADA%TYPE;
  
+    -- Obtiene el valor de la columna NRO_ACTA
     FUNCTION fnuObtNRO_ACTA(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.NRO_ACTA%TYPE;
  
+    -- Obtiene el valor de la columna UNIDAD_OPERATIVA_PADRE
     FUNCTION fnuObtUNIDAD_OPERATIVA_PADRE(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.UNIDAD_OPERATIVA_PADRE%TYPE;
- 
+
+    -- Obtiene el valor de la columna ZONA_OFERTADOS 
     FUNCTION fnuObtZONA_OFERTADOS(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.ZONA_OFERTADOS%TYPE;
- 
+
+    -- Obtiene el valor de la columna IDENTIFICADOR_REG 
     FUNCTION fnuObtIDENTIFICADOR_REG(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.IDENTIFICADOR_REG%TYPE;
  
+    -- Obtiene el valor de la columna IDRANGOOFER 
     FUNCTION fnuObtIDRANGOOFER(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.IDRANGOOFER%TYPE;
  
+    -- Actualiza el valor de la columna NUSSESION
     PROCEDURE prAcNUSSESION(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuNUSSESION    NUMBER
     );
  
+    -- Actualiza el valor de la columna LIQUIDACION
     PROCEDURE prAcLIQUIDACION(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         isbLIQUIDACION    VARCHAR2
     );
  
+    -- Actualiza el valor de la columna CANTIDAD_ITEM_LEGALIZADA
     PROCEDURE prAcCANTIDAD_ITEM_LEGALIZADA(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuCANTIDAD_ITEM_LEGALIZADA    NUMBER
     );
- 
+
+    -- Actualiza el valor de la columna NRO_ACTA 
     PROCEDURE prAcNRO_ACTA(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuNRO_ACTA    NUMBER
     );
  
+    -- Actualiza el valor de la columna UNIDAD_OPERATIVA_PADRE
     PROCEDURE prAcUNIDAD_OPERATIVA_PADRE(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuUNIDAD_OPERATIVA_PADRE    NUMBER
     );
  
+    -- Actualiza el valor de la columna ZONA_OFERTADOS
     PROCEDURE prAcZONA_OFERTADOS(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuZONA_OFERTADOS    NUMBER
     );
  
+    -- Actualiza el valor de la columna IDENTIFICADOR_REG
     PROCEDURE prAcIDENTIFICADOR_REG(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuIDENTIFICADOR_REG    NUMBER
     );
  
+    -- Actualiza el valor de la columna IDRANGOOFER
     PROCEDURE prAcIDRANGOOFER(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuIDRANGOOFER    NUMBER
     );
  
+    -- Actualiza las columnas con valor diferente al anterior
     PROCEDURE prActRegistro( ircRegistro LDC_UNI_ACT_OT%ROWTYPE);
+    
+    -- Borra registros por sesion  y acta
+    PROCEDURE prBorRegxSesYacta( inuSesion NUMBER, inuActa NUMBER);    
  
 END PKG_LDC_UNI_ACT_OT;
 /
+
 CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
     csbSP_NAME		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.';
     csbNivelTraza    CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
-    FUNCTION ftbObtRowIdsxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRowIds IS
-        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'ftbObtRowIdsxCond';
-        nuError         NUMBER;
-        sbError         VARCHAR2(4000);
-        tbRowIds tytbRowIds;
-        sbSentencia VARCHAR2(32000);
-        crfRowIds sys_refcursor;
-    BEGIN
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-        sbSentencia := 'SELECT tb.ROWID FROM LDC_UNI_ACT_OT tb WHERE ';
-        sbSentencia := sbSentencia ||isbCondicion;
-        OPEN crfRowIds FOR sbSentencia;
-        FETCH crfRowIds BULK COLLECT INTO tbRowIds;
-        CLOSE crfRowIds;
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-        RETURN tbRowIds;
-        EXCEPTION
-            WHEN pkg_error.Controlled_Error THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-            WHEN OTHERS THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-                pkg_error.setError;
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-    END ftbObtRowIdsxCond;
- 
-    FUNCTION ftbObtRegistrosxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRegistros IS
-        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'ftbObtRegistrosxCond';
-        nuError         NUMBER;
-        sbError         VARCHAR2(4000);
-        tbRegistros  tytbRegistros;
-        sbSentencia VARCHAR2(32000);
-        crfRegistros sys_refcursor;
-    BEGIN
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-        sbSentencia := 'SELECT tb.* FROM LDC_UNI_ACT_OT tb WHERE ';
-        sbSentencia := sbSentencia ||isbCondicion;
-        OPEN crfRegistros FOR sbSentencia;
-        FETCH crfRegistros BULK COLLECT INTO tbRegistros;
-        CLOSE crfRegistros;
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-    RETURN tbRegistros;
-        EXCEPTION
-            WHEN pkg_error.Controlled_Error THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-            WHEN OTHERS THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-                pkg_error.setError;
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-    END ftbObtRegistrosxCond;
- 
+
+    -- Obtiene un registro consultando con el rowid 
     FUNCTION frcObtRegistroRId(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER, iblBloquea BOOLEAN DEFAULT FALSE
     ) RETURN cuRegistroRId%ROWTYPE IS
@@ -246,6 +221,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 RAISE pkg_error.Controlled_Error;
     END frcObtRegistroRId;
  
+    -- Retorna verdadero si existe un registro con la llave primaria
     FUNCTION fblExiste(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
     ) RETURN BOOLEAN IS
@@ -272,6 +248,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 RAISE pkg_error.Controlled_Error;
     END fblExiste;
  
+    -- Eleva un mensaje de error si No existe un registro con la llave primaria 
     PROCEDURE prValExiste(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
     ) IS
@@ -298,7 +275,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 RAISE pkg_error.Controlled_Error;
     END prValExiste;
  
-    PROCEDURE prInsRegistro( ircRegistro LDC_UNI_ACT_OT%ROWTYPE, oRowId OUT ROWID) IS
+    -- Inserta un registro en LDC_UNI_ACT_OT
+    PROCEDURE prInsRegistro( ircRegistro LDC_UNI_ACT_OT%ROWTYPE ) IS
         csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prInsRegistro';
         nuError         NUMBER;
         sbError         VARCHAR2(4000);
@@ -309,7 +287,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
         )
         VALUES (
             ircRegistro.UNIDAD_OPERATIVA,ircRegistro.ACTIVIDAD,ircRegistro.ORDEN,ircRegistro.NUSSESION,ircRegistro.ITEM,ircRegistro.LIQUIDACION,ircRegistro.CANTIDAD_ITEM_LEGALIZADA,ircRegistro.NRO_ACTA,ircRegistro.UNIDAD_OPERATIVA_PADRE,ircRegistro.ZONA_OFERTADOS,ircRegistro.IDENTIFICADOR_REG,ircRegistro.IDRANGOOFER
-        ) RETURNING ROWID INTO oRowId;
+        );
         pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
         EXCEPTION
             WHEN pkg_error.Controlled_Error THEN
@@ -324,7 +302,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prInsRegistro;
- 
+
+    -- Borra el registro que tenga la llave primaria    
     PROCEDURE prBorRegistro(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
     ) IS
@@ -354,7 +333,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prBorRegistro;
- 
+
+    -- Borra el registro que tenga el RowId    
     PROCEDURE prBorRegistroxRowId(
         iRowId ROWID
     ) IS
@@ -381,43 +361,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prBorRegistroxRowId;
- 
-    PROCEDURE prBorRegistroxCond(
-        isbCondicion VARCHAR2,
-        inuCantMaxima NUMBER DEFAULT 10
-    ) IS
-        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prBorRegistroxCond';
-        nuError         NUMBER;
-        sbError         VARCHAR2(4000);
-        tbRowIds tytbRowIds;
-    BEGIN
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-        IF isbCondicion IS NULL THEN
-            pkg_error.setErrorMessage( isbMsgErrr => 'Debe proporcionarse una condición para el borrado');
-        ELSE
-            tbRowIds := ftbObtRowIdsxCond(isbCondicion);
-            IF tbRowIds.COUNT > inuCantMaxima THEN
-                pkg_error.setErrorMessage( isbMsgErrr => 'Se intentan borrar ['||tbRowIds.COUNT||']inuCantMaxima['||inuCantMaxima||']');
-            ELSE
-                FOR ind IN 1..tbRowIds.COUNT LOOP
-                    prBorRegistroxRowId(tbRowIds(ind));
-                END LOOP;
-            END IF;
-        END IF;
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-        EXCEPTION
-            WHEN pkg_error.Controlled_Error THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-            WHEN OTHERS THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-                pkg_error.setError;
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-    END prBorRegistroxCond;
+
+    -- Obtiene el valor de la columna NUSSESION 
     FUNCTION fnuObtNUSSESION(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.NUSSESION%TYPE
@@ -444,7 +389,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtNUSSESION;
- 
+
+    -- Obtiene el valor de la columna LIQUIDACION 
     FUNCTION fsbObtLIQUIDACION(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.LIQUIDACION%TYPE
@@ -471,7 +417,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fsbObtLIQUIDACION;
- 
+
+    -- Obtiene el valor de la columna CANTIDAD_ITEM_LEGALIZADA 
     FUNCTION fnuObtCANTIDAD_ITEM_LEGALIZADA(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.CANTIDAD_ITEM_LEGALIZADA%TYPE
@@ -498,7 +445,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtCANTIDAD_ITEM_LEGALIZADA;
- 
+
+    -- Obtiene el valor de la columna NRO_ACTA 
     FUNCTION fnuObtNRO_ACTA(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.NRO_ACTA%TYPE
@@ -526,6 +474,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 RAISE pkg_error.Controlled_Error;
     END fnuObtNRO_ACTA;
  
+    -- Obtiene el valor de la columna UNIDAD_OPERATIVA_PADRE
     FUNCTION fnuObtUNIDAD_OPERATIVA_PADRE(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.UNIDAD_OPERATIVA_PADRE%TYPE
@@ -553,6 +502,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 RAISE pkg_error.Controlled_Error;
     END fnuObtUNIDAD_OPERATIVA_PADRE;
  
+    -- Obtiene el valor de la columna ZONA_OFERTADOS 
     FUNCTION fnuObtZONA_OFERTADOS(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.ZONA_OFERTADOS%TYPE
@@ -579,7 +529,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtZONA_OFERTADOS;
- 
+
+    -- Obtiene el valor de la columna IDENTIFICADOR_REG  
     FUNCTION fnuObtIDENTIFICADOR_REG(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.IDENTIFICADOR_REG%TYPE
@@ -606,7 +557,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtIDENTIFICADOR_REG;
- 
+
+    -- Obtiene el valor de la columna IDRANGOOFER  
     FUNCTION fnuObtIDRANGOOFER(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER
         ) RETURN LDC_UNI_ACT_OT.IDRANGOOFER%TYPE
@@ -634,6 +586,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 RAISE pkg_error.Controlled_Error;
     END fnuObtIDRANGOOFER;
  
+    -- Actualiza el valor de la columna NUSSESION
     PROCEDURE prAcNUSSESION(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuNUSSESION    NUMBER
@@ -665,7 +618,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcNUSSESION;
- 
+
+    -- Actualiza el valor de la columna LIQUIDACION 
     PROCEDURE prAcLIQUIDACION(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         isbLIQUIDACION    VARCHAR2
@@ -697,7 +651,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcLIQUIDACION;
- 
+
+    -- Actualiza el valor de la columna CANTIDAD_ITEM_LEGALIZADA 
     PROCEDURE prAcCANTIDAD_ITEM_LEGALIZADA(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuCANTIDAD_ITEM_LEGALIZADA    NUMBER
@@ -729,7 +684,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcCANTIDAD_ITEM_LEGALIZADA;
- 
+
+    -- Actualiza el valor de la columna NRO_ACTA  
     PROCEDURE prAcNRO_ACTA(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuNRO_ACTA    NUMBER
@@ -761,7 +717,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcNRO_ACTA;
- 
+
+    -- Actualiza el valor de la columna UNIDAD_OPERATIVA_PADRE 
     PROCEDURE prAcUNIDAD_OPERATIVA_PADRE(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuUNIDAD_OPERATIVA_PADRE    NUMBER
@@ -793,7 +750,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcUNIDAD_OPERATIVA_PADRE;
- 
+
+    -- Actualiza el valor de la columna ZONA_OFERTADOS 
     PROCEDURE prAcZONA_OFERTADOS(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuZONA_OFERTADOS    NUMBER
@@ -825,7 +783,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcZONA_OFERTADOS;
- 
+
+    -- Actualiza el valor de la columna IDENTIFICADOR_REG 
     PROCEDURE prAcIDENTIFICADOR_REG(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuIDENTIFICADOR_REG    NUMBER
@@ -857,7 +816,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcIDENTIFICADOR_REG;
- 
+
+    -- Actualiza el valor de la columna IDRANGOOFER 
     PROCEDURE prAcIDRANGOOFER(
         inuUNIDAD_OPERATIVA    NUMBER,inuORDEN    NUMBER,inuACTIVIDAD    NUMBER,inuITEM    NUMBER,
         inuIDRANGOOFER    NUMBER
@@ -1138,6 +1098,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 RAISE pkg_error.Controlled_Error;
     END prAcIDRANGOOFER_RId;
  
+    -- Actualiza las columnas con valor diferente al anterior
     PROCEDURE prActRegistro( ircRegistro LDC_UNI_ACT_OT%ROWTYPE) IS
         csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prActRegistro';
         nuError         NUMBER;
@@ -1210,11 +1171,113 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_UNI_ACT_OT AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prActRegistro;
+    
+    -- Actualiza las columnas con valor diferente al anterior
+    PROCEDURE prActRegistro( ircRegistro culdc_uni_act_ot%ROWTYPE) IS
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prActRegistro';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);
+        rcRegistroAct cuRegistroRId%ROWTYPE;
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+        rcRegistroAct := frcObtRegistroRId(ircRegistro.UNIDAD_OPERATIVA,ircRegistro.ORDEN,ircRegistro.ACTIVIDAD,ircRegistro.ITEM,TRUE);
+        IF rcRegistroAct.RowId IS NOT NULL THEN
+            prAcNUSSESION_RId(
+                rcRegistroAct.RowId,
+                rcRegistroAct.NUSSESION,
+                ircRegistro.NUSSESION
+            );
+
+            prAcLIQUIDACION_RId(
+                rcRegistroAct.RowId,
+                rcRegistroAct.LIQUIDACION,
+                ircRegistro.LIQUIDACION
+            );
+
+            prAcCANTIDAD_ITEM_LEGALIZADA_R(
+                rcRegistroAct.RowId,
+                rcRegistroAct.CANTIDAD_ITEM_LEGALIZADA,
+                ircRegistro.CANTIDAD_ITEM_LEGALIZADA
+            );
+
+            prAcNRO_ACTA_RId(
+                rcRegistroAct.RowId,
+                rcRegistroAct.NRO_ACTA,
+                ircRegistro.NRO_ACTA
+            );
+
+            prAcUNIDAD_OPERATIVA_PADRE_RId(
+                rcRegistroAct.RowId,
+                rcRegistroAct.UNIDAD_OPERATIVA_PADRE,
+                ircRegistro.UNIDAD_OPERATIVA_PADRE
+            );
+
+            prAcZONA_OFERTADOS_RId(
+                rcRegistroAct.RowId,
+                rcRegistroAct.ZONA_OFERTADOS,
+                ircRegistro.ZONA_OFERTADOS
+            );
+
+            prAcIDENTIFICADOR_REG_RId(
+                rcRegistroAct.RowId,
+                rcRegistroAct.IDENTIFICADOR_REG,
+                ircRegistro.IDENTIFICADOR_REG
+            );
+
+            prAcIDRANGOOFER_RId(
+                rcRegistroAct.RowId,
+                rcRegistroAct.IDRANGOOFER,
+                ircRegistro.IDRANGOOFER
+            );
+
+        END IF;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+        EXCEPTION
+            WHEN pkg_error.Controlled_Error THEN
+                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+                pkg_Error.getError(nuError,sbError);
+                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
+                RAISE pkg_error.Controlled_Error;
+            WHEN OTHERS THEN
+                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
+                pkg_error.setError;
+                pkg_Error.getError(nuError,sbError);
+                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
+                RAISE pkg_error.Controlled_Error;
+    END prActRegistro;
+
+    -- Borra registros por sesion  y acta
+    PROCEDURE prBorRegxSesYacta( inuSesion NUMBER, inuActa NUMBER)
+    IS
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prBorRegxOrdActa';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+        DELETE ldc_uni_act_ot
+        WHERE NUSSESION = inuSesion
+        AND NRO_ACTA = inuActa;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+        EXCEPTION
+            WHEN pkg_error.Controlled_Error THEN
+                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+                pkg_Error.getError(nuError,sbError);
+                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
+                RAISE pkg_error.Controlled_Error;
+            WHEN OTHERS THEN
+                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
+                pkg_error.setError;
+                pkg_Error.getError(nuError,sbError);
+                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
+                RAISE pkg_error.Controlled_Error;
+    END prBorRegxSesYacta;    
  
 END PKG_LDC_UNI_ACT_OT;
 /
+
 BEGIN
     -- OSF-2204
     pkg_Utilidades.prAplicarPermisos( UPPER('PKG_LDC_UNI_ACT_OT'), UPPER('adm_person'));
 END;
 /
+

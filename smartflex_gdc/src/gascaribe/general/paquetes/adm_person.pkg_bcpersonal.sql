@@ -11,7 +11,9 @@ create or replace package adm_person.pkg_bcpersonal IS
 
     Modificaciones  :
     =========================================================
-    Autor       Fecha       Caso    Descripcion
+    Autor       Fecha       Caso        Descripcion
+    jpinedc     26/03/2025  OSF-4010    Se crea fnuObtAreaOrganizacional
+    jpinedc     08/04/2025  OSF-4205    Se crea fnuObtFuncionarioUsuario
   ***************************************************************************/
 
     --------------------------------------------
@@ -38,9 +40,24 @@ create or replace package adm_person.pkg_bcpersonal IS
 		 inuUserId in sa_user.user_id%type
 	   )
 		return varchar2;
-
+		
+    -- Obtiene el área organizacional a la que pertenece el funcionario
+	FUNCTION fnuObtAreaOrganizacional
+	(
+        inuFuncionario  IN  ge_person.person_id%TYPE
+    )
+    RETURN NUMBER;
+    
+    -- Obtiene el funcionario asociado al usuario
+    FUNCTION fnuObtFuncionarioUsuario
+    (
+        inuUsuario      IN  notas.notausua%TYPE
+    )
+    RETURN NUMBER;
+    
 end pkg_bcpersonal;
 /
+
 create or replace package body     adm_person.pkg_bcpersonal IS
   /***************************************************************************
     Propiedad Intelectual de Gases del Caribe
@@ -59,7 +76,7 @@ create or replace package body     adm_person.pkg_bcpersonal IS
 
     -- Constantes para el control de la traza
     csbNOMPKG 		CONSTANT VARCHAR2(35):= $$PLSQL_UNIT||'.';
-    csbVERSION      CONSTANT VARCHAR2(10) := 'OSF-3668';
+    csbVERSION      CONSTANT VARCHAR2(10) := 'OSF-4205';
 
 
     /***************************************************************************
@@ -171,9 +188,9 @@ create or replace package body     adm_person.pkg_bcpersonal IS
 			CLOSE cuconsultausuario;
 		END IF;
 
-		return(sbUser);
-
 		pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+		
+		return(sbUser);
 
 	EXCEPTION
 		  when OTHERS then
@@ -182,7 +199,141 @@ create or replace package body     adm_person.pkg_bcpersonal IS
 				pkg_traza.trace('Error:'||nuCodError||'-'||sbMensErro,pkg_traza.cnuNivelTrzDef);
 				pkg_traza.trace(csbMT_NAME,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
 				RETURN sbUser;
-	end fsbObtNombrePorUsuario;    
+	end fsbObtNombrePorUsuario;
+	
+    -- Obtiene el área organizacional a la que pertenece el funcionario
+	FUNCTION fnuObtAreaOrganizacional
+	(
+        inuFuncionario  IN  ge_person.person_id%TYPE
+    )
+    RETURN NUMBER
+    IS 
+
+        csbMT_NAME  CONSTANT VARCHAR2(100) := csbNOMPKG||'.fnuObtAreaOrganizacional';
+        sbMensErro  VARCHAR2(4000);
+        nuCodError  NUMBER;
+
+		nuAreaOrganizacional    NUMBER;
+
+        CURSOR cuObtAreaOrganizacional
+        IS
+        SELECT organizat_area_id
+        FROM ge_person pe
+        WHERE pe.person_id = inuFuncionario;
+        
+        PROCEDURE prcCierraCursor
+        IS
+            csbMT_NAME1  CONSTANT VARCHAR2(100) := csbMT_NAME||'.prcCierraCursor';
+            sbMensErro1  VARCHAR2(4000);
+            nuCodError1  NUMBER;
+            
+        BEGIN
+        
+            pkg_traza.trace(csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);    
+
+            IF cuObtAreaOrganizacional%ISOPEN THEN
+                CLOSE cuObtAreaOrganizacional;
+            END IF;
+
+            pkg_traza.trace(csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);        
+
+        EXCEPTION
+              when OTHERS then
+                    pkg_error.SetError;
+                    pkg_error.getError(nuCodError,sbMensErro);
+                    pkg_traza.trace('Error:'||nuCodError||'-'||sbMensErro,pkg_traza.cnuNivelTrzDef);
+                    pkg_traza.trace(csbMT_NAME,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
+                    RAISE pkg_Error.CONTROLLED_ERROR;
+        END prcCierraCursor;              
+
+	BEGIN
+
+		pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);    
+        
+		OPEN cuObtAreaOrganizacional;		
+        FETCH cuObtAreaOrganizacional INTO nuAreaOrganizacional;
+        CLOSE cuObtAreaOrganizacional;
+
+		pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+
+		RETURN nuAreaOrganizacional;
+
+    EXCEPTION
+		  when OTHERS then
+				pkg_error.SetError;
+				pkg_error.getError(nuCodError,sbMensErro);
+				pkg_traza.trace('Error:'||nuCodError||'-'||sbMensErro,pkg_traza.cnuNivelTrzDef);
+				pkg_traza.trace(csbMT_NAME,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
+				prcCierraCursor;
+				RETURN nuAreaOrganizacional;
+	end fnuObtAreaOrganizacional;
+	
+    -- Obtiene el funcionario asociado al usuario
+    FUNCTION fnuObtFuncionarioUsuario
+    (
+        inuUsuario      IN  notas.notausua%TYPE
+    )
+    RETURN NUMBER
+    IS 
+
+        csbMT_NAME  CONSTANT VARCHAR2(100) := csbNOMPKG||'.fnuObtFuncionarioUsuario';
+        sbMensErro  VARCHAR2(4000);
+        nuCodError  NUMBER;
+
+		nuFuncionarioUsuario    NUMBER;
+
+        CURSOR cuObtFuncionarioUsuario
+        IS
+        SELECT person_id
+        FROM ge_person pe
+        WHERE pe.user_id = inuUsuario;
+        
+        PROCEDURE prcCierraCursor
+        IS
+            csbMT_NAME1  CONSTANT VARCHAR2(100) := csbMT_NAME||'.prcCierraCursor';
+            sbMensErro1  VARCHAR2(4000);
+            nuCodError1  NUMBER;
+            
+        BEGIN
+        
+            pkg_traza.trace(csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);    
+
+            IF cuObtFuncionarioUsuario%ISOPEN THEN
+                CLOSE cuObtFuncionarioUsuario;
+            END IF;
+
+            pkg_traza.trace(csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);        
+
+        EXCEPTION
+              when OTHERS then
+                    pkg_error.SetError;
+                    pkg_error.getError(nuCodError,sbMensErro);
+                    pkg_traza.trace('Error:'||nuCodError||'-'||sbMensErro,pkg_traza.cnuNivelTrzDef);
+                    pkg_traza.trace(csbMT_NAME,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
+                    RAISE pkg_Error.CONTROLLED_ERROR;
+        END prcCierraCursor;              
+
+	BEGIN
+
+		pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);    
+        
+		OPEN cuObtFuncionarioUsuario;		
+        FETCH cuObtFuncionarioUsuario INTO nuFuncionarioUsuario;
+        CLOSE cuObtFuncionarioUsuario;
+
+		pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+
+		RETURN nuFuncionarioUsuario;
+
+    EXCEPTION
+		  when OTHERS then
+				pkg_error.SetError;
+				pkg_error.getError(nuCodError,sbMensErro);
+				pkg_traza.trace('Error:'||nuCodError||'-'||sbMensErro,pkg_traza.cnuNivelTrzDef);
+				pkg_traza.trace(csbMT_NAME,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
+				prcCierraCursor;
+				RETURN nuFuncionarioUsuario;
+	end fnuObtFuncionarioUsuario;    	 
 
 END pkg_bcpersonal;
 /
@@ -191,3 +342,4 @@ BEGIN
   pkg_utilidades.prAplicarPermisos('PKG_BCPERSONAL', 'ADM_PERSON');
 END;
 /
+

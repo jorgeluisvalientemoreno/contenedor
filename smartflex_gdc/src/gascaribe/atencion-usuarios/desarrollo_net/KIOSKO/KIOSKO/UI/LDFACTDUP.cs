@@ -408,46 +408,50 @@ namespace KIOSKO.UI
             //
             object[] valores = { suscripcion, saldo, factimp };
             resp_facturacion DatosFactura = blLDFACTDUP.consultaFactura(BLCONSULTAS.ConsultaFactura, valores);
-            if (factimp == "0") 
+            //OSF-3938
+            //Adicion de validacion de codigo de error
+            if (DatosFactura.onuErrorCode == 0)
             {
-                if (double.Parse(sant) <= double.Parse(sact)) 
+                if (factimp == "0")
                 {
-                    try
+                    if (double.Parse(sant) <= double.Parse(sact))
                     {
-                        if (DatosFactura.osbprocfact == "S") 
+                        try
                         {
-                            general.mensajeOk("Contrato en proceso de facturación");
+                            if (DatosFactura.osbprocfact == "S")
+                            {
+                                general.mensajeOk("Contrato en proceso de facturación");
+                            }
+                            if (DatosFactura.osbseguroliberty == "S")
+                            {
+                                general.mensajeOk("Va a imprimir la factura de " + txt_municipio.Text + " Direccion " + txt_direccion.Text);
+                            }
+                            else
+                            { }
                         }
-                        if (DatosFactura.osbseguroliberty == "S") 
+                        catch (Exception ex)
                         {
-                            general.mensajeOk("Va a imprimir la factura de " + txt_municipio.Text + " Direccion " + txt_direccion.Text);
-                        } 
-                        else 
-                        {}
-                    } 
-                    catch (Exception ex) 
-                    {
-                        general.mensajeERROR("Inconvenientes durante el proceso de generacion de la factura: " + ex.Message);
+                            general.mensajeERROR("Inconvenientes durante el proceso de generacion de la factura: " + ex.Message);
+                        }
                     }
                 }
-            }
-            try
-            {
-                if(DatosFactura.osbordensusp != "N")
+                try
                 {
-                    string cadenaSinTags = Regex.Replace(DatosFactura.osbordensusp, "<.*?>", string.Empty);
-                    general.mensajeOk(cadenaSinTags);
+                    if (DatosFactura.osbordensusp != "N")
+                    {
+                        string cadenaSinTags = Regex.Replace(DatosFactura.osbordensusp, "<.*?>", string.Empty);
+                        general.mensajeOk(cadenaSinTags);
+                    }
                 }
-            }
-            catch(Exception e)
-            {
-                general.mensajeERROR("Inconvenientes durante el proceso de generacion de la factura: " + e.Message);
-            }
-            //bloqueado para compatibilidad con caso 200-1515 y 200-1427
-            /*if(DatosFactura != null && DatosFactura.osbimprimir != null && DatosFactura.osbimprimir != "S")
-            {}
-            else
-            {*/
+                catch (Exception e)
+                {
+                    general.mensajeERROR("Inconvenientes durante el proceso de generacion de la factura: " + e.Message);
+                }
+                //bloqueado para compatibilidad con caso 200-1515 y 200-1427
+                /*if(DatosFactura != null && DatosFactura.osbimprimir != null && DatosFactura.osbimprimir != "S")
+                {}
+                else
+                {*/
                 if (DatosFactura.datos.Tables["datosBasicos"].Rows.Count > 0)
                 {
 
@@ -458,7 +462,7 @@ namespace KIOSKO.UI
                     //caso 200-2574 - danval - 20-04-19
                     //se retira la generacion del codigo de barras
                     //String cadena = "415" + DatosFactura.datos.Tables["codigos"].Rows[0].ItemArray[0].ToString() + "8020" + DatosFactura.datos.Tables["codigos"].Rows[0].ItemArray[1].ToString() + "s3900" + DatosFactura.datos.Tables["codigos"].Rows[0].ItemArray[2].ToString() + "s96" + DatosFactura.datos.Tables["codigos"].Rows[0].ItemArray[3].ToString();
-                    
+
                     //cargamos los datos para llenar la factura
                     //String[] tipos = { "String" };
                     //String[] campos = { "isbCadeOrig" };
@@ -474,39 +478,39 @@ namespace KIOSKO.UI
                     //int continuar = 1;
                     //do
                     //{
-                        //creamos el codigo de barras
-                        //convertirTextoImagen(cadena, suscripcion, nombreCodigo);
-                        //Thread.Sleep(2000);
-                        //general.mensajeOk("Control 1");
-                        //if (!System.IO.File.Exists(DireccionCarpeta + "\\" + nombreCodigo + ".png"))
-                        //{
-                            //continuar++;
-                            //ExitoI = false;
-                        //}
-                        //else
-                        //{
-                            //FileInfo file = new FileInfo(DireccionCarpeta + "\\" + nombreCodigo + ".png");
-                            //if (file.Length == 0)
-                            //{
-                                //continuar++;
-                                //ExitoI = false;
-                                //File.Delete(DireccionCarpeta + "\\" + nombreCodigo + ".png");
-                            //}
-                            //else
-                            //{
-                                //continuar = intentos + 1;
-                                //ExitoI = true;
-                            //}
-                        //}
+                    //creamos el codigo de barras
+                    //convertirTextoImagen(cadena, suscripcion, nombreCodigo);
+                    //Thread.Sleep(2000);
+                    //general.mensajeOk("Control 1");
+                    //if (!System.IO.File.Exists(DireccionCarpeta + "\\" + nombreCodigo + ".png"))
+                    //{
+                    //continuar++;
+                    //ExitoI = false;
+                    //}
+                    //else
+                    //{
+                    //FileInfo file = new FileInfo(DireccionCarpeta + "\\" + nombreCodigo + ".png");
+                    //if (file.Length == 0)
+                    //{
+                    //continuar++;
+                    //ExitoI = false;
+                    //File.Delete(DireccionCarpeta + "\\" + nombreCodigo + ".png");
+                    //}
+                    //else
+                    //{
+                    //continuar = intentos + 1;
+                    //ExitoI = true;
+                    //}
+                    //}
                     //} while (continuar <= intentos && !ExitoI);
 
                     //if (!ExitoI)
                     //{
-                        /*rutina para reversar el cobro de el duplicado*/
-                        //????nueva funcion o rollback???
-                        //OpenDataBase.Transaction.Rollback();
-                        //
-                        //return;
+                    /*rutina para reversar el cobro de el duplicado*/
+                    //????nueva funcion o rollback???
+                    //OpenDataBase.Transaction.Rollback();
+                    //
+                    //return;
                     //}
                     //creamos el codigo de barras
                     //convertirTextoImagen(cadena, suscripcion, nombreCodigo);
@@ -519,7 +523,7 @@ namespace KIOSKO.UI
                     plantilla.Subreports[2].SetDataSource(DatosFactura.datos.Tables["rangos"]);
                     plantilla.SetParameterValue("valoresref", DatosFactura.datos.Tables["valores"].Rows[0].ItemArray[1].ToString());
                     plantilla.SetParameterValue("valcalc", DatosFactura.datos.Tables["valores"].Rows[1].ItemArray[1].ToString());
-                    
+
                     //Agregar un 0 faltante antes de un punto (.)
                     //plantilla.SetParameterValue("cupobrilla", DatosFactura.datos.Tables["valores"].Rows[2].ItemArray[1].ToString());
                     String cpbr = DatosFactura.datos.Tables["valores"].Rows[2].ItemArray[1].ToString();
@@ -581,12 +585,20 @@ namespace KIOSKO.UI
                     //caso 200-2574 - danval - 20-04-19
                     //se retira la generacion del codigo de barras
                     //File.Delete(DireccionCarpeta + "\\" + nombreCodigo + ".png");
-                    OpenDataBase.Transaction.Commit();                    
+                    OpenDataBase.Transaction.Commit();
                 }
                 else
                 {
                     general.mensajeERROR("Error durante la busqueda de Registros de la Factura");
                 }
+            }
+            else
+            {
+                //OSF-3938
+                //Mesaje de error
+                general.mensajeERROR(DatosFactura.osbErrorMessage);
+                OpenDataBase.Transaction.Rollback();
+            }
             //}
         }
 

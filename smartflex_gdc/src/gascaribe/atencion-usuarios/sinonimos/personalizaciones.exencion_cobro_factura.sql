@@ -1,0 +1,5 @@
+BEGIN
+    -- OSF-4171
+    pkg_Utilidades.prCrearSinonimos( UPPER('EXENCION_COBRO_FACTURA'), UPPER('PERSONALIZACIONES'));
+END;
+/

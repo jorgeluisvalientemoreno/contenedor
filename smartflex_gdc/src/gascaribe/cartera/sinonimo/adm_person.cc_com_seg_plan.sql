@@ -1,5 +1,5 @@
 PROMPT Crea sinonimo objeto dependiente CC_COM_SEG_PLAN
 BEGIN
-    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.CC_COM_SEG_PLAN FOR CC_COM_SEG_PLAN';
+    pkg_Utilidades.prCrearSinonimos( UPPER('CC_COM_SEG_PLAN'), UPPER('open'));
 END;
 /

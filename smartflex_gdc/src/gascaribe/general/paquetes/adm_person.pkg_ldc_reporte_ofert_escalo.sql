@@ -8,6 +8,12 @@ CREATE OR REPLACE PACKAGE adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
         Tabla : LDC_REPORTE_OFERT_ESCALO
         Caso  : OSF-2204
         Fecha : 12/07/2024 08:00:15
+        Modificaciones
+        Fecha       Autor       Caso        Descrición
+        17/03/2025  jpinedc     OSF-4123    * Se modifica prInsRegistro
+                                            * Se borran ftbObtRowIdsxCond,
+                                            ftbObtRegistrosxCond, 
+                                            prBorRegistroxCond       
     ***************************************************************************/
     CURSOR cuRegistroRId
     (
@@ -33,183 +39,129 @@ CREATE OR REPLACE PACKAGE adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
         NRO_ACTA = inuNRO_ACTA AND
         IDEN_REGI = inuIDEN_REGI
         FOR UPDATE NOWAIT;
-     
-    FUNCTION ftbObtRowIdsxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRowIds;
-    FUNCTION ftbObtRegistrosxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRegistros;
+
+    -- Obtiene el registro y su RowId
     FUNCTION frcObtRegistroRId(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER, iblBloquea BOOLEAN DEFAULT FALSE
     ) RETURN cuRegistroRId%ROWTYPE;
  
+    -- Retorna verdadero si existe un registro con la llave primaria
     FUNCTION fblExiste(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
     ) RETURN BOOLEAN;
- 
+
+    -- Eleva un mensaje de error si NO existe un registro con la llave primaria 
     PROCEDURE prValExiste(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
     );
  
-    PROCEDURE prinsRegistro( ircRegistro LDC_REPORTE_OFERT_ESCALO%ROWTYPE, oRowId OUT ROWID);
+    -- Inserta un registro en LDC_REPORTE_OFERT_ESCALO
+    PROCEDURE prinsRegistro( ircRegistro LDC_REPORTE_OFERT_ESCALO%ROWTYPE );
  
+    -- Borra el registro que tenga la llave primaria
     PROCEDURE prBorRegistro(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
     );
- 
-    PROCEDURE prBorRegistroxRowId(
-        iRowId ROWID
-    );
- 
-    PROCEDURE prBorRegistroxCond(
-        isbCondicion VARCHAR2,
-        inuCantMaxima NUMBER DEFAULT 10
-    );
- 
+  
+    -- Obtiene el valor de la columna UNIDAD_OPERATIVA_ESCA
     FUNCTION fnuObtUNIDAD_OPERATIVA_ESCA(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.UNIDAD_OPERATIVA_ESCA%TYPE;
  
+    -- Obtiene el valor de la columna ACTIVIDAD_REP_ESCALONADO
     FUNCTION fnuObtACTIVIDAD_REP_ESCALONADO(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.ACTIVIDAD_REP_ESCALONADO%TYPE;
  
+    -- Obtiene el valor de la columna ITEM_REP_ESCALONADO
     FUNCTION fnuObtITEM_REP_ESCALONADO(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.ITEM_REP_ESCALONADO%TYPE;
- 
+
+    -- Obtiene el valor de la columna RANGO_INICIAL 
     FUNCTION fnuObtRANGO_INICIAL(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.RANGO_INICIAL%TYPE;
- 
+        
+    -- Obtiene el valor de la columna RANGO_FINAL
     FUNCTION fnuObtRANGO_FINAL(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.RANGO_FINAL%TYPE;
- 
+
+    -- Obtiene el valor de la columna CANTIDAD_ORDENES
     FUNCTION fnuObtCANTIDAD_ORDENES(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.CANTIDAD_ORDENES%TYPE;
- 
+
+    -- Obtiene el valor de la columna VALOR_LIQUIDAR
     FUNCTION fnuObtVALOR_LIQUIDAR(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.VALOR_LIQUIDAR%TYPE;
- 
+
+    -- Obtiene el valor de la columna TOTAL_AJUSTE
     FUNCTION fnuObtTOTAL_AJUSTE(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.TOTAL_AJUSTE%TYPE;
  
+    -- Actualiza el valor de la columna UNIDAD_OPERATIVA_ESCA
     PROCEDURE prAcUNIDAD_OPERATIVA_ESCA(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuUNIDAD_OPERATIVA_ESCA    NUMBER
     );
- 
+
+    -- Actualiza el valor de la columna ACTIVIDAD_REP_ESCALONADO
     PROCEDURE prAcACTIVIDAD_REP_ESCALONADO(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuACTIVIDAD_REP_ESCALONADO    NUMBER
     );
- 
+
+    -- Actualiza el valor de la columna ITEM_REP_ESCALONADO
     PROCEDURE prAcITEM_REP_ESCALONADO(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuITEM_REP_ESCALONADO    NUMBER
     );
- 
+    
+    -- Actualiza el valor de la columna RANGO_INICIAL
     PROCEDURE prAcRANGO_INICIAL(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuRANGO_INICIAL    NUMBER
     );
- 
+
+    -- Actualiza el valor de la columna RANGO_FINAL
     PROCEDURE prAcRANGO_FINAL(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuRANGO_FINAL    NUMBER
     );
- 
+
+    -- Actualiza el valor de la columna CANTIDAD_ORDENES
     PROCEDURE prAcCANTIDAD_ORDENES(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuCANTIDAD_ORDENES    NUMBER
     );
- 
+
+    -- Actualiza el valor de la columna VALOR_LIQUIDAR
     PROCEDURE prAcVALOR_LIQUIDAR(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuVALOR_LIQUIDAR    NUMBER
     );
- 
+
+    -- Actualiza el valor de la columna TOTAL_AJUSTE
     PROCEDURE prAcTOTAL_AJUSTE(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuTOTAL_AJUSTE    NUMBER
     );
- 
+
+    -- Actualiza las columnas cuyo valor haya cambiado 
     PROCEDURE prActRegistro( ircRegistro LDC_REPORTE_OFERT_ESCALO%ROWTYPE);
  
 END PKG_LDC_REPORTE_OFERT_ESCALO;
 /
+
 CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
     csbSP_NAME		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.';
     csbNivelTraza    CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
-    FUNCTION ftbObtRowIdsxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRowIds IS
-        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'ftbObtRowIdsxCond';
-        nuError         NUMBER;
-        sbError         VARCHAR2(4000);
-        tbRowIds tytbRowIds;
-        sbSentencia VARCHAR2(32000);
-        crfRowIds sys_refcursor;
-    BEGIN
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-        sbSentencia := 'SELECT tb.ROWID FROM LDC_REPORTE_OFERT_ESCALO tb WHERE ';
-        sbSentencia := sbSentencia ||isbCondicion;
-        OPEN crfRowIds FOR sbSentencia;
-        FETCH crfRowIds BULK COLLECT INTO tbRowIds;
-        CLOSE crfRowIds;
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-        RETURN tbRowIds;
-        EXCEPTION
-            WHEN pkg_error.Controlled_Error THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-            WHEN OTHERS THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-                pkg_error.setError;
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-    END ftbObtRowIdsxCond;
- 
-    FUNCTION ftbObtRegistrosxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRegistros IS
-        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'ftbObtRegistrosxCond';
-        nuError         NUMBER;
-        sbError         VARCHAR2(4000);
-        tbRegistros  tytbRegistros;
-        sbSentencia VARCHAR2(32000);
-        crfRegistros sys_refcursor;
-    BEGIN
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-        sbSentencia := 'SELECT tb.* FROM LDC_REPORTE_OFERT_ESCALO tb WHERE ';
-        sbSentencia := sbSentencia ||isbCondicion;
-        OPEN crfRegistros FOR sbSentencia;
-        FETCH crfRegistros BULK COLLECT INTO tbRegistros;
-        CLOSE crfRegistros;
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-    RETURN tbRegistros;
-        EXCEPTION
-            WHEN pkg_error.Controlled_Error THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-            WHEN OTHERS THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-                pkg_error.setError;
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-    END ftbObtRegistrosxCond;
- 
+
+    -- Obtiene el registro y su RowId    
     FUNCTION frcObtRegistroRId(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER, iblBloquea BOOLEAN DEFAULT FALSE
     ) RETURN cuRegistroRId%ROWTYPE IS
@@ -243,7 +195,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END frcObtRegistroRId;
- 
+
+    -- Retorna verdadero si existe un registro con la llave primaria 
     FUNCTION fblExiste(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
     ) RETURN BOOLEAN IS
@@ -269,7 +222,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fblExiste;
- 
+
+    -- Eleva un mensaje de error si NO existe un registro con la llave primaria  
     PROCEDURE prValExiste(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
     ) IS
@@ -295,8 +249,9 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prValExiste;
- 
-    PROCEDURE prInsRegistro( ircRegistro LDC_REPORTE_OFERT_ESCALO%ROWTYPE, oRowId OUT ROWID) IS
+
+    -- Inserta un registro en LDC_REPORTE_OFERT_ESCALO 
+    PROCEDURE prInsRegistro( ircRegistro LDC_REPORTE_OFERT_ESCALO%ROWTYPE ) IS
         csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prInsRegistro';
         nuError         NUMBER;
         sbError         VARCHAR2(4000);
@@ -307,7 +262,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
         )
         VALUES (
             ircRegistro.NUSESION,ircRegistro.NRO_ACTA,ircRegistro.IDEN_REGI,ircRegistro.UNIDAD_OPERATIVA_ESCA,ircRegistro.ACTIVIDAD_REP_ESCALONADO,ircRegistro.ITEM_REP_ESCALONADO,ircRegistro.RANGO_INICIAL,ircRegistro.RANGO_FINAL,ircRegistro.CANTIDAD_ORDENES,ircRegistro.VALOR_LIQUIDAR,ircRegistro.TOTAL_AJUSTE
-        ) RETURNING ROWID INTO oRowId;
+        );
         pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
         EXCEPTION
             WHEN pkg_error.Controlled_Error THEN
@@ -322,7 +277,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prInsRegistro;
- 
+
+    -- Borra el registro que tenga la llave primaria 
     PROCEDURE prBorRegistro(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
     ) IS
@@ -352,70 +308,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prBorRegistro;
- 
-    PROCEDURE prBorRegistroxRowId(
-        iRowId ROWID
-    ) IS
-        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prBorRegistroxRowId';
-        nuError         NUMBER;
-        sbError         VARCHAR2(4000);
-    BEGIN
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-        IF iRowId IS NOT NULL THEN
-            DELETE LDC_REPORTE_OFERT_ESCALO
-            WHERE RowId = iRowId;
-        END IF;
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-        EXCEPTION
-            WHEN pkg_error.Controlled_Error THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-            WHEN OTHERS THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-                pkg_error.setError;
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-    END prBorRegistroxRowId;
- 
-    PROCEDURE prBorRegistroxCond(
-        isbCondicion VARCHAR2,
-        inuCantMaxima NUMBER DEFAULT 10
-    ) IS
-        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prBorRegistroxCond';
-        nuError         NUMBER;
-        sbError         VARCHAR2(4000);
-        tbRowIds tytbRowIds;
-    BEGIN
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-        IF isbCondicion IS NULL THEN
-            pkg_error.setErrorMessage( isbMsgErrr => 'Debe proporcionarse una condición para el borrado');
-        ELSE
-            tbRowIds := ftbObtRowIdsxCond(isbCondicion);
-            IF tbRowIds.COUNT > inuCantMaxima THEN
-                pkg_error.setErrorMessage( isbMsgErrr => 'Se intentan borrar ['||tbRowIds.COUNT||']inuCantMaxima['||inuCantMaxima||']');
-            ELSE
-                FOR ind IN 1..tbRowIds.COUNT LOOP
-                    prBorRegistroxRowId(tbRowIds(ind));
-                END LOOP;
-            END IF;
-        END IF;
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-        EXCEPTION
-            WHEN pkg_error.Controlled_Error THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-            WHEN OTHERS THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-                pkg_error.setError;
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-    END prBorRegistroxCond;
+
+    -- Obtiene el valor de la columna UNIDAD_OPERATIVA_ESCA 
     FUNCTION fnuObtUNIDAD_OPERATIVA_ESCA(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.UNIDAD_OPERATIVA_ESCA%TYPE
@@ -442,7 +336,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtUNIDAD_OPERATIVA_ESCA;
- 
+
+    -- Obtiene el valor de la columna ACTIVIDAD_REP_ESCALONADO 
     FUNCTION fnuObtACTIVIDAD_REP_ESCALONADO(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.ACTIVIDAD_REP_ESCALONADO%TYPE
@@ -469,7 +364,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtACTIVIDAD_REP_ESCALONADO;
- 
+
+    -- Obtiene el valor de la columna ITEM_REP_ESCALONADO
     FUNCTION fnuObtITEM_REP_ESCALONADO(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.ITEM_REP_ESCALONADO%TYPE
@@ -497,6 +393,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 RAISE pkg_error.Controlled_Error;
     END fnuObtITEM_REP_ESCALONADO;
  
+    -- Obtiene el valor de la columna RANGO_INICIAL
     FUNCTION fnuObtRANGO_INICIAL(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.RANGO_INICIAL%TYPE
@@ -523,7 +420,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtRANGO_INICIAL;
- 
+
+    -- Obtiene el valor de la columna RANGO_FINAL 
     FUNCTION fnuObtRANGO_FINAL(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.RANGO_FINAL%TYPE
@@ -551,6 +449,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 RAISE pkg_error.Controlled_Error;
     END fnuObtRANGO_FINAL;
  
+    -- Obtiene el valor de la columna CANTIDAD_ORDENES
     FUNCTION fnuObtCANTIDAD_ORDENES(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.CANTIDAD_ORDENES%TYPE
@@ -578,6 +477,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 RAISE pkg_error.Controlled_Error;
     END fnuObtCANTIDAD_ORDENES;
  
+    -- Obtiene el valor de la columna VALOR_LIQUIDAR
     FUNCTION fnuObtVALOR_LIQUIDAR(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.VALOR_LIQUIDAR%TYPE
@@ -604,7 +504,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtVALOR_LIQUIDAR;
- 
+
+    -- Obtiene el valor de la columna TOTAL_AJUSTE
     FUNCTION fnuObtTOTAL_AJUSTE(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER
         ) RETURN LDC_REPORTE_OFERT_ESCALO.TOTAL_AJUSTE%TYPE
@@ -631,7 +532,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtTOTAL_AJUSTE;
- 
+
+    -- Actualiza el valor de la columna UNIDAD_OPERATIVA_ESCA 
     PROCEDURE prAcUNIDAD_OPERATIVA_ESCA(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuUNIDAD_OPERATIVA_ESCA    NUMBER
@@ -663,7 +565,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcUNIDAD_OPERATIVA_ESCA;
- 
+
+    -- Actualiza el valor de la columna ACTIVIDAD_REP_ESCALONADO 
     PROCEDURE prAcACTIVIDAD_REP_ESCALONADO(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuACTIVIDAD_REP_ESCALONADO    NUMBER
@@ -695,7 +598,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcACTIVIDAD_REP_ESCALONADO;
- 
+
+    -- Actualiza el valor de la columna ITEM_REP_ESCALONADO 
     PROCEDURE prAcITEM_REP_ESCALONADO(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuITEM_REP_ESCALONADO    NUMBER
@@ -727,7 +631,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcITEM_REP_ESCALONADO;
- 
+
+    -- Actualiza el valor de la columna RANGO_INICIAL 
     PROCEDURE prAcRANGO_INICIAL(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuRANGO_INICIAL    NUMBER
@@ -759,7 +664,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcRANGO_INICIAL;
- 
+
+    -- Actualiza el valor de la columna RANGO_FINAL 
     PROCEDURE prAcRANGO_FINAL(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuRANGO_FINAL    NUMBER
@@ -791,7 +697,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcRANGO_FINAL;
- 
+
+    -- Actualiza el valor de la columna CANTIDAD_ORDENES 
     PROCEDURE prAcCANTIDAD_ORDENES(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuCANTIDAD_ORDENES    NUMBER
@@ -823,7 +730,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcCANTIDAD_ORDENES;
- 
+
+    -- Actualiza el valor de la columna VALOR_LIQUIDAR 
     PROCEDURE prAcVALOR_LIQUIDAR(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuVALOR_LIQUIDAR    NUMBER
@@ -855,7 +763,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcVALOR_LIQUIDAR;
- 
+
+    -- Actualiza el valor de la columna TOTAL_AJUSTE 
     PROCEDURE prAcTOTAL_AJUSTE(
         inuNUSESION    NUMBER,inuNRO_ACTA    NUMBER,inuIDEN_REGI    NUMBER,
         inuTOTAL_AJUSTE    NUMBER
@@ -1211,8 +1120,10 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_REPORTE_OFERT_ESCALO AS
  
 END PKG_LDC_REPORTE_OFERT_ESCALO;
 /
+
 BEGIN
     -- OSF-2204
     pkg_Utilidades.prAplicarPermisos( UPPER('PKG_LDC_REPORTE_OFERT_ESCALO'), UPPER('adm_person'));
 END;
 /
+

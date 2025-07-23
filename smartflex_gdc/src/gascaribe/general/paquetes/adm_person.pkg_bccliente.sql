@@ -120,13 +120,19 @@ CREATE OR REPLACE PACKAGE adm_person.pkg_bccliente IS
     )
     RETURN GE_SUBSCRIBER.SUBSCRIBER_ID%TYPE;
 
+    --Retorna la actividad economica del cliente
+    FUNCTION fnuActividadEconomicaCliente
+    (
+        inuCliente	IN	ge_subscriber.subscriber_id%TYPE
+    )
+    RETURN ge_subs_busines_data.economic_activity_id%TYPE;
 END pkg_bccliente;
 /
 
 CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bccliente IS
 
     -- Identificador del ultimo caso que hizo cambios
-    csbVersion                 VARCHAR2(15) := 'OSF-1788';
+    csbVersion                 VARCHAR2(15) := 'OSF-4451';
 
     -- Constantes para el control de la traza
     csbSP_NAME		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.';
@@ -1008,7 +1014,79 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bccliente IS
             pkg_error.SETERROR;
             RAISE pkg_error.CONTROLLED_ERROR;
     END fnuClienteId;
-       
+
+	/***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuActividadEconomicaCliente 
+    Descripcion     : Retorna la actividad economica del cliente
+	
+    Autor           : Luis Felipe Valencia Hurtado
+    Fecha           : 13-05-2025
+	
+    Modificaciones  :
+    Autor       Fecha       Caso        Descripcion
+    fvalencia   13-05-2025  OSF-4451    Creacion
+    ***************************************************************************/                     
+    FUNCTION fnuActividadEconomicaCliente
+    (
+        inuCliente	IN	ge_subscriber.subscriber_id%TYPE
+    )
+    RETURN ge_subs_busines_data.economic_activity_id%TYPE
+    IS
+
+        -- Nombre del metodo
+        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || 'fnuActividadEconomicaCliente';
+        
+        CURSOR cuActividadEconomica
+        IS
+        SELECT  a.economic_activity_id
+        FROM    ge_subs_busines_data a
+        WHERE   a.subscriber_id = inuCliente;
+        
+        nuActividadEconomica    VARCHAR2(4000);
+        
+        PROCEDURE pCierraCursor
+        IS
+            -- Nombre de este método
+            csbMT_NAME1  VARCHAR2(105) := csbMT_NAME || '.pCierraCursor';        
+        BEGIN
+        
+            pkg_traza.trace(csbMT_NAME1, cnuNVLTRC, csbPUSH);        
+        
+            IF cuActividadEconomica%ISOPEN THEN  
+                CLOSE cuActividadEconomica;
+            END IF;        
+
+            pkg_traza.trace(csbMT_NAME1, cnuNVLTRC, pkg_traza.csbFIN);
+
+        END pCierraCursor;             
+        
+    BEGIN
+    
+        pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbPUSH);
+		
+		pkg_traza.trace('inuCliente: ' || inuCliente, cnuNVLTRC);
+        
+        pCierraCursor;
+    
+        OPEN cuActividadEconomica;
+        FETCH cuActividadEconomica INTO nuActividadEconomica;
+        CLOSE cuActividadEconomica;
+		
+		pkg_traza.trace('nuActividadEconomica: '||nuActividadEconomica, cnuNVLTRC);
+            
+        pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
+        
+        RETURN nuActividadEconomica;
+        
+    EXCEPTION
+        WHEN OTHERS THEN
+			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR);
+            pkg_error.SetError;
+            pCierraCursor;
+            RETURN nuActividadEconomica;                 
+    END fnuActividadEconomicaCliente; 
+	
 END pkg_bccliente;
 /
 

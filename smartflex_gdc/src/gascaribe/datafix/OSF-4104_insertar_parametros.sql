@@ -1,0 +1,49 @@
+DECLARE
+
+	nuExiste NUMBER;
+	
+	cursor cuDatos(sbNombre VARCHAR2) is
+	select count(1)
+    from parametros 
+	where codigo = sbNombre;
+
+BEGIN
+
+   -- Agregar Configuracion de secuencia
+
+  	OPEN cuDatos('ARTE_FACT_RECURRENTE_GDGU');
+	FETCH cuDatos INTO nuExiste;
+	CLOSE cuDatos;
+
+	IF nuExiste = 0 THEN
+	Insert into PARAMETROS (CODIGO,DESCRIPCION,VALOR_NUMERICO,VALOR_CADENA,VALOR_FECHA,PROCESO,ESTADO,OBLIGATORIO,FECHA_CREACION,FECHA_ACTUALIZACION,USUARIO,TERMINAL) values ('ARTE_FACT_RECURRENTE_GDGU','Arte facturacion recurrente - facturacion electronica GDGU',null,'ARTE_FACTURA_RECURRENTE.PDF',null,'18','A','S',to_date('25/07/24','DD/MM/RR'),to_date('04/09/24','DD/MM/RR'),'OPEN','NO TERMINAL');	
+	END IF;
+
+  	OPEN cuDatos('ARTE_FACT_RECURRENTE_NR_GDGU');
+	FETCH cuDatos INTO nuExiste;
+	CLOSE cuDatos;
+
+	IF nuExiste = 0 THEN
+	Insert into PARAMETROS (CODIGO,DESCRIPCION,VALOR_NUMERICO,VALOR_CADENA,VALOR_FECHA,PROCESO,ESTADO,OBLIGATORIO,FECHA_CREACION,FECHA_ACTUALIZACION,USUARIO,TERMINAL) values ('ARTE_FACT_RECURRENTE_NR_GDGU','Arte facturacion recurrente productos no regulados- facturacion electronica GDGU',null,'ARTE_FACTURA_RECURRENTE_NO_REGULADOS.PDF',null,'18','A','S',to_date('25/07/24','DD/MM/RR'),to_date('04/09/24','DD/MM/RR'),'OPEN','NO TERMINAL');	
+	END IF;
+
+  	OPEN cuDatos('ARTE_FACT_VENTA_GDGU');
+	FETCH cuDatos INTO nuExiste;
+	CLOSE cuDatos;
+
+	IF nuExiste = 0 THEN
+	Insert into PARAMETROS (CODIGO,DESCRIPCION,VALOR_NUMERICO,VALOR_CADENA,VALOR_FECHA,PROCESO,ESTADO,OBLIGATORIO,FECHA_CREACION,FECHA_ACTUALIZACION,USUARIO,TERMINAL) values ('ARTE_FACT_VENTA_GDGU','Arte facturacion venta - facturacion electronica GDGU',null,'ARTE_FACTURA_OTROS_SERVICIOS.PDF',null,'18','A','S',to_date('25/07/24','DD/MM/RR'),to_date('04/09/24','DD/MM/RR'),'OPEN','NO TERMINAL');	
+	END IF;
+
+  	OPEN cuDatos('ARTE_NOTAS_GDGU');
+	FETCH cuDatos INTO nuExiste;
+	CLOSE cuDatos;
+
+	IF nuExiste = 0 THEN
+	Insert into PARAMETROS (CODIGO,DESCRIPCION,VALOR_NUMERICO,VALOR_CADENA,VALOR_FECHA,PROCESO,ESTADO,OBLIGATORIO,FECHA_CREACION,FECHA_ACTUALIZACION,USUARIO,TERMINAL) values ('ARTE_NOTAS_GDGU','Arte notas - facturacion electronica',null,'ARTE_NOTAS.PDF',null,'18','A','S',to_date('25/07/24','DD/MM/RR'),to_date('04/09/24','DD/MM/RR'),'OPEN','NO TERMINAL');	
+	END IF;
+
+COMMIT;
+
+END;
+/

@@ -1,0 +1,39 @@
+DECLARE
+  NUCANTIDAD NUMBER;
+BEGIN
+
+  SELECT COUNT(1) INTO NUCANTIDAD
+  FROM HOMOLOGACION_SERVICIOS HS
+  WHERE UPPER(HS.SERVICIO_DESTINO) = UPPER('PKG_BOUTILIDADESCADENAS.FBLBUSCARVALORENCADENA');
+
+  IF NUCANTIDAD = 0 THEN
+    INSERT INTO HOMOLOGACION_SERVICIOS
+      (ESQUEMA_ORIGEN,
+       SERVICIO_ORIGEN,
+       DESCRIPCION_ORIGEN,
+       ESQUEMA_DESTINO,
+       SERVICIO_DESTINO,
+       DESCRIPCION_DESTINO,
+       OBSERVACION)
+    VALUES
+      ('OPEN',
+       'UT_STRING.FINDPARAMETERVALUE',
+       'Buscar valor en cadena con agrupacion de atributos',
+       'ADM_PERSON',
+       'PKG_BOUTILIDADESCADENAS.FBLBUSCARVALORENCADENA',
+       'Buscar valor en cadena con agrupacion de atributos',
+       NULL);
+
+    COMMIT;
+    DBMS_OUTPUT.put_line('El servicio destino PKG_BOUTILIDADESCADENAS.FBLBUSCARVALORENCADENA fue homologado al servicio origen UT_STRING.FINDPARAMETERVALUE de forma exisosa');
+  ELSE
+    DBMS_OUTPUT.put_line('El servicio destino PKG_BOUTILIDADESCADENAS.FBLBUSCARVALORENCADENA ya fue homologado a un servicio origen.');
+  END IF;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+    DBMS_OUTPUT.put_line('El servicio destino PKG_BOUTILIDADESCADENAS.FBLBUSCARVALORENCADENA ya fue homologado a un servicio origen.');
+END;
+/
+

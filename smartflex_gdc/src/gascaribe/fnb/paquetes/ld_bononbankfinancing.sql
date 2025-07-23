@@ -36,7 +36,10 @@ CREATE OR REPLACE PACKAGE LD_BONONBANKFINANCING IS
 
 
 
-  =========     ===================   ===============================================
+  =========     ================   ===============================================
+  18/06/2025    Lubin Pineda        REQ. OSF-4555
+                                    Se borran las variables sbNitEmpresa porque
+                                    no se usan
   08/02/2024    Paola Acosta        REQ. OSF-2245
                                     Debido a que el proceso CreateProductFNB esta siendo 
                                     usado por varias reglas (gr_config_expression) 
@@ -41312,8 +41315,6 @@ procedure pro_grabalog_RegisterSuscShare(inusesion  number,
 
     sbPackagesType varchar2(3000);
 
-    sbNitEmpresa sistema.sistnitc%type;
-
     nuHilosComision number;
 
     nuTotReg number;
@@ -42119,8 +42120,6 @@ procedure pro_grabalog_RegisterSuscShare(inusesion  number,
     dtToday date := sysdate;
 
     sbPackagesType varchar2(3000);
-
-    sbNitEmpresa sistema.sistnitc%type;
 
     nuHilosComision number;
 

@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2CF9079F-237D-4DF6-B8A7-9BA6E8717BB5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CONTROLDESARROLLO</RootNamespace>
+    <AssemblyName>CONTROLDESARROLLO</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Infragistics2.Shared.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Shared.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.Misc.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.Misc.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinCalcManager.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.UltraWinCalcManager.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinEditors.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.UltraWinEditors.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.UltraWinGrid.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinTabControl.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.UltraWinTabControl.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.v5.3, Version=5.3.20053.73, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\Infragistics2.Win.v5.3.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Common, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\OpenSystems.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.EnterpriseLibrary, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\OpenSystems.EnterpriseLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Security.ExecutableMgr, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\OpenSystems.Security.ExecutableMgr.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSystems.Windows, Version=0.0.2.1, Culture=neutral, PublicKeyToken=1a886a7826ec4444, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\OpenSystems\OpenSmartflex_BD\OpenSystems.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BL\BLGENERAL.cs" />
+    <Compile Include="callACD.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="callvalimp.cs" />
+    <Compile Include="DAL\DAGENERAL.cs" />
+    <Compile Include="ENTITY\TBCONTROL_REGISTRO.cs" />
+    <Compile Include="ENTITY\Variables.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\ACD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ACD.Designer.cs">
+      <DependentUpon>ACD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CR.Designer.cs">
+      <DependentUpon>CR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\crearfuncion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\crearfuncion.Designer.cs">
+      <DependentUpon>crearfuncion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\crearpaquete.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\crearpaquete.Designer.cs">
+      <DependentUpon>crearpaquete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\crearprocedimiento.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\crearprocedimiento.Designer.cs">
+      <DependentUpon>crearprocedimiento.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\valimp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\valimp.Designer.cs">
+      <DependentUpon>valimp.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="UI\ACD.resx">
+      <DependentUpon>ACD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CR.resx">
+      <DependentUpon>CR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\crearfuncion.resx">
+      <DependentUpon>crearfuncion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\crearpaquete.resx">
+      <DependentUpon>crearpaquete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\crearprocedimiento.resx">
+      <DependentUpon>crearprocedimiento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\valimp.resx">
+      <DependentUpon>valimp.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\CONTROLDESARROLLO.ENTITY.TBCONTROL_REGISTRO.datasource" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

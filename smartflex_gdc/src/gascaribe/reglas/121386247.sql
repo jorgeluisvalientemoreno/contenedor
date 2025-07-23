@@ -4,12 +4,12 @@ Archivo     insGR_CONFIG_EXPRESSION_<AAAAMMDD>.sql
 Autor       <Nombre autor>
 Fecha       <AAAAMMDD>
 
-Descripción
+Descripci¿n
 Observaciones
 
 Historia de Modificaciones
-Fecha         Autor               Modificación
-<AAAAMMDD>  <Nombre Autor>              Creación
+Fecha         Autor               Modificaci¿n
+<AAAAMMDD>  <Nombre Autor>              Creaci¿n
 ******************************************************************/
 declare
     CURSOR cuData(nuIdConfExpre in gr_config_expression.config_expression_id%type) is
@@ -27,7 +27,7 @@ declare
     sbErrorMsg           VARCHAR2(2000);
 
     IdConfExpre GR_CONFIG_EXPRESSION.config_expression_id%type;
-
+    
     	CURSOR cuRef is
 		SELECT a.table_name, b.column_name
 		from   all_constraints a, all_cons_columns b
@@ -48,12 +48,12 @@ declare
 	  nuCodigo    number:=1296;
 	  sbTabla     varchar2(50);
 	  sbCampo     varchar2(50);
-
+	    
 
 	  CURSOR cuNum ( inuConfExpreID IN gr_config_expression.config_expression_id%type ) IS
 	  SELECT CONFIG_EXPRESSION_ID codigo, object_name objeto
 	  FROM gr_config_expression WHERE config_expression_id in (inuConfExpreID);
-
+	  
 	  CURSOR cuTipoObjeto ( isbNomObj IN gr_config_expression.object_name%type ) IS
 	  SELECT  object_type
 	  FROM    DBA_OBJECTS
@@ -61,7 +61,7 @@ declare
     sbObjetoEliminar gr_config_expression.object_name%type;
     sbObjeto 		 gr_config_expression.object_name%type;
     sbtipo			 dba_objects.object_type%type;
-
+    
 BEGIN
 
   dbms_output.put_line('Inicia Proceso '||sysdate);
@@ -69,7 +69,7 @@ BEGIN
 
   dbms_output.put_line('Insertando Regla: '||IdConfExpre);
 
-  --INICIO Busca regla para realizar los ajustes correspondientes�
+  --INICIO Busca regla para realizar los ajustes correspondientes¿
   dbms_output.put_line('Inicia Proceso ajustes regla');  
 	open cuNum(IdConfExpre);
 	  loop
@@ -103,7 +103,7 @@ BEGIN
 				  fetch cuTipoObjeto
 					into sbTipo;
 				close cuTipoObjeto;
-
+							
 				--tipo = procedure o function
 				sbStatement := ' drop ' || sbTipo || ' ' || sbObjetoEliminar;
 
@@ -119,93 +119,34 @@ BEGIN
 	  END loop;
 	close cuNum;
 	dbms_output.put_line('Termine Proceso ajustes regla');
-
+	
 	--FIN Busca regla para realizar los ajustes correspondientes
-
+  
 
     UPDATE GR_CONFIG_EXPRESSION
-	set expression = '
-GE_BOINSTANCECONTROL.GETCURRENTINSTANCE(sbInstanciaActual);GE_BOINSTANCECONTROL.GETATTRIBUTEOLDVALUE(sbInstanciaActual,NULL,'||
-'"MO_PROCESS",'||
-'"ADDRESS_MAIN_MOTIVE",'||
-'sbOldInstalAddressId);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstanciaActual,'||
-'NULL,'||
-'"MO_PROCESS",'||
-'"ADDRESS_MAIN_MOTIVE",'||
-'sbNewInstalAddressId);if (sbOldInstalAddressId = NULL,'||
-'sbOldInstalAddressId = "-1";,'||
-');GE_BOINSTANCECONTROL.GETATTRIBUTEOLDVALUE(sbInstanciaActual,'||
-'NULL,'||
-'"MO_PROCESS",'||
-'"VARCHAR_1",'||
-'sbOldFactAddressId);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstanciaActual,'||
-'NULL,'||
-'"MO_PROCESS",'||
-'"VARCHAR_1",'||
-'sbNewFactAddressId);if (sbOldFactAddressId = NULL,'||
-'sbOldFactAddressId = "-1";,'||
-');GE_BOINSTANCECONTROL.GETATTRIBUTEOLDVALUE(sbInstanciaActual,'||
-'NULL,'||
-'"MO_MOTIVE",'||
-'"SUBCATEGORY_ID",'||
-'sbOldEstratoId);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstanciaActual,'||
-'NULL,'||
-'"MO_MOTIVE",'||
-'"SUBCATEGORY_ID",'||
-'sbNewEstratoId);GE_BOINSTANCECONTROL.GETATTRIBUTEOLDVALUE(sbInstanciaActual,'||
-'NULL,'||
-'"MO_MOTIVE",'||
-'"CATEGORY_ID",'||
-'sbOldUsoId);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstanciaActual,'||
-'NULL,'||
-'"MO_MOTIVE",'||
-'"CATEGORY_ID",'||
-'sbNewUsoId);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstanciaActual,'||
-'NULL,'||
-'"MO_PROCESS",'||
-'"VARCHAR_2",'||
-'sbResolucion);if (sbOldUsoId = NULL,'||
-'sbOldUsoId = "-1";,'||
-');if (sbOldEstratoId = NULL,'||
-'sbOldEstratoId = "-1";,'||
-');if (sbNewEstratoId <> NULL && sbNewEstratoId <> sbOldEstratoId || sbNewUsoId <> NULL && sbNewUsoId <> sbOldUsoId,'||
-'if (sbResolucion = NULL,'||
-'GI_BOERRORS.SETERRORCODEARGUMENT(2741,'||
-'"Al cambiar la categoria o la subcategoria se debe ingresar obligatoriamente la resoluci�n");,'||
-');,'||
-'if (sbResolucion <> NULL,'||
-'GI_BOERRORS.SETERRORCODEARGUMENT(2741,'||
-'"La resoluci�n solo se debe ingresar cuando se est� cambiando la categoria o subcategoria");,'||
-'););if (sbNewInstalAddressId <> NULL && sbNewInstalAddressId <> sbOldInstalAddressId || sbNewFactAddressId <> NULL && sbNewFactAddressId <> sbOldFactAddressId || sbNewEstratoId <> NULL && sbNewEstratoId <> sbOldEstratoId || sbNewUsoId <> NULL && sbNewUsoId <> sbOldUsoId,'||
-','||
-'GI_BOERRORS.SETERRORCODEARGUMENT(2741,'||
-'"El tr�mite no puede ser registrado ya que no ha modificado ning�n dato"););cnuAtribDirDummy = 5001333;cnuPackTypeActDatoPredio = 100220;if (sbNewInstalAddressId = PS_BOPACKTYPEPARAM.FSBGETPACKTYPEPARAM(cnuPackTypeActDatoPredio,'||
-' cnuAtribDirDummy,'||
-' GE_BOCONSTANTS.GETTRUE()),'||
-'GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstanciaActual,'||
-'null,'||
-'"MO_PROCESS",'||
-'"COMMENTARY",'||
-'sbDirInstReal);if (UT_CONVERT.FBLISSTRINGNULL(sbDirInstReal) = GE_BOCONSTANTS.GETTRUE(),'||
-'GI_BOERRORS.SETERRORCODEARGUMENT(2741,'||
-'"Debe Ingresar la Direcci�n de Instalaci�n a Registrar en el Sistema");,'||
-');,'||
-');if (sbNewFactAddressId = PS_BOPACKTYPEPARAM.FSBGETPACKTYPEPARAM(cnuPackTypeActDatoPredio,'||
-' cnuAtribDirDummy,'||
-' GE_BOCONSTANTS.GETTRUE()),'||
-'GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstanciaActual,'||
-'null,'||
-'"MO_COMMENT",'||
-'"COMMENT_",'||
-'sbDirEntReal);if (UT_CONVERT.FBLISSTRINGNULL(sbDirEntReal) = GE_BOCONSTANTS.GETTRUE() || sbDirEntReal = "-",'||
-'GI_BOERRORS.SETERRORCODEARGUMENT(2741,'||
-'"Debe Ingresar la Direcci�n de Entrega de Factura a Registrar en el Sistema");,'||
-');,'||
-')', author = 'LBTEST',
-generation_date = to_date ('14/12/21','DD/MM/YYYY HH24:MI:SS'),
-last_modifi_date = to_date ('14/12/21','DD/MM/YYYY HH24:MI:SS'),
+	set expression = 'PRCREGLAPRECAMBIARDATOSPREDIO()', author = 'LBTEST',
+generation_date = to_date ('26-11-2024 18:02:20','DD/MM/YYYY HH24:MI:SS'),
+last_modifi_date = to_date ('26-11-2024 18:02:20','DD/MM/YYYY HH24:MI:SS'),
 object_type = 'PP',
-code = ''
+code = 'CREATE OR REPLACE PROCEDURE MO_EVE_COMP_CT65E'||121386247||'(errorNumber OUT NUMBER, errorMessage OUT VARCHAR2)
+IS
+-- Generated by Code Generator (PVCS Version 1.5)
+ -- Open Systems Ltd, Copyright 2003.
+V0 NUMBER;
+
+BEGIN
+PRCREGLAPRECAMBIARDATOSPREDIO;
+V0:= 0;
+errorNumber := 0;
+errorMessage:= NULL;
+EXCEPTION
+	WHEN ex.CONTROLLED_ERROR then
+	errors.getError(errorNumber, errorMessage);
+	WHEN OTHERS THEN
+	errors.setError;
+	errors.getError(errorNumber, errorMessage);
+END;
+'
  where config_expression_id = 121386247;
 
     dbms_output.put_line('Regenerando Regla: '||IdConfExpre);

@@ -26,6 +26,9 @@ create or replace PROCEDURE adm_person.api_registranotaydetalle(    ircNota     
     diana.montes 01/08/2023    OSF-1246: retorna el numero de la nota creada
     diana.montes 01/08/2023    OSF-1246: Se inicializan las variales
                                onuCodigoError y osbMensajeError.
+    jose.pineda  30/04/2025    OSF-4337: Se ejecuta
+                                pkBillingNoteMgr.setNoteType antes de 
+                                pkBillingNoteMgr.CreateBillingNote
   ***************************************************************************/
 
 
@@ -69,6 +72,9 @@ BEGIN
         prValidaNota(ircNota);
 
         pkg_error.setApplication(ircNota.sbPrograma);
+        
+        pkBillingNoteMgr.setNoteType;
+        
         pkBillingNoteMgr.CreateBillingNote
         (
             ircNota.nuProducto,

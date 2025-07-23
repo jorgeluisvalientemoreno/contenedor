@@ -1,5 +1,67 @@
-DECLARE
-  nuConta NUMBER;
+CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKFACTELECTRONICA_EMI AS
+/*
+   PROPIEDAD INTELECTUAL DE GASES DEL CARIBE S.A E.S.P
+   PAQUETE       : LDCI_PKFACTELECTRONICA_EMI
+   AUTOR         : Jose Donado
+   FECHA         : 03/09/2020
+   GLPI     : 458
+   DESCRIPCION: Paquete que tiene la logica del proceso de emisi?n de facturaci?n electr?nica
+
+  Historia de Modificaciones
+  Autor   Fecha      Descripcion.
+  JOSDON  11/12/2023 INT-404: Creacion de procedimiento PROSELFACTESOLARENVIAR para seleccion de facturacion electronica de energia solar a enviar
+                              Creacion de procedimiento PROENVIAENERGIASOLAR para envio de facturacion electronica de energia solar
+  Jpinedc 04/06/2025 OSF-4290: Creacion funciones fsbObtOficinaVentaSAP , fsbObtClasePedidoSAP y fsbObtCentroSAP
+*/
+  PROCEDURE PROSELECCIONACACTASENVIAR;
+  PROCEDURE PROSELFACTESOLARENVIAR;
+  PROCEDURE PROENVIACOMISIONBRILLA(inuActaId IN GE_ACTA.ID_ACTA%TYPE,onuErrorCode OUT NUMBER,osbErrorMessage OUT VARCHAR2);
+  PROCEDURE PROENVIANOTACRBRILLA(inuActaId IN GE_ACTA.ID_ACTA%TYPE,onuErrorCode OUT NUMBER,osbErrorMessage OUT VARCHAR2);
+  PROCEDURE PROENVIAENERGIASOLAR(inuSucripc IN NUMBER, inuConsFact IN NUMBER, icbXMLFac IN CLOB, ocbResponse OUT CLOB, onuErrorCode OUT NUMBER,osbErrorMessage OUT CLOB);
+  PROCEDURE PROREGISTRAENVIO(inuActaId IN GE_ACTA.ID_ACTA%TYPE, iclXML IN CLOB, onuErrorCode OUT NUMBER,osbErrorMessage OUT VARCHAR2);
+  PROCEDURE PROREGISTRAENVIONC(inuActaId IN GE_ACTA.ID_ACTA%TYPE, iclXML IN CLOB, onuErrorCode OUT NUMBER,osbErrorMessage OUT VARCHAR2);
+  FUNCTION fnuValidaSoapFault(iClResponse IN CLOB) RETURN NUMBER;
+  --Obtiene la oficina de venta SAP asociada a la empresa
+  FUNCTION fsbObtOficinaVentaSAP( isbEmpresa empresa.codigo%type)
+  RETURN VARCHAR2;
+  --Obtiene la clase de pedido SAP asociado a la empresa y el proceso
+  FUNCTION fsbObtClasePedidoSAP(isbEmpresa empresa.codigo%type, isbProceso VARCHAR2) 
+  RETURN VARCHAR2;
+  --Obtiene el centro SAP asociado a la empresa
+  FUNCTION fsbObtCentroSAP(isbEmpresa empresa.codigo%type) 
+  RETURN VARCHAR2;
+END LDCI_PKFACTELECTRONICA_EMI;
+/
+CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKFACTELECTRONICA_EMI AS
+
+    csbSP_NAME		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.';
+    csbNivelTraza    CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
+/*
+ PROPIEDAD INTELECTUAL DE GASES DEL CARIBE S.A. E.S.P
+
+ PROCEDIMIENTO : fnuValidaSoapFault
+                  AUTOR : Jose Donado
+                   FECHA : 03/09/2020
+
+ DESCRIPCION : Procedimiento validar si es un mensaje de error.
+
+ Parametros de Entrada
+
+    iClResponse                IN  CLOB
+
+ Parametros de Salida
+
+    nuValida           OUT NUMBER
+
+
+ Historia de Modificaciones
+
+ Autor        Fecha       Descripcion.
+ EDMLAR     19/04/2021    Se modifica los procedimientos
+*/
+FUNCTION fnuValidaSoapFault(iClResponse IN CLOB) RETURN NUMBER  IS
+
+nuValida number;
 BEGIN
 
     SELECT INSTR(iClResponse,'<faultcode>') INTO nuValida FROM DUAL;
@@ -35,13 +97,13 @@ END fnuValidaSoapFault ;
 */
 FUNCTION  IsXML(inXML CLOB) RETURN BOOLEAN AS
   xmldata XMLTYPE;
-  
+
   BEGIN
     xmldata := XMLTYPE(inXML);
     return TRUE;
   Exception
     WHEN OTHERS THEN
-      RETURN FALSE;  
+      RETURN FALSE;
 END IsXML;
 
 
@@ -132,8 +194,8 @@ END IsXML;
         ROLLBACK;
         ldci_pkWebServUtils.Procrearerrorlogint('PROSELECCIONACACTASENVIAR', '2', 'ERROR no controlado <LDCI_PKFACTELECTRONICA_EMI.PROSELECCIONACACTASENVIAR>: ' || SQLERRM, null);
  END PROSELECCIONACACTASENVIAR;
- 
- 
+
+
  /*
  PROPIEDAD INTELECTUAL DE GASES DEL CARIBE S.A. E.S.P
 
@@ -161,7 +223,7 @@ END IsXML;
   sbEstFalla    LDCI_CARASEWE.CASEVALO%TYPE;-- ESTADOS FALLA DIAN
   sbResMainTag  LDCI_CARASEWE.CASEVALO%TYPE;-- TAG PRINCIPAL DE RESPUESTA
   sbIntermit    LDCI_CARASEWE.CASEVALO%TYPE;-- TEXTO INTERMITENCIA DIAN
-  blExito       NUMBER; 
+  blExito       NUMBER;
   cuFacturas    SYS_REFCURSOR;
   nuContrato    NUMBER(15);
   nuConsecut    NUMBER(15);
@@ -174,18 +236,19 @@ END IsXML;
   cbFactura     CLOB;
   cbRespuesta   CLOB;
   sbMensaje     CLOB;
-  
+
   nuError       NUMBER;
   sbError       VARCHAR2(4000);
+  clError       CLOB;
   sbMens        varchar2(4000);
-  
+
   nuEstadoProceso	NUMBER;
   nuDescProceso   VARCHAR2(4000);
   cbListaMensaje  CLOB;
 
   errorPara01  EXCEPTION;        -- Excepcion que verifica que ingresen los parametros de entrada
-  errorQuery   EXCEPTION;        -- Excepcion que maneja los errores en el proceso de consulta de facturas pendientes por env�o
-  
+  errorQuery   EXCEPTION;        -- Excepcion que maneja los errores en el proceso de consulta de facturas pendientes por env?o
+
   CURSOR cuValidaExito(inuEstado NUMBER, isbListaEstados LDCI_CARASEWE.CASEVALO%TYPE) IS
     SELECT 1
     FROM DUAL
@@ -205,50 +268,50 @@ END IsXML;
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
-    
+
     ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_ENERSOLAR', 'CODIGOS_EXITO_DIAN', sbEstExito, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
-    
+
     ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_ENERSOLAR', 'CODIGOS_FALLA_DIAN', sbEstFalla, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
-    
+
     ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_ENERSOLAR', 'TEXTO_INTERMITENCIA_DIAN', sbIntermit, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
-    
+
     --se buscan las facturas pendientes por envio o en estado de reenvio
     cuFacturas := PKG_FACTURA_ELECTRONICA.frcGetInfoFactElec(-1,sbEstados,nuMaxInt,nuError,sbError);
     if(nuError != '0') then
          RAISE errorQuery;
     end if;
-    
+
     LOOP
       blExito := 0;
       nuEstadoProceso := 0;
       nuDescProceso := '';
       cbListaMensaje := '';
-      
+
       FETCH cuFacturas INTO nuContrato,nuConsecut,nuFactura,nuEstado,nuIntento,dtFechaReg,dtFechaEnv,dtFechaRes,cbFactura,cbRespuesta,sbMensaje;
       EXIT WHEN cuFacturas%NOTFOUND;
-      
+
       dtFechaEnv := SYSDATE;
-      
-      PROENVIAENERGIASOLAR(nuContrato,nuConsecut,cbFactura,cbRespuesta,nuError,sbError);
-      
+
+      PROENVIAENERGIASOLAR(nuContrato,nuConsecut,cbFactura,cbRespuesta,nuError,clError);
+
       nuIntento := nuIntento + 1;
       dtFechaRes := SYSDATE;
-      sbMensaje := sbError;
-      
+      sbMensaje := clError;
+
       --Se verifica si ocurrio error tecnico en el servicio, para marcar el mensaje con estado de reintento
       IF (nuError < 0) THEN
         nuEstado := 2;--error en envio de mensaje
-        PKG_FACTURA_ELECTRONICA.prActualizaFactElec(nuConsecut,nuContrato,dtFechaEnv,dtFechaRes,cbFactura,cbRespuesta,sbError,nuIntento, nuEstado, nuError, sbError);
-        
+        PKG_FACTURA_ELECTRONICA.prActualizaFactElec(nuConsecut,nuContrato,dtFechaEnv,dtFechaRes,cbFactura,cbRespuesta,clError,nuIntento, nuEstado, nuError, sbError);
+
         IF (nuError = 0) THEN
           COMMIT;
         ELSE
@@ -256,27 +319,27 @@ END IsXML;
         END IF;
         CONTINUE;
       END IF;
-      
+
       --procesa XML de respuesta recibida por el PT
       BEGIN
-               
+
         SELECT RESPCONSULTAFACRECEP.*
         INTO nuEstadoProceso, nuDescProceso, cbListaMensaje
-        FROM xmltable(xmlnamespaces(     
-                                 'http://wsenviardocumento.webservice.dispapeles.com/' as "ns1" 
+        FROM xmltable(xmlnamespaces(
+                                 'http://wsenviardocumento.webservice.dispapeles.com/' as "ns1"
                               ),  --XPath to specific node
-                        '//ns1:enviarDocumentoResponse/return'   passing             
-                         XMLType(cbRespuesta)                         
-                         columns 
+                        '//ns1:enviarDocumentoResponse/return'   passing
+                         XMLType(cbRespuesta)
+                         columns
                               IDERROR          NUMBER          PATH 'estadoProceso',
-                              SBRESPUESTA      VARCHAR2(4000)  PATH 'descripcionProceso', 
-                              CBLISTAMENSAJE   CLOB            PATH 'listaMensajesProceso'                                                  
-                        ) RESPCONSULTAFACRECEP;  
-        
+                              SBRESPUESTA      VARCHAR2(4000)  PATH 'descripcionProceso',
+                              CBLISTAMENSAJE   CLOB            PATH 'listaMensajesProceso'
+                        ) RESPCONSULTAFACRECEP;
+
         OPEN cuValidaExito(nuEstadoProceso,sbEstExito);
         FETCH cuValidaExito INTO blExito;
-        CLOSE cuValidaExito;  
-        
+        CLOSE cuValidaExito;
+
         IF (blExito = 1) THEN
           nuEstado := 6;--exito
         ELSE
@@ -284,26 +347,26 @@ END IsXML;
           IF (INSTR(UPPER(nuDescProceso),UPPER(sbIntermit)) > 0) THEN
             nuEstado := 2;--Intermitencia de la DIAN
           END IF;
-        END IF;  
-        
+        END IF;
+
         nuDescProceso := nuDescProceso || cbListaMensaje;
-           
+
       EXCEPTION
           WHEN OTHERS THEN
             ldci_pkWebServUtils.Procrearerrorlogint('PROSELFACTESOLARENVIAR', '2', 'Error procesando XML de respuesta: ' || SQLERRM, null);
             nuEstado := 2;--falla en procesamiento de XML
             nuDescProceso := 'Error procesando XML de respuesta: ' || SQLERRM;
       END;
-      
-      PKG_FACTURA_ELECTRONICA.prActualizaFactElec(nuConsecut,nuContrato,dtFechaEnv,dtFechaRes,cbFactura,cbRespuesta,nuDescProceso,nuIntento,nuEstado,nuError,sbError);          
+
+      PKG_FACTURA_ELECTRONICA.prActualizaFactElec(nuConsecut,nuContrato,dtFechaEnv,dtFechaRes,cbFactura,cbRespuesta,nuDescProceso,nuIntento,nuEstado,nuError,sbError);
       IF (nuError = 0) THEN
         COMMIT;
       ELSE
         ROLLBACK;
       END IF;
-    
+
     END LOOP;
-    
+
  EXCEPTION
     WHEN Errorpara01 THEN
         ldci_pkWebServUtils.Procrearerrorlogint('PROSELFACTESOLARENVIAR', '2', 'ERROR DE PARAMETRIZACION <LDCI_PKFACTELECTRONICA_EMI.PROSELFACTESOLARENVIAR>: ' || sbMens, null);
@@ -313,7 +376,6 @@ END IsXML;
         ROLLBACK;
         ldci_pkWebServUtils.Procrearerrorlogint('PROSELFACTESOLARENVIAR', '2', 'ERROR no controlado <LDCI_PKFACTELECTRONICA_EMI.PROSELFACTESOLARENVIAR>: ' || SQLERRM, null);
  END PROSELFACTESOLARENVIAR;
-
 
 /*
  PROPIEDAD INTELECTUAL DE GASES DEL CARIBE S.A. E.S.P
@@ -333,10 +395,15 @@ END IsXML;
 
  Historia de Modificaciones
 
- Autor        Fecha       Descripcion.
+Autor       Fecha       Descripcion.
+Jpinedc     04/06/2025  OSF-4290: Se usan pkg_empresa.fsbObtOrganizacionVenta,fsbObtOficinaVentaSAP,fsbObtClasePedidoSAP y fsbObtCentroSAP
 */
-  PROCEDURE PROENVIACOMISIONBRILLA(inuActaId IN GE_ACTA.ID_ACTA%TYPE, onuErrorCode OUT NUMBER,osbErrorMessage OUT VARCHAR2) AS
+PROCEDURE PROENVIACOMISIONBRILLA(inuActaId IN GE_ACTA.ID_ACTA%TYPE, onuErrorCode OUT NUMBER,osbErrorMessage OUT VARCHAR2) AS
 
+    csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'PROENVIACOMISIONBRILLA';
+    nuError     NUMBER;
+    sbError     VARCHAR2(4000);
+    
     --Define variables
     sbNameSpace    LDCI_CARASEWE.CASEVALO%type;
     sbUrlWS        LDCI_CARASEWE.CASEVALO%type;
@@ -356,84 +423,82 @@ END IsXML;
     sbOrgVent    LDCI_CARASEWE.CASEVALO%type;
     sbCanal      LDCI_CARASEWE.CASEVALO%type;
     sbSector     LDCI_CARASEWE.CASEVALO%type;
-  sbOfiVent    LDCI_CARASEWE.CASEVALO%type;
+	sbOfiVent    LDCI_CARASEWE.CASEVALO%type;
     sbGrVen      LDCI_CARASEWE.CASEVALO%type;
-    sbWsNomb     LDCI_CARASEWE.CASEDESE%type := 'WS_FACELEC_EMI_COMIBRILLA';
     sbMotivo     LDCI_CARASEWE.CASEVALO%type;
-    sbPrefijoLDC LDCI_CARASEWE.CASEVALO%type;
+    sbEmpresa LDCI_CARASEWE.CASEVALO%type;
 
-   --Variables mensajes SOAP
-   l_payload     CLOB;
-   l_response    CLOB;
-   qryCtx        DBMS_XMLGEN.ctxHandle;
-   rfMensaje     Constants.tyRefCursor;
+    --Variables mensajes SOAP
+    l_payload     CLOB;
+    l_response    CLOB;
+    qryCtx        DBMS_XMLGEN.ctxHandle;
+    rfMensaje     Constants.tyRefCursor;
 
-   errorPara01  EXCEPTION;        -- Excepcion que verifica que ingresen los parametros de entrada
-   excepNoProcesoRegi  EXCEPTION;   -- Excepcion que valida si proceso registros la consulta
-   excepNoProcesoSOAP  EXCEPTION;   -- Excepcion que valida si proceso peticion SOAP
+    errorPara01  EXCEPTION;        -- Excepcion que verifica que ingresen los parametros de entrada
+    excepNoProcesoRegi  EXCEPTION;   -- Excepcion que valida si proceso registros la consulta
+    excepNoProcesoSOAP  EXCEPTION;   -- Excepcion que valida si proceso peticion SOAP
 
+    nuContrato  ge_contrato.id_contrato%TYPE;
 
 Begin
-  onuErrorCode := 0;
 
-    --PARAMETROS DE INTERFAZ DE COMISIONES BRILLA
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_CLASE_PEDI', sbClasPed, sbMens);
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+        
+    onuErrorCode := 0;
+    nuContrato      :=  pkg_ge_Acta.fnuObtID_CONTRATO( inuActaId );
+    
+    pkg_traza.trace('nuContrato|' || nuContrato , csbNivelTraza );
+        
+    sbEmpresa    :=  pkg_BOConsultaEmpresa.fsbObtEmpresaGe_Contrato( nuContrato );
+
+    pkg_traza.trace('sbEmpresa|' || sbEmpresa , csbNivelTraza );
+    
+    sbClasPed   := fsbObtClasePedidoSAP( sbEmpresa, 'COMISION' );
+
+    pkg_traza.trace('sbClasPed|' || sbClasPed , csbNivelTraza );
+    
+	sbOrgVent := pkg_empresa.fsbObtOrganizacionVenta( sbEmpresa );
+
+    pkg_traza.trace('sbOrgVent|' || sbOrgVent , csbNivelTraza );
+    
+    ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_CANAL_DIST', sbCanal, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
 
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_ORGA_VENT', sbOrgVent, sbMens);
+    ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_SECTOR', sbSector, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
 
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_CANAL_DIST', sbCanal, sbMens);
+    sbOfiVent := fsbObtOficinaVentaSAP( sbEmpresa );
+
+    pkg_traza.trace('sbOfiVent|' || sbOfiVent , csbNivelTraza );
+    
+    ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_GRU_VENDEDOR', sbGrVen, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
 
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_SECTOR', sbSector, sbMens);
+    ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_SOCIEDAD', sbSociedad, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
 
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_OFI_VENTAS', sbOfiVent, sbMens);
+    ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_MOTIVO_PEDIDO', sbMotivo, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
 
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_GRU_VENDEDOR', sbGrVen, sbMens);
+    ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_COD_MAT', nuCodMaterial, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
 
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'PREFIJO_LDC', sbPrefijoLDC, sbMens);
-    if(sbMens != '0') then
-         RAISE errorPara01;
-    end if;
-
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_SOCIEDAD', sbSociedad, sbMens);
-    if(sbMens != '0') then
-         RAISE errorPara01;
-    end if;
-
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_MOTIVO_PEDIDO', sbMotivo, sbMens);
-    if(sbMens != '0') then
-         RAISE errorPara01;
-    end if;
-
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_COD_MAT', nuCodMaterial, sbMens);
-    if(sbMens != '0') then
-         RAISE errorPara01;
-    end if;
-
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_COD_CENTRO', nuCodCentro, sbMens);
-    if(sbMens != '0') then
-         RAISE errorPara01;
-    end if;
+    nuCodCentro := fsbObtCentroSAP(sbEmpresa);
 
     --PAR?METROS DE CONEXION HACIA EL SERVICIO
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'NAMESPACE', sbNameSpace, sbMens);
+    ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'NAMESPACE', sbNameSpace, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
@@ -486,7 +551,7 @@ Begin
                     AND ga.id_contrato = co.id_contrato
                     AND co.id_contratista = oc.id_contratista
                     AND oc.subscriber_id = cl.subscriber_id)  as "Cliente",
-                    sbPrefijoLDC || '-' || inuActaId as "PedCli",
+                    sbEmpresa || '-' || inuActaId as "PedCli",
                     sbMotivo as "Motivo",
                     cursor (SELECT
                               --<< CA-680
@@ -578,10 +643,16 @@ Begin
 
    LDCI_PKFACTELECTRONICA_EMI.PROREGISTRAENVIO(inuActaId,l_payload,onuErrorCode,osbErrorMessage);
 
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+        
 Exception
   When Errorpara01 then
     onuErrorCode := -1;
     osbErrorMessage := 'ERROR PARAMETROS: <Emision Fact Electronica - PROENVIACOMISIONBRILLA>: ' || Dbms_Utility.Format_Error_Backtrace;
+  When pkg_Error.CONTROLLED_ERROR then
+    onuErrorCode := -1;
+    pkg_Error.getError(nuError, sbError );
+    osbErrorMessage := 'ERROR PARAMETROS: <Emision Fact Electronica - PROENVIACOMISIONBRILLA>: ' || sbError;
   WHEN excepNoProcesoRegi THEN
     onuErrorCode := -1;
     osbErrorMessage := 'ERROR- excepNoProcesoRegi: <Emision Fact Electronica - PROENVIACOMISIONBRILLA>: La consulta no ha arrojo registros' || DBMS_UTILITY.format_error_backtrace;
@@ -593,7 +664,6 @@ Exception
     osbErrorMessage := SQLERRM;
     osbErrorMessage := 'ERROR - OTHERS: <Emision Fact Electronica - PROENVIACOMISIONBRILLA>: ' || Dbms_Utility.Format_Error_Backtrace || ' - ' || onuErrorCode || ' - ' || osbErrorMessage;
   END PROENVIACOMISIONBRILLA;
-
 
 /*
  PROPIEDAD INTELECTUAL DE GASES DEL CARIBE S.A. E.S.P
@@ -613,10 +683,15 @@ Exception
 
  Historia de Modificaciones
 
- Autor        Fecha       Descripcion.
+Autor       Fecha       Descripcion.
+Jpinedc     04/06/2025  OSF-4290: Se usan pkg_empresa.fsbObtOrganizacionVenta,fsbObtOficinaVentaSAP,fsbObtClasePedidoSAP y fsbObtCentroSAP
 */
   PROCEDURE PROENVIANOTACRBRILLA(inuActaId IN GE_ACTA.ID_ACTA%TYPE, onuErrorCode OUT NUMBER,osbErrorMessage OUT VARCHAR2) AS
 
+    csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'PROENVIANOTACRBRILLA';
+    nuError         NUMBER;
+    sbError         VARCHAR2(4000); 
+        
     --Define variables
     sbNameSpace    LDCI_CARASEWE.CASEVALO%type;
     sbUrlWS        LDCI_CARASEWE.CASEVALO%type;
@@ -636,11 +711,10 @@ Exception
     sbOrgVent      LDCI_CARASEWE.CASEVALO%type;
     sbCanal        LDCI_CARASEWE.CASEVALO%type;
     sbSector       LDCI_CARASEWE.CASEVALO%type;
-  sbOfiVent        LDCI_CARASEWE.CASEVALO%type;
+    sbOfiVent        LDCI_CARASEWE.CASEVALO%type;
     sbGrVen        LDCI_CARASEWE.CASEVALO%type;
-    sbWsNomb       LDCI_CARASEWE.CASEDESE%type := 'WS_FACELEC_EMI_COMIBRILLA';
     sbMotivo       LDCI_CARASEWE.CASEVALO%type;
-    sbPrefijoLDC   LDCI_CARASEWE.CASEVALO%type;
+    sbEmpresa       LDCI_CARASEWE.CASEVALO%type;
 
    --Variables mensajes SOAP
    l_payload       CLOB;
@@ -652,21 +726,26 @@ Exception
    excepNoProcesoRegi  EXCEPTION;   -- Excepcion que valida si proceso registros la consulta
    excepNoProcesoSOAP  EXCEPTION;   -- Excepcion que valida si proceso peticion SOAP
 
+    nuContrato  ge_contrato.id_contrato%TYPE;
+    nuError     NUMBER;
+    sbError     VARCHAR2(4000);
 
 Begin
-  onuErrorCode := 0;
 
-  --PARAMETROS DE INTERFAZ NOTAS CREDITOS DE BRILA
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_CLASE_NCR_PEDI', sbClasPed, sbMens);
-    if(sbMens != '0') then
-         RAISE errorPara01;
-    end if;
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+        
+    onuErrorCode := 0;
 
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_ORGA_VENT', sbOrgVent, sbMens);
-    if(sbMens != '0') then
-         RAISE errorPara01;
-    end if;
+    nuContrato      :=  pkg_ge_Acta.fnuObtID_CONTRATO( inuActaId );
+        
+    sbEmpresa    :=  pkg_BOConsultaEmpresa.fsbObtEmpresaGe_Contrato( nuContrato );
+    
+    sbClasPed    := fsbObtClasePedidoSAP( sbEmpresa, 'NOTA' );
 
+	sbOrgVent := pkg_empresa.fsbObtOrganizacionVenta( sbEmpresa );
+
+    pkg_traza.trace('sbOrgVent|' || sbOrgVent , csbNivelTraza );
+    
   ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_CANAL_DIST', sbCanal, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
@@ -677,17 +756,10 @@ Begin
          RAISE errorPara01;
     end if;
 
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_OFI_VENTAS', sbOfiVent, sbMens);
-    if(sbMens != '0') then
-         RAISE errorPara01;
-    end if;
+    sbOfiVent := fsbObtOficinaVentaSAP( sbEmpresa );
+    
 
   ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_GRU_VENDEDOR', sbGrVen, sbMens);
-    if(sbMens != '0') then
-         RAISE errorPara01;
-    end if;
-
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'PREFIJO_LDC', sbPrefijoLDC, sbMens);
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
@@ -707,10 +779,7 @@ Begin
          RAISE errorPara01;
     end if;
 
-  ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_COD_CENTRO', nuCodCentro, sbMens);
-    if(sbMens != '0') then
-         RAISE errorPara01;
-    end if;
+    nuCodCentro := fsbObtCentroSAP(sbEmpresa);
 
     --PAR?METROS DE CONEXION HACIA EL SERVICIO
   ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'NAMESPACE', sbNameSpace, sbMens);
@@ -748,7 +817,6 @@ Begin
          RAISE errorPara01;
     end if;
 
-
     --arma la URL del servicio donde se enviar? la interfaz
     sbUrlDesti := lower(sbProtocol) || '://' || sbHost || ':' || sbPuerto || '/' || sbUrlWS;
     sbUrlDesti := trim(sbUrlDesti);
@@ -767,7 +835,7 @@ Begin
                     AND ga.id_contrato = co.id_contrato
                     AND co.id_contratista = oc.id_contratista
                     AND oc.subscriber_id = cl.subscriber_id)  as "Cliente",
-                    sbPrefijoLDC || '-' || inuActaId as "PedCli",
+                    sbEmpresa || '-' || inuActaId as "PedCli",
                     sbMotivo as "Motivo",
                     cursor (SELECT
                               --<< CA-680
@@ -858,6 +926,8 @@ Begin
 
   LDCI_PKFACTELECTRONICA_EMI.PROREGISTRAENVIONC(inuActaId,l_payload,onuErrorCode,osbErrorMessage);
 
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+    
 Exception
   When Errorpara01 then
     onuErrorCode := -1;
@@ -873,7 +943,7 @@ Exception
     osbErrorMessage := SQLERRM;
     osbErrorMessage := 'ERROR - OTHERS: <Emision Fact Electronica - PROENVIANOTACRBRILLA>: ' || Dbms_Utility.Format_Error_Backtrace || ' - ' || onuErrorCode || ' - ' || osbErrorMessage;
   END PROENVIANOTACRBRILLA;
-  
+
 
 /*
  PROPIEDAD INTELECTUAL DE GASES DEL CARIBE S.A. E.S.P
@@ -882,7 +952,7 @@ Exception
                  AUTOR : Jose Donado
                  FECHA : 11/12/2023
 
- DESCRIPCION : Procedimiento para enviar documentos de energia solar 
+ DESCRIPCION : Procedimiento para enviar documentos de energia solar
 
  Parametros de Entrada
  inuSucripc:  Id de Contrato
@@ -898,8 +968,8 @@ Exception
 
  Autor        Fecha       Descripcion.
 */
-  PROCEDURE PROENVIAENERGIASOLAR(inuSucripc IN NUMBER, inuConsFact IN NUMBER, icbXMLFac IN CLOB, ocbResponse OUT CLOB, onuErrorCode OUT NUMBER,osbErrorMessage OUT VARCHAR2) AS
-  
+  PROCEDURE PROENVIAENERGIASOLAR(inuSucripc IN NUMBER, inuConsFact IN NUMBER, icbXMLFac IN CLOB, ocbResponse OUT CLOB, onuErrorCode OUT NUMBER,osbErrorMessage OUT CLOB) AS
+
       --Define variables
     sbNameSpace    LDCI_CARASEWE.CASEVALO%type;
     sbUrlWS        LDCI_CARASEWE.CASEVALO%type;
@@ -912,7 +982,6 @@ Exception
     sbMens         varchar2(4000);
 
     --Parametros de logica de negocio
-    sbWsNomb       LDCI_CARASEWE.CASEDESE%type := 'WS_FACELEC_EMI_ENERSOLAR';
     nuError        NUMBER;
     sbRespuesta    VARCHAR2(4000);
     clXMLFact      CLOB;
@@ -925,7 +994,7 @@ Exception
     errorPara01         EXCEPTION;   -- Excepcion que verifica que ingresen los parametros de entrada
     excepNoProcesoSOAP  EXCEPTION;   -- Excepcion que valida si proceso peticion SOAP
     excepXMLInvalid     EXCEPTION;   -- Excepcion que valida estructura del XML de entrada
-   
+
   Begin
     onuErrorCode := 0;
     --PARAMETROS DE CONEXION HACIA EL SERVICIO
@@ -963,36 +1032,36 @@ Exception
     if(sbMens != '0') then
          RAISE errorPara01;
     end if;
-    
+
     --arma la URL del servicio donde se enviara la interfaz
     sbUrlDesti := lower(sbProtocol) || '://' || sbHost || ':' || sbPuerto || '/' || sbUrlWS;
     sbUrlDesti := trim(sbUrlDesti);
-    
+
     --verifica si el dato es un XML valido
-    l_payload := icbXMLFac;  
+    l_payload := icbXMLFac;
     l_payload := replace(l_payload, 'ns1:enviarDocumento', 'enviarDocumento');
     blXMLValid := IsXML(l_payload);
     l_payload := replace(l_payload, 'enviarDocumento', 'ns1:enviarDocumento');
-    
+
     IF (NOT blXMLValid) THEN
       RAISE excepXMLInvalid;
     END IF;
-    
+
     l_payload := replace(l_payload, '<?xml version="1.0" encoding="UTF-8"?>');
     l_payload := trim(l_payload);
-    
+
     --Hace el consumo del servicio Web
     LDCI_PKSOAPAPI.Prosetprotocol(Sbprotocol);
     l_response := LDCI_PKSOAPAPI.fsbSoapSegmentedCallSyncExt('WS_FACELEC_EMI_ENERSOLAR',l_payload, sbUrlDesti, sbSoapActi, sbNameSpace);
-         
+
     IF (LDCI_PKSOAPAPI.boolHttpError OR LDCI_PKSOAPAPI.Boolsoaperror) THEN
       Raise excepNoProcesoSOAP;
     END IF;
-                                
+
     ocbResponse := l_response;
     onuErrorCode := 0;
     osbErrorMessage := nuError || ' - ' || sbRespuesta || ' - ' || clXMLFact;
-     
+
 
   Exception
     When Errorpara01 then
@@ -1003,14 +1072,15 @@ Exception
       osbErrorMessage := 'ERROR ESTRUCTURA XML: <Emision Fact Electronica - PROENVIAENERGIASOLAR>: ';
     WHEN excepNoProcesoSOAP THEN
       onuErrorCode := -3;
-      osbErrorMessage := 'ERROR - excepNoProcesoSOAP: <Emision Fact Electronica - PROENVIAENERGIASOLAR>: Ocurrio un error en procesamiento SOAP.' || Dbms_Utility.Format_Error_Backtrace || ' - ' || l_response;
+      --dbms_output.put_line(l_response);
+      osbErrorMessage := 'ERROR - excepNoProcesoSOAP: <Emision Fact Electronica - PROENVIAENERGIASOLAR>: Ocurrio un error en procesamiento SOAP.' || Dbms_Utility.Format_Error_Backtrace || ' - '|| l_response;
     WHEN OTHERS THEN
       onuErrorCode := -4;
       osbErrorMessage := SQLCODE || ' - ' || SQLERRM;
       osbErrorMessage := 'ERROR - OTHERS: <Emision Fact Electronica - PROENVIAENERGIASOLAR>: ' || Dbms_Utility.Format_Error_Backtrace || ' - ' || osbErrorMessage;
   END PROENVIAENERGIASOLAR;
-  
-  
+
+
 /*
  PROPIEDAD INTELECTUAL DE GASES DEL CARIBE S.A. E.S.P
 
@@ -1092,10 +1162,211 @@ EXCEPTION
     osbErrorMessage := 'ERROR - OTHERS: <Emision Fact Electronica - PROREGISTRAENVIONC>: ' || Dbms_Utility.Format_Error_Backtrace || ' - ' || onuErrorCode || ' - ' || osbErrorMessage;
   END PROREGISTRAENVIONC;
 
+    /*
+        PROPIEDAD INTELECTUAL DE GASES DEL CARIBE S.A. E.S.P
+
+        PROCEDIMIENTO   : fsbObtOficinaVentaSAP
+        AUTOR           : Lubin Pineda
+        FECHA           : 04/06/2025
+        DESCRIPCION     : Obtiene la oficina de venta SAP para la empresa
+
+        Parametros de Entrada
+            isbEmpresa empresa.codigo%type -> GDCA, GDGU
+
+        Historia de Modificaciones
+
+        Autor        Fecha       Descripcion.
+    */  
+    FUNCTION fsbObtOficinaVentaSAP( isbEmpresa empresa.codigo%type) 
+    RETURN VARCHAR2
+    IS
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fsbObtOficinaVentaSAP';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000); 
+        
+        sbOficinaVenta  ldci_oficvent.ofvecodi%TYPE;
+        
+    BEGIN
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+    
+        IF isbEmpresa  = 'GDCA' THEN 
+            ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_OFI_VENTAS', sbOficinaVenta, sbError);
+            if(sbError != '0') then
+                pkg_error.setError;
+                RAISE pkg_Error.CONTROLLED_ERROR;
+            end if;
+        ELSIF isbEmpresa  = 'GDGU' THEN         
+            ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_OFI_VENTAS_GDGU', sbOficinaVenta, sbError);
+            if(sbError != '0') then
+                pkg_error.setError;
+                RAISE pkg_Error.CONTROLLED_ERROR;
+            end if;
+        END IF;
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+    
+        RETURN sbOficinaVenta;
+
+    EXCEPTION
+        WHEN pkg_error.Controlled_Error THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+            pkg_Error.getError(nuError,sbError);        
+            pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
+            RAISE pkg_error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);          
+            pkg_error.setError;
+            pkg_Error.getError(nuError,sbError);
+            pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
+            RAISE pkg_error.Controlled_Error;        
+    END fsbObtOficinaVentaSAP;
+
+    /*
+        PROPIEDAD INTELECTUAL DE GASES DEL CARIBE S.A. E.S.P
+
+        PROCEDIMIENTO   :   fsbObtClasePedidoSAP
+        AUTOR           :   Lubin Pineda
+        FECHA           :   04/06/2025
+        DESCRIPCION     :   Obtiene la clase de pedido SAP para la empresa y el
+                            proceso
+
+        Parametros de Entrada
+            isbEmpresa  :   Valores permitidos GDCA, GDGU
+            isbProceso  :   Valores permitidos COMISION, NOTA            
+
+        Historia de Modificaciones
+
+        Autor        Fecha       Descripcion.
+    */  
+    FUNCTION fsbObtClasePedidoSAP(isbEmpresa empresa.codigo%type, isbProceso VARCHAR2) 
+    RETURN VARCHAR2
+    IS
+    
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fsbObtClasePedidoSAP';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000); 
+            
+        sbClasePedido           ldci_oficvent.ofvecodi%TYPE;
+        
+    BEGIN
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+    
+        IF isbEmpresa  = 'GDCA' THEN         
+            IF isbProceso = 'COMISION' THEN        
+                ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_CLASE_PEDI', sbClasePedido, sbError);
+                if(sbError != '0') then
+                    pkg_error.setError;
+                    RAISE pkg_Error.CONTROLLED_ERROR;
+                end if;
+            ELSIF isbProceso = 'NOTA' THEN
+                ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_CLASE_NCR_PEDI', sbClasePedido, sbError);
+                if(sbError != '0') then
+                    pkg_error.setError;
+                    RAISE pkg_Error.CONTROLLED_ERROR;
+                end if;
+            END IF;            
+        ELSIF isbEmpresa  = 'GDGU' THEN 
+            IF isbProceso = 'COMISION' THEN   
+                ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_CLASE_PEDI_GDGU', sbClasePedido, sbError);
+                if(sbError != '0') then
+                    pkg_error.setError;
+                    RAISE pkg_Error.CONTROLLED_ERROR;
+                end if;                
+            ELSIF isbProceso = 'NOTA' THEN
+                ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_CLASE_NCR_PEDI_GDGU', sbClasePedido, sbError);
+                if(sbError != '0') then
+                    pkg_error.setError;
+                    RAISE pkg_Error.CONTROLLED_ERROR;
+                end if;                
+            END IF;
+        END IF;
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+        
+        RETURN sbClasePedido;
+
+    EXCEPTION
+        WHEN pkg_error.Controlled_Error THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+            pkg_Error.getError(nuError,sbError);        
+            pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
+            RAISE pkg_error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);          
+            pkg_error.setError;
+            pkg_Error.getError(nuError,sbError);
+            pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
+            RAISE pkg_error.Controlled_Error;
+    END fsbObtClasePedidoSAP;
+    
+    /*
+        PROPIEDAD INTELECTUAL DE GASES DEL CARIBE S.A. E.S.P
+
+        PROCEDIMIENTO   : fsbObtCentroSAP
+        AUTOR           : Lubin Pineda
+        FECHA           : 11/06/2025
+        DESCRIPCION     : Obtiene el centro SAP para la empresa
+
+        Parametros de Entrada
+            isbEmpresa empresa.codigo%type -> GDCA, GDGU
+
+        Historia de Modificaciones
+
+        Autor        Fecha       Descripcion.
+    */  
+    FUNCTION fsbObtCentroSAP( isbEmpresa empresa.codigo%type) 
+    RETURN VARCHAR2
+    IS
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fsbObtCentroSAP';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000); 
+        
+        sbCentro  ldci_oficvent.ofvecodi%TYPE;
+        
+    BEGIN
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+    
+        IF isbEmpresa  = 'GDCA' THEN 
+            ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_COD_CENTRO', sbCentro, sbError);
+            if(sbError != '0') then
+                pkg_error.setError;
+                RAISE pkg_Error.CONTROLLED_ERROR;
+            end if;
+        ELSIF isbEmpresa  = 'GDGU' THEN         
+            ldci_pkWebServUtils.proCaraServWeb('WS_FACELEC_EMI_COMIBRILLA', 'SAP_PVM_COD_CENTRO_GDGU', sbCentro, sbError);
+            if(sbError != '0') then
+                pkg_error.setError;
+                RAISE pkg_Error.CONTROLLED_ERROR;
+            end if;
+        END IF;
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+    
+        RETURN sbCentro;
+
+    EXCEPTION
+        WHEN pkg_error.Controlled_Error THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+            pkg_Error.getError(nuError,sbError);        
+            pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
+            RAISE pkg_error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);          
+            pkg_error.setError;
+            pkg_Error.getError(nuError,sbError);
+            pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
+            RAISE pkg_error.Controlled_Error;        
+    END fsbObtCentroSAP;    
+      
 END LDCI_PKFACTELECTRONICA_EMI;
 /
-
-BEGIN
-    pkg_utilidades.prAplicarPermisos('LDCI_PKFACTELECTRONICA_EMI', 'ADM_PERSON'); 
-END;
+GRANT EXECUTE on ADM_PERSON.LDCI_PKFACTELECTRONICA_EMI to SYSTEM_OBJ_PRIVS_ROLE;
+GRANT EXECUTE on ADM_PERSON.LDCI_PKFACTELECTRONICA_EMI to INTEGRACIONES;
+GRANT EXECUTE on ADM_PERSON.LDCI_PKFACTELECTRONICA_EMI to INTEGRADESA;
+GRANT EXECUTE on ADM_PERSON.LDCI_PKFACTELECTRONICA_EMI to PERSONALIZACIONES;
+GRANT EXECUTE on ADM_PERSON.LDCI_PKFACTELECTRONICA_EMI to HOMOLOGACION;
+GRANT EXECUTE on ADM_PERSON.LDCI_PKFACTELECTRONICA_EMI to MULTIEMPRESA;
 /

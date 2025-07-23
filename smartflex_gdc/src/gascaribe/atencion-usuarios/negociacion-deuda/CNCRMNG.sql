@@ -906,7 +906,7 @@ null,
 'Y'
 ,
 8,
-null,
+'C',
 to_date('10-11-2022 15:02:57','DD-MM-YYYY HH24:MI:SS'),
 null);
 
@@ -1645,7 +1645,7 @@ null,
 -1,
 -1,
 9,
-'¿Cual es la ruta?'
+'ï¿½Cual es la ruta?'
 ,
 null,
 null,
@@ -1987,7 +1987,7 @@ null,
 -1,
 -1,
 8,
-'¿Cual es la direccion?'
+'ï¿½Cual es la direccion?'
 ,
 null,
 null,

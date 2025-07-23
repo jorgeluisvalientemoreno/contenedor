@@ -8,6 +8,7 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.PKG_BCDIRECCIONES IS
 					direcciones
     Modificaciones  :
     Autor       Fecha       Caso     	Descripcion
+	jerazomvm	14/05/2025	OSF-4466	Se crea la función fnuObtZonaOperativa
 	jerazomvm	08-11-2023	OSF-1831	1. Se crea el cursor cuGetRecord
 										2. Se crea el tipo tabla tytbDirecciones y tipo record tyrfDirecciones
 										3. Se crea las funciones:
@@ -118,6 +119,10 @@ FUNCTION fnuGetUbicaGeoPadre
 
   -- Servicio para obtener la Subcategoria configurada en un segmento
   FUNCTION fnuObtSubCategoriaSegmento(inuSegmento NUMBER) RETURN NUMBER;
+  
+	-- Obtiene zona operativa de una dirección   
+	FUNCTION fnuObtZonaOperativa(inuDireccion IN ab_address.address_id%TYPE)
+	RETURN NUMBER;
 
 END PKG_BCDIRECCIONES;
 /
@@ -1066,6 +1071,81 @@ FUNCTION fblExiste
       RAISE pkg_Error.Controlled_Error;
     
   END fnuObtSubCategoriaSegmento;
+  
+  /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuObtZonaOperativa
+    Descripcion     : Obtiene zona operativa de una dirección
+    Caso            : OSF-3541
+    Autor           : Jhon Erazo
+    Fecha           : 14/05/2025
+    
+    Parametros
+		Entrada
+			inuDireccion 	Identificador de la dirección
+		
+		Salida
+			nuZonaOperativa		Zona operativa de la dirección
+    
+    Modificaciones  :
+    Autor       Fecha       Caso       Descripcion
+    jerazomvm	14/05/2025	OSF-4480   OSF-4480: Creación
+    ***************************************************************************/    
+    FUNCTION fnuObtZonaOperativa(inuDireccion IN ab_address.address_id%TYPE) 
+	RETURN NUMBER 
+	IS
+    
+        csbMetodo   VARCHAR2(70) := csbSP_NAME || 'fnuObtZonaOperativa';
+		
+        nuErrorCode 	NUMBER; -- se almacena codigo de error
+		nuZonaOperativa	or_route_zone.operating_zone_id%TYPE;
+        sbMensError 	VARCHAR2(2000); -- se almacena descripcion del error
+        
+        CURSOR cuZonaOperativa 
+		IS
+			SELECT ro.operating_zone_id
+            FROM ab_address    ab,
+                 ab_segments   seg,
+                 or_route_zone ro
+            WHERE ab.address_id = inuDireccion
+            AND seg.segments_id	= ab.segment_id
+            AND ro.route_id		= seg.route_id;
+    
+    BEGIN
+    
+        pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbINICIO);
+		
+		pkg_traza.trace('inuDireccion: ' || inuDireccion, cnuNVLTRC);
+        
+        IF (cuZonaOperativa%ISOPEN) THEN
+			CLOSE cuZonaOperativa;
+		END IF;
+		
+		OPEN cuZonaOperativa;
+        FETCH cuZonaOperativa INTO nuZonaOperativa;
+        CLOSE cuZonaOperativa;
+        
+        pkg_traza.trace('nuZonaOperativa: ' || nuZonaOperativa, cnuNVLTRC);
+        
+        pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN);
+        
+        RETURN nuZonaOperativa;
+    
+    EXCEPTION
+        WHEN pkg_Error.Controlled_Error THEN
+              pkg_Error.getError(nuErrorCode, sbMensError);
+              pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+              pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERC);
+              RAISE pkg_Error.Controlled_Error;
+        
+        WHEN OTHERS THEN
+              pkg_Error.setError;
+              pkg_Error.getError(nuErrorCode, sbMensError);
+              pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+              pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERR);
+              RAISE pkg_Error.Controlled_Error;
+    
+    END fnuObtZonaOperativa;
 
 END PKG_BCDIRECCIONES;
 /

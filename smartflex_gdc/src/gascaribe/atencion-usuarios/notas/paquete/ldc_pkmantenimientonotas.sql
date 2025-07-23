@@ -1,12 +1,40 @@
-CREATE OR REPLACE PACKAGE OPEN.LDC_PKMANTENIMIENTONOTAS IS
+CREATE OR REPLACE PACKAGE LDC_PKMANTENIMIENTONOTAS IS
     /***********************************************************
-    -- Author  : Sandra Mu?o
+    -- Author  : Sandra Muñoz
     -- Created : 15/04/2016 9:32:52
     -- Purpose : Administra las acciones a realizar en FAJU-MANOT
     Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    ------------------------------------
+        25-09-2024      jcatuche            OSF-3332: Se ajustan los métodos
+                                                [proInsMantenimientoNotaDet]
+                                                [proDetAcreditarConcepto]
+                                                [proDetAcreditarConceptoYCC]
+                                                [proDetDebitarConceptoYCC]
+                                                [proGrabarDebitarConcepto]
+                                                [proDetAcreditarCuentaCobro]
+                                                [proDetDebitarCuentaCobro]
+                                                [proDetAcreditarDeuda]
+                                                [fcrConceptosCtaCobro]
+                                                [fcrConceptosProducto]
+                                                [proGrabar]
+                                                [validamonto]
+                                                [proDetDebitarConcepto]
+                                                                            
+                                            A nivel general se estandariza la traza y el manejo de errores, se crean cursores para llamados Select INTO, se se cambian los llamados
+                                            PKCONSTANTE.TYREFCURSOR por CONSTANTS_PER.TYREFCURSOR, GE_BOPERSONAL.FNUGETPERSONID por PKG_BOPERSONAL.FNUGETPERSONAID,
+                                            OS_QUERYPRODDEBTBYCONC por API_QUERYPRODDEBTBYCONC, DAPR_PRODUCT.FNUGETSUBSCRIPTION_ID por PKG_BCPRODUCTO.FNUCONTRATO [adecuación
+                                            para control de error], DALD_PARAMETER.FNUGETNUMERIC_VALUE por PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO, DALD_PARAMETER.FSBGETVALUE_CHAIN por
+                                            PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA, SA_BOUSER.FNUGETUSERID por PKG_SESSION.GETUSERID, USER por PKG_SESSION.GETUSER, DAPR_PRODUCT.FNUGETPRODUCT_STATUS_ID por 
+                                            PKG_BCPRODUCTO.FNUESTADOPRODUCTO [adecuación para control de error], PKCONSTANTE.SI por CONSTANTS_PER.CSBSI, PKTBLSERVSUSC.FNUGETSERVICE por PKG_BCPRODUCTO.FNUTIPOPRODUCTO
+                                            
+                                            Se crea nueva constante csbNotaProg para almacenar el programa de las notas
+                                            Se crea nuevo procedimiento interno para registro de auditoria
+                                                [prRegistraAuditoria]
+                                                
+                                            Se elimina el procedimiento interno
+                                                [proPlantilla]
         29-04-2024      jcatuche            OSF-3206 Se ajustan los métodos
                                                 [proDetDebitarConcepto]
                                                 [proGrabarDebitarConcepto]
@@ -25,17 +53,17 @@ CREATE OR REPLACE PACKAGE OPEN.LDC_PKMANTENIMIENTONOTAS IS
         28-10-2022   jcatuchemvm            OSF-637: Se ajusta procedimientos
                                                 [proGrabar]
                                                 [proGrabarDebitarConcepto]
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
     ***********************************************************/
     ------------------------------------------------------------------------------------------------
     -- Listas de valores
     ------------------------------------------------------------------------------------------------
-    FUNCTION fcnconcepnoacredit RETURN PKCONSTANTE.TYREFCURSOR;
+    FUNCTION fcnconcepnoacredit RETURN CONSTANTS_PER.TYREFCURSOR;
     FUNCTION fcrCtasCobroProducto(inuProducto LDC_MANTENIMIENTO_NOTAS_PROY.producto%TYPE)
-        RETURN PKCONSTANTE.TYREFCURSOR;
+        RETURN CONSTANTS_PER.TYREFCURSOR;
 
     FUNCTION fcrConceptosCtaCobro(inuCuentaCobro ldc_mantenimiento_notas_enc.cuenta_cobro%TYPE)
-        RETURN PKCONSTANTE.TYREFCURSOR;
+        RETURN CONSTANTS_PER.TYREFCURSOR;
 
     FUNCTION fcrConceptosProducto
     (
@@ -43,13 +71,13 @@ CREATE OR REPLACE PACKAGE OPEN.LDC_PKMANTENIMIENTONOTAS IS
         isbnovedad  VARCHAR2
     )
     --FUNCTION fcrConceptosProducto(inuProducto ldc_mantenimiento_notas_enc.producto%TYPE)
-     RETURN PKCONSTANTE.TYREFCURSOR;
+     RETURN CONSTANTS_PER.TYREFCURSOR;
 
     FUNCTION fcrPlanesFinanciacion
     (
         inuNroCuotas ldc_mantenimiento_notas_enc.cuotas%TYPE,
         inuservicio  servicio.servcodi%TYPE
-    ) RETURN PKCONSTANTE.TYREFCURSOR;
+    ) RETURN CONSTANTS_PER.TYREFCURSOR;
 
     FUNCTION fnutraePIva
     (
@@ -98,14 +126,14 @@ CREATE OR REPLACE PACKAGE OPEN.LDC_PKMANTENIMIENTONOTAS IS
     PROCEDURE proMostrarProyectado
     (
         inuProducto                   ldc_mantenimiento_notas_proy.producto%TYPE,
-        ocrLDC_MANTENIMIENTO_NOTAS_PR OUT PKCONSTANTE.TYREFCURSOR,
+        ocrLDC_MANTENIMIENTO_NOTAS_PR OUT CONSTANTS_PER.TYREFCURSOR,
         osbError                      OUT VARCHAR2
     );
 
     PROCEDURE proMostrarDeudaActual
     (
         inuProducto                   LDC_MANTENIMIENTO_NOTAS_PROY.producto%TYPE,
-        ocrLDC_MANTENIMIENTO_NOTAS_PR OUT PKCONSTANTE.TYREFCURSOR,
+        ocrLDC_MANTENIMIENTO_NOTAS_PR OUT CONSTANTS_PER.TYREFCURSOR,
         onucreditbalance              OUT NUMBER,
         onuclaimvalue                 OUT NUMBER,
         onudefclaimvalue              OUT NUMBER,
@@ -171,15 +199,13 @@ CREATE OR REPLACE PACKAGE OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
 END LDC_PKMANTENIMIENTONOTAS;
 /
-CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
+CREATE OR REPLACE PACKAGE BODY LDC_PKMANTENIMIENTONOTAS IS
 
     ------------------------------------------------------------------------------------------------
     -- Datos de paquete
     ------------------------------------------------------------------------------------------------
-    gsbPaquete            VARCHAR2(30) := 'LDC_PKMANTENIMIENTONOTAS';
     gnuSesion             NUMBER := userenv('sessionid');
-    gsbCRM_SAC_LMF_200818 VARCHAR2(20) := 'CRM_SAC_LMF_200818_3';
-
+    
     ------------------------------------------------------------------------------------------------
     -- Tipos de datos
     ------------------------------------------------------------------------------------------------
@@ -209,23 +235,24 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
     csbFin_Erc              CONSTANT VARCHAR2(4)        := pkg_traza.fsbFIN_ERC;        -- Indica fin de método con error controlado
     csbFin_Err              CONSTANT VARCHAR2(4)        := pkg_traza.fsbFIN_ERR;        -- Indica fin de método con error no controlado
     
-    nuError                 NUMBER;
-    sbError                 VARCHAR2(4000);
-    
-    csbCredito      CONSTANT CHAR(2) := 'CR'; -- Cargo credito
-    csbNotaCredito  CONSTANT CHAR(2) := 'NC'; -- Nota credito
+    csbCredito      CONSTANT VARCHAR2(2) := 'CR'; -- Cargo credito
+    csbNotaCredito  CONSTANT VARCHAR2(2) := 'NC'; -- Nota credito
     cnuNotaCredito  CONSTANT NUMBER(2) := 71; -- Nota debito
-    csbDebito       CONSTANT CHAR(2) := 'DB'; -- Cargo debito
-    csbNotaDebito   CONSTANT CHAR(2) := 'ND'; -- Nota Debito
+    csbDebito       CONSTANT VARCHAR2(2) := 'DB'; -- Cargo debito
+    csbNotaDebito   CONSTANT VARCHAR2(2) := 'ND'; -- Nota Debito
     cnuNotaDebito   CONSTANT NUMBER(2) := 70; -- Nota Debito
     cnuConcConsumo  CONSTANT NUMBER(3) := 31; -- concepto de Consumo
     cnuConcSubsidio CONSTANT NUMBER(3) := 196; -- concepto de Subsidio
     cnuConcSubCovid CONSTANT NUMBER(3) := 167; -- concepto de Subsidio
-    cnuConcCovid CONSTANT NUMBER(3) := 130; -- concepto de Subsidio
+    cnuConcCovid    CONSTANT NUMBER(3) := 130; -- concepto de Subsidio
     cnuTipoconcliq  CONSTANT NUMBER(3) := 4; -- Tipo concepto liquidacion impuesto
     cnuConcContribu CONSTANT NUMBER(3) := 37; -- concepto de Subsidio
-    csbTinoDebito   CONSTANT CHAR(1) := 'D'; -- Tipo Nota debito
-
+    csbTinoDebito   CONSTANT VARCHAR2(1) := 'D'; -- Tipo Nota debito
+    csbNotaProg     CONSTANT VARCHAR2(4) := 'FRNF';  --Programa para registrar las notas MANOT
+    
+    nuError                 NUMBER;
+    sbError                 VARCHAR2(4000);
+    
     ------------------------------------------------------------------------------------------------
     -- Cursores
     ------------------------------------------------------------------------------------------------
@@ -240,7 +267,15 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
     ------------------------------------------------------------------------------------------------
     -- Procedimientos
     ------------------------------------------------------------------------------------------------
-
+    PROCEDURE prRegistraAuditoria
+    ( 
+        isbNovedad      IN VARCHAR2,
+        inuSolicitud    IN NUMBER,
+        isbObservacion  IN VARCHAR2,
+        isbNovedad2     IN VARCHAR2,
+        isbError        IN VARCHAR2
+    );
+    
     PROCEDURE proInsMantenimientoNotaProy
     (
         inuProducto       LDC_MANTENIMIENTO_NOTAS_PROY.producto%TYPE,
@@ -256,32 +291,40 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete: proInsertarMantenimientoNota
+        Nombre del Paquete: proInsMantenimientoNotaProy
         Descripcion:        Inserta un registro en la tabla LDC_MANTENIMIENTO_NOTAS_PROY
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proInsertarMantenimientoNota';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proInsMantenimientoNotaProy';
         rgDatos   LDC_MANTENIMIENTO_NOTAS_PROY%ROWTYPE; -- Datos a insertar en la tabla
-        onuError             NUMBER;  
-        exError EXCEPTION; -- Error controlado
+        
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto        <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('isbSignoCorriente  <= '||isbSignoCorriente, csbNivelTraza);
+        pkg_traza.trace('inuValorCorriente  <= '||inuValorCorriente, csbNivelTraza);
+        pkg_traza.trace('inuValorVencido    <= '||inuValorVencido, csbNivelTraza);
+        pkg_traza.trace('inuConcepto        <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('isbOrigen          <= '||isbOrigen, csbNivelTraza);
+        pkg_traza.trace('inuValorDiferido   <= '||inuValorDiferido, csbNivelTraza);
+        pkg_traza.trace('isbSignoDiferido   <= '||isbSignoDiferido, csbNivelTraza);
+        
+        pkg_traza.trace('gnuSesion ' || gnuSesion ,csbNivelTraza );
 
         -- Construccion del registro
         rgDatos.Producto        := inuProducto;
         rgDatos.sesion          := gnuSesion;
-        rgDatos.usuario         := ge_bopersonal.fnuGetPersonId;
+        rgDatos.usuario         := PKG_BOPERSONAL.FNUGETPERSONAID;
         rgDatos.fecha           := SYSDATE;
         rgDatos.signo_corriente := isbSignoCorriente;
         rgDatos.valor_corriente := inuValorCorriente;
@@ -290,19 +333,19 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         rgDatos.Origen          := isbOrigen;
         rgDatos.Valor_Diferido  := inuValorDiferido;
         rgDatos.Signo_Diferido  := isbSignoDiferido;
-        ut_trace.trace('gnuSesion ' || gnuSesion );
+        
         INSERT INTO LDC_MANTENIMIENTO_NOTAS_PROY VALUES rgDatos;
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);            
     END;
 
     PROCEDURE proInsMantenimientoNotaEnc
@@ -323,26 +366,32 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proInsMantenimientoNotaEnc
         Descripcion:        Inserta un registro en la tabla LDC_MANTENIMIENTO_NOTAS_ENC
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proInsMantenimientoNotaEnc';
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proInsMantenimientoNotaEnc';
         nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
         rgDatos   LDC_MANTENIMIENTO_NOTAS_ENC%ROWTYPE; -- Datos a insertar en la tabla
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
 
     BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto        <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('isbNovedad         <= '||isbNovedad, csbNivelTraza);
+        pkg_traza.trace('inuConcepto        <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('inuCuenta_cobro    <= '||inuCuenta_cobro, csbNivelTraza);
+        pkg_traza.trace('inuValor           <= '||inuValor, csbNivelTraza);
+        pkg_traza.trace('inuCausa_cargo     <= '||inuCausa_cargo, csbNivelTraza);
+        pkg_traza.trace('inuCuotas          <= '||inuCuotas, csbNivelTraza);
+        pkg_traza.trace('inuPlan_diferido   <= '||inuPlan_diferido, csbNivelTraza);
 
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
         -- Construccion del registro
 
         nuPaso           := 10;
@@ -370,17 +419,17 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         INSERT INTO ldc_mantenimiento_notas_enc VALUES rgDatos;
 
         COMMIT;
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError||'('||nuPaso||')',csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err); 
     END;
 
     PROCEDURE proInsMantenimientoNotaDet
@@ -391,6 +440,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         inuSigno        ldc_mantenimiento_notas_det.signo%TYPE, -- cuenta de cobro
         inuValor        ldc_mantenimiento_notas_det.valor%TYPE, -- valor de la nota
         inuCausa_cargo  ldc_mantenimiento_notas_det.causa_cargo%TYPE, -- Causa cargo
+        inuValor_Base   ldc_mantenimiento_notas_det.valor_base%TYPE DEFAULT NULL, -- valor base de la nota
         osbError        OUT VARCHAR2 -- Mensaje de error
     ) IS
         /*****************************************************************
@@ -399,24 +449,31 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proInsMantenimientoNotaDet
         Descripcion:        Inserta un registro en la tabla LDC_MANTENIMIENTO_NOTAS_DET
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
+        25-09/2024      jcatuche            OSF-3332: Se agrega nueva columna al registro. Valor_base
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proInsMantenimientoNotaDet';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proInsMantenimientoNotaDet';
         rgDatos   LDC_MANTENIMIENTO_NOTAS_DET%ROWTYPE; -- Datos a insertar en la tabla
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        
     BEGIN
-
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuCuenta_cobro    <= '||inuCuenta_cobro, csbNivelTraza);
+        pkg_traza.trace('inuProducto        <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto        <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('inuSigno           <= '||inuSigno, csbNivelTraza);
+        pkg_traza.trace('inuValor           <= '||inuValor, csbNivelTraza);
+        pkg_traza.trace('inuCausa_cargo     <= '||inuCausa_cargo, csbNivelTraza);
+        pkg_traza.trace('inuValor_Base      <= '||inuValor_Base, csbNivelTraza);
+        
         -- Construccion del registro
         rgDatos.cuenta_cobro := inuCuenta_cobro;
         rgDatos.producto     := inuProducto;
@@ -425,20 +482,21 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         rgDatos.Valor        := inuValor;
         rgDatos.Sesion       := gnuSesion;
         rgDatos.Causa_Cargo  := inuCausa_cargo;
+        rgDatos.Valor_Base   := nvl(inuValor_Base,inuValor);
 
         INSERT INTO ldc_mantenimiento_notas_det VALUES rgDatos;
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);    
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err); 
+    END proInsMantenimientoNotaDet;
 
     PROCEDURE proBorMantenimientoNotaEnc(osbError OUT VARCHAR2 -- Mensaje de error
                                          ) IS
@@ -448,37 +506,35 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proBorMantenimientoNotaEnc
         Descripcion:        Borra los datos de LDC_MANTENIMIENTO_NOTAS_ENC para la sesion
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proBorMantenimientoNotaEnc';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proBorMantenimientoNotaEnc';
+        
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        
         DELETE LDC_MANTENIMIENTO_NOTAS_ENC lmn WHERE lmn.sesion = gnuSesion;
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            osbError := 'No fue posible borrar el contenido de la tabla LDC_MANTENIMIENTO_NOTAS_ENC para la sesion ' ||
-                        gnuSesion;
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
         WHEN OTHERS THEN
+            osbError := 'No fue posible borrar el contenido de la tabla LDC_MANTENIMIENTO_NOTAS_ENC para la sesion ' ||gnuSesion;
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            sbError := osbError||'-'||sbError;
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err); 
     END;
 
     PROCEDURE proBorMantenimientoNotaProy(osbError OUT VARCHAR2 -- Mensaje de error
@@ -489,38 +545,37 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proBorMantenimientoNotaProy
         Descripcion:        Borra un registro en la tabla LDC_MANTENIMIENTO_NOTAS_PROY
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proBorraMantenimientoNota';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proBorMantenimientoNotaProy';
+        
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
-      ut_trace.trace('gnuSesion ' || gnuSesion );  
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('gnuSesion ' || gnuSesion, csbNivelTraza); 
+         
        DELETE LDC_MANTENIMIENTO_NOTAS_PROY lmn WHERE lmn.sesion = gnuSesion;
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+    
     EXCEPTION
-        WHEN exError THEN
-            osbError := 'No fue posible borrar el contenido de la tabla LDC_MANTENIMIENTO_NOTAS_PROY para la sesion ' ||
-                        gnuSesion;
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
         WHEN OTHERS THEN
+            osbError := 'No fue posible borrar el contenido de la tabla LDC_MANTENIMIENTO_NOTAS_PROY para la sesion ' ||gnuSesion;
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            sbError := osbError||'-'||sbError; 
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err); 
     END;
 
     PROCEDURE proBorMantenimientoNotaDet(osbError OUT VARCHAR2 -- Mensaje de error
@@ -528,40 +583,39 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete: proBorMantenimientoNotaEnc
+        Nombre del Paquete: proBorMantenimientoNotaDet
         Descripcion:        Borra los datos de LDC_MANTENIMIENTO_NOTAS_DETpara la sesion
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proBorMantenimientoNotaDet';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proBorMantenimientoNotaDet';
+       
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        
         DELETE LDC_MANTENIMIENTO_NOTAS_DET lmn WHERE lmn.sesion = gnuSesion;
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            osbError := 'No fue posible borrar el contenido de la tabla LDC_MANTENIMIENTO_NOTAS_DET para la sesion ' ||
-                        gnuSesion;
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
         WHEN OTHERS THEN
+            osbError := 'No fue posible borrar el contenido de la tabla LDC_MANTENIMIENTO_NOTAS_DET para la sesion ' ||gnuSesion;
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            sbError := osbError||'-'||sbError;
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err); 
     END;
 
     PROCEDURE proBorraDatosTemporales(osbError OUT VARCHAR2) IS
@@ -571,51 +625,51 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proBorraDatosTemporales
         Descripcion:        Borra todos los datos usados para la operacion
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proInsertarMantenimientoNota';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proBorraDatosTemporales';
+        
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
 
         proBorMantenimientoNotaEnc(osbError => osbError);
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         proBorMantenimientoNotaProy(osbError => osbError);
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         proBorMantenimientoNotaDet(osbError => osbError);
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
-        WHEN OTHERS THEN
-            
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);     
+        WHEN OTHERS THEN            
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err); 
     END;
 
     PROCEDURE proDeudaConceptoProy
@@ -625,45 +679,62 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         onuValorAAcreditar OUT NUMBER,
         osbError           OUT VARCHAR2
     ) IS
-        sbProceso VARCHAR2(4000) := 'proDeudaConcepto';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proDeudaConceptoProy';
+        
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete: proDeudaConcepto
+        Nombre del Paquete: proDeudaConceptoProy
         Descripcion:       Obtiene la deuda actual por concepto
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-    BEGIN
+        cursor cuValorAAcreditar IS
         SELECT nvl(SUM(nvl(valor_corriente, 0)) + SUM(nvl(valor_diferido, 0)), 0) deuda_total
-        INTO onuValorAAcreditar
         FROM LDC_MANTENIMIENTO_NOTAS_PROY lmn
         WHERE lmn.sesion = gnuSesion
               AND lmn.producto = inuProducto
               AND lmn.origen = 'D'
               AND lmn.signo_corriente = csbDebito
               AND lmn.concepto = inuConcepto; -- Deuda real del concepto
+
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        
+        if cuValorAAcreditar%isopen then
+            close cuValorAAcreditar;
+        end if;
+        
+        open cuValorAAcreditar;
+        fetch cuValorAAcreditar into onuValorAAcreditar;
+        close cuValorAAcreditar;
+              
+        pkg_traza.trace('onuValorAAcreditar => '||onuValorAAcreditar, csbNivelTraza);
+        pkg_traza.trace('osbError           => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc); 
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err); 
     END proDeudaConceptoProy;
 
     PROCEDURE proDeudaConceptoReal
@@ -676,36 +747,36 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete: fnuDeudaConcepto
+        Nombre del Paquete: proDeudaConceptoReal
         Descripcion:       Obtiene la deuda actual por concepto
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso   VARCHAR2(4000) := 'fnuDeudaConcepto';
-        nuPaso      NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        cuDeudaConc PKCONSTANTE.TYREFCURSOR;
-        nuError     NUMBER := 0;
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proDeudaConceptoReal';
+        cuDeudaConc CONSTANTS_PER.TYREFCURSOR;
         rgDeudaConc tDeudaConc;
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
-    BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
 
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+
+        nuError     := 0;
         -- Obtener los conceptos con deuda del producto
-        os_queryproddebtbyconc(inusesunuse => inuProducto, isbpunished => 'S', ocuqueryproddebtbyconc => cuDeudaConc, onuerrorcode => nuError, osberrormessage => osbError);
+        api_queryproddebtbyconc(inusesunuse => inuProducto, isbpunished => 'S', ocuqueryproddebtbyconc => cuDeudaConc, onuerrorcode => nuError, osberrormessage => sbError);
 
         IF nuError > 0 THEN
-            osbError := nuError || ' - ' || osbError;
-            RAISE exError;
+            osbError := nuError ||' - '||sbError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         LOOP
@@ -729,24 +800,28 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             onuDeuda := 0;
         END IF;
 
-        IF osbError = '-' THEN
+        IF nuError = 0 or sbError = '-' THEN
             osbError := NULL;
         END IF;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('onuDeuda   => '||onuDeuda, csbNivelTraza);
+        pkg_traza.trace('osbError   => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc); 
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err); 
     END;
 
-    -- Refactored procedure proDeudaCuentaCobro
     PROCEDURE proDeudaCuentaCobro
     (
         inuProducto      IN pr_product.product_id%TYPE,
@@ -761,55 +836,58 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Descripcion:        Devuelve el saldo de una cuenta de cobro
 
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso         VARCHAR2(4000) := 'proDeudaCuentaCobro';
-        nuPaso            NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo           CONSTANT VARCHAR2(100) := csbPaquete||'proDeudaCuentaCobro';
         nuValorAAcreditar NUMBER; -- Valor a acreditar al concepto
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
-    BEGIN
-
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
-        BEGIN
+        cursor cuSaldoCuenCobr is
             SELECT nvl(cc.cucosacu, 0)
-            INTO onuSaldoCuenCobr
             FROM cuencobr cc
             WHERE cc.cucocodi = inuCuenCobr;
-        EXCEPTION
-            WHEN no_data_found THEN
-                osbError := 'La cuenta de cobro ' || inuCuenCobr ||
-                            ' no esta asociada al producto ' || inuProducto;
-                RAISE exError;
-            WHEN OTHERS THEN
-                Pkg_Error.setError;
-                pkg_error.geterror(onuError, osberror);
-                osbError := 'No fue posible obtener el saldo de la cuenta de cobro ' ||
-                            inuCuenCobr || ' - ' || osberror;
-                RAISE exError;
-                
-                
-        END;
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuCuenCobr    <= '||inuCuenCobr, csbNivelTraza);
+        
+        if cuSaldoCuenCobr%isopen then
+            close cuSaldoCuenCobr;
+        end if;
+        
+        open cuSaldoCuenCobr;
+        fetch cuSaldoCuenCobr into onuSaldoCuenCobr;
+        if cuSaldoCuenCobr%notfound then
+            close cuSaldoCuenCobr;
+            osbError := 'No fue posible obtener el saldo de la cuenta de cobro '||inuCuenCobr;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        end if;
+        close cuSaldoCuenCobr;
+            
+        pkg_traza.trace('onuSaldoCuenCobr   => '||onuSaldoCuenCobr, csbNivelTraza);
+        pkg_traza.trace('osbError           => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN Pkg_Error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc); 
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err); 
     END proDeudaCuentaCobro;
 
     PROCEDURE proCargaDeudaActual
@@ -823,21 +901,20 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proCargaDeudaActual
         Descripcion:       Obtiene la deuda actual por concepto
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         10-12-2018   Ronald Colpas          caso-200-1650Se modifica para que se muestre la deuda
                                             detallada valor actual, valor vencido.
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso   VARCHAR2(4000) := 'proCargaDeudaActual';
-        nuPaso      NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        cuDeudaConc PKCONSTANTE.TYREFCURSOR;
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proCargaDeudaActual';
+        cuDeudaConc CONSTANTS_PER.TYREFCURSOR;
         nuError     NUMBER := 0;
         rgDeudaConc tDeudaConc;
         nuConteo    NUMBER;
@@ -848,23 +925,24 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuValorecl  NUMBER;
         nuSaldoafa  NUMBER;
         nuDifrecla  NUMBER;
-        cuDeudetre  PKCONSTANTE.TYREFCURSOR;
-        cuDeudetai  PKCONSTANTE.TYREFCURSOR;
+        cuDeudetre  CONSTANTS_PER.TYREFCURSOR;
+        cuDeudetai  CONSTANTS_PER.TYREFCURSOR;
         rgDeudadet  tDeudetre;
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+      
+        
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto <= '||inuProducto, csbNivelTraza);
 
         -- Borrar los resultados de la consulta anterior
         proBorMantenimientoNotaProy(osbError => osbError);
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         -- Obtener los conceptos con deuda del producto
-        os_queryproddebtbyconc(inusesunuse => inuProducto, isbpunished => 'S', ocuqueryproddebtbyconc => cuDeudaConc, onuerrorcode => nuError, osberrormessage => osbError);
+        api_queryproddebtbyconc(inusesunuse => inuProducto, isbpunished => 'S', ocuqueryproddebtbyconc => cuDeudaConc, onuerrorcode => nuError, osberrormessage => osbError);
 
         LOOP
             -- Obtener registro
@@ -875,7 +953,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             proInsMantenimientoNotaProy(inuProducto => rgDeudaConc.producto, isbSignoCorriente => rgDeudaConc.signo_corriente, inuValorCorriente => rgDeudaConc.valor_corriente, inuValorVencido => 0, inuConcepto => rgDeudaConc.concepto_id, isbOrigen => 'D', inuValorDiferido => rgDeudaConc.valor_diferido, isbSignoDiferido => rgDeudaConc.signo_diferido, osbError => osbError);
 
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
 
         END LOOP;
@@ -903,7 +981,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
              where t.sesion = gnuSesion
                and t.concepto = rgDeudadet.concepto_id;
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
 
         END LOOP;
@@ -920,20 +998,23 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
          where t.sesion = gnuSesion;
         --Fin Mod. 10/12/2018
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.CONTROLLED_ERROR THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END;
 
-    -- Refactored procedure proSaldoConcepto
     PROCEDURE proDeudaConceptoCC
     (
         inuCuenCobr      cuencobr.cucocodi%TYPE, -- Codigo de la cuenta de cobro
@@ -945,27 +1026,27 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete: proSaldoConcepto
+        Nombre del Paquete: proDeudaConceptoCC
         Descripcion:        Retorna el saldo de un concepto dentro de una cuenta de cobro
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proDeudaConceptoCC';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-
-        exError EXCEPTION; -- Error controlado
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proDeudaConceptoCC';
         tbsaldoconc pkbalanceconceptmgr.tytbsaldoconc;
-        onuError             NUMBER;  
+        
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuCuenCobr    <= '||inuCuenCobr, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        
         -- Call the procedure
         pkbalanceconceptmgr.getbalancebyconc(inuaccount => inuCuenCobr, otbsaldoconc => tbsaldoconc);
         BEGIN
@@ -974,18 +1055,23 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             WHEN no_data_found THEN
                 onuSaldoConcepto := 0;
         END;
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        
+        pkg_traza.trace('onuSaldoConcepto   => '||onuSaldoConcepto, csbNivelTraza);
+        pkg_traza.trace('osbError           => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.CONTROLLED_ERROR THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END proDeudaConceptoCC;
 
     PROCEDURE proDeudaProducto
@@ -1000,40 +1086,43 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proDeudaProducto
         Descripcion:        Devuelve la deuda del producto
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proInsertarMantenimientoNota';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proDeudaProducto';
+     
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto <= '||inuProducto, csbNivelTraza);
 
         onuDeuda := pkBCCuencobr.fnuGetOutStandBal(inuproduct => inuProducto);
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('onuDeuda => '||onuDeuda, csbNivelTraza);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.CONTROLLED_ERROR THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END;
 
-    -- Refactored procedure proValidaConceptoYaFacurado
     PROCEDURE proValidaConceptoYaFacurado
     (
         inuProducto IN pr_product.product_id%TYPE,
@@ -1048,84 +1137,86 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Descripcion:       Indica si un concepto ya ha sido facturado para el producto ingresado por
                            parametro
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proValidaConceptoYaFacurado';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proValidaConceptoYaFacurado';
         nuExiste  NUMBER;
-        exError EXCEPTION;
-        onuError             NUMBER;  
-    BEGIN
-        BEGIN
+        
+        cursor cuExiste is
             SELECT COUNT(1)
-            INTO nuExiste
             FROM cargos c
             WHERE c.cargnuse = inuProducto
                   AND c.cargconc = inuConcepto;
-        EXCEPTION
-            WHEN OTHERS THEN
-                osbError := 'No fue posible identificar si el concepto ' ||
-                            inuConcepto || ' ya ha sido facturado al producto ' ||
-                            inuProducto;
-                RAISE exError;
-        END;
+       
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        
+        if cuExiste%isopen then
+            close cuExiste;
+        end if;
 
+        open cuExiste;
+        fetch cuExiste into nuExiste;
+        close cuExiste;
+            
+       
         IF nuExiste = 0 THEN
-            osbError := 'No se puede acreditar el concepto ' || inuConcepto ||
-                        ' ya que no se encuentra en ninguna de ' ||
-                        'las cuentas de cobro asociadas al producto ' ||
-                        inuProducto;
-            RAISE exError;
+            osbError := 'No se puede acreditar el concepto ' || inuConcepto ||' ya que no se encuentra en ninguna de las cuentas de cobro asociadas al producto ' ||inuProducto;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END proValidaConceptoYaFacurado;
 
     FUNCTION fcrCtasCobroProducto(inuProducto LDC_MANTENIMIENTO_NOTAS_PROY.producto%TYPE)
-        RETURN PKCONSTANTE.TYREFCURSOR IS
+        RETURN CONSTANTS_PER.TYREFCURSOR IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete:
+        Nombre del Paquete: fcrCtasCobroProducto
         Descripcion:
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
 
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso     VARCHAR2(4000) := 'proInsertarMantenimientoNota';
-        nuPaso        NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        crCuentaCobro PKCONSTANTE.TYREFCURSOR;
-        sbError       VARCHAR2(4000); -- Error
+        csbMetodo       CONSTANT VARCHAR2(100) := csbPaquete||'fcrCtasCobroProducto';
+        crCuentaCobro   CONSTANTS_PER.TYREFCURSOR;
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
 
         -- Consulta cursor referenciado
         OPEN crCuentaCobro FOR
@@ -1139,112 +1230,102 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
              and cucofact = factcodi
            order by pefafege desc;
 
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
         RETURN crCuentaCobro;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || sbError);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, sberror);
-            sbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || sberror;
-            ut_trace.trace(sbError);
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END;
 
     FUNCTION fcrConceptosCtaCobro(inuCuentaCobro ldc_mantenimiento_notas_enc.cuenta_cobro%TYPE)
-        RETURN PKCONSTANTE.TYREFCURSOR IS
+        RETURN CONSTANTS_PER.TYREFCURSOR IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete:
+        Nombre del Paquete:fcrConceptosCtaCobro
         Descripcion:
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
 
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
-        17-04-2017   Luis Fren G            Se modifica consulta para que no aparezcan los conceptos
+        15-04-2016  Sandra Muñoz            Creación
+        17-04-2017  Luis Fren G             Se modifica consulta para que no aparezcan los conceptos
                                             que se definen en la tabla que contiene los conceptos que no
                                             se pueden acreditar LDC_CONC_NO_ACRED
+        25-09-2024   jcatuche               OSF-3332: Se añade exclusión de conceptos de impuesto concticl = cnuTipoconcliq y de pago
         ******************************************************************/
 
-        sbProceso   VARCHAR2(4000) := 'fcrConceptosCtaCobro';
-        nuPaso      NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        crConceptos PKCONSTANTE.TYREFCURSOR;
-        sbError     VARCHAR2(4000); -- Error
+        csbMetodo   VARCHAR2(4000) := csbPaquete||'fcrConceptosCtaCobro';
+        crConceptos CONSTANTS_PER.TYREFCURSOR;
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuCuentaCobro <= '||inuCuentaCobro, csbNivelTraza);
 
         -- Consulta cursor referenciado
         OPEN crConceptos FOR
-            SELECT DISTINCT cargconc concepto, concdesc descripcion
-            FROM cargos, concepto
-            WHERE cargcuco = inuCuentaCobro
-                  AND conccodi = cargconc
-                  AND
-                  cargconc NOT IN (SELECT l.CONCCODI FROM LDC_CONC_NO_ACRED l)
-            ORDER BY cargconc;
+        SELECT DISTINCT cargconc concepto, concdesc descripcion
+        FROM cargos, concepto
+        WHERE cargcuco = inuCuentaCobro
+        AND conccodi = cargconc
+        AND cargconc NOT IN (SELECT l.CONCCODI FROM LDC_CONC_NO_ACRED l)
+        AND concticl != cnuTipoconcliq
+        AND cargsign != 'PA'
+        ORDER BY cargconc;
 
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
         RETURN crConceptos;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || sbError);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, sberror);
-            sbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || sberror;
-            ut_trace.trace(sbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END fcrConceptosCtaCobro;
 
     FUNCTION fcrConceptosProducto
     (
         inuProducto ldc_mantenimiento_notas_enc.producto%TYPE,
         isbnovedad  VARCHAR2
-    ) RETURN PKCONSTANTE.TYREFCURSOR IS
+    ) RETURN CONSTANTS_PER.TYREFCURSOR IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete:
+        Nombre del Paquete:fcrConceptosProducto
         Descripcion:
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
 
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         17-04-2017   Luis Fren G            Se modifica consulta para que no aparezcan los conceptos
                                             que se definen en la tabla que contiene los conceptos que no
                                             se pueden acreditar LDC_CONC_NO_ACRED
+        25-09-2024      jcatuche            OSF-3332: Se añade exclusión de conceptos de impuesto concticl = cnuTipoconcliq y de pago
         ******************************************************************/
 
-        sbProceso   VARCHAR2(4000) := 'fcrConceptosProducto';
-        nuPaso      NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        crConceptos PKCONSTANTE.TYREFCURSOR;
-        sbError     VARCHAR2(4000); -- Error
-
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        csbMetodo   VARCHAR2(4000) := csbPaquete||'fcrConceptosProducto';
+        crConceptos CONSTANTS_PER.TYREFCURSOR;
+    
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('isbnovedad     <= '||isbnovedad, csbNivelTraza);
 
         -- Consulta cursor referenciado lmfg para que aparezcan todos los conceptos
         IF isbNovedad <> 'DC' THEN
@@ -1257,6 +1338,8 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                       AND cargconc = conccodi
                       AND cargconc NOT IN
                       (SELECT l.CONCCODI FROM LDC_CONC_NO_ACRED l)
+                AND concticl != cnuTipoconcliq
+                AND cargsign != 'PA'
                 ORDER BY cargconc;
         ELSE
             OPEN crConceptos FOR
@@ -1266,59 +1349,57 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                       AND cargconc = conccodi
                       AND cargconc NOT IN
                       (SELECT l.CONCCODI FROM LDC_CONC_NO_ACRED l)
+                AND concticl != cnuTipoconcliq
+                AND cargsign != 'PA'
                 UNION
                 SELECT t.conccodi concepto, t.concdesc descripcion
                 FROM concepto t
                 WHERE t.conccodi <> -1
+                AND concticl != cnuTipoconcliq
+                AND conccodi != 145
                 ORDER BY 1;
         END IF;
 
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
         RETURN crConceptos;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || sbError);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, sberror);
-            sbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || sberror;
-            ut_trace.trace(sbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END fcrConceptosProducto;
 
     FUNCTION fcrPlanesFinanciacion
     (
         inuNroCuotas ldc_mantenimiento_notas_enc.cuotas%TYPE,
         inuservicio  servicio.servcodi%TYPE
-    ) RETURN PKCONSTANTE.TYREFCURSOR IS
+    ) RETURN CONSTANTS_PER.TYREFCURSOR IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete:
+        Nombre del Paquete:fcrPlanesFinanciacion
         Descripcion:
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
 
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'fcrPlanesFinanciacion';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        crPlanes  PKCONSTANTE.TYREFCURSOR;
-        sbError   VARCHAR2(4000); -- Error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'fcrPlanesFinanciacion';
+        crPlanes  CONSTANTS_PER.TYREFCURSOR;
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuNroCuotas   <= '||inuNroCuotas, csbNivelTraza);
+        pkg_traza.trace('inuservicio    <= '||inuservicio, csbNivelTraza);
 
         -- Consulta cursor referenciado
         OPEN crPlanes FOR
@@ -1336,35 +1417,31 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                        decode(inuservicio, 7055, '%FNB%', 7053, '%FNB%')))
             ORDER BY pldicodi DESC;
 
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
         RETURN crPlanes;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || sbError);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, sberror);
-            sbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || sberror;
-            ut_trace.trace(sbError);
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END;
     /*****************************************************************
     Propiedad intelectual de Gases del Caribe.
 
-    Nombre del Paquete:
+    Nombre del Paquete:fnutraePIva
     Descripcion:
 
-    Autor    : Sandra Mu?oz
+    Autor    : Sandra Muñoz
 
     Fecha    : 14-08-2017
 
     Historia de Modificaciones
 
-    DD-MM-YYYY    <Autor>.              Modificacion
+    DD-MM-YYYY    <Autor>.              Modificación
     -----------  -------------------    -------------------------------------
-    14-08-2017   Luis Fren G.           Creacion
+    14-08-2017   Luis Fren G.           Creación
     ******************************************************************/
     FUNCTION fnutraePIva
     (
@@ -1372,10 +1449,10 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         inuserv     servsusc.sesuserv%TYPE -- porcentaje
     ) RETURN NUMBER IS
         nuporcentaje NUMBER := 0;
-    BEGIN
+        
+        cursor cuporcentaje is
         SELECT /*VITCCONS cons_tarifa, */
          nvl(ravtporc, 0) /*, cotcserv  servicio */
-        INTO nuporcentaje
         FROM ta_tariconc a,
              ta_conftaco b,
              ta_vigetaco d,
@@ -1387,9 +1464,24 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
               AND SYSDATE BETWEEN vitcfein AND vitcfefi
               AND ravtporc > 0
               AND cotcserv = inuserv;
+        
+    BEGIN
+        if cuporcentaje%isopen then
+            close cuporcentaje;
+        end if;
+
+        open cuporcentaje;
+        fetch cuporcentaje into nuporcentaje;
+        if cuporcentaje%notfound then
+            close cuporcentaje;
+            nuporcentaje := 0;
+        else
+            close cuporcentaje;
+        end if;
+        
         RETURN nuporcentaje;
     EXCEPTION
-        WHEN no_data_found THEN
+        WHEN others THEN
             nuporcentaje := 0;
             RETURN nuporcentaje;
     END;
@@ -1415,22 +1507,21 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                             que sobra debe crearse como saldo a favor del producto.
                             La causa cargo sera la que se asigne a cada cargo CR creado.
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         09-08-2023   diana.montes           OSF-1343:se modifica cursor cuDeudaConcepto
                                             para incluir cnuConcSubCovid cnuConcCovid y colocar distinct
         11-12-2018   Ronald Colpas          200-1650 Se modifica cursor cuDeudaConcepto para que tenga encuenta
                                             en la proyeccion el concepto subsidio
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proProyAcreditarDeuda';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proProyAcreditarDeuda';
         --nuDeudaTotal NUMBER; -- Deuda total del producto
         nuValorDigitado NUMBER; --valor digitado en la pantalla
 
@@ -1448,16 +1539,19 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                   AND (lmn.signo_corriente = csbDebito -- Deuda real de los productos
                   OR lmn.concepto  in (cnuConcSubsidio,cnuConcSubCovid,cnuConcCovid)); 
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+      
+        
         
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
-        ut_trace.trace('gnuSesion ' || gnuSesion );
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        
+        pkg_traza.trace('gnuSesion ' || gnuSesion, csbNivelTraza);
+        
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
        
@@ -1478,22 +1572,26 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                         osbError => osbError);
 
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
 
         END LOOP;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END;
 
     PROCEDURE proProyAcreditarConcepto
@@ -1512,12 +1610,12 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                             sido facturados al producto, es decir, que esten asociados a las cuentas
                             de cobro del producto sin importar si tienen saldo o no.
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         24-04-2019   Ronald Colpas          Caso-200-1650 Se modifica para excluir de la proyeccion los
                                             conceptos subsidio y contribucion, el iva se calcula
@@ -1535,11 +1633,10 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                             funcion fnutraePIva
 
 
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso         VARCHAR2(4000) := 'proProyAcreditarConcepto';
-        nuPaso            NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo         VARCHAR2(4000) := csbPaquete||'proProyAcreditarConcepto';
         nuValorAAcreditar NUMBER; -- Deuda total del concepto
         nuValorSubsidio   NUMBER; --valor del subsidio
         nuValorIva        NUMBER; --valor de Iva
@@ -1556,8 +1653,8 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuValorVenIVA     NUMBER; -- Deuda actual del concepto IVA
         nuValorsubsidioCovid NUMBER; --valor del subsidio
         nuValorCovid      NUMBER; --valor del subsidio
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        
+       
         --caso 200-1650 Cursor que consulta la deuda proyectada para el concepto seleccionado
         CURSOR cuDeudaConcepto IS
           SELECT decode(signo_corriente, csbDebito, csbCredito, csbDebito) signo_corriente,
@@ -1586,29 +1683,9 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                    WHERE t.conccodi = c.coblconc
                      AND t.concticl = cnuTipoconcliq);
 
-    BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
-
-        -- Validar datos obligatorios
-        IF inuProducto IS NULL THEN
-            osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
-        END IF;
-
-        IF inuConcepto IS NULL THEN
-            osbError := 'Falta indicar el concepto al que se va a acreditar';
-            RAISE exError;
-        ELSE
-            proValidaConceptoYaFacurado(inuProducto => inuProducto, inuConcepto => inuConcepto, osbError => osbError);
-            IF osbError IS NOT NULL THEN
-                RAISE exError;
-            END IF;
-        END IF;
-        nuValorAAcreditar := 0;
-        -- Identificar la deuda total del concepto
-        SELECT nvl(SUM(nvl(valor_corriente, 0)) /*+ SUM(nvl(valor_diferido, 0))*/, 0) deuda_total,
-               NVL(SUM(nvl(valor_vencido, 0)), 0)  --caso-200-1650
-        INTO nuValorActconc, nuValorVenconc
+        cursor cuValor is
+        SELECT nvl(SUM(nvl(valor_corriente, 0)) /*+ SUM(nvl(valor_diferido, 0))*/, 0) deuda_corr,
+               NVL(SUM(nvl(valor_vencido, 0)), 0)  deuda_vencida 
         FROM LDC_MANTENIMIENTO_NOTAS_PROY lmn
         WHERE lmn.sesion = gnuSesion
               AND lmn.producto = inuProducto
@@ -1616,17 +1693,61 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
               AND lmn.signo_corriente = csbDebito
               AND lmn.concepto = inuConcepto -- Deuda real del concepto
         ;
+        
+        cursor cuDigitado is
+        SELECT e.valor
+        FROM ldc_mantenimiento_notas_enc e
+        WHERE e.producto = inuProducto
+              AND e.concepto = inuConcepto
+              AND e.sesion = gnuSesion;
+
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        
+        if cuValor%isopen then
+            close cuValor;
+        end if;
+        
+        if cuDigitado%isopen then
+            close cuDigitado;
+        end if;
+
+        -- Validar datos obligatorios
+        IF inuProducto IS NULL THEN
+            osbError := 'Falta indicar el producto al que se le acreditara la deuda';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        END IF;
+
+        IF inuConcepto IS NULL THEN
+            osbError := 'Falta indicar el concepto al que se va a acreditar';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        ELSE
+            proValidaConceptoYaFacurado(inuProducto => inuProducto, inuConcepto => inuConcepto, osbError => osbError);
+            IF osbError IS NOT NULL THEN
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+            END IF;
+        END IF;
+        nuValorAAcreditar := 0;
+        -- Identificar la deuda total del concepto
+        open cuValor;
+        fetch cuValor into nuValorActconc, nuValorVenconc;
+        close cuValor;
+        
         --si el valor es cero entonces se saca del valor digitado
 
         --caso200-1650 Mod.13.12.2018 Valor acreditar actual + vencido
         nuValorAAcreditar := nuValorActconc + nuValorVenconc;
 
-        SELECT e.valor
-        INTO nuValorDigitado
-        FROM ldc_mantenimiento_notas_enc e
-        WHERE e.producto = inuProducto
-              AND e.concepto = inuConcepto
-              AND e.sesion = gnuSesion;
+        open cuDigitado;
+        fetch cuDigitado into nuValorDigitado;
+        if cuDigitado%notfound then
+            close cuDigitado;
+            osbError := 'No fue posible determinar el valor digitado para el ajuste';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        end if;
+        close cuDigitado;
 
         IF nuValordigitado > nuValorAAcreditar THEN
 
@@ -1675,7 +1796,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                         osbError => osbError);
 
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
 
             --mod.24.04.2019 validamos si el concepto base tiene Iva para calcularlo
@@ -1684,20 +1805,20 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             IF cuConcIva%FOUND THEN
               --Se proyecta el valor calculado del IVA
               --Realiza calculo para el valor del IVA
-              nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => pktblservsusc.fnugetservice(inuProducto));
-              nuValorIva := round(nuValorDigitado * (nuPorIva / 100), 0);
+                nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(inuProducto));
+                nuValorIva := round(nuValorDigitado * (nuPorIva / 100), 0);
 
-              ut_trace.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: ' ||
-                              nuValorIva ||' porcentaje IVA: '|| nuPorIva);
-              IF nuValorIva != 0 THEN
-                IF rgDeudaConcepto.Valor_Corriente <> 0 then
-                  nuValorActIVA := nuValorIva;
-                  nuValorVenIVA := 0;
-                ELSE
-                  nuValorActIVA := 0;
-                  nuValorVenIVA := nuValorIva;
-                END IF;
-                proInsMantenimientoNotaProy(inuProducto => inuProducto, --
+                pkg_traza.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: '||nuValorIva||' porcentaje IVA: '|| nuPorIva,csbNivelTraza);
+                
+                IF nuValorIva != 0 THEN
+                    IF rgDeudaConcepto.Valor_Corriente <> 0 then
+                        nuValorActIVA := nuValorIva;
+                        nuValorVenIVA := 0;
+                    ELSE
+                        nuValorActIVA := 0;
+                        nuValorVenIVA := nuValorIva;
+                    END IF;
+                    proInsMantenimientoNotaProy(inuProducto => inuProducto, --
                                             isbSignoCorriente => csbCredito, --
                                             inuValorCorriente => nuValorActIVA, --
                                             inuValorVencido => nuValorVenIVA, --
@@ -1707,17 +1828,17 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                             isbSignoDiferido => 0, --
                                             osbError => osbError);
 
-                IF osbError IS NOT NULL THEN
-                   RAISE exError;
+                    IF osbError IS NOT NULL THEN
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                    END IF;
                 END IF;
-              END IF;
             END IF;
             CLOSE cuConcIva;
         END LOOP;
 
         --Si el valor no fue proyectado por deuda pendiente se proyecta en actual
         IF nuConcregistra = 0 THEN
-          proInsMantenimientoNotaProy(inuProducto => inuProducto, --
+            proInsMantenimientoNotaProy(inuProducto => inuProducto, --
                                       isbSignoCorriente => csbCredito, --
                                       inuValorCorriente => nuValorDigitado, --
                                       inuValorVencido => 0, --
@@ -1728,7 +1849,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                       osbError => osbError);
 
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
 
             OPEN cuConcIva;
@@ -1736,13 +1857,12 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             IF cuConcIva%FOUND THEN
               --Se proyecta el valor calculado del IVA
               --Realiza calculo para el valor del IVA
-              nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => pktblservsusc.fnugetservice(inuProducto));
-              nuValorIva := round(nuValorDigitado * (nuPorIva / 100), 0);
+                nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(inuProducto));
+                nuValorIva := round(nuValorDigitado * (nuPorIva / 100), 0);
 
-              ut_trace.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: ' ||
-                              nuValorIva ||' porcentaje IVA: '|| nuPorIva);
-              IF nuValorIva != 0 THEN
-                proInsMantenimientoNotaProy(inuProducto => inuProducto, --
+                pkg_traza.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: '||nuValorIva||' porcentaje IVA: '|| nuPorIva,csbNivelTraza);
+                IF nuValorIva != 0 THEN
+                    proInsMantenimientoNotaProy(inuProducto => inuProducto, --
                                             isbSignoCorriente => csbCredito, --
                                             inuValorCorriente => nuValorIva, --
                                             inuValorVencido => 0, --
@@ -1752,27 +1872,31 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                             isbSignoDiferido => 0, --
                                             osbError => osbError);
 
-                IF osbError IS NOT NULL THEN
-                   RAISE exError;
+                    IF osbError IS NOT NULL THEN
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                    END IF;
                 END IF;
-              END IF;
             END IF;
             CLOSE cuConcIva;
 
         END IF;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proProyAcreditarConcepto;
 
 
 
@@ -1794,12 +1918,12 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                             sido facturados al producto, es decir, que esten asociados a las cuentas
                             de cobro del producto sin importar si tienen saldo o no.
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         09/08/2023   Diana.Montes           OSF-1343: Se modifica cursor cuConceptos para que tenga 
                                             en cuenta el concepto de subsido por covid 167. 130
@@ -1813,11 +1937,10 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                             por concepto y cuenta de cobro correcta.
                                             si el concepto tiene IVA este se proyecta.
 
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso       VARCHAR2(4000) := 'proProyAcreditarConceptoYCC';
-        nuPaso          NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo       VARCHAR2(4000) := csbPaquete||'proProyAcreditarConceptoYCC';
         nuValorSubsidio NUMBER; --valor del subsidio
         nuValorIva      NUMBER; --valor de Iva
         nuConcIva       NUMBER := 0; --concept Iva
@@ -1835,8 +1958,8 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuValorVenIVA     NUMBER; -- Deuda actual del concepto IVA
         nuValorsubsidioCovid NUMBER; --valor del subsidio
         nuValorCovid        NUMBER; --valor del subsidio
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        
+        
  --caso 200-1650 Valida si la cuenta de cobro es a la fecha o vencida
         CURSOR cuVencta is
           SELECT COUNT(1)
@@ -1856,35 +1979,39 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                      AND t.concticl = cnuTipoconcliq);
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('inuValor       <= '||inuValor, csbNivelTraza);
+        pkg_traza.trace('inuCuenCobr    <= '||inuCuenCobr, csbNivelTraza);
 
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuConcepto IS NULL THEN
             osbError := 'Falta indicar el concepto al que se va a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         ELSE
 
             proValidaConceptoYaFacurado(inuProducto => inuProducto, --
                                         inuConcepto => inuConcepto, --
                                         osbError => osbError);
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
         END IF;
 
         IF inuValor IS NULL THEN
             osbError := 'Falta ingresar el valor a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCuenCobr IS NULL THEN
             osbError := 'Falta la cuenta de cobro en la que se acreditara el concepto';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         --Mod.15.12.2018 Validamos el vencimiento de la cuenta de cobro para indicar si es
@@ -1908,7 +2035,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                            osbError => osbError);
 
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         proInsMantenimientoNotaProy(inuProducto => inuProducto, --
@@ -1921,7 +2048,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                     isbSignoDiferido => 0, --
                                     osbError => osbError);
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         --mod.24.04.2019 validamos si el concepto base tiene Iva para calcularlo
@@ -1930,20 +2057,20 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         IF cuConcIva%FOUND THEN
           --Se proyecta el valor calculado del IVA
           --Realiza calculo para el valor del IVA
-          nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => pktblservsusc.fnugetservice(inuProducto));
-          nuValorIva := round(inuValor * (nuPorIva / 100), 0);
+            nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(inuProducto));
+            nuValorIva := round(inuValor * (nuPorIva / 100), 0);
 
-          ut_trace.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: ' ||
-                          nuValorIva ||' porcentaje IVA: '|| nuPorIva);
-          IF nuValorIva != 0 THEN
-            IF nuValorActual <> 0 then
-              nuValorActIVA := nuValorIva;
-              nuValorVenIVA := 0;
-            ELSE
-              nuValorActIVA := 0;
-              nuValorVenIVA := nuValorIva;
-            END IF;
-            proInsMantenimientoNotaProy(inuProducto => inuProducto, --
+            pkg_traza.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: '||nuValorIva||' porcentaje IVA: '||nuPorIva,csbNivelTraza);
+            
+            IF nuValorIva != 0 THEN
+                IF nuValorActual <> 0 then
+                    nuValorActIVA := nuValorIva;
+                    nuValorVenIVA := 0;
+                ELSE
+                    nuValorActIVA := 0;
+                    nuValorVenIVA := nuValorIva;
+                END IF;
+                proInsMantenimientoNotaProy(inuProducto => inuProducto, --
                                         isbSignoCorriente => csbCredito, --
                                         inuValorCorriente => nuValorActIVA, --
                                         inuValorVencido => nuValorVenIVA, --
@@ -1953,26 +2080,29 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                         isbSignoDiferido => 0, --
                                         osbError => osbError);
 
-            IF osbError IS NOT NULL THEN
-               RAISE exError;
+                IF osbError IS NOT NULL THEN
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                END IF;
             END IF;
-          END IF;
         END IF;
         CLOSE cuConcIva;
 
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
         
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proProyAcreditarConceptoYCC;
 
     PROCEDURE proProyAcreditarCuentaCobro
     (
@@ -1997,23 +2127,22 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         sin importar si tiene saldo o no.
 
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         09-08-2023   diana.montes           OSF-1343: se ajusta para  tener en cuenta el subsidio covid  
                                             y consumo de covid
         15-12-2018   Ronald Colpas          Se modifica para prorretear la deuda de la cuenta de cobro
                                             cuando el valor digitado sea mayor al de la cuenta
 
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso        VARCHAR2(4000) := 'proProyAcreditarCuentaCobro';
-        nuPaso           NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo        VARCHAR2(4000) := csbPaquete||'proProyAcreditarCuentaCobro';
         nuSaldoConcepto  cargos.cargvalo%TYPE; -- Saldo del concepto
         nuSaldoCuenCobr  cuencobr.cucosacu%TYPE; -- Saldo de la cuenta de cobro
         nuValorDigitado  NUMBER; --valor digitado en la pantalla
@@ -2037,8 +2166,8 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuValorVencidC    NUMBER:= 0; --valor vencidoC
         nuValorActualCv    NUMBER := 0; --valor actualC
         nuValorVencidCv    NUMBER:= 0; --valor vencidoC
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        
+        
         CURSOR cuConceptosCC IS
             SELECT DISTINCT cargconc
             FROM cargos c
@@ -2052,49 +2181,64 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
            WHERE cucocodi = inuCuenCobr
              AND cucofeve > sysdate;
 
+        cursor cuValorDigitado is
+        SELECT e.valor
+        FROM ldc_mantenimiento_notas_enc e
+        WHERE e.producto = inuProducto
+        AND e.cuenta_cobro = inuCuenCobr
+        AND e.sesion = gnuSesion;
+        
+        cursor cuSaldoCuenCobr is
+        SELECT nvl(cc.cucosacu, 0)
+        FROM cuencobr cc
+        WHERE cc.cucocodi = inuCuenCobr;
+
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
-        ut_trace.trace('gnuSesion ' || gnuSesion );
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuCuenCobr    <= '||inuCuenCobr, csbNivelTraza);
+        
+        pkg_traza.trace('gnuSesion ' || gnuSesion, csbNivelTraza);
+        
+        if cuValorDigitado%isopen then
+            close cuValorDigitado;
+        end if;
+        
+        if cuSaldoCuenCobr%isopen then
+            close cuSaldoCuenCobr;
+        end if;
+        
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCuenCobr IS NULL THEN
             osbError := 'Falta indicar el numero de cuenta de cobro a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
         --se guarda el valor que se digito
-        SELECT e.valor
-        INTO nuValorDigitado
-        FROM ldc_mantenimiento_notas_enc e
-        WHERE e.producto = inuProducto
-              AND e.cuenta_cobro = inuCuenCobr
-              AND e.sesion = gnuSesion;
+        open cuValorDigitado;
+        fetch cuValorDigitado into nuValorDigitado;
+        if cuValorDigitado%notfound then
+            close cuValorDigitado;
+            osbError := 'No fue posible determinar el valor digitado para el ajuste';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        end if;
+        close cuValorDigitado;
 
         -- Obtener el saldo total de la cuenta de cobro
-        BEGIN
-            SELECT nvl(cc.cucosacu, 0)
-            INTO nuSaldoCuenCobr
-            FROM cuencobr cc
-            WHERE cc.cucocodi = inuCuenCobr;
-        EXCEPTION
-            WHEN no_data_found THEN
-                osbError := 'La cuenta de cobro ' || inuCuenCobr ||
-                            ' no esta asociada al producto ' || inuProducto;
-                RAISE exError;
-            WHEN OTHERS THEN
-                Pkg_Error.setError;
-                pkg_error.geterror(onuError, osberror);
-                osbError := 'No fue posible obtener el saldo de la cuenta de cobro ' ||
-                            inuCuenCobr || ' - ' || osberror;
-                RAISE exError;  
-           
-        END;
-
-        IF nuValorDigitado > nuSaldoCuenCobr THEN
+        open cuSaldoCuenCobr;
+        fetch cuSaldoCuenCobr into nuSaldoCuenCobr;
+        if cuSaldoCuenCobr%notfound then
+            close cuSaldoCuenCobr;
+            osbError := 'No fue posible obtener el saldo de la cuenta de cobro ' || inuCuenCobr;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        end if;
+        close cuSaldoCuenCobr;
             
+        IF nuValorDigitado > nuSaldoCuenCobr THEN            
             swMayor          := 1;
         END IF;
 
@@ -2117,7 +2261,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                    osbError => osbError);
 
                 IF osbError IS NOT NULL THEN
-                    RAISE exError;
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
                 END IF;
 
                 --Mod.15.12.2018 Se verifica el vencimiento de la cuenta de cobro para indicar actual y vencido
@@ -2144,7 +2288,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                                     osbError => osbError);
 
                         IF osbError IS NOT NULL THEN
-                            RAISE exError;
+                            pkg_error.setErrorMessage( isbMsgErrr => osbError);
                         END IF;
                     ELSIF nuSaldoConcepto > 0 THEN --mod.15.12.2018 Isempre y cuando el concepto tenga deuda
                         --mod.15.12.2018 realizamos el prorrateo para el concepto
@@ -2166,7 +2310,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                                     osbError => osbError);
 
                         IF osbError IS NOT NULL THEN
-                            RAISE exError;
+                            pkg_error.setErrorMessage( isbMsgErrr => osbError);
                         END IF;
                     END IF;
                 END IF;    
@@ -2174,14 +2318,14 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                 nuValorsubsidioCovid := 0;
                 nuValorCovid :=0;
                 IF rgConceptosCC.Cargconc = cnuConcConsumo THEN
-                    ut_trace.trace('acredita concepto entro por concepto 31 ');
+                    pkg_traza.trace('acredita concepto entro por concepto 31',csbNivelTraza);
                     --- subsidio cnuConcSubsidio
                     proDeudaConceptoCC(inuCuenCobr => inuCuenCobr,
                                        inuConcepto => cnuConcSubsidio,
                                        onuSaldoConcepto => nuValorsubsidio,
                                        osbError => osbError);
                     IF osbError IS NOT NULL THEN
-                        RAISE exError;
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
                     END IF;
                     ---  subsidio cnuConcSubCovid
                     proDeudaConceptoCC(inuCuenCobr => inuCuenCobr,
@@ -2189,7 +2333,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                        onuSaldoConcepto => nuValorsubsidioCovid,
                                        osbError => osbError);
                     IF osbError IS NOT NULL THEN
-                        RAISE exError;
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
                     END IF;
                     ---  consumo cnuConcCovid
                     proDeudaConceptoCC(inuCuenCobr => inuCuenCobr,
@@ -2197,7 +2341,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                        onuSaldoConcepto => nuValorCovid,
                                        osbError => osbError);
                     IF osbError IS NOT NULL THEN
-                        RAISE exError;
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
                     END IF;
                     --Mod.15.12.2018 Se verifica el vencimiento de la cuenta de cobro para indicar actual y vencido
                     --  se modifica el valor para el subsidio de covid y consumo covid
@@ -2221,8 +2365,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                 END IF;
 
                 IF nuValorSubsidio <> 0 THEN
-                    ut_trace.trace('acredita concepto va a insertar valor del subsidio ' ||
-                                   nuValorSubsidio);
+                    pkg_traza.trace('acredita concepto va a insertar valor del subsidio '||nuValorSubsidio,csbNivelTraza);
                     proInsMantenimientoNotaProy(inuProducto => inuProducto, --
                                                 isbSignoCorriente => csbDebito, --
                                                 inuValorCorriente => nuValorActual * -1, --
@@ -2236,8 +2379,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                 
                  
                 IF nuValorsubsidioCovid <> 0 THEN
-                    ut_trace.trace('acredita concepto va a insertar valor del subsidio  covid' ||
-                                   nuValorsubsidioCovid);
+                    pkg_traza.trace('acredita concepto va a insertar valor del subsidio  covid '||nuValorsubsidioCovid,csbNivelTraza);
                     IF nvl(nuValorsubsidioCovid,0) < 0 THEN
                     
                         proInsMantenimientoNotaProy(inuProducto => inuProducto, --
@@ -2263,8 +2405,9 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                 END IF;
                 
                 IF nuValorCovid <> 0 THEN
-                    ut_trace.trace('acredita concepto va a insertar valor del consumo  covid' ||
-                                   nuValorCovid);
+                
+                    pkg_traza.trace('acredita concepto va a insertar valor del consumo  covid' ||nuValorCovid,csbNivelTraza);
+                    
                     IF nvl(nuValorCovid,0) < 0 THEN                
                         proInsMantenimientoNotaProy(inuProducto => inuProducto, --
                                                 isbSignoCorriente => csbDebito, --
@@ -2291,21 +2434,24 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                 
             END LOOP;
         ELSE
-            ut_trace.trace('La cuenta de cobro ' || inuCuenCobr ||
-                           ' no se puede acreditar ya que no tiene saldo');
+            pkg_traza.trace('La cuenta de cobro '||inuCuenCobr||' no se puede acreditar ya que no tiene saldo',csbNivelTraza);
         END IF;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END;
 
     PROCEDURE proProyDebitarConcepto
@@ -2323,21 +2469,19 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Descripcion:        Esta opcion se utilizara cuando se requiera aumentar la deuda de un
                             concepto para el producto seleccionado.
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         19-12-2018   Ronald Colpas          Se modifica para que se proyecte el concepto IVA
 
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proProyDebitarConcepto';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        exError EXCEPTION; -- Error controlado
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proProyDebitarConcepto';
         nuValorSubsidio NUMBER; --valor del subsidio
         nuValorIva      NUMBER; --valor de Iva
         nuConcIva       NUMBER := 0; --concept Iva
@@ -2348,7 +2492,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuMetodo        NUMBER; --Metodo de calculo
         nuValorsubsidioCovid NUMBER;
         nuValorCovid    NUMBER;
-        onuError             NUMBER;  
+        
         --caso 200-1650 Consulta el concepto IVA del base
         CURSOR cuConcIva is
           SELECT c.coblconc
@@ -2367,16 +2511,21 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
              and p.pldifefi >= sysdate;
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('inuValor       <= '||inuValor, csbNivelTraza);
+        pkg_traza.trace('inuPlan        <= '||inuPlan, csbNivelTraza);
+        
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le debitara el valor';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuConcepto IS NULL THEN
             osbError := 'Falta indicar el concepto al que se le debitara el valor';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         ELSE
             proValidaConceptoYaFacurado(inuProducto => inuProducto, inuConcepto => inuConcepto, osbError => osbError);
             IF osbError IS NOT NULL THEN
@@ -2386,26 +2535,26 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         IF inuValor IS NULL THEN
             osbError := 'Falta indicar el valor a debitar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         --Validamos si el concepto se carga a diferido para validar vigencia del plan de financiacion
         IF nvl(inuPlan, -1) != -1 THEN
 
-          OPEN cuPlandife;
-          FETCH cuPlandife INTO nuMetodo;
-          IF cuPlandife%NOTFOUND THEN
-            CLOSE cuPlandife;
-            osbError := 'Plan definanciacion seleccionado no esta vigente.';
-            RAISE exError;
-          ELSE
-            CLOSE cuPlandife;
-          END IF;
+            OPEN cuPlandife;
+            FETCH cuPlandife INTO nuMetodo;
+            IF cuPlandife%notfound THEN
+                CLOSE cuPlandife;
+                osbError := 'Plan definanciacion seleccionado no esta vigente.';
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+            ELSE
+                CLOSE cuPlandife;
+            END IF;
 
-          IF nuMetodo is null THEN
-            osbError := 'Plan de financiacion: '||inuPlan||', no tiene metodo de calculo configurado';
-            RAISE exError;
-          END IF;
+            IF nuMetodo is null THEN
+                osbError := 'Plan de financiacion: '||inuPlan||', no tiene metodo de calculo configurado';
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+            END IF;
 
         END IF;
         -- Debitar el concepto
@@ -2420,8 +2569,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                     osbError => osbError);
 
         IF osbError IS NOT NULL THEN
-
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         --Se valida si el IVA del concepto base
@@ -2429,10 +2577,10 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         FETCH cuConcIva INTO nuConcIva;
         IF cuConcIva%FOUND THEN
           CLOSE cuConcIva;
-          nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => pktblservsusc.fnugetservice(inuProducto));
+          nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(inuProducto));
           nuValorIva := round(inuValor * (nuPorIva / 100), 0);
 
-          ut_trace.trace('Proyectar concepto IVA: ' || nuConcIva || ', valor: ' || nuValorIva);
+          pkg_traza.trace('Proyectar concepto IVA: '||nuConcIva||', valor: '||nuValorIva,csbNivelTraza);
 
           proInsMantenimientoNotaProy(inuProducto => inuProducto, --
                                     isbSignoCorriente => NULL, --
@@ -2443,23 +2591,26 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                     inuValorDiferido => nuValorIva, --
                                     isbSignoDiferido => NULL, 
                                     osbError => osbError);
-
         ELSE
           CLOSE cuConcIva;
         END IF;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proProyDebitarConcepto;
 
     PROCEDURE proProyDebitarConceptoPM
     (
@@ -2472,7 +2623,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete: proProyDebitarConcepto para traer a presente mes
+        Nombre del Paquete: proProyDebitarConceptoPM para traer a presente mes
         Descripcion:        Esta opcion se utilizara cuando se requiera aumentar la deuda de un
                             concepto para el producto seleccionado y no diferirla.
 
@@ -2481,17 +2632,15 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         19-12-2018   Ronald Colpas          Se modifica para que proyecte la deuda a cargar a PM.
                                             para que consulte el concepto IVA que tenga asociado.
 
-        15-09-2017   Luis Fren G           Creacion
+        15-09-2017   Luis Fren G           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proProyDebitarConceptoPM';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        exError EXCEPTION; -- Error controlado
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proProyDebitarConceptoPM';
         nuValorSubsidio NUMBER; --valor del subsidio
         nuValorIva      NUMBER; --valor de Iva
         nuConcIva       NUMBER := 0; --concept Iva
@@ -2503,7 +2652,6 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         RCPERIFACT      PERIFACT%ROWTYPE;
         nuValorsubsidioCovid NUMBER;
         nuValorCovid     NUMBER;
-        onuError             NUMBER;  
         --caso 200-1650 Consulta el concepto IVA del base
         CURSOR cuConcIva is
           SELECT c.coblconc
@@ -2516,17 +2664,21 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                      AND t.concticl = cnuTipoconcliq);
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('inuValor       <= '||inuValor, csbNivelTraza);
+        pkg_traza.trace('isbpresente    <= '||isbpresente, csbNivelTraza);
 
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le debitara el valor';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuConcepto IS NULL THEN
             osbError := 'Falta indicar el concepto al que se le debitara el valor';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         ELSE
             proValidaConceptoYaFacurado(inuProducto => inuProducto, inuConcepto => inuConcepto, osbError => osbError);
             IF osbError IS NOT NULL THEN
@@ -2536,7 +2688,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         IF inuValor IS NULL THEN
             osbError := 'Falta indicar el valor a debitar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         -- Debitar el concepto
@@ -2551,7 +2703,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                     osbError => osbError);
 
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         --Se valida si el IVA del concepto base
@@ -2559,10 +2711,10 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         FETCH cuConcIva INTO nuConcIva;
         IF cuConcIva%FOUND THEN
           CLOSE cuConcIva;
-          nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => pktblservsusc.fnugetservice(inuProducto));
+          nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(inuProducto));
           nuValorIva := round(inuValor * (nuPorIva / 100), 0);
 
-          ut_trace.trace('Proyectar concepto IVA: ' || nuConcIva || ', valor: ' || nuValorIva);
+          pkg_traza.trace('Proyectar concepto IVA: '||nuConcIva||', valor: '||nuValorIva,csbNivelTraza);
 
           proInsMantenimientoNotaProy(inuProducto => inuProducto, --
                                     isbSignoCorriente => NULL, --
@@ -2577,18 +2729,23 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         ELSE
           CLOSE cuConcIva;
         END IF;
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proProyDebitarConceptoPM;
 
     PROCEDURE proProyDebitarCuentaCobro
     (
@@ -2612,13 +2769,12 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        21-05-2019   Ronald Colpas C.       Creacion
+        21-05-2019   Ronald Colpas C.       Creación
         ******************************************************************/
 
-        sbProceso        VARCHAR2(4000) := 'proProyDebitarCuentaCobro';
-        nuPaso           NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo        VARCHAR2(4000) := csbPaquete||'proProyDebitarCuentaCobro';
         nuSaldoConcepto  cargos.cargvalo%TYPE; -- Saldo del concepto
         nuSaldoCuenCobr  cuencobr.cucosacu%TYPE; -- Saldo de la cuenta de cobro
         nuValorDigitado  NUMBER; --valor digitado en la pantalla
@@ -2628,8 +2784,8 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuValorActual    NUMBER; --valor actual
         nuValorVencid    NUMBER; --valor vencido
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        
+        
         CURSOR cuConceptosCC IS
             SELECT DISTINCT cargconc
             FROM cargos c
@@ -2649,51 +2805,66 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
            WHERE cargcuco = inuCuenCobr
              AND cargprog = 5;
 
+        cursor cuValorDigitado is
+        SELECT e.valor
+        FROM ldc_mantenimiento_notas_enc e
+        WHERE e.producto = inuProducto
+        AND e.cuenta_cobro = inuCuenCobr
+        AND e.sesion = gnuSesion;
+        
+        cursor cuSaldoCuenCobr is
+        SELECT nvl(cc.cucosacu, 0)
+        FROM cuencobr cc
+        WHERE cc.cucocodi = inuCuenCobr;
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuCuenCobr    <= '||inuCuenCobr, csbNivelTraza);
+        
+        if cuValorDigitado%isopen then
+            close cuValorDigitado;
+        end if;
+        
+        if cuSaldoCuenCobr%isopen then
+            close cuSaldoCuenCobr;
+        end if;
 
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCuenCobr IS NULL THEN
             osbError := 'Falta indicar el numero de cuenta de cobro a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
         --se guarda el valor que se digito
-        SELECT e.valor
-        INTO nuValorDigitado
-        FROM ldc_mantenimiento_notas_enc e
-        WHERE e.producto = inuProducto
-              AND e.cuenta_cobro = inuCuenCobr
-              AND e.sesion = gnuSesion;
+        open cuValorDigitado;
+        fetch cuValorDigitado into nuValorDigitado;
+        if cuValorDigitado%notfound then
+            close cuValorDigitado;
+            osbError := 'No fue posible determinar el valor digitado para el ajuste';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        end if;
+        close cuValorDigitado;
+        
 
         -- Obtener el saldo total de la cuenta de cobro
-        BEGIN
-            SELECT nvl(cc.cucosacu, 0)
-            INTO nuSaldoCuenCobr
-            FROM cuencobr cc
-            WHERE cc.cucocodi = inuCuenCobr;
-        EXCEPTION
-            WHEN no_data_found THEN
-                osbError := 'La cuenta de cobro ' || inuCuenCobr ||
-                            ' no esta asociada al producto ' || inuProducto;
-                RAISE exError;
-            WHEN OTHERS THEN
-                Pkg_Error.setError;
-                pkg_error.geterror(onuError, osberror);
-                osbError := 'No fue posible obtener el saldo de la cuenta de cobro ' ||
-                            inuCuenCobr || ' - ' || osberror;
-                RAISE exError;
-        END;
+        open cuSaldoCuenCobr;
+        fetch cuSaldoCuenCobr into nuSaldoCuenCobr;
+        if cuSaldoCuenCobr%notfound then
+            close cuSaldoCuenCobr;
+            osbError := 'No fue posible obtener el saldo de la cuenta de cobro '||inuCuenCobr;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        end if;
+        close cuSaldoCuenCobr;
+
 
         IF nuSaldoCuenCobr > 0 THEN
-          osbError := 'La cuenta de cobro ' || inuCuenCobr ||
-                      ' a la que se quiere aplicar novedad debitar por cuenta de cobro esta con saldo pendiente ';
-          RAISE exError;
+            osbError := 'La cuenta de cobro ' || inuCuenCobr ||' a la que se quiere aplicar novedad debitar por cuenta de cobro esta con saldo pendiente';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         --actual o vencida
@@ -2704,52 +2875,53 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         swExist := 0;
         -- Crear un cargo CR por el saldo de cada concepto de la cuenta de cobro
         FOR rgConceptosCC IN cuCargFGCA LOOP
-          swExist := 1;
-          --Se verifica el vencimiento de la cuenta de cobro para indicar actual y vencido
-          IF nuVenc = 0 THEN
-            nuValorActual := 0;
-            nuValorVencid := rgConceptosCC.Cargvalo;
-          ELSE
-             nuValorActual := rgConceptosCC.Cargvalo;
-             nuValorVencid := 0;
-          END IF;
-
-          proInsMantenimientoNotaProy(inuProducto => inuProducto, --
-                                      isbSignoCorriente => rgConceptosCC.Cargsign, --
-                                      inuValorCorriente => nuValorActual, --nuSaldoConcepto
-                                      inuValorVencido => nuValorVencid, --
-                                      inuConcepto => rgConceptosCC.Cargconc, --
-                                      isbOrigen => 'P', --
-                                      inuValorDiferido => 0, --
-                                      isbSignoDiferido => 0, --
-                                      osbError => osbError);
-
-          IF osbError IS NOT NULL THEN
-              RAISE exError;
-          END IF;
-          ut_trace.trace('Nota Debito concepto ' || rgConceptosCC.Cargconc);
+            swExist := 1;
+            --Se verifica el vencimiento de la cuenta de cobro para indicar actual y vencido
+            IF nuVenc = 0 THEN
+                nuValorActual := 0;
+                nuValorVencid := rgConceptosCC.Cargvalo;
+            ELSE
+                nuValorActual := rgConceptosCC.Cargvalo;
+                nuValorVencid := 0;
+            END IF;
+    
+            proInsMantenimientoNotaProy(inuProducto => inuProducto, --
+                                        isbSignoCorriente => rgConceptosCC.Cargsign, --
+                                        inuValorCorriente => nuValorActual, --nuSaldoConcepto
+                                        inuValorVencido => nuValorVencid, --
+                                        inuConcepto => rgConceptosCC.Cargconc, --
+                                        isbOrigen => 'P', --
+                                        inuValorDiferido => 0, --
+                                        isbSignoDiferido => 0, --
+                                        osbError => osbError);
+    
+            IF osbError IS NOT NULL THEN
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+            END IF;
+            
+            pkg_traza.trace('Nota Debito concepto ' || rgConceptosCC.Cargconc,csbNivelTraza);
+          
         END LOOP;
         IF swExist = 0 THEN
-            osbError := 'La cuenta de cobro ' || inuCuenCobr ||
-                           ' a la que se quiere aplicar novedad '||
-                           'debitar por cuenta de cobro no tiene cargos generados por FGCA';
-            ut_trace.trace(osbError);
-            RAISE exError;
+            osbError := 'La cuenta de cobro ' || inuCuenCobr ||' a la que se quiere aplicar novedad debitar por cuenta de cobro no tiene cargos generados por FGCA';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-            
-            
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END;
 
     PROCEDURE proProyDebitarConceptoYCC
@@ -2773,13 +2945,12 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        20-05-2019   Ronald colpas          Creacion
+        20-05-2019   Ronald colpas          Creación
         ******************************************************************/
 
-        sbProceso       VARCHAR2(4000) := 'proProyDebitarConceptoYCC';
-        nuPaso          NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo       VARCHAR2(4000) := csbPaquete||'proProyDebitarConceptoYCC';
         nuValorIva      NUMBER; --valor de Iva
         nuConcIva       NUMBER := 0; --concept Iva
 
@@ -2792,8 +2963,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuValorActIVA     NUMBER; -- Deuda actual del concepto IVA
         nuValorVenIVA     NUMBER; -- Deuda actual del concepto IVA
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+       
 
         --caso 200-1650 Valida si la cuenta de cobro es a la fecha o vencida
         CURSOR cuVencta is
@@ -2814,27 +2984,31 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                      AND t.concticl = cnuTipoconcliq);
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('inuValor       <= '||inuValor, csbNivelTraza);
+        pkg_traza.trace('inuCuenCobr    <= '||inuCuenCobr, csbNivelTraza);
 
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le debitar la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuConcepto IS NULL THEN
             osbError := 'Falta indicar el concepto al que se va a debitar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuValor IS NULL THEN
             osbError := 'Falta ingresar el valor a debitar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCuenCobr IS NULL THEN
             osbError := 'Falta la cuenta de cobro en la que se debitara el concepto';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         --Validamos el vencimiento de la cuenta de cobro para indicar si es
@@ -2861,7 +3035,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                     isbSignoDiferido => 0, --
                                     osbError => osbError);
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         --validamos si el concepto base tiene Iva para calcularlo
@@ -2870,20 +3044,20 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         IF cuConcIva%FOUND THEN
           --Se proyecta el valor calculado del IVA
           --Realiza calculo para el valor del IVA
-          nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => pktblservsusc.fnugetservice(inuProducto));
-          nuValorIva := round(inuValor * (nuPorIva / 100), 0);
+            nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(inuProducto));
+            nuValorIva := round(inuValor * (nuPorIva / 100), 0);
 
-          ut_trace.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: ' ||
-                          nuValorIva ||' porcentaje IVA: '|| nuPorIva);
-          IF nuValorIva != 0 THEN
-            IF nuValorActual <> 0 then
-              nuValorActIVA := nuValorIva;
-              nuValorVenIVA := 0;
-            ELSE
-              nuValorActIVA := 0;
-              nuValorVenIVA := nuValorIva;
-            END IF;
-            proInsMantenimientoNotaProy(inuProducto => inuProducto, --
+            pkg_traza.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: '||nuValorIva||' porcentaje IVA: '||nuPorIva,csbNivelTraza);
+          
+            IF nuValorIva != 0 THEN
+                IF nuValorActual <> 0 then
+                    nuValorActIVA := nuValorIva;
+                    nuValorVenIVA := 0;
+                ELSE
+                    nuValorActIVA := 0;
+                    nuValorVenIVA := nuValorIva;
+                END IF;
+                proInsMantenimientoNotaProy(inuProducto => inuProducto, --
                                         isbSignoCorriente => csbDebito, --
                                         inuValorCorriente => nuValorActIVA, --
                                         inuValorVencido => nuValorVenIVA, --
@@ -2893,25 +3067,29 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                         isbSignoDiferido => 0, --
                                         osbError => osbError);
 
-            IF osbError IS NOT NULL THEN
-               RAISE exError;
+                IF osbError IS NOT NULL THEN
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                END IF;
             END IF;
-          END IF;
         END IF;
         CLOSE cuConcIva;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proProyDebitarConceptoYCC;
 
     PROCEDURE proDetAcreditarDeuda
     (
@@ -2925,50 +3103,71 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proDetAcreditarDeuda
         Descripcion:        Prepara el registro para crear el cargo para la aprobacio'n
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
+        15-04-2016   Sandra Muñoz           Creación
         10-08-2023   diana.montes           OSF-1343: Se incluye el manejo de subsidio 167 y 
                                             130 consumo
-        15-04-2016   Sandra Mu?oz           Creacion
+        25-09-2024   jcatuche               OSF-3332: Se ajusta cursor cuConceptosCC, añadiendo validación para conceptos base e impuesto,
+                                            ahora solo se gestionan conceptos base y a aquellos con configuración de impuesto se les calcula el impuesto
+                                            Se agrega parámetro de entrada valor_base al llamado proInsMantenimientoNotaDet del impuesto
         ******************************************************************/
 
-        sbProceso        VARCHAR2(4000) := 'proDetAcreditarDeuda';
-        nuPaso           NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        nuSaldoConcepto  cargos.cargvalo%TYPE; -- Saldo del concepto
-        nuValorsubsidio  NUMBER(8);
-        nuValorsubsidioC NUMBER(8);
-        nuValorsubsidioCovid NUMBER(8);
-        nuValorCovid     NUMBER(8);
-        nuValorsubsidioCv NUMBER(8);
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        csbMetodo               VARCHAR2(4000) := csbPaquete||'proDetAcreditarDeuda';
+        nuSaldoConcepto         cargos.cargvalo%TYPE; -- Saldo del concepto
+        nuValorsubsidio         NUMBER(8);
+        nuValorsubsidioCovid    NUMBER(8);
+        nuValorCovid            NUMBER(8);
+        nuPorIva                NUMBER;
+        nuValorBase             NUMBER;
+        nuServ                  NUMBER;
+        nuValorIva              NUMBER;
         
         CURSOR cuConceptosCC(inuCuenCobr cuencobr.cucocodi%TYPE) IS
-            SELECT DISTINCT c.cargconc concepto
+        with base as
+        (
+            SELECT DISTINCT cargconc,
+            (
+                select case when concticl = cnuTipoconcliq then 'N' else 'S' end
+                from concepto 
+                where conccodi = cargconc
+            ) esbase,
+            (
+                select coblconc from concbali,concepto a
+                where coblcoba = cargconc
+                and a.conccodi = coblconc
+                and a.concticl = cnuTipoconcliq
+            ) impuesto
             FROM cargos c
-            WHERE c.cargcuco = inuCuenCobr;
+            WHERE c.cargcuco = inuCuenCobr
+        )
+        select * from base
+        where esbase = 'S';
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuCausaCargo  <= '||inuCausaCargo, csbNivelTraza);
 
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCausaCargo IS NULL THEN
             osbError := 'Falta indicar la causa cargo';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
+        nuServ := pkg_bcproducto.fnuTipoProducto(inuProducto);
+        
         -- Recorrer las cuentas de cuentas de cobro con saldo del producto
-
         FOR rgCuentasConSaldo IN cuCuentasConSaldo(inuProducto => inuProducto)
         LOOP
 
@@ -2977,40 +3176,66 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             LOOP
 
                 -- Calcular saldo del concepto en la cuenta de cobro
-                proDeudaConceptoCC(inuCuenCobr => rgCuentasConSaldo.cuenta_cobro, inuConcepto => rgConceptosCC.concepto, onuSaldoConcepto => nuSaldoConcepto, osbError => osbError);
+                proDeudaConceptoCC(inuCuenCobr => rgCuentasConSaldo.cuenta_cobro, inuConcepto => rgConceptosCC.cargconc, onuSaldoConcepto => nuSaldoConcepto, osbError => osbError);
 
                 IF osbError IS NOT NULL THEN
-                    RAISE exError;
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
                 END IF;
                 --  SE ADICIONA IF 
-                IF rgConceptosCC.CONCEPTO not in (cnuConcSubsidio,cnuConcSubCovid,cnuConcCovid)
+                IF rgConceptosCC.cargconc not in (cnuConcSubsidio,cnuConcSubCovid,cnuConcCovid)
                 THEN
                     -- Si el concepto tiene deuda, se crea el registro CR por ese valor
                     IF nvl(nuSaldoConcepto, 0) > 0 THEN
-
+                        
                         -- Crear registro CR
-                        proInsMantenimientoNotaDet(inuCuenta_cobro => rgCuentasConSaldo.cuenta_cobro, inuProducto => inuProducto, inuConcepto => rgConceptosCC.concepto, inuSigno => csbCredito, inuValor => nuSaldoConcepto, inuCausa_cargo => inuCausaCargo, osbError => osbError);
+                        proInsMantenimientoNotaDet(inuCuenta_cobro => rgCuentasConSaldo.cuenta_cobro, inuProducto => inuProducto, inuConcepto => rgConceptosCC.cargconc, inuSigno => csbCredito, inuValor => nuSaldoConcepto, inuCausa_cargo => inuCausaCargo, osbError => osbError);
 
                         IF osbError IS NOT NULL THEN
-                            RAISE exError;
+                            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                        END IF;
+                        
+                        --Gestión de impuestos
+                        IF rgConceptosCC.impuesto is not null then
+                        
+                            nuPorIva := 0;
+                            nuPorIva   := fnutraePIva(inuconcepto => rgConceptosCC.impuesto, inuserv => nuServ);
+                    
+                            IF nuPorIva <= 0 then
+                                osbError := 'El concepto de impuesto '||rgConceptosCC.impuesto||' en la cuenta '||rgCuentasConSaldo.cuenta_cobro||' no tiene % válido ['||nuPorIva||']';
+                                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                            END IF;
+                            
+                            nuValorBase := nuSaldoConcepto;
+                            nuValorIva := round(nuValorBase * (nuPorIva / 100), 0);
+                            
+                            proInsMantenimientoNotaDet(inuCuenta_cobro => rgCuentasConSaldo.cuenta_cobro, --
+                                             inuProducto => inuProducto, --
+                                             inuConcepto => rgConceptosCC.impuesto, --
+                                             inuSigno => csbCredito, --
+                                             inuValor => nuValorIva, --
+                                             inuCausa_cargo => inuCausaCargo, --
+                                             inuValor_Base => nuValorBase,
+                                             osbError => osbError);
+                                             
+                            IF osbError IS NOT NULL THEN
+                                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                            END IF;
                         END IF;
                     END IF;
                 END IF;    
                 ---------------------------------------------------------------------------------------------------
                 --lmfg
-                IF rgConceptosCC.concepto = cnuConcConsumo THEN
+                IF rgConceptosCC.cargconc = cnuConcConsumo THEN
                     proDeudaConceptoCC(inuCuenCobr => rgCuentasConSaldo.Cuenta_Cobro, inuConcepto => cnuConcSubsidio, onuSaldoConcepto => nuValorsubsidio, osbError => osbError);
                     IF nuValorsubsidio <> 0 THEN
-                        ut_trace.trace('Va a insertar el subsidio acreditar deuda ' ||
-                                       nuValorsubsidio);
+                        pkg_traza.trace('Va a insertar el subsidio acreditar deuda '||nuValorsubsidio,csbNivelTraza);
                         proInsMantenimientoNotaDet(inuCuenta_cobro => rgCuentasConSaldo.cuenta_cobro, inuProducto => inuProducto, inuConcepto => cnuConcSubsidio, inuSigno => csbDebito, inuValor => -1 *
                                                                 nuValorsubsidio, inuCausa_cargo => inuCausaCargo, osbError => osbError);
                     END IF;
                     
                     proDeudaConceptoCC(inuCuenCobr => rgCuentasConSaldo.Cuenta_Cobro, inuConcepto => cnuConcSubCovid, onuSaldoConcepto => nuValorsubsidioCovid, osbError => osbError);
                     IF nuValorsubsidioCovid <> 0 THEN
-                        ut_trace.trace('Va a insertar el subsidio COVID acreditar deuda ' ||
-                                       nuValorsubsidioCovid);
+                        pkg_traza.trace('Va a insertar el subsidio COVID acreditar deuda '||nuValorsubsidioCovid,csbNivelTraza);
                         --  NUEVA CONDICION
                         
                         IF  nvl(nuValorsubsidioCovid, 0) < 0 THEN             
@@ -3024,8 +3249,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                     --  concepto 130
                     proDeudaConceptoCC(inuCuenCobr => rgCuentasConSaldo.Cuenta_Cobro, inuConcepto => cnuConcCovid, onuSaldoConcepto => nuValorCovid, osbError => osbError);
                     IF nuValorCovid <> 0 THEN
-                        ut_trace.trace('Va a insertar el 130 COVID acreditar deuda ' ||
-                                       nuValorCovid);
+                        pkg_traza.trace('Va a insertar el 130 COVID acreditar deuda '||nuValorCovid,csbNivelTraza);
                         IF  nvl(nuValorCovid,0) < 0 THEN                 
                             proInsMantenimientoNotaDet(inuCuenta_cobro => rgCuentasConSaldo.cuenta_cobro, inuProducto => inuProducto, inuConcepto => cnuConcCovid, inuSigno => csbDebito, inuValor => -1 *
                                                                 nuValorCovid, inuCausa_cargo => inuCausaCargo, osbError => osbError);
@@ -3042,18 +3266,22 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         END LOOP;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proDetAcreditarDeuda;
 
     -- Refactored procedure proDeudaConcepto
 
@@ -3061,6 +3289,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
     (
         inuProducto   pr_product.product_id%TYPE, -- Producto
         inuConcepto   concepto.conccodi%TYPE, -- Concepto
+        inuValor      cargos.cargvalo%TYPE, -- Valor a acreditar
         inuCausaCargo causcarg.cacacodi%TYPE, -- Causa cargo
         osbError      OUT VARCHAR2
     ) IS
@@ -3070,19 +3299,14 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proDetAcreditarConcepto
         Descripcion:        Crea la aprobacion de conceptos para la acreditacion de conceptos
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        25-04-2019   Ronald Colpas          Caso-200-1650 Se modifica para excluir de la proyeccion los
-                                            conceptos subsidio y contribucion, el iva se calcula
-                                            con respecto al valor ingresado en el concepto.
-                                            Se modifico para que tenga encuenta cuando el valor deuda concepto
-                                            sea menor que el digitado
-
+        15-04-2016   Sandra Muñoz           Creación
         13-12-2018   Ronald Colpas          Caso-200-1650 se modifica el servicio para que detalle
                                             correctamente la novedad de acreditar por concepto.
                                             se tiene encuenta cuando el concepto tenga IVA para que se detalle.
@@ -3091,12 +3315,16 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                             a la deuda real del concepto base se calcula el IVA que
                                             tenga este de acuerdo al procenteje calculado por la
                                             funcion fnutraePIva
-
-        15-04-2016   Sandra Mu?oz           Creacion
+        25-04-2019   Ronald Colpas          Caso-200-1650 Se modifica para excluir de la proyeccion los
+                                            conceptos subsidio y contribucion, el iva se calcula
+                                            con respecto al valor ingresado en el concepto.
+                                            Se modifico para que tenga encuenta cuando el valor deuda concepto
+                                            sea menor que el digitado
+        25-09-2024   jcatuche               OSF-3332: Se agrega parámetro de entrada valor_base al llamado proInsMantenimientoNotaDet
+                                            Se añade parámetro de entrada inuValor para evitar hacer la busqueda directamente en el procedimiento
         ******************************************************************/
 
-        sbProceso         VARCHAR2(4000) := 'proDetAcreditarConcepto';
-        nuPaso            NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo         VARCHAR2(4000) := csbPaquete||'proDetAcreditarConcepto';
         nuValorAAcreditar NUMBER; -- Deuda total del concepto
         nuValorsubsidio   NUMBER(8); --valor del subsidio
         sw                NUMBER := 0; --swtch para controlar el subsidio
@@ -3114,8 +3342,6 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuPorIva          NUMBER; -- Porcentage IVA
         nuValorsubsidioCovid NUMBER(8);
         nuValorCovid      NUMBER(8);
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
         
         --mod.15.12.2018 Se modifica para agrupar por cuenta de cobro
         CURSOR cuCuentasConSaldo IS
@@ -3137,136 +3363,154 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                    WHERE t.conccodi = c.coblconc
                      AND t.concticl = cnuTipoconcliq);
 
+        
+        cursor cucuencobr is
+        SELECT MAX(cucocodi)
+        FROM cuencobr, cargos
+        WHERE cuconuse = inuProducto
+        AND cargcuco = cucocodi;
+        
+        cursor cucuencobrSal is
+        SELECT MAX(cucocodi)
+        FROM cuencobr, cargos
+        WHERE cuconuse = inuProducto
+        AND cargcuco = cucocodi
+        AND cargconc = inuConcepto
+        AND cucosacu > 0;
+
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('inuValor       <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('inuCausaCargo  <= '||inuCausaCargo, csbNivelTraza);
+        
+        
+        if cucuencobr%isopen then
+            close cucuencobr;
+        end if;
+        
+        if cucuencobrSal%isopen then
+            close cucuencobrSal;
+        end if;
 
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuConcepto IS NULL THEN
             osbError := 'Falta indicar el concepto al que se va a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         ELSE
             proValidaConceptoYaFacurado(inuProducto => inuProducto, inuConcepto => inuConcepto, osbError => osbError);
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
         END IF;
 
         IF inuCausaCargo IS NULL THEN
             osbError := 'Falta indicar la causa cargo';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
-        -- Obtener los parametros de sistemas
-        --MET_CALC_MANTENIMIENTO_NOTAS
-        --si el valor es cero entonces se saca del valor digitado
-        SELECT e.valor
-        INTO nuvalorDigitado
-        FROM ldc_mantenimiento_notas_enc e
-        WHERE e.producto = inuProducto
-              AND e.concepto = inuConcepto
-              AND e.sesion = gnuSesion;
+        if nvl(inuValor,0) <= 0 then
+            osbError := 'El valor a acreditar debe ser mayor a cero';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        end if;
+        
+        nuValorDigitado := inuValor;
 
         -- Recorrer todas las cuentas de cobro con saldo y donde este presente el concepto a acreditar
         FOR rgCuentasConSaldo IN cuCuentasConSaldo LOOP
-          nucantcc := 1;
-          -- Identificar la deuda del concepto en la cuenta de cobro
-          proDeudaConceptoCC(inuCuenCobr => rgCuentasConSaldo.Cuenta_Cobro, --
-                             inuConcepto => inuConcepto, --
-                             onuSaldoConcepto => nuValorAAcreditar, --
-                             osbError => osbError);
-
-          IF osbError IS NOT NULL THEN
-            RAISE exError;
-          END IF;
-          --Acumulamos el valor acreditado
-          nuTotalAcreditar := nuTotalAcreditar + nuValorAAcreditar;
-
-          --mod.25.04 valida si el valor digitado es menor que el que se este acreditando
-          --y se salga del recorrido de las cuentas
-          IF nuTotalAcreditar > nuvalorDigitado THEN
-            nuValorAAcreditar :=nuValorAAcreditar-( nuTotalAcreditar - nuvalorDigitado);
-          END IF;
-
-          proInsMantenimientoNotaDet(inuCuenta_cobro => rgCuentasConSaldo.cuenta_cobro, --
-                                     inuProducto => inuProducto, --
-                                     inuConcepto => inuConcepto, --
-                                     inuSigno => csbCredito, --
-                                     inuValor => nuValorAAcreditar, --
-                                     inuCausa_cargo => inuCausaCargo, --
-                                     osbError => osbError);
-
-          IF osbError IS NOT NULL THEN
-            RAISE exError;
-          END IF;
-
-          --mod.25.04.2019 validamos si el concepto base tiene Iva para calcularlo
-          OPEN cuConcIva;
-          FETCH cuConcIva INTO nuConcIva;
-          IF cuConcIva%FOUND THEN
-            --Se proyecta el valor calculado del IVA
-            --Realiza calculo para el valor del IVA
-            nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => pktblservsusc.fnugetservice(inuProducto));
-            nuValorIva := round(nuValorAAcreditar * (nuPorIva / 100), 0);
-
-            ut_trace.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: ' ||
-                            nuValorIva ||' porcentaje IVA: '|| nuPorIva);
-
-            IF nuValorIva != 0 THEN
-              proInsMantenimientoNotaDet(inuCuenta_cobro => rgCuentasConSaldo.cuenta_cobro, --
-                                         inuProducto => inuProducto, --
-                                         inuConcepto => nuConcIva, --
-                                         inuSigno => csbCredito, --
-                                         inuValor => nuValorIva, --
-                                         inuCausa_cargo => inuCausaCargo, --
-                                         osbError => osbError);
-              IF osbError IS NOT NULL THEN
-                RAISE exError;
-              END IF;
-
+            nucantcc := 1;
+            -- Identificar la deuda del concepto en la cuenta de cobro
+            proDeudaConceptoCC(inuCuenCobr => rgCuentasConSaldo.Cuenta_Cobro, --
+                                inuConcepto => inuConcepto, --
+                                onuSaldoConcepto => nuValorAAcreditar, --
+                                osbError => osbError);
+    
+            IF osbError IS NOT NULL THEN
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
-          END IF;
-          close cuConcIva;
+            --Acumulamos el valor acreditado
+            nuTotalAcreditar := nuTotalAcreditar + nuValorAAcreditar;
+    
+            --mod.25.04 valida si el valor digitado es menor que el que se este acreditando
+            --y se salga del recorrido de las cuentas
+            IF nuTotalAcreditar > nuvalorDigitado THEN
+                nuValorAAcreditar :=nuValorAAcreditar-( nuTotalAcreditar - nuvalorDigitado);
+            END IF;
+    
+            proInsMantenimientoNotaDet(inuCuenta_cobro => rgCuentasConSaldo.cuenta_cobro, --
+                                        inuProducto => inuProducto, --
+                                        inuConcepto => inuConcepto, --
+                                        inuSigno => csbCredito, --
+                                        inuValor => nuValorAAcreditar, --
+                                        inuCausa_cargo => inuCausaCargo, --
+                                        osbError => osbError);
+    
+            IF osbError IS NOT NULL THEN
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+            END IF;
+    
+            --mod.25.04.2019 validamos si el concepto base tiene Iva para calcularlo
+            OPEN cuConcIva;
+            FETCH cuConcIva INTO nuConcIva;
+            IF cuConcIva%FOUND THEN
+                --Se proyecta el valor calculado del IVA
+                --Realiza calculo para el valor del IVA
+                nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(inuProducto));
+                nuValorIva := round(nuValorAAcreditar * (nuPorIva / 100), 0);
+    
+                pkg_traza.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: '||nuValorIva||' porcentaje IVA: '||nuPorIva,csbNivelTraza);
+    
+                IF nuValorIva != 0 THEN
+                    proInsMantenimientoNotaDet(inuCuenta_cobro => rgCuentasConSaldo.cuenta_cobro, --
+                                            inuProducto => inuProducto, --
+                                            inuConcepto => nuConcIva, --
+                                            inuSigno => csbCredito, --
+                                            inuValor => nuValorIva, --
+                                            inuCausa_cargo => inuCausaCargo, --
+                                            inuValor_Base => nuValorAAcreditar,
+                                            osbError => osbError);
+                    IF osbError IS NOT NULL THEN
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                    END IF;
+    
+                END IF;
+            END IF;
+            close cuConcIva;
 
-          --mod.25.04.2019 termina de acreditar las cuentas por conceptos
-          IF nuTotalAcreditar >= nuvalorDigitado THEN
-            EXIT;
-          END IF;
+            --mod.25.04.2019 termina de acreditar las cuentas por conceptos
+            IF nuTotalAcreditar >= nuvalorDigitado THEN
+                EXIT;
+            END IF;
 
-          --Validamos si el concepto es consumo y si la cuenta de cobro tiene subsidio
-          
-
+            --Validamos si el concepto es consumo y si la cuenta de cobro tiene subsidio
+        
         END LOOP;
 
         nuValorRestante := nuvalorDigitado - nuTotalAcreditar;
         --Si el usuario tiene valor restante se carga como saldo afavor en la cuenta de cobro mas reciente
         IF nuValorRestante > 0 THEN
 
-          --Si el usuario no tiene cuenta de cobro pendiente se busca la mas reciente
-          --de lo contrario busca la pendiente mas reciente
-          IF nucantcc = 0 THEN
-            --se halla la maxima cuenta de cobro del producto
-            SELECT MAX(cucocodi)
-              INTO nucuencobr
-              FROM cuencobr, cargos
-             WHERE cuconuse = inuProducto
-               AND cargcuco = cucocodi;
-          ELSE
-            --se halla la maxima cuenta de cobro pendiente del concepto
-            SELECT MAX(cucocodi)
-              INTO nucuencobr
-              FROM cuencobr, cargos
-             WHERE cuconuse = inuProducto
-               AND cargcuco = cucocodi
-               AND cargconc = inuConcepto
-               AND cucosacu > 0;
-          END IF;
+            --Si el usuario no tiene cuenta de cobro pendiente se busca la mas reciente
+            --de lo contrario busca la pendiente mas reciente
+            IF nucantcc = 0 THEN
+                --se halla la maxima cuenta de cobro del producto
+                open cucuencobr;
+                fetch cucuencobr into nucuencobr;
+                close cucuencobr;
+            ELSE
+                --se halla la maxima cuenta de cobro pendiente del concepto
+                open cucuencobrSal;
+                fetch cucuencobrSal into nucuencobr;
+                close cucuencobrSal;
+            END IF;
 
-          proInsMantenimientoNotaDet(inuCuenta_cobro => nucuencobr, --
+            proInsMantenimientoNotaDet(inuCuenta_cobro => nucuencobr, --
                                      inuProducto => inuProducto, --
                                      inuConcepto => inuConcepto, --
                                      inuSigno => csbCredito, --
@@ -3274,55 +3518,57 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                      inuCausa_cargo => inuCausaCargo, --
                                      osbError => osbError);
 
-          IF osbError IS NOT NULL THEN
-            RAISE exError;
-          END IF;
+            IF osbError IS NOT NULL THEN
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+            END IF;
 
-          --IF nucantcc = 0 THEN
+            --IF nucantcc = 0 THEN
             OPEN cuConcIva;
             FETCH cuConcIva INTO nuConcIva;
             IF cuConcIva%FOUND THEN
-              --Se proyecta el valor calculado del IVA
-              --Realiza calculo para el valor del IVA
-              nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => pktblservsusc.fnugetservice(inuProducto));
-              nuValorIva := round(nuValorRestante * (nuPorIva / 100), 0);
-
-              ut_trace.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: ' ||
-                              nuValorIva ||' porcentaje IVA: '|| nuPorIva);
-
-              IF nuValorIva != 0 THEN
-                proInsMantenimientoNotaDet(inuCuenta_cobro => nucuencobr, --
+                --Se proyecta el valor calculado del IVA
+                --Realiza calculo para el valor del IVA
+                nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(inuProducto));
+                nuValorIva := round(nuValorRestante * (nuPorIva / 100), 0);
+    
+                pkg_traza.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: ' ||nuValorIva||' porcentaje IVA: '|| nuPorIva,csbNivelTraza);
+    
+                IF nuValorIva != 0 THEN
+                    proInsMantenimientoNotaDet(inuCuenta_cobro => nucuencobr, --
                                            inuProducto => inuProducto, --
                                            inuConcepto => nuConcIva, --
                                            inuSigno => csbCredito, --
                                            inuValor => nuValorIva, --
                                            inuCausa_cargo => inuCausaCargo, --
+                                           inuValor_Base => nuValorRestante,
                                            osbError => osbError);
-               IF osbError IS NOT NULL THEN
-                 RAISE exError;
-               END IF;
+                    IF osbError IS NOT NULL THEN
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                    END IF;
 
-             END IF;
+                END IF;
 
             END IF;
             close cuConcIva;
           
         END IF;
 
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
         
-
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proDetAcreditarConcepto;
 
     PROCEDURE proDetAcreditarConceptoYCC
     (
@@ -3339,33 +3585,31 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proDetAcreditarConceptoYCC
         Descripcion:        Almacena la informacion a acreditar
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        22-08-2023   Diana.Montes           OSF-1343: Se coloca la validacion inuValor < 0 para que 
-                                            no permita registrar valores negativos
-        25-04-2019   Ronald Colpas          Caso-200-1650 Se modifica para excluir de la proyeccion los
-                                            conceptos subsidio y contribucion, el iva se calcula
-                                            con respecto al valor ingresado en el concepto.
-                                            Se modifico para que tenga encuenta cuando el valor deuda concepto
-                                            sea menor que el digitado
-
+        15-04-2016   Sandra Muñoz           Creación
         16-12-2018   Ronald Colpas          Se modifica para que calcule correctamente
                                             el cargo a crear por concepto subsidio e IVA.
                                             si el valor acreditar del concepto base es difernte
                                             a la deuda real del concepto base se calcula el IVA que
                                             tenga este de acuerdo al procenteje calculado por la
                                             funcion fnutraePIva
-
-        15-04-2016   Sandra Mu?oz           Creacion
+        25-04-2019   Ronald Colpas          Caso-200-1650 Se modifica para excluir de la proyeccion los
+                                            conceptos subsidio y contribucion, el iva se calcula
+                                            con respecto al valor ingresado en el concepto.
+                                            Se modifico para que tenga encuenta cuando el valor deuda concepto
+                                            sea menor que el digitado
+        22-08-2023   Diana.Montes           OSF-1343: Se coloca la validacion inuValor < 0 para que 
+                                            no permita registrar valores negativos
+        25-09-2024   jcatuche               OSF-3332: Se agrega parámetro de entrada valor_base al llamado proInsMantenimientoNotaDet
         ******************************************************************/
 
-        sbProceso       VARCHAR2(4000) := 'proDetAcreditarConceptoYCC';
-        nuPaso          NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo       VARCHAR2(4000) := csbPaquete||'proDetAcreditarConceptoYCC';
         nuValorsubsidio NUMBER(8); --valor del subsidio en caso de que el concepto tenga
         nuValorIva      NUMBER; --valor de Iva
         nuConcIva       NUMBER := 0; --concept Iva
@@ -3377,8 +3621,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuValorConc     NUMBER; --valor conpeto asociados de base
         nuValorsubsidioCovid NUMBER(8);
         nuValorCovid   NUMBER(8);
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        
         --caso 200-1650 Consulta el concepto IVA del base
        CURSOR cuConcIva is
           SELECT c.coblconc
@@ -3391,56 +3634,56 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                      AND t.concticl = cnuTipoconcliq);
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('inuValor       <= '||inuValor, csbNivelTraza);
+        pkg_traza.trace('inuCuenCobr    <= '||inuCuenCobr, csbNivelTraza);
+        pkg_traza.trace('inuCausaCargo  <= '||inuCausaCargo, csbNivelTraza);
 
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuConcepto IS NULL THEN
             osbError := 'Falta indicar el concepto al que se va a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         ELSE
             proValidaConceptoYaFacurado(inuProducto => inuProducto, inuConcepto => inuConcepto, osbError => osbError);
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
         END IF;
 
-        IF inuValor IS NULL THEN
-            osbError := 'Falta ingresar el valor a acreditar';
-            RAISE exError;
-        END IF;
-        
-        IF inuValor < 0 THEN
+        IF nvl(inuValor,0) <= 0 THEN
             osbError := 'El valor a acreditar debe ser mayor a cero';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCuenCobr IS NULL THEN
             osbError := 'Falta la cuenta de cobro en la que se acreditara la cuenta de cobro';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCausaCargo IS NULL THEN
             osbError := 'Falta indicar la causa cargo';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
 
-            -- Acreditar el concepto
-            proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
-                                   inuProducto => inuProducto, --
-                                   inuConcepto => inuConcepto, --
-                                   inuSigno => csbCredito, --
-                                   inuValor => inuValor, --
-                                   inuCausa_cargo => inuCausaCargo, --
-                                   osbError => osbError);
+        -- Acreditar el concepto
+        proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
+                               inuProducto => inuProducto, --
+                               inuConcepto => inuConcepto, --
+                               inuSigno => csbCredito, --
+                               inuValor => inuValor, --
+                               inuCausa_cargo => inuCausaCargo, --
+                               osbError => osbError);
 
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         --mod.25.04.2019 validamos si el concepto base tiene Iva para calcularlo
@@ -3449,46 +3692,49 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         IF cuConcIva%FOUND THEN
           --Se proyecta el valor calculado del IVA
           --Realiza calculo para el valor del IVA
-          nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => pktblservsusc.fnugetservice(inuProducto));
-          nuValorIva := round(inuValor * (nuPorIva / 100), 0);
+            nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(inuProducto));
+            nuValorIva := round(inuValor * (nuPorIva / 100), 0);
 
-          ut_trace.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: ' ||
-                          nuValorIva ||' porcentaje IVA: '|| nuPorIva);
+            pkg_traza.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: '||nuValorIva||' porcentaje IVA: '|| nuPorIva,csbNivelTraza);
 
-          IF nuValorIva != 0 THEN
-            proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
+            IF nuValorIva != 0 THEN
+                proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
                                        inuProducto => inuProducto, --
                                        inuConcepto => nuConcIva, --
                                        inuSigno => csbCredito, --
                                        inuValor => nuValorIva, --
                                        inuCausa_cargo => inuCausaCargo, --
+                                       inuValor_Base => inuValor,
                                        osbError => osbError);
-            IF osbError IS NOT NULL THEN
-              RAISE exError;
-            END IF;
+                IF osbError IS NOT NULL THEN
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                END IF;
 
-          END IF;
+            END IF;
         END IF;
 
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);  
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
         
-
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proDetAcreditarConceptoYCC;
 
     PROCEDURE proDetAcreditarCuentaCobro
     (
         inuProducto   pr_product.product_id%TYPE, -- Producto
         inuCuenCobr   cuencobr.cucocodi%TYPE, -- CuentaCobro
+        inuValor      cargos.cargvalo%TYPE, -- Valor a acreditar
         inuCausaCargo causcarg.cacacodi%TYPE, -- Causa cargo
         osbError      OUT VARCHAR2
     ) IS
@@ -3502,23 +3748,25 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         sin importar si tiene saldo o no.
 
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        10-08-2023   diana.montes           OSF-1343: se modifica para tener en cuenta el subsidio 
-                                            del concepto 167
+        15-04-2016   Sandra Muñoz           Creación
         15-12-2018   Ronald Colpas          Se modifica para prorretear la deuda de la cuenta de cobro
                                             cuando el valor digitado sea mayor al de la cuenta
-
-        15-04-2016   Sandra Mu?oz           Creacion
+        10-08-2023   diana.montes           OSF-1343: se modifica para tener en cuenta el subsidio 
+                                            del concepto 167
+        25-09-2024   jcatuche               OSF-3332: Se ajusta cursor cuConceptosCC, añadiendo validación para conceptos base e impuesto,
+                                            ahora solo se gestionan conceptos base y a aquellos con configuración de impuesto se les calcula el impuesto
+                                            Se agrega parámetro de entrada valor_base al llamado proInsMantenimientoNotaDet del impuesto
+                                            Se añade parámetro de entrada inuValor para evitar hacer la busqueda directamente en el procedimiento
         ******************************************************************/
 
-        sbProceso         VARCHAR2(4000) := 'proProyAcreditarCuentaCobro';
-        nuPaso            NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo         VARCHAR2(4000) := csbPaquete||'proDetAcreditarCuentaCobro';
         nuSaldoCuenCobr   cuencobr.cucosacu%TYPE; -- Saldo de la cuenta de cobro
         nuValorAAcreditar NUMBER; -- Valor a acreditar al concepto
         nuValorsubsidio   NUMBER(8); --valor subsidio
@@ -3530,36 +3778,64 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuVenc           NUMBER; --vencimiento de la cta 0 vencida, 1 actual
         nuPorcentage     NUMBER; --Porcentaje para prorratear la deuda
         nuValorsubsidioCovid NUMBER(8);
-        nuValorCovid     NUMBER(8);
-        onuError             NUMBER;  
-        exError EXCEPTION; -- Error controlado
+        nuValorCovid      NUMBER(8);
+        nuPorIva          NUMBER;
+        nuValorBase       NUMBER;
+        nuServ            NUMBER;
+        nuValorIva        NUMBER;
 
         CURSOR cuConceptosCC IS
-            SELECT DISTINCT cargconc
+        with base as
+        (
+            SELECT DISTINCT cargconc,
+            (
+                select case when concticl = cnuTipoconcliq then 'N' else 'S' end
+                from concepto 
+                where conccodi = cargconc
+            ) esbase,
+            (
+                select coblconc from concbali,concepto a
+                where coblcoba = cargconc
+                and a.conccodi = coblconc
+                and a.concticl = cnuTipoconcliq
+            ) impuesto
             FROM cargos c
             WHERE c.cargcuco = inuCuenCobr
-
-            ;
-
+        )
+        select * from base
+        where esbase = 'S';
+            
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
-
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuCuenCobr    <= '||inuCuenCobr, csbNivelTraza);
+        pkg_traza.trace('inuValor       <= '||inuValor, csbNivelTraza);
+        pkg_traza.trace('inuCausaCargo  <= '||inuCausaCargo, csbNivelTraza);
+        
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCuenCobr IS NULL THEN
             osbError := 'Falta indicar el numero de cuenta de cobro a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCausaCargo IS NULL THEN
             osbError := 'Falta indicar la causa cargo';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
-
+        
+        IF nvl(inuValor,0) <= 0 THEN
+            osbError := 'El valor a acreditar debe ser mayor a cero';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        END IF;
+        
+        --se guarda el valor que se digito
+        nuValorDigitado := inuValor;
+        
         -- Obtener el saldo total de la cuenta de cobro
         proDeudaCuentaCobro(inuProducto => inuProducto, --
                             inuCuenCobr => inuCuenCobr, --
@@ -3567,16 +3843,10 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                             osbError => osbError);
 
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
-        --se guarda el valor que se digito
-        SELECT e.valor
-        INTO nuValorDigitado
-        FROM ldc_mantenimiento_notas_enc e
-        WHERE e.producto = inuProducto
-              AND e.cuenta_cobro = inuCuenCobr
-              AND e.sesion = gnuSesion;
-
+        
+        
         IF nuValorDigitado > nuSaldoCuenCobr THEN
            
             swMayor := 1;
@@ -3584,6 +3854,8 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         -- No procesar si la cuenta de cobro no tiene saldo
         IF nuSaldoCuenCobr > 0 THEN
+        
+            nuServ := pkg_bcproducto.fnuTipoProducto(inuProducto);
 
             -- Recorrer todos los conceptos de la cuenta de cobro seleccionada
             FOR rgConceptosCC IN cuConceptosCC
@@ -3596,7 +3868,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                    osbError => osbError);
 
                 IF osbError IS NOT NULL THEN
-                    RAISE exError;
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
                 END IF;
 
                 -- Si el concepto tiene deuda, se crea el cargo CR
@@ -3605,37 +3877,58 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                 
                 -- se adiciona if
                 IF rgConceptosCC.Cargconc not in (cnuConcSubsidio,cnuConcSubCovid,cnuConcCovid) THEN
-                    IF nuValorAAcreditar > 0
-                       AND swMayor = 0 THEN
-                        proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
-                                                   inuProducto => inuProducto, --
-                                                   inuConcepto => rgConceptosCC.Cargconc, --
-                                                   inuSigno => csbCredito, --
-                                                   inuValor => nuValorAAcreditar, --
-                                                   inuCausa_cargo => inuCausaCargo, --
-                                                   osbError => osbError);
-
-                        IF osbError IS NOT NULL THEN
-                            RAISE exError;
+                    
+                    IF nuValorAAcreditar > 0 THEN
+                    
+                        IF swMayor = 1 THEN
+                            --mod.15.12.2018 Isempre y cuando el concepto tenga deuda
+                            --mod.15.12.2018 realizamos el prorrateo para el concepto
+                            --para indicar el valor que le corresponde
+                            nuPorcentage := nuValorAAcreditar / nuSaldoCuenCobr;
+                            nuValorAAcreditar := round(nuValorDigitado * nuPorcentage);
+                            
+                            --valor digitado mayor al valor de la cc(swmayor<>0) se toma el
+                            --valor porcionado
                         END IF;
-                    ELSIF nuValorAAcreditar > 0 THEN --mod.15.12.2018 Isempre y cuando el concepto tenga deuda
-                        --mod.15.12.2018 realizamos el prorrateo para el concepto
-                        --para indicar el valor que le corresponde
-                        nuPorcentage := nuValorAAcreditar / nuSaldoCuenCobr;
-                        nuValorAAcreditar := round(nuValorDigitado * nuPorcentage);
-
-                        --valor digitado mayor al valor de la cc(swmayor<>0) se toma el
-                        --valor porcionado
+                        
                         proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
-                                                   inuProducto => inuProducto, --
-                                                   inuConcepto => rgConceptosCC.Cargconc, --
-                                                   inuSigno => csbCredito, --
-                                                   inuValor => nuValorAAcreditar, --nuvalor, --
-                                                   inuCausa_cargo => inuCausaCargo, --
-                                                   osbError => osbError);
+                                                       inuProducto => inuProducto, --
+                                                       inuConcepto => rgConceptosCC.Cargconc, --
+                                                       inuSigno => csbCredito, --
+                                                       inuValor => nuValorAAcreditar, --
+                                                       inuCausa_cargo => inuCausaCargo, 
+                                                       osbError => osbError);
 
                         IF osbError IS NOT NULL THEN
-                            RAISE exError;
+                            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                        END IF;
+                    
+                        --Gestión de impuestos
+                        IF rgConceptosCC.impuesto is not null then
+                        
+                            nuPorIva := 0;
+                            nuPorIva   := fnutraePIva(inuconcepto => rgConceptosCC.impuesto, inuserv => nuServ);
+                    
+                            IF nuPorIva <= 0 then
+                                osbError := 'El concepto de impuesto '||rgConceptosCC.impuesto||' en la cuenta '||inuCuenCobr||' no tiene % válido ['||nuPorIva||']';
+                                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                            END IF;
+                            
+                            nuValorBase := nuValorAAcreditar;
+                            nuValorIva := round(nuValorBase * (nuPorIva / 100), 0);
+                            
+                            proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
+                                             inuProducto => inuProducto, --
+                                             inuConcepto => rgConceptosCC.impuesto, --
+                                             inuSigno => csbCredito, --
+                                             inuValor => nuValorIva, --
+                                             inuCausa_cargo => inuCausaCargo, --
+                                             inuValor_Base => nuValorBase,
+                                             osbError => osbError);
+                                             
+                            IF osbError IS NOT NULL THEN
+                                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                            END IF;
                         END IF;
                     END IF;
                 END IF;
@@ -3648,7 +3941,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                        osbError => osbError);
 
                     IF osbError IS NOT NULL THEN
-                        RAISE exError;
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
                     END IF;
                     -- subsidio covid
                     proDeudaConceptoCC(inuCuenCobr => inuCuenCobr,
@@ -3657,7 +3950,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                        osbError => osbError);
 
                     IF osbError IS NOT NULL THEN
-                        RAISE exError;
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
                     END IF;
                     -- consumo covid
                     proDeudaConceptoCC(inuCuenCobr => inuCuenCobr,
@@ -3666,11 +3959,12 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                        osbError => osbError);
 
                     IF osbError IS NOT NULL THEN
-                        RAISE exError;
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
                     END IF;
                     IF nuValorsubsidio <> 0 THEN
-                        ut_trace.trace('Va a insertar el subsidio acreditar deuda ' ||
-                                       nuValorsubsidio);
+                    
+                        pkg_traza.trace('Va a insertar el subsidio acreditar deuda ' ||nuValorsubsidio,csbNivelTraza);
+                        
                         proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr,
                                                    inuProducto => inuProducto,
                                                    inuConcepto => cnuConcSubsidio,
@@ -3679,13 +3973,13 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                                    inuCausa_cargo => inuCausaCargo,
                                                    osbError => osbError);
                         IF osbError IS NOT NULL THEN
-                          RAISE exError;
+                            pkg_error.setErrorMessage( isbMsgErrr => osbError);
                         END IF;
                     END IF;
                     --  valor subsidio covid
                     IF nuValorsubsidioCovid <> 0 THEN
-                        ut_trace.trace('Va a insertar el subsidio covid acreditar deuda ' ||
-                                       nuValorsubsidioCovid);
+                        pkg_traza.trace('Va a insertar el subsidio covid acreditar deuda ' ||nuValorsubsidioCovid,csbNivelTraza);
+                        
                         IF nvl(nuValorsubsidioCovid,0) < 0 THEN
                             proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr,
                                                    inuProducto => inuProducto,
@@ -3704,13 +3998,12 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                                    osbError => osbError);
                         END IF;                           
                         IF osbError IS NOT NULL THEN
-                          RAISE exError;
+                            pkg_error.setErrorMessage( isbMsgErrr => osbError);
                         END IF;
                     END IF;
                     --  valor consumo covid
                     IF nuValorCovid <> 0 THEN
-                        ut_trace.trace('Va a insertar el consumo covid acreditar deuda ' ||
-                                       nuValorCovid);
+                        pkg_traza.trace('Va a insertar el consumo covid acreditar deuda ' ||nuValorCovid,csbNivelTraza);
                         IF nvl(nuValorCovid,0) < 0 THEN
                             proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr,
                                                    inuProducto => inuProducto,
@@ -3729,7 +4022,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                                    osbError => osbError);
                         END IF;   
                         IF osbError IS NOT NULL THEN
-                          RAISE exError;
+                            pkg_error.setErrorMessage( isbMsgErrr => osbError);
                         END IF;
                     END IF;
                     
@@ -3741,28 +4034,31 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             END LOOP;
 
         ELSE
-            ut_trace.trace('La cuenta de cobro ' || inuCuenCobr ||
-                           ' no se puede acreditar ya que no tiene saldo');
+            pkg_traza.trace('La cuenta de cobro ' ||inuCuenCobr||' no se puede acreditar ya que no tiene saldo',csbNivelTraza);
         END IF;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proDetAcreditarCuentaCobro;
 
     PROCEDURE proDetDebitarConcepto
     (
         inuProducto   pr_product.product_id%TYPE, -- Producto
         inuConcepto   concepto.conccodi%TYPE, -- Concepto
-        inuValor      cargos.cargvalo%TYPE, -- Valor a acreditar
+        inuValor      cargos.cargvalo%TYPE, -- Valor a debitar
         inuCausaCargo causcarg.cacacodi%TYPE, -- Causa cargo
         inuPlanId     plandife.pldicodi%TYPE, -- Plan de diferido
         inuNroCuotas  plandife.pldicumi%TYPE, -- Numero de cuotas
@@ -3774,16 +4070,17 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proDetDebitarConcepto
         Descripcion:        Almacena la informacion a debitar
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
-        -----------  -------------------    -------------------------------------
+        DD-MM-YYYY    <Autor>.              Modificación
+        -----------  --------------     -------------------------------------
+        15-04-2016   Sandra Muñoz           Creación
         29-04-2024   jcatuche               OSF-3206: Se agrega llamado a pkg_gestiondiferidos.pSimProyCuotas
                                                 para simulación de financiación
-        15-04-2016   Sandra Mu?oz           Creacion
+        25-11-2024   jcatuche               OSF-3332: Se elimina variable sbDifeProg para dar paso a la constante csbNotaProg
         ******************************************************************/
 
         csbMetodo              VARCHAR2(4000) := csbPaquete||'proDetDebitarConcepto';
@@ -3797,7 +4094,6 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         sbDescription          VARCHAR2(4000) := NULL;
         nuSubsc                servsusc.sesususc%TYPE;
         nuNote                 notas.notanume%TYPE;
-        sbDifeProg             CHAR(4) := 'FRNF';
         nuNroCuotas            NUMBER;
         nuSaldo                NUMBER;
         nuTotalAcumCapital     NUMBER;
@@ -3810,7 +4106,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuConcIva              NUMBER := 0; --concepto de iva
         nuvaloriva             NUMBER := 0; --valor de iva proyectado
         nuPorIva               NUMBER := 0; --porcentaje IVA
-        onuError             NUMBER;  
+        
         --lmfg
         CURSOR cuivaProy IS
             SELECT nvl(valor_corriente, 0)
@@ -3832,7 +4128,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                    WHERE t.conccodi = c.coblconc
                      AND t.concticl = cnuTipoconcliq);
 
-        exError EXCEPTION; -- Error controlado
+        
 
     BEGIN
         pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
@@ -3843,27 +4139,27 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         pkg_traza.trace('inuPlanId      <= '||inuPlanId, csbNivelTraza);
         pkg_traza.trace('inuNroCuotas   <= '||inuNroCuotas, csbNivelTraza);
 
-        Pkg_Error.SetApplication(sbDifeProg);
+        Pkg_Error.SetApplication(csbNotaProg);
 
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuConcepto IS NULL THEN
             osbError := 'Falta indicar el concepto al que se va a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
-        IF inuValor IS NULL THEN
-            osbError := 'Falta ingresar el valor a acreditar';
-            RAISE exError;
+        IF nvl(inuValor,0) <= 0 THEN
+            osbError := 'El valor a debitar debe ser mayor a cero';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCausaCargo IS NULL THEN
             osbError := 'Falta indicar la causa cargo';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
         
         IF inuPlanId is not null and inuNroCuotas is not null  then
@@ -3884,20 +4180,20 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                     osbError := osbError||' Valor ['||inuValor||']';
                     osbError := osbError||' Plan ['||inuPlanId||']';
                     osbError := osbError||' Cuotas ['||inuNroCuotas||']';
-                    RAISE exError;
+                    RAISE pkg_error.CONTROLLED_ERROR;
             end;
         End If;
 
         proInsMantenimientoNotaDet(inuCuenta_cobro => -1, --
                                    inuProducto => inuProducto, --
                                    inuConcepto => inuConcepto, --
-                                   inuSigno => 'DB', --
+                                   inuSigno => csbDebito, --
                                    inuValor => inuValor, --
                                    inuCausa_cargo => inuCausaCargo, --
                                    osbError => osbError);
 
 
-        --Registramos en LDC_MANTENIMIENTO_NOTAS_DIF la informaci?n para ser usada en proceso
+        --Registramos en LDC_MANTENIMIENTO_NOTAS_DIF la información para ser usada en proceso
         --de aprobacion de moviemntos finacieros
         insert into LDC_MANTENIMIENTO_NOTAS_DIF(PACKAGE_ID, PRODUCT_ID, CUCOCODI, CONCEPTO_ID,  CUOTAS, PLAN_DIFE, SESION)
           values(-1, inuProducto, -1, inuConcepto, inuNroCuotas, inuPlanId, gnuSesion);
@@ -3906,8 +4202,9 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
         
     EXCEPTION
-        WHEN exError THEN
-            sbError := osbError;
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
             pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
             pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
@@ -3916,7 +4213,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             osbError := sbError;
             pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
             pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
-    END;
+    END proDetDebitarConcepto;
     
     PROCEDURE proDetDebitarCuentaCobro
     (
@@ -3940,47 +4237,71 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        21-05-2019   Ronald Colpas C.       Creacion
+        21-05-2019   Ronald Colpas C.       Creación
+        25-09-2024   jcatuche               OSF-3332: Se ajusta cursor cuCargFGCA, añadiendo validación para conceptos base, impuesto y liquidación de impuesto,
+                                            ahora solo se gestionan conceptos base y a aquellos con configuración de impuesto se les calcula el impuesto
+                                            Se agrega parámetro de entrada valor_base al llamado proInsMantenimientoNotaDet
         ******************************************************************/
 
-        sbProceso         VARCHAR2(4000) := 'proDetDebitarCuentaCobro';
-        nuPaso            NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo         VARCHAR2(4000) := 'proDetDebitarCuentaCobro';
         nuSaldoCuenCobr   cuencobr.cucosacu%TYPE; -- Saldo de la cuenta de cobro
         nucantconc        NUMBER; --cantidad de conceptos en la cuenta de cobro
         swExist           NUMBER := 0; --sw para saber si hay cargos del programa FGCA
         nuValorDigitado   NUMBER; --valor digitado en la pantalla
         nuvalor           NUMBER; --valor porcionado de la deuda por concepto
 
-        nuVenc           NUMBER; --vencimiento de la cta 0 vencida, 1 actual
-        onuError             NUMBER;  
-        exError EXCEPTION; -- Error controlado
+        nuVenc            NUMBER; --vencimiento de la cta 0 vencida, 1 actual
+        nuPorIva          NUMBER;
+        nuValorIva        NUMBER; --valor de Iva
+        nuValorBase       NUMBER;
+        nuServ            NUMBER;
 
         CURSOR cuCargFGCA is
-          SELECT *
-            FROM cargos
-           WHERE cargcuco = inuCuenCobr
-             AND cargprog = 5;
+        with base as 
+        (
+            SELECT 
+            (
+                select case when concticl = cnuTipoconcliq then 'N' else 'S' end
+                from concepto 
+                where conccodi = cargconc
+            ) esbase, 
+            case when cargcaca = 51 and (cargdoso like 'DF%' or cargdoso like 'FD%' or cargdoso like 'CX%') then 'N' else 'S' end liqimp,
+            (
+                select coblconc from concbali,concepto a
+                where coblcoba = cargconc
+                and a.conccodi = coblconc
+                and a.concticl = cnuTipoconcliq
+            ) impuesto,c.*
+            FROM cargos c
+            WHERE cargcuco = inuCuenCobr
+            AND cargprog = 5
+        )
+        select * from base 
+        where esbase = 'S';
 
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuCuenCobr    <= '||inuCuenCobr, csbNivelTraza);
+        pkg_traza.trace('inuCausaCargo  <= '||inuCausaCargo, csbNivelTraza);
 
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCuenCobr IS NULL THEN
             osbError := 'Falta indicar el numero de cuenta de cobro a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCausaCargo IS NULL THEN
             osbError := 'Falta indicar la causa cargo';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         -- Obtener el saldo total de la cuenta de cobro
@@ -3990,31 +4311,63 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                             osbError => osbError);
 
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF nuSaldoCuenCobr > 0 THEN
-          osbError := 'La cuenta de cobro ' || inuCuenCobr ||
+            osbError := 'La cuenta de cobro ' || inuCuenCobr ||
                       ' a la que se quiere aplicar novedad debitar por cuenta de cobro esta con saldo pendiente ';
-          RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         swExist := 0;
+        nuServ := pkg_bcproducto.fnuTipoProducto(inuProducto);
         -- Recorrer todos los conceptos de la cuenta de cobro seleccionada generados por FGCA
         FOR rgConceptosCC IN cuCargFGCA LOOP
-          swExist := 1;
-          proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
-                                     inuProducto => inuProducto, --
-                                     inuConcepto => rgConceptosCC.Cargconc, --
-                                     inuSigno => rgConceptosCC.Cargsign, --
-                                     inuValor => rgConceptosCC.Cargvalo, --
-                                     inuCausa_cargo => inuCausaCargo, --
-                                     osbError => osbError);
-
-           IF osbError IS NOT NULL THEN
-             RAISE exError;
-           END IF;
-           ut_trace.trace('Novedad Debitar CC concepto: ' || rgConceptosCC.Cargconc);
+            
+            swExist := 1;
+            
+            proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
+                                 inuProducto => inuProducto, --
+                                 inuConcepto => rgConceptosCC.Cargconc, --
+                                 inuSigno => rgConceptosCC.Cargsign, --
+                                 inuValor => rgConceptosCC.Cargvalo, --
+                                 inuCausa_cargo => inuCausaCargo, --
+                                 osbError => osbError);
+            
+            IF osbError IS NOT NULL THEN
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
+            END IF;
+                                 
+            IF rgConceptosCC.liqimp = 'S' and rgConceptosCC.impuesto is not null then
+            
+                nuPorIva := 0;
+                nuPorIva   := fnutraePIva(inuconcepto => rgConceptosCC.impuesto, inuserv => nuServ);
+                
+                IF nuPorIva <= 0 then
+                    osbError := 'El concepto de impuesto '||rgConceptosCC.impuesto||' en la cuenta '||inuCuenCobr||' no tiene % válido ['||nuPorIva||']';
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                END IF;
+                
+                nuValorBase := rgConceptosCC.Cargvalo;
+                nuValorIva := round(nuValorBase * (nuPorIva / 100), 0);
+                
+                proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
+                                 inuProducto => inuProducto, --
+                                 inuConcepto => rgConceptosCC.impuesto, --
+                                 inuSigno => rgConceptosCC.Cargsign, --
+                                 inuValor => nuValorIva, --
+                                 inuCausa_cargo => inuCausaCargo, --
+                                 inuValor_Base => nuValorBase,
+                                 osbError => osbError);
+                                 
+                IF osbError IS NOT NULL THEN
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                END IF;
+                
+            END IF;
+            
+            pkg_traza.trace('Novedad Debitar CC concepto: ' || rgConceptosCC.Cargconc,csbNivelTraza);
 
         END LOOP;
 
@@ -4022,22 +4375,25 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             osbError := 'La cuenta de cobro ' || inuCuenCobr ||
                            ' a la que se quiere aplicar novedad '||
                            'debitar por cuenta de cobro no tiene cargos generados por FGCA';
-            ut_trace.trace(osbError);
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proDetDebitarCuentaCobro;
 
     PROCEDURE proDetDebitarConceptoYCC
     (
@@ -4059,15 +4415,15 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
+        20-05-2019   Ronad Colpas C.        Creación
         22-08-2023   Diana.Montes           OSF-1343: Se coloca la validacion inuValor < 0 para que 
                                             no permita registrar valores negativos
-        20-05-2019   Ronad Colpas C.        Creacion
+        25-09-2024   jcatuche               OSF-3332: Se agrega parámetro de entrada valor_base al llamado proInsMantenimientoNotaDet
         ******************************************************************/
 
-        sbProceso       VARCHAR2(4000) := 'proDetDebitarConceptoYCC';
-        nuPaso          NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo       VARCHAR2(4000) := csbPaquete||'proDetDebitarConceptoYCC';
         nuValorsubsidio NUMBER(8); --valor del subsidio en caso de que el concepto tenga
         nuValorIva      NUMBER; --valor de Iva
         nuConcIva       NUMBER := 0; --concept Iva
@@ -4079,8 +4435,8 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         nuValorConc     NUMBER; --valor conpeto asociados de base
         nuValorsubsidioCovid NUMBER(8);
         nuValorCovid    NUMBER(8);
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        
+        
        --Consulta el concepto IVA del base
        CURSOR cuConcIva is
           SELECT c.coblconc
@@ -4093,37 +4449,42 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                      AND t.concticl = cnuTipoconcliq);
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('inuConcepto    <= '||inuConcepto, csbNivelTraza);
+        pkg_traza.trace('inuValor       <= '||inuValor, csbNivelTraza);
+        pkg_traza.trace('inuCuenCobr    <= '||inuCuenCobr, csbNivelTraza);
+        pkg_traza.trace('inuCausaCargo  <= '||inuCausaCargo, csbNivelTraza);
 
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuConcepto IS NULL THEN
             osbError := 'Falta indicar el concepto al que se va a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuValor IS NULL THEN
             osbError := 'Falta ingresar el valor a acreditar';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
         
-        IF inuValor < 0 THEN
+        IF nvl(inuValor,0) <= 0 THEN
             osbError := 'El valor a debitar debe ser mayor a cero';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
         
         IF inuCuenCobr IS NULL THEN
             osbError := 'Falta la cuenta de cobro en la que se acreditara la cuenta de cobro';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         IF inuCausaCargo IS NULL THEN
             osbError := 'Falta indicar la causa cargo';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         -- Acreditar el concepto
@@ -4136,47 +4497,51 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                    osbError => osbError);
 
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         --Validamos si el concepto base tiene Iva para calcularlo
         OPEN cuConcIva;
         FETCH cuConcIva INTO nuConcIva;
         IF cuConcIva%FOUND THEN
-          --Realiza calculo para el valor del IVA
-          nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => pktblservsusc.fnugetservice(inuProducto));
-          nuValorIva := round(inuValor * (nuPorIva / 100), 0);
+            --Realiza calculo para el valor del IVA
+            nuPorIva   := fnutraePIva(inuconcepto => nuConcIva, inuserv => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(inuProducto));
+            nuValorIva := round(inuValor * (nuPorIva / 100), 0);
 
-          ut_trace.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: ' ||
-                          nuValorIva ||' porcentaje IVA: '|| nuPorIva);
+            pkg_traza.trace('Acredita concepto IVA: '||nuConcIva||' va a insertar valor de: '||nuValorIva ||' porcentaje IVA: '||nuPorIva,csbNivelTraza);
 
-          IF nuValorIva != 0 THEN
-            proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
+            IF nuValorIva != 0 THEN
+                proInsMantenimientoNotaDet(inuCuenta_cobro => inuCuenCobr, --
                                        inuProducto => inuProducto, --
                                        inuConcepto => nuConcIva, --
                                        inuSigno => csbDebito, --
                                        inuValor => nuValorIva, --
                                        inuCausa_cargo => inuCausaCargo, --
+                                       inuValor_Base => inuValor,
                                        osbError => osbError);
-            IF osbError IS NOT NULL THEN
-              RAISE exError;
-            END IF;
+                IF osbError IS NOT NULL THEN
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
+                END IF;
 
-          END IF;
+            END IF;
         END IF;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proDetDebitarConceptoYCC;
 
     PROCEDURE proCalcularProyectado
     (
@@ -4189,24 +4554,22 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proCalcularProyectado
         Descripcion:        Carga toda la informacion para poder calcular la deuda proyectada
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
 
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         12-04-2018   Ronald Colpas          caso 2001650 se omite validacion de aplicacion de entrega fblaplicaentrega
 
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proInsertarMantenimientoNota';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proCalcularProyectado';
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        
         CURSOR cuNovedades IS
             SELECT producto,
                    novedad,
@@ -4224,7 +4587,8 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             ;
 
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto <= '||inuProducto, csbNivelTraza);
 
         -- Calcular los saldos por concepto actuales
 
@@ -4287,29 +4651,33 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             END IF;
 
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
         END LOOP;
 
         COMMIT;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proCalcularProyectado;
 
     PROCEDURE proMostrarDeudaActual
     (
         inuProducto                   LDC_MANTENIMIENTO_NOTAS_PROY.producto%TYPE,
-        ocrLDC_MANTENIMIENTO_NOTAS_PR OUT PKCONSTANTE.TYREFCURSOR,
+        ocrLDC_MANTENIMIENTO_NOTAS_PR OUT CONSTANTS_PER.TYREFCURSOR,
         onucreditbalance              OUT NUMBER,
         onuclaimvalue                 OUT NUMBER,
         onudefclaimvalue              OUT NUMBER,
@@ -4321,33 +4689,31 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proMostrarDeudaActual
         Descripcion:        Muestra la deuda actual por concepto
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
 
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         11-12-2018   Ronald colpas          caso2001650 se modifica cursor ocrLDC_MANTENIMIENTO_NOTAS_PR
                                             para incluir el valor vencido
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proMostrarDeudaActual';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proMostrarDeudaActual';
 
         nucurrentaccounttotal  NUMBER;
         nudeferredaccounttotal NUMBER;
         nuContrato  pr_product.subscription_id%type;
-        otbbalanceaccounts PKCONSTANTE.TYREFCURSOR; --fa_boaccountstatustodate.tytbbalanceaccounts;
-        otbdeferredbalance PKCONSTANTE.TYREFCURSOR; --fa_boaccountstatustodate.tytbdeferredbalance;
+        otbbalanceaccounts CONSTANTS_PER.TYREFCURSOR; --fa_boaccountstatustodate.tytbbalanceaccounts;
+        otbdeferredbalance CONSTANTS_PER.TYREFCURSOR; --fa_boaccountstatustodate.tytbdeferredbalance;
 
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto <= '||inuProducto, csbNivelTraza);
 
         -- Consulta cursor referenciado
         OPEN ocrLDC_MANTENIMIENTO_NOTAS_PR FOR
@@ -4370,7 +4736,11 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             ORDER BY lmn.producto, lmn.concepto;
 
         --obtengo el contrato del producto
-        nuContrato := dapr_product.fnugetsubscription_id(inuProducto);
+        nuContrato := pkg_bcproducto.fnuContrato(inuProducto);
+        if nuContrato is null then
+            osbError:= 'El producto '||inuProducto||' no existe en la BD';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        end if;
 
         --Mod. 10-12-2018 Saldo a Favor, Valor Reclamo, Valor reclamo diferido.
          fa_boaccountstatustodate.subscriptaccountstatustodate(inusubscriptionid => nuContrato,
@@ -4383,51 +4753,56 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                                                orfresumeaccountdetail => otbbalanceaccounts,
                                                                orfaccountdetail => otbdeferredbalance);
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('onucreditbalance   => '||onucreditbalance, csbNivelTraza);
+        pkg_traza.trace('onuclaimvalue      => '||onuclaimvalue, csbNivelTraza);
+        pkg_traza.trace('onudefclaimvalue   => '||onudefclaimvalue, csbNivelTraza);
+        pkg_traza.trace('osbError           => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.CONTROLLED_ERROR THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END;
 
     PROCEDURE proMostrarProyectado
     (
         inuProducto                   LDC_MANTENIMIENTO_NOTAS_PROY.producto%TYPE,
-        ocrLDC_MANTENIMIENTO_NOTAS_PR OUT PKCONSTANTE.TYREFCURSOR,
+        ocrLDC_MANTENIMIENTO_NOTAS_PR OUT CONSTANTS_PER.TYREFCURSOR,
         osbError                      OUT VARCHAR2
     ) IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete:
+        Nombre del Paquete:proMostrarProyectado
         Descripcion:
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
 
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         11-12-2018   Ronald colpas          caso2001650 se modifica cursor ocrLDC_MANTENIMIENTO_NOTAS_PR
                                             para incluir el valor vencido
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso VARCHAR2(4000) := 'proInsertarMantenimientoNota';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo   CONSTANT VARCHAR2(100) := csbPaquete||'proMostrarProyectado';
 
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto <= '||inuProducto, csbNivelTraza);
 
         -- Consulta cursor referenciado
         OPEN ocrLDC_MANTENIMIENTO_NOTAS_PR FOR
@@ -4448,17 +4823,16 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             GROUP BY lmn.producto, lmn.concepto, c.concdesc
             ORDER BY lmn.producto, lmn.concepto;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END;
 
     PROCEDURE proDesglosaAcreditarDeuda
@@ -4469,22 +4843,21 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete: proGenAcreditarDeuda
+        Nombre del Paquete: proDesglosaAcreditarDeuda
         Descripcion:        Genera las solicitudes de aprobacion de notas
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso    VARCHAR2(4000) := 'proGenAcreditarDeuda';
-        nuPaso       NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        nuDeudaTotal NUMBER; -- Deuda total del producto
+        csbMetodo    VARCHAR2(4000) := csbPaquete||'proDesglosaAcreditarDeuda';
+        
 
         CURSOR cuDeudaConcepto IS
             SELECT signo_corriente,
@@ -4498,39 +4871,18 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                   AND lmn.producto = inuProducto
                   AND lmn.origen = 'D'
                   AND lmn.signo_corriente = csbDebito -- Deuda real de los productos
-
             ;
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
-    BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
 
+        
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto <= '||inuProducto, csbNivelTraza);
+        
         -- Validar datos obligatorios
         IF inuProducto IS NULL THEN
             osbError := 'Falta indicar el producto al que se le acreditara la deuda';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
-
-        -- Obtiene la deuda del producto
-        BEGIN
-            SELECT nvl(SUM(nvl(valor_corriente, 0)) +
-                       SUM(nvl(valor_diferido, 0)), 0) deuda_total
-            INTO nuDeudaTotal
-            FROM LDC_MANTENIMIENTO_NOTAS_PROY lmn
-            WHERE lmn.sesion = gnuSesion
-                  AND lmn.producto = inuProducto
-                  AND lmn.origen = 'D'
-                  AND lmn.signo_corriente = csbDebito -- Deuda real de los productos
-
-            ;
-        EXCEPTION
-            WHEN OTHERS THEN
-                Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-                osbError := 'No fue posible determinar la deuda total del producto ' ||
-                            inuProducto || '. ' || osberror;
-                RAISE exError;
-        END;
 
         -- Obtener los conceptos con deuda del producto
         FOR rgDeudaConcepto IN cuDeudaConcepto
@@ -4540,23 +4892,27 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             proInsMantenimientoNotaProy(inuProducto => inuProducto, isbSignoCorriente => csbCredito, inuValorCorriente => rgDeudaConcepto.Valor_Corriente, inuValorVencido => rgDeudaConcepto.valor_vencido, inuConcepto => rgDeudaConcepto.concepto, isbOrigen => 'P', inuValorDiferido => 0, isbSignoDiferido => 0, osbError => osbError);
 
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
 
         END LOOP;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proDesglosaAcreditarDeuda;
 
     FUNCTION fnuGeneraNota
     (
@@ -4580,170 +4936,196 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                             1 = Si
                             0 = No
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
         12-04-2018   Ronald Colpas          caso 2001650 se omite validacion de aplicacion de entrega fblaplicaentrega
 
-        15-04-2016   Sandra Mu?oz           Creacion
+        15-04-2016   Sandra Muñoz           Creación
         ******************************************************************/
 
-        sbProceso                    VARCHAR2(4000) := 'fnuGeneraNota';
-        nuPaso                       NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo                    VARCHAR2(4000) := csbPaquete||'fnuGeneraNota';
         nuMaxMontoPerfilFinanciero   NUMBER; -- Maximo monto autorizado para el perfil financiero del usuario
         nuGeneraNota                 NUMBER := 1; -- Indica si se genera la nota o se envia a visado
-        sbError                      VARCHAR2(4000); -- Error
         nuProducto                   pr_product.product_id%TYPE; -- Producto
+        nuProductStatus              pr_product.product_status_id%TYPE;
         nuNumeroDias                 ld_parameter.numeric_value%TYPE; -- Numero de dias en las que se evaluara si un producto ya se le crearon notas
         nuAcumuladoNotas             NUMBER; -- Valor de las notas generadas en un periodo de tiempo para un cliente a un mismo producto
         sbEstadoPendienteInstalacion ld_parameter.value_chain%TYPE; -- Estados de producto que indican que esta pendiente de instalacion
         sbSolicitudVenta             ld_parameter.value_chain%TYPE; -- Tipos de solicitud de venta
         nuSolicitudRegistrado        ld_parameter.numeric_value%TYPE; -- Estado registrado de una solicitud
         nuTieneVentaRegistrada       ld_parameter.numeric_value%TYPE; -- Indica si un producto tiene venta registrada
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
-    BEGIN
         
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        
+        cursor cuProducto is
+        SELECT product_id
+        FROM mo_motive mm
+        WHERE mm.package_id = inuSolicitud;
+        
+        cursor cuAcumuladoNotas is
+        SELECT SUM(nvl(fca.caapvalo, 0))
+        FROM fa_apromofa famf,
+             mo_motive   mm,
+             fa_notaapro fna,
+             fa_cargapro fca
+        WHERE famf.apmousre = isbUsuarioRegistra
+              AND famf.apmosoli = mm.package_id
+              AND trunc(famf.apmofere) >=
+              trunc(SYSDATE) - nvl(nuNumeroDias, 0)
+              AND mm.product_id = nuProducto
+              AND famf.apmocons = fna.noapapmo
+              AND fna.noapnume = fca.caapnoap
+              AND fca.caapsign = csbCredito;
+        
+        cursor cuTieneVentaRegistrada is 
+        SELECT COUNT(1)
+        FROM mo_packages mp, mo_motive mm
+        WHERE mp.package_id = mm.package_id
+              AND mm.product_id = nuProducto
+              AND
+              instr(sbSolicitudVenta, mp.package_type_id || '|') > 0
+              AND mp.motive_status_id = nuSolicitudRegistrado;
+        
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuSolicitud       <= '||inuSolicitud, csbNivelTraza);
+        pkg_traza.trace('isbUsuarioRegistra <= '||isbUsuarioRegistra, csbNivelTraza);
+        
+        if cuProducto%isopen then
+            close cuProducto;
+        end if;
+        
+        if cuAcumuladoNotas%isopen then
+            close cuAcumuladoNotas;
+        end if;
+        
+        if cuTieneVentaRegistrada%isopen then
+            close cuTieneVentaRegistrada;
+        end if;
 
         -- Obtener los valores de los parametros
-        nuNumeroDias := DALD_PARAMETER.fnuGetNumeric_Value('DIAS_MONTO_NOTAS');
+        nuNumeroDias := pkg_bcld_parameter.fnuObtieneValorNumerico('DIAS_MONTO_NOTAS');
         IF nuNumeroDias IS NULL THEN
             sbError := 'No se ha definido el parametro DIAS_MONTO_NOTAS';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
         END IF;
 
-        sbEstadoPendienteInstalacion := DALD_PARAMETER.fsbGetValue_Chain('PRODUCTO_PENDIENTE_INSTALACION');
+        sbEstadoPendienteInstalacion := pkg_bcld_parameter.fsbObtieneValorCadena('PRODUCTO_PENDIENTE_INSTALACION');
         IF sbEstadoPendienteInstalacion IS NULL THEN
             sbError := 'No se ha definido el parametro PRODUCTO_PENDIENTE_INSTALACION';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
         END IF;
 
-        sbSolicitudVenta := DALD_PARAMETER.fsbGetValue_Chain('SOLICITUDES_VENTA');
+        sbSolicitudVenta := pkg_bcld_parameter.fsbObtieneValorCadena('SOLICITUDES_VENTA');
         IF sbSolicitudVenta IS NULL THEN
             sbError := 'No se ha definido el parametro SOLICITUDES_VENTA';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
         END IF;
 
-        nuSolicitudRegistrado := DALD_PARAMETER.fnuGetNumeric_Value('FNB_ESTADOSOL_REG');
+        nuSolicitudRegistrado := pkg_bcld_parameter.fnuObtieneValorNumerico('FNB_ESTADOSOL_REG');
         IF nuSolicitudRegistrado IS NULL THEN
             sbError := 'No se ha definido el parametro FNB_ESTADOSOL_REG';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
         END IF;
-        ut_trace.trace('va a obtener el perfil financiero');
+        
+        pkg_traza.trace('va a obtener el perfil financiero',csbNivelTraza);
         -- Obtener el monto maximo autorizado para el perfil financiero del usuario
-        nuMaxMontoPerfilFinanciero := GE_BOFinancialProfile.fnuMaxAmountByUser(4, sa_bouser.fnuGetUserId(isbUsuarioRegistra));
-        ut_trace.trace('usuario ' || isbUsuarioRegistra || ' valor ' ||
-                             nuMaxMontoPerfilFinanciero);
+        nuMaxMontoPerfilFinanciero := GE_BOFinancialProfile.fnuMaxAmountByUser(4, pkg_session.fnugetuseridbymask(isbUsuarioRegistra));
+        
+        pkg_traza.trace('usuario ' || isbUsuarioRegistra || ' valor ' ||nuMaxMontoPerfilFinanciero,csbNivelTraza);
 
         -- Valida si la entrega aplica para la gasera
         --caso-2001650 Se omite validacion de aplicacion de entrega
 
-            -- Tener en cuenta que si el total de notas aplicadas a un mismo concepto en un producto
-            -- en el dia por el usuario final es superior a lo que indica su perfil financiero se
-            -- debe solicitar visado
-            BEGIN
-                SELECT product_id
-                INTO nuProducto
-                FROM mo_motive mm
-                WHERE mm.package_id = inuSolicitud;
-            EXCEPTION
-                WHEN OTHERS THEN
-                    sbError := 'Error al intentar obtener el producto asociado a la solicitud ' ||
-                               inuSolicitud;
-                    ut_trace.trace('    SELECT product_id
-                                        FROM   mo_motive mm
-                                        WHERE  mm.package_id = ' ||
-                                   inuSolicitud);
-                    RAISE exError;
-            END;
+        -- Tener en cuenta que si el total de notas aplicadas a un mismo concepto en un producto
+        -- en el dia por el usuario final es superior a lo que indica su perfil financiero se
+        -- debe solicitar visado
+        open cuProducto;
+        fetch cuProducto into nuProducto;
+        if cuProducto%notfound then
+            close cuProducto;
+            sbError := 'Error al intentar obtener el producto asociado a la solicitud '||inuSolicitud;
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
+        end if;
+        close cuProducto;
+                
+        pkg_traza.trace(' producto ' || nuProducto,csbNivelTraza);            
+         
+        nuAcumuladoNotas := null;   
+        open cuAcumuladoNotas;
+        fetch cuAcumuladoNotas into nuAcumuladoNotas;
+        close cuAcumuladoNotas;
+        
+        if nuAcumuladoNotas is null then 
+            sbError := 'No fue posible obtener el valor de las notas realizadas';
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
+        end if;
+        
+        pkg_traza.trace(' valor acumulado de notas '||nuAcumuladoNotas,csbNivelTraza);
+            
+        -- Requiere aprobacion
+        IF nuAcumuladoNotas > nuMaxMontoPerfilFinanciero THEN
+            nuGeneraNota := 0;
+            pkg_traza.trace(' =0 ' || nuGeneraNota,csbNivelTraza);
+        ELSE
+            nuGeneraNota := 1;
+            pkg_traza.trace(' =1 ' || nuGeneraNota,csbNivelTraza);
+            --RETURN 0;
+        END IF;
+        
+        pkg_traza.trace(' nugenera ' || nuGeneraNota,csbNivelTraza);
+        -- Si el producto tiene una solicitud de venta (587 - Venta, 100277 - Venta de Gas Cotizada IFRS,
+        -- 100275 - Venta de Gas por Formulario IFRS, 100271 - Venta de Gas por Formulario
+        -- Migración, 100288 - Venta de Gas por Formulario Migracion 2, 100101 - Venta de
+        -- Servicios de Ingeniería, 323 - Venta a Constructoras, 271 - Venta de Gas por
+        -- Formulario, 100229 - Venta de Gas Cotizada, 100025 - Venta de Accesorios, 100236 -
+        -- Venta de Seguros, 100264 - VENTA FNB, 100261 - Venta Seguros XML, 141 - Venta,
+        -- 100218 - Venta promigas XML, 100233 - Venta de Gas por Formulario XML,
+        -- 100219 - Venta Servicios Financieros) registrada (estado 13) y el parametro de
+        -- solicitar visado de aprobacion debe iniciarse el tramite 289.
 
-            ut_trace.trace(' producto ' || nuProducto);
-            BEGIN
-                SELECT SUM(nvl(fca.caapvalo, 0))
-                INTO nuAcumuladoNotas
-                FROM fa_apromofa famf,
-                     mo_motive   mm,
-                     fa_notaapro fna,
-                     fa_cargapro fca
-                WHERE famf.apmousre = isbUsuarioRegistra
-                      AND famf.apmosoli = mm.package_id
-                      AND trunc(famf.apmofere) >=
-                      trunc(SYSDATE) - nvl(nuNumeroDias, 0)
-                      AND mm.product_id = nuProducto
-                      AND famf.apmocons = fna.noapapmo
-                      AND fna.noapnume = fca.caapnoap
-                      AND fca.caapsign = csbCredito;
-            EXCEPTION
-                WHEN OTHERS THEN
-                    sbError := 'No fue posible obtener el valor de las notas realizadas';
-                    RAISE exError;
-            END;
-            ut_trace.trace(' valor acumulado de notas ' ||
-                                 nuAcumuladoNotas);
-            -- Requiere aprobacion
-            IF nuAcumuladoNotas > nuMaxMontoPerfilFinanciero THEN
+        nuProductStatus := pkg_bcproducto.fnuEstadoProducto(inuProducto => nuProducto);
+        if nuProductStatus is null then
+            sbError :='El producto '||nuProducto||' no existe en la BD';
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
+        end if;
+        
+        IF instr(sbEstadoPendienteInstalacion, nuProductStatus || '|') > 0 THEN
+
+            open cuTieneVentaRegistrada;
+            fetch cuTieneVentaRegistrada into nuTieneVentaRegistrada;
+            close cuTieneVentaRegistrada;
+
+            IF nuTieneVentaRegistrada > 0 THEN
                 nuGeneraNota := 0;
-                ut_trace.trace(' =0 ' || nuGeneraNota);
+                pkg_traza.trace(' venta registrada >0 ',csbNivelTraza);
             ELSE
                 nuGeneraNota := 1;
-                ut_trace.trace(' =1 ' || nuGeneraNota);
-                --RETURN 0;
+                pkg_traza.trace(' venta registrada =0 ',csbNivelTraza);
+
             END IF;
-            ut_trace.trace(' nugenera ' || nuGeneraNota);
-            -- Si el producto tiene una solicitud de venta (587 - Venta, 100277 - Venta de Gas Cotizada IFRS,
-            -- 100275 - Venta de Gas por Formulario IFRS, 100271 - Venta de Gas por Formulario
-            -- Migraci?n, 100288 - Venta de Gas por Formulario Migracion 2, 100101 - Venta de
-            -- Servicios de Ingenier?a, 323 - Venta a Constructoras, 271 - Venta de Gas por
-            -- Formulario, 100229 - Venta de Gas Cotizada, 100025 - Venta de Accesorios, 100236 -
-            -- Venta de Seguros, 100264 - VENTA FNB, 100261 - Venta Seguros XML, 141 - Venta,
-            -- 100218 - Venta promigas XML, 100233 - Venta de Gas por Formulario XML,
-            -- 100219 - Venta Servicios Financieros) registrada (estado 13) y el parametro de
-            -- solicitar visado de aprobacion debe iniciarse el tramite 289.
-            IF instr(sbEstadoPendienteInstalacion, dapr_product.fnugetproduct_status_id(inuproduct_id => nuProducto) || '|') > 0 THEN
-
-                SELECT COUNT(1)
-                INTO nuTieneVentaRegistrada
-                FROM mo_packages mp, mo_motive mm
-                WHERE mp.package_id = mm.package_id
-                      AND mm.product_id = nuProducto
-                      AND
-                      instr(sbSolicitudVenta, mp.package_type_id || '|') > 0
-                      AND mp.motive_status_id = nuSolicitudRegistrado;
-
-                IF nuTieneVentaRegistrada > 0 THEN
-                    nuGeneraNota := 0;
-                    ut_trace.trace(' venta registrada >0 ');
-                ELSE
-                    nuGeneraNota := 1;
-                    ut_trace.trace(' venta registrada =0 ');
-
-                END IF;
-            END IF;
+        END IF;
 
         --caso 201650 se omite If de fblaplicaentrega
-
-
-        ut_trace.trace(' va a devolver valor  ' || nuGeneraNota);
+        pkg_traza.trace('return => '||nuGeneraNota, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
         RETURN nuGeneraNota;
         -- No requiere aprobacion
-
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || sbError);
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, sberror);
-            sbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                       sbProceso || '(' || nuPaso || '): ' || sbError;
-            ut_trace.trace(sbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END fnuGeneraNota;
 
     PROCEDURE validamonto
     (
@@ -4765,161 +5147,194 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
+        15-04-2016   Sandra Muñoz           Creación
         12-04-2018   Ronald Colpas          caso 2001650 se omite validacion de aplicacion de entrega fblaplicaentrega
-
-        15-04-2016   Sandra Mu?oz           Creacion
+        25-09-2024   jcatuche               OSF-3332: Se ajusta cursor cuValorAprobacion encargado de obtener el valor del total de cargos
+                                            a gestionar [nuValorAprobacion]. Evita error cuando se registra más de un cargo en MANOT
         ******************************************************************/
 
-        sbProceso                    VARCHAR2(4000) := 'fnuGeneraNota';
-        nuPaso                       NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo                    VARCHAR2(4000) := csbPaquete||'validamonto';
         nuMaxMontoPerfilFinanciero   NUMBER; -- Maximo monto autorizado para el perfil financiero del usuario
         nuGeneraNota                 NUMBER := 1; -- Indica si se genera la nota o se envia a visado
-        sbError                      VARCHAR2(4000); -- Error
-        nuProducto                   pr_product.product_id%TYPE; -- Producto
+        nuProductStatus              pr_product.product_status_id%TYPE;
         nuNumeroDias                 ld_parameter.numeric_value%TYPE; -- Numero de dias en las que se evaluara si un producto ya se le crearon notas
         nuAcumuladoNotas             NUMBER := 0; -- Valor de las notas generadas en un periodo de tiempo para un cliente a un mismo producto
         sbEstadoPendienteInstalacion ld_parameter.value_chain%TYPE; -- Estados de producto que indican que esta pendiente de instalacion
         sbSolicitudVenta             ld_parameter.value_chain%TYPE; -- Tipos de solicitud de venta
         nuSolicitudRegistrado        ld_parameter.numeric_value%TYPE; -- Estado registrado de una solicitud
         nuTieneVentaRegistrada       ld_parameter.numeric_value%TYPE; -- Indica si un producto tiene venta registrada
-        exError EXCEPTION; -- Error controlado
         nuvaloraprobacion ldc_mantenimiento_notas_enc.valor%TYPE;
         sbUsuarioRegistra FA_APROMOFA.APMOUSRE%TYPE;
-        onuError             NUMBER;  
-    BEGIN
         
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        cursor cuValorAprobacion is
+        SELECT sum(lmne.valor)
+        FROM ldc_mantenimiento_notas_enc lmne
+        WHERE lmne.producto = inuProducto
+        AND lmne.sesion = gnuSesion;
+        
+        cursor cuAcumuladoNotas is
+        SELECT nvl(SUM(fca.caapvalo),0)
+        FROM fa_apromofa famf,
+             mo_motive   mm,
+             fa_notaapro fna,
+             fa_cargapro fca
+        WHERE famf.apmousre = sbUsuarioRegistra
+              AND famf.apmosoli = mm.package_id
+              AND trunc(famf.apmofere) >=
+              trunc(SYSDATE) - nvl(nuNumeroDias, 0)
+              AND mm.product_id = inuproducto
+              AND famf.apmocons = fna.noapapmo
+              AND fna.noapnume = fca.caapnoap
+              AND fca.caapsign = csbCredito;
+        
+        cursor cuTieneVentaRegistrada is 
+        SELECT COUNT(1)
+        FROM mo_packages mp, mo_motive mm
+        WHERE mp.package_id = mm.package_id
+              AND mm.product_id = InuProducto
+              AND
+              instr(sbSolicitudVenta, mp.package_type_id || '|') > 0
+              AND mp.motive_status_id = nuSolicitudRegistrado;
+    
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto <= '||inuProducto, csbNivelTraza);
+        
+        if cuValorAprobacion%isopen then
+            close cuValorAprobacion;
+        end if;
+        
+        if cuAcumuladoNotas%isopen then
+            close cuAcumuladoNotas;
+        end if;
+        
+        if cuTieneVentaRegistrada%isopen then
+            close cuTieneVentaRegistrada;
+        end if;
 
-        SELECT USER INTO sbUsuarioRegistra FROM dual;
+        sbUsuarioRegistra := pkg_session.getUser;
 
         -- Obtener los valores de los parametros
-        nuNumeroDias := DALD_PARAMETER.fnuGetNumeric_Value('DIAS_MONTO_NOTAS');
+        nuNumeroDias := pkg_bcld_parameter.fnuObtieneValorNumerico('DIAS_MONTO_NOTAS');
         IF nuNumeroDias IS NULL THEN
             sbError := 'No se ha definido el parametro DIAS_MONTO_NOTAS';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
         END IF;
 
-        sbEstadoPendienteInstalacion := DALD_PARAMETER.fsbGetValue_Chain('PRODUCTO_PENDIENTE_INSTALACION');
+        sbEstadoPendienteInstalacion := pkg_bcld_parameter.fsbObtieneValorCadena('PRODUCTO_PENDIENTE_INSTALACION');
         IF sbEstadoPendienteInstalacion IS NULL THEN
             sbError := 'No se ha definido el parametro PRODUCTO_PENDIENTE_INSTALACION';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
         END IF;
 
-        sbSolicitudVenta := DALD_PARAMETER.fsbGetValue_Chain('SOLICITUDES_VENTA');
+        sbSolicitudVenta := pkg_bcld_parameter.fsbObtieneValorCadena('SOLICITUDES_VENTA');
         IF sbSolicitudVenta IS NULL THEN
             sbError := 'No se ha definido el parametro SOLICITUDES_VENTA';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
         END IF;
 
-        nuSolicitudRegistrado := DALD_PARAMETER.fnuGetNumeric_Value('FNB_ESTADOSOL_REG');
+        nuSolicitudRegistrado := pkg_bcld_parameter.fnuObtieneValorNumerico('FNB_ESTADOSOL_REG');
         IF nuSolicitudRegistrado IS NULL THEN
             sbError := 'No se ha definido el parametro FNB_ESTADOSOL_REG';
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
         END IF;
-        ut_trace.trace('va a obtener el perfil financiero');
+        
+        pkg_traza.trace('va a obtener el perfil financiero',csbNivelTraza);
+        
         -- Obtener el monto maximo autorizado para el perfil financiero del usuario
-        nuMaxMontoPerfilFinanciero := GE_BOFinancialProfile.fnuMaxAmountByUser(4, sa_bouser.fnuGetUserId(sbUsuarioRegistra));
-        ut_trace.trace('usuario ' || sbUsuarioRegistra || ' valor ' ||
-                             nuMaxMontoPerfilFinanciero);
-
-
+        nuMaxMontoPerfilFinanciero := GE_BOFinancialProfile.fnuMaxAmountByUser(4, pkg_session.getUserId);
+        
+        pkg_traza.trace('usuario ' || sbUsuarioRegistra || ' valor ' ||nuMaxMontoPerfilFinanciero,csbNivelTraza);
 
         -- Valida si la entrega aplica para la gasera
         --caso-2001650 Se omite validacion de aplicacione de entrega
-
-
-            SELECT lmne.valor
-            INTO nuValorAprobacion
-            FROM ldc_mantenimiento_notas_enc lmne
-            WHERE lmne.producto = inuProducto
-                  AND lmne.sesion = gnuSesion;
-
-            ut_trace.trace(' producto ' || inuproducto);
-            BEGIN
-                SELECT SUM(nvl(fca.caapvalo, 0))
-                INTO nuAcumuladoNotas
-                FROM fa_apromofa famf,
-                     mo_motive   mm,
-                     fa_notaapro fna,
-                     fa_cargapro fca
-                WHERE famf.apmousre = sbUsuarioRegistra
-                      AND famf.apmosoli = mm.package_id
-                      AND trunc(famf.apmofere) >=
-                      trunc(SYSDATE) - nvl(nuNumeroDias, 0)
-                      AND mm.product_id = inuproducto
-                      AND famf.apmocons = fna.noapapmo
-                      AND fna.noapnume = fca.caapnoap
-                      AND fca.caapsign = csbCredito;
-            EXCEPTION
-                WHEN OTHERS THEN
-                    sbError := 'No fue posible obtener el valor de las notas realizadas';
-                    RAISE exError;
-            END;
-
-            ut_trace.trace(' valor acumulado de notas ' ||
-                                 nuAcumuladoNotas);
+        
+        nuValorAprobacion := null;
+        open cuValorAprobacion;
+        fetch cuValorAprobacion into nuValorAprobacion;
+        close cuValorAprobacion;
+        
+        nuAcumuladoNotas := null;
+        open cuAcumuladoNotas;
+        fetch cuAcumuladoNotas into nuAcumuladoNotas;
+        close cuAcumuladoNotas;
+        
+        if nuAcumuladoNotas is null then
+            sbError := 'No fue posible obtener el valor de las notas realizadas';
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
+        end if;
+        
+        pkg_traza.trace(' valor acumulado de notas ' ||nuAcumuladoNotas,csbNivelTraza);
+        pkg_traza.trace(' valor aprobacción de notas ' ||nuValorAprobacion,csbNivelTraza);
+        
             -- Requiere aprobacion
             IF (nvl(nuvaloraprobacion, 0) + NVL(nuAcumuladoNotas, 0)) >
                NVL(nuMaxMontoPerfilFinanciero, 0) THEN
                 nuGeneraNota := 0;
-                ut_trace.trace(' =0 ' || nuGeneraNota);
+            pkg_traza.trace(' =0 ' || nuGeneraNota,csbNivelTraza);
             ELSE
                 nuGeneraNota := 1;
-                ut_trace.trace(' =1 ' || nuGeneraNota);
+            pkg_traza.trace(' =1 ' || nuGeneraNota,csbNivelTraza);
                 --RETURN 0;
             END IF;
-            ut_trace.trace(' nugenera ' || nuGeneraNota);
+        
+        pkg_traza.trace('nugenera ' ||nuGeneraNota,csbNivelTraza);
             -- Si el producto tiene una solicitud de venta (587 - Venta, 100277 - Venta de Gas Cotizada IFRS,
             -- 100275 - Venta de Gas por Formulario IFRS, 100271 - Venta de Gas por Formulario
-            -- Migraci?n, 100288 - Venta de Gas por Formulario Migracion 2, 100101 - Venta de
-            -- Servicios de Ingenier?a, 323 - Venta a Constructoras, 271 - Venta de Gas por
+        -- Migración, 100288 - Venta de Gas por Formulario Migracion 2, 100101 - Venta de
+        -- Servicios de Ingeniería, 323 - Venta a Constructoras, 271 - Venta de Gas por
             -- Formulario, 100229 - Venta de Gas Cotizada, 100025 - Venta de Accesorios, 100236 -
             -- Venta de Seguros, 100264 - VENTA FNB, 100261 - Venta Seguros XML, 141 - Venta,
             -- 100218 - Venta promigas XML, 100233 - Venta de Gas por Formulario XML,
             -- 100219 - Venta Servicios Financieros) registrada (estado 13) y el parametro de
             -- solicitar visado de aprobacion debe iniciarse el tramite 289.
-            IF instr(sbEstadoPendienteInstalacion, dapr_product.fnugetproduct_status_id(inuproduct_id => InuProducto) || '|') > 0 THEN
 
-                SELECT COUNT(1)
-                INTO nuTieneVentaRegistrada
-                FROM mo_packages mp, mo_motive mm
-                WHERE mp.package_id = mm.package_id
-                      AND mm.product_id = InuProducto
-                      AND
-                      instr(sbSolicitudVenta, mp.package_type_id || '|') > 0
-                      AND mp.motive_status_id = nuSolicitudRegistrado;
+        nuProductStatus := pkg_bcproducto.fnuEstadoProducto(inuProducto => InuProducto);
+        
+        if nuProductStatus is null then
+            sbError := 'El producto '||InuProducto||' no existe en la BD';
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
+        end if;
+        
+        IF instr(sbEstadoPendienteInstalacion, nuProductStatus || '|') > 0 THEN
 
-                IF nuTieneVentaRegistrada > 0 THEN
-                    nuGeneraNota := 0;
-                    ut_trace.trace(' venta registrada >0 ');
-                ELSE
-                    nuGeneraNota := 1;
-                    ut_trace.trace(' venta registrada =0 ');
+            open cuTieneVentaRegistrada;
+            fetch cuTieneVentaRegistrada into nuTieneVentaRegistrada;
+            close cuTieneVentaRegistrada;
 
-                END IF;
+            IF nuTieneVentaRegistrada > 0 THEN
+                nuGeneraNota := 0;
+                pkg_traza.trace(' venta registrada >0 ',csbNivelTraza);
             ELSE
-                NULL;
+                nuGeneraNota := 1;
+                pkg_traza.trace(' venta registrada =0 ',csbNivelTraza);
+
             END IF;
+        ELSE
+            NULL;
+        END IF;
 
 
-        ut_trace.trace(' va a devolver valor  ' || nuGeneraNota);
+        pkg_traza.trace(' va a devolver valor  ' || nuGeneraNota,csbNivelTraza);
         osbError := nuGeneraNota;
         -- No requiere aprobacion
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace('osbError => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || sbError);
+        WHEN pkg_error.CONTROLLED_ERROR THEN
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, sbError);
-            sbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                       sbProceso || '(' || nuPaso || '): ' || sbError;
-            ut_trace.trace(sbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END validamonto;
 
     PROCEDURE proGrabar
     (
@@ -4934,24 +5349,27 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         Nombre del Paquete: proGrabar
         Descripcion:        Almacena la informacion de las notas
 
-        Autor    : Sandra Mu?oz
+        Autor    : Sandra Muñoz
         Fecha    : 15-04-2016  CA 200-201
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-
+        15-04-2016   Sandra Muñoz           Creación
+        12-04-2018   Ronald Colpas          caso 2001650 se omite validacion de aplicacion de entrega fblaplicaentrega
         28-10-2022   jcatuchemvm            OSF-637: Se ajusta cursor cuCargos eliminando DISTINCT, el cual evita que 
                                             se registre mas de un cargo para el mismo concepto, cuenta, signo, valor, causa.
                                             En MANOT se presenta el escenario para el mismo concepto, valor, causa. 
-        12-04-2018   Ronald Colpas          caso 2001650 se omite validacion de aplicacion de entrega fblaplicaentrega
-
-        15-04-2016   Sandra Mu?oz           Creacion
+        25-09-2024      jcatuche            OSF-3332: Se añade ajuste en llamado a regchargetoapprove enviando el valor base explicito del cursor cuCargos
+                                            Se añade llamado setApplication para asignar programa después de crear la aprobación de movimientos de facturación
+                                            Se añade parámetro inuValor al llamar a proDetAcreditarConcepto
+                                            Se añade restricción para novedades masivas por cuenta de cobro por inconsistencias en FAEL
+                                            Se añade validación de unicidad de novedad por solicitud, no se permiten combinaciónes de novedeades en una misma solicitud.
+                                            Se añade registro de auditoría a las solicitudes MANOT
         ******************************************************************/
 
-        sbProceso                     VARCHAR2(4000) := 'proGrabar';
-        nuPaso                        NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
+        csbMetodo                     VARCHAR2(4000) := csbPaquete||'proGrabar';
         nuSolicitud                   mo_packages.package_id%TYPE; -- Solicitud
         nuAprobacion                  fa_apromofa.apmocons%TYPE; -- Numero de aprobacion
         nuContrato                    suscripc.susccodi%TYPE; -- Contrato asociado al producto
@@ -4966,9 +5384,9 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         NuServ                        NUMBER;
         aprueba                       NUMBER;
         usuario                       VARCHAR2(10);
-
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        sbNovedad                     VARCHAR2(4);
+        sbNovedadT                    VARCHAR2(4);
+        
         CURSOR cuNovedades IS
             SELECT producto,
                    novedad,
@@ -4981,10 +5399,16 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                    sesion
             FROM ldc_mantenimiento_notas_enc lmne
             WHERE sesion = gnuSesion
-                  AND producto = inuProducto
-
-            ;
-
+                  AND producto = inuProducto;
+            
+        CURSOR cuValidaNovedad IS
+            SELECT novedad,min(rowid) row_id
+            FROM ldc_mantenimiento_notas_enc lmne
+            WHERE sesion = gnuSesion
+            AND producto = inuProducto
+            group by novedad
+            order by row_id;
+        
         --Para que solo aplique una nota por cuenta de cobro
         CURSOR cuFacturas IS
           SELECT cucofact factura,
@@ -5008,27 +5432,89 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                             lmnd.causa_cargo,
                             lmnd.signo,
                             lmnd.valor,
+                            lmnd.valor_base,
                             lmnd.cuenta_cobro
             FROM ldc_mantenimiento_notas_det lmnd, cuencobr cc
             WHERE lmnd.producto = inuProducto
                   AND lmnd.sesion = gnuSesion
                   AND lmnd.cuenta_cobro = cc.cucocodi
-                  AND cc.cucofact = inuFactura
+                  AND cc.cucofact = inuFactura;
 
-            ;
+        cursor cuValorAprobacion is 
+        SELECT SUM(DECODE(lmnd.signo, csbCredito, -NVL(lmnd.valor, 0), NVL(lmnd.valor, 0))),
+               COUNT(1)
+        FROM ldc_mantenimiento_notas_det lmnd
+        WHERE lmnd.producto = inuProducto
+              AND lmnd.sesion = gnuSesion;
 
     BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('inuProducto    <= '||inuProducto, csbNivelTraza);
+        pkg_traza.trace('isbObservacion <= '||isbObservacion, csbNivelTraza);
 
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        if cuValorAprobacion%isopen then
+            close cuValorAprobacion;
+        end if;
 
-        SELECT USER INTO usuario FROM dual;
+        usuario :=  PKG_SESSION.GETUSER;
 
         proBorMantenimientoNotaDet(osbError => osbError);
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
-        /*        INSERT INTO ltrace VALUES ('esta en prograbar...'); -- Recorrer las novedades ingresadas
-        --commit;*/
+       
+        --Valida unicidad de novedades
+        sbNovedad := null;
+        FOR rgNovedades in cuValidaNovedad LOOP
+            IF sbNovedad IS NULL THEN
+                sbNovedad := rgNovedades.Novedad;
+            END IF;
+            
+            sbNovedadT := rgNovedades.Novedad;
+            
+            --Validación de combinación de novedades por gestión
+            IF sbNovedadT != sbNovedad THEN
+                sbError := 'No está permitido combinar diferentes tipos novedades por solicitud [';
+                sbError := sbError||
+                case sbNovedad 
+                    when 'AD' then 'Acreditar Deuda'
+                    when 'AC' then 'Acreditar por Concepto'
+                    when 'ACC' then 'Acreditar por Cuenta de Cobro'
+                    when 'ACCC' then 'Acreditar por Cuenta de Cobro y Concepto'
+                    when 'DC' then 'Debitar por Concepto'
+                    when 'DCC' then 'Debitar por Cuenta de Cobro'
+                    when 'DCCC' then 'Debitar por Cuenta de Cobro y Concepto'
+                    else sbNovedad
+                end;
+                sbError := sbError||' - ';
+                sbError := sbError||
+                case sbNovedadT 
+                    when 'AD' then 'Acreditar Deuda]'
+                    when 'AC' then 'Acreditar por Concepto]'
+                    when 'ACC' then 'Acreditar por Cuenta de Cobro]'
+                    when 'ACCC' then 'Acreditar por Cuenta de Cobro y Concepto]'
+                    when 'DC' then 'Debitar por Concepto]'
+                    when 'DCC' then 'Debitar por Cuenta de Cobro]'
+                    when 'DCCC' then 'Debitar por Cuenta de Cobro y Concepto]'
+                    else sbNovedadT
+                end;
+                sbError := sbError||'. Por favor registre un solo tipo de novedad por solicitud';
+                pkg_error.setErrorMessage( isbMsgErrr => sbError);
+            END IF;
+        END LOOP;
+        
+        --Restricción de novedades crédito por cuenta de cobro
+        IF sbNovedad in ('AD','ACC') THEN
+            sbError := 'Por inconsistencias en Facturación Electrónica, se restringe la gestión automática de notas crédito por cuenta de cobro [';
+            sbError := sbError||
+            case sbNovedad
+                when 'AD' then 'Acreditar Deuda]'
+                when 'ACC' then 'Acreditar por Cuenta de Cobro]'
+            end;
+            sbError := sbError||'. Por favor considerar las novedades Acreditar por Concepto o Acreditar por Cuenta de Cobro y Concepto';
+            pkg_error.setErrorMessage( isbMsgErrr => sbError);
+        END IF;
+        
         FOR rgNovedades IN cuNovedades
         LOOP
 
@@ -5037,10 +5523,10 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                 proDetAcreditarDeuda(inuProducto => rgNovedades.Producto, inuCausaCargo => rgNovedades.Causa_Cargo, osbError => osbError);
             ELSIF rgNovedades.Novedad = 'AC' THEN
                 -- Acreditar concepto
-                proDetAcreditarConcepto(inuProducto => rgNovedades.Producto, inuConcepto => rgNovedades.Concepto, inuCausaCargo => rgNovedades.Causa_Cargo, osbError => osbError);
+                proDetAcreditarConcepto(inuProducto => rgNovedades.Producto, inuConcepto => rgNovedades.Concepto, inuValor => rgNovedades.Valor, inuCausaCargo => rgNovedades.Causa_Cargo, osbError => osbError);
             ELSIF rgNovedades.Novedad = 'ACC' THEN
                 -- Acreditar cuenta de cobro
-                proDetAcreditarCuentaCobro(inuProducto => rgNovedades.Producto, inuCuenCobr => rgNovedades.Cuenta_Cobro, inuCausaCargo => rgNovedades.Causa_Cargo, osbError => osbError);
+                proDetAcreditarCuentaCobro(inuProducto => rgNovedades.Producto, inuCuenCobr => rgNovedades.Cuenta_Cobro, inuValor => rgNovedades.Valor, inuCausaCargo => rgNovedades.Causa_Cargo, osbError => osbError);
             ELSIF rgNovedades.Novedad = 'ACCC' THEN
                 -- Acreditar cuenta de cobro y concepto
                 proDetAcreditarConceptoYCC(inuProducto => rgNovedades.Producto, inuConcepto => rgNovedades.Concepto, inuValor => rgNovedades.Valor, inuCuenCobr => rgNovedades.Cuenta_Cobro, inuCausaCargo => rgNovedades.Causa_Cargo, osbError => osbError);
@@ -5054,28 +5540,33 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                 -- Debitar cuenta de cobro y concepto
                 proDetDebitarConceptoYCC(inuProducto => rgNovedades.Producto, inuConcepto => rgNovedades.Concepto, inuValor => rgNovedades.Valor, inuCuenCobr => rgNovedades.Cuenta_Cobro, inuCausaCargo => rgNovedades.Causa_Cargo, osbError => osbError);
             END IF;
+            
             IF osbError IS NOT NULL THEN
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
-
+            
         END LOOP;
 
         -- Obtener el contrato asociado al producto
-        nuContrato := dapr_product.fnugetsubscription_id(inuProducto);
+        nuContrato := pkg_bcproducto.fnuContrato(inuProducto);
+        if nuContrato is null then
+            osbError := 'El producto '||inuProducto||' no existe en la BD';
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
+        end if;
+        
+        pkg_traza.trace('Contrato :'||nuContrato,csbNivelTraza);
 
         --se revisa el monto que lleva
 
         -- Calcular el valor a aprobar
-        SELECT SUM(DECODE(lmnd.signo, csbCredito, -NVL(lmnd.valor, 0), NVL(lmnd.valor, 0))),
-               COUNT(1)
-        INTO nuValorAprobacion, nuExistenRegistrosParaAprobar
-        FROM ldc_mantenimiento_notas_det lmnd
-        WHERE lmnd.producto = inuProducto
-              AND lmnd.sesion = gnuSesion;
+        open cuValorAprobacion;
+        fetch cuValorAprobacion into nuValorAprobacion, nuExistenRegistrosParaAprobar;
+        close cuValorAprobacion;
+        
+        pkg_traza.trace('Valor a aprobar :'||nuValorAprobacion,csbNivelTraza);
 
         IF nuExistenRegistrosParaAprobar > 0
-        /*  AND aprueba = 0 */
-         THEN
+        THEN
 
             -- Crear la solicitud
             BEGIN
@@ -5085,20 +5576,18 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
             EXCEPTION
                 WHEN OTHERS THEN
-                    osbError := 'No fue posible crear la solicitud de aprobacion';
-                    ut_trace.trace('fa_boapprobilladjustmov.regapproverequest(inusubscriptionid => ' ||
-                                   nuContrato || ',
-                                                  inuproductid      => ' ||
-                                   inuProducto || ',
-                                                  onupackageid      => ' ||
-                                   nuSolicitud || ');');
-                    RAISE exError;
+                    Pkg_Error.setError;
+                    pkg_error.geterror(nuError, sbError);
+                    osbError := 'No fue posible crear la solicitud de aprobacion. Error :'||sberror;
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END;
 
             IF nvl(nuSolicitud, -1) = -1 THEN
                 osbError := 'No fue posible crear la solicitud de aprobacion';
-                RAISE exError;
+                pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END IF;
+            
+            pkg_traza.trace('Solicitud :'||nuSolicitud,csbNivelTraza);
 
             --Se actualiza comment_ en mo_packages
             update mo_packages
@@ -5112,38 +5601,25 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                                            isbprocces => FA_BCApromofa.csbPRGA_AMOUNT, --
                                                            ionuapromofaid => nuAprobacion, --
                                                            inupackageid => nuSolicitud);
-
-
             EXCEPTION
                 WHEN OTHERS THEN
                     Pkg_Error.setError;
-                    pkg_error.geterror(onuError, osberror);
-                    osbError := 'Error al crear la aprobacion de los movimientos';
-                    ut_trace.trace('fa_boapprobilladjustmov.regapprobilladjust(inusumapprove  => ' ||
-                                   pkbillconst.CERO || ',
-                                                   isbprocces     => ' ||
-                                   FA_BCApromofa.csbPRGA_AMOUNT || ',
-                                                   ionuapromofaid => ' ||
-                                   nuAprobacion || ',
-                                                   inupackageid   => ' ||
-                                   nuSolicitud || ') ;' || ' - ' || osberror);
-                    ut_trace.trace('fa_boapprobilladjustmov.regapprobilladjust(inusumapprove  => ' ||
-                                         pkbillconst.CERO || ',
-                                                   isbprocces     => ' ||
-                                         FA_BCApromofa.csbPRGA_AMOUNT || ',
-                                                   ionuapromofaid => ' ||
-                                         nuAprobacion || ',
-                                                   inupackageid   => ' ||
-                                         nuSolicitud || ') ;' || ' - ' ||
-                                         SQLERRM);
-                    RAISE exError;
+                    pkg_error.geterror(nuError, sberror);
+                    osbError := 'Error al crear la aprobacion de los movimientos: '||sberror;
+                    pkg_error.setErrorMessage( isbMsgErrr => osbError);
             END;
-
+            
+            pkg_traza.trace('Número de aprobación :'||nuAprobacion,csbNivelTraza);
+            
+            Pkg_Error.SetApplication(csbNotaProg);
+            
             -- Obtener las facturas
             FOR rgFacturas IN cuFacturas
             LOOP
 
                 sbDocumentoSoporteAprob := NULL;
+                pkg_traza.trace('Factura :'||rgFacturas.Factura,csbNivelTraza);
+                pkg_traza.trace('Tipo Documento :'||rgFacturas.tipo_documento,csbNivelTraza);
 
                 -- Registrar la nota para aprobacion
                 BEGIN
@@ -5158,49 +5634,20 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                 EXCEPTION
                     WHEN OTHERS THEN
                         Pkg_Error.setError;
-                        pkg_error.geterror(onuError, osberror);
-                        osbError := 'Error al registrar la nota para aprobacion de la factura ' ||
-                                    rgFacturas.factura;
-                        ut_trace.trace(' fa_boapprobilladjustmov.RegNoteToApprove(inuapprovdoc  => ' ||
-                                       nuAprobacion || ',
-                                                         inucontract   => ' ||
-                                       nuContrato || ',
-                                                         inubill       => ' ||
-                                       rgFacturas.Factura || ',
-                                                         isbobserv     => ' ||
-                                       isbObservacion || ',
-                                                         inudoctype    => ' ||
-                                       rgFacturas.tipo_documento || ',
-                                                         iosbsopdoc    => ' ||
-                                       sbDocumentoSoporteAprob || ',
-                                                         onunotenumber => ' ||
-                                       nuNotaAprobacion || ');');
-
-                        ut_trace.trace(' fa_boapprobilladjustmov.RegNoteToApprove(inuapprovdoc  => ' ||
-                                             nuAprobacion || ',
-                                                         inucontract   => ' ||
-                                             nuContrato || ',
-                                                         inubill       => ' ||
-                                             rgFacturas.Factura || ',
-                                                         isbobserv     => ' ||
-                                             isbObservacion || ',
-                                                         inudoctype    => ' ||
-                                             rgFacturas.tipo_documento || ',
-                                                         iosbsopdoc    => ' ||
-                                             sbDocumentoSoporteAprob || ',
-                                                         onunotenumber => ' ||
-                                             nuNotaAprobacion || ');' ||
-                                             osberror);
-
-                        RAISE exError;
+                        pkg_error.geterror(nuError, sberror);
+                        osbError := 'Error al registrar la nota para aprobacion de la factura '||rgFacturas.factura||': '||sberror;
+                        pkg_error.setErrorMessage( isbMsgErrr => osbError);
                 END;
+                
+                pkg_traza.trace('Documento soporte :'||sbDocumentoSoporteAprob,csbNivelTraza);
+                pkg_traza.trace('Nota creada :'||nuNotaAprobacion,csbNivelTraza);
 
-                ut_trace.trace('nuFacturaAnt ' || nuFacturaAnt);
-                ut_trace.trace('rgfacturas ' || rgFacturas.Factura);
+                pkg_traza.trace('nuFacturaAnt ' || nuFacturaAnt,csbNivelTraza);
+                pkg_traza.trace('rgfacturas ' || rgFacturas.Factura,csbNivelTraza);
 
                 IF nuFacturaAnt <> rgFacturas.Factura THEN
                     --lmf*/
-                    ut_trace.trace('entro por diferencia de facturas');
+                    pkg_traza.trace('entro por diferencia de facturas',csbNivelTraza);
 
                     -- Crear los cargos para aprobacion
                     FOR rgCargos IN cuCargos(inuFactura => rgFacturas.factura)
@@ -5230,7 +5677,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                                                    inuvalue => rgCargos.Valor, --
                                                                    isbsopdocuc => sbDocumentoSoporteCargo, --
                                                                    inunoteid => nuNotaAprobacion, --
-                                                                   inubasevalue => rgCargos.Valor, --
+                                                                   inubasevalue => rgCargos.Valor_Base, --
                                                                    iboapplypolicy => TRUE);
                     END LOOP;
                     nuFacturaAnt := rgFacturas.Factura;
@@ -5249,23 +5696,35 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         ldc_pkMantenimientoNotas.proBorraDatosTemporales(osbError => osbError);
 
         IF osbError IS NOT NULL THEN
-            RAISE exError;
+            pkg_error.setErrorMessage( isbMsgErrr => osbError);
         END IF;
 
         COMMIT;
-
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+        
+        --Registra auditoría MANOT Exito
+        prRegistraAuditoria(sbNovedad,nuSolicitud,isbObservacion,sbNovedadT,null);
+        
+        pkg_traza.trace('onuSolicitud   => '||onuSolicitud, csbNivelTraza);
+        pkg_traza.trace('osbError       => '||osbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
+        WHEN pkg_error.CONTROLLED_ERROR THEN
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError; 
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            --Registra auditoría MANOT fallo
+            prRegistraAuditoria(sbNovedad,nuSolicitud,isbObservacion,sbNovedadT,sbError);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
+            pkg_error.geterror(nuError, sbError);
+            osbError := sbError;
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            --Registra auditoría MANOT fallo
+            prRegistraAuditoria(sbNovedad,nuSolicitud,isbObservacion,sbNovedadT,sbError);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END proGrabar;
 
     PROCEDURE proGrabarDebitarConcepto(inuPackage in mo_packages.package_id%type) IS
 
@@ -5280,17 +5739,9 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        29-04-2024      jcatuchemvm         OSF-3206: Se elimina en el llamado al procedimiento para ajustar la cuenta el valor del impuesto [nuvaloriva]
-                                            el procedimiento de registro del cargo de iva ya realiza el ajuste de la cuenta para el valor del impuesto.
-                                            Evita que la cuenta quede desajustada
-        19-06-2023   Diana Montes           OSF-1347: Se modifica para que ejecute el proceso solamente cuando tenga registro 
-                                            en la entidad ldc_mantenimiento_notas_dif (cuando se registra por MANOT), se 
-                                            encuentra en la accion 8342 en el flujo. 
-        13-06-2023   Diana Montes           OSF-1117: Se modifica para que todos los cargos queden 
-                                            asociados a una sola cuenta de cobro y factura
-
+        30-11-2020   Miguel Ballesteros     caso 271: se modificar el cierre del cursor cuConcIva
         28-10-2022   jcatuchemvm            OSF-637: Se ajusta cursor cuDebConc el cual duplicaba los cargos
                                             que en MANOT se registran para el mismo concepto y valor, ya que en
                                             ldc_mantenimiento_notas_dif no se hace distincion por el valor, ahora 
@@ -5298,38 +5749,43 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                             Se actualiza la variable nuvaloriva en cada iteracion de concepto, para evitar
                                             que las cuentas de cobro queden con un saldo errado correspondiente al valor del
                                             IVA de la cuenta/concepto anterior
-        30-11-2020   Miguel Ballesteros     caso 271: se modificar el cierre del cursor cuConcIva
-
+        13-06-2023   Diana Montes           OSF-1117: Se modifica para que todos los cargos queden 
+                                            asociados a una sola cuenta de cobro y factura
+        19-06-2023   Diana Montes           OSF-1347: Se modifica para que ejecute el proceso solamente cuando tenga registro 
+                                            en la entidad ldc_mantenimiento_notas_dif (cuando se registra por MANOT), se 
+                                            encuentra en la accion 8342 en el flujo. 
+        29-04-2024   jcatuche               OSF-3206: Se elimina en el llamado al procedimiento para ajustar la cuenta el valor del impuesto [nuvaloriva]
+                                            el procedimiento de registro del cargo de iva ya realiza el ajuste de la cuenta para el valor del impuesto.
+                                            Evita que la cuenta quede desajustada
+        25-09-2024   jcatuche               OSF-3332: Se especifica valor base del iva al llamar al procedimiento DetailRegister
+                                            Se elimina variable sbDifeProg para dar paso a la constante csbNotaProg
         ******************************************************************/
         csbMetodo                     VARCHAR2(4000) := csbPaquete||'proGrabarDebitarConcepto';
-      nuFactura              factura.factcodi%TYPE; -- Numero de factura
-      nuContrato             NUMBER;
-      grcSubscription        suscripc%ROWTYPE;
-      nuCuentaCobro          cuencobr.cucocodi%TYPE;
-      rcProduct              servsusc%ROWTYPE;
-      nuNote                 notas.notanume%TYPE;
-      sbDifeProg             CHAR(4) := 'FRNF';
-      nuNroCuotas            NUMBER;
-      nuSaldo                NUMBER;
-      nuTotalAcumCapital     NUMBER;
-      nuTotalAcumCuotExtr    NUMBER;
-      nuTotalAcumInteres     NUMBER;
-      sbRequiereVisado       VARCHAR2(10);
-      nuDifeCofi             NUMBER;
-      nuMetodoCalculo        ld_parameter.numeric_value%TYPE; -- Metodo de calculo
-      nuConcIva              NUMBER := 0; --concepto de iva
-      nuvaloriva             NUMBER := 0; --valor de iva proyectado
-      nuPorIva               NUMBER := 0; --porcentaje IVA
-      sbError                VARCHAR2(4000) := NULL;
-      onuError             NUMBER;  
-      SBSIGNAPPLIED   cargos.cargsign%type;
-      NUADJUSTAPPLIED cargos.cargvalo%type;
-      cuentaC         cuencobr.cucocodi%TYPE;
-      nuProduct       servsusc.sesunuse%TYPE;
-      sbDocSoporte    ldc_mantenimiento_notas_dif.docsoporte%TYPE;
+        nuFactura              factura.factcodi%TYPE; -- Numero de factura
+        nuContrato             NUMBER;
+        grcSubscription        suscripc%ROWTYPE;
+        nuCuentaCobro          cuencobr.cucocodi%TYPE;
+        rcProduct              servsusc%ROWTYPE;
+        nuNote                 notas.notanume%TYPE;
+        nuNroCuotas            NUMBER;
+        nuSaldo                NUMBER;
+        nuTotalAcumCapital     NUMBER;
+        nuTotalAcumCuotExtr    NUMBER;
+        nuTotalAcumInteres     NUMBER;
+        sbRequiereVisado       VARCHAR2(10);
+        nuDifeCofi             NUMBER;
+        nuMetodoCalculo        ld_parameter.numeric_value%TYPE; -- Metodo de calculo
+        nuConcIva              NUMBER := 0; --concepto de iva
+        nuvaloriva             NUMBER := 0; --valor de iva proyectado
+        nuPorIva               NUMBER := 0; --porcentaje IVA
+        SBSIGNAPPLIED   cargos.cargsign%type;
+        NUADJUSTAPPLIED cargos.cargvalo%type;
+        cuentaC         cuencobr.cucocodi%TYPE;
+        nuProduct       servsusc.sesunuse%TYPE;
+        sbDocSoporte    ldc_mantenimiento_notas_dif.docsoporte%TYPE;
 
-      --Consulta la solicitud a procesar
-      cursor cuDebConc is
+        --Consulta la solicitud a procesar
+        cursor cuDebConc is
         select c.*,m.*,c.rowid row_id
           from cargos c,  ( select distinct * from ldc_mantenimiento_notas_dif a where a.package_id = inuPackage ) m
          where cargcuco+0 = -1
@@ -5337,8 +5793,8 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
            and cargconc = m.concepto_id
            and cargdoso = m.docsoporte;
 
-      --caso 200-1650 Consulta el concepto IVA del base
-      CURSOR cuConcIva (nuConcepto concepto.conccodi%type) is
+        --caso 200-1650 Consulta el concepto IVA del base
+        CURSOR cuConcIva (nuConcepto concepto.conccodi%type) is
         SELECT c.coblconc
           FROM concbali c
          WHERE c.coblcoba = nuConcepto
@@ -5348,7 +5804,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                  WHERE t.conccodi = c.coblconc
                    AND t.concticl = cnuTipoconcliq);
                    
-       -- obtiene el producto nuevo dmontes
+        -- obtiene el producto nuevo dmontes
         CURSOR cuProduct IS
         select distinct(product_id) product_id,DOCSOPORTE  from ldc_mantenimiento_notas_dif
         where package_id = inuPackage;              
@@ -5367,15 +5823,15 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
         close   cuProduct;  
         if nuProduct != -1 then
         
-            Pkg_Error.SetApplication(sbDifeProg);     
+            Pkg_Error.SetApplication(csbNotaProg);     
             -- crear factura
             pkAccountStatusMgr.GetNewAccoStatusNum(nuFactura);
             -- Obtener el codigo del contrato
             nuContrato := pkg_bcproducto.fnuContrato(nuProduct);
             if nuContrato is null then
-                pkg_error.setErrorMessage(isbMsgErrr => 'El producto '||nuProduct||' no existe en la BD');
+                sbError := 'El producto '||nuProduct||' no existe en la BD';
+                pkg_error.setErrorMessage( isbMsgErrr => sbError);
             end if;
-            nuContrato := dapr_product.fnugetsubscription_id(nuProduct);
             
             grcSubscription := pktblSuscripc.frcGetRecord(nuContrato);
 
@@ -5401,84 +5857,80 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
              where notafact =-1
              and notanume = nuNote;
              
-          for rd in cuDebConc loop
+            for rd in cuDebConc loop
+
+                -- Actualiza la cuenta de cobro de los cargos a la -1
+                update cargos c
+                set cargcuco = nuCuentaCobro
+                where c.rowid    = rd.row_id
+                and c.cargcuco = -1
+                and c.cargnuse = rd.cargnuse
+                and c.cargconc = rd.cargconc
+                and c.cargdoso = rd.cargdoso;
+                
+                 --Actualizamos la cartera del usario
+                PKUPDACCORECEIV.UPDACCOREC(PKBILLCONST.CNUSUMA_CARGO,
+                                           nuCuentaCobro,
+                                           nuContrato,
+                                           rd.cargnuse,
+                                           rd.cargconc,
+                                           rd.cargsign,
+                                           rd.cargvalo,
+                                           PKBILLCONST.CNUUPDATE_DB);
+
+                PKACCOUNTMGR.ADJUSTACCOUNT(nuCuentaCobro,
+                                           rd.cargnuse,
+                                           rd.cargcaca,
+                                           rd.cargprog,
+                                           PKBILLCONST.CNUUPDATE_DB,
+                                           SBSIGNAPPLIED,
+                                           NUADJUSTAPPLIED,
+                                           PKBILLCONST.POST_FACTURACION);
+
+                --Se valida si el IVA del concepto base
+                nuvaloriva := 0;
+                OPEN cuConcIva (rd.cargconc);
+                FETCH cuConcIva INTO nuConcIva;
             
-
-            -- Actualiza la cuenta de cobro de los cargos a la -1
-            update cargos c
-               set cargcuco = nuCuentaCobro
-             where c.rowid    = rd.row_id
-               and c.cargcuco = -1
-               and c.cargnuse = rd.cargnuse
-               and c.cargconc = rd.cargconc
-               and c.cargdoso = rd.cargdoso;
-
-            
-            
-
-             --Actualizamos la cartera del usario
-            PKUPDACCORECEIV.UPDACCOREC(PKBILLCONST.CNUSUMA_CARGO,
-                                       nuCuentaCobro,
-                                       nuContrato,
-                                       rd.cargnuse,
-                                       rd.cargconc,
-                                       rd.cargsign,
-                                       rd.cargvalo,
-                                       PKBILLCONST.CNUUPDATE_DB);
-
-            PKACCOUNTMGR.ADJUSTACCOUNT(nuCuentaCobro,
-                                       rd.cargnuse,
-                                       rd.cargcaca,
-                                       rd.cargprog,
-                                       PKBILLCONST.CNUUPDATE_DB,
-                                       SBSIGNAPPLIED,
-                                       NUADJUSTAPPLIED,
-                                       PKBILLCONST.POST_FACTURACION);
-
-            --Se valida si el IVA del concepto base
-            nuvaloriva := 0;
-            OPEN cuConcIva (rd.cargconc);
-            FETCH cuConcIva
-              INTO nuConcIva;
-            IF cuConcIva%FOUND THEN
-              --CLOSE cuConcIva;  --- modificacion caso 271
-              nuPorIva   := fnutraePIva(inuconcepto => nuConcIva,
+                IF cuConcIva%FOUND THEN
+                    
+                    nuPorIva   := fnutraePIva(inuconcepto => nuConcIva,
                                         inuserv     => PKG_BCPRODUCTO.FNUTIPOPRODUCTO(rd.cargnuse));
-              nuValorIva := round(rd.cargvalo * (nuPorIva / 100), 0);
+                    nuValorIva := round(rd.cargvalo * (nuPorIva / 100), 0);
 
-              pkg_traza.trace('debitar concepto IVA: ' ||nuConcIva||', valor: '||nuValorIva,csbNivelTraza);
+                    pkg_traza.trace('debitar concepto IVA: ' ||nuConcIva||', valor: '||nuValorIva,csbNivelTraza);
 
-              -- Crear Detalle Nota debito del IVA
-              FA_BOBillingNotes.DetailRegister(nuNote, --
+                    -- Crear Detalle Nota debito del IVA
+                    FA_BOBillingNotes.DetailRegister(nuNote, --
                                                rd.product_id, --
                                                nuContrato, --
                                                nuCuentaCobro, --
                                                nuConcIva, --
                                                rd.cargcaca, --
                                                nuValorIva, --
-                                               nuValorIva, --
+                                               rd.cargvalo, --
                                                pkBillConst.csbTOKEN_NOTA_DEBITO ||
                                                nuNote, --
                                                pkBillConst.DEBITO, --
                                                 Constants_Per.Csbsi, --
                                                NULL, --
                                                 Constants_Per.Csbsi);
-            END IF;
+                END IF;
 
-            CLOSE cuConcIva; --- modificacion caso 271
+                CLOSE cuConcIva; --- Modificación caso 271
 
-            IF rd.plan_dife IS NOT NULL AND rd.cuotas IS NOT NULL THEN
-              --Obtenemos el metodo de calculo para el plan de financiacion
-              nuMetodoCalculo := pktblplandife.fnugetpldimccd(rd.plan_dife);
+                IF rd.plan_dife IS NOT NULL AND rd.cuotas IS NOT NULL THEN
+                    --Obtenemos el metodo de calculo para el plan de financiacion
+                    nuMetodoCalculo := pktblplandife.fnugetpldimccd(rd.plan_dife);
 
-              -- Crea diferido si las cuotas y el plan son no nulos, si son nulos es porque se trae a presente mes
-              ldc_validalegcertnuevas.financiarconceptosfactura(inunumprodsfinanc    => rd.product_id, --
+                    -- Crea diferido si las cuotas y el plan son no nulos, si son nulos es porque se trae a presente mes
+                    ldc_validalegcertnuevas.financiarconceptosfactura(inunumprodsfinanc    => rd.product_id, --
                                                                 inufactura           => nuFactura, --
                                                                 inuplanid            => rd.plan_dife, --
                                                                 inumetodo            => nuMetodoCalculo, --
                                                                 inudifenucu          => rd.cuotas, --
                                                                 isbdocusopo          => '-', --
-                                                                isbdifeprog          => sbDifeProg, --
+                                                                isbdifeprog          => csbNotaProg, --
                                                                 onuacumcuota         => nuNroCuotas, --
                                                                 onusaldo             => nuSaldo, --
                                                                 onutotalacumcapital  => nuTotalAcumCapital, --
@@ -5486,16 +5938,16 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
                                                                 onutotalacuminteres  => nuTotalAcumInteres, --
                                                                 osbrequierevisado    => sbRequiereVisado, --
                                                                 onudifecofi          => nuDifeCofi);
-            END IF;
+                END IF;
 
-          end loop; 
+            end loop; 
             
         end if;      
         
+        delete from ldc_mantenimiento_notas_dif where package_id = inuPackage;
 
-      delete from ldc_mantenimiento_notas_dif where package_id = inuPackage;
-
-      pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+        
     EXCEPTION
         WHEN pkg_error.CONTROLLED_ERROR THEN
             pkg_error.geterror(nuError, sbError);
@@ -5510,53 +5962,11 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
             raise pkg_error.CONTROLLED_ERROR;
     END proGrabarDebitarConcepto;    
 
-    PROCEDURE proPlantilla
-    (
-        nuDato   NUMBER,
-        osbError OUT VARCHAR2
-    ) IS
+    FUNCTION fcnconcepnoacredit RETURN CONSTANTS_PER.TYREFCURSOR IS
         /*****************************************************************
         Propiedad intelectual de Gases del Caribe.
 
-        Nombre del Paquete:
-        Descripcion:
-
-        Autor    : Sandra Mu?oz
-        Fecha    : 15-04-2016  CA 200-201
-
-        Historia de Modificaciones
-
-        DD-MM-YYYY    <Autor>.              Modificacion
-        -----------  -------------------    -------------------------------------
-        15-04-2016   Sandra Mu?oz           Creacion
-        ******************************************************************/
-
-        sbProceso VARCHAR2(4000) := 'proInsertarMantenimientoNota';
-        nuPaso    NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
-    BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
-
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
-    EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || osbError);
-        WHEN OTHERS THEN
-            Pkg_Error.setError;
-            pkg_error.geterror(onuError, osberror);
-            osbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                        sbProceso || '(' || nuPaso || '): ' || osberror;
-            ut_trace.trace(osbError);
-    END;
-
-    FUNCTION fcnconcepnoacredit RETURN PKCONSTANTE.TYREFCURSOR IS
-        /*****************************************************************
-        Propiedad intelectual de Gases del Caribe.
-
-        Nombre del Paquete:
+        Nombre del Paquete:fcnconcepnoacredit
         Descripcion:
 
         Autor    : Luis Fren G
@@ -5565,38 +5975,103 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_PKMANTENIMIENTONOTAS IS
 
         Historia de Modificaciones
 
-        DD-MM-YYYY    <Autor>.              Modificacion
+        DD-MM-YYYY    <Autor>.              Modificación
         -----------  -------------------    -------------------------------------
-        10-04-2017   Luis Fren G           Creacion
+        10-04-2017   Luis Fren G           Creación
         ******************************************************************/
 
-        sbProceso     VARCHAR2(4000) := 'fcnconcepnoacredit';
-        nuPaso        NUMBER; -- Ultimo paso ejecutado antes de ocurrir el error
-        crConcepNoAcr PKCONSTANTE.TYREFCURSOR;
-        sbError       VARCHAR2(4000); -- Error
-        exError EXCEPTION; -- Error controlado
-        onuError             NUMBER;  
+        csbMetodo     VARCHAR2(4000) := csbPaquete||'fcnconcepnoacredit';
+        crConcepNoAcr CONSTANTS_PER.TYREFCURSOR;
+        
     BEGIN
-        ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
 
         -- Consulta cursor referenciado
         OPEN crConcepNoAcr FOR
             SELECT l.conccodi FROM ldc_conc_no_acred l ORDER BY 1;
 
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
         RETURN crConcepNoAcr;
 
-        ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
     EXCEPTION
-        WHEN exError THEN
-            ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||
-                           sbProceso || '(' || nuPaso || '):' || sbError);
         WHEN OTHERS THEN
             Pkg_Error.setError;
-            pkg_error.geterror(onuError, sberror);
-            sbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||
-                       sbProceso || '(' || nuPaso || '): ' || sberror;
-            ut_trace.trace(sbError);
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
     END;
+    
+    PROCEDURE prRegistraAuditoria
+    ( 
+        isbNovedad      IN VARCHAR2,
+        inuSolicitud    IN NUMBER,
+        isbObservacion  IN VARCHAR2,
+        isbNovedad2     IN VARCHAR2,
+        isbError        IN VARCHAR2
+    )IS
+        /*****************************************************************
+        Propiedad intelectual de Gases del Caribe.
+
+        Nombre del procedimiento: prRegistraAuditoria
+        Descripcion:
+
+        Autor    :
+        Fecha    :
+
+        Historia de Modificaciones
+
+        DD/MM/YYYY      <Autor>.            Modificación
+        -----------     ---------------     -------------------------------------
+        02/12/2024      jcatuche            OSF-3332: Creación 
+        ******************************************************************/
+        PRAGMA AUTONOMOUS_TRANSACTION;
+        
+        csbMetodo                     VARCHAR2(4000) := csbPaquete||'prRegistraAuditoria';
+        
+        rcAuditoria                   PKG_AUDITORIA_MANOT.styRegistro;
+        dtFecha                       date := SYSDATE;
+        
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+        pkg_traza.trace('isbNovedad     <= '||isbNovedad, csbNivelTraza);
+        pkg_traza.trace('inuSolicitud   <= '||inuSolicitud, csbNivelTraza);
+        pkg_traza.trace('isbNovedad2    <= '||isbNovedad2, csbNivelTraza);
+        pkg_traza.trace('isbError       <= '||isbError, csbNivelTraza);
+        
+        rcAuditoria.novedad     := nvl(isbNovedad,'ERR');
+        rcAuditoria.usuario     := PKG_SESSION.GETUSER;
+        rcAuditoria.fecha       := dtFecha;
+        rcAuditoria.solicitud   := nvl(inuSolicitud,-1);
+        rcAuditoria.observacion := isbObservacion;
+        rcAuditoria.error       := isbError;
+        
+        --Inserta novedad 1
+        PKG_AUDITORIA_MANOT.prInsRegistro(rcAuditoria);
+        
+        if isbNovedad2 is not null and isbNovedad != isbNovedad2 then 
+            
+            --Inserta novedad 2
+            rcAuditoria.novedad     := isbNovedad2;
+            PKG_AUDITORIA_MANOT.prInsRegistro(rcAuditoria);
+            
+        end if;
+        
+        commit;
+        
+        pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin);
+    EXCEPTION
+        WHEN pkg_error.CONTROLLED_ERROR THEN
+            rollback;
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Erc);
+        WHEN OTHERS THEN
+            rollback;
+            Pkg_Error.setError;
+            pkg_error.geterror(nuError, sbError);
+            pkg_traza.trace('sbError: '||sbError,csbNivelTraza);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, csbFin_Err);
+    END prRegistraAuditoria;
 
 END LDC_PKMANTENIMIENTONOTAS;
 /

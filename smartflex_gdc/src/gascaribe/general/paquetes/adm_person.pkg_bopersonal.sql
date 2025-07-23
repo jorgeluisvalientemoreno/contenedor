@@ -17,6 +17,7 @@ create or replace package adm_person.pkg_bopersonal IS
                                        el id del usario. 
 	jsoto		15/01/2024	OSF-2175 Se eliminan las constantes para estado del producto
 	cgonzalez	26/11/2024	OSF-3668 Se adiciona servicio fnuObtPersonaPorUsuario
+    jpinedc     08/04/2025  OSF-4205 Se modifica fnuObtPersonaPorUsuario	
   ***************************************************************************/
     
   
@@ -315,7 +316,7 @@ BEGIN
 END prRegistraPersona;
 
   
-  /***************************************************************************
+    /***************************************************************************
     Propiedad Intelectual de Gases del Caribe
     Programa        : fnuObtPersonaPorUsuario
     Descripcion     : Proceso para consultar persona mediante id de usuario
@@ -326,54 +327,45 @@ END prRegistraPersona;
            inuUsuarioID                  Id de Usuario
       Parametro de entrada y/o salida
             ionuPersonaId                 Id de Persona
- 
+
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso    Descripcion
     jsoto       26/11/2024  3668    Creacion
-  ***************************************************************************/
-  FUNCTION fnuObtPersonaPorUsuario
-  (
-    inuUsuarioID    in    sa_user.user_id%type
-  )
-  RETURN  ge_person.person_id%type
-  IS             
-      csbMETODO     CONSTANT VARCHAR2(100) := csbNOMPKG||'fnuObtPersonaPorUsuario';
-      nuCodError    ge_error_log.message_id%TYPE;--Código mensaje de error
-      sbMenError    ge_error_log.description%TYPE;--Descripción mensaje de error
-      nuPerson      ge_person.person_id%type;
+    jpinedc     08/04/2025  4205    Se usa pkg_bcPersonal.fnuObtFuncionarioUsuario
+    ***************************************************************************/
+    FUNCTION fnuObtPersonaPorUsuario
+    (
+        inuUsuarioID    in    sa_user.user_id%type
+    )
+    RETURN  ge_person.person_id%type
+    IS             
+        csbMETODO     CONSTANT VARCHAR2(100) := csbNOMPKG||'fnuObtPersonaPorUsuario';
+        nuCodError    ge_error_log.message_id%TYPE;--Código mensaje de error
+        sbMenError    ge_error_log.description%TYPE;--Descripción mensaje de error
+        nuPerson      ge_person.person_id%type;
+      
+    BEGIN
+        pkg_traza.trace(csbMETODO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbINICIO);   
 
-	  --Persona con el primer ID encontrado para el id de usuario
-      cursor cuPersonId is
-		 select consulta.person_id
-		 from
-		 (
-			 select person_id
-			 from ge_person
-			 where user_id = inuUsuarioID
-			 order by 1 asc
-		 ) consulta
-		  where ROWNUM = 1;
+        pkg_traza.trace('Id Usuario|'||inuUsuarioID,pkg_traza.cnuNivelTrzDef);
+        
+        nuPerson    :=  pkg_bcPersonal.fnuObtFuncionarioUsuario(inuUsuarioID);
+  
+        pkg_traza.trace('Id Funcionario|'||nuPerson,pkg_traza.cnuNivelTrzDef);
       
-  BEGIN
-      pkg_traza.trace(csbMETODO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbINICIO);   
-      
-      open cuPersonId;
-         fetch cuPersonId into nuPerson;
-      close cuPersonId;   
-      pkg_traza.trace('Usuario: '||inuUsuarioID||
-                      ' - Persona obtenida:'||nuPerson,pkg_traza.cnuNivelTrzDef);
-      
-      pkg_traza.trace(csbMETODO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN);
-      return nuPerson;   
-  EXCEPTION
-      WHEN OTHERS THEN
-          pkg_error.SetError;  
-          pkg_error.GetError(nuCodError,sbMenError);          
-          pkg_traza.trace(csbMetodo||' '|| 'Error:'||nuCodError||'-'||sbMenError);
-          pkg_traza.trace(csbMETODO, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
-          RETURN nuPerson;       
-  END fnuObtPersonaPorUsuario;
+        pkg_traza.trace(csbMETODO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN);
+        
+        RETURN nuPerson;
+        
+    EXCEPTION
+        WHEN OTHERS THEN
+            pkg_error.SetError;  
+            pkg_error.GetError(nuCodError,sbMenError);          
+            pkg_traza.trace(csbMetodo||' '|| 'Error:'||nuCodError||'-'||sbMenError);
+            pkg_traza.trace(csbMETODO, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+            RETURN nuPerson;       
+    END fnuObtPersonaPorUsuario;
   
 END pkg_bopersonal;
 /

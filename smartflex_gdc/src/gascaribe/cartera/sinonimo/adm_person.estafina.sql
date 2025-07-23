@@ -1,5 +1,5 @@
-PROMPT Crea sinonimo objeto dependiente ESTAFINA
+PROMPT Crea Sinonimo a Tabla estafina
 BEGIN
-    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.ESTAFINA FOR ESTAFINA';
+    pkg_Utilidades.prCrearSinonimos( UPPER('estafina'), UPPER('open'));
 END;
 /

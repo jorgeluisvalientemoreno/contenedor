@@ -1,0 +1,6 @@
+PROMPT Crea sinonimo objeto PKG_BOSOLICITUD_INTERACCION
+
+BEGIN
+    pkg_utilidades.prCrearSinonimos('PKG_BOSOLICITUD_INTERACCION', 'PERSONALIZACIONES');
+END;
+/

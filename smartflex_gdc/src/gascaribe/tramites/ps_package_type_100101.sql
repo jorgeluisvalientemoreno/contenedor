@@ -1821,7 +1821,7 @@ RQTY_100101_.tb1_1(0):=RQTY_100101_.tb0_0(0);
 ut_trace.trace('Actualizar o insertar tabla: GR_CONFIGURA_TYPE fila (0)',1);
 UPDATE GR_CONFIGURA_TYPE SET CONFIGURA_TYPE_ID=RQTY_100101_.tb1_0(0),
 MODULE_ID=RQTY_100101_.tb1_1(0),
-DESCRIPTION='Ejecuci�n Acciones de todos los m�dulos'
+DESCRIPTION='Ejecuci¿n Acciones de todos los m¿dulos'
 ,
 GENERATION_TYPE='PL'
 ,
@@ -1836,7 +1836,7 @@ if not (sql%found) then
 INSERT INTO GR_CONFIGURA_TYPE(CONFIGURA_TYPE_ID,MODULE_ID,DESCRIPTION,GENERATION_TYPE,EXECUTION_MODE,CALL_TYPE,GENERATION_MASK) 
 VALUES (RQTY_100101_.tb1_0(0),
 RQTY_100101_.tb1_1(0),
-'Ejecuci�n Acciones de todos los m�dulos'
+'Ejecuci¿n Acciones de todos los m¿dulos'
 ,
 'PL'
 ,
@@ -1861,10 +1861,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(0):=121400707;
+RQTY_100101_.old_tb2_0(0):=121407917;
 RQTY_100101_.tb2_0(0):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(0):=RQTY_100101_.tb2_0(0);
-RQTY_100101_.old_tb2_1(0):='GE_EXEACTION_CT1E121400707'
+RQTY_100101_.old_tb2_1(0):='GE_EXEACTION_CT1E121407917'
 ;
 RQTY_100101_.tb2_1(0):=RQTY_100101_.tb2_0(0);
 RQTY_100101_.tb2_2(0):=RQTY_100101_.tb1_0(0);
@@ -1878,8 +1878,8 @@ RQTY_100101_.tb2_2(0),
 'LBTEST'
 ,
 to_date('18-05-2011 13:53:13','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:38','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:38','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -1889,7 +1889,7 @@ to_date('30-01-2024 09:48:38','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'LBC-Venta Servicio de Ingenier�a'
+'LBC-Venta Servicio de Ingenier¿a'
 ,
 'PP'
 ,
@@ -1917,7 +1917,7 @@ ut_trace.trace('Actualizar o insertar tabla: GE_ACTION_MODULE fila (0)',1);
 UPDATE GE_ACTION_MODULE SET ACTION_ID=RQTY_100101_.tb3_0(0),
 CONFIG_EXPRESSION_ID=RQTY_100101_.tb3_1(0),
 MODULE_ID=5,
-DESCRIPTION='LBC-Venta Servicio de Ingenier�a'
+DESCRIPTION='LBC-Venta Servicio de Ingenier¿a'
 ,
 EXE_AT_STATUS_CHANGE='N'
 ,
@@ -1929,7 +1929,7 @@ INSERT INTO GE_ACTION_MODULE(ACTION_ID,CONFIG_EXPRESSION_ID,MODULE_ID,DESCRIPTIO
 VALUES (RQTY_100101_.tb3_0(0),
 RQTY_100101_.tb3_1(0),
 5,
-'LBC-Venta Servicio de Ingenier�a'
+'LBC-Venta Servicio de Ingenier¿a'
 ,
 'N'
 ,
@@ -2035,7 +2035,7 @@ ACTION_REGIS_EXEC=RQTY_100101_.tb5_1(0),
 VALIDATE_XML_ID=null,
 CLASS_REGISTER_ID=null,
 TAG_NAME=RQTY_100101_.tb5_4(0),
-DESCRIPTION='Venta de Servicios de Ingenier�a'
+DESCRIPTION='Venta de Servicios de Ingenier¿a'
 ,
 PROCESS_WITH_XML='Y'
 ,
@@ -2065,7 +2065,7 @@ RQTY_100101_.tb5_1(0),
 null,
 null,
 RQTY_100101_.tb5_4(0),
-'Venta de Servicios de Ingenier�a'
+'Venta de Servicios de Ingenier¿a'
 ,
 'Y'
 ,
@@ -2105,7 +2105,7 @@ end if;
 RQTY_100101_.tb0_0(1):=5;
 ut_trace.trace('Actualizar o insertar tabla: GE_MODULE fila (1)',1);
 UPDATE GE_MODULE SET MODULE_ID=RQTY_100101_.tb0_0(1),
-DESCRIPTION='GESTI�N DE MOTIVOS'
+DESCRIPTION='GESTI¿N DE MOTIVOS'
 ,
 MNEMONIC='MO'
 ,
@@ -2120,7 +2120,7 @@ LOCALIZATION='IN'
 if not (sql%found) then
 INSERT INTO GE_MODULE(MODULE_ID,DESCRIPTION,MNEMONIC,LAST_MESSAGE,PATH_MODULE,ICON_NAME,LOCALIZATION) 
 VALUES (RQTY_100101_.tb0_0(1),
-'GESTI�N DE MOTIVOS'
+'GESTI¿N DE MOTIVOS'
 ,
 'MO'
 ,
@@ -2191,10 +2191,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(1):=121400708;
+RQTY_100101_.old_tb2_0(1):=121407918;
 RQTY_100101_.tb2_0(1):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(1):=RQTY_100101_.tb2_0(1);
-RQTY_100101_.old_tb2_1(1):='MO_INITATRIB_CT23E121400708'
+RQTY_100101_.old_tb2_1(1):='MO_INITATRIB_CT23E121407918'
 ;
 RQTY_100101_.tb2_1(1):=RQTY_100101_.tb2_0(1);
 RQTY_100101_.tb2_2(1):=RQTY_100101_.tb1_0(1);
@@ -2208,8 +2208,8 @@ RQTY_100101_.tb2_2(1),
 'LBTEST'
 ,
 to_date('29-03-2012 08:09:12','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -2219,7 +2219,7 @@ to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'INI - PAQ - MO_PACKAGES - RECEPTION_TYPE_ID - Inicializaci�n del medio de recepci�n'
+'INI - PAQ - MO_PACKAGES - RECEPTION_TYPE_ID - Inicializaci¿n del medio de recepci¿n'
 ,
 'PP'
 ,
@@ -2241,14 +2241,14 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb6_0(0):=120196909;
+RQTY_100101_.old_tb6_0(0):=120198521;
 RQTY_100101_.tb6_0(0):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 RQTY_100101_.tb6_0(0):=RQTY_100101_.tb6_0(0);
 ut_trace.trace('insertando tabla sin fallo: GE_STATEMENT fila (0)',1);
 INSERT INTO GE_STATEMENT(STATEMENT_ID,MODULE_ID,DESCRIPTION,STATEMENT,NAME) 
 VALUES (RQTY_100101_.tb6_0(0),
 16,
-'Tipos de Recepci�n de Queja'
+'Tipos de Recepci¿n de Queja'
 ,
 'SELECT r.RECEPTION_TYPE_ID id, r.description
 FROM ge_reception_type r, or_ope_uni_rece_type o, or_operating_unit u
@@ -2260,7 +2260,7 @@ FROM ge_reception_type r, or_ope_uni_rece_type o, or_operating_unit u
 '||chr(64)||'o.operating_unit_id = u.operating_unit_id '||chr(64)||'
 '||chr(64)||'u.operating_unit_id = ge_boinstancecontrol.fsbgetfieldvalue('|| chr(39) ||'MO_PACKAGES'|| chr(39) ||','|| chr(39) ||'POS_OPER_UNIT_ID'|| chr(39) ||') '||chr(64)||''
 ,
-'Tipos de Recepci�n de Queja'
+'Tipos de Recepci¿n de Queja'
 );
 
 exception 
@@ -2303,7 +2303,7 @@ INIT_EXPRESSION_ID=RQTY_100101_.tb7_7(0),
 VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=8,
-DISPLAY_NAME='Medio de recepci�n'
+DISPLAY_NAME='Medio de recepci¿n'
 ,
 DISPLAY_ORDER=8,
 INCLUDED_VAL_DOC='Y'
@@ -2345,7 +2345,7 @@ RQTY_100101_.tb7_7(0),
 null,
 null,
 8,
-'Medio de recepci�n'
+'Medio de recepci¿n'
 ,
 8,
 'Y'
@@ -2388,10 +2388,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(2):=121400709;
+RQTY_100101_.old_tb2_0(2):=121407919;
 RQTY_100101_.tb2_0(2):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(2):=RQTY_100101_.tb2_0(2);
-RQTY_100101_.old_tb2_1(2):='MO_INITATRIB_CT23E121400709'
+RQTY_100101_.old_tb2_1(2):='MO_INITATRIB_CT23E121407919'
 ;
 RQTY_100101_.tb2_1(2):=RQTY_100101_.tb2_0(2);
 RQTY_100101_.tb2_2(2):=RQTY_100101_.tb1_0(1);
@@ -2405,8 +2405,8 @@ RQTY_100101_.tb2_2(2),
 'LBTEST'
 ,
 to_date('29-03-2012 08:09:13','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -2416,7 +2416,7 @@ to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'INI - PAQ - MO_PACKAGES - CONTACT_ID - Inicializaci�n del solicitante'
+'INI - PAQ - MO_PACKAGES - CONTACT_ID - Inicializaci¿n del solicitante'
 ,
 'PP'
 ,
@@ -2461,7 +2461,7 @@ INIT_EXPRESSION_ID=RQTY_100101_.tb7_7(1),
 VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=10,
-DISPLAY_NAME='Informaci�n del Solicitante'
+DISPLAY_NAME='Informaci¿n del Solicitante'
 ,
 DISPLAY_ORDER=10,
 INCLUDED_VAL_DOC='Y'
@@ -2503,7 +2503,7 @@ RQTY_100101_.tb7_7(1),
 null,
 null,
 10,
-'Informaci�n del Solicitante'
+'Informaci¿n del Solicitante'
 ,
 10,
 'Y'
@@ -2551,7 +2551,7 @@ RQTY_100101_.tb1_1(2):=RQTY_100101_.tb0_0(1);
 ut_trace.trace('Actualizar o insertar tabla: GR_CONFIGURA_TYPE fila (2)',1);
 UPDATE GR_CONFIGURA_TYPE SET CONFIGURA_TYPE_ID=RQTY_100101_.tb1_0(2),
 MODULE_ID=RQTY_100101_.tb1_1(2),
-DESCRIPTION='Validaci�n de atributos'
+DESCRIPTION='Validaci¿n de atributos'
 ,
 GENERATION_TYPE='PL'
 ,
@@ -2566,7 +2566,7 @@ if not (sql%found) then
 INSERT INTO GR_CONFIGURA_TYPE(CONFIGURA_TYPE_ID,MODULE_ID,DESCRIPTION,GENERATION_TYPE,EXECUTION_MODE,CALL_TYPE,GENERATION_MASK) 
 VALUES (RQTY_100101_.tb1_0(2),
 RQTY_100101_.tb1_1(2),
-'Validaci�n de atributos'
+'Validaci¿n de atributos'
 ,
 'PL'
 ,
@@ -2591,10 +2591,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(3):=121400710;
+RQTY_100101_.old_tb2_0(3):=121407920;
 RQTY_100101_.tb2_0(3):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(3):=RQTY_100101_.tb2_0(3);
-RQTY_100101_.old_tb2_1(3):='MO_VALIDATTR_CT26E121400710'
+RQTY_100101_.old_tb2_1(3):='MO_VALIDATTR_CT26E121407920'
 ;
 RQTY_100101_.tb2_1(3):=RQTY_100101_.tb2_0(3);
 RQTY_100101_.tb2_2(3):=RQTY_100101_.tb1_0(2);
@@ -2608,8 +2608,8 @@ RQTY_100101_.tb2_2(3),
 'LBTEST'
 ,
 to_date('07-02-2011 11:07:44','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -2619,7 +2619,7 @@ to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'VAL - Instancia Identificador del Paquete (Requerido para generar la notificaci�n)'
+'VAL - Instancia Identificador del Paquete (Requerido para generar la notificaci¿n)'
 ,
 'PP'
 ,
@@ -2664,7 +2664,7 @@ INIT_EXPRESSION_ID=null,
 VALID_EXPRESSION_ID=RQTY_100101_.tb7_8(2),
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=5,
-DISPLAY_NAME='N�mero de Solicitud'
+DISPLAY_NAME='N¿mero de Solicitud'
 ,
 DISPLAY_ORDER=5,
 INCLUDED_VAL_DOC='Y'
@@ -2673,7 +2673,7 @@ HEADER_TAG_XML='N'
 ,
 REQUIRED='Y'
 ,
-TAG_NAME='NUMERO_DE_SOLICITUD'
+TAG_NAME='N_MERO_DE_SOLICITUD'
 ,
 GROUP_ATTRIBUTE_TYPE='N'
 ,
@@ -2706,7 +2706,7 @@ null,
 RQTY_100101_.tb7_8(2),
 null,
 5,
-'N�mero de Solicitud'
+'N¿mero de Solicitud'
 ,
 5,
 'Y'
@@ -2715,7 +2715,7 @@ null,
 ,
 'Y'
 ,
-'NUMERO_DE_SOLICITUD'
+'N_MERO_DE_SOLICITUD'
 ,
 'N'
 ,
@@ -2749,10 +2749,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(4):=121400711;
+RQTY_100101_.old_tb2_0(4):=121407921;
 RQTY_100101_.tb2_0(4):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(4):=RQTY_100101_.tb2_0(4);
-RQTY_100101_.old_tb2_1(4):='MO_INITATRIB_CT23E121400711'
+RQTY_100101_.old_tb2_1(4):='MO_INITATRIB_CT23E121407921'
 ;
 RQTY_100101_.tb2_1(4):=RQTY_100101_.tb2_0(4);
 RQTY_100101_.tb2_2(4):=RQTY_100101_.tb1_0(1);
@@ -2766,8 +2766,8 @@ RQTY_100101_.tb2_2(4),
 'LBTEST'
 ,
 to_date('07-02-2011 11:07:44','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -2799,10 +2799,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(5):=121400712;
+RQTY_100101_.old_tb2_0(5):=121407922;
 RQTY_100101_.tb2_0(5):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(5):=RQTY_100101_.tb2_0(5);
-RQTY_100101_.old_tb2_1(5):='MO_VALIDATTR_CT26E121400712'
+RQTY_100101_.old_tb2_1(5):='MO_VALIDATTR_CT26E121407922'
 ;
 RQTY_100101_.tb2_1(5):=RQTY_100101_.tb2_0(5);
 RQTY_100101_.tb2_2(5):=RQTY_100101_.tb1_0(2);
@@ -2811,14 +2811,14 @@ INSERT INTO GR_CONFIG_EXPRESSION(CONFIG_EXPRESSION_ID,OBJECT_NAME,CONFIGURA_TYPE
 VALUES (RQTY_100101_.tb2_0(5),
 RQTY_100101_.tb2_1(5),
 RQTY_100101_.tb2_2(5),
-'GE_BOINSTANCECONTROL.GETENTITYATTRIBUTE(sbReqDate);dtReqDate = UT_CONVERT.FNUCHARTODATE(sbReqDate);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE("WORK_INSTANCE",null,"MO_PROCESS","PACKAGE_TYPE_ID",nuPackageTypeId);nuParamAttribute = 17;nuMaxDays = UT_CONVERT.FNUCHARTONUMBER(PS_BOPACKTYPEPARAM.FSBGETPACKTYPEPARAM(nuPackageTypeId, nuParamAttribute, GE_BOCONSTANTS.GETTRUE()));dtFechaAct = UT_DATE.FDTSYSDATE();nuDiasDiferencia = UT_DATE.FDTDIFFDATE(dtFechaAct, dtReqDate);nuMaxDaysParam = GE_BOPARAMETER.FNUGET("LD_MAX_DAYS_REGISTER", "N");if (dtReqDate > dtFechaAct,GI_BOERRORS.SETERRORCODEARGUMENT(2741,"No est� permitido registrar una solicitud a futuro");,if (nuMaxDays <= nuMaxDaysParam,if (nuDiasDiferencia > nuMaxDays,GI_BOERRORS.SETERRORCODEARGUMENT(2741,"La fecha de registro est� fuera del rango permitido para el tipo de solicitud");,);,if (nuDiasDiferencia > nuMaxDaysParam,GI_BOERRORS.SETERRORCODEARGUMENT(2741,"La fecha de registro est� fuera del rango permitido para el tipo de solicitud")' ||
+'GE_BOINSTANCECONTROL.GETENTITYATTRIBUTE(sbReqDate);dtReqDate = UT_CONVERT.FNUCHARTODATE(sbReqDate);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE("WORK_INSTANCE",null,"MO_PROCESS","PACKAGE_TYPE_ID",nuPackageTypeId);nuParamAttribute = 17;nuMaxDays = UT_CONVERT.FNUCHARTONUMBER(PS_BOPACKTYPEPARAM.FSBGETPACKTYPEPARAM(nuPackageTypeId, nuParamAttribute, GE_BOCONSTANTS.GETTRUE()));dtFechaAct = UT_DATE.FDTSYSDATE();nuDiasDiferencia = UT_DATE.FDTDIFFDATE(dtFechaAct, dtReqDate);nuMaxDaysParam = GE_BOPARAMETER.FNUGET("LD_MAX_DAYS_REGISTER", "N");if (dtReqDate > dtFechaAct,GI_BOERRORS.SETERRORCODEARGUMENT(2741,"No est¿ permitido registrar una solicitud a futuro");,if (nuMaxDays <= nuMaxDaysParam,if (nuDiasDiferencia > nuMaxDays,GI_BOERRORS.SETERRORCODEARGUMENT(2741,"La fecha de registro est¿ fuera del rango permitido para el tipo de solicitud");,);,if (nuDiasDiferencia > nuMaxDaysParam,GI_BOERRORS.SETERRORCODEARGUMENT(2741,"La fecha de registro est¿ fuera del rango permitido para el tipo de solicitud")' ||
 ';,););)'
 ,
 'JUANPAMP'
 ,
 to_date('15-04-2013 09:33:35','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:39','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -2828,7 +2828,7 @@ to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'VAL - PAQ - MO_PACKAGES - REQUEST_DATE - Valida que la fecha de registro hacia atr�s no sea mayor al num�ro de d�as definido en el par�metro MAX_DAYS'
+'VAL - PAQ - MO_PACKAGES - REQUEST_DATE - Valida que la fecha de registro hacia atr¿s no sea mayor al num¿ro de d¿as definido en el par¿metro MAX_DAYS'
 ,
 'PP'
 ,
@@ -2959,10 +2959,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(6):=121400713;
+RQTY_100101_.old_tb2_0(6):=121407923;
 RQTY_100101_.tb2_0(6):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(6):=RQTY_100101_.tb2_0(6);
-RQTY_100101_.old_tb2_1(6):='MO_INITATRIB_CT23E121400713'
+RQTY_100101_.old_tb2_1(6):='MO_INITATRIB_CT23E121407923'
 ;
 RQTY_100101_.tb2_1(6):=RQTY_100101_.tb2_0(6);
 RQTY_100101_.tb2_2(6):=RQTY_100101_.tb1_0(1);
@@ -2976,8 +2976,8 @@ RQTY_100101_.tb2_2(6),
 'LBTEST'
 ,
 to_date('21-06-2011 16:30:12','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -3009,10 +3009,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(7):=121400714;
+RQTY_100101_.old_tb2_0(7):=121407924;
 RQTY_100101_.tb2_0(7):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(7):=RQTY_100101_.tb2_0(7);
-RQTY_100101_.old_tb2_1(7):='MO_VALIDATTR_CT26E121400714'
+RQTY_100101_.old_tb2_1(7):='MO_VALIDATTR_CT26E121407924'
 ;
 RQTY_100101_.tb2_1(7):=RQTY_100101_.tb2_0(7);
 RQTY_100101_.tb2_2(7):=RQTY_100101_.tb1_0(2);
@@ -3026,8 +3026,8 @@ RQTY_100101_.tb2_2(7),
 'LBTEST'
 ,
 to_date('21-06-2011 16:30:13','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -3059,7 +3059,7 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb6_0(1):=120196910;
+RQTY_100101_.old_tb6_0(1):=120198522;
 RQTY_100101_.tb6_0(1):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 RQTY_100101_.tb6_0(1):=RQTY_100101_.tb6_0(1);
 ut_trace.trace('insertando tabla sin fallo: GE_STATEMENT fila (1)',1);
@@ -3199,10 +3199,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(8):=121400715;
+RQTY_100101_.old_tb2_0(8):=121407925;
 RQTY_100101_.tb2_0(8):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(8):=RQTY_100101_.tb2_0(8);
-RQTY_100101_.old_tb2_1(8):='MO_INITATRIB_CT23E121400715'
+RQTY_100101_.old_tb2_1(8):='MO_INITATRIB_CT23E121407925'
 ;
 RQTY_100101_.tb2_1(8):=RQTY_100101_.tb2_0(8);
 RQTY_100101_.tb2_2(8):=RQTY_100101_.tb1_0(1);
@@ -3216,8 +3216,8 @@ RQTY_100101_.tb2_2(8),
 'LBTEST'
 ,
 to_date('29-03-2012 08:09:13','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -3227,7 +3227,7 @@ to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'INI - PAQ - MO_PACKAGES - ADDRESS_ID - inicializaci�n de la direcci�n de respuesta'
+'INI - PAQ - MO_PACKAGES - ADDRESS_ID - inicializaci¿n de la direcci¿n de respuesta'
 ,
 'PP'
 ,
@@ -3272,7 +3272,7 @@ INIT_EXPRESSION_ID=RQTY_100101_.tb7_7(5),
 VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=11,
-DISPLAY_NAME='Direcci�n de Respuesta'
+DISPLAY_NAME='Direcci¿n de Respuesta'
 ,
 DISPLAY_ORDER=11,
 INCLUDED_VAL_DOC='Y'
@@ -3314,7 +3314,7 @@ RQTY_100101_.tb7_7(5),
 null,
 null,
 11,
-'Direcci�n de Respuesta'
+'Direcci¿n de Respuesta'
 ,
 11,
 'Y'
@@ -3379,7 +3379,7 @@ INIT_EXPRESSION_ID=null,
 VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=12,
-DISPLAY_NAME='Observaci�n'
+DISPLAY_NAME='Observaci¿n'
 ,
 DISPLAY_ORDER=12,
 INCLUDED_VAL_DOC='Y'
@@ -3421,7 +3421,7 @@ null,
 null,
 null,
 12,
-'Observaci�n'
+'Observaci¿n'
 ,
 12,
 'Y'
@@ -3464,10 +3464,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(9):=121400716;
+RQTY_100101_.old_tb2_0(9):=121407926;
 RQTY_100101_.tb2_0(9):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(9):=RQTY_100101_.tb2_0(9);
-RQTY_100101_.old_tb2_1(9):='MO_INITATRIB_CT23E121400716'
+RQTY_100101_.old_tb2_1(9):='MO_INITATRIB_CT23E121407926'
 ;
 RQTY_100101_.tb2_1(9):=RQTY_100101_.tb2_0(9);
 RQTY_100101_.tb2_2(9):=RQTY_100101_.tb1_0(1);
@@ -3481,8 +3481,8 @@ RQTY_100101_.tb2_2(9),
 'LBTEST'
 ,
 to_date('21-08-2012 11:01:07','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -3537,7 +3537,7 @@ INIT_EXPRESSION_ID=RQTY_100101_.tb7_7(7),
 VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=19,
-DISPLAY_NAME='Facturaci�n Es En La Recurrente'
+DISPLAY_NAME='Facturaci¿n Es En La Recurrente'
 ,
 DISPLAY_ORDER=19,
 INCLUDED_VAL_DOC='N'
@@ -3579,7 +3579,7 @@ RQTY_100101_.tb7_7(7),
 null,
 null,
 19,
-'Facturaci�n Es En La Recurrente'
+'Facturaci¿n Es En La Recurrente'
 ,
 19,
 'N'
@@ -3729,10 +3729,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(10):=121400717;
+RQTY_100101_.old_tb2_0(10):=121407927;
 RQTY_100101_.tb2_0(10):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(10):=RQTY_100101_.tb2_0(10);
-RQTY_100101_.old_tb2_1(10):='MO_INITATRIB_CT23E121400717'
+RQTY_100101_.old_tb2_1(10):='MO_INITATRIB_CT23E121407927'
 ;
 RQTY_100101_.tb2_1(10):=RQTY_100101_.tb2_0(10);
 RQTY_100101_.tb2_2(10):=RQTY_100101_.tb1_0(1);
@@ -3746,8 +3746,8 @@ RQTY_100101_.tb2_2(10),
 'LBTEST'
 ,
 to_date('07-02-2011 14:22:47','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -3757,7 +3757,7 @@ to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'INI - PACKAGES - MO_PROCESS - CONTRACT_INFORMATION - Inicializa Atributo de Modificaci�n de Cliente'
+'INI - PACKAGES - MO_PROCESS - CONTRACT_INFORMATION - Inicializa Atributo de Modificaci¿n de Cliente'
 ,
 'PP'
 ,
@@ -3779,10 +3779,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(11):=121400718;
+RQTY_100101_.old_tb2_0(11):=121407928;
 RQTY_100101_.tb2_0(11):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(11):=RQTY_100101_.tb2_0(11);
-RQTY_100101_.old_tb2_1(11):='MO_VALIDATTR_CT26E121400718'
+RQTY_100101_.old_tb2_1(11):='MO_VALIDATTR_CT26E121407928'
 ;
 RQTY_100101_.tb2_1(11):=RQTY_100101_.tb2_0(11);
 RQTY_100101_.tb2_2(11):=RQTY_100101_.tb1_0(2);
@@ -3796,8 +3796,8 @@ RQTY_100101_.tb2_2(11),
 'OPEN'
 ,
 to_date('10-01-2018 21:12:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:39','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -3853,7 +3853,7 @@ INIT_EXPRESSION_ID=RQTY_100101_.tb7_7(9),
 VALID_EXPRESSION_ID=RQTY_100101_.tb7_8(9),
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=18,
-DISPLAY_NAME='Informaci�n de contrato'
+DISPLAY_NAME='Informaci¿n de contrato'
 ,
 DISPLAY_ORDER=18,
 INCLUDED_VAL_DOC='Y'
@@ -3862,7 +3862,7 @@ HEADER_TAG_XML='N'
 ,
 REQUIRED='Y'
 ,
-TAG_NAME='INFORMACION_DE_CONTRATO'
+TAG_NAME='INFORMACI_N_DE_CONTRATO'
 ,
 GROUP_ATTRIBUTE_TYPE='N'
 ,
@@ -3895,7 +3895,7 @@ RQTY_100101_.tb7_7(9),
 RQTY_100101_.tb7_8(9),
 null,
 18,
-'Informaci�n de contrato'
+'Informaci¿n de contrato'
 ,
 18,
 'Y'
@@ -3904,7 +3904,7 @@ null,
 ,
 'Y'
 ,
-'INFORMACION_DE_CONTRATO'
+'INFORMACI_N_DE_CONTRATO'
 ,
 'N'
 ,
@@ -4495,7 +4495,7 @@ INIT_EXPRESSION_ID=null,
 VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=15,
-DISPLAY_NAME='C�digo Canal De Ventas'
+DISPLAY_NAME='C¿digo Canal De Ventas'
 ,
 DISPLAY_ORDER=15,
 INCLUDED_VAL_DOC='N'
@@ -4537,7 +4537,7 @@ null,
 null,
 null,
 15,
-'C�digo Canal De Ventas'
+'C¿digo Canal De Ventas'
 ,
 15,
 'N'
@@ -4580,10 +4580,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(12):=121400719;
+RQTY_100101_.old_tb2_0(12):=121407929;
 RQTY_100101_.tb2_0(12):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(12):=RQTY_100101_.tb2_0(12);
-RQTY_100101_.old_tb2_1(12):='MO_INITATRIB_CT23E121400719'
+RQTY_100101_.old_tb2_1(12):='MO_INITATRIB_CT23E121407929'
 ;
 RQTY_100101_.tb2_1(12):=RQTY_100101_.tb2_0(12);
 RQTY_100101_.tb2_2(12):=RQTY_100101_.tb1_0(1);
@@ -4597,8 +4597,8 @@ RQTY_100101_.tb2_2(12),
 'LBTEST'
 ,
 to_date('29-03-2012 08:07:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:40','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -4608,7 +4608,7 @@ to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'INI - PAQ - MO_PACKAGES - POS_OPER_UNIT_ID - inicializaci�n del punto de atenci�n'
+'INI - PAQ - MO_PACKAGES - POS_OPER_UNIT_ID - inicializaci¿n del punto de atenci¿n'
 ,
 'PP'
 ,
@@ -4630,21 +4630,21 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb6_0(2):=120196911;
+RQTY_100101_.old_tb6_0(2):=120198523;
 RQTY_100101_.tb6_0(2):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 RQTY_100101_.tb6_0(2):=RQTY_100101_.tb6_0(2);
 ut_trace.trace('insertando tabla sin fallo: GE_STATEMENT fila (2)',1);
 INSERT INTO GE_STATEMENT(STATEMENT_ID,MODULE_ID,DESCRIPTION,STATEMENT,NAME) 
 VALUES (RQTY_100101_.tb6_0(2),
 5,
-'Lista Punto de Atenci�n'
+'Lista Punto de Atenci¿n'
 ,
 'SELECT a.organizat_area_id id, a.display_description description
 FROM ge_organizat_area a, cc_orga_area_seller b
 WHERE a.organizat_area_id = b.organizat_area_id
 AND b.person_id = ge_boinstancecontrol.fsbGetFieldValue('|| chr(39) ||'MO_PACKAGES'|| chr(39) ||','|| chr(39) ||'PERSON_ID'|| chr(39) ||')'
 ,
-'Lista Punto de Atenci�n'
+'Lista Punto de Atenci¿n'
 );
 
 exception 
@@ -4687,7 +4687,7 @@ INIT_EXPRESSION_ID=RQTY_100101_.tb7_7(16),
 VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=7,
-DISPLAY_NAME='Punto de Atenci�n'
+DISPLAY_NAME='Punto de Atenci¿n'
 ,
 DISPLAY_ORDER=7,
 INCLUDED_VAL_DOC='Y'
@@ -4729,7 +4729,7 @@ RQTY_100101_.tb7_7(16),
 null,
 null,
 7,
-'Punto de Atenci�n'
+'Punto de Atenci¿n'
 ,
 7,
 'Y'
@@ -4794,7 +4794,7 @@ INIT_EXPRESSION_ID=null,
 VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=13,
-DISPLAY_NAME='C�digo del Tipo de Paquete'
+DISPLAY_NAME='C¿digo del Tipo de Paquete'
 ,
 DISPLAY_ORDER=13,
 INCLUDED_VAL_DOC='N'
@@ -4836,7 +4836,7 @@ null,
 null,
 null,
 13,
-'C�digo del Tipo de Paquete'
+'C¿digo del Tipo de Paquete'
 ,
 13,
 'N'
@@ -4879,10 +4879,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(13):=121400720;
+RQTY_100101_.old_tb2_0(13):=121407930;
 RQTY_100101_.tb2_0(13):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(13):=RQTY_100101_.tb2_0(13);
-RQTY_100101_.old_tb2_1(13):='MO_INITATRIB_CT23E121400720'
+RQTY_100101_.old_tb2_1(13):='MO_INITATRIB_CT23E121407930'
 ;
 RQTY_100101_.tb2_1(13):=RQTY_100101_.tb2_0(13);
 RQTY_100101_.tb2_2(13):=RQTY_100101_.tb1_0(1);
@@ -4896,8 +4896,8 @@ RQTY_100101_.tb2_2(13),
 'LBTEST'
 ,
 to_date('07-02-2011 11:07:44','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -4952,7 +4952,7 @@ INIT_EXPRESSION_ID=RQTY_100101_.tb7_7(18),
 VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=16,
-DISPLAY_NAME='Fecha de Env�o'
+DISPLAY_NAME='Fecha de Env¿o'
 ,
 DISPLAY_ORDER=16,
 INCLUDED_VAL_DOC='N'
@@ -4961,7 +4961,7 @@ HEADER_TAG_XML='N'
 ,
 REQUIRED='Y'
 ,
-TAG_NAME='FECHA_DE_ENVIO'
+TAG_NAME='FECHA_DE_ENV_O'
 ,
 GROUP_ATTRIBUTE_TYPE='N'
 ,
@@ -4994,7 +4994,7 @@ RQTY_100101_.tb7_7(18),
 null,
 null,
 16,
-'Fecha de Env�o'
+'Fecha de Env¿o'
 ,
 16,
 'N'
@@ -5003,7 +5003,7 @@ null,
 ,
 'Y'
 ,
-'FECHA_DE_ENVIO'
+'FECHA_DE_ENV_O'
 ,
 'N'
 ,
@@ -5037,10 +5037,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(14):=121400721;
+RQTY_100101_.old_tb2_0(14):=121407931;
 RQTY_100101_.tb2_0(14):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(14):=RQTY_100101_.tb2_0(14);
-RQTY_100101_.old_tb2_1(14):='MO_INITATRIB_CT23E121400721'
+RQTY_100101_.old_tb2_1(14):='MO_INITATRIB_CT23E121407931'
 ;
 RQTY_100101_.tb2_1(14):=RQTY_100101_.tb2_0(14);
 RQTY_100101_.tb2_2(14):=RQTY_100101_.tb1_0(1);
@@ -5054,8 +5054,8 @@ RQTY_100101_.tb2_2(14),
 'LBTEST'
 ,
 to_date('29-03-2012 08:04:57','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -5065,7 +5065,7 @@ to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'INI - PAQ - MO_PACKAGES - CUST_CARE_REQUES_NUM - Inicializaci�n de la petici�n'
+'INI - PAQ - MO_PACKAGES - CUST_CARE_REQUES_NUM - Inicializaci¿n de la petici¿n'
 ,
 'PP'
 ,
@@ -5110,7 +5110,7 @@ INIT_EXPRESSION_ID=RQTY_100101_.tb7_7(19),
 VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PROCESS_SEQUENCE=3,
-DISPLAY_NAME='Interacci�n'
+DISPLAY_NAME='Interacci¿n'
 ,
 DISPLAY_ORDER=3,
 INCLUDED_VAL_DOC='Y'
@@ -5119,7 +5119,7 @@ HEADER_TAG_XML='N'
 ,
 REQUIRED='Y'
 ,
-TAG_NAME='INTERACCION'
+TAG_NAME='INTERACCI_N'
 ,
 GROUP_ATTRIBUTE_TYPE='N'
 ,
@@ -5152,7 +5152,7 @@ RQTY_100101_.tb7_7(19),
 null,
 null,
 3,
-'Interacci�n'
+'Interacci¿n'
 ,
 3,
 'Y'
@@ -5161,7 +5161,7 @@ null,
 ,
 'Y'
 ,
-'INTERACCION'
+'INTERACCI_N'
 ,
 'N'
 ,
@@ -5195,10 +5195,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(15):=121400722;
+RQTY_100101_.old_tb2_0(15):=121407932;
 RQTY_100101_.tb2_0(15):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(15):=RQTY_100101_.tb2_0(15);
-RQTY_100101_.old_tb2_1(15):='MO_INITATRIB_CT23E121400722'
+RQTY_100101_.old_tb2_1(15):='MO_INITATRIB_CT23E121407932'
 ;
 RQTY_100101_.tb2_1(15):=RQTY_100101_.tb2_0(15);
 RQTY_100101_.tb2_2(15):=RQTY_100101_.tb1_0(1);
@@ -5212,8 +5212,8 @@ RQTY_100101_.tb2_2(15),
 'LBTEST'
 ,
 to_date('06-09-2012 17:49:16','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -5223,7 +5223,7 @@ to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'INI - PAQ - MO_PACKAGES - SUBSCRIBER_ID - Inicializaci�n del cliente'
+'INI - PAQ - MO_PACKAGES - SUBSCRIBER_ID - Inicializaci¿n del cliente'
 ,
 'PP'
 ,
@@ -5245,10 +5245,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(16):=121400723;
+RQTY_100101_.old_tb2_0(16):=121407933;
 RQTY_100101_.tb2_0(16):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(16):=RQTY_100101_.tb2_0(16);
-RQTY_100101_.old_tb2_1(16):='MO_VALIDATTR_CT26E121400723'
+RQTY_100101_.old_tb2_1(16):='MO_VALIDATTR_CT26E121407933'
 ;
 RQTY_100101_.tb2_1(16):=RQTY_100101_.tb2_0(16);
 RQTY_100101_.tb2_2(16):=RQTY_100101_.tb1_0(2);
@@ -5262,8 +5262,8 @@ RQTY_100101_.tb2_2(16),
 'LBTEST'
 ,
 to_date('06-09-2012 18:20:41','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -5495,7 +5495,7 @@ RQTY_100101_.tb1_1(3):=RQTY_100101_.tb0_0(0);
 ut_trace.trace('Actualizar o insertar tabla: GR_CONFIGURA_TYPE fila (3)',1);
 UPDATE GR_CONFIGURA_TYPE SET CONFIGURA_TYPE_ID=RQTY_100101_.tb1_0(3),
 MODULE_ID=RQTY_100101_.tb1_1(3),
-DESCRIPTION='Reglas validaci�n de atributos'
+DESCRIPTION='Reglas validaci¿n de atributos'
 ,
 GENERATION_TYPE='PL'
 ,
@@ -5510,7 +5510,7 @@ if not (sql%found) then
 INSERT INTO GR_CONFIGURA_TYPE(CONFIGURA_TYPE_ID,MODULE_ID,DESCRIPTION,GENERATION_TYPE,EXECUTION_MODE,CALL_TYPE,GENERATION_MASK) 
 VALUES (RQTY_100101_.tb1_0(3),
 RQTY_100101_.tb1_1(3),
-'Reglas validaci�n de atributos'
+'Reglas validaci¿n de atributos'
 ,
 'PL'
 ,
@@ -5535,10 +5535,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(17):=121400724;
+RQTY_100101_.old_tb2_0(17):=121407934;
 RQTY_100101_.tb2_0(17):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(17):=RQTY_100101_.tb2_0(17);
-RQTY_100101_.old_tb2_1(17):='GEGE_EXERULVAL_CT69E121400724'
+RQTY_100101_.old_tb2_1(17):='GEGE_EXERULVAL_CT69E121407934'
 ;
 RQTY_100101_.tb2_1(17):=RQTY_100101_.tb2_0(17);
 RQTY_100101_.tb2_2(17):=RQTY_100101_.tb1_0(3);
@@ -5547,13 +5547,13 @@ INSERT INTO GR_CONFIG_EXPRESSION(CONFIG_EXPRESSION_ID,OBJECT_NAME,CONFIGURA_TYPE
 VALUES (RQTY_100101_.tb2_0(17),
 RQTY_100101_.tb2_1(17),
 RQTY_100101_.tb2_2(17),
-'GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE("WORK_INSTANCE",null,"SUSCRIPC","SUSCCODI",nuContrato);GC_BOINSOLVENCY.VALIDATESUSCRIPTIONTYPE(nuContrato,sbInsolvente);if (sbInsolvente = GE_BOCONSTANTS.GETYES(),GI_BOERRORS.SETERRORCODEARGUMENT(2741,"El tr�mite no puede ser ejecutado ya que el contrato se encuentra en proceso de Insolvencia Econ�mica");,)'
+'GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE("WORK_INSTANCE",null,"SUSCRIPC","SUSCCODI",nuContrato);GC_BOINSOLVENCY.VALIDATESUSCRIPTIONTYPE(nuContrato,sbInsolvente);if (sbInsolvente = GE_BOCONSTANTS.GETYES(),GI_BOERRORS.SETERRORCODEARGUMENT(2741,"El tr¿mite no puede ser ejecutado ya que el contrato se encuentra en proceso de Insolvencia Econ¿mica");,)'
 ,
 'LBTEST'
 ,
 to_date('26-07-2012 19:36:38','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -5563,7 +5563,7 @@ to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'Valida que el contrato no se encuentre en proceso de insolvencia econ�mica (Nivel Producto)'
+'Valida que el contrato no se encuentre en proceso de insolvencia econ¿mica (Nivel Producto)'
 ,
 'PP'
 ,
@@ -5601,9 +5601,9 @@ PRECISION=null,
 SCALE=null,
 DEFAULT_VALUE=null,
 IS_FIX_OR_VARIABLE=null,
-COMMENT_='Valida que el contrato no se encuentre en insolvencia econ�mica (NIVEL PRODUCTO)'
+COMMENT_='Valida que el contrato no se encuentre en insolvencia econ¿mica (NIVEL PRODUCTO)'
 ,
-DISPLAY_NAME='Valida que el contrato no se encuentre en insolvencia econ�mica (NIVEL PRODUCTO)'
+DISPLAY_NAME='Valida que el contrato no se encuentre en insolvencia econ¿mica (NIVEL PRODUCTO)'
 
  WHERE ATTRIBUTE_ID = RQTY_100101_.tb8_0(1);
 if not (sql%found) then
@@ -5621,9 +5621,9 @@ null,
 null,
 null,
 null,
-'Valida que el contrato no se encuentre en insolvencia econ�mica (NIVEL PRODUCTO)'
+'Valida que el contrato no se encuentre en insolvencia econ¿mica (NIVEL PRODUCTO)'
 ,
-'Valida que el contrato no se encuentre en insolvencia econ�mica (NIVEL PRODUCTO)'
+'Valida que el contrato no se encuentre en insolvencia econ¿mica (NIVEL PRODUCTO)'
 );
 end if;
 
@@ -5646,7 +5646,7 @@ ut_trace.trace('insertando tabla sin fallo: PS_PACK_TYPE_PARAM fila (1)',1);
 INSERT INTO PS_PACK_TYPE_PARAM(PACKAGE_TYPE_ID,ATTRIBUTE_ID,DESCRIPTION,VALUE,PARAMETER_ORDER,CLASS,RESTRICTION_TYPE) 
 VALUES (RQTY_100101_.tb9_0(1),
 RQTY_100101_.tb9_1(1),
-'Valida que el contrato no se encuentre en insolvencia econ�mica (NIVEL PRODUCTO)'
+'Valida que el contrato no se encuentre en insolvencia econ¿mica (NIVEL PRODUCTO)'
 ,
 'Y'
 ,
@@ -5686,9 +5686,9 @@ PRECISION=null,
 SCALE=null,
 DEFAULT_VALUE=null,
 IS_FIX_OR_VARIABLE=null,
-COMMENT_='M�todo de medici�n por defecto'
+COMMENT_='M¿todo de medici¿n por defecto'
 ,
-DISPLAY_NAME='M�todo de medici�n por defecto'
+DISPLAY_NAME='M¿todo de medici¿n por defecto'
 
  WHERE ATTRIBUTE_ID = RQTY_100101_.tb8_0(2);
 if not (sql%found) then
@@ -5706,9 +5706,9 @@ null,
 null,
 null,
 null,
-'M�todo de medici�n por defecto'
+'M¿todo de medici¿n por defecto'
 ,
-'M�todo de medici�n por defecto'
+'M¿todo de medici¿n por defecto'
 );
 end if;
 
@@ -5731,7 +5731,7 @@ ut_trace.trace('insertando tabla sin fallo: PS_PACK_TYPE_PARAM fila (2)',1);
 INSERT INTO PS_PACK_TYPE_PARAM(PACKAGE_TYPE_ID,ATTRIBUTE_ID,DESCRIPTION,VALUE,PARAMETER_ORDER,CLASS,RESTRICTION_TYPE) 
 VALUES (RQTY_100101_.tb9_0(2),
 RQTY_100101_.tb9_1(2),
-'M�todo de medici�n por defecto'
+'M¿todo de medici¿n por defecto'
 ,
 '3102'
 ,
@@ -5755,10 +5755,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(18):=121400725;
+RQTY_100101_.old_tb2_0(18):=121407935;
 RQTY_100101_.tb2_0(18):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(18):=RQTY_100101_.tb2_0(18);
-RQTY_100101_.old_tb2_1(18):='GEGE_EXERULVAL_CT69E121400725'
+RQTY_100101_.old_tb2_1(18):='GEGE_EXERULVAL_CT69E121407935'
 ;
 RQTY_100101_.tb2_1(18):=RQTY_100101_.tb2_0(18);
 RQTY_100101_.tb2_2(18):=RQTY_100101_.tb1_0(3);
@@ -5772,8 +5772,8 @@ RQTY_100101_.tb2_2(18),
 'LBTEST'
 ,
 to_date('19-07-2012 17:06:33','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -5896,7 +5896,7 @@ RQTY_100101_.tb1_1(4):=RQTY_100101_.tb0_0(1);
 ut_trace.trace('Actualizar o insertar tabla: GR_CONFIGURA_TYPE fila (4)',1);
 UPDATE GR_CONFIGURA_TYPE SET CONFIGURA_TYPE_ID=RQTY_100101_.tb1_0(4),
 MODULE_ID=RQTY_100101_.tb1_1(4),
-DESCRIPTION='Validaci�n Tramites'
+DESCRIPTION='Validaci¿n Tramites'
 ,
 GENERATION_TYPE='PL'
 ,
@@ -5911,7 +5911,7 @@ if not (sql%found) then
 INSERT INTO GR_CONFIGURA_TYPE(CONFIGURA_TYPE_ID,MODULE_ID,DESCRIPTION,GENERATION_TYPE,EXECUTION_MODE,CALL_TYPE,GENERATION_MASK) 
 VALUES (RQTY_100101_.tb1_0(4),
 RQTY_100101_.tb1_1(4),
-'Validaci�n Tramites'
+'Validaci¿n Tramites'
 ,
 'PL'
 ,
@@ -5936,10 +5936,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(19):=121400726;
+RQTY_100101_.old_tb2_0(19):=121407936;
 RQTY_100101_.tb2_0(19):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(19):=RQTY_100101_.tb2_0(19);
-RQTY_100101_.old_tb2_1(19):='MO_VALIDTRAM_CT64E121400726'
+RQTY_100101_.old_tb2_1(19):='MO_VALIDTRAM_CT64E121407936'
 ;
 RQTY_100101_.tb2_1(19):=RQTY_100101_.tb2_0(19);
 RQTY_100101_.tb2_2(19):=RQTY_100101_.tb1_0(4);
@@ -5953,8 +5953,8 @@ RQTY_100101_.tb2_2(19),
 'CONFBOSS'
 ,
 to_date('24-05-2005 12:31:07','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -6072,10 +6072,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(20):=121400727;
+RQTY_100101_.old_tb2_0(20):=121407937;
 RQTY_100101_.tb2_0(20):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(20):=RQTY_100101_.tb2_0(20);
-RQTY_100101_.old_tb2_1(20):='GEGE_EXERULVAL_CT69E121400727'
+RQTY_100101_.old_tb2_1(20):='GEGE_EXERULVAL_CT69E121407937'
 ;
 RQTY_100101_.tb2_1(20):=RQTY_100101_.tb2_0(20);
 RQTY_100101_.tb2_2(20):=RQTY_100101_.tb1_0(3);
@@ -6089,8 +6089,8 @@ RQTY_100101_.tb2_2(20),
 'LBTEST'
 ,
 to_date('24-07-2012 17:40:31','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -6223,9 +6223,9 @@ PRECISION=null,
 SCALE=null,
 DEFAULT_VALUE=null,
 IS_FIX_OR_VARIABLE=null,
-COMMENT_='Cantidad de d�as m�ximos para la ejecuci�n de trabajos'
+COMMENT_='Cantidad de d¿as m¿ximos para la ejecuci¿n de trabajos'
 ,
-DISPLAY_NAME='Cantidad de d�as m�ximos para la ejecuci�n de trabajos'
+DISPLAY_NAME='Cantidad de d¿as m¿ximos para la ejecuci¿n de trabajos'
 
  WHERE ATTRIBUTE_ID = RQTY_100101_.tb8_0(6);
 if not (sql%found) then
@@ -6243,9 +6243,9 @@ null,
 null,
 null,
 null,
-'Cantidad de d�as m�ximos para la ejecuci�n de trabajos'
+'Cantidad de d¿as m¿ximos para la ejecuci¿n de trabajos'
 ,
-'Cantidad de d�as m�ximos para la ejecuci�n de trabajos'
+'Cantidad de d¿as m¿ximos para la ejecuci¿n de trabajos'
 );
 end if;
 
@@ -6268,7 +6268,7 @@ ut_trace.trace('insertando tabla sin fallo: PS_PACK_TYPE_PARAM fila (6)',1);
 INSERT INTO PS_PACK_TYPE_PARAM(PACKAGE_TYPE_ID,ATTRIBUTE_ID,DESCRIPTION,VALUE,PARAMETER_ORDER,CLASS,RESTRICTION_TYPE) 
 VALUES (RQTY_100101_.tb9_0(6),
 RQTY_100101_.tb9_1(6),
-'Cantidad de d�as m�ximos para la ejecuci�n de trabajos'
+'Cantidad de d¿as m¿ximos para la ejecuci¿n de trabajos'
 ,
 '350'
 ,
@@ -6376,10 +6376,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(21):=121400728;
+RQTY_100101_.old_tb2_0(21):=121407938;
 RQTY_100101_.tb2_0(21):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(21):=RQTY_100101_.tb2_0(21);
-RQTY_100101_.old_tb2_1(21):='GEGE_EXERULVAL_CT69E121400728'
+RQTY_100101_.old_tb2_1(21):='GEGE_EXERULVAL_CT69E121407938'
 ;
 RQTY_100101_.tb2_1(21):=RQTY_100101_.tb2_0(21);
 RQTY_100101_.tb2_2(21):=RQTY_100101_.tb1_0(3);
@@ -6393,8 +6393,8 @@ RQTY_100101_.tb2_2(21),
 'OPEN'
 ,
 to_date('17-09-2018 11:13:15','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -6512,10 +6512,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(22):=121400729;
+RQTY_100101_.old_tb2_0(22):=121407939;
 RQTY_100101_.tb2_0(22):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(22):=RQTY_100101_.tb2_0(22);
-RQTY_100101_.old_tb2_1(22):='GEGE_EXERULVAL_CT69E121400729'
+RQTY_100101_.old_tb2_1(22):='GEGE_EXERULVAL_CT69E121407939'
 ;
 RQTY_100101_.tb2_1(22):=RQTY_100101_.tb2_0(22);
 RQTY_100101_.tb2_2(22):=RQTY_100101_.tb1_0(3);
@@ -6529,8 +6529,8 @@ RQTY_100101_.tb2_2(22),
 'OPEN'
 ,
 to_date('17-09-2018 10:45:09','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:41','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -6540,7 +6540,7 @@ to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'LDC - Valida que el producto no tenga una revisi�n peri�dica pendiente.'
+'LDC - Valida que el producto no tenga una revisi¿n peri¿dica pendiente.'
 ,
 'PP'
 ,
@@ -6578,9 +6578,9 @@ PRECISION=null,
 SCALE=null,
 DEFAULT_VALUE=null,
 IS_FIX_OR_VARIABLE=null,
-COMMENT_='LDC - Valida que el producto no tenga una revisi�n peri�dica pendiente.'
+COMMENT_='LDC - Valida que el producto no tenga una revisi¿n peri¿dica pendiente.'
 ,
-DISPLAY_NAME='LDC - Valida que el producto no tenga una revisi�n peri�dica pendiente.'
+DISPLAY_NAME='LDC - Valida que el producto no tenga una revisi¿n peri¿dica pendiente.'
 
  WHERE ATTRIBUTE_ID = RQTY_100101_.tb8_0(9);
 if not (sql%found) then
@@ -6598,9 +6598,9 @@ null,
 null,
 null,
 null,
-'LDC - Valida que el producto no tenga una revisi�n peri�dica pendiente.'
+'LDC - Valida que el producto no tenga una revisi¿n peri¿dica pendiente.'
 ,
-'LDC - Valida que el producto no tenga una revisi�n peri�dica pendiente.'
+'LDC - Valida que el producto no tenga una revisi¿n peri¿dica pendiente.'
 );
 end if;
 
@@ -6623,7 +6623,7 @@ ut_trace.trace('insertando tabla sin fallo: PS_PACK_TYPE_PARAM fila (9)',1);
 INSERT INTO PS_PACK_TYPE_PARAM(PACKAGE_TYPE_ID,ATTRIBUTE_ID,DESCRIPTION,VALUE,PARAMETER_ORDER,CLASS,RESTRICTION_TYPE) 
 VALUES (RQTY_100101_.tb9_0(9),
 RQTY_100101_.tb9_1(9),
-'LDC - Valida que el producto no tenga una revisi�n peri�dica pendiente.'
+'LDC - Valida que el producto no tenga una revisi¿n peri¿dica pendiente.'
 ,
 'Y'
 ,
@@ -6648,10 +6648,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(23):=121400730;
+RQTY_100101_.old_tb2_0(23):=121407940;
 RQTY_100101_.tb2_0(23):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(23):=RQTY_100101_.tb2_0(23);
-RQTY_100101_.old_tb2_1(23):='GEGE_EXERULVAL_CT69E121400730'
+RQTY_100101_.old_tb2_1(23):='GEGE_EXERULVAL_CT69E121407940'
 ;
 RQTY_100101_.tb2_1(23):=RQTY_100101_.tb2_0(23);
 RQTY_100101_.tb2_2(23):=RQTY_100101_.tb1_0(3);
@@ -6665,8 +6665,8 @@ RQTY_100101_.tb2_2(23),
 'OPEN'
 ,
 to_date('17-09-2018 11:18:10','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:42','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:42','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -6799,9 +6799,9 @@ PRECISION=null,
 SCALE=null,
 DEFAULT_VALUE=null,
 IS_FIX_OR_VARIABLE=null,
-COMMENT_='N�mero m�ximo de d�as'
+COMMENT_='N¿mero m¿ximo de d¿as'
 ,
-DISPLAY_NAME='N�mero m�ximo de d�as'
+DISPLAY_NAME='N¿mero m¿ximo de d¿as'
 
  WHERE ATTRIBUTE_ID = RQTY_100101_.tb8_0(11);
 if not (sql%found) then
@@ -6819,9 +6819,9 @@ null,
 null,
 null,
 null,
-'N�mero m�ximo de d�as'
+'N¿mero m¿ximo de d¿as'
 ,
-'N�mero m�ximo de d�as'
+'N¿mero m¿ximo de d¿as'
 );
 end if;
 
@@ -6844,7 +6844,7 @@ ut_trace.trace('insertando tabla sin fallo: PS_PACK_TYPE_PARAM fila (11)',1);
 INSERT INTO PS_PACK_TYPE_PARAM(PACKAGE_TYPE_ID,ATTRIBUTE_ID,DESCRIPTION,VALUE,PARAMETER_ORDER,CLASS,RESTRICTION_TYPE) 
 VALUES (RQTY_100101_.tb9_0(11),
 RQTY_100101_.tb9_1(11),
-'N�mero m�ximo de d�as'
+'N¿mero m¿ximo de d¿as'
 ,
 '60'
 ,
@@ -6883,9 +6883,9 @@ PRECISION=null,
 SCALE=null,
 DEFAULT_VALUE=null,
 IS_FIX_OR_VARIABLE=null,
-COMMENT_='N�mero M�ximo de D�as para Pagar la Factura'
+COMMENT_='N¿mero M¿ximo de D¿as para Pagar la Factura'
 ,
-DISPLAY_NAME='N�mero M�ximo de D�as para Pagar la Factura'
+DISPLAY_NAME='N¿mero M¿ximo de D¿as para Pagar la Factura'
 
  WHERE ATTRIBUTE_ID = RQTY_100101_.tb8_0(12);
 if not (sql%found) then
@@ -6903,9 +6903,9 @@ null,
 null,
 null,
 null,
-'N�mero M�ximo de D�as para Pagar la Factura'
+'N¿mero M¿ximo de D¿as para Pagar la Factura'
 ,
-'N�mero M�ximo de D�as para Pagar la Factura'
+'N¿mero M¿ximo de D¿as para Pagar la Factura'
 );
 end if;
 
@@ -6928,7 +6928,7 @@ ut_trace.trace('insertando tabla sin fallo: PS_PACK_TYPE_PARAM fila (12)',1);
 INSERT INTO PS_PACK_TYPE_PARAM(PACKAGE_TYPE_ID,ATTRIBUTE_ID,DESCRIPTION,VALUE,PARAMETER_ORDER,CLASS,RESTRICTION_TYPE) 
 VALUES (RQTY_100101_.tb9_0(12),
 RQTY_100101_.tb9_1(12),
-'N�mero M�ximo de D�as para Pagar la Factura'
+'N¿mero M¿ximo de D¿as para Pagar la Factura'
 ,
 '30'
 ,
@@ -6952,10 +6952,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(24):=121400731;
+RQTY_100101_.old_tb2_0(24):=121407941;
 RQTY_100101_.tb2_0(24):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(24):=RQTY_100101_.tb2_0(24);
-RQTY_100101_.old_tb2_1(24):='GEGE_EXERULVAL_CT69E121400731'
+RQTY_100101_.old_tb2_1(24):='GEGE_EXERULVAL_CT69E121407941'
 ;
 RQTY_100101_.tb2_1(24):=RQTY_100101_.tb2_0(24);
 RQTY_100101_.tb2_2(24):=RQTY_100101_.tb1_0(3);
@@ -6964,13 +6964,13 @@ INSERT INTO GR_CONFIG_EXPRESSION(CONFIG_EXPRESSION_ID,OBJECT_NAME,CONFIGURA_TYPE
 VALUES (RQTY_100101_.tb2_0(24),
 RQTY_100101_.tb2_1(24),
 RQTY_100101_.tb2_2(24),
-'GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE("WORK_INSTANCE",null,"PR_PRODUCT","PRODUCT_ID",nuIdProd);LDC_PRVERIFICAFECHAMIN(nuIdProd,NULL,sbAplicaRevision,sbDatos);if (sbAplicaRevision = "SI",GE_BOERRORS.SETERRORCODEARGUMENT(901110,UT_STRING.FSBCONCATSTRING("Este producto se encuentra apto para iniciar el proceso de Revisi�n peri�dica: ", nuIdProd, " "));,);LDC_BOVALIDAACTREPA.VALIDAACTIREPA(nuIdProd)'
+'GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE("WORK_INSTANCE",null,"PR_PRODUCT","PRODUCT_ID",nuIdProd);LDC_PRVERIFICAFECHAMIN(nuIdProd,NULL,sbAplicaRevision,sbDatos);if (sbAplicaRevision = "SI",GE_BOERRORS.SETERRORCODEARGUMENT(901110,UT_STRING.FSBCONCATSTRING("Este producto se encuentra apto para iniciar el proceso de Revisi¿n peri¿dica: ", nuIdProd, " "));,);LDC_BOVALIDAACTREPA.VALIDAACTIREPA(nuIdProd)'
 ,
 'OPEN'
 ,
 to_date('21-10-2019 09:03:26','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:42','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:42','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -7132,7 +7132,7 @@ UNIT_TYPE_ID=100214,
 STD_TIME=0,
 MAX_TIME=31536000,
 AVG_TIME=0,
-DESCRIPTION='Venta de Servicios de Ingenier�a'
+DESCRIPTION='Venta de Servicios de Ingenier¿a'
 ,
 VALUE_3=null,
 VALUE_4=null,
@@ -7163,7 +7163,7 @@ null,
 0,
 31536000,
 0,
-'Venta de Servicios de Ingenier�a'
+'Venta de Servicios de Ingenier¿a'
 ,
 null,
 null,
@@ -7230,7 +7230,7 @@ RQTY_100101_.tb1_1(5):=RQTY_100101_.tb0_0(1);
 ut_trace.trace('Actualizar o insertar tabla: GR_CONFIGURA_TYPE fila (5)',1);
 UPDATE GR_CONFIGURA_TYPE SET CONFIGURA_TYPE_ID=RQTY_100101_.tb1_0(5),
 MODULE_ID=RQTY_100101_.tb1_1(5),
-DESCRIPTION='Configuraci�n eventos de componentes'
+DESCRIPTION='Configuraci¿n eventos de componentes'
 ,
 GENERATION_TYPE='PL'
 ,
@@ -7245,7 +7245,7 @@ if not (sql%found) then
 INSERT INTO GR_CONFIGURA_TYPE(CONFIGURA_TYPE_ID,MODULE_ID,DESCRIPTION,GENERATION_TYPE,EXECUTION_MODE,CALL_TYPE,GENERATION_MASK) 
 VALUES (RQTY_100101_.tb1_0(5),
 RQTY_100101_.tb1_1(5),
-'Configuraci�n eventos de componentes'
+'Configuraci¿n eventos de componentes'
 ,
 'PL'
 ,
@@ -7270,10 +7270,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(25):=121400732;
+RQTY_100101_.old_tb2_0(25):=121407942;
 RQTY_100101_.tb2_0(25):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(25):=RQTY_100101_.tb2_0(25);
-RQTY_100101_.old_tb2_1(25):='MO_EVE_COMP_CT65E121400732'
+RQTY_100101_.old_tb2_1(25):='MO_EVE_COMP_CT65E121407942'
 ;
 RQTY_100101_.tb2_1(25):=RQTY_100101_.tb2_0(25);
 RQTY_100101_.tb2_2(25):=RQTY_100101_.tb1_0(5);
@@ -7287,8 +7287,8 @@ RQTY_100101_.tb2_2(25),
 'LBTEST'
 ,
 to_date('19-05-2011 07:45:29','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:48:40','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:42','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:42','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -7356,10 +7356,10 @@ if (not RQTY_100101_.blProcessStatus) then
  return;
 end if;
 
-RQTY_100101_.old_tb2_0(26):=121400733;
+RQTY_100101_.old_tb2_0(26):=121407943;
 RQTY_100101_.tb2_0(26):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQTY_100101_.tb2_0(26):=RQTY_100101_.tb2_0(26);
-RQTY_100101_.old_tb2_1(26):='MO_EVE_COMP_CT65E121400733'
+RQTY_100101_.old_tb2_1(26):='MO_EVE_COMP_CT65E121407943'
 ;
 RQTY_100101_.tb2_1(26):=RQTY_100101_.tb2_0(26);
 RQTY_100101_.tb2_2(26):=RQTY_100101_.tb1_0(5);
@@ -7368,14 +7368,14 @@ INSERT INTO GR_CONFIG_EXPRESSION(CONFIG_EXPRESSION_ID,OBJECT_NAME,CONFIGURA_TYPE
 VALUES (RQTY_100101_.tb2_0(26),
 RQTY_100101_.tb2_1(26),
 RQTY_100101_.tb2_2(26),
-'GE_BOINSTANCECONTROL.GETCURRENTINSTANCE(sbInstance);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstance,null,"MO_PROCESS","CONTRACT_INFORMATION",sbSubscriptionId);UT_STRING.FINDPARAMETERVALUE(sbSubscriptionId,"SUBSCRIPTION_ID","|","=",nuSubscriptionId);if (UT_CONVERT.FBLISNUMBERNULL(nuSubscriptionId) = GE_BOCONSTANTS.GETTRUE(),GI_BOERRORS.SETERRORCODEARGUMENT(2741,"El atributo Informaci�n de Contrato no puede ser nulo");,)'
+'GE_BOINSTANCECONTROL.GETCURRENTINSTANCE(sbInstance);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstance,null,"MO_PROCESS","CONTRACT_INFORMATION",sbSubscriptionId);UT_STRING.FINDPARAMETERVALUE(sbSubscriptionId,"SUBSCRIPTION_ID","|","=",nuSubscriptionId);if (UT_CONVERT.FBLISNUMBERNULL(nuSubscriptionId) = GE_BOCONSTANTS.GETTRUE(),GI_BOERRORS.SETERRORCODEARGUMENT(2741,"El atributo Informaci¿n de Contrato no puede ser nulo");,)'
 ,
 'OPEN'
 ,
 to_date('16-07-2016 11:24:06','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 16:45:41','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 16:45:41','DD-MM-YYYY HH24:MI:SS'),
-'R'
+to_date('06-03-2025 10:25:42','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:25:42','DD-MM-YYYY HH24:MI:SS'),
+'G'
 ,
 'N'
 ,
@@ -7384,7 +7384,7 @@ to_date('30-01-2024 16:45:41','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'LDC-Validaci�n Campo null'
+'LDC-Validaci¿n Campo null'
 ,
 'PP'
 ,
@@ -7447,7 +7447,7 @@ RQTY_100101_.tb14_0(0):='5'
 ut_trace.trace('insertando tabla sin fallo: TIPOSERV fila (0)',1);
 INSERT INTO TIPOSERV(TISECODI,TISEDESC) 
 VALUES (RQTY_100101_.tb14_0(0),
-'GEN�RICO'
+'GENÉRICO'
 );
 
 exception 
@@ -7470,7 +7470,7 @@ RQTY_100101_.tb15_0(0):=5;
 ut_trace.trace('insertando tabla sin fallo: GE_SERVICE_TYPE fila (0)',1);
 INSERT INTO GE_SERVICE_TYPE(SERVICE_TYPE_ID,DESCRIPTION) 
 VALUES (RQTY_100101_.tb15_0(0),
-'Gen�rico'
+'Genérico'
 );
 
 exception 
@@ -7605,7 +7605,7 @@ RQTY_100101_.tb17_0(0):=108;
 ut_trace.trace('Actualizar o insertar tabla: PS_MOTIVE_TYPE fila (0)',1);
 UPDATE PS_MOTIVE_TYPE SET MOTIVE_TYPE_ID=RQTY_100101_.tb17_0(0),
 CLASS_REGISTER_ID=6,
-DESCRIPTION='Venta de Servicios de Ingenier�a'
+DESCRIPTION='Venta de Servicios de Ingenier¿a'
 ,
 ASSIGNABLE='N'
 ,
@@ -7619,7 +7619,7 @@ if not (sql%found) then
 INSERT INTO PS_MOTIVE_TYPE(MOTIVE_TYPE_ID,CLASS_REGISTER_ID,DESCRIPTION,ASSIGNABLE,USE_WF_PLAN,TAG_NAME,ACTIVITY_TYPE) 
 VALUES (RQTY_100101_.tb17_0(0),
 6,
-'Venta de Servicios de Ingenier�a'
+'Venta de Servicios de Ingenier¿a'
 ,
 'N'
 ,
@@ -7767,7 +7767,7 @@ if (not RQTY_100101_.blProcessStatus) then
 end if;
 nuRowProcess:=RQTY_100101_.tb2_0.first;
 while (nuRowProcess is not null) loop 
-ut_trace.trace('Genera expresi�n regla:'|| RQTY_100101_.tb2_0(nuRowProcess),1); 
+ut_trace.trace('Genera expresión regla:'|| RQTY_100101_.tb2_0(nuRowProcess),1); 
 begin
 GR_BOINTERFACE_BODY.MakeExpression(RQTY_100101_.tb2_0(nuRowProcess)); 
 exception when others then
@@ -10145,7 +10145,7 @@ end if;
 RQPMT_100101_.tb1_0(0):=5;
 ut_trace.trace('Actualizar o insertar tabla: GE_MODULE fila (0)',1);
 UPDATE GE_MODULE SET MODULE_ID=RQPMT_100101_.tb1_0(0),
-DESCRIPTION='GESTI�N DE MOTIVOS'
+DESCRIPTION='GESTI¿N DE MOTIVOS'
 ,
 MNEMONIC='MO'
 ,
@@ -10160,7 +10160,7 @@ LOCALIZATION='IN'
 if not (sql%found) then
 INSERT INTO GE_MODULE(MODULE_ID,DESCRIPTION,MNEMONIC,LAST_MESSAGE,PATH_MODULE,ICON_NAME,LOCALIZATION) 
 VALUES (RQPMT_100101_.tb1_0(0),
-'GESTI�N DE MOTIVOS'
+'GESTI¿N DE MOTIVOS'
 ,
 'MO'
 ,
@@ -10231,10 +10231,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(0):=121400735;
+RQPMT_100101_.old_tb3_0(0):=121407944;
 RQPMT_100101_.tb3_0(0):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(0):=RQPMT_100101_.tb3_0(0);
-RQPMT_100101_.old_tb3_1(0):='MO_INITATRIB_CT23E121400735'
+RQPMT_100101_.old_tb3_1(0):='MO_INITATRIB_CT23E121407944'
 ;
 RQPMT_100101_.tb3_1(0):=RQPMT_100101_.tb3_0(0);
 RQPMT_100101_.tb3_2(0):=RQPMT_100101_.tb2_0(0);
@@ -10248,8 +10248,8 @@ RQPMT_100101_.tb3_2(0),
 'LBTEST'
 ,
 to_date('28-06-2012 08:29:22','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:47','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:47','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -10510,10 +10510,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(1):=121400736;
+RQPMT_100101_.old_tb3_0(1):=121407945;
 RQPMT_100101_.tb3_0(1):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(1):=RQPMT_100101_.tb3_0(1);
-RQPMT_100101_.old_tb3_1(1):='MO_INITATRIB_CT23E121400736'
+RQPMT_100101_.old_tb3_1(1):='MO_INITATRIB_CT23E121407945'
 ;
 RQPMT_100101_.tb3_1(1):=RQPMT_100101_.tb3_0(1);
 RQPMT_100101_.tb3_2(1):=RQPMT_100101_.tb2_0(0);
@@ -10527,8 +10527,8 @@ RQPMT_100101_.tb3_2(1),
 'FLEX'
 ,
 to_date('04-09-2002 16:04:19','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:47','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:47','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -10723,7 +10723,7 @@ RQPMT_100101_.tb2_1(1):=RQPMT_100101_.tb1_0(1);
 ut_trace.trace('Actualizar o insertar tabla: GR_CONFIGURA_TYPE fila (1)',1);
 UPDATE GR_CONFIGURA_TYPE SET CONFIGURA_TYPE_ID=RQPMT_100101_.tb2_0(1),
 MODULE_ID=RQPMT_100101_.tb2_1(1),
-DESCRIPTION='Ejecuci�n Acciones de todos los m�dulos'
+DESCRIPTION='Ejecuci¿n Acciones de todos los m¿dulos'
 ,
 GENERATION_TYPE='PL'
 ,
@@ -10738,7 +10738,7 @@ if not (sql%found) then
 INSERT INTO GR_CONFIGURA_TYPE(CONFIGURA_TYPE_ID,MODULE_ID,DESCRIPTION,GENERATION_TYPE,EXECUTION_MODE,CALL_TYPE,GENERATION_MASK) 
 VALUES (RQPMT_100101_.tb2_0(1),
 RQPMT_100101_.tb2_1(1),
-'Ejecuci�n Acciones de todos los m�dulos'
+'Ejecuci¿n Acciones de todos los m¿dulos'
 ,
 'PL'
 ,
@@ -10763,10 +10763,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(2):=121400737;
+RQPMT_100101_.old_tb3_0(2):=121407946;
 RQPMT_100101_.tb3_0(2):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(2):=RQPMT_100101_.tb3_0(2);
-RQPMT_100101_.old_tb3_1(2):='GE_EXEACTION_CT1E121400737'
+RQPMT_100101_.old_tb3_1(2):='GE_EXEACTION_CT1E121407946'
 ;
 RQPMT_100101_.tb3_1(2):=RQPMT_100101_.tb3_0(2);
 RQPMT_100101_.tb3_2(2):=RQPMT_100101_.tb2_0(1);
@@ -10780,8 +10780,8 @@ RQPMT_100101_.tb3_2(2),
 'TESTOSS'
 ,
 to_date('21-11-2006 11:27:21','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:47','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:47','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -10813,10 +10813,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(3):=121400738;
+RQPMT_100101_.old_tb3_0(3):=121407947;
 RQPMT_100101_.tb3_0(3):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(3):=RQPMT_100101_.tb3_0(3);
-RQPMT_100101_.old_tb3_1(3):='MO_INITATRIB_CT23E121400738'
+RQPMT_100101_.old_tb3_1(3):='MO_INITATRIB_CT23E121407947'
 ;
 RQPMT_100101_.tb3_1(3):=RQPMT_100101_.tb3_0(3);
 RQPMT_100101_.tb3_2(3):=RQPMT_100101_.tb2_0(0);
@@ -10830,8 +10830,8 @@ RQPMT_100101_.tb3_2(3),
 'TESTOSS'
 ,
 to_date('21-11-2006 11:05:12','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -11321,10 +11321,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(4):=121400739;
+RQPMT_100101_.old_tb3_0(4):=121407948;
 RQPMT_100101_.tb3_0(4):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(4):=RQPMT_100101_.tb3_0(4);
-RQPMT_100101_.old_tb3_1(4):='MO_INITATRIB_CT23E121400739'
+RQPMT_100101_.old_tb3_1(4):='MO_INITATRIB_CT23E121407948'
 ;
 RQPMT_100101_.tb3_1(4):=RQPMT_100101_.tb3_0(4);
 RQPMT_100101_.tb3_2(4):=RQPMT_100101_.tb2_0(0);
@@ -11338,8 +11338,8 @@ RQPMT_100101_.tb3_2(4),
 'LBTEST'
 ,
 to_date('08-09-2012 09:20:27','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -11349,7 +11349,7 @@ to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
 null,
 'DS'
 ,
-'INI - MO_ADDRESS - ADDRESS_ID - Inicializa la secuencia de la direcci�n de motivo.'
+'INI - MO_ADDRESS - ADDRESS_ID - Inicializa la secuencia de la direcci¿n de motivo.'
 ,
 'PP'
 ,
@@ -11394,7 +11394,7 @@ VALID_EXPRESSION_ID=null,
 PARENT_ATTRIB_ID=null,
 PRODUCT_MOTIVE_ID=RQPMT_100101_.tb4_9(7),
 PROCESS_SEQUENCE=16,
-DISPLAY_NAME='C�digo de la Direcci�n'
+DISPLAY_NAME='C¿digo de la Direcci¿n'
 ,
 DISPLAY_ORDER=16,
 INCLUDED_VAL_DOC='N'
@@ -11440,7 +11440,7 @@ null,
 null,
 RQPMT_100101_.tb4_9(7),
 16,
-'C�digo de la Direcci�n'
+'C¿digo de la Direcci¿n'
 ,
 16,
 'N'
@@ -11492,7 +11492,7 @@ RQPMT_100101_.tb2_1(2):=RQPMT_100101_.tb1_0(0);
 ut_trace.trace('Actualizar o insertar tabla: GR_CONFIGURA_TYPE fila (2)',1);
 UPDATE GR_CONFIGURA_TYPE SET CONFIGURA_TYPE_ID=RQPMT_100101_.tb2_0(2),
 MODULE_ID=RQPMT_100101_.tb2_1(2),
-DESCRIPTION='Validaci�n de atributos'
+DESCRIPTION='Validaci¿n de atributos'
 ,
 GENERATION_TYPE='PL'
 ,
@@ -11507,7 +11507,7 @@ if not (sql%found) then
 INSERT INTO GR_CONFIGURA_TYPE(CONFIGURA_TYPE_ID,MODULE_ID,DESCRIPTION,GENERATION_TYPE,EXECUTION_MODE,CALL_TYPE,GENERATION_MASK) 
 VALUES (RQPMT_100101_.tb2_0(2),
 RQPMT_100101_.tb2_1(2),
-'Validaci�n de atributos'
+'Validaci¿n de atributos'
 ,
 'PL'
 ,
@@ -11532,10 +11532,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(5):=121400740;
+RQPMT_100101_.old_tb3_0(5):=121407949;
 RQPMT_100101_.tb3_0(5):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(5):=RQPMT_100101_.tb3_0(5);
-RQPMT_100101_.old_tb3_1(5):='MO_VALIDATTR_CT26E121400740'
+RQPMT_100101_.old_tb3_1(5):='MO_VALIDATTR_CT26E121407949'
 ;
 RQPMT_100101_.tb3_1(5):=RQPMT_100101_.tb3_0(5);
 RQPMT_100101_.tb3_2(5):=RQPMT_100101_.tb2_0(2);
@@ -11549,8 +11549,8 @@ RQPMT_100101_.tb3_2(5),
 'OPEN'
 ,
 to_date('19-04-2017 10:07:47','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -11582,10 +11582,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(6):=121400741;
+RQPMT_100101_.old_tb3_0(6):=121407950;
 RQPMT_100101_.tb3_0(6):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(6):=RQPMT_100101_.tb3_0(6);
-RQPMT_100101_.old_tb3_1(6):='MO_INITATRIB_CT23E121400741'
+RQPMT_100101_.old_tb3_1(6):='MO_INITATRIB_CT23E121407950'
 ;
 RQPMT_100101_.tb3_1(6):=RQPMT_100101_.tb3_0(6);
 RQPMT_100101_.tb3_2(6):=RQPMT_100101_.tb2_0(0);
@@ -11599,8 +11599,8 @@ RQPMT_100101_.tb3_2(6),
 'OPEN'
 ,
 to_date('19-04-2017 10:33:28','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -11656,7 +11656,7 @@ VALID_EXPRESSION_ID=RQPMT_100101_.tb4_7(8),
 PARENT_ATTRIB_ID=null,
 PRODUCT_MOTIVE_ID=RQPMT_100101_.tb4_9(8),
 PROCESS_SEQUENCE=13,
-DISPLAY_NAME='Direcci�n de Ejecuci�n de trabajos'
+DISPLAY_NAME='Direcci¿n de Ejecuci¿n de trabajos'
 ,
 DISPLAY_ORDER=13,
 INCLUDED_VAL_DOC='Y'
@@ -11667,7 +11667,7 @@ USED_ASSIGNATION='N'
 ,
 REQUIRED='Y'
 ,
-TAG_NAME='DIRECCION_DE_EJECUCION_DE_TRABAJOS'
+TAG_NAME='DIRECCI_N_DE_EJECUCI_N_DE_TRABAJOS'
 ,
 GROUP_ATTRIBUTE_TYPE='N'
 ,
@@ -11702,7 +11702,7 @@ RQPMT_100101_.tb4_7(8),
 null,
 RQPMT_100101_.tb4_9(8),
 13,
-'Direcci�n de Ejecuci�n de trabajos'
+'Direcci¿n de Ejecuci¿n de trabajos'
 ,
 13,
 'Y'
@@ -11713,7 +11713,7 @@ RQPMT_100101_.tb4_9(8),
 ,
 'Y'
 ,
-'DIRECCION_DE_EJECUCION_DE_TRABAJOS'
+'DIRECCI_N_DE_EJECUCI_N_DE_TRABAJOS'
 ,
 'N'
 ,
@@ -11749,10 +11749,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(7):=121400742;
+RQPMT_100101_.old_tb3_0(7):=121407951;
 RQPMT_100101_.tb3_0(7):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(7):=RQPMT_100101_.tb3_0(7);
-RQPMT_100101_.old_tb3_1(7):='MO_INITATRIB_CT23E121400742'
+RQPMT_100101_.old_tb3_1(7):='MO_INITATRIB_CT23E121407951'
 ;
 RQPMT_100101_.tb3_1(7):=RQPMT_100101_.tb3_0(7);
 RQPMT_100101_.tb3_2(7):=RQPMT_100101_.tb2_0(0);
@@ -11766,8 +11766,8 @@ RQPMT_100101_.tb3_2(7),
 'LBTEST'
 ,
 to_date('08-09-2012 14:27:28','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -11915,10 +11915,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(8):=121400743;
+RQPMT_100101_.old_tb3_0(8):=121407952;
 RQPMT_100101_.tb3_0(8):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(8):=RQPMT_100101_.tb3_0(8);
-RQPMT_100101_.old_tb3_1(8):='MO_INITATRIB_CT23E121400743'
+RQPMT_100101_.old_tb3_1(8):='MO_INITATRIB_CT23E121407952'
 ;
 RQPMT_100101_.tb3_1(8):=RQPMT_100101_.tb3_0(8);
 RQPMT_100101_.tb3_2(8):=RQPMT_100101_.tb2_0(0);
@@ -11932,8 +11932,8 @@ RQPMT_100101_.tb3_2(8),
 'LBTEST'
 ,
 to_date('28-06-2012 08:36:23','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -12192,10 +12192,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(9):=121400744;
+RQPMT_100101_.old_tb3_0(9):=121407953;
 RQPMT_100101_.tb3_0(9):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(9):=RQPMT_100101_.tb3_0(9);
-RQPMT_100101_.old_tb3_1(9):='MO_INITATRIB_CT23E121400744'
+RQPMT_100101_.old_tb3_1(9):='MO_INITATRIB_CT23E121407953'
 ;
 RQPMT_100101_.tb3_1(9):=RQPMT_100101_.tb3_0(9);
 RQPMT_100101_.tb3_2(9):=RQPMT_100101_.tb2_0(0);
@@ -12209,8 +12209,8 @@ RQPMT_100101_.tb3_2(9),
 'LBTEST'
 ,
 to_date('28-06-2012 08:26:39','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -12356,7 +12356,7 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb5_0(0):=120196912;
+RQPMT_100101_.old_tb5_0(0):=120198524;
 RQPMT_100101_.tb5_0(0):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 RQPMT_100101_.tb5_0(0):=RQPMT_100101_.tb5_0(0);
 ut_trace.trace('insertando tabla sin fallo: GE_STATEMENT fila (0)',1);
@@ -12369,7 +12369,7 @@ VALUES (RQPMT_100101_.tb5_0(0),
         ||'|| chr(39) ||'         MODALIDAD['|| chr(39) ||'
         ||DECODE(a.pay_modality,
                 2, '|| chr(39) ||'2-Al Finalizar los Trabajos'|| chr(39) ||',
-                4, '|| chr(39) ||'4-Sin Cotizaci�n'|| chr(39) ||')
+                4, '|| chr(39) ||'4-Sin Cotizaci¿n'|| chr(39) ||')
         ||'|| chr(39) ||']'|| chr(39) ||' DESCRIPTION
 FROM    ps_engineering_activ a, ge_items b, ldc_conf_engi_acti
 WHERE   a.items_id = b.items_id
@@ -12377,8 +12377,7 @@ AND     a.items_id = ldc_conf_engi_acti.items_id
 AND     a.product_type_id IS null
 AND     a.pay_modality in (2,4)
 AND     ldc_conf_engi_acti.product_only = decode(fsbExistsInstanSubsc('|| chr(39) ||'WORK_INSTANCE'|| chr(39) ||', NULL, '|| chr(39) ||'PR_PRODUCT'|| chr(39) ||',          '|| chr(39) ||'SUBSCRIPTION_ID'|| chr(39) ||'), '|| chr(39) ||'Y'|| chr(39) ||', ldc_conf_engi_acti.product_only, '|| chr(39) ||'N'|| chr(39) ||')
-AND FNUGETAPPLYACT(GE_BOPERSONAL.FNUGETCURRENTCHANNEL(ge_bopersonal.fnugetpersonid),a.items_id) = 1
-'
+AND FNUGETAPPLYACT(GE_BOPERSONAL.FNUGETCURRENTCHANNEL(ge_bopersonal.fnugetpersonid),a.items_id) = 1'
 ,
 'Obtiene Actividades Para VSI'
 );
@@ -12741,10 +12740,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(10):=121400746;
+RQPMT_100101_.old_tb3_0(10):=121407954;
 RQPMT_100101_.tb3_0(10):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(10):=RQPMT_100101_.tb3_0(10);
-RQPMT_100101_.old_tb3_1(10):='MO_INITATRIB_CT23E121400746'
+RQPMT_100101_.old_tb3_1(10):='MO_INITATRIB_CT23E121407954'
 ;
 RQPMT_100101_.tb3_1(10):=RQPMT_100101_.tb3_0(10);
 RQPMT_100101_.tb3_2(10):=RQPMT_100101_.tb2_0(0);
@@ -12758,8 +12757,8 @@ RQPMT_100101_.tb3_2(10),
 'LBTEST'
 ,
 to_date('07-02-2011 16:51:29','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -12905,10 +12904,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(11):=121400745;
+RQPMT_100101_.old_tb3_0(11):=121407955;
 RQPMT_100101_.tb3_0(11):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(11):=RQPMT_100101_.tb3_0(11);
-RQPMT_100101_.old_tb3_1(11):='MO_INITATRIB_CT23E121400745'
+RQPMT_100101_.old_tb3_1(11):='MO_INITATRIB_CT23E121407955'
 ;
 RQPMT_100101_.tb3_1(11):=RQPMT_100101_.tb3_0(11);
 RQPMT_100101_.tb3_2(11):=RQPMT_100101_.tb2_0(0);
@@ -12922,8 +12921,8 @@ RQPMT_100101_.tb3_2(11),
 'TESTOSS'
 ,
 to_date('29-06-2005 08:52:45','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -13167,9 +13166,9 @@ PRECISION=null,
 SCALE=null,
 DEFAULT_VALUE=null,
 IS_FIX_OR_VARIABLE=null,
-COMMENT_='Clases de Trabajo - Servicios de Ingenier�a'
+COMMENT_='Clases de Trabajo - Servicios de Ingenier¿a'
 ,
-DISPLAY_NAME='Clases de Trabajo - Servicios de Ingenier�a'
+DISPLAY_NAME='Clases de Trabajo - Servicios de Ingenier¿a'
 
  WHERE ATTRIBUTE_ID = RQPMT_100101_.tb6_0(1);
 if not (sql%found) then
@@ -13187,9 +13186,9 @@ null,
 null,
 null,
 null,
-'Clases de Trabajo - Servicios de Ingenier�a'
+'Clases de Trabajo - Servicios de Ingenier¿a'
 ,
-'Clases de Trabajo - Servicios de Ingenier�a'
+'Clases de Trabajo - Servicios de Ingenier¿a'
 );
 end if;
 
@@ -13212,7 +13211,7 @@ ut_trace.trace('insertando tabla sin fallo: PS_PROD_MOTI_PARAM fila (1)',1);
 INSERT INTO PS_PROD_MOTI_PARAM(PRODUCT_MOTIVE_ID,ATTRIBUTE_ID,DESCRIPTION,VALUE) 
 VALUES (RQPMT_100101_.tb7_0(1),
 RQPMT_100101_.tb7_1(1),
-'Clases de Trabajo - Servicios de Ingenier�a'
+'Clases de Trabajo - Servicios de Ingenier¿a'
 ,
 '150,151,155'
 );
@@ -13248,9 +13247,9 @@ PRECISION=null,
 SCALE=null,
 DEFAULT_VALUE=null,
 IS_FIX_OR_VARIABLE=null,
-COMMENT_='Requiere generar cuenta para la liquidaci�n de cargos pos-instalaci�n'
+COMMENT_='Requiere generar cuenta para la liquidaci¿n de cargos pos-instalaci¿n'
 ,
-DISPLAY_NAME='Requiere generar cuenta para la liquidaci�n de cargos pos-instalaci�n'
+DISPLAY_NAME='Requiere generar cuenta para la liquidaci¿n de cargos pos-instalaci¿n'
 
  WHERE ATTRIBUTE_ID = RQPMT_100101_.tb6_0(2);
 if not (sql%found) then
@@ -13268,9 +13267,9 @@ null,
 null,
 null,
 null,
-'Requiere generar cuenta para la liquidaci�n de cargos pos-instalaci�n'
+'Requiere generar cuenta para la liquidaci¿n de cargos pos-instalaci¿n'
 ,
-'Requiere generar cuenta para la liquidaci�n de cargos pos-instalaci�n'
+'Requiere generar cuenta para la liquidaci¿n de cargos pos-instalaci¿n'
 );
 end if;
 
@@ -13293,7 +13292,7 @@ ut_trace.trace('insertando tabla sin fallo: PS_PROD_MOTI_PARAM fila (2)',1);
 INSERT INTO PS_PROD_MOTI_PARAM(PRODUCT_MOTIVE_ID,ATTRIBUTE_ID,DESCRIPTION,VALUE) 
 VALUES (RQPMT_100101_.tb7_0(2),
 RQPMT_100101_.tb7_1(2),
-'Requiere generar cuenta para la liquidaci�n de cargos pos-instalaci�n'
+'Requiere generar cuenta para la liquidaci¿n de cargos pos-instalaci¿n'
 ,
 'N'
 );
@@ -13318,7 +13317,7 @@ RQPMT_100101_.tb8_0(0):=5;
 ut_trace.trace('insertando tabla sin fallo: GE_SERVICE_TYPE fila (0)',1);
 INSERT INTO GE_SERVICE_TYPE(SERVICE_TYPE_ID,DESCRIPTION) 
 VALUES (RQPMT_100101_.tb8_0(0),
-'Gen�rico'
+'Genérico'
 );
 
 exception 
@@ -13445,7 +13444,7 @@ MIN_COMPONENTS=1,
 MAX_COMPONENTS=1,
 IS_OPTIONAL='N'
 ,
-DESCRIPTION='Gen�rico'
+DESCRIPTION='Gen¿rico'
 ,
 PROCESS_SEQUENCE=3,
 CONTAIN_MAIN_NUMBER='N'
@@ -13486,7 +13485,7 @@ RQPMT_100101_.tb10_4(0),
 1,
 'N'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
 3,
 'N'
@@ -13532,7 +13531,7 @@ ut_trace.trace('Actualizar o insertar tabla: PS_COMPONENT_TYPE fila (1)',1);
 UPDATE PS_COMPONENT_TYPE SET COMPONENT_TYPE_ID=RQPMT_100101_.tb9_0(1),
 SERVICE_TYPE_ID=RQPMT_100101_.tb9_1(1),
 PRODUCT_TYPE_ID=null,
-DESCRIPTION='Gen�rico'
+DESCRIPTION='Gen¿rico'
 ,
 ACCEPT_IF_PROJECTED='Y'
 ,
@@ -13568,7 +13567,7 @@ INSERT INTO PS_COMPONENT_TYPE(COMPONENT_TYPE_ID,SERVICE_TYPE_ID,PRODUCT_TYPE_ID,
 VALUES (RQPMT_100101_.tb9_0(1),
 RQPMT_100101_.tb9_1(1),
 null,
-'Gen�rico'
+'Gen¿rico'
 ,
 'Y'
 ,
@@ -13631,7 +13630,7 @@ MIN_COMPONENTS=1,
 MAX_COMPONENTS=1,
 IS_OPTIONAL='N'
 ,
-DESCRIPTION='Gen�rico'
+DESCRIPTION='Gen¿rico'
 ,
 PROCESS_SEQUENCE=4,
 CONTAIN_MAIN_NUMBER='N'
@@ -13672,7 +13671,7 @@ RQPMT_100101_.tb10_4(1),
 1,
 'N'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
 4,
 'N'
@@ -13744,7 +13743,7 @@ RQPMT_100101_.tb2_1(3):=RQPMT_100101_.tb1_0(0);
 ut_trace.trace('Actualizar o insertar tabla: GR_CONFIGURA_TYPE fila (3)',1);
 UPDATE GR_CONFIGURA_TYPE SET CONFIGURA_TYPE_ID=RQPMT_100101_.tb2_0(3),
 MODULE_ID=RQPMT_100101_.tb2_1(3),
-DESCRIPTION='Configuraci�n eventos de componentes'
+DESCRIPTION='Configuraci¿n eventos de componentes'
 ,
 GENERATION_TYPE='PL'
 ,
@@ -13759,7 +13758,7 @@ if not (sql%found) then
 INSERT INTO GR_CONFIGURA_TYPE(CONFIGURA_TYPE_ID,MODULE_ID,DESCRIPTION,GENERATION_TYPE,EXECUTION_MODE,CALL_TYPE,GENERATION_MASK) 
 VALUES (RQPMT_100101_.tb2_0(3),
 RQPMT_100101_.tb2_1(3),
-'Configuraci�n eventos de componentes'
+'Configuraci¿n eventos de componentes'
 ,
 'PL'
 ,
@@ -13784,10 +13783,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(12):=121400747;
+RQPMT_100101_.old_tb3_0(12):=121407956;
 RQPMT_100101_.tb3_0(12):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(12):=RQPMT_100101_.tb3_0(12);
-RQPMT_100101_.old_tb3_1(12):='MO_EVE_COMP_CT65E121400747'
+RQPMT_100101_.old_tb3_1(12):='MO_EVE_COMP_CT65E121407956'
 ;
 RQPMT_100101_.tb3_1(12):=RQPMT_100101_.tb3_0(12);
 RQPMT_100101_.tb3_2(12):=RQPMT_100101_.tb2_0(3);
@@ -13801,8 +13800,8 @@ RQPMT_100101_.tb3_2(12),
 'OPEN'
 ,
 to_date('17-09-2013 17:46:08','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:02','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -13860,10 +13859,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(13):=121400748;
+RQPMT_100101_.old_tb3_0(13):=121407957;
 RQPMT_100101_.tb3_0(13):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(13):=RQPMT_100101_.tb3_0(13);
-RQPMT_100101_.old_tb3_1(13):='MO_VALIDATTR_CT26E121400748'
+RQPMT_100101_.old_tb3_1(13):='MO_VALIDATTR_CT26E121407957'
 ;
 RQPMT_100101_.tb3_1(13):=RQPMT_100101_.tb3_0(13);
 RQPMT_100101_.tb3_2(13):=RQPMT_100101_.tb2_0(2);
@@ -13877,8 +13876,8 @@ RQPMT_100101_.tb3_2(13),
 'OPEN'
 ,
 to_date('17-09-2013 17:05:29','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:48','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -13910,7 +13909,7 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb5_0(1):=120196913;
+RQPMT_100101_.old_tb5_0(1):=120198525;
 RQPMT_100101_.tb5_0(1):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 RQPMT_100101_.tb5_0(1):=RQPMT_100101_.tb5_0(1);
 ut_trace.trace('insertando tabla sin fallo: GE_STATEMENT fila (1)',1);
@@ -14384,10 +14383,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(14):=121400749;
+RQPMT_100101_.old_tb3_0(14):=121407958;
 RQPMT_100101_.tb3_0(14):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(14):=RQPMT_100101_.tb3_0(14);
-RQPMT_100101_.old_tb3_1(14):='MO_INITATRIB_CT23E121400749'
+RQPMT_100101_.old_tb3_1(14):='MO_INITATRIB_CT23E121407958'
 ;
 RQPMT_100101_.tb3_1(14):=RQPMT_100101_.tb3_0(14);
 RQPMT_100101_.tb3_2(14):=RQPMT_100101_.tb2_0(0);
@@ -14396,14 +14395,14 @@ INSERT INTO GR_CONFIG_EXPRESSION(CONFIG_EXPRESSION_ID,OBJECT_NAME,CONFIGURA_TYPE
 VALUES (RQPMT_100101_.tb3_0(14),
 RQPMT_100101_.tb3_1(14),
 RQPMT_100101_.tb3_2(14),
-'if (GE_BOINSTANCECONTROL.FBLACCKEYATTRIBUTESTACK("WORK_INSTANCE", null, "PR_PRODUCT", "PRODUCT_ID", 1) = GE_BOCONSTANTS.GETTRUE() '||chr(38)||''||chr(38)||' GE_BOINSTANCECONTROL.FBLACCKEYATTRIBUTESTACK("WORK_INSTANCE", null, "PR_PRODUCT", "PRODUCT_TYPE_ID", 1) = GE_BOCONSTANTS.GETTRUE(),GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE("WORK_INSTANCE",null,"PR_PRODUCT","PRODUCT_ID",nuProductId);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE("WORK_INSTANCE",null,"PR_PRODUCT","PRODUCT_TYPE_ID",nuProdTypeId);nuComponentId = PR_BCPRODUCT.FNUGETMAINCOMPONENTID(nuProductId, GE_BOCONSTANTS.GETTRUE());nuCompMedId = PR_BOCNFCOMPONENT.FNUGETCOMPONENTIDBYPRODUCT(nuProductId, "7039");GE_BOINSTANCECONTROL.SETENTITYATTRIBUTE(nuCompMedId);nuComponentType = PR_BOCOMPONENT.GETCOMPONENTTYPE(nuComponentId);GE_BOINSTANCECONTROL.GETCURRENTINSTANCE(sbInstance);if (nuComponentType = 7038,GE_BOINSTANCECONTROL.SETATTRIBUTENEWVALUE(sbInstance,null,"MO_COMPONENT","COMPONENT_TYPE_ID",7039);,);,)'
+'PKG_REGLAS_TRAMITEVSI.PRCINICOMPONENTIDPROD()'
 ,
 'OPEN'
 ,
 to_date('17-09-2013 17:07:38','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-'G'
+to_date('06-03-2025 11:45:44','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 11:45:44','DD-MM-YYYY HH24:MI:SS'),
+'R'
 ,
 'N'
 ,
@@ -14544,10 +14543,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(15):=121400750;
+RQPMT_100101_.old_tb3_0(15):=121407959;
 RQPMT_100101_.tb3_0(15):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(15):=RQPMT_100101_.tb3_0(15);
-RQPMT_100101_.old_tb3_1(15):='MO_INITATRIB_CT23E121400750'
+RQPMT_100101_.old_tb3_1(15):='MO_INITATRIB_CT23E121407959'
 ;
 RQPMT_100101_.tb3_1(15):=RQPMT_100101_.tb3_0(15);
 RQPMT_100101_.tb3_2(15):=RQPMT_100101_.tb2_0(0);
@@ -14561,8 +14560,8 @@ RQPMT_100101_.tb3_2(15),
 'OPEN'
 ,
 to_date('17-09-2013 17:05:31','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -15140,10 +15139,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(16):=121400751;
+RQPMT_100101_.old_tb3_0(16):=121407960;
 RQPMT_100101_.tb3_0(16):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(16):=RQPMT_100101_.tb3_0(16);
-RQPMT_100101_.old_tb3_1(16):='MO_INITATRIB_CT23E121400751'
+RQPMT_100101_.old_tb3_1(16):='MO_INITATRIB_CT23E121407960'
 ;
 RQPMT_100101_.tb3_1(16):=RQPMT_100101_.tb3_0(16);
 RQPMT_100101_.tb3_2(16):=RQPMT_100101_.tb2_0(0);
@@ -15157,8 +15156,8 @@ RQPMT_100101_.tb3_2(16),
 'OPEN'
 ,
 to_date('17-09-2013 17:05:29','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -15438,10 +15437,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(17):=121400752;
+RQPMT_100101_.old_tb3_0(17):=121407961;
 RQPMT_100101_.tb3_0(17):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(17):=RQPMT_100101_.tb3_0(17);
-RQPMT_100101_.old_tb3_1(17):='MO_EVE_COMP_CT65E121400752'
+RQPMT_100101_.old_tb3_1(17):='MO_EVE_COMP_CT65E121407961'
 ;
 RQPMT_100101_.tb3_1(17):=RQPMT_100101_.tb3_0(17);
 RQPMT_100101_.tb3_2(17):=RQPMT_100101_.tb2_0(3);
@@ -15455,8 +15454,8 @@ RQPMT_100101_.tb3_2(17),
 'LBTEST'
 ,
 to_date('08-09-2012 09:05:23','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -15841,10 +15840,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(18):=121400754;
+RQPMT_100101_.old_tb3_0(18):=121407962;
 RQPMT_100101_.tb3_0(18):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(18):=RQPMT_100101_.tb3_0(18);
-RQPMT_100101_.old_tb3_1(18):='MO_INITATRIB_CT23E121400754'
+RQPMT_100101_.old_tb3_1(18):='MO_INITATRIB_CT23E121407962'
 ;
 RQPMT_100101_.tb3_1(18):=RQPMT_100101_.tb3_0(18);
 RQPMT_100101_.tb3_2(18):=RQPMT_100101_.tb2_0(0);
@@ -15858,8 +15857,8 @@ RQPMT_100101_.tb3_2(18),
 'LBTEST'
 ,
 to_date('01-03-2012 12:55:26','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -16001,10 +16000,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(19):=121400755;
+RQPMT_100101_.old_tb3_0(19):=121407963;
 RQPMT_100101_.tb3_0(19):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(19):=RQPMT_100101_.tb3_0(19);
-RQPMT_100101_.old_tb3_1(19):='MO_VALIDATTR_CT26E121400755'
+RQPMT_100101_.old_tb3_1(19):='MO_VALIDATTR_CT26E121407963'
 ;
 RQPMT_100101_.tb3_1(19):=RQPMT_100101_.tb3_0(19);
 RQPMT_100101_.tb3_2(19):=RQPMT_100101_.tb2_0(2);
@@ -16018,8 +16017,8 @@ RQPMT_100101_.tb3_2(19),
 'LBTEST'
 ,
 to_date('01-03-2012 12:34:05','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -16162,10 +16161,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(20):=121400756;
+RQPMT_100101_.old_tb3_0(20):=121407964;
 RQPMT_100101_.tb3_0(20):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(20):=RQPMT_100101_.tb3_0(20);
-RQPMT_100101_.old_tb3_1(20):='MO_INITATRIB_CT23E121400756'
+RQPMT_100101_.old_tb3_1(20):='MO_INITATRIB_CT23E121407964'
 ;
 RQPMT_100101_.tb3_1(20):=RQPMT_100101_.tb3_0(20);
 RQPMT_100101_.tb3_2(20):=RQPMT_100101_.tb2_0(0);
@@ -16179,8 +16178,8 @@ RQPMT_100101_.tb3_2(20),
 'LBTEST'
 ,
 to_date('01-03-2012 12:34:05','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -16760,10 +16759,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(21):=121400753;
+RQPMT_100101_.old_tb3_0(21):=121407965;
 RQPMT_100101_.tb3_0(21):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(21):=RQPMT_100101_.tb3_0(21);
-RQPMT_100101_.old_tb3_1(21):='MO_INITATRIB_CT23E121400753'
+RQPMT_100101_.old_tb3_1(21):='MO_INITATRIB_CT23E121407965'
 ;
 RQPMT_100101_.tb3_1(21):=RQPMT_100101_.tb3_0(21);
 RQPMT_100101_.tb3_2(21):=RQPMT_100101_.tb2_0(0);
@@ -16777,8 +16776,8 @@ RQPMT_100101_.tb3_2(21),
 'LBTEST'
 ,
 to_date('01-03-2012 12:48:36','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -17056,10 +17055,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(22):=121400757;
+RQPMT_100101_.old_tb3_0(22):=121407966;
 RQPMT_100101_.tb3_0(22):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(22):=RQPMT_100101_.tb3_0(22);
-RQPMT_100101_.old_tb3_1(22):='MO_EVE_COMP_CT65E121400757'
+RQPMT_100101_.old_tb3_1(22):='MO_EVE_COMP_CT65E121407966'
 ;
 RQPMT_100101_.tb3_1(22):=RQPMT_100101_.tb3_0(22);
 RQPMT_100101_.tb3_2(22):=RQPMT_100101_.tb2_0(3);
@@ -17068,14 +17067,14 @@ INSERT INTO GR_CONFIG_EXPRESSION(CONFIG_EXPRESSION_ID,OBJECT_NAME,CONFIGURA_TYPE
 VALUES (RQPMT_100101_.tb3_0(22),
 RQPMT_100101_.tb3_1(22),
 RQPMT_100101_.tb3_2(22),
-'GE_BOINSTANCECONTROL.GETCURRENTINSTANCE(sbInstance);GE_BOINSTANCECONTROL.GETFATHERINSTANCE(sbInstance,sbFatherInstance);if (GE_BOINSTANCECONTROL.FBLACCKEYATTRIBUTESTACK("WORK_INSTANCE", null, "PR_PRODUCT", "PRODUCT_ID", "1") = TRUE,GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE("WORK_INSTANCE",null,"PR_PRODUCT","PRODUCT_ID",nuIdProd);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstance,null,"MO_DATA_FOR_ORDER","ITEM_ID",nuItem);boSolicitud = MO_BODATA_FOR_ORDER.FBOEXISTACTIVITYBYPROD(nuIdProd, "P_LBC_VENTA_DE_SERVICIOS_DE_INGENIERIA_100101", nuItem);if (boSolicitud = TRUE,GI_BOERRORS.SETERRORCODEARGUMENT(2741,"El producto ya cuenta con una solicitud de venta de servicios de ingenier�a con ese tipo de actividad");,);PR_VALIDA_GENERA_ACTI(nuItem,nuIdProd);LDC_PKGESTIONCERTSV.PRVALIORDERP(nuIdProd,nuItem);LDC_PKGESTIONCERTSV.PRVALIORCERT(nuIdProd,nuItem);,);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstance,NULL,"MO_PROCESS","ADDRESS_MAIN_MOTIVE",sbAddressId);nuAddressId = UT_CONVERT.FNUCHAR' ||
+'GE_BOINSTANCECONTROL.GETCURRENTINSTANCE(sbInstance);GE_BOINSTANCECONTROL.GETFATHERINSTANCE(sbInstance,sbFatherInstance);if (GE_BOINSTANCECONTROL.FBLACCKEYATTRIBUTESTACK("WORK_INSTANCE", null, "PR_PRODUCT", "PRODUCT_ID", "1") = TRUE,GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE("WORK_INSTANCE",null,"PR_PRODUCT","PRODUCT_ID",nuIdProd);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstance,null,"MO_DATA_FOR_ORDER","ITEM_ID",nuItem);boSolicitud = MO_BODATA_FOR_ORDER.FBOEXISTACTIVITYBYPROD(nuIdProd, "P_LBC_VENTA_DE_SERVICIOS_DE_INGENIERIA_100101", nuItem);if (boSolicitud = TRUE,GI_BOERRORS.SETERRORCODEARGUMENT(2741,"El producto ya cuenta con una solicitud de venta de servicios de ingenier¿a con ese tipo de actividad");,);PR_VALIDA_GENERA_ACTI(nuItem,nuIdProd);LDC_PKGESTIONCERTSV.PRVALIORDERP(nuIdProd,nuItem);LDC_PKGESTIONCERTSV.PRVALIORCERT(nuIdProd,nuItem);,);GE_BOINSTANCECONTROL.GETATTRIBUTENEWVALUE(sbInstance,NULL,"MO_PROCESS","ADDRESS_MAIN_MOTIVE",sbAddressId);nuAddressId = UT_CONVERT.FNUCHAR' ||
 'TONUMBER(sbAddressId);CF_BOREGISTERRULESCRM.LOADADDRESS(sbInstance,sbAddressId)'
 ,
 'LBTEST'
 ,
 to_date('08-09-2012 09:04:22','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 09:49:03','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -17143,10 +17142,10 @@ if (not RQPMT_100101_.blProcessStatus) then
  return;
 end if;
 
-RQPMT_100101_.old_tb3_0(23):=121400758;
+RQPMT_100101_.old_tb3_0(23):=121407967;
 RQPMT_100101_.tb3_0(23):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 RQPMT_100101_.tb3_0(23):=RQPMT_100101_.tb3_0(23);
-RQPMT_100101_.old_tb3_1(23):='MO_EVE_COMP_CT65E121400758'
+RQPMT_100101_.old_tb3_1(23):='MO_EVE_COMP_CT65E121407967'
 ;
 RQPMT_100101_.tb3_1(23):=RQPMT_100101_.tb3_0(23);
 RQPMT_100101_.tb3_2(23):=RQPMT_100101_.tb2_0(3);
@@ -17161,9 +17160,9 @@ RQPMT_100101_.tb3_2(23),
 'LBTEST'
 ,
 to_date('08-09-2012 09:03:44','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 20:58:29','DD-MM-YYYY HH24:MI:SS'),
-to_date('30-01-2024 20:58:29','DD-MM-YYYY HH24:MI:SS'),
-'R'
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
+to_date('06-03-2025 10:26:49','DD-MM-YYYY HH24:MI:SS'),
+'G'
 ,
 'N'
 ,
@@ -17240,7 +17239,7 @@ FOR rc in RQPMT_100101_.cuProdMot LOOP
 PS_BSPSCRE_MGR.SetProdMotiveConf(rc.product_motive_id, sbSuccess, nuErrCode, sbErrMssg);
 END LOOP;
 if(nvl(sbSuccess, ge_boconstants.csbNO) != ge_boconstants.csbYES)then
-Raise_application_error(-20101, 'No se pudo generar la informaci�n de Configuraci�n');
+Raise_application_error(-20101, 'No se pudo generar la información de Configuración');
 end if;
 
 exception when others then
@@ -17287,7 +17286,7 @@ if (not RQPMT_100101_.blProcessStatus) then
 end if;
 nuRowProcess:=RQPMT_100101_.tb3_0.first;
 while (nuRowProcess is not null) loop 
-ut_trace.trace('Genera expresi�n regla:'|| RQPMT_100101_.tb3_0(nuRowProcess),1); 
+ut_trace.trace('Genera expresión regla:'|| RQPMT_100101_.tb3_0(nuRowProcess),1); 
 begin
 GR_BOINTERFACE_BODY.MakeExpression(RQPMT_100101_.tb3_0(nuRowProcess)); 
 exception when others then
@@ -17683,11 +17682,11 @@ BEGIN
    RQCFG_100101_.tbEntityName(43) := 'MO_COMPONENT';
    RQCFG_100101_.tbEntityAttributeName(50000936) := 'MO_COMPONENT@PRODUCT_ID';
    RQCFG_100101_.tbEntityName(17) := 'MO_PACKAGES';
+   RQCFG_100101_.tbEntityAttributeName(269) := 'MO_PACKAGES@PACKAGE_TYPE_ID';
+   RQCFG_100101_.tbEntityName(17) := 'MO_PACKAGES';
    RQCFG_100101_.tbEntityAttributeName(2683) := 'MO_PACKAGES@RECEPTION_TYPE_ID';
    RQCFG_100101_.tbEntityName(17) := 'MO_PACKAGES';
    RQCFG_100101_.tbEntityAttributeName(146755) := 'MO_PACKAGES@CONTACT_ID';
-   RQCFG_100101_.tbEntityName(17) := 'MO_PACKAGES';
-   RQCFG_100101_.tbEntityAttributeName(269) := 'MO_PACKAGES@PACKAGE_TYPE_ID';
    RQCFG_100101_.tbEntityName(118) := 'MO_DATA_FOR_ORDER';
    RQCFG_100101_.tbEntityAttributeName(44501) := 'MO_DATA_FOR_ORDER@ITEM_ID';
    RQCFG_100101_.tbEntityName(43) := 'MO_COMPONENT';
@@ -17712,14 +17711,14 @@ BEGIN
    RQCFG_100101_.tbEntityAttributeName(2559) := 'MO_PROCESS@VALUE_2';
    RQCFG_100101_.tbEntityName(43) := 'MO_COMPONENT';
    RQCFG_100101_.tbEntityAttributeName(1801) := 'MO_COMPONENT@CLASS_SERVICE_ID';
-   RQCFG_100101_.tbEntityName(68) := 'MO_PROCESS';
-   RQCFG_100101_.tbEntityAttributeName(2826) := 'MO_PROCESS@CONTRACT_INFORMATION';
-   RQCFG_100101_.tbEntityName(68) := 'MO_PROCESS';
-   RQCFG_100101_.tbEntityAttributeName(1081) := 'MO_PROCESS@SUBSCRIBER_ID';
    RQCFG_100101_.tbEntityName(17) := 'MO_PACKAGES';
    RQCFG_100101_.tbEntityAttributeName(50001162) := 'MO_PACKAGES@PERSON_ID';
    RQCFG_100101_.tbEntityName(17) := 'MO_PACKAGES';
    RQCFG_100101_.tbEntityAttributeName(255) := 'MO_PACKAGES@PACKAGE_ID';
+   RQCFG_100101_.tbEntityName(68) := 'MO_PROCESS';
+   RQCFG_100101_.tbEntityAttributeName(2826) := 'MO_PROCESS@CONTRACT_INFORMATION';
+   RQCFG_100101_.tbEntityName(68) := 'MO_PROCESS';
+   RQCFG_100101_.tbEntityAttributeName(1081) := 'MO_PROCESS@SUBSCRIBER_ID';
    RQCFG_100101_.tbEntityName(118) := 'MO_DATA_FOR_ORDER';
    RQCFG_100101_.tbEntityAttributeName(2875) := 'MO_DATA_FOR_ORDER@DATA_FOR_ORDER_ID';
    RQCFG_100101_.tbEntityName(8) := 'MO_MOTIVE';
@@ -18285,7 +18284,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb0_0(0):=8927;
+RQCFG_100101_.old_tb0_0(0):=8956;
 RQCFG_100101_.tb0_0(0):=GI_BOSEQUENCES.FNUGETNEXTCONFIGID;
 RQCFG_100101_.tb0_0(0):=RQCFG_100101_.tb0_0(0);
 RQCFG_100101_.old_tb0_2(0):=2012;
@@ -18317,14 +18316,14 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb1_0(0):=1066016;
+RQCFG_100101_.old_tb1_0(0):=1066894;
 RQCFG_100101_.tb1_0(0):=GI_BOSEQUENCES.FNUGETNEXTCOMPOSITIONID;
 RQCFG_100101_.tb1_0(0):=RQCFG_100101_.tb1_0(0);
 RQCFG_100101_.old_tb1_1(0):=100101;
 RQCFG_100101_.tb1_1(0):=RQCFG_100101_.old_tb1_1(0);
 RQCFG_100101_.old_tb1_2(0):=2012;
 RQCFG_100101_.tb1_2(0):=CC_BOUTILEXPORT.FNUGETIDENTITYFROMCAT(RQCFG_100101_.TBENTITYNAME(NVL(RQCFG_100101_.old_tb1_2(0),-1)));
-RQCFG_100101_.old_tb1_3(0):=8927;
+RQCFG_100101_.old_tb1_3(0):=8956;
 RQCFG_100101_.tb1_3(0):=GI_BOCONFIG.FNUGETCONFIG(CC_BOUTILEXPORT.FNUGETIDENTITYFROMCAT(RQCFG_100101_.TBENTITYNAME(NVL(RQCFG_100101_.old_tb1_2(0),-1))), RQCFG_100101_.old_tb1_1(0), 4);
 RQCFG_100101_.tb1_3(0):=RQCFG_100101_.tb0_0(0);
 ut_trace.trace('insertando tabla: GI_COMPOSITION fila (0)',1);
@@ -18353,7 +18352,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb2_0(0):=100026184;
+RQCFG_100101_.old_tb2_0(0):=100026287;
 RQCFG_100101_.tb2_0(0):=GI_BOSEQUENCES.FNUGETNEXTCONFIGCOMPID;
 RQCFG_100101_.tb2_0(0):=RQCFG_100101_.tb2_0(0);
 RQCFG_100101_.tb2_1(0):=RQCFG_100101_.tb0_0(0);
@@ -18382,7 +18381,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb1_0(1):=1066017;
+RQCFG_100101_.old_tb1_0(1):=1066895;
 RQCFG_100101_.tb1_0(1):=GI_BOSEQUENCES.FNUGETNEXTCOMPOSITIONID;
 RQCFG_100101_.tb1_0(1):=RQCFG_100101_.tb1_0(1);
 RQCFG_100101_.old_tb1_1(1):=100113;
@@ -18417,7 +18416,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb2_0(1):=100026185;
+RQCFG_100101_.old_tb2_0(1):=100026288;
 RQCFG_100101_.tb2_0(1):=GI_BOSEQUENCES.FNUGETNEXTCONFIGCOMPID;
 RQCFG_100101_.tb2_0(1):=RQCFG_100101_.tb2_0(1);
 RQCFG_100101_.tb2_1(1):=RQCFG_100101_.tb0_0(0);
@@ -18447,7 +18446,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb1_0(2):=1066018;
+RQCFG_100101_.old_tb1_0(2):=1066896;
 RQCFG_100101_.tb1_0(2):=GI_BOSEQUENCES.FNUGETNEXTCOMPOSITIONID;
 RQCFG_100101_.tb1_0(2):=RQCFG_100101_.tb1_0(2);
 RQCFG_100101_.old_tb1_1(2):=22;
@@ -18483,7 +18482,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb2_0(2):=100026186;
+RQCFG_100101_.old_tb2_0(2):=100026289;
 RQCFG_100101_.tb2_0(2):=GI_BOSEQUENCES.FNUGETNEXTCONFIGCOMPID;
 RQCFG_100101_.tb2_0(2):=RQCFG_100101_.tb2_0(2);
 RQCFG_100101_.tb2_1(2):=RQCFG_100101_.tb0_0(0);
@@ -18513,7 +18512,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb1_0(3):=1066019;
+RQCFG_100101_.old_tb1_0(3):=1066897;
 RQCFG_100101_.tb1_0(3):=GI_BOSEQUENCES.FNUGETNEXTCOMPOSITIONID;
 RQCFG_100101_.tb1_0(3):=RQCFG_100101_.tb1_0(3);
 RQCFG_100101_.old_tb1_1(3):=10319;
@@ -18549,7 +18548,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb2_0(3):=100026187;
+RQCFG_100101_.old_tb2_0(3):=100026290;
 RQCFG_100101_.tb2_0(3):=GI_BOSEQUENCES.FNUGETNEXTCONFIGCOMPID;
 RQCFG_100101_.tb2_0(3):=RQCFG_100101_.tb2_0(3);
 RQCFG_100101_.tb2_1(3):=RQCFG_100101_.tb0_0(0);
@@ -18579,7 +18578,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(0):=1151018;
+RQCFG_100101_.old_tb3_0(0):=1152802;
 RQCFG_100101_.tb3_0(0):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(0):=RQCFG_100101_.tb3_0(0);
 RQCFG_100101_.old_tb3_1(0):=2042;
@@ -18636,7 +18635,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb4_0(0):=2502;
+RQCFG_100101_.old_tb4_0(0):=3177;
 RQCFG_100101_.tb4_0(0):=GI_BOSEQUENCES.FNUGETNEXTFRAMEID;
 RQCFG_100101_.tb4_0(0):=RQCFG_100101_.tb4_0(0);
 RQCFG_100101_.tb4_1(0):=RQCFG_100101_.tb2_2(3);
@@ -18646,7 +18645,7 @@ VALUES (RQCFG_100101_.tb4_0(0),
 RQCFG_100101_.tb4_1(0),
 null,
 null,
-'FRAME-C_GENERICO_10319-1066019'
+'FRAME-C_GENERICO_10319-1066897'
 ,
 4);
 
@@ -18663,7 +18662,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(0):=1603676;
+RQCFG_100101_.old_tb5_0(0):=1613917;
 RQCFG_100101_.tb5_0(0):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(0):=RQCFG_100101_.tb5_0(0);
 RQCFG_100101_.old_tb5_1(0):=355;
@@ -18713,7 +18712,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(1):=1151019;
+RQCFG_100101_.old_tb3_0(1):=1152803;
 RQCFG_100101_.tb3_0(1):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(1):=RQCFG_100101_.tb3_0(1);
 RQCFG_100101_.old_tb3_1(1):=2042;
@@ -18727,9 +18726,9 @@ RQCFG_100101_.tb3_4(1):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TB
 RQCFG_100101_.tb3_5(1):=RQCFG_100101_.tb2_2(3);
 RQCFG_100101_.old_tb3_6(1):=null;
 RQCFG_100101_.tb3_6(1):=NULL;
-RQCFG_100101_.old_tb3_7(1):=121400748;
+RQCFG_100101_.old_tb3_7(1):=121407957;
 RQCFG_100101_.tb3_7(1):=NULL;
-RQCFG_100101_.old_tb3_8(1):=120196913;
+RQCFG_100101_.old_tb3_8(1):=120198525;
 RQCFG_100101_.tb3_8(1):=NULL;
 ut_trace.trace('insertando tabla: GI_COMP_ATTRIBS fila (1)',1);
 INSERT INTO GI_COMP_ATTRIBS(COMP_ATTRIBS_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,MIRROR_ENTI_ATTRIB,PARENT_ATTRIBUTE_ID,COMPOSITION_ID,INIT_EXPRESSION_ID,VALID_EXPRESSION_ID,SELECT_STATEMENT_ID,PARENT_GROUP_ATTR_ID,EXTERNAL_ID,DISPLAY_ORDER,DISPLAY_NAME,GROUP_ATTRIBUTE_TYPE,INCLUDED_VAL_DOC,REQUIRED,PROCESS_SEQUENCE,TAG_NAME,TAB_STOP) 
@@ -18770,7 +18769,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(1):=1603677;
+RQCFG_100101_.old_tb5_0(1):=1613918;
 RQCFG_100101_.tb5_0(1):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(1):=RQCFG_100101_.tb5_0(1);
 RQCFG_100101_.old_tb5_1(1):=1801;
@@ -18820,7 +18819,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(2):=1151020;
+RQCFG_100101_.old_tb3_0(2):=1152804;
 RQCFG_100101_.tb3_0(2):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(2):=RQCFG_100101_.tb3_0(2);
 RQCFG_100101_.old_tb3_1(2):=2042;
@@ -18877,7 +18876,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(2):=1603678;
+RQCFG_100101_.old_tb5_0(2):=1613919;
 RQCFG_100101_.tb5_0(2):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(2):=RQCFG_100101_.tb5_0(2);
 RQCFG_100101_.old_tb5_1(2):=362;
@@ -18927,7 +18926,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(3):=1151021;
+RQCFG_100101_.old_tb3_0(3):=1152805;
 RQCFG_100101_.tb3_0(3):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(3):=RQCFG_100101_.tb3_0(3);
 RQCFG_100101_.old_tb3_1(3):=2042;
@@ -18984,7 +18983,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(3):=1603679;
+RQCFG_100101_.old_tb5_0(3):=1613920;
 RQCFG_100101_.tb5_0(3):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(3):=RQCFG_100101_.tb5_0(3);
 RQCFG_100101_.old_tb5_1(3):=456;
@@ -19034,7 +19033,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(4):=1151022;
+RQCFG_100101_.old_tb3_0(4):=1152806;
 RQCFG_100101_.tb3_0(4):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(4):=RQCFG_100101_.tb3_0(4);
 RQCFG_100101_.old_tb3_1(4):=2042;
@@ -19091,7 +19090,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(4):=1603680;
+RQCFG_100101_.old_tb5_0(4):=1613921;
 RQCFG_100101_.tb5_0(4):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(4):=RQCFG_100101_.tb5_0(4);
 RQCFG_100101_.old_tb5_1(4):=361;
@@ -19141,7 +19140,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(5):=1151023;
+RQCFG_100101_.old_tb3_0(5):=1152807;
 RQCFG_100101_.tb3_0(5):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(5):=RQCFG_100101_.tb3_0(5);
 RQCFG_100101_.old_tb3_1(5):=2042;
@@ -19198,7 +19197,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(5):=1603681;
+RQCFG_100101_.old_tb5_0(5):=1613922;
 RQCFG_100101_.tb5_0(5):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(5):=RQCFG_100101_.tb5_0(5);
 RQCFG_100101_.old_tb5_1(5):=696;
@@ -19248,7 +19247,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(6):=1151024;
+RQCFG_100101_.old_tb3_0(6):=1152808;
 RQCFG_100101_.tb3_0(6):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(6):=RQCFG_100101_.tb3_0(6);
 RQCFG_100101_.old_tb3_1(6):=2042;
@@ -19305,7 +19304,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(6):=1603682;
+RQCFG_100101_.old_tb5_0(6):=1613923;
 RQCFG_100101_.tb5_0(6):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(6):=RQCFG_100101_.tb5_0(6);
 RQCFG_100101_.old_tb5_1(6):=1026;
@@ -19355,7 +19354,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(7):=1151025;
+RQCFG_100101_.old_tb3_0(7):=1152809;
 RQCFG_100101_.tb3_0(7):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(7):=RQCFG_100101_.tb3_0(7);
 RQCFG_100101_.old_tb3_1(7):=2042;
@@ -19412,7 +19411,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(7):=1603683;
+RQCFG_100101_.old_tb5_0(7):=1613924;
 RQCFG_100101_.tb5_0(7):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(7):=RQCFG_100101_.tb5_0(7);
 RQCFG_100101_.old_tb5_1(7):=50000937;
@@ -19462,7 +19461,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(8):=1151026;
+RQCFG_100101_.old_tb3_0(8):=1152810;
 RQCFG_100101_.tb3_0(8):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(8):=RQCFG_100101_.tb3_0(8);
 RQCFG_100101_.old_tb3_1(8):=2042;
@@ -19474,7 +19473,7 @@ RQCFG_100101_.tb3_3(8):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TB
 RQCFG_100101_.old_tb3_4(8):=null;
 RQCFG_100101_.tb3_4(8):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(8),-1)));
 RQCFG_100101_.tb3_5(8):=RQCFG_100101_.tb2_2(3);
-RQCFG_100101_.old_tb3_6(8):=121400749;
+RQCFG_100101_.old_tb3_6(8):=121407958;
 RQCFG_100101_.tb3_6(8):=NULL;
 RQCFG_100101_.old_tb3_7(8):=null;
 RQCFG_100101_.tb3_7(8):=NULL;
@@ -19519,7 +19518,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(8):=1603684;
+RQCFG_100101_.old_tb5_0(8):=1613925;
 RQCFG_100101_.tb5_0(8):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(8):=RQCFG_100101_.tb5_0(8);
 RQCFG_100101_.old_tb5_1(8):=8064;
@@ -19569,7 +19568,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(9):=1151027;
+RQCFG_100101_.old_tb3_0(9):=1152811;
 RQCFG_100101_.tb3_0(9):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(9):=RQCFG_100101_.tb3_0(9);
 RQCFG_100101_.old_tb3_1(9):=2042;
@@ -19581,7 +19580,7 @@ RQCFG_100101_.tb3_3(9):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TB
 RQCFG_100101_.old_tb3_4(9):=null;
 RQCFG_100101_.tb3_4(9):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(9),-1)));
 RQCFG_100101_.tb3_5(9):=RQCFG_100101_.tb2_2(3);
-RQCFG_100101_.old_tb3_6(9):=121400750;
+RQCFG_100101_.old_tb3_6(9):=121407959;
 RQCFG_100101_.tb3_6(9):=NULL;
 RQCFG_100101_.old_tb3_7(9):=null;
 RQCFG_100101_.tb3_7(9):=NULL;
@@ -19626,7 +19625,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(9):=1603685;
+RQCFG_100101_.old_tb5_0(9):=1613926;
 RQCFG_100101_.tb5_0(9):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(9):=RQCFG_100101_.tb5_0(9);
 RQCFG_100101_.old_tb5_1(9):=50000936;
@@ -19676,7 +19675,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(10):=1151028;
+RQCFG_100101_.old_tb3_0(10):=1152812;
 RQCFG_100101_.tb3_0(10):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(10):=RQCFG_100101_.tb3_0(10);
 RQCFG_100101_.old_tb3_1(10):=2042;
@@ -19688,7 +19687,7 @@ RQCFG_100101_.tb3_3(10):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(10):=null;
 RQCFG_100101_.tb3_4(10):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(10),-1)));
 RQCFG_100101_.tb3_5(10):=RQCFG_100101_.tb2_2(3);
-RQCFG_100101_.old_tb3_6(10):=121400751;
+RQCFG_100101_.old_tb3_6(10):=121407960;
 RQCFG_100101_.tb3_6(10):=NULL;
 RQCFG_100101_.old_tb3_7(10):=null;
 RQCFG_100101_.tb3_7(10):=NULL;
@@ -19733,7 +19732,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(10):=1603686;
+RQCFG_100101_.old_tb5_0(10):=1613927;
 RQCFG_100101_.tb5_0(10):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(10):=RQCFG_100101_.tb5_0(10);
 RQCFG_100101_.old_tb5_1(10):=338;
@@ -19783,7 +19782,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(11):=1151029;
+RQCFG_100101_.old_tb3_0(11):=1152813;
 RQCFG_100101_.tb3_0(11):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(11):=RQCFG_100101_.tb3_0(11);
 RQCFG_100101_.old_tb3_1(11):=2042;
@@ -19840,7 +19839,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(11):=1603687;
+RQCFG_100101_.old_tb5_0(11):=1613928;
 RQCFG_100101_.tb5_0(11):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(11):=RQCFG_100101_.tb5_0(11);
 RQCFG_100101_.old_tb5_1(11):=4013;
@@ -19890,7 +19889,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(12):=1151030;
+RQCFG_100101_.old_tb3_0(12):=1152814;
 RQCFG_100101_.tb3_0(12):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(12):=RQCFG_100101_.tb3_0(12);
 RQCFG_100101_.old_tb3_1(12):=2042;
@@ -19947,7 +19946,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb4_0(1):=2503;
+RQCFG_100101_.old_tb4_0(1):=3178;
 RQCFG_100101_.tb4_0(1):=GI_BOSEQUENCES.FNUGETNEXTFRAMEID;
 RQCFG_100101_.tb4_0(1):=RQCFG_100101_.tb4_0(1);
 RQCFG_100101_.tb4_1(1):=RQCFG_100101_.tb2_2(2);
@@ -19957,7 +19956,7 @@ VALUES (RQCFG_100101_.tb4_0(1),
 RQCFG_100101_.tb4_1(1),
 null,
 null,
-'FRAME-C_GENERICO_22-1066018'
+'FRAME-C_GENERICO_22-1066896'
 ,
 3);
 
@@ -19974,7 +19973,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(12):=1603688;
+RQCFG_100101_.old_tb5_0(12):=1613929;
 RQCFG_100101_.tb5_0(12):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(12):=RQCFG_100101_.tb5_0(12);
 RQCFG_100101_.old_tb5_1(12):=361;
@@ -20024,7 +20023,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(13):=1151031;
+RQCFG_100101_.old_tb3_0(13):=1152815;
 RQCFG_100101_.tb3_0(13):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(13):=RQCFG_100101_.tb3_0(13);
 RQCFG_100101_.old_tb3_1(13):=2042;
@@ -20081,7 +20080,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(13):=1603689;
+RQCFG_100101_.old_tb5_0(13):=1613930;
 RQCFG_100101_.tb5_0(13):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(13):=RQCFG_100101_.tb5_0(13);
 RQCFG_100101_.old_tb5_1(13):=355;
@@ -20131,7 +20130,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(14):=1151032;
+RQCFG_100101_.old_tb3_0(14):=1152816;
 RQCFG_100101_.tb3_0(14):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(14):=RQCFG_100101_.tb3_0(14);
 RQCFG_100101_.old_tb3_1(14):=2042;
@@ -20145,9 +20144,9 @@ RQCFG_100101_.tb3_4(14):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.tb3_5(14):=RQCFG_100101_.tb2_2(2);
 RQCFG_100101_.old_tb3_6(14):=null;
 RQCFG_100101_.tb3_6(14):=NULL;
-RQCFG_100101_.old_tb3_7(14):=121400755;
+RQCFG_100101_.old_tb3_7(14):=121407963;
 RQCFG_100101_.tb3_7(14):=NULL;
-RQCFG_100101_.old_tb3_8(14):=120196913;
+RQCFG_100101_.old_tb3_8(14):=120198525;
 RQCFG_100101_.tb3_8(14):=NULL;
 ut_trace.trace('insertando tabla: GI_COMP_ATTRIBS fila (14)',1);
 INSERT INTO GI_COMP_ATTRIBS(COMP_ATTRIBS_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,MIRROR_ENTI_ATTRIB,PARENT_ATTRIBUTE_ID,COMPOSITION_ID,INIT_EXPRESSION_ID,VALID_EXPRESSION_ID,SELECT_STATEMENT_ID,PARENT_GROUP_ATTR_ID,EXTERNAL_ID,DISPLAY_ORDER,DISPLAY_NAME,GROUP_ATTRIBUTE_TYPE,INCLUDED_VAL_DOC,REQUIRED,PROCESS_SEQUENCE,TAG_NAME,TAB_STOP) 
@@ -20188,7 +20187,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(14):=1603690;
+RQCFG_100101_.old_tb5_0(14):=1613931;
 RQCFG_100101_.tb5_0(14):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(14):=RQCFG_100101_.tb5_0(14);
 RQCFG_100101_.old_tb5_1(14):=1801;
@@ -20238,7 +20237,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(15):=1151033;
+RQCFG_100101_.old_tb3_0(15):=1152817;
 RQCFG_100101_.tb3_0(15):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(15):=RQCFG_100101_.tb3_0(15);
 RQCFG_100101_.old_tb3_1(15):=2042;
@@ -20250,7 +20249,7 @@ RQCFG_100101_.tb3_3(15):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(15):=null;
 RQCFG_100101_.tb3_4(15):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(15),-1)));
 RQCFG_100101_.tb3_5(15):=RQCFG_100101_.tb2_2(2);
-RQCFG_100101_.old_tb3_6(15):=121400756;
+RQCFG_100101_.old_tb3_6(15):=121407964;
 RQCFG_100101_.tb3_6(15):=NULL;
 RQCFG_100101_.old_tb3_7(15):=null;
 RQCFG_100101_.tb3_7(15):=NULL;
@@ -20295,7 +20294,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(15):=1603691;
+RQCFG_100101_.old_tb5_0(15):=1613932;
 RQCFG_100101_.tb5_0(15):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(15):=RQCFG_100101_.tb5_0(15);
 RQCFG_100101_.old_tb5_1(15):=338;
@@ -20345,7 +20344,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(16):=1151034;
+RQCFG_100101_.old_tb3_0(16):=1152818;
 RQCFG_100101_.tb3_0(16):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(16):=RQCFG_100101_.tb3_0(16);
 RQCFG_100101_.old_tb3_1(16):=2042;
@@ -20402,7 +20401,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(16):=1603692;
+RQCFG_100101_.old_tb5_0(16):=1613933;
 RQCFG_100101_.tb5_0(16):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(16):=RQCFG_100101_.tb5_0(16);
 RQCFG_100101_.old_tb5_1(16):=456;
@@ -20452,7 +20451,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(17):=1151035;
+RQCFG_100101_.old_tb3_0(17):=1152819;
 RQCFG_100101_.tb3_0(17):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(17):=RQCFG_100101_.tb3_0(17);
 RQCFG_100101_.old_tb3_1(17):=2042;
@@ -20509,7 +20508,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(17):=1603693;
+RQCFG_100101_.old_tb5_0(17):=1613934;
 RQCFG_100101_.tb5_0(17):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(17):=RQCFG_100101_.tb5_0(17);
 RQCFG_100101_.old_tb5_1(17):=696;
@@ -20559,7 +20558,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(18):=1151036;
+RQCFG_100101_.old_tb3_0(18):=1152820;
 RQCFG_100101_.tb3_0(18):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(18):=RQCFG_100101_.tb3_0(18);
 RQCFG_100101_.old_tb3_1(18):=2042;
@@ -20616,7 +20615,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(18):=1603694;
+RQCFG_100101_.old_tb5_0(18):=1613935;
 RQCFG_100101_.tb5_0(18):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(18):=RQCFG_100101_.tb5_0(18);
 RQCFG_100101_.old_tb5_1(18):=1026;
@@ -20666,7 +20665,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(19):=1151037;
+RQCFG_100101_.old_tb3_0(19):=1152821;
 RQCFG_100101_.tb3_0(19):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(19):=RQCFG_100101_.tb3_0(19);
 RQCFG_100101_.old_tb3_1(19):=2042;
@@ -20678,7 +20677,7 @@ RQCFG_100101_.tb3_3(19):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(19):=null;
 RQCFG_100101_.tb3_4(19):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(19),-1)));
 RQCFG_100101_.tb3_5(19):=RQCFG_100101_.tb2_2(2);
-RQCFG_100101_.old_tb3_6(19):=121400754;
+RQCFG_100101_.old_tb3_6(19):=121407962;
 RQCFG_100101_.tb3_6(19):=NULL;
 RQCFG_100101_.old_tb3_7(19):=null;
 RQCFG_100101_.tb3_7(19):=NULL;
@@ -20723,7 +20722,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(19):=1603695;
+RQCFG_100101_.old_tb5_0(19):=1613936;
 RQCFG_100101_.tb5_0(19):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(19):=RQCFG_100101_.tb5_0(19);
 RQCFG_100101_.old_tb5_1(19):=50000936;
@@ -20773,7 +20772,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(20):=1151038;
+RQCFG_100101_.old_tb3_0(20):=1152822;
 RQCFG_100101_.tb3_0(20):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(20):=RQCFG_100101_.tb3_0(20);
 RQCFG_100101_.old_tb3_1(20):=2042;
@@ -20830,7 +20829,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(20):=1603696;
+RQCFG_100101_.old_tb5_0(20):=1613937;
 RQCFG_100101_.tb5_0(20):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(20):=RQCFG_100101_.tb5_0(20);
 RQCFG_100101_.old_tb5_1(20):=50000937;
@@ -20880,7 +20879,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(21):=1151039;
+RQCFG_100101_.old_tb3_0(21):=1152823;
 RQCFG_100101_.tb3_0(21):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(21):=RQCFG_100101_.tb3_0(21);
 RQCFG_100101_.old_tb3_1(21):=2042;
@@ -20892,7 +20891,7 @@ RQCFG_100101_.tb3_3(21):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(21):=null;
 RQCFG_100101_.tb3_4(21):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(21),-1)));
 RQCFG_100101_.tb3_5(21):=RQCFG_100101_.tb2_2(2);
-RQCFG_100101_.old_tb3_6(21):=121400753;
+RQCFG_100101_.old_tb3_6(21):=121407965;
 RQCFG_100101_.tb3_6(21):=NULL;
 RQCFG_100101_.old_tb3_7(21):=null;
 RQCFG_100101_.tb3_7(21):=NULL;
@@ -20937,7 +20936,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(21):=1603697;
+RQCFG_100101_.old_tb5_0(21):=1613938;
 RQCFG_100101_.tb5_0(21):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(21):=RQCFG_100101_.tb5_0(21);
 RQCFG_100101_.old_tb5_1(21):=8064;
@@ -20987,7 +20986,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(22):=1151040;
+RQCFG_100101_.old_tb3_0(22):=1152824;
 RQCFG_100101_.tb3_0(22):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(22):=RQCFG_100101_.tb3_0(22);
 RQCFG_100101_.old_tb3_1(22):=2042;
@@ -21044,7 +21043,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(22):=1603698;
+RQCFG_100101_.old_tb5_0(22):=1613939;
 RQCFG_100101_.tb5_0(22):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(22):=RQCFG_100101_.tb5_0(22);
 RQCFG_100101_.old_tb5_1(22):=4013;
@@ -21094,7 +21093,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(23):=1151041;
+RQCFG_100101_.old_tb3_0(23):=1152825;
 RQCFG_100101_.tb3_0(23):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(23):=RQCFG_100101_.tb3_0(23);
 RQCFG_100101_.old_tb3_1(23):=2042;
@@ -21151,7 +21150,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(23):=1603699;
+RQCFG_100101_.old_tb5_0(23):=1613940;
 RQCFG_100101_.tb5_0(23):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(23):=RQCFG_100101_.tb5_0(23);
 RQCFG_100101_.old_tb5_1(23):=362;
@@ -21201,7 +21200,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(24):=1151042;
+RQCFG_100101_.old_tb3_0(24):=1152826;
 RQCFG_100101_.tb3_0(24):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(24):=RQCFG_100101_.tb3_0(24);
 RQCFG_100101_.old_tb3_1(24):=3334;
@@ -21213,7 +21212,7 @@ RQCFG_100101_.tb3_3(24):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(24):=null;
 RQCFG_100101_.tb3_4(24):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(24),-1)));
 RQCFG_100101_.tb3_5(24):=RQCFG_100101_.tb2_2(1);
-RQCFG_100101_.old_tb3_6(24):=121400746;
+RQCFG_100101_.old_tb3_6(24):=121407954;
 RQCFG_100101_.tb3_6(24):=NULL;
 RQCFG_100101_.old_tb3_7(24):=null;
 RQCFG_100101_.tb3_7(24):=NULL;
@@ -21258,7 +21257,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb4_0(2):=2504;
+RQCFG_100101_.old_tb4_0(2):=3179;
 RQCFG_100101_.tb4_0(2):=GI_BOSEQUENCES.FNUGETNEXTFRAMEID;
 RQCFG_100101_.tb4_0(2):=RQCFG_100101_.tb4_0(2);
 RQCFG_100101_.tb4_1(2):=RQCFG_100101_.tb2_2(1);
@@ -21268,7 +21267,7 @@ VALUES (RQCFG_100101_.tb4_0(2),
 RQCFG_100101_.tb4_1(2),
 null,
 null,
-'FRAME-M_SOLICITUD_DE_TRABAJOS_PARA_UN_CLIENTE_100113-1066017'
+'FRAME-M_SOLICITUD_DE_TRABAJOS_PARA_UN_CLIENTE_100113-1066895'
 ,
 2);
 
@@ -21285,7 +21284,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(24):=1603700;
+RQCFG_100101_.old_tb5_0(24):=1613941;
 RQCFG_100101_.tb5_0(24):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(24):=RQCFG_100101_.tb5_0(24);
 RQCFG_100101_.old_tb5_1(24):=187;
@@ -21335,7 +21334,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(25):=1151043;
+RQCFG_100101_.old_tb3_0(25):=1152827;
 RQCFG_100101_.tb3_0(25):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(25):=RQCFG_100101_.tb3_0(25);
 RQCFG_100101_.old_tb3_1(25):=3334;
@@ -21392,7 +21391,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(25):=1603701;
+RQCFG_100101_.old_tb5_0(25):=1613942;
 RQCFG_100101_.tb5_0(25):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(25):=RQCFG_100101_.tb5_0(25);
 RQCFG_100101_.old_tb5_1(25):=213;
@@ -21442,7 +21441,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(26):=1151044;
+RQCFG_100101_.old_tb3_0(26):=1152828;
 RQCFG_100101_.tb3_0(26):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(26):=RQCFG_100101_.tb3_0(26);
 RQCFG_100101_.old_tb3_1(26):=3334;
@@ -21454,7 +21453,7 @@ RQCFG_100101_.tb3_3(26):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(26):=null;
 RQCFG_100101_.tb3_4(26):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(26),-1)));
 RQCFG_100101_.tb3_5(26):=RQCFG_100101_.tb2_2(1);
-RQCFG_100101_.old_tb3_6(26):=121400745;
+RQCFG_100101_.old_tb3_6(26):=121407955;
 RQCFG_100101_.tb3_6(26):=NULL;
 RQCFG_100101_.old_tb3_7(26):=null;
 RQCFG_100101_.tb3_7(26):=NULL;
@@ -21499,7 +21498,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(26):=1603702;
+RQCFG_100101_.old_tb5_0(26):=1613943;
 RQCFG_100101_.tb5_0(26):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(26):=RQCFG_100101_.tb5_0(26);
 RQCFG_100101_.old_tb5_1(26):=2875;
@@ -21549,7 +21548,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(27):=1151045;
+RQCFG_100101_.old_tb3_0(27):=1152829;
 RQCFG_100101_.tb3_0(27):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(27):=RQCFG_100101_.tb3_0(27);
 RQCFG_100101_.old_tb3_1(27):=3334;
@@ -21606,7 +21605,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(27):=1603703;
+RQCFG_100101_.old_tb5_0(27):=1613944;
 RQCFG_100101_.tb5_0(27):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(27):=RQCFG_100101_.tb5_0(27);
 RQCFG_100101_.old_tb5_1(27):=2877;
@@ -21656,7 +21655,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(28):=1151046;
+RQCFG_100101_.old_tb3_0(28):=1152830;
 RQCFG_100101_.tb3_0(28):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(28):=RQCFG_100101_.tb3_0(28);
 RQCFG_100101_.old_tb3_1(28):=3334;
@@ -21672,7 +21671,7 @@ RQCFG_100101_.old_tb3_6(28):=null;
 RQCFG_100101_.tb3_6(28):=NULL;
 RQCFG_100101_.old_tb3_7(28):=null;
 RQCFG_100101_.tb3_7(28):=NULL;
-RQCFG_100101_.old_tb3_8(28):=120196912;
+RQCFG_100101_.old_tb3_8(28):=120198524;
 RQCFG_100101_.tb3_8(28):=NULL;
 ut_trace.trace('insertando tabla: GI_COMP_ATTRIBS fila (28)',1);
 INSERT INTO GI_COMP_ATTRIBS(COMP_ATTRIBS_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,MIRROR_ENTI_ATTRIB,PARENT_ATTRIBUTE_ID,COMPOSITION_ID,INIT_EXPRESSION_ID,VALID_EXPRESSION_ID,SELECT_STATEMENT_ID,PARENT_GROUP_ATTR_ID,EXTERNAL_ID,DISPLAY_ORDER,DISPLAY_NAME,GROUP_ATTRIBUTE_TYPE,INCLUDED_VAL_DOC,REQUIRED,PROCESS_SEQUENCE,TAG_NAME,TAB_STOP) 
@@ -21713,7 +21712,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(28):=1603704;
+RQCFG_100101_.old_tb5_0(28):=1613945;
 RQCFG_100101_.tb5_0(28):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(28):=RQCFG_100101_.tb5_0(28);
 RQCFG_100101_.old_tb5_1(28):=44501;
@@ -21763,7 +21762,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(29):=1151047;
+RQCFG_100101_.old_tb3_0(29):=1152831;
 RQCFG_100101_.tb3_0(29):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(29):=RQCFG_100101_.tb3_0(29);
 RQCFG_100101_.old_tb3_1(29):=3334;
@@ -21775,7 +21774,7 @@ RQCFG_100101_.tb3_3(29):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(29):=null;
 RQCFG_100101_.tb3_4(29):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(29),-1)));
 RQCFG_100101_.tb3_5(29):=RQCFG_100101_.tb2_2(1);
-RQCFG_100101_.old_tb3_6(29):=121400742;
+RQCFG_100101_.old_tb3_6(29):=121407951;
 RQCFG_100101_.tb3_6(29):=NULL;
 RQCFG_100101_.old_tb3_7(29):=null;
 RQCFG_100101_.tb3_7(29):=NULL;
@@ -21820,7 +21819,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(29):=1603705;
+RQCFG_100101_.old_tb5_0(29):=1613946;
 RQCFG_100101_.tb5_0(29):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(29):=RQCFG_100101_.tb5_0(29);
 RQCFG_100101_.old_tb5_1(29):=192;
@@ -21870,7 +21869,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(30):=1151048;
+RQCFG_100101_.old_tb3_0(30):=1152832;
 RQCFG_100101_.tb3_0(30):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(30):=RQCFG_100101_.tb3_0(30);
 RQCFG_100101_.old_tb3_1(30):=3334;
@@ -21927,7 +21926,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(30):=1603706;
+RQCFG_100101_.old_tb5_0(30):=1613947;
 RQCFG_100101_.tb5_0(30):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(30):=RQCFG_100101_.tb5_0(30);
 RQCFG_100101_.old_tb5_1(30):=197;
@@ -21977,7 +21976,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(31):=1151049;
+RQCFG_100101_.old_tb3_0(31):=1152833;
 RQCFG_100101_.tb3_0(31):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(31):=RQCFG_100101_.tb3_0(31);
 RQCFG_100101_.old_tb3_1(31):=3334;
@@ -21989,7 +21988,7 @@ RQCFG_100101_.tb3_3(31):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(31):=null;
 RQCFG_100101_.tb3_4(31):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(31),-1)));
 RQCFG_100101_.tb3_5(31):=RQCFG_100101_.tb2_2(1);
-RQCFG_100101_.old_tb3_6(31):=121400736;
+RQCFG_100101_.old_tb3_6(31):=121407945;
 RQCFG_100101_.tb3_6(31):=NULL;
 RQCFG_100101_.old_tb3_7(31):=null;
 RQCFG_100101_.tb3_7(31):=NULL;
@@ -22034,7 +22033,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(31):=1603707;
+RQCFG_100101_.old_tb5_0(31):=1613948;
 RQCFG_100101_.tb5_0(31):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(31):=RQCFG_100101_.tb5_0(31);
 RQCFG_100101_.old_tb5_1(31):=322;
@@ -22084,7 +22083,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(32):=1151050;
+RQCFG_100101_.old_tb3_0(32):=1152834;
 RQCFG_100101_.tb3_0(32):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(32):=RQCFG_100101_.tb3_0(32);
 RQCFG_100101_.old_tb3_1(32):=3334;
@@ -22096,9 +22095,9 @@ RQCFG_100101_.tb3_3(32):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(32):=null;
 RQCFG_100101_.tb3_4(32):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(32),-1)));
 RQCFG_100101_.tb3_5(32):=RQCFG_100101_.tb2_2(1);
-RQCFG_100101_.old_tb3_6(32):=121400738;
+RQCFG_100101_.old_tb3_6(32):=121407947;
 RQCFG_100101_.tb3_6(32):=NULL;
-RQCFG_100101_.old_tb3_7(32):=121400737;
+RQCFG_100101_.old_tb3_7(32):=121407946;
 RQCFG_100101_.tb3_7(32):=NULL;
 RQCFG_100101_.old_tb3_8(32):=null;
 RQCFG_100101_.tb3_8(32):=NULL;
@@ -22141,7 +22140,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(32):=1603708;
+RQCFG_100101_.old_tb5_0(32):=1613949;
 RQCFG_100101_.tb5_0(32):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(32):=RQCFG_100101_.tb5_0(32);
 RQCFG_100101_.old_tb5_1(32):=203;
@@ -22191,7 +22190,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(33):=1151051;
+RQCFG_100101_.old_tb3_0(33):=1152835;
 RQCFG_100101_.tb3_0(33):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(33):=RQCFG_100101_.tb3_0(33);
 RQCFG_100101_.old_tb3_1(33):=3334;
@@ -22248,7 +22247,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(33):=1603709;
+RQCFG_100101_.old_tb5_0(33):=1613950;
 RQCFG_100101_.tb5_0(33):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(33):=RQCFG_100101_.tb5_0(33);
 RQCFG_100101_.old_tb5_1(33):=189;
@@ -22298,7 +22297,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(34):=1151052;
+RQCFG_100101_.old_tb3_0(34):=1152836;
 RQCFG_100101_.tb3_0(34):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(34):=RQCFG_100101_.tb3_0(34);
 RQCFG_100101_.old_tb3_1(34):=3334;
@@ -22310,7 +22309,7 @@ RQCFG_100101_.tb3_3(34):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(34):=null;
 RQCFG_100101_.tb3_4(34):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(34),-1)));
 RQCFG_100101_.tb3_5(34):=RQCFG_100101_.tb2_2(1);
-RQCFG_100101_.old_tb3_6(34):=121400744;
+RQCFG_100101_.old_tb3_6(34):=121407953;
 RQCFG_100101_.tb3_6(34):=NULL;
 RQCFG_100101_.old_tb3_7(34):=null;
 RQCFG_100101_.tb3_7(34):=NULL;
@@ -22355,7 +22354,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(34):=1603710;
+RQCFG_100101_.old_tb5_0(34):=1613951;
 RQCFG_100101_.tb5_0(34):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(34):=RQCFG_100101_.tb5_0(34);
 RQCFG_100101_.old_tb5_1(34):=413;
@@ -22405,7 +22404,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(35):=1151053;
+RQCFG_100101_.old_tb3_0(35):=1152837;
 RQCFG_100101_.tb3_0(35):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(35):=RQCFG_100101_.tb3_0(35);
 RQCFG_100101_.old_tb3_1(35):=3334;
@@ -22417,7 +22416,7 @@ RQCFG_100101_.tb3_3(35):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(35):=null;
 RQCFG_100101_.tb3_4(35):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(35),-1)));
 RQCFG_100101_.tb3_5(35):=RQCFG_100101_.tb2_2(1);
-RQCFG_100101_.old_tb3_6(35):=121400735;
+RQCFG_100101_.old_tb3_6(35):=121407944;
 RQCFG_100101_.tb3_6(35):=NULL;
 RQCFG_100101_.old_tb3_7(35):=null;
 RQCFG_100101_.tb3_7(35):=NULL;
@@ -22462,7 +22461,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(35):=1603711;
+RQCFG_100101_.old_tb5_0(35):=1613952;
 RQCFG_100101_.tb5_0(35):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(35):=RQCFG_100101_.tb5_0(35);
 RQCFG_100101_.old_tb5_1(35):=11403;
@@ -22512,7 +22511,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(36):=1151054;
+RQCFG_100101_.old_tb3_0(36):=1152838;
 RQCFG_100101_.tb3_0(36):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(36):=RQCFG_100101_.tb3_0(36);
 RQCFG_100101_.old_tb3_1(36):=3334;
@@ -22524,7 +22523,7 @@ RQCFG_100101_.tb3_3(36):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(36):=null;
 RQCFG_100101_.tb3_4(36):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(36),-1)));
 RQCFG_100101_.tb3_5(36):=RQCFG_100101_.tb2_2(1);
-RQCFG_100101_.old_tb3_6(36):=121400743;
+RQCFG_100101_.old_tb3_6(36):=121407952;
 RQCFG_100101_.tb3_6(36):=NULL;
 RQCFG_100101_.old_tb3_7(36):=null;
 RQCFG_100101_.tb3_7(36):=NULL;
@@ -22569,7 +22568,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(36):=1603712;
+RQCFG_100101_.old_tb5_0(36):=1613953;
 RQCFG_100101_.tb5_0(36):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(36):=RQCFG_100101_.tb5_0(36);
 RQCFG_100101_.old_tb5_1(36):=45189;
@@ -22619,7 +22618,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(37):=1151055;
+RQCFG_100101_.old_tb3_0(37):=1152839;
 RQCFG_100101_.tb3_0(37):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(37):=RQCFG_100101_.tb3_0(37);
 RQCFG_100101_.old_tb3_1(37):=3334;
@@ -22676,7 +22675,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(37):=1603713;
+RQCFG_100101_.old_tb5_0(37):=1613954;
 RQCFG_100101_.tb5_0(37):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(37):=RQCFG_100101_.tb5_0(37);
 RQCFG_100101_.old_tb5_1(37):=2559;
@@ -22726,7 +22725,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(38):=1151056;
+RQCFG_100101_.old_tb3_0(38):=1152840;
 RQCFG_100101_.tb3_0(38):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(38):=RQCFG_100101_.tb3_0(38);
 RQCFG_100101_.old_tb3_1(38):=3334;
@@ -22738,9 +22737,9 @@ RQCFG_100101_.tb3_3(38):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(38):=null;
 RQCFG_100101_.tb3_4(38):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(38),-1)));
 RQCFG_100101_.tb3_5(38):=RQCFG_100101_.tb2_2(1);
-RQCFG_100101_.old_tb3_6(38):=121400741;
+RQCFG_100101_.old_tb3_6(38):=121407950;
 RQCFG_100101_.tb3_6(38):=NULL;
-RQCFG_100101_.old_tb3_7(38):=121400740;
+RQCFG_100101_.old_tb3_7(38):=121407949;
 RQCFG_100101_.tb3_7(38):=NULL;
 RQCFG_100101_.old_tb3_8(38):=null;
 RQCFG_100101_.tb3_8(38):=NULL;
@@ -22758,7 +22757,7 @@ RQCFG_100101_.tb3_8(38),
 null,
 1829,
 13,
-'Direcci�n de Ejecuci�n de trabajos'
+'Direcci¿n de Ejecuci¿n de trabajos'
 ,
 'N'
 ,
@@ -22783,7 +22782,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(38):=1603714;
+RQCFG_100101_.old_tb5_0(38):=1613955;
 RQCFG_100101_.tb5_0(38):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(38):=RQCFG_100101_.tb5_0(38);
 RQCFG_100101_.old_tb5_1(38):=1035;
@@ -22806,7 +22805,7 @@ RQCFG_100101_.tb5_4(38),
 13,
 'Y'
 ,
-'Direcci�n de Ejecuci�n de trabajos'
+'Direcci¿n de Ejecuci¿n de trabajos'
 ,
 'N'
 ,
@@ -22833,7 +22832,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(39):=1151057;
+RQCFG_100101_.old_tb3_0(39):=1152841;
 RQCFG_100101_.tb3_0(39):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(39):=RQCFG_100101_.tb3_0(39);
 RQCFG_100101_.old_tb3_1(39):=3334;
@@ -22890,7 +22889,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(39):=1603715;
+RQCFG_100101_.old_tb5_0(39):=1613956;
 RQCFG_100101_.tb5_0(39):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(39):=RQCFG_100101_.tb5_0(39);
 RQCFG_100101_.old_tb5_1(39):=281;
@@ -22940,7 +22939,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(40):=1151058;
+RQCFG_100101_.old_tb3_0(40):=1152842;
 RQCFG_100101_.tb3_0(40):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(40):=RQCFG_100101_.tb3_0(40);
 RQCFG_100101_.old_tb3_1(40):=3334;
@@ -22997,7 +22996,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(40):=1603716;
+RQCFG_100101_.old_tb5_0(40):=1613957;
 RQCFG_100101_.tb5_0(40):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(40):=RQCFG_100101_.tb5_0(40);
 RQCFG_100101_.old_tb5_1(40):=39322;
@@ -23047,7 +23046,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(41):=1151059;
+RQCFG_100101_.old_tb3_0(41):=1152843;
 RQCFG_100101_.tb3_0(41):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(41):=RQCFG_100101_.tb3_0(41);
 RQCFG_100101_.old_tb3_1(41):=3334;
@@ -23059,7 +23058,7 @@ RQCFG_100101_.tb3_3(41):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(41):=null;
 RQCFG_100101_.tb3_4(41):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(41),-1)));
 RQCFG_100101_.tb3_5(41):=RQCFG_100101_.tb2_2(1);
-RQCFG_100101_.old_tb3_6(41):=121400739;
+RQCFG_100101_.old_tb3_6(41):=121407948;
 RQCFG_100101_.tb3_6(41):=NULL;
 RQCFG_100101_.old_tb3_7(41):=null;
 RQCFG_100101_.tb3_7(41):=NULL;
@@ -23079,7 +23078,7 @@ RQCFG_100101_.tb3_8(41),
 null,
 2026,
 16,
-'C�digo de la Direcci�n'
+'C¿digo de la Direcci¿n'
 ,
 'N'
 ,
@@ -23104,7 +23103,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(41):=1603717;
+RQCFG_100101_.old_tb5_0(41):=1613958;
 RQCFG_100101_.tb5_0(41):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(41):=RQCFG_100101_.tb5_0(41);
 RQCFG_100101_.old_tb5_1(41):=474;
@@ -23127,7 +23126,7 @@ RQCFG_100101_.tb5_4(41),
 16,
 'Y'
 ,
-'C�digo de la Direcci�n'
+'C¿digo de la Direcci¿n'
 ,
 'N'
 ,
@@ -23154,7 +23153,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(42):=1151060;
+RQCFG_100101_.old_tb3_0(42):=1152844;
 RQCFG_100101_.tb3_0(42):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(42):=RQCFG_100101_.tb3_0(42);
 RQCFG_100101_.old_tb3_1(42):=2036;
@@ -23166,7 +23165,7 @@ RQCFG_100101_.tb3_3(42):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(42):=null;
 RQCFG_100101_.tb3_4(42):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(42),-1)));
 RQCFG_100101_.tb3_5(42):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(42):=121400720;
+RQCFG_100101_.old_tb3_6(42):=121407930;
 RQCFG_100101_.tb3_6(42):=NULL;
 RQCFG_100101_.old_tb3_7(42):=null;
 RQCFG_100101_.tb3_7(42):=NULL;
@@ -23186,7 +23185,7 @@ RQCFG_100101_.tb3_8(42),
 null,
 102739,
 16,
-'Fecha de Env�o'
+'Fecha de Env¿o'
 ,
 'N'
 ,
@@ -23211,7 +23210,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb4_0(3):=2505;
+RQCFG_100101_.old_tb4_0(3):=3180;
 RQCFG_100101_.tb4_0(3):=GI_BOSEQUENCES.FNUGETNEXTFRAMEID;
 RQCFG_100101_.tb4_0(3):=RQCFG_100101_.tb4_0(3);
 RQCFG_100101_.tb4_1(3):=RQCFG_100101_.tb2_2(0);
@@ -23221,7 +23220,7 @@ VALUES (RQCFG_100101_.tb4_0(3),
 RQCFG_100101_.tb4_1(3),
 null,
 null,
-'FRAME-PAQUETE-1066016'
+'FRAME-PAQUETE-1066894'
 ,
 1);
 
@@ -23238,7 +23237,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(42):=1603718;
+RQCFG_100101_.old_tb5_0(42):=1613959;
 RQCFG_100101_.tb5_0(42):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(42):=RQCFG_100101_.tb5_0(42);
 RQCFG_100101_.old_tb5_1(42):=259;
@@ -23261,7 +23260,7 @@ RQCFG_100101_.tb5_4(42),
 16,
 'Y'
 ,
-'Fecha de Env�o'
+'Fecha de Env¿o'
 ,
 'N'
 ,
@@ -23288,7 +23287,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(43):=1151061;
+RQCFG_100101_.old_tb3_0(43):=1152845;
 RQCFG_100101_.tb3_0(43):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(43):=RQCFG_100101_.tb3_0(43);
 RQCFG_100101_.old_tb3_1(43):=2036;
@@ -23300,7 +23299,7 @@ RQCFG_100101_.tb3_3(43):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(43):=null;
 RQCFG_100101_.tb3_4(43):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(43),-1)));
 RQCFG_100101_.tb3_5(43):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(43):=121400721;
+RQCFG_100101_.old_tb3_6(43):=121407931;
 RQCFG_100101_.tb3_6(43):=NULL;
 RQCFG_100101_.old_tb3_7(43):=null;
 RQCFG_100101_.tb3_7(43):=NULL;
@@ -23320,7 +23319,7 @@ RQCFG_100101_.tb3_8(43),
 null,
 102740,
 3,
-'Interacci�n'
+'Interacci¿n'
 ,
 'N'
 ,
@@ -23345,7 +23344,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(43):=1603719;
+RQCFG_100101_.old_tb5_0(43):=1613960;
 RQCFG_100101_.tb5_0(43):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(43):=RQCFG_100101_.tb5_0(43);
 RQCFG_100101_.old_tb5_1(43):=257;
@@ -23368,7 +23367,7 @@ RQCFG_100101_.tb5_4(43),
 3,
 'Y'
 ,
-'Interacci�n'
+'Interacci¿n'
 ,
 'N'
 ,
@@ -23395,7 +23394,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(44):=1151062;
+RQCFG_100101_.old_tb3_0(44):=1152846;
 RQCFG_100101_.tb3_0(44):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(44):=RQCFG_100101_.tb3_0(44);
 RQCFG_100101_.old_tb3_1(44):=2036;
@@ -23407,11 +23406,11 @@ RQCFG_100101_.tb3_3(44):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(44):=null;
 RQCFG_100101_.tb3_4(44):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(44),-1)));
 RQCFG_100101_.tb3_5(44):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(44):=121400713;
+RQCFG_100101_.old_tb3_6(44):=121407923;
 RQCFG_100101_.tb3_6(44):=NULL;
-RQCFG_100101_.old_tb3_7(44):=121400714;
+RQCFG_100101_.old_tb3_7(44):=121407924;
 RQCFG_100101_.tb3_7(44):=NULL;
-RQCFG_100101_.old_tb3_8(44):=120196910;
+RQCFG_100101_.old_tb3_8(44):=120198522;
 RQCFG_100101_.tb3_8(44):=NULL;
 ut_trace.trace('insertando tabla: GI_COMP_ATTRIBS fila (44)',1);
 INSERT INTO GI_COMP_ATTRIBS(COMP_ATTRIBS_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,MIRROR_ENTI_ATTRIB,PARENT_ATTRIBUTE_ID,COMPOSITION_ID,INIT_EXPRESSION_ID,VALID_EXPRESSION_ID,SELECT_STATEMENT_ID,PARENT_GROUP_ATTR_ID,EXTERNAL_ID,DISPLAY_ORDER,DISPLAY_NAME,GROUP_ATTRIBUTE_TYPE,INCLUDED_VAL_DOC,REQUIRED,PROCESS_SEQUENCE,TAG_NAME,TAB_STOP) 
@@ -23452,7 +23451,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(44):=1603720;
+RQCFG_100101_.old_tb5_0(44):=1613961;
 RQCFG_100101_.tb5_0(44):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(44):=RQCFG_100101_.tb5_0(44);
 RQCFG_100101_.old_tb5_1(44):=50001162;
@@ -23502,7 +23501,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(45):=1151063;
+RQCFG_100101_.old_tb3_0(45):=1152847;
 RQCFG_100101_.tb3_0(45):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(45):=RQCFG_100101_.tb3_0(45);
 RQCFG_100101_.old_tb3_1(45):=2036;
@@ -23534,7 +23533,7 @@ RQCFG_100101_.tb3_8(45),
 null,
 102734,
 13,
-'C�digo del Tipo de Paquete'
+'C¿digo del Tipo de Paquete'
 ,
 'N'
 ,
@@ -23559,7 +23558,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(45):=1603721;
+RQCFG_100101_.old_tb5_0(45):=1613962;
 RQCFG_100101_.tb5_0(45):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(45):=RQCFG_100101_.tb5_0(45);
 RQCFG_100101_.old_tb5_1(45):=269;
@@ -23582,7 +23581,7 @@ RQCFG_100101_.tb5_4(45),
 13,
 'Y'
 ,
-'C�digo del Tipo de Paquete'
+'C¿digo del Tipo de Paquete'
 ,
 'N'
 ,
@@ -23609,7 +23608,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(46):=1151064;
+RQCFG_100101_.old_tb3_0(46):=1152848;
 RQCFG_100101_.tb3_0(46):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(46):=RQCFG_100101_.tb3_0(46);
 RQCFG_100101_.old_tb3_1(46):=2036;
@@ -23623,7 +23622,7 @@ RQCFG_100101_.tb3_4(46):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.tb3_5(46):=RQCFG_100101_.tb2_2(0);
 RQCFG_100101_.old_tb3_6(46):=null;
 RQCFG_100101_.tb3_6(46):=NULL;
-RQCFG_100101_.old_tb3_7(46):=121400710;
+RQCFG_100101_.old_tb3_7(46):=121407920;
 RQCFG_100101_.tb3_7(46):=NULL;
 RQCFG_100101_.old_tb3_8(46):=null;
 RQCFG_100101_.tb3_8(46):=NULL;
@@ -23641,7 +23640,7 @@ RQCFG_100101_.tb3_8(46),
 null,
 102735,
 5,
-'N�mero de Solicitud'
+'N¿mero de Solicitud'
 ,
 'N'
 ,
@@ -23666,7 +23665,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(46):=1603722;
+RQCFG_100101_.old_tb5_0(46):=1613963;
 RQCFG_100101_.tb5_0(46):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(46):=RQCFG_100101_.tb5_0(46);
 RQCFG_100101_.old_tb5_1(46):=255;
@@ -23689,7 +23688,7 @@ RQCFG_100101_.tb5_4(46),
 5,
 'Y'
 ,
-'N�mero de Solicitud'
+'N¿mero de Solicitud'
 ,
 'N'
 ,
@@ -23716,7 +23715,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(47):=1151065;
+RQCFG_100101_.old_tb3_0(47):=1152849;
 RQCFG_100101_.tb3_0(47):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(47):=RQCFG_100101_.tb3_0(47);
 RQCFG_100101_.old_tb3_1(47):=2036;
@@ -23728,9 +23727,9 @@ RQCFG_100101_.tb3_3(47):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(47):=null;
 RQCFG_100101_.tb3_4(47):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(47),-1)));
 RQCFG_100101_.tb3_5(47):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(47):=121400711;
+RQCFG_100101_.old_tb3_6(47):=121407921;
 RQCFG_100101_.tb3_6(47):=NULL;
-RQCFG_100101_.old_tb3_7(47):=121400712;
+RQCFG_100101_.old_tb3_7(47):=121407922;
 RQCFG_100101_.tb3_7(47):=NULL;
 RQCFG_100101_.old_tb3_8(47):=null;
 RQCFG_100101_.tb3_8(47):=NULL;
@@ -23773,7 +23772,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(47):=1603723;
+RQCFG_100101_.old_tb5_0(47):=1613964;
 RQCFG_100101_.tb5_0(47):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(47):=RQCFG_100101_.tb5_0(47);
 RQCFG_100101_.old_tb5_1(47):=258;
@@ -23823,7 +23822,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(48):=1151066;
+RQCFG_100101_.old_tb3_0(48):=1152850;
 RQCFG_100101_.tb3_0(48):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(48):=RQCFG_100101_.tb3_0(48);
 RQCFG_100101_.old_tb3_1(48):=2036;
@@ -23835,7 +23834,7 @@ RQCFG_100101_.tb3_3(48):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(48):=null;
 RQCFG_100101_.tb3_4(48):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(48),-1)));
 RQCFG_100101_.tb3_5(48):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(48):=121400715;
+RQCFG_100101_.old_tb3_6(48):=121407925;
 RQCFG_100101_.tb3_6(48):=NULL;
 RQCFG_100101_.old_tb3_7(48):=null;
 RQCFG_100101_.tb3_7(48):=NULL;
@@ -23855,7 +23854,7 @@ RQCFG_100101_.tb3_8(48),
 null,
 869,
 11,
-'Direcci�n de Respuesta'
+'Direcci¿n de Respuesta'
 ,
 'N'
 ,
@@ -23880,7 +23879,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(48):=1603724;
+RQCFG_100101_.old_tb5_0(48):=1613965;
 RQCFG_100101_.tb5_0(48):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(48):=RQCFG_100101_.tb5_0(48);
 RQCFG_100101_.old_tb5_1(48):=146756;
@@ -23903,7 +23902,7 @@ RQCFG_100101_.tb5_4(48),
 11,
 'N'
 ,
-'Direcci�n de Respuesta'
+'Direcci¿n de Respuesta'
 ,
 'N'
 ,
@@ -23930,7 +23929,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(49):=1151067;
+RQCFG_100101_.old_tb3_0(49):=1152851;
 RQCFG_100101_.tb3_0(49):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(49):=RQCFG_100101_.tb3_0(49);
 RQCFG_100101_.old_tb3_1(49):=2036;
@@ -23962,7 +23961,7 @@ RQCFG_100101_.tb3_8(49),
 null,
 870,
 12,
-'Observaci�n'
+'Observaci¿n'
 ,
 'N'
 ,
@@ -23987,7 +23986,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(49):=1603725;
+RQCFG_100101_.old_tb5_0(49):=1613966;
 RQCFG_100101_.tb5_0(49):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(49):=RQCFG_100101_.tb5_0(49);
 RQCFG_100101_.old_tb5_1(49):=146754;
@@ -24010,7 +24009,7 @@ RQCFG_100101_.tb5_4(49),
 12,
 'Y'
 ,
-'Observaci�n'
+'Observaci¿n'
 ,
 'N'
 ,
@@ -24037,7 +24036,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(50):=1151068;
+RQCFG_100101_.old_tb3_0(50):=1152852;
 RQCFG_100101_.tb3_0(50):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(50):=RQCFG_100101_.tb3_0(50);
 RQCFG_100101_.old_tb3_1(50):=2036;
@@ -24049,11 +24048,11 @@ RQCFG_100101_.tb3_3(50):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(50):=null;
 RQCFG_100101_.tb3_4(50):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(50),-1)));
 RQCFG_100101_.tb3_5(50):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(50):=121400719;
+RQCFG_100101_.old_tb3_6(50):=121407929;
 RQCFG_100101_.tb3_6(50):=NULL;
 RQCFG_100101_.old_tb3_7(50):=null;
 RQCFG_100101_.tb3_7(50):=NULL;
-RQCFG_100101_.old_tb3_8(50):=120196911;
+RQCFG_100101_.old_tb3_8(50):=120198523;
 RQCFG_100101_.tb3_8(50):=NULL;
 ut_trace.trace('insertando tabla: GI_COMP_ATTRIBS fila (50)',1);
 INSERT INTO GI_COMP_ATTRIBS(COMP_ATTRIBS_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,MIRROR_ENTI_ATTRIB,PARENT_ATTRIBUTE_ID,COMPOSITION_ID,INIT_EXPRESSION_ID,VALID_EXPRESSION_ID,SELECT_STATEMENT_ID,PARENT_GROUP_ATTR_ID,EXTERNAL_ID,DISPLAY_ORDER,DISPLAY_NAME,GROUP_ATTRIBUTE_TYPE,INCLUDED_VAL_DOC,REQUIRED,PROCESS_SEQUENCE,TAG_NAME,TAB_STOP) 
@@ -24069,7 +24068,7 @@ RQCFG_100101_.tb3_8(50),
 null,
 1060,
 7,
-'Punto de Atenci�n'
+'Punto de Atenci¿n'
 ,
 'N'
 ,
@@ -24094,7 +24093,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(50):=1603726;
+RQCFG_100101_.old_tb5_0(50):=1613967;
 RQCFG_100101_.tb5_0(50):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(50):=RQCFG_100101_.tb5_0(50);
 RQCFG_100101_.old_tb5_1(50):=109479;
@@ -24117,7 +24116,7 @@ RQCFG_100101_.tb5_4(50),
 7,
 'Y'
 ,
-'Punto de Atenci�n'
+'Punto de Atenci¿n'
 ,
 'N'
 ,
@@ -24144,7 +24143,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(51):=1151069;
+RQCFG_100101_.old_tb3_0(51):=1152853;
 RQCFG_100101_.tb3_0(51):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(51):=RQCFG_100101_.tb3_0(51);
 RQCFG_100101_.old_tb3_1(51):=2036;
@@ -24201,7 +24200,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(51):=1603727;
+RQCFG_100101_.old_tb5_0(51):=1613968;
 RQCFG_100101_.tb5_0(51):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(51):=RQCFG_100101_.tb5_0(51);
 RQCFG_100101_.old_tb5_1(51):=109478;
@@ -24251,7 +24250,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(52):=1151070;
+RQCFG_100101_.old_tb3_0(52):=1152854;
 RQCFG_100101_.tb3_0(52):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(52):=RQCFG_100101_.tb3_0(52);
 RQCFG_100101_.old_tb3_1(52):=2036;
@@ -24283,7 +24282,7 @@ RQCFG_100101_.tb3_8(52),
 null,
 397,
 15,
-'C�digo Canal De Ventas'
+'C¿digo Canal De Ventas'
 ,
 'N'
 ,
@@ -24308,7 +24307,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(52):=1603728;
+RQCFG_100101_.old_tb5_0(52):=1613969;
 RQCFG_100101_.tb5_0(52):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(52):=RQCFG_100101_.tb5_0(52);
 RQCFG_100101_.old_tb5_1(52):=42118;
@@ -24331,7 +24330,7 @@ RQCFG_100101_.tb5_4(52),
 15,
 'N'
 ,
-'C�digo Canal De Ventas'
+'C¿digo Canal De Ventas'
 ,
 'N'
 ,
@@ -24358,7 +24357,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(53):=1151071;
+RQCFG_100101_.old_tb3_0(53):=1152855;
 RQCFG_100101_.tb3_0(53):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(53):=RQCFG_100101_.tb3_0(53);
 RQCFG_100101_.old_tb3_1(53):=2036;
@@ -24370,11 +24369,11 @@ RQCFG_100101_.tb3_3(53):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(53):=null;
 RQCFG_100101_.tb3_4(53):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(53),-1)));
 RQCFG_100101_.tb3_5(53):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(53):=121400708;
+RQCFG_100101_.old_tb3_6(53):=121407918;
 RQCFG_100101_.tb3_6(53):=NULL;
 RQCFG_100101_.old_tb3_7(53):=null;
 RQCFG_100101_.tb3_7(53):=NULL;
-RQCFG_100101_.old_tb3_8(53):=120196909;
+RQCFG_100101_.old_tb3_8(53):=120198521;
 RQCFG_100101_.tb3_8(53):=NULL;
 ut_trace.trace('insertando tabla: GI_COMP_ATTRIBS fila (53)',1);
 INSERT INTO GI_COMP_ATTRIBS(COMP_ATTRIBS_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,MIRROR_ENTI_ATTRIB,PARENT_ATTRIBUTE_ID,COMPOSITION_ID,INIT_EXPRESSION_ID,VALID_EXPRESSION_ID,SELECT_STATEMENT_ID,PARENT_GROUP_ATTR_ID,EXTERNAL_ID,DISPLAY_ORDER,DISPLAY_NAME,GROUP_ATTRIBUTE_TYPE,INCLUDED_VAL_DOC,REQUIRED,PROCESS_SEQUENCE,TAG_NAME,TAB_STOP) 
@@ -24390,7 +24389,7 @@ RQCFG_100101_.tb3_8(53),
 null,
 102741,
 8,
-'Medio de recepci�n'
+'Medio de recepci¿n'
 ,
 'N'
 ,
@@ -24415,7 +24414,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(53):=1603729;
+RQCFG_100101_.old_tb5_0(53):=1613970;
 RQCFG_100101_.tb5_0(53):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(53):=RQCFG_100101_.tb5_0(53);
 RQCFG_100101_.old_tb5_1(53):=2683;
@@ -24438,7 +24437,7 @@ RQCFG_100101_.tb5_4(53),
 8,
 'Y'
 ,
-'Medio de recepci�n'
+'Medio de recepci¿n'
 ,
 'N'
 ,
@@ -24465,7 +24464,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(54):=1151072;
+RQCFG_100101_.old_tb3_0(54):=1152856;
 RQCFG_100101_.tb3_0(54):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(54):=RQCFG_100101_.tb3_0(54);
 RQCFG_100101_.old_tb3_1(54):=2036;
@@ -24477,9 +24476,9 @@ RQCFG_100101_.tb3_3(54):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(54):=null;
 RQCFG_100101_.tb3_4(54):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(54),-1)));
 RQCFG_100101_.tb3_5(54):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(54):=121400722;
+RQCFG_100101_.old_tb3_6(54):=121407932;
 RQCFG_100101_.tb3_6(54):=NULL;
-RQCFG_100101_.old_tb3_7(54):=121400723;
+RQCFG_100101_.old_tb3_7(54):=121407933;
 RQCFG_100101_.tb3_7(54):=NULL;
 RQCFG_100101_.old_tb3_8(54):=null;
 RQCFG_100101_.tb3_8(54):=NULL;
@@ -24522,7 +24521,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(54):=1603730;
+RQCFG_100101_.old_tb5_0(54):=1613971;
 RQCFG_100101_.tb5_0(54):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(54):=RQCFG_100101_.tb5_0(54);
 RQCFG_100101_.old_tb5_1(54):=4015;
@@ -24572,7 +24571,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(55):=1151073;
+RQCFG_100101_.old_tb3_0(55):=1152857;
 RQCFG_100101_.tb3_0(55):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(55):=RQCFG_100101_.tb3_0(55);
 RQCFG_100101_.old_tb3_1(55):=2036;
@@ -24629,7 +24628,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(55):=1603731;
+RQCFG_100101_.old_tb5_0(55):=1613972;
 RQCFG_100101_.tb5_0(55):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(55):=RQCFG_100101_.tb5_0(55);
 RQCFG_100101_.old_tb5_1(55):=11619;
@@ -24679,7 +24678,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(56):=1151074;
+RQCFG_100101_.old_tb3_0(56):=1152858;
 RQCFG_100101_.tb3_0(56):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(56):=RQCFG_100101_.tb3_0(56);
 RQCFG_100101_.old_tb3_1(56):=2036;
@@ -24691,9 +24690,9 @@ RQCFG_100101_.tb3_3(56):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(56):=4015;
 RQCFG_100101_.tb3_4(56):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(56),-1)));
 RQCFG_100101_.tb3_5(56):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(56):=121400717;
+RQCFG_100101_.old_tb3_6(56):=121407927;
 RQCFG_100101_.tb3_6(56):=NULL;
-RQCFG_100101_.old_tb3_7(56):=121400718;
+RQCFG_100101_.old_tb3_7(56):=121407928;
 RQCFG_100101_.tb3_7(56):=NULL;
 RQCFG_100101_.old_tb3_8(56):=null;
 RQCFG_100101_.tb3_8(56):=NULL;
@@ -24711,7 +24710,7 @@ RQCFG_100101_.tb3_8(56),
 null,
 102757,
 18,
-'Informaci�n de contrato'
+'Informaci¿n de contrato'
 ,
 'N'
 ,
@@ -24736,7 +24735,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(56):=1603732;
+RQCFG_100101_.old_tb5_0(56):=1613973;
 RQCFG_100101_.tb5_0(56):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(56):=RQCFG_100101_.tb5_0(56);
 RQCFG_100101_.old_tb5_1(56):=2826;
@@ -24759,7 +24758,7 @@ RQCFG_100101_.tb5_4(56),
 18,
 'Y'
 ,
-'Informaci�n de contrato'
+'Informaci¿n de contrato'
 ,
 'N'
 ,
@@ -24786,7 +24785,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(57):=1151075;
+RQCFG_100101_.old_tb3_0(57):=1152859;
 RQCFG_100101_.tb3_0(57):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(57):=RQCFG_100101_.tb3_0(57);
 RQCFG_100101_.old_tb3_1(57):=2036;
@@ -24798,7 +24797,7 @@ RQCFG_100101_.tb3_3(57):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(57):=null;
 RQCFG_100101_.tb3_4(57):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(57),-1)));
 RQCFG_100101_.tb3_5(57):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(57):=121400716;
+RQCFG_100101_.old_tb3_6(57):=121407926;
 RQCFG_100101_.tb3_6(57):=NULL;
 RQCFG_100101_.old_tb3_7(57):=null;
 RQCFG_100101_.tb3_7(57):=NULL;
@@ -24818,7 +24817,7 @@ RQCFG_100101_.tb3_8(57),
 null,
 1714,
 19,
-'Facturaci�n Es En La Recurrente'
+'Facturaci¿n Es En La Recurrente'
 ,
 'N'
 ,
@@ -24843,7 +24842,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(57):=1603733;
+RQCFG_100101_.old_tb5_0(57):=1613974;
 RQCFG_100101_.tb5_0(57):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(57):=RQCFG_100101_.tb5_0(57);
 RQCFG_100101_.old_tb5_1(57):=191044;
@@ -24866,7 +24865,7 @@ RQCFG_100101_.tb5_4(57),
 19,
 'N'
 ,
-'Facturaci�n Es En La Recurrente'
+'Facturaci¿n Es En La Recurrente'
 ,
 'N'
 ,
@@ -24893,7 +24892,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(58):=1151076;
+RQCFG_100101_.old_tb3_0(58):=1152860;
 RQCFG_100101_.tb3_0(58):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(58):=RQCFG_100101_.tb3_0(58);
 RQCFG_100101_.old_tb3_1(58):=2036;
@@ -24950,7 +24949,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(58):=1603734;
+RQCFG_100101_.old_tb5_0(58):=1613975;
 RQCFG_100101_.tb5_0(58):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(58):=RQCFG_100101_.tb5_0(58);
 RQCFG_100101_.old_tb5_1(58):=419;
@@ -25000,7 +24999,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(59):=1151077;
+RQCFG_100101_.old_tb3_0(59):=1152861;
 RQCFG_100101_.tb3_0(59):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(59):=RQCFG_100101_.tb3_0(59);
 RQCFG_100101_.old_tb3_1(59):=2036;
@@ -25057,7 +25056,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(59):=1603735;
+RQCFG_100101_.old_tb5_0(59):=1613976;
 RQCFG_100101_.tb5_0(59):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(59):=RQCFG_100101_.tb5_0(59);
 RQCFG_100101_.old_tb5_1(59):=1111;
@@ -25107,7 +25106,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(60):=1151078;
+RQCFG_100101_.old_tb3_0(60):=1152862;
 RQCFG_100101_.tb3_0(60):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(60):=RQCFG_100101_.tb3_0(60);
 RQCFG_100101_.old_tb3_1(60):=2036;
@@ -25164,7 +25163,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(60):=1603736;
+RQCFG_100101_.old_tb5_0(60):=1613977;
 RQCFG_100101_.tb5_0(60):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(60):=RQCFG_100101_.tb5_0(60);
 RQCFG_100101_.old_tb5_1(60):=1081;
@@ -25214,7 +25213,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(61):=1151079;
+RQCFG_100101_.old_tb3_0(61):=1152863;
 RQCFG_100101_.tb3_0(61):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(61):=RQCFG_100101_.tb3_0(61);
 RQCFG_100101_.old_tb3_1(61):=2036;
@@ -25271,7 +25270,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(61):=1603737;
+RQCFG_100101_.old_tb5_0(61):=1613978;
 RQCFG_100101_.tb5_0(61):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(61):=RQCFG_100101_.tb5_0(61);
 RQCFG_100101_.old_tb5_1(61):=54944;
@@ -25321,7 +25320,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb3_0(62):=1151080;
+RQCFG_100101_.old_tb3_0(62):=1152864;
 RQCFG_100101_.tb3_0(62):=GI_BOSEQUENCES.FNUGETNEXTCOMPATTRIBSID;
 RQCFG_100101_.tb3_0(62):=RQCFG_100101_.tb3_0(62);
 RQCFG_100101_.old_tb3_1(62):=2036;
@@ -25333,7 +25332,7 @@ RQCFG_100101_.tb3_3(62):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.T
 RQCFG_100101_.old_tb3_4(62):=null;
 RQCFG_100101_.tb3_4(62):=CC_BOUTILEXPORT.FNUGETIDENTATTIBFROMCAT(RQCFG_100101_.TBENTITYATTRIBUTENAME(NVL(RQCFG_100101_.old_tb3_4(62),-1)));
 RQCFG_100101_.tb3_5(62):=RQCFG_100101_.tb2_2(0);
-RQCFG_100101_.old_tb3_6(62):=121400709;
+RQCFG_100101_.old_tb3_6(62):=121407919;
 RQCFG_100101_.tb3_6(62):=NULL;
 RQCFG_100101_.old_tb3_7(62):=null;
 RQCFG_100101_.tb3_7(62):=NULL;
@@ -25353,7 +25352,7 @@ RQCFG_100101_.tb3_8(62),
 null,
 868,
 10,
-'Informaci�n del Solicitante'
+'Informaci¿n del Solicitante'
 ,
 'N'
 ,
@@ -25378,7 +25377,7 @@ if (not RQCFG_100101_.blProcessStatus) then
  return;
 end if;
 
-RQCFG_100101_.old_tb5_0(62):=1603738;
+RQCFG_100101_.old_tb5_0(62):=1613979;
 RQCFG_100101_.tb5_0(62):=GI_BOSEQUENCES.FNUGETNEXTCOMPFRAMEATTRIBID;
 RQCFG_100101_.tb5_0(62):=RQCFG_100101_.tb5_0(62);
 RQCFG_100101_.old_tb5_1(62):=146755;
@@ -25401,7 +25400,7 @@ RQCFG_100101_.tb5_4(62),
 10,
 'Y'
 ,
-'Informaci�n del Solicitante'
+'Informaci¿n del Solicitante'
 ,
 'N'
 ,
@@ -25545,7 +25544,7 @@ END loop;
 open c2;
 fetch c2 bulk collect INTO tbMoticom;
 close c2;
--- Se obtiene el �ndice
+-- Se obtiene el índice
 indice := tbMoticom.FIRST;
 -- Se actualizan los registros a partir del componente de motivo
 while indice IS not null loop
@@ -25760,12 +25759,12 @@ VALUES (I18N_R_100101_.tb0_0(3),
 I18N_R_100101_.tb0_1(3),
 'WE8ISO8859P1'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
 null,
-'Gen�rico'
+'Gen¿rico'
 ,
 null);
 
@@ -25795,12 +25794,12 @@ VALUES (I18N_R_100101_.tb0_0(4),
 I18N_R_100101_.tb0_1(4),
 'WE8ISO8859P1'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
 null,
-'Gen�rico'
+'Gen¿rico'
 ,
 null);
 
@@ -25830,12 +25829,12 @@ VALUES (I18N_R_100101_.tb0_0(5),
 I18N_R_100101_.tb0_1(5),
 'WE8ISO8859P1'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
 null,
-'Gen�rico'
+'Gen¿rico'
 ,
 null);
 
@@ -25865,12 +25864,12 @@ VALUES (I18N_R_100101_.tb0_0(6),
 I18N_R_100101_.tb0_1(6),
 'WE8ISO8859P1'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
 null,
-'Gen�rico'
+'Gen¿rico'
 ,
 null);
 
@@ -25900,12 +25899,12 @@ VALUES (I18N_R_100101_.tb0_0(7),
 I18N_R_100101_.tb0_1(7),
 'WE8ISO8859P1'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
 null,
-'Gen�rico'
+'Gen¿rico'
 ,
 null);
 
@@ -25935,12 +25934,12 @@ VALUES (I18N_R_100101_.tb0_0(8),
 I18N_R_100101_.tb0_1(8),
 'WE8ISO8859P1'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
-'Gen�rico'
+'Gen¿rico'
 ,
 null,
-'Gen�rico'
+'Gen¿rico'
 ,
 null);
 
@@ -26075,12 +26074,12 @@ VALUES (I18N_R_100101_.tb0_0(9),
 I18N_R_100101_.tb0_1(9),
 'WE8ISO8859P1'
 ,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
 null,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
 null);
 
@@ -26110,12 +26109,12 @@ VALUES (I18N_R_100101_.tb0_0(10),
 I18N_R_100101_.tb0_1(10),
 'WE8ISO8859P1'
 ,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
 null,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
 null);
 
@@ -26145,12 +26144,12 @@ VALUES (I18N_R_100101_.tb0_0(11),
 I18N_R_100101_.tb0_1(11),
 'WE8ISO8859P1'
 ,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
 null,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
 null);
 
@@ -26180,12 +26179,12 @@ VALUES (I18N_R_100101_.tb0_0(12),
 I18N_R_100101_.tb0_1(12),
 'WE8ISO8859P1'
 ,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
 null,
-'Datos B�sicos Solicitud'
+'Datos B¿sicos Solicitud'
 ,
 null);
 
@@ -26257,10 +26256,10 @@ RQEXEC_100101_.tb0_1(0):=RQEXEC_100101_.tb0_1(0);
 ut_trace.trace('Actualizar o insertar tabla: SA_EXECUTABLE fila (0)',1);
 UPDATE SA_EXECUTABLE SET NAME=RQEXEC_100101_.tb0_0(0),
 EXECUTABLE_ID=RQEXEC_100101_.tb0_1(0),
-DESCRIPTION=' Venta de Servicios de Ingenier�a'
+DESCRIPTION=' Venta de Servicios de Ingenier¿a'
 ,
 PATH=null,
-VERSION='396'
+VERSION='399'
 ,
 EXECUTABLE_TYPE_ID=3,
 EXEC_OPER_TYPE_ID=2,
@@ -26275,19 +26274,20 @@ WITHOUT_RESTR_POLICY='N'
 ,
 DIRECT_EXECUTION='N'
 ,
-TIMES_EXECUTED=40230,
-EXEC_OWNER='O',
-LAST_DATE_EXECUTED=to_date('30-01-2024 21:27:54','DD-MM-YYYY HH24:MI:SS'),
+TIMES_EXECUTED=40237,
+EXEC_OWNER='O'
+,
+LAST_DATE_EXECUTED=to_date('07-03-2025 17:33:28','DD-MM-YYYY HH24:MI:SS'),
 CLASS_ID=null
  WHERE EXECUTABLE_ID = RQEXEC_100101_.tb0_1(0);
 if not (sql%found) then
 INSERT INTO SA_EXECUTABLE(NAME,EXECUTABLE_ID,DESCRIPTION,PATH,VERSION,EXECUTABLE_TYPE_ID,EXEC_OPER_TYPE_ID,MODULE_ID,SUBSYSTEM_ID,PARENT_EXECUTABLE_ID,LAST_RECORD_ALLOWED,PATH_FILE_HELP,WITHOUT_RESTR_POLICY,DIRECT_EXECUTION,TIMES_EXECUTED,EXEC_OWNER,LAST_DATE_EXECUTED,CLASS_ID) 
 VALUES (RQEXEC_100101_.tb0_0(0),
 RQEXEC_100101_.tb0_1(0),
-' Venta de Servicios de Ingenier�a'
+' Venta de Servicios de Ingenier¿a'
 ,
 null,
-'396'
+'399'
 ,
 3,
 2,
@@ -26302,9 +26302,10 @@ null,
 ,
 'N'
 ,
-40230,
-'O',
-to_date('30-01-2024 21:27:54','DD-MM-YYYY HH24:MI:SS'),
+40237,
+'O'
+,
+to_date('07-03-2025 17:33:28','DD-MM-YYYY HH24:MI:SS'),
 null);
 end if;
 

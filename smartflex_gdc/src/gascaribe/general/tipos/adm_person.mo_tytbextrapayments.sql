@@ -1,19 +1,22 @@
 PROMPT Crea TYPE MO_TYTBEXTRAPAYMENTS
 DECLARE
-    nucontaSyn NUMBER;
+    nuconta NUMBER;
 BEGIN
     
     --Valida exstencia del sinonimo
     SELECT COUNT(*)
-    INTO nucontaSyn 
-    FROM dba_synonyms
-    WHERE UPPER(synonym_name) = 'MO_TYTBEXTRAPAYMENTS'
-    AND OWNER = 'ADM_PERSON';
+    INTO nuconta 
+    FROM dba_objects
+    WHERE UPPER(object_name) = 'MO_TYTBEXTRAPAYMENTS'
+    AND OWNER = 'ADM_PERSON'
+    AND OBJECT_TYPE = 'TYPE';
     
-    IF nucontaSyn > 0 THEN
-        EXECUTE IMMEDIATE 'DROP SYNONYM ADM_PERSON.MO_TYTBEXTRAPAYMENTS FORCE';
+    IF nuconta > 0 THEN
+        EXECUTE IMMEDIATE 'DROP TYPE ADM_PERSON.MO_TYTBEXTRAPAYMENTS FORCE';
     END IF; 
-
-    EXECUTE IMMEDIATE 'create or replace TYPE adm_person.mo_tytbExtraPayments AS TABLE OF mo_tyobExtraPayments';
 END;
+/
+GRANT EXECUTE ON MO_TYTBEXTRAPAYMENTS TO ADM_PERSON;
+/
+GRANT EXECUTE ON MO_TYTBEXTRAPAYMENTS TO PERSONALIZACIONES;
 /

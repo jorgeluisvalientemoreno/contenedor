@@ -151,5 +151,5 @@ select s.*,
         f.md5_hash,
         f.distri_group_id
 from base s
-left join ge_distribution_file f on f.distribution_file_id = s.nombre_ejec
+left join open.ge_distribution_file f on f.distribution_file_id = s.nombre_ejec
 

@@ -12,6 +12,9 @@ IS
            <Modificacion Autor="felipe.valencia" Fecha="17-04-2023" Inc="OSF-937" Empresa="GDC">
                Creación
            </Modificacion>
+           <Modificacion Autor="lubin.pineda" Fecha="03-02-2025" Inc="OSF-3893" Empresa="GDC">
+               Se crea prcAnulaFlujoSolicitud
+           </Modificacion>           
      </Historial>
      </Package>
     ******************************************************************/
@@ -167,8 +170,16 @@ IS
     (
         inuInstanciaId	IN WF_INSTANCE.INSTANCE_ID%TYPE
     );
+    
+    -- Anula el flujo de la solicitud
+    PROCEDURE prcAnulaFlujoSolicitud
+    (
+        inuSolicitud	IN WF_INSTANCE.EXTERNAL_ID%TYPE
+    );
+    
 END pkgManejoSolicitudes;
 /
+
 CREATE OR REPLACE PACKAGE BODY ADM_PERSON.pkgManejoSolicitudes
 IS
     /******************************************************************
@@ -190,7 +201,7 @@ IS
     --------------------------------------------
     -- Constantes 
     --------------------------------------------
-    csbVERSION          CONSTANT VARCHAR2(10) := 'OSF-1907';
+    csbVERSION          CONSTANT VARCHAR2(10) := 'OSF-3893';
     csbSP_NAME          CONSTANT VARCHAR2(100):= $$PLSQL_UNIT||'.';
     cnuNVLTRC           CONSTANT NUMBER       := pkg_traza.cnuNivelTrzDef;
 	csbInicio   		CONSTANT VARCHAR2(35) := pkg_traza.fsbINICIO;
@@ -268,6 +279,7 @@ IS
         AND     entity_id = inuEntityId
         AND     initial_date IS NOT NULL
         ORDER BY initial_date DESC; 
+        
     BEGIN
         pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);
 		
@@ -908,9 +920,66 @@ IS
 		pkg_traza.trace(csbSP_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR); 
 		RAISE pkg_Error.Controlled_Error;
     END prcAnulaFlujo;
+    
+
+	/**************************************************************************
+    <Procedure Fuente="Propiedad Intelectual de Gases del Caribe y Efigas">
+    <Unidad> prcAnulaFlujoSolicitud </Unidad>
+    <Autor> Lubin Pineda </Autor>
+    <Fecha> 03-02-2025 </Fecha>
+    <Descripcion> 
+        Anula el flujo de la solicitud
+    </Descripcion>
+    <Historial>
+           <Modificacion Autor="Lubin.Pineda" Fecha="03-02-2025" Inc="OSF-3893" Empresa="GDC">
+               Creación
+           </Modificacion>
+    </Historial>
+    </Procedure>
+    **************************************************************************/
+    PROCEDURE prcAnulaFlujoSolicitud
+    (
+        inuSolicitud	IN WF_INSTANCE.EXTERNAL_ID%TYPE
+    )
+    IS
+        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || 'prcAnulaFlujoSolicitud';
+        nuError     NUMBER;
+        sbmensaje   VARCHAR2(4000);
+        
+        nuPlanWorfFlow  wf_instance.plan_id%TYPE;
+        
+    BEGIN
+
+		pkg_traza.trace(csbSP_NAME, cnuNVLTRC, pkg_traza.csbINICIO);
+		
+		nuPlanWorfFlow := WF_BOInstance.fnuGetPlanId( inuSolicitud, 17 );
+		
+		IF nuPlanWorfFlow IS NOT NULL THEN
+            prcAnulaFlujo ( nuPlanWorfFlow );
+		END IF;
+		    
+		pkg_traza.trace(csbSP_NAME, cnuNVLTRC, pkg_traza.csbFIN);
+
+    EXCEPTION
+        WHEN pkg_error.CONTROLLED_ERROR THEN
+            pkg_error.setError;
+            pkg_Error.getError(nuError, sbmensaje);
+            pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
+            pkg_traza.trace(csbSP_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC); 
+            RAISE pkg_error.CONTROLLED_ERROR;
+        WHEN others THEN
+            pkg_Error.setError;
+            pkg_Error.getError(nuError, sbmensaje);
+            pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
+            pkg_traza.trace(csbSP_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR); 
+            RAISE pkg_Error.Controlled_Error;
+    END prcAnulaFlujoSolicitud;    
+        
 END pkgManejoSolicitudes;
 /
+
 BEGIN
 pkg_utilidades.prAplicarPermisos(upper('pkgManejoSolicitudes'),'ADM_PERSON'); 
 END;
 /
+

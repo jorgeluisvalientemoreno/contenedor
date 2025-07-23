@@ -1,0 +1,48 @@
+DECLARE
+
+    nuConta NUMBER;
+
+    CURSOR cuDatosGdCa
+    IS
+	SELECT ID_CONTRATISTA CONTRATISTA, 'GDCA' EMPRESA
+	FROM GE_CONTRATISTA;
+    
+	CURSOR cuExiste (inuContratista IN NUMBER) 
+	IS
+	SELECT COUNT(*)
+	FROM CONTRATISTA
+	WHERE CONTRATISTA = inuContratista;
+    
+    rcDatosGdCa cuDatosGdCa%ROWTYPE;
+    
+BEGIN
+
+
+    FOR rcDatosGdCa IN cuDatosGdCa LOOP
+	
+		OPEN cuExiste(rcDatosGdCa.CONTRATISTA);
+		FETCH cuExiste INTO nuConta;
+		CLOSE cuExiste;
+	
+		IF nuConta = 0 THEN	
+
+			BEGIN
+			
+				INSERT INTO MULTIEMPRESA.CONTRATISTA VALUES rcDatosGdCa;
+				
+				COMMIT;
+
+				DBMS_OUTPUT.PUT_LINE('INFO:INSERCION EN CONTRATISTA CODIGO[' || rcDatosGdCa.CONTRATISTA || '][OK]' ); 
+				
+			EXCEPTION
+				WHEN OTHERS THEN
+					DBMS_OUTPUT.PUT_LINE('ERROR:INSERCION EN EMPRESA CODIGO[' || rcDatosGdCa.CONTRATISTA || '][' || SQLERRM || ']' ); 
+					ROLLBACK;
+			END;
+
+		END IF;
+        
+    END LOOP;
+
+END;
+/

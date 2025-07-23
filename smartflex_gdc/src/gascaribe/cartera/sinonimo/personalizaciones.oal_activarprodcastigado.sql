@@ -1,0 +1,4 @@
+BEGIN
+     pkg_utilidades.prCrearSinonimos('OAL_ACTIVARPRODCASTIGADO', 'PERSONALIZACIONES');
+END;
+/

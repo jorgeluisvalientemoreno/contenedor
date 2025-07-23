@@ -15,6 +15,7 @@ CREATE OR REPLACE PACKAGE OPEN.LDC_BOPERSECUCION IS
   =========       =========           ====================
   14/07/2023	  cgonzalez (Horbath) OSF-1326: Modificar los servicios PRANULA_ORDENES_PERSECUCION, 
 										PRANULA_ORDEN_PERSECUCION y PRSUSPENSIONCMPERSECUCION.
+  24/04/2025      PAcosta             OSF-4169: Eliminacion metodo PRANULA_ORDENES_PERSECUCION                                            
   ******************************************************************/
 
   /*VACTOR PARA ALMACENAR LOS DATOS PROVENIENETES LINEA DE ARCHIVO*/
@@ -35,23 +36,6 @@ CREATE OR REPLACE PACKAGE OPEN.LDC_BOPERSECUCION IS
   18/07/2023	  cgonzalez (Horbath) OSF-1326: Se utiliza el api api_anullorder para anular la orden
   ******************************************************************/
   PROCEDURE PRANULA_ORDEN_PERSECUCION(inuProduct_id pr_certificate.product_id%type);
-
-  /*****************************************************************
-  Propiedad intelectual de PETI.
-
-  Unidad         : PRANULA_ORDENES_PERSECUCION
-  Descripcion    : Metodo para anular TODAS las  ordenes de persecucion
-                   que aun estan registradas
-  Autor          : Jorge Valiente.
-  Fecha          : 29/10/2014
-
-  Historia de Modificaciones
-  Fecha             Autor             Modificacion
-  =========       =========           ====================
-  14/07/2023	  cgonzalez (Horbath) OSF-1326: Se modifica para procesar ordenes de tipo
-										de trabajo configurado en el parametro TIPOS_TRABAJO_PERSECUCION
-  ******************************************************************/
-  PROCEDURE PRANULA_ORDENES_PERSECUCION;
 
   /*****************************************************************
   Propiedad intelectual de PETI.
@@ -92,6 +76,7 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_BOPERSECUCION IS
   =========       =========           ====================
   14/07/2023	  cgonzalez (Horbath) OSF-1326: Modificar los servicios PRANULA_ORDENES_PERSECUCION, 
 										PRANULA_ORDEN_PERSECUCION y PRSUSPENSIONCMPERSECUCION.
+  24/04/2025      PAcosta             OSF-4169: Eliminacion metodo PRANULA_ORDENES_PERSECUCION                                            
   ******************************************************************/
 
   /*****************************************************************
@@ -168,103 +153,11 @@ CREATE OR REPLACE PACKAGE BODY OPEN.LDC_BOPERSECUCION IS
 
   EXCEPTION
     when OTHERS then
-	  UT_TRACE.TRACE('ERROR OTHERS LDC_BOPERSECUCION.PRANULA_ORDENES_PERSECUCION', 3);
+	  UT_TRACE.TRACE('ERROR OTHERS LDC_BOPERSECUCION.PRANULA_ORDENE_PERSECUCION', 3);
       Pkg_Error.SetError;
       Pkg_Error.GetError(nuErrorCode, sbErrorMessage);
 	  RAISE Pkg_Error.CONTROLLED_ERROR;
   END PRANULA_ORDEN_PERSECUCION;
-
-  /*****************************************************************
-  Propiedad intelectual de PETI.
-
-  Unidad         : PRANULA_ORDENES_PERSECUCION
-  Descripcion    : Metodo para anular TODAS las  ordenes de persecucion
-                   que aun estan registradas
-  Autor          : Jorge Valiente.
-  Fecha          : 29/10/2014
-
-  Historia de Modificaciones
-  Fecha             Autor             Modificacion
-  =========       =========           ====================
-  14/07/2023	  cgonzalez (Horbath) OSF-1326: Se modifica para procesar ordenes de tipo
-										de trabajo configurado en el parametro TIPOS_TRABAJO_PERSECUCION
-  ******************************************************************/
-  PROCEDURE PRANULA_ORDENES_PERSECUCION IS
-
-    nuOK        number := 0;
-    nuVlrDeuda  NUMBER(15, 2) := 0;
-    
-    sbTipoTrabajo   VARCHAR2(2000) := ldc_bcConsGenerales.fsbValorColumna('OPEN.LD_PARAMETER','VALUE_CHAIN','PARAMETER_ID','TIPOS_TRABAJO_PERSECUCION');
-    nuErrorCode     NUMBER;
-    sbErrorMessage  VARCHAR2(2000);
-
-    CURSOR cuOtPersecucion IS
-        SELECT  /*+ 
-					use_nl(o, a, s)
-					index(o idx_or_order_012)
-					index(a idx_or_order_activity_05)
-					index(s pk_servsusc)
-				*/
-				a.product_id susp_persec_producto, o.created_date susp_persec_fegeot,
-                o.order_id order_id, s.sesususc sesususc, s.sesucate sesucate
-        FROM    /*PRANULA_ORDENES_PERSECUCION.cuOtPersecucion*/
-				or_order o, or_order_activity a, servsusc s
-        WHERE   o.task_type_id IN (SELECT TO_NUMBER(regexp_substr(sbTipoTrabajo, '[^,]+', 1, LEVEL)) AS task_type_id
-                                    FROM dual
-                                    CONNECT BY regexp_substr(sbTipoTrabajo, '[^,]+', 1, LEVEL) IS NOT NULL)
-        AND     o.order_status_id = 0
-        AND     o.order_id = a.order_id
-        AND     a.product_id = s.sesunuse;
-
-    cursor cuPago(inususc servsusc.sesususc%type,
-                  dtfecha pagos.PAGOFEPA%type) IS
-      select count(1)
-        from pagos
-       where PAGOSUSC = inususc
-         and PAGOFEPA >= dtfecha;
-  BEGIN
-    UT_TRACE.TRACE('INICIO LDC_BOPERSECUCION.PRANULA_ORDENES_PERSECUCION', 3);
-    
-    FOR reg IN cuOtPersecucion LOOP
-	  
-	  UT_TRACE.TRACE('PRODUCTO: '||reg.susp_persec_producto, 5);
-	  UT_TRACE.TRACE('ORDEN: '||reg.order_id, 5);
-	  
-	  IF (cuPago%ISOPEN) THEN
-        CLOSE cuPago;
-      END IF;
-      
-      OPEN cuPago(reg.sesususc, reg.susp_persec_fegeot);
-      FETCH cuPago into nuOk;
-      CLOSE cuPago;
-      
-	  IF (nuOk > 0) THEN
-        IF (reg.sesucate = 1) THEN
-          nuVlrDeuda := gc_bodebtmanagement.fnugetexpirdebtbyprod(reg.susp_persec_producto); -- deuda vencida
-        ELSE
-          nuVlrDeuda := gc_bodebtmanagement.fnugetdebtbyprod(reg.susp_persec_producto); -- Deuda Corriente (Vencida y No vencida)
-        END IF;
-        
-        IF (nuVlrDeuda = 0) THEN
-          -- Anula la orden
-          api_anullorder(reg.order_id, 1277, 'ORDEN ANULADA MEDIANTE JOB DE ANULACION DE ORDENES DE PERSECUCION', nuErrorCode, sbErrorMessage);
-		  
-		  UT_TRACE.TRACE('nuErrorCode: '||nuErrorCode, 5);
-		  UT_TRACE.TRACE('sbErrorMessage: '||sbErrorMessage, 5);
-		  
-        END IF;
-      END IF;
-    END LOOP;
-    
-    UT_TRACE.TRACE('FIN LDC_BOPERSECUCION.PRANULA_ORDENES_PERSECUCION', 3);
-
-  EXCEPTION
-    when OTHERS then
-      UT_TRACE.TRACE('ERROR OTHERS LDC_BOPERSECUCION.PRANULA_ORDENES_PERSECUCION', 3);
-      Pkg_Error.SetError;
-      Pkg_Error.GetError(nuErrorCode, sbErrorMessage);
-	  RAISE Pkg_Error.CONTROLLED_ERROR;
-  END PRANULA_ORDENES_PERSECUCION;
 
   /*****************************************************************
   Propiedad intelectual de PETI.

@@ -12,6 +12,8 @@ AS
     Historia de Modificaciones
     Fecha   	           Autor            Modificacion
     ====================   =========        ====================
+	29/30/2025				jerazomvm		OSF-4170: Se migra el procedimiento Processeprocastiinm 
+													  al paquete pkg_uildc_procinclumas
     30/07/2024              PAcosta         OSF-2952: Cambio de esquema ADM_PERSON                              
     ****************************************************************/  
 
@@ -19,7 +21,6 @@ AS
     PROCEDURE ProcessCartdia;
     PROCEDURE ProcessCartconccierre;
     PROCEDURE Processevausucasti;
-    PROCEDURE Processeprocastiinm;
     PROCEDURE getLocalidadcast(id in number, description in varchar2, rfQuery OUT Constants.tyRefCursor);
     PROCEDURE getSubcategoriacast(id in number, description in varchar2, rfQuery OUT Constants.tyRefCursor);
     PROCEDURE ProcessLDRCVBM;
@@ -41,8 +42,6 @@ AS
     sbGEOGRAP_LOCATION_ID ge_boInstanceControl.stysbValue;
     sbCATECODI ge_boInstanceControl.stysbValue;
     sbSUCACODI ge_boInstanceControl.stysbValue;
-    --sbPECSFECI ge_boInstanceControl.stysbValue;
-    --sbPECSFECF ge_boInstanceControl.stysbValue;
     sbSUSCCODI ge_boInstanceControl.stysbValue;
     sbMARKETING_SEGMENT_ID ge_boInstanceControl.stysbValue;
     sbECONOMIC_ACTIVITY_ID ge_boInstanceControl.stysbValue;
@@ -55,11 +54,6 @@ AS
     sbE_MAIL ge_boInstanceControl.stysbValue; -- E-Mail
 
     BEGIN
-        /*
-        ut_trace.init;
-        ut_trace.setlevel(99);
-        ut_trace.trace('INICIA GDO_ReporteConsumos.ProcessDLRHCCI', 15);
-        */
 
         sbFATHER_ADDRESS_ID := ge_boInstanceControl.fsbGetFieldValue ('AB_ADDRESS', 'FATHER_ADDRESS_ID');
         sbGEOGRAP_LOCATION_ID := ge_boInstanceControl.fsbGetFieldValue ('AB_ADDRESS', 'GEOGRAP_LOCATION_ID');
@@ -68,8 +62,6 @@ AS
         sbMARKETING_SEGMENT_ID := ge_boInstanceControl.fsbGetFieldValue ('GE_SUBSCRIBER', 'MARKETING_SEGMENT_ID');
         sbECONOMIC_ACTIVITY_ID := ge_boInstanceControl.fsbGetFieldValue ('GE_SUBSCRIBER', 'ECONOMIC_ACTIVITY_ID');
         sbIDENTIFICATION := ge_boInstanceControl.fsbGetFieldValue ('GE_SUBSCRIBER', 'IDENTIFICATION');
-        --sbPECSFECI := ge_boInstanceControl.fsbGetFieldValue ('PERICOSE', 'PECSFECI');
-        --sbPECSFECF := ge_boInstanceControl.fsbGetFieldValue ('PERICOSE', 'PECSFECF');
         sbSUSCCODI := ge_boInstanceControl.fsbGetFieldValue ('SUSCRIPC', 'SUSCCODI');
         sbDIRECTORY_ID := ge_boInstanceControl.fsbGetFieldValue ('GE_DIRECTORY', 'DIRECTORY_ID');
         sbPEFAANO := ge_boInstanceControl.fsbGetFieldValue ('PERIFACT', 'PEFAANO');
@@ -110,18 +102,6 @@ AS
             Errors.SetError (cnuNULL_ATTRIBUTE, 'Actividad Economica');
             raise ex.CONTROLLED_ERROR;
         end if;
-
-        /*
-        if (sbPECSFECI is null) then
-            Errors.SetError (cnuNULL_ATTRIBUTE, 'Fecha Inicial');
-            raise ex.CONTROLLED_ERROR;
-        end if;
-
-        if (sbPECSFECF is null) then
-            Errors.SetError (cnuNULL_ATTRIBUTE, 'Fecha Final');
-            raise ex.CONTROLLED_ERROR;
-        end if;
-        */
 
         if (sbPEFAANO is null) then
             Errors.SetError (cnuNULL_ATTRIBUTE, 'A?o Inicial');
@@ -326,24 +306,7 @@ BEGIN
             Errors.setError;
             raise ex.CONTROLLED_ERROR;
 END;
- PROCEDURE Processeprocastiinm AS
-  sbnomarch ge_boInstanceControl.stysbValue;
-  cnuNULL_ATTRIBUTE constant number := 2126;
- BEGIN
-   sbnomarch := ge_boInstanceControl.fsbGetFieldValue ('GE_SUBSCRIBER', 'SUBSCRIBER_NAME');
-    -- Validamos Nombre archivo
-  if (sbnomarch is null) then
-      Errors.SetError (cnuNULL_ATTRIBUTE, 'Nombre archivo');
-      raise ex.CONTROLLED_ERROR;
-  end if;
 
- EXCEPTION
-        when ex.CONTROLLED_ERROR then
-            raise ex.CONTROLLED_ERROR;
-        when others then
-            Errors.setError;
-            raise ex.CONTROLLED_ERROR;
- END;
  PROCEDURE getLocalidadcast(id in number, description in varchar2, rfQuery OUT Constants.tyRefCursor) AS
 
 

@@ -7,6 +7,9 @@ CREATE OR REPLACE PACKAGE adm_person.pkg_ct_order_certifica AS
         Tabla : CT_ORDER_CERTIFICA
         Caso  : OSF-2204
         Fecha : 08/07/2024 14:31:22
+        Fecha       Autor       Caso        Descripción
+        10/03/2025  jpinedc     OSF-4080    Se modifica prinsRegistro        
+        10/03/2025  jpinedc     OSF-4042    Se crea fblExisteRegistroOrden
     ***************************************************************************/
     CURSOR cuRegistroRId
     (
@@ -46,7 +49,7 @@ CREATE OR REPLACE PACKAGE adm_person.pkg_ct_order_certifica AS
         inuORDER_ID    NUMBER,inuCERTIFICATE_ID    NUMBER
     );
  
-    PROCEDURE prinsRegistro( ircRegistro CT_ORDER_CERTIFICA%ROWTYPE, oRowId OUT ROWID);
+    PROCEDURE prinsRegistro( ircRegistro CT_ORDER_CERTIFICA%ROWTYPE);
  
     PROCEDURE prBorRegistro(
         inuORDER_ID    NUMBER,inuCERTIFICATE_ID    NUMBER
@@ -71,9 +74,14 @@ CREATE OR REPLACE PACKAGE adm_person.pkg_ct_order_certifica AS
     );
  
     PROCEDURE prActRegistro( ircRegistro CT_ORDER_CERTIFICA%ROWTYPE);
+    
+    -- Retorna verdadero si existe registro para la orden en CT_ORDER_CERTIFICA
+    FUNCTION fblExisteRegistroOrden( inuOrden    CT_ORDER_CERTIFICA.order_id%TYPE)
+    RETURN BOOLEAN;
  
 END pkg_ct_order_certifica;
 /
+
 CREATE OR REPLACE PACKAGE BODY adm_person.pkg_ct_order_certifica AS
     csbSP_NAME		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.';
     csbNivelTraza    CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
@@ -195,7 +203,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_ct_order_certifica AS
                 RAISE pkg_error.Controlled_Error;
     END prValExiste;
  
-    PROCEDURE prInsRegistro( ircRegistro CT_ORDER_CERTIFICA%ROWTYPE, oRowId OUT ROWID) IS
+    PROCEDURE prInsRegistro( ircRegistro CT_ORDER_CERTIFICA%ROWTYPE) IS
         csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prInsRegistro';
         nuError         NUMBER;
         sbError         VARCHAR2(4000);
@@ -206,7 +214,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_ct_order_certifica AS
         )
         VALUES (
             ircRegistro.ORDER_ID,ircRegistro.CERTIFICATE_ID,ircRegistro.VERIFICATION_DATE
-        ) RETURNING ROWID INTO oRowId;
+        );
         pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
         EXCEPTION
             WHEN pkg_error.Controlled_Error THEN
@@ -436,10 +444,73 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_ct_order_certifica AS
                 RAISE pkg_error.Controlled_Error;
     END prActRegistro;
  
+
+    -- Retorna verdadero si existe registro para la orden en CT_ORDER_CERTIFICA
+    FUNCTION fblExisteRegistroOrden( inuOrden    CT_ORDER_CERTIFICA.order_id%TYPE)
+    RETURN BOOLEAN
+    IS
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'fblExisteRegistroOrden';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);    
+    
+        blExisteRegistroOrden   BOOLEAN;
+        
+        nuCertificado       CT_ORDER_CERTIFICA.certificate_id%TYPE;
+        
+        CURSOR cuExisteRegistroOrden
+        IS
+        SELECT certificate_id
+        FROM CT_ORDER_CERTIFICA oc
+        WHERE oc.order_id = inuOrden;
+        
+        PROCEDURE prcCierraCursor
+        IS
+        BEGIN
+        
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+        
+            IF cuExisteRegistroOrden%ISOPEN THEN
+                CLOSE cuExisteRegistroOrden;
+            END IF;
+           
+        END prcCierraCursor;
+        
+    BEGIN
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+        
+        OPEN cuExisteRegistroOrden;
+        FETCH cuExisteRegistroOrden INTO nuCertificado;
+        CLOSE  cuExisteRegistroOrden;
+
+        blExisteRegistroOrden := nuCertificado IS NOT NULL;
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+        
+        RETURN blExisteRegistroOrden;
+        
+    EXCEPTION
+        WHEN pkg_error.Controlled_Error THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+            pkg_Error.getError(nuError,sbError);
+            pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
+            prcCierraCursor;
+            RETURN blExisteRegistroOrden;
+        WHEN OTHERS THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
+            pkg_error.setError;
+            pkg_Error.getError(nuError,sbError);
+            pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
+            prcCierraCursor;
+            RETURN blExisteRegistroOrden;
+    END fblExisteRegistroOrden;    
+    
 END pkg_ct_order_certifica;
 /
+
 BEGIN
     -- OSF-2204
     pkg_Utilidades.prAplicarPermisos( UPPER('pkg_ct_order_certifica'), UPPER('adm_person'));
 END;
 /
+

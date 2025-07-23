@@ -4,8 +4,8 @@ create or replace PACKAGE LDC_BCSALESCOMMISSION is
   Propiedad intelectual de PETI (c).
 
   Unidad         : LDC_BCSalesCommission
-  Descripcion    : Paquete donde se implementa la l?gica para la generaci?n de multas
-     para procesos del ?rea de ventas
+  Descripcion    : Paquete donde se implementa la lógica para la generación de multas
+     para procesos del área de ventas
   Autor          : Sayra Ocoro
   Fecha          : 08/03/2013
 
@@ -17,9 +17,14 @@ create or replace PACKAGE LDC_BCSALESCOMMISSION is
 
 
   Historia de Modificaciones
-  Fecha             Autor             Modificacion
-  =========         =========         ====================
-  14-03-2023      Luis Valencia      OSF-882: Se modifica la función LDC_BCSALESCOMMISSION.fnuGetPackagesVR
+  Fecha             Autor               Modificacion
+  =========         =========           ====================
+  14-03-2023        Luis Valencia       OSF-882: Se modifica la función fnuGetPackagesVR
+  18-06-2025        Lubin Pineda        OSF-4555: 
+                                        * Se corrigen tildes
+                                        * Se usa pkg_Trace
+                                        * Se borra csbNitSurtigas.
+                                        * Se ajusta PrGenerateCommission
   ******************************************************************/
 
   TYPE RgCommissionRegister IS RECORD(
@@ -30,28 +35,28 @@ create or replace PACKAGE LDC_BCSALESCOMMISSION is
   |                 Variables Globales                              |
   ------------------------------------------------------------------*/
 
-  nuActCIVZNR LDC_PKG_OR_ITEM.order_item_id%type := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_INICIO_VENTA_ZNR');
-  nuActCIVZSR LDC_PKG_OR_ITEM.order_item_id%type := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_INICIO_VENTA_ZSR');
-  nuActCIVZNC LDC_PKG_OR_ITEM.order_item_id%type := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_INICIO_VENTA_ZNC');
-  nuActCIVZSC LDC_PKG_OR_ITEM.order_item_id%type := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_INICIO_VENTA_ZSC');
-  nuActMZR    LDC_PKG_OR_ITEM.order_item_id%type := DALD_parameter.fnuGetNumeric_Value('ID_MULTA_VENTA_OTRA_ZONA_RESID');
-  nuActMZC    LDC_PKG_OR_ITEM.order_item_id%type := DALD_parameter.fnuGetNumeric_Value('ID_MULTA_VENTA_OTRA_ZONA_COMM');
+  nuActCIVZNR LDC_PKG_OR_ITEM.order_item_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_INICIO_VENTA_ZNR');
+  nuActCIVZSR LDC_PKG_OR_ITEM.order_item_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_INICIO_VENTA_ZSR');
+  nuActCIVZNC LDC_PKG_OR_ITEM.order_item_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_INICIO_VENTA_ZNC');
+  nuActCIVZSC LDC_PKG_OR_ITEM.order_item_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_INICIO_VENTA_ZSC');
+  nuActMZR    LDC_PKG_OR_ITEM.order_item_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ID_MULTA_VENTA_OTRA_ZONA_RESID');
+  nuActMZC    LDC_PKG_OR_ITEM.order_item_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ID_MULTA_VENTA_OTRA_ZONA_COMM');
 
-  nuRange     number := DALD_parameter.fnuGetNumeric_Value('RANGO_COMISIONES_VENTA');
-  nuActCLVZNR LDC_PKG_OR_ITEM.order_item_id%type := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_LEG_VENTA_ZNR');
-  nuActCLVZSR LDC_PKG_OR_ITEM.order_item_id%type := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_LEG_VENTA_ZSR');
-  nuActCLVZNC LDC_PKG_OR_ITEM.order_item_id%type := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_LEG_VENTA_ZNC');
-  nuActCLVZSC LDC_PKG_OR_ITEM.order_item_id%type := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_LEG_VENTA_ZSC');
+  nuRange     number := pkg_BCLD_Parameter.fnuObtieneValorNumerico('RANGO_COMISIONES_VENTA');
+  nuActCLVZNR LDC_PKG_OR_ITEM.order_item_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_LEG_VENTA_ZNR');
+  nuActCLVZSR LDC_PKG_OR_ITEM.order_item_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_LEG_VENTA_ZSR');
+  nuActCLVZNC LDC_PKG_OR_ITEM.order_item_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_LEG_VENTA_ZNC');
+  nuActCLVZSC LDC_PKG_OR_ITEM.order_item_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_LEG_VENTA_ZSC');
 
-  nuPkgAtendido ps_package_type.package_type_id%type := DALD_parameter.fnuGetNumeric_Value('ID_ESTADO_PKG_ATENDTIDO');
-  nuPkgAnulado  ps_package_type.package_type_id%type := DALD_parameter.fnuGetNumeric_Value('ID_ESTADO_PKG_ANULADA');
+  nuPkgAtendido ps_package_type.package_type_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ID_ESTADO_PKG_ATENDTIDO');
+  nuPkgAnulado  ps_package_type.package_type_id%type := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ID_ESTADO_PKG_ANULADA');
   
   /*****************************************************************
   Propiedad intelectual de PETI (c).
 
   Unidad         : FnuGetCommissionValue
-  Descripcion    : Funci?n que retorna el valor de la comisi?n de venta al inicio de acuerdo a la
-     configuraci?n realizada en la forma CTCVE.
+  Descripcion    : Función que retorna el valor de la comisión de venta al inicio de acuerdo a la
+     configuración realizada en la forma CTCVE.
   Autor          : Sayra Ocoro
   Fecha          : 08/03/2013
 
@@ -103,15 +108,15 @@ create or replace PACKAGE LDC_BCSALESCOMMISSION is
                                  inuresult number, isbobse varchar2);                                        
 
   PROCEDURE ProcessGOPCV;
-  /*Funci?n que devuelve la versi?n del pkg*/
+  /*Función que devuelve la versión del pkg*/
   FUNCTION fsbVersion RETURN VARCHAR2;
 
   /*****************************************************************
   Propiedad intelectual de PETI (c).
 
   Unidad         : fnuGetPackagesVR
-  Descripcion    : Funci?n que valida si una solicitud pertence a un tipo de paquete que tiene asociada unas ot
-                   en estado 7 u 8. Se usa en condici?n de visualizaci?n solicitada en la NC 2046
+  Descripcion    : Función que valida si una solicitud pertence a un tipo de paquete que tiene asociada unas ot
+                   en estado 7 u 8. Se usa en condición de visualización solicitada en la NC 2046
   Autor          : Sayra Ocoro
   Fecha          : 05/12/2013
 
@@ -155,25 +160,21 @@ create or replace PACKAGE LDC_BCSALESCOMMISSION is
 
 end LDC_BCSalesCommission;
 /
+
 create or replace PACKAGE BODY LDC_BCSALESCOMMISSION is
 
-  /*Variable global*/
-  CSBVERSION CONSTANT varchar2(40) := 'LDC_BCSalesCommission_10';
+    csbSP_NAME		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.';
+    csbNivelTraza    CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
 
-  -- Nit Gaseras Empresas
-  csbNitSurtigas  CONSTANT sistema.sistnitc%type := '890400869-9';
-  csbNitGasCaribe CONSTANT sistema.sistnitc%type := '890101691-2';
-
-  -- Cursor para consultar el NIT de la Empresa
-  CURSOR cuNitEmpresa is
-    select sistnitc from open.sistema;
+    /*Variable global*/
+    CSBVERSION CONSTANT varchar2(40) := 'OSF-4555';
 
   /*****************************************************************
     Propiedad intelectual de PETI (c).
 
     Unidad         : LDC_BCSalesCommission
-    Descripcion    : Paquete donde se implementa la l?gica para la generaci?n de multas
-                     para procesos del ?rea de ventas
+    Descripcion    : Paquete donde se implementa la lógica para la generación de multas
+                     para procesos del área de ventas
     Autor          : Sayra Ocoro
     Fecha          : 08/03/2013
 
@@ -187,19 +188,19 @@ create or replace PACKAGE BODY LDC_BCSALESCOMMISSION is
     Historia de Modificaciones
     Fecha             Autor             Modificacion
     =========         =========         ====================
-    06-11-2013      Sayra Ocor?       Se modifica el m?todo PrGenerateCommision para que las ordenes
-                                      de comisi?n generadas como comisiones sean vistas desde el proceso
-                                      de liquidaci?n a contratistas -> Soluciona NC 1749
-   05-12-2013       Sayra Ocor?       Se adiciona la funci?n fnuGetPackagesVR para solucionar la NC 2046
-   06-03-2014       Emiro Leyva       Aranda 3038 (Debe corregirse para que tome s?lo el valor de la venta antes de IVA.).
+    06-11-2013      Sayra Ocoró       Se modifica el método PrGenerateCommision para que las ordenes
+                                      de comisión generadas como comisiones sean vistas desde el proceso
+                                      de liquidación a contratistas -> Soluciona NC 1749
+   05-12-2013       Sayra Ocoró       Se adiciona la función fnuGetPackagesVR para solucionar la NC 2046
+   06-03-2014       Emiro Leyva       Aranda 3038 (Debe corregirse para que tome sólo el valor de la venta antes de IVA.).
                                        Solucion: se busca el valor de la venta en la tabla cargos de todos los
                                        conceptos de la venta atravez de la funcion LDC_FNUGETVLRVENTA, recibe
                                        como parametro 'PP-' concatenado con el numero de la solicitud de la venta.
-   01-04-2014      Sayra Ocor?        Aranda 3275:Se deben actualizar correctamente la direcci?n (Address_id)
+   01-04-2014      Sayra Ocoró        Aranda 3275:Se deben actualizar correctamente la dirección (Address_id)
                                        de la venta en los campos "External_address_id" de la entidad OR_ORDER y
                                        "Address_id" de la entidad OR_ORDER_ACTIVITY.
-   20-01-2015      Gabriel Gamarra    NC 3968: Se modifica el m?todo PrGenerateCommision.
-                                      Se a?ade validacion para que no procese las solicitudes del tipo
+   20-01-2015      Gabriel Gamarra    NC 3968: Se modifica el método PrGenerateCommision.
+                                      Se añade validacion para que no procese las solicitudes del tipo
                                       100271 - Venta de Gas Formulario Migracion en la etapa de registro.
    05-02-2016      Francisco Castro  Caso 100.7353: Se implementa funcionalidad para ejecutar el proceso
                                      por hilos                                      
@@ -234,32 +235,40 @@ create or replace PACKAGE BODY LDC_BCSALESCOMMISSION is
 
     ******************************************************************/
 
-    cursor cuCargos(sbCargdoso in cargos.cargdoso%type) is
-      select nvl(SUM(NVL(CARGVALO, 0)), 0)
-        from cargos
-       where cargdoso = sbCargdoso
-         AND CARGSIGN = 'DB'
-         AND CARGCONC in
-             (SELECT column_value
-                from table(ldc_boutilities.SPLITstrings(dald_parameter.fsbGetValue_Chain('COD_CONC_VTA_LIQ_COMISIONES'),
-                                                        ',')));
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'LDC_FNUGETVLRVENTA';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000); 
+    
+        cursor cuCargos(sbCargdoso in cargos.cargdoso%type) is
+          select nvl(SUM(NVL(CARGVALO, 0)), 0)
+            from cargos
+           where cargdoso = sbCargdoso
+             AND CARGSIGN = 'DB'
+             AND CARGCONC in
+                 (SELECT column_value
+                    from table(ldc_boutilities.SPLITstrings(pkg_BCLD_Parameter.fsbObtieneValorCadena('COD_CONC_VTA_LIQ_COMISIONES'),
+                                                            ',')));
 
-    nuCargvalo cargos.cargvalo%type;
-  begin
+        nuCargvalo cargos.cargvalo%type;
+        
+    begin
 
-    open cuCargos(isbCargdoso);
-    fetch cuCargos
-      INTO nuCargvalo;
-    close cuCargos;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+    
+        open cuCargos(isbCargdoso);
+        fetch cuCargos INTO nuCargvalo;
+        close cuCargos;
 
-    ut_trace.trace('LDC_FNUGETVLRVENTA valor de la venta ' || nuCargvalo,
-                   10);
+        pkg_Traza.Trace('LDC_FNUGETVLRVENTA valor de la venta ' || nuCargvalo,
+                       10);
 
-    return nuCargvalo;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+        
+        return nuCargvalo;
 
-  end LDC_FNUGETVLRVENTA;
+    end LDC_FNUGETVLRVENTA;
 
-  /*****************************************************************
+    /*****************************************************************
     Propiedad intelectual de PETI (c).
 
     Unidad         : PrGenerateCommission
@@ -277,68 +286,67 @@ create or replace PACKAGE BODY LDC_BCSALESCOMMISSION is
     Historia de Modificaciones
     Fecha             Autor             Modificacion
     =========         =========         ====================
-   06-11-2013      Sayra Ocor?        Se modifica el m?todo PrGenerateCommision para que las ordenes
-                                        de comisi?n generadas como comisiones sean vistas desde el proceso
-                                        de liquidaci?n a contratistas
-   19-01-2014      Sayra Ocor?        Se adiciona b?squeda de la orden de referencia para la novedad para
+    06-11-2013      Sayra Ocoró        Se modifica el método PrGenerateCommision para que las ordenes
+                                        de comisión generadas como comisiones sean vistas desde el proceso
+                                        de liquidación a contratistas
+    19-01-2014      Sayra Ocoró        Se adiciona búsqueda de la orden de referencia para la novedad para
                                       solucionar la NC 2561.
                                       Se modifica filtro para no multar doble.
-   20-02-2014     Sayra Ocor?        Aranda 89871 : Se modifica l?gica para manejo de errores
-   21-02-2014     Sayra Ocor?        Aranda 2877:  Se modifican los par?metros que se env?an al apli para
+    20-02-2014     Sayra Ocoró        Aranda 89871 : Se modifica lógica para manejo de errores
+    21-02-2014     Sayra Ocoró        Aranda 2877:  Se modifican los parámetros que se envían al apli para
                                      registro de novedades OS_REGISTERNEWCHARGE
-   06-03-2014     Emiro Leyva        aranda 3038 (Debe corregirse para que tome s?lo el valor de la venta antes de IVA.).
+    06-03-2014     Emiro Leyva        aranda 3038 (Debe corregirse para que tome sólo el valor de la venta antes de IVA.).
                                      Solucion: se busca el valor de la venta en la tabla cargos de todos los
                                      conceptos de la venta atravez de la funcion LDC_FNUGETVLRVENTA, recibe
                                      como parametro 'PP-' concatenado con el numero de la solicitud de la venta.
-   25-03-2014     Jorge Valiente     ARANDA 3224: Se colocaron validaciones para identificar cuando las varibales
+    25-03-2014     Jorge Valiente     ARANDA 3224: Se colocaron validaciones para identificar cuando las varibales
                                                   con datos provenientes de servicios de 1er nivel tiene dato NULO.
-   01-04-2014      Sayra Ocor?       Aranda 3275:Se deben actualizar correctamente la direcci?n (Address_id)
+    01-04-2014      Sayra Ocoró       Aranda 3275:Se deben actualizar correctamente la dirección (Address_id)
                                        de la venta en los campos "External_address_id" de la entidad OR_ORDER y
                                        "Address_id" de la entidad OR_ORDER_ACTIVITY.
-  10-04-2014      Sayra Ocor?       Aranda 3275_2:Se ajusta la soluci?n para que actualice los campos OPERATING_SECTOR_ID
-                                              y GEOGRAP_LOCATION_ID de la tabla OR_ORDER y tambi?n el campo
+    10-04-2014      Sayra Ocoró       Aranda 3275_2:Se ajusta la solución para que actualice los campos OPERATING_SECTOR_ID
+                                              y GEOGRAP_LOCATION_ID de la tabla OR_ORDER y también el campo
                                                OPERATING_SECTOR_ID  de la tabla OR_ORDER_ACTIVITY.
-  16-04-2014    Sayra Ocor?         Aranda 3420: Se corrige mensage de generaci?n.
-  08-09-2014      oparra            TEAM 33. Se modifica el proceso para que se pueda realizar el calculo y el
+    16-04-2014    Sayra Ocoró         Aranda 3420: Se corrige mensage de generación.
+    08-09-2014      oparra            TEAM 33. Se modifica el proceso para que se pueda realizar el calculo y el
                                     pago decomisiones a contratistas pertenecientes al tramite de venta a constructoras,
                                     para que aplique para Surtigas y Gases del Caribe.
-  20-01-2015      Gabriel Gamarra    NC 3968: Se a?ade validacion para que no procese las solicitudes del tipo
+    20-01-2015      Gabriel Gamarra    NC 3968: Se añade validacion para que no procese las solicitudes del tipo
                                       100271 - Venta de Gas Formulario Migracion en la etapa de registro.
-  05-02-2016      Francisco Castro  Caso 100.7353: Se implementa funcionalidad para ejecutar el proceso
+    05-02-2016      Francisco Castro  Caso 100.7353: Se implementa funcionalidad para ejecutar el proceso
                                     por hilos (se separa parte del codigo original que estaba en PrGenerateCommission
-                                    pasandolo para PrGenerateCommission_Hilos 
-  ******************************************************************/
-  procedure PrGenerateCommission is
-    
-    dtLastExecution        date;
-    dtToday                date := sysdate;
-    
-    sbPackagesType         varchar2(3000);
-    sbNitEmpresa           sistema.sistnitc%type;
-    
-    nuHilosComision        number;
-    nuTotReg               number;
-    nuFinJobs              number(1);
-    nuCont                 number;
-    nusesion               number;
-    nuresult               number(5);
-    
+                                    pasandolo para PrGenerateCommission_Hilos
+    18-06-2025        Lubin Pineda        OSF-4555: Se ajusta por borrado de csbNitSurtigas.                                    
+    ******************************************************************/
+    PROCEDURE PrGenerateCommission is
 
-    cursor cuPackages(idtToday         date,
-                      idtLastExecution date,
-                      isbPackagesType  varchar2) is
-    --Solicitudes de venta pendientes por pago de comision al legalizar
-     select count(1) from (
-     (select mo_packages.package_id id, 'B' sbTime
-        from mo_packages
-       where mo_packages.request_date between idtLastExecution and idtToday
-         and instr(','||isbPackagesType||',', ','||mo_packages.PACKAGE_TYPE_ID||',') > 0
-         AND mo_packages.PACKAGE_TYPE_ID <> 100271
-         and mo_packages.MOTIVE_STATUS_ID <> nuPkgAnulado -- 32-Solicitud ANULADA
-            -- minus
-         and not exists
-       (select null
-              --select mo_packages.package_id id, 'B' sbTime
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'PrGenerateCommission';
+        
+        dtLastExecution        date;
+        dtToday                date := sysdate;
+
+        sbPackagesType         varchar2(3000);
+
+        nuHilosComision        number;
+        nuTotReg               number;
+        nuFinJobs              number(1);
+        nuCont                 number;
+        nusesion               number;
+        nuresult               number(5);
+    
+        cursor cuPackages(idtToday         date,
+                          idtLastExecution date,
+                          isbPackagesType  varchar2) is
+        --Solicitudes de venta pendientes por pago de comision al legalizar
+         select count(1) from (
+         (select mo_packages.package_id id, 'B' sbTime
+            from mo_packages
+           where mo_packages.request_date between idtLastExecution and idtToday
+             and instr(','||isbPackagesType||',', ','||mo_packages.PACKAGE_TYPE_ID||',') > 0
+             AND mo_packages.PACKAGE_TYPE_ID <> 100271
+             and mo_packages.MOTIVE_STATUS_ID <> nuPkgAnulado -- 32-Solicitud ANULADA
+             and not exists
+           (select null
                 from mo_packages MP, LDC_PKG_OR_ITEM
                where MP.package_id = LDC_PKG_OR_ITEM.package_id
                  and LDC_PKG_OR_ITEM.order_item_id in
@@ -350,16 +358,14 @@ create or replace PACKAGE BODY LDC_BCSALESCOMMISSION is
                       nuActMZC)
                  and instr(','||isbPackagesType||',', ','||mo_packages.PACKAGE_TYPE_ID||',') > 0
                  and mo_packages.package_id = MP.package_id))
-      union
-      --Solicitudes de venta pendientes por pago de comision al legalizar
+        union
+        --Solicitudes de venta pendientes por pago de comision al legalizar
        (select mo_packages.package_id id, 'L' sbTime
           from mo_packages
          where mo_packages.request_date between idtLastExecution and
                idtToday
            and instr(','||isbPackagesType||',', ','||mo_packages.PACKAGE_TYPE_ID||',') > 0
            and mo_packages.MOTIVE_STATUS_ID = nuPkgAtendido -- 14-Solicitud atendida
-
-              --minus
            and not exists
          (select null
                 --select mo_packages.package_id id, 'L' sbTime
@@ -376,156 +382,143 @@ create or replace PACKAGE BODY LDC_BCSALESCOMMISSION is
                    and mo_packages.package_id = MP.package_id)));
                    
   
-cursor cuJobs (nuInd number) is
- select resultado
-   from ldc_log_salescomission
-  where sesion = nusesion
-    and fecha_inicio = dtToday
-    and hilo = nuind
-    AND resultado in (-1,2); -- -1 Termino con errores, 2 termino OK
+        cursor cuJobs (nuInd number) is
+        select resultado
+        from ldc_log_salescomission
+        where sesion = nusesion
+        and fecha_inicio = dtToday
+        and hilo = nuind
+        AND resultado in (-1,2); -- -1 Termino con errores, 2 termino OK
   
-    rgNewParameter ld_parameter%rowtype;
-    
-    dtBegin   date;
-    
-    
-    
-    
-    nujob         number;
-    sbWhat        varchar2(4000);
-
-  begin
-    ut_trace.trace('Inicio LDC_BCSalesCommission.PrGenerateCommission', 10);
-    
-    nuHilosComision := dald_parameter.fnuGetNumeric_Value('COMISION_HILOS');
-    select userenv('SESSIONID') into nusesion from dual;
-    
-    pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Inicia Proceso');
-     
-    open cuNitEmpresa;
-    fetch cuNitEmpresa
-      into sbNitEmpresa;
-    close cuNitEmpresa;
-
-    -- TEAM 33: Validacion segun empresa
-    if sbNitEmpresa = csbNitSurtigas or sbNitEmpresa = csbNitGasCaribe then
-      sbPackagesType := DALD_PARAMETER.fsbGetValue_Chain('ID_SOLIC_VENTA_GAS_CONST',
-                                                         NULL);
-    else
-      sbPackagesType := DALD_PARAMETER.fsbGetValue_Chain('ID_PKG_SOLIC_VENTA_GAS',
-                                                         NULL);
-    end if;
-
-    --Obtener la fecha de la ?ltima ejecuci?n del proceso
-    if (dald_parameter.fblexist('FECHA_COM_REG_VENTA') = FALSE) then
-      rgNewParameter.PARAMETER_ID := 'FECHA_COM_REG_VENTA';
-      --rgNewParameter.NUMERIC_VALUE := null;
-      rgNewParameter.VALUE_CHAIN := SYSDATE;
-      rgNewParameter.DESCRIPTION := 'ULTIMA FECHA DE EJECUCION DEL PROCESO PARA GENERAR COMISIONES DE VENTA AL REGISTRO';
-      --dald_parameter.insRecord(rgNewParameter);
-      insert into ld_parameter
-        (PARAMETER_ID, NUMERIC_VALUE, VALUE_CHAIN, DESCRIPTION)
-      values
-        (rgNewParameter.PARAMETER_ID,
-         null,
-         rgNewParameter.VALUE_CHAIN,
-         rgNewParameter.DESCRIPTION);
-      commit;
-      
-    end if;
-    --Almacenar en un par?mmetro para futuras ejecuciones
-    dtLastExecution := dald_parameter.fsbgetvalue_chain('FECHA_COM_REG_VENTA');
-    dtBegin         := dtLastExecution - nuRange;
-
-    ut_trace.trace('Fecha inicio dtBegin --> ' || dtBegin, 10);
-    
-     pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Inicia conteo regs a procesar. dtLastExecution: ' ||
-                            dtLastExecution || ' dtBegin: '  || dtBegin);
-                            
-    -- se halla el total de registros a procesar
-    open cuPackages(dtToday, dtBegin, sbPackagesType);
-    fetch cuPackages into nuTotReg;
-    if nuTotReg is null then
-      nuTotReg := -1;
-    end if;
-    close cuPackages;
-    
-    pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Termina conteo regs a procesar. Nro Regs: ' || nuTotReg);
-    
-   
-  if nuTotReg > 0 then
-    -- Si el numero de regs a procesar es menor o igual al Nro de hilos, se ejecutara en uno solo
-     if nuTotReg <= nuHilosComision then 
-       nuHilosComision := 1;
-     end if;     
-    
-    pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Inicia creacion de los jobs');
-    -- se crean los jobs y se ejecutan
-    for rgJob in 1 .. nuHilosComision loop
-          sbWhat := 'BEGIN'                                           || chr(10) ||
-            '   SetSystemEnviroment;'                         || chr(10) ||
-            '   LDC_BCSALESCOMMISSION.PrGenerateCommission_Hilos(' || 'to_date(''' ||to_char(dtToday,'DD/MM/YYYY  HH24:MI:SS')||'''),' || chr(10) ||  
-            '                                                    to_date(''' ||to_char(dtBegin,'DD/MM/YYYY  HH24:MI:SS')||'''),' || chr(10) || 
-            '                                                    ''' || sbPackagesType || ''',' || chr(10) || 
-            '                                                    ' || rgJob || ',' || chr(10) ||
-            '                                                    ' || nuHilosComision || ',' || chr(10) ||
-            '                                                    ' || nusesion || ');' || chr(10) || 
-            'END;';
-        dbms_job.submit (nujob,
-                         sbWhat,
-                         sysdate + 1/3600); -- se programa la ejecucion (los jobs se eliminan automatiamente apenas terminan)
-        commit;    
-        pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Creo job: ' || rgJob ||
-                               ' Nro ' || nujob);
-     end loop;
-  
-    -- se verifica si terminaron los jobs
-    nuFinJobs := 0;
-    while nuFinJobs = 0 loop
-      nucont    := 0;
-      for i in 1 .. nuHilosComision loop
-        open cujobs (i);
-        fetch cujobs into nuresult;
-        if nuresult is not null then
-            nucont := nucont + 1;
-         end if;
-         close cujobs;
-       end loop;
-       if nucont = nuHilosComision then
-         nuFinJobs := 1;
-       else
-         DBMS_LOCK.SLEEP(60);
-       end if;
-     end loop;
-    
-    pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Terminaron todos los hilos');
+        rgNewParameter ld_parameter%rowtype;
         
-    ut_trace.trace('Actualizando par?metro fecha', 10);
-    dald_parameter.UPDVALUE_CHAIN('FECHA_COM_REG_VENTA', to_char(SYSDATE));
-    ut_trace.trace('Asentando transaccion', 10);
-    commit;
+        dtBegin   date;
+                
+        nujob         number;
+        sbWhat        varchar2(4000);
+
+    BEGIN
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+        
+        nuHilosComision := pkg_BCLD_Parameter.fnuObtieneValorNumerico('COMISION_HILOS');
+        
+        nusesion := pkg_Session.fnuGetSesion;
+            
+        pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Inicia Proceso');
+     
+        sbPackagesType := pkg_BCLD_Parameter.fsbObtieneValorCadena('ID_SOLIC_VENTA_GAS_CONST');
+
+        --Obtener la fecha de la última ejecución del proceso
+        if (dald_parameter.fblexist('FECHA_COM_REG_VENTA') = FALSE) then
+          rgNewParameter.PARAMETER_ID := 'FECHA_COM_REG_VENTA';
+          rgNewParameter.VALUE_CHAIN := SYSDATE;
+          rgNewParameter.DESCRIPTION := 'ULTIMA FECHA DE EJECUCION DEL PROCESO PARA GENERAR COMISIONES DE VENTA AL REGISTRO';
+          insert into ld_parameter
+            (PARAMETER_ID, NUMERIC_VALUE, VALUE_CHAIN, DESCRIPTION)
+          values
+            (rgNewParameter.PARAMETER_ID,
+             null,
+             rgNewParameter.VALUE_CHAIN,
+             rgNewParameter.DESCRIPTION);
+          commit;          
+        end if;
+        
+        --Almacenar en un parámetro para futuras ejecuciones
+        dtLastExecution := pkg_BCLD_Parameter.fsbObtieneValorCadena('FECHA_COM_REG_VENTA');
+        dtBegin         := dtLastExecution - nuRange;
+
+        pkg_Traza.Trace('Fecha inicio dtBegin --> ' || dtBegin, 10);
+        
+        pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Inicia conteo regs a procesar. dtLastExecution: ' ||
+                                dtLastExecution || ' dtBegin: '  || dtBegin);
+                            
+        -- se halla el total de registros a procesar
+        open cuPackages(dtToday, dtBegin, sbPackagesType);
+        fetch cuPackages into nuTotReg;
+        close cuPackages;
     
-    ut_trace.trace('Fin LDC_BCSalesCommission.PrGenerateCommission', 10);
-    ut_trace.trace('Ejecuta LDC_prorevercomisionventasanul', 10);
+        if nuTotReg is null then
+            nuTotReg := -1;
+        end if;    
     
-    pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Inicia LDC_prorevercomisionventasanul');
-    LDC_prorevercomisionventasanul;
-    pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Termino LDC_prorevercomisionventasanul. Fin proceso');
-   
-  else
-    pro_grabalog_comision (nusesion, dtToday, 0, 0, 'LDC_BCSalesCommission.PrGenerateCommission con cero registros a procesar');
-    ut_trace.trace('LDC_BCSalesCommission.PrGenerateCommission con cero registros a procesar', 10);
-  end if;
-  exception
-    WHEN ex.CONTROLLED_ERROR then
-      pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Error: ' || sqlerrm);
-      rollback;
-      raise;
-    When others then
-      pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Error: ' || sqlerrm);
-      rollback;
-      gw_boerrors.checkerror(SQLCODE, SQLERRM);
-  end PrGenerateCommission;
+        pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Termina conteo regs a procesar. Nro Regs: ' || nuTotReg);
+       
+        if nuTotReg > 0 then
+            -- Si el numero de regs a procesar es menor o igual al Nro de hilos, se ejecutara en uno solo
+            if nuTotReg <= nuHilosComision then 
+                nuHilosComision := 1;
+            end if;     
+
+            pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Inicia creacion de los jobs');
+            -- se crean los jobs y se ejecutan
+            for rgJob in 1 .. nuHilosComision loop
+                sbWhat := 'BEGIN'                                           || chr(10) ||
+                '   SetSystemEnviroment;'                         || chr(10) ||
+                '   LDC_BCSALESCOMMISSION.PrGenerateCommission_Hilos(' || 'to_date(''' ||to_char(dtToday,'DD/MM/YYYY  HH24:MI:SS')||'''),' || chr(10) ||  
+                '                                                    to_date(''' ||to_char(dtBegin,'DD/MM/YYYY  HH24:MI:SS')||'''),' || chr(10) || 
+                '                                                    ''' || sbPackagesType || ''',' || chr(10) || 
+                '                                                    ' || rgJob || ',' || chr(10) ||
+                '                                                    ' || nuHilosComision || ',' || chr(10) ||
+                '                                                    ' || nusesion || ');' || chr(10) || 
+                'END;';
+                dbms_job.submit (nujob,
+                             sbWhat,
+                             sysdate + 1/3600); -- se programa la ejecucion (los jobs se eliminan automatiamente apenas terminan)
+                commit;    
+                pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Creo job: ' || rgJob ||
+                                   ' Nro ' || nujob);
+            end loop;
+
+            -- se verifica si terminaron los jobs
+            nuFinJobs := 0;
+            while nuFinJobs = 0 loop
+              nucont    := 0;
+              for i in 1 .. nuHilosComision loop
+                open cujobs (i);
+                fetch cujobs into nuresult;
+                if nuresult is not null then
+                    nucont := nucont + 1;
+                 end if;
+                 close cujobs;
+               end loop;
+               if nucont = nuHilosComision then
+                 nuFinJobs := 1;
+               else
+                 DBMS_LOCK.SLEEP(60);
+               end if;
+             end loop;
+
+            pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Terminaron todos los hilos');
+                
+            pkg_Traza.Trace('Actualizando parámetro fecha', 10);
+            dald_parameter.UPDVALUE_CHAIN('FECHA_COM_REG_VENTA', to_char(SYSDATE));
+            pkg_Traza.Trace('Asentando transaccion', 10);
+            commit;
+
+            pkg_Traza.Trace('Ejecuta LDC_prorevercomisionventasanul', 10);
+
+            pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Inicia LDC_prorevercomisionventasanul');
+            LDC_prorevercomisionventasanul;
+            pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Termino LDC_prorevercomisionventasanul. Fin proceso');
+
+        else
+            pro_grabalog_comision (nusesion, dtToday, 0, 0, 'LDC_BCSalesCommission.PrGenerateCommission con cero registros a procesar');
+            pkg_Traza.Trace('LDC_BCSalesCommission.PrGenerateCommission con cero registros a procesar', 10);
+        end if;
+        
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+            
+    EXCEPTION
+        WHEN ex.CONTROLLED_ERROR then
+            pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Error: ' || sqlerrm);
+            rollback;
+            raise;
+        WHEN OTHERS then
+            pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Error: ' || sqlerrm);
+            rollback;
+            gw_boerrors.checkerror(SQLCODE, SQLERRM);
+    END PrGenerateCommission;
 
 
 /*****************************************************************
@@ -547,32 +540,32 @@ cursor cuJobs (nuInd number) is
     Historia de Modificaciones
     Fecha             Autor             Modificacion
     =========         =========         ====================
-   06-11-2013      Sayra Ocor?        Se modifica el m?todo PrGenerateCommision para que las ordenes
-                                        de comisi?n generadas como comisiones sean vistas desde el proceso
-                                        de liquidaci?n a contratistas
-   19-01-2014      Sayra Ocor?        Se adiciona b?squeda de la orden de referencia para la novedad para
+   06-11-2013      Sayra Ocoró        Se modifica el método PrGenerateCommision para que las ordenes
+                                        de comisión generadas como comisiones sean vistas desde el proceso
+                                        de liquidación a contratistas
+   19-01-2014      Sayra Ocoró        Se adiciona búsqueda de la orden de referencia para la novedad para
                                       solucionar la NC 2561.
                                       Se modifica filtro para no multar doble.
-   20-02-2014     Sayra Ocor?        Aranda 89871 : Se modifica l?gica para manejo de errores
-   21-02-2014     Sayra Ocor?        Aranda 2877:  Se modifican los par?metros que se env?an al apli para
+   20-02-2014     Sayra Ocoró        Aranda 89871 : Se modifica lógica para manejo de errores
+   21-02-2014     Sayra Ocoró        Aranda 2877:  Se modifican los parámetros que se envían al apli para
                                      registro de novedades OS_REGISTERNEWCHARGE
-   06-03-2014     Emiro Leyva        aranda 3038 (Debe corregirse para que tome s?lo el valor de la venta antes de IVA.).
+   06-03-2014     Emiro Leyva        aranda 3038 (Debe corregirse para que tome sólo el valor de la venta antes de IVA.).
                                      Solucion: se busca el valor de la venta en la tabla cargos de todos los
                                      conceptos de la venta atravez de la funcion LDC_FNUGETVLRVENTA, recibe
                                      como parametro 'PP-' concatenado con el numero de la solicitud de la venta.
    25-03-2014     Jorge Valiente     ARANDA 3224: Se colocaron validaciones para identificar cuando las varibales
                                                   con datos provenientes de servicios de 1er nivel tiene dato NULO.
-   01-04-2014      Sayra Ocor?       Aranda 3275:Se deben actualizar correctamente la direcci?n (Address_id)
+   01-04-2014      Sayra Ocoró       Aranda 3275:Se deben actualizar correctamente la dirección (Address_id)
                                        de la venta en los campos "External_address_id" de la entidad OR_ORDER y
                                        "Address_id" de la entidad OR_ORDER_ACTIVITY.
-  10-04-2014      Sayra Ocor?       Aranda 3275_2:Se ajusta la soluci?n para que actualice los campos OPERATING_SECTOR_ID
-                                              y GEOGRAP_LOCATION_ID de la tabla OR_ORDER y tambi?n el campo
+  10-04-2014      Sayra Ocoró       Aranda 3275_2:Se ajusta la solución para que actualice los campos OPERATING_SECTOR_ID
+                                              y GEOGRAP_LOCATION_ID de la tabla OR_ORDER y también el campo
                                                OPERATING_SECTOR_ID  de la tabla OR_ORDER_ACTIVITY.
-  16-04-2014    Sayra Ocor?         Aranda 3420: Se corrige mensage de generaci?n.
+  16-04-2014    Sayra Ocoró         Aranda 3420: Se corrige mensage de generación.
   08-09-2014      oparra            TEAM 33. Se modifica el proceso para que se pueda realizar el calculo y el
                                     pago decomisiones a contratistas pertenecientes al tramite de venta a constructoras,
                                     para que aplique para Surtigas y Gases del Caribe.
-  20-01-2015      Gabriel Gamarra    NC 3968: Se a?ade validacion para que no procese las solicitudes del tipo
+  20-01-2015      Gabriel Gamarra    NC 3968: Se añade validacion para que no procese las solicitudes del tipo
                                       100271 - Venta de Gas Formulario Migracion en la etapa de registro.
 
   05-02-2016      Francisco Castro  Caso 100.7353: Se implementa funcionalidad para ejecutar el proceso
@@ -585,6 +578,9 @@ cursor cuJobs (nuInd number) is
                                         innuNroHilo number,
                                         innuTotHilos number,
                                         innusesion number) is
+                                        
+    csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'PrGenerateCommission_Hilos';
+                                            
     nuTaskTypeId      or_task_type.task_type_id%type;
     nuCateCodi        LDC_COMISION_PLAN.CATECODI%type;
     nuGeograpDepto    ge_geogra_location.geograp_location_id%type;
@@ -692,19 +688,8 @@ cursor cuJobs (nuInd number) is
       select order_id id
         from or_order_comment
        where order_comment like isbObservation;
-    --nuOrderItemsId          or_order_items.order_items_id%type;
-    --NC 2561 19-01-2014
-    /*cursor cuOrderRef (
-      inuPackageId mo_packages.package_id%type
-    )is
 
-    select order_id
-     from or_order_activity
-      where task_type_id = dald_parameter.fnuGetNumeric_Value('ID_TT_ENTREGA_FORM')
-      and package_id = inuPackageId;*/
-
-    --nuOrderIdReference or_order.order_id%type;
-    --Cursor para validar si durante el proceso ya se gener? multa
+    --Cursor para validar si durante el proceso ya se generó multa
     cursor cuExisteMulta(inuPackageId mo_packages.package_id%type) is
       select count(*)
         from ldc_pkg_or_item
@@ -716,112 +701,111 @@ cursor cuJobs (nuInd number) is
     nucantiregcom NUMBER(15) DEFAULT 0;
     nucantiregtot NUMBER(15) DEFAULT 0;
 
-  begin
-    ut_trace.trace('Inicio LDC_BCSalesCommission.PrGenerateCommission Hilo ' || innuNroHilo, 10);
-     pro_grabalog_comision (innusesion, indtToday, innuNroHilo, 1, 'Inicia Hilo: ' || innuNroHilo);
-       
-    --Buscar solicitudes de venta en estado "13 - Registrada" enun rango de fecha
-    --Para cada solicitud, validar si ya se le gener? una OT cerrada para el pago de la comisi?n, si no, entonces generar OT y generar
-    --dbms_output.put_line('Inicio validar si ya se le gener? una OT cerrada para el pago de la comisi?n');
-    nucantiregcom := 0;
-    nucantiregtot := 0;
-    nucontareg    := dald_parameter.fnuGetNumeric_Value('COD_CANTIDAD_REG_GUARDAR');
-    nugrabados := 0; 
-  for pkg in cuPackages(indtToday, indtBegin, insbPackagesType) loop 
-
-      BEGIN
-        ut_trace.trace('Procesando solicitud --> ' || pkg.id || ' (Hilo ' || innuNroHilo || ')', 10);
+    begin
+  
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+          
+        pkg_Traza.Trace('PrGenerateCommission Hilo ' || innuNroHilo, 10);
         
-       -- pro_grabalog_comision (innusesion, indtToday, 0, 0, 'Procesando solicitud --> ' || pkg.id || ' (Hilo ' || innuNroHilo || ')'); 
+        pro_grabalog_comision (innusesion, indtToday, innuNroHilo, 1, 'Inicia Hilo: ' || innuNroHilo);
+       
+        --Buscar solicitudes de venta en estado "13 - Registrada" enun rango de fecha
+        --Para cada solicitud, validar si ya se le generó una OT cerrada para el pago de la comisión, si no, entonces generar OT y generar
+        --dbms_output.put_line('Inicio validar si ya se le generó una OT cerrada para el pago de la comisión');
+        nucantiregcom := 0;
+        nucantiregtot := 0;
+        nucontareg    := pkg_BCLD_Parameter.fnuObtieneValorNumerico('COD_CANTIDAD_REG_GUARDAR');
+        nugrabados := 0; 
+    
+        for pkg in cuPackages(indtToday, indtBegin, insbPackagesType) loop 
+
+        BEGIN
+            pkg_Traza.Trace('Procesando solicitud --> ' || pkg.id || ' (Hilo ' || innuNroHilo || ')', 10);
+        
       
-       --dbms_output.put_line(pkg.id);
-        nuBan       := 0;
-        inuActivity := null;
-        inuOrderId  := null;
-        --Obtener unidad de trabajo o contratista para consultar en CTCVE
-        nuSalesmanId := damo_packages.fnugetperson_id(pkg.id);
-        ut_trace.trace('nuSalesmanId --> ' || nuSalesmanId, 10);
-        sbDOCUMENT_KEY := damo_packages.fsbgetdocument_key(pkg.id);
-        ut_trace.trace('sbDOCUMENT_KEY --> ' || sbDOCUMENT_KEY, 10);
-        --dbms_output.put_line('sbDOCUMENT_KEY => '||sbDOCUMENT_KEY);
-        if nuSalesmanId is null then
-          ut_trace.trace('No existe un vendedor asociado a la solicitud de venta',
-                         10);
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error,
-                                           'No existe un vendedor asociado a la solicitud de venta ' ||
-                                           pkg.id);
-          raise ex.CONTROLLED_ERROR;
-        end if;
-        inuPersonId := nuSalesmanId;
+           --dbms_output.put_line(pkg.id);
+            nuBan       := 0;
+            inuActivity := null;
+            inuOrderId  := null;
+            --Obtener unidad de trabajo o contratista para consultar en CTCVE
+            nuSalesmanId := damo_packages.fnugetperson_id(pkg.id);
+            pkg_Traza.Trace('nuSalesmanId --> ' || nuSalesmanId, 10);
+            sbDOCUMENT_KEY := damo_packages.fsbgetdocument_key(pkg.id);
+            pkg_Traza.Trace('sbDOCUMENT_KEY --> ' || sbDOCUMENT_KEY, 10);
+
+            if nuSalesmanId is null then
+              pkg_Traza.Trace('No existe un vendedor asociado a la solicitud de venta',
+                             10);
+              ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error,
+                                               'No existe un vendedor asociado a la solicitud de venta ' ||
+                                               pkg.id);
+              raise ex.CONTROLLED_ERROR;
+            end if;
+            
+            inuPersonId := nuSalesmanId;
+        
         --Obtener la unidad asociada al punto de venta
         nuOperatingUnitId := damo_packages.fnugetpos_oper_unit_id(pkg.id);
-        ut_trace.trace('nuOperatingUnitId --> ' || nuOperatingUnitId, 10);
-        --NC 2561 19-01-2014: Obtener orden de entrega de formulario => Orden de referencia
-        /*nuOrderIdReference := null;
-        open cuOrderRef(pkg.id);
-        fetch cuOrderRef into nuOrderIdReference;
-        close cuOrderRef;
-
-        ut_trace.trace('nuOrderIdReference --> '||nuOrderIdReference, 10);*/
+        pkg_Traza.Trace('nuOperatingUnitId --> ' || nuOperatingUnitId, 10);
 
         if nuOperatingUnitId is null then
-          ut_trace.trace('La Solicitud ' || pkg.id ||
+          pkg_Traza.Trace('La Solicitud ' || pkg.id ||
                          ' no esta asociado a una unidad de trabajo.',
                          10);
           ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error,
                                            'El Solicitud ' || pkg.id ||
-                                           ' no est? asociado a una unidad de trabajo.');
+                                           ' no está asociado a una unidad de trabajo.');
           raise ex.CONTROLLED_ERROR;
         end if;
         --Obtener el tipo de unidad operativa asociada a la solicitud de venta
         sbES_externa := daor_operating_unit.fsbgetes_externa(nuOperatingUnitId);
 
-        ut_trace.trace('sbES_externa --> ' || sbES_externa, 10);
+        pkg_Traza.Trace('sbES_externa --> ' || sbES_externa, 10);
 
         --Validar si la unidad operativa es externa
         --dbms_output.put_line('sbES_externa => '||sbES_externa);
         if sbES_externa = 'Y' then
-          ut_trace.trace('Unidad Operativa si es externa', 10);
-          --Obener la direcci?n del producto
+          pkg_Traza.Trace('Unidad Operativa si es externa', 10);
+          --Obener la dirección del producto
           nuAdressId := damo_packages.fnugetaddress_id(pkg.id);
-          ut_trace.trace('nuAdressId --> ' || nuAdressId, 10);
+          pkg_Traza.Trace('nuAdressId --> ' || nuAdressId, 10);
           --dbms_output.put_line('nuAdressId => '||nuAdressId);
           --Producto
           nuProductId := to_number(LDC_BOUTILITIES.fsbGetValorCampoTabla('mo_motive',
                                                                          'package_id',
                                                                          'product_id',
                                                                          pkg.id));
-          ut_trace.trace('nuProductId --> ' || nuProductId, 10);
+          pkg_Traza.Trace('nuProductId --> ' || nuProductId, 10);
           --Categoria
           nuCateCodi := to_number(LDC_BOUTILITIES.fsbGetValorCampoTabla('mo_motive',
                                                                         'PACKAGE_ID',
                                                                         'CATEGORY_ID',
                                                                         pkg.id));
-          ut_trace.trace('nuCateCodi --> ' || nuCateCodi, 10);
+          pkg_Traza.Trace('nuCateCodi --> ' || nuCateCodi, 10);
           --Obtener la localidad
           nuGeograpLoca := daab_address.fnugetgeograp_location_id(nuAdressId,
                                                                   NULL);
-          ut_trace.trace('nuGeograpLoca --> ' || nuGeograpLoca, 10);
+          pkg_Traza.Trace('nuGeograpLoca --> ' || nuGeograpLoca, 10);
           --Obtener el Depto
           nuGeograpDepto := dage_geogra_location.fnugetgeo_loca_father_id(nuGeograpLoca,
                                                                           NULL);
-          ut_trace.trace('nuGeograpDepto --> ' || nuGeograpDepto, 10);
+          pkg_Traza.Trace('nuGeograpDepto --> ' || nuGeograpDepto, 10);
           --Obtener el segmento de la direccion del producto
           nuSegmentId := daab_address.fnugetsegment_id(nuAdressId, NULL);
-          ut_trace.trace('nuSegmentId --> ' || nuSegmentId, 10);
+          pkg_Traza.Trace('nuSegmentId --> ' || nuSegmentId, 10);
           --Obtener el sector operativo del segmento
           nuOperatingSectorId := daab_segments.fnugetoperating_sector_id(nuSegmentId,
                                                                          null);
-          ut_trace.trace('nuOperatingSectorId --> ' || nuOperatingSectorId,
+          pkg_Traza.Trace('nuOperatingSectorId --> ' || nuOperatingSectorId,
                          10);
           --dbms_output.put_line('nuOperatingSectorId => '||nuOperatingSectorId);
           --dbms_output.put_line('nuOperatingSectorId => '||nuOperatingSectorId);
-          --Obtener la zona del sector operativo asociado a la direcci?n del producto
+          --Obtener la zona del sector operativo asociado a la dirección del producto
           nuZoneIdProduct := daor_operating_sector.fnugetoperating_zone_id(nuOperatingSectorId);
-          ut_trace.trace('nuZoneIdProduct --> ' || nuZoneIdProduct, 10);
-          --Obtener el tipo de asignaci?n de la unidad operativa
+          pkg_Traza.Trace('nuZoneIdProduct --> ' || nuZoneIdProduct, 10);
+          --Obtener el tipo de asignación de la unidad operativa
           sbAssignType := daor_operating_unit.fsbgetassign_type(nuOperatingUnitId);
-          ut_trace.trace('sbAssignType --> ' || sbAssignType, 10);
+          pkg_Traza.Trace('sbAssignType --> ' || sbAssignType, 10);
           --dbms_output.put_line('sbAssignType => '||sbAssignType);
           --dbms_output.put_line('nuOperatingUnitId => '||nuOperatingUnitId);
 
@@ -832,7 +816,7 @@ cursor cuJobs (nuInd number) is
               --VALIDACION DE LA LOCALIDAD
               ----FIN CONTROL VALIDACION DE DATA PARTE 1
 
-              ut_trace.trace('Valida si el tipo de asignaci?n es por demanda ' ||
+              pkg_Traza.Trace('Valida si el tipo de asignación es por demanda ' ||
                              sbAssignType,
                              10);
               --Validar si el tipo de asignacion es por DEMANDA  : C => Obtener sectores de la Zona asociada a la Base Operativa de la UT
@@ -855,36 +839,36 @@ cursor cuJobs (nuInd number) is
                                                                                            nuOperatingSectorId));
               end if;
 
-              ut_trace.trace('nuOperatingSectorIdAux --> ' ||
+              pkg_Traza.Trace('nuOperatingSectorIdAux --> ' ||
                              nuOperatingSectorIdAux,
                              10);
 
               --dbms_output.put_line('nuOperatingSectorIdAux => '||nuOperatingSectorIdAux);
-              --Validar si se registra multa o comisi?n
-              ut_trace.trace('Valida genera multa o comision ', 10);
+              --Validar si se registra multa o comisión
+              pkg_Traza.Trace('Valida genera multa o comision ', 10);
               if nuOperatingSectorIdAux = 0 or nuOperatingSectorIdAux = -1 then
 
-                ut_trace.trace('MULTA ', 10);
+                pkg_Traza.Trace('MULTA ', 10);
 
                 --Validar si la categoria del producto es residencial
                 if nuCateCodi =
-                   DALD_parameter.fnuGetNumeric_Value('RESIDEN_CATEGORY') then
+                   pkg_BCLD_Parameter.fnuObtieneValorNumerico('RESIDEN_CATEGORY') then
                   --Definir item de novedad y tipo de trabajo para multar
-                  nuTaskTypeId := DALD_parameter.fnuGetNumeric_Value('ID_TT_MULTA_RESID');
-                  inuActivity  := DALD_parameter.fnuGetNumeric_Value('ID_MULTA_VENTA_OTRA_ZONA_RESID');
+                  nuTaskTypeId := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ID_TT_MULTA_RESID');
+                  inuActivity  := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ID_MULTA_VENTA_OTRA_ZONA_RESID');
                 end if;
                 --Validar si la categoria del producto es residencial
                 if nuCateCodi =
-                   DALD_parameter.fnuGetNumeric_Value('COMMERCIAL_CATEGORY') then
-                  nuTaskTypeId := DALD_parameter.fnuGetNumeric_Value('ID_TT_MULTA_COMME');
-                  inuActivity  := DALD_parameter.fnuGetNumeric_Value('ID_MULTA_VENTA_OTRA_ZONA_COMM');
+                   pkg_BCLD_Parameter.fnuObtieneValorNumerico('COMMERCIAL_CATEGORY') then
+                  nuTaskTypeId := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ID_TT_MULTA_COMME');
+                  inuActivity  := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ID_MULTA_VENTA_OTRA_ZONA_COMM');
                 end if;
 
-                ut_trace.trace('nuTaskTypeId --> ' || nuTaskTypeId ||
+                pkg_Traza.Trace('nuTaskTypeId --> ' || nuTaskTypeId ||
                                ' inuActivity --> ' || inuActivity,
                                10);
 
-                --Obtener el valor de la multa de LDC_ALT de acuerdo a la configuraci?n realizada
+                --Obtener el valor de la multa de LDC_ALT de acuerdo a la configuración realizada
                 ldc_boordenes.PROCVALRANGOTIEMPLEGOT(null,
                                                      null,
                                                      nuGeograpDepto,
@@ -896,12 +880,12 @@ cursor cuJobs (nuInd number) is
                                                      nuPercent,
                                                      nuValue,
                                                      nuNDays);
-                ut_trace.trace(' Obtener el valor de la multa nuValue --> ' ||
+                pkg_Traza.Trace(' Obtener el valor de la multa nuValue --> ' ||
                                nuValue || ' nuNDays --> ' || nuNDays,
                                10);
-                --Si existe configuraci?n
+                --Si existe configuración
                 if nuValue is not null and nuValue > 0 then
-                  ut_trace.trace('Validando si ya existe multa', 10);
+                  pkg_Traza.Trace('Validando si ya existe multa', 10);
                   --Validar si ya existe MULTA
                   nuCount := 0;
                   open cuExisteMulta(pkg.id);
@@ -909,20 +893,17 @@ cursor cuJobs (nuInd number) is
                     into nuCount;
                   close cuExisteMulta;
 
-                  ut_trace.trace('nuCount --> ' || nuCount, 10);
+                  pkg_Traza.Trace('nuCount --> ' || nuCount, 10);
 
                   if nuCount = 0 or nuCount is null then
-                    ut_trace.trace('No Existe multa, Registrar multa', 10);
+                    pkg_Traza.Trace('No Existe multa, Registrar multa', 10);
                     --Registrar multa
-                    isbObservation := 'MULTA GENERADA DESDE PROCESO AUTOM?TICO' ||
+                    isbObservation := 'MULTA GENERADA DESDE PROCESO AUTOMÁTICO' ||
                                       ' No.Documento:' || sbDOCUMENT_KEY ||
                                       ' No. Solicitud:' || pkg.id;
-                    ut_trace.trace(' Observation --> ' || isbObservation,
+                    pkg_Traza.Trace(' Observation --> ' || isbObservation,
                                    10);
 
-                    /*ut_trace.trace('Ejecuta API OS_REGISTERNEWCHARGE('||nuOperatingUnitId||
-                    ','||inuActivity||',null,'||nuOrderIdReference||','||nuValue||',null,'||DALD_parameter.fnuGetNumeric_Value('ID_TIPO_OBS_COMISION_VENTA')
-                    ||','||isbObservation||')', 10);*/
                     ---api de open para crear novedades orden cerrada
                     LDC_prRegisterNewCharge(nuOperatingUnitId,
                                             inuActivity,
@@ -931,7 +912,7 @@ cursor cuJobs (nuInd number) is
                                             nuValue,
                                             null,
                                             null,
-                                            DALD_parameter.fnuGetNumeric_Value('ID_TIPO_OBS_COMISION_VENTA'),
+                                            pkg_BCLD_Parameter.fnuObtieneValorNumerico('ID_TIPO_OBS_COMISION_VENTA'),
                                             isbObservation,
                                             onuErrorCode,
                                             osbErrorMessage,
@@ -942,32 +923,22 @@ cursor cuJobs (nuInd number) is
                                              ' Ultima Orden generada: ' || inuOrderId); 
                      end if;
                        
-                    /* OS_REGISTERNEWCHARGE (nuOperatingUnitId, inuActivity,inuPersonId, null, nuValue, null,
-                    DALD_parameter.fnuGetNumeric_Value('ID_TIPO_OBS_COMISION_VENTA'),
-                    isbObservation, onuErrorCode, osbErrorMessage);*/
-                    ut_trace.trace('onuErrorCode --> ' || onuErrorCode ||
+                    pkg_Traza.Trace('onuErrorCode --> ' || onuErrorCode ||
                                    ' osbErrorMessage' || osbErrorMessage,
                                    10);
                     if (onuErrorCode <> 0) then
-                      ---INICIO GW_BOERRORS ARANDA 3224
-                      --COLOCAR EN COMENTARIO EL SERVICO DE OPEN GW_BOERRORS
-                      --YA QUE CONTROLA LOS ERRORES PROVENIENTES DE OTROS SERVCIOS
-                      --DE OPEN
-                      ----rollback;
-                      --gw_boerrors.checkerror(onuErrorCode, osbErrorMessage);
-                      --raise ex.CONTROLLED_ERROR;
-                      ut_trace.trace('NO SE GENERO NOVEDAD DE MULTA', 10);
+                      pkg_Traza.Trace('NO SE GENERO NOVEDAD DE MULTA', 10);
                       --persistencia para no generar pago de comisiones en ejecuciones futuras
                       rgData.LDC_PKG_OR_ITEM_ID := GE_BOSEQUENCE.FNUGETNEXTVALSEQUENCE('LDC_PKG_OR_ITEM',
                                                                                        'SEQ_LDC_PKG_OR_ITEM');
                       rgData.order_item_id      := null;
                       rgData.order_id           := null;
                       rgData.package_id         := pkg.id;
-                      rgData.FECHA              := dald_parameter.fsbgetvalue_chain('FECHA_COM_REG_VENTA');
+                      rgData.FECHA              := pkg_BCLD_Parameter.fsbObtieneValorCadena('FECHA_COM_REG_VENTA');
                       rgData.OBSERVACION        := 'NO SE GENERO NOVEDAD DE MULTA';
 
-                      ut_trace.trace('Insert en LDC_PKG_OR_ITEM ', 10);
-                      ut_trace.trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
+                      pkg_Traza.Trace('Insert en LDC_PKG_OR_ITEM ', 10);
+                      pkg_Traza.Trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
                                      rgData.LDC_PKG_OR_ITEM_ID ||
                                      ' rgData.order_item_id->' ||
                                      rgData.order_item_id ||
@@ -994,24 +965,16 @@ cursor cuJobs (nuInd number) is
                          rgData.package_id,
                          rgData.FECHA,
                          rgData.OBSERVACION);
-                      ---FIN GW_BOERRORS ARANADA 3224
 
-                      --Inicio seccion 07-11-2013
                     else
-                      --aqui esta el problema
 
-                      /* isbObservation := '%'||isbObservation||'%';
-                      open cuOtMulta(isbObservation);
-                      fetch cuOtMulta into inuOrderId;
-                      close cuOtMulta;*/
-                      ut_trace.trace('inuOrderId --> ' || inuOrderId, 10);
+                      pkg_Traza.Trace('inuOrderId --> ' || inuOrderId, 10);
                       nuActivityId := ldc_bcfinanceot.fnuGetActivityId(inuOrderId);
-                      ut_trace.trace('nuActivityId --> ' || nuActivityId,
+                      pkg_Traza.Trace('nuActivityId --> ' || nuActivityId,
                                      10);
                       daor_order_activity.updaddress_id(nuActivityId,
                                                         nuAdressId);
 
-                      --Aranda 3275
                       daor_order.updexternal_address_id(inuOrderId,
                                                         nuAdressId);
                       daor_order.updgeograp_location_id(inuOrderId,
@@ -1020,10 +983,9 @@ cursor cuJobs (nuInd number) is
                                                         nuOperatingSectorId);
                       daor_order_activity.updoperating_sector_id(nuActivityId,
                                                                  nuOperatingSectorId);
-                      --Fin Aranda 3275
 
-                      ut_trace.trace('Fin Actualizaci?n ', 10);
-                      --Fin seccion 07-11-2013
+                      pkg_Traza.Trace('Fin Actualización ', 10);
+                      
                       SBobservacion := 'SE GENERO NOVEDAD DE MULTA ' ||
                                        inuActivity || ' - ' ||
                                        dage_items.fsbgetdescription(inuActivity);
@@ -1031,7 +993,7 @@ cursor cuJobs (nuInd number) is
                     end if;
                   end if;
                 else
-                  ut_trace.trace('Ya existe multa, persistencia para no generar pago de comisiones en ejecuciones futuras',
+                  pkg_Traza.Trace('Ya existe multa, persistencia para no generar pago de comisiones en ejecuciones futuras',
                                  10);
                   --persistencia para no generar pago de comisiones en ejecuciones futuras
                   rgData.LDC_PKG_OR_ITEM_ID := GE_BOSEQUENCE.FNUGETNEXTVALSEQUENCE('LDC_PKG_OR_ITEM',
@@ -1039,11 +1001,11 @@ cursor cuJobs (nuInd number) is
                   rgData.order_item_id      := null;
                   rgData.order_id           := null;
                   rgData.package_id         := pkg.id;
-                  rgData.FECHA              := dald_parameter.fsbgetvalue_chain('FECHA_COM_REG_VENTA');
-                  rgData.OBSERVACION        := 'NO SE ENCONTRARON CONDICIONES PARA GENERACI?N DE MULTA';
+                  rgData.FECHA              := pkg_BCLD_Parameter.fsbObtieneValorCadena('FECHA_COM_REG_VENTA');
+                  rgData.OBSERVACION        := 'NO SE ENCONTRARON CONDICIONES PARA GENERACIÓN DE MULTA';
 
-                  ut_trace.trace('Insert en LDC_PKG_OR_ITEM ', 10);
-                  ut_trace.trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
+                  pkg_Traza.Trace('Insert en LDC_PKG_OR_ITEM ', 10);
+                  pkg_Traza.Trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
                                  rgData.LDC_PKG_OR_ITEM_ID ||
                                  ' rgData.order_item_id->' ||
                                  rgData.order_item_id ||
@@ -1072,73 +1034,69 @@ cursor cuJobs (nuInd number) is
                 end if;
               else
 
-                ut_trace.trace('COMISION', 10);
+                pkg_Traza.Trace('COMISION', 10);
                 --Al generar la novedad,  se debe calcular el valor a pagar (con la funcion -> IN: mo_packages.package_id)
                 RgCommission := FnuGetCommissionValue(pkg.sbTime,
                                                       pkg.id,
                                                       nuAdressId,
                                                       nuProductId,
                                                       nuOperatingUnitId);
-                ut_trace.trace('Valida si tiene comisi?n RgCommission.onuCommissionValue -> ' ||
+                pkg_Traza.Trace('Valida si tiene comisión RgCommission.onuCommissionValue -> ' ||
                                RgCommission.onuCommissionValue,
                                10);
                 --dbms_output.put_line('RgCommission.onuCommissionValue => '||RgCommission.onuCommissionValue);
                 if RgCommission.onuCommissionValue > 0 then
 
-                  ut_trace.trace('No existe comisi?n asociada, Genera comisi?n',
+                  pkg_Traza.Trace('No existe comisión asociada, Genera comisión',
                                  10);
                   inuOrderId := null;
                   --Validar si la categoria del producto es comercial
                   if nuCateCodi =
-                     DALD_parameter.fnuGetNumeric_Value('RESIDEN_CATEGORY') then
+                     pkg_BCLD_Parameter.fnuObtieneValorNumerico('RESIDEN_CATEGORY') then
                     if RgCommission.sbIsZone = 'N' then
                       if pkg.sbTime = 'B' then
-                        inuActivity := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_INICIO_VENTA_ZNR');
+                        inuActivity := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_INICIO_VENTA_ZNR');
                       else
-                        inuActivity := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_LEG_VENTA_ZNR');
+                        inuActivity := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_LEG_VENTA_ZNR');
                       end if;
                     else
                       if RgCommission.sbIsZone = 'S' then
                         if pkg.sbTime = 'B' then
-                          inuActivity := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_INICIO_VENTA_ZSR');
+                          inuActivity := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_INICIO_VENTA_ZSR');
                         else
-                          inuActivity := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_LEG_VENTA_ZSR');
+                          inuActivity := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_LEG_VENTA_ZSR');
                         end if;
                       end if;
                     end if;
                   else
                     --Validar si la categoria del producto es comercial
                     if nuCateCodi =
-                       DALD_parameter.fnuGetNumeric_Value('COMMERCIAL_CATEGORY') then
+                       pkg_BCLD_Parameter.fnuObtieneValorNumerico('COMMERCIAL_CATEGORY') then
                       if RgCommission.sbIsZone = 'N' then
                         if pkg.sbTime = 'B' then
-                          inuActivity := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_INICIO_VENTA_ZNC');
+                          inuActivity := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_INICIO_VENTA_ZNC');
                         else
-                          inuActivity := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_LEG_VENTA_ZNC');
+                          inuActivity := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_LEG_VENTA_ZNC');
                         end if;
                       else
                         if RgCommission.sbIsZone = 'S' then
                           if pkg.sbTime = 'B' then
-                            inuActivity := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_INICIO_VENTA_ZSC');
+                            inuActivity := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_INICIO_VENTA_ZSC');
                           else
-                            inuActivity := DALD_parameter.fnuGetNumeric_Value('ACT_COMISION_LEG_VENTA_ZSC');
+                            inuActivity := pkg_BCLD_Parameter.fnuObtieneValorNumerico('ACT_COMISION_LEG_VENTA_ZSC');
                           end if;
                         end if;
                       end if;
                     end if;
                   end if;
-                  ut_trace.trace('Actividad inuActivity --> ' ||
+                  pkg_Traza.Trace('Actividad inuActivity --> ' ||
                                  inuActivity,
                                  10);
                   --API para registrar novedades
-                  isbObservation := 'COMISION GENERADA DESDE PROCESO AUTOM?TICO' ||
+                  isbObservation := 'COMISION GENERADA DESDE PROCESO AUTOMÁTICO' ||
                                     ' No.Documento:' || sbDOCUMENT_KEY ||
                                     ' No. Solicitud:' || pkg.id;
-                  ut_trace.trace('Observation  --> ' || isbObservation, 10);
-                  /*ut_trace.trace('Ejecutando OS_REGISTERNEWCHARGE('||
-                  nuOperatingUnitId||','||inuActivity||','||inuPersonId||','||nuOrderIdReference||','||RgCommission.onuCommissionValue||',null,'||
-                                      DALD_parameter.fnuGetNumeric_Value('ID_TIPO_OBS_COMISION_VENTA')||','||
-                                      isbObservation, 10);*/
+                  pkg_Traza.Trace('Observation  --> ' || isbObservation, 10);
 
                   LDC_prRegisterNewCharge(nuOperatingUnitId,
                                           inuActivity,
@@ -1147,63 +1105,33 @@ cursor cuJobs (nuInd number) is
                                           RgCommission.onuCommissionValue,
                                           null,
                                           null,
-                                          DALD_parameter.fnuGetNumeric_Value('ID_TIPO_OBS_COMISION_VENTA'),
+                                          pkg_BCLD_Parameter.fnuObtieneValorNumerico('ID_TIPO_OBS_COMISION_VENTA'),
                                           isbObservation,
                                           onuErrorCode,
                                           osbErrorMessage,
                                           inuOrderId);
-                  /* OS_REGISTERNEWCHARGE (nuOperatingUnitId, inuActivity, inuPersonId, null, RgCommission.onuCommissionValue, null,
-                  DALD_parameter.fnuGetNumeric_Value('ID_TIPO_OBS_COMISION_VENTA'),
-                  isbObservation, onuErrorCode, osbErrorMessage);*/
-
-                  ut_trace.trace('onuErrorCode --> ' || onuErrorCode ||
+                                          
+                  pkg_Traza.Trace('onuErrorCode --> ' || onuErrorCode ||
                                  ' osbErrorMessage' || osbErrorMessage,
                                  10);
 
-                  --Fin seccion 26-11-2013
-                  --Modificaci?n 06-11-2013 => Registro de novedad => Ot cerrada
-                  /*  OR_bsorder.CreateCloseOrder
-                  (
-                      nuOperatingUnitId,                          -- Unidad de trabajo
-                      inuActivity,                                -- Actividad asociada
-                      nuAdressId,                                 -- ID Direcci?n
-                      sysdate,                                    -- Fecha de Pago
-                      1,                                          -- Cantidad
-                      RgCommission.onuCommissionValue,            -- Valor
-                      1,                                          -- Causal (Default 1)
-                      null,                                       -- Tipo de Relaci?n (NULL)
-                      inuOrderId,                                 -- Orden Generada
-                      null,                                       -- Orden Relacionada Generada(NULL)
-                      DALD_parameter.fnuGetNumeric_Value('ID_TIPO_OBS_COMISION_VENTA'),              -- Tipo de Comentario
-                      isbObservation,                             -- Comentario
-                      inuPersonId,                                -- Persona que Legaliza
-                      onuErrorCode,                               -- C?digo de Error
-                      osbErrorMessage                             -- Mensaje de Error
-                  );*/
-                  --
                   if (onuErrorCode <> 0) then
-                    ---INICIO GW_BOERRORS ARANDA 3224
-                    --COLOCAR EN COMENTARIO EL SERVICO DE OPEN GW_BOERRORS
-                    --YA QUE CONTROLA LOS ERRORES PROVENIENTES DE OTROS SERVCIOS
-                    --DE OPEN
-                    ----rollback;
-                    --gw_boerrors.checkerror(onuErrorCode, osbErrorMessage);
-                    --raise ex.CONTROLLED_ERROR;
-                    ut_trace.trace('NO SE GENERO NOVEDAD DE COMISION', 10);
+
+                    pkg_Traza.Trace('NO SE GENERO NOVEDAD DE COMISION', 10);
                     --persistencia para no generar pago de comisiones en ejecuciones futuras
                     rgData.LDC_PKG_OR_ITEM_ID := GE_BOSEQUENCE.FNUGETNEXTVALSEQUENCE('LDC_PKG_OR_ITEM',
                                                                                      'SEQ_LDC_PKG_OR_ITEM');
                     rgData.order_item_id      := null;
                     rgData.order_id           := null;
                     rgData.package_id         := pkg.id;
-                    rgData.FECHA              := dald_parameter.fsbgetvalue_chain('FECHA_COM_REG_VENTA');
+                    rgData.FECHA              := pkg_BCLD_Parameter.fsbObtieneValorCadena('FECHA_COM_REG_VENTA');
                     rgData.OBSERVACION        := 'NO SE GENERO NOVEDAD DE COMISION' ||
                                                  inuActivity || ' - ' ||
                                                  dage_items.fsbgetdescription(inuActivity,
                                                                               NULL);
 
-                    ut_trace.trace('Insert en LDC_PKG_OR_ITEM ', 10);
-                    ut_trace.trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
+                    pkg_Traza.Trace('Insert en LDC_PKG_OR_ITEM ', 10);
+                    pkg_Traza.Trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
                                    rgData.LDC_PKG_OR_ITEM_ID ||
                                    ' rgData.order_item_id->' ||
                                    rgData.order_item_id ||
@@ -1228,21 +1156,15 @@ cursor cuJobs (nuInd number) is
                        rgData.package_id,
                        rgData.FECHA,
                        rgData.OBSERVACION);
-                    ---FIN GW_BOERRORS ARANADA 3224
 
                   else
-                    --Inicio seccion 26-11-2013
-                    /* isbObservation := '%'||isbObservation||'%';
-                    open cuOtMulta(isbObservation);
-                    fetch cuOtMulta into inuOrderId;
-                    close cuOtMulta;*/
-                    ut_trace.trace('inuOrderId --> ' || inuOrderId, 10);
+                    pkg_Traza.Trace('inuOrderId --> ' || inuOrderId, 10);
                     nuActivityId := ldc_bcfinanceot.fnuGetActivityId(inuOrderId);
-                    ut_trace.trace('nuActivityId --> ' || nuActivityId, 10);
+                    pkg_Traza.Trace('nuActivityId --> ' || nuActivityId, 10);
                     daor_order_activity.updaddress_id(nuActivityId,
                                                       nuAdressId);
-                    ut_trace.trace('Fin Actualizaci?n ', 10);
-                    ut_trace.trace('Orden generada inuOrderId --> ' ||
+                    pkg_Traza.Trace('Fin Actualización ', 10);
+                    pkg_Traza.Trace('Orden generada inuOrderId --> ' ||
                                    inuOrderId,
                                    10);
                     --Aranda 3275
@@ -1254,26 +1176,19 @@ cursor cuJobs (nuInd number) is
                                                       nuOperatingSectorId);
                     daor_order_activity.updoperating_sector_id(nuActivityId,
                                                                nuOperatingSectorId);
-                    --Aranda 3275
-                    --Fin Aranda 3275
-                    --Aranda 3420
-
-                    --Actualizar costo de la OT
-                    /* nuOrderItemsId := to_number(ldc_boutilities.fsbGetValorCampoTabla('OR_Order_Items','order_id','order_items_id',inuOrderId));
-                    DAOR_Order_Items.UpdValue(nuOrderItemsId,RgCommission.onuCommissionValue);*/
 
                     SBobservacion := 'SE GENERO NOVEDAD DE COMISION ' ||
                                      inuActivity || ' - ' ||
                                      dage_items.fsbgetdescription(inuActivity,
                                                                   NULL);
-                    ut_trace.trace('SBobservacion --> ' || SBobservacion,
+                    pkg_Traza.Trace('SBobservacion --> ' || SBobservacion,
                                    10);
 
                     nuBan := 1;
                   end if;
                 else
 
-                  ut_trace.trace('Ya existe comisi?n, persistencia para no generar pago de comisiones en ejecuciones futuras',
+                  pkg_Traza.Trace('Ya existe comisión, persistencia para no generar pago de comisiones en ejecuciones futuras',
                                  10);
                   --persistencia para no generar pago de comisiones en ejecuciones futuras
                   rgData.LDC_PKG_OR_ITEM_ID := GE_BOSEQUENCE.FNUGETNEXTVALSEQUENCE('LDC_PKG_OR_ITEM',
@@ -1281,11 +1196,11 @@ cursor cuJobs (nuInd number) is
                   rgData.order_item_id      := null;
                   rgData.order_id           := null;
                   rgData.package_id         := pkg.id;
-                  rgData.FECHA              := dald_parameter.fsbgetvalue_chain('FECHA_COM_REG_VENTA');
+                  rgData.FECHA              := pkg_BCLD_Parameter.fsbObtieneValorCadena('FECHA_COM_REG_VENTA');
                   rgData.OBSERVACION        := 'NO SE ENCONTRARON CONDICIONES PARA PAGO DE COMISION';
 
-                  ut_trace.trace('Insert en LDC_PKG_OR_ITEM ', 10);
-                  ut_trace.trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
+                  pkg_Traza.Trace('Insert en LDC_PKG_OR_ITEM ', 10);
+                  pkg_Traza.Trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
                                  rgData.LDC_PKG_OR_ITEM_ID ||
                                  ' rgData.order_item_id->' ||
                                  rgData.order_item_id ||
@@ -1313,12 +1228,12 @@ cursor cuJobs (nuInd number) is
                 end if;
               end if;
 
-              ut_trace.trace(' nuBan --> ' || nuBan, 10);
+              pkg_Traza.Trace(' nuBan --> ' || nuBan, 10);
               --dbms_output.put_line('SBobservacion => '||SBobservacion);
               if nuBan = 1 then
-                ut_trace.trace('Valida actividad ' || inuActivity, 10);
+                pkg_Traza.Trace('Valida actividad ' || inuActivity, 10);
                 if nvl(inuActivity, 0) > 0 then
-                  ut_trace.trace('Persistencia para no generar pago de comisiones en ejecuciones futuras',
+                  pkg_Traza.Trace('Persistencia para no generar pago de comisiones en ejecuciones futuras',
                                  10);
                   --persistencia para no generar pago de comisiones en ejecuciones futuras
                   rgData.LDC_PKG_OR_ITEM_ID := GE_BOSEQUENCE.FNUGETNEXTVALSEQUENCE('LDC_PKG_OR_ITEM',
@@ -1326,11 +1241,11 @@ cursor cuJobs (nuInd number) is
                   rgData.order_item_id      := inuActivity;
                   rgData.order_id           := inuOrderId;
                   rgData.package_id         := pkg.id;
-                  rgData.FECHA              := dald_parameter.fsbgetvalue_chain('FECHA_COM_REG_VENTA');
+                  rgData.FECHA              := pkg_BCLD_Parameter.fsbObtieneValorCadena('FECHA_COM_REG_VENTA');
                   rgData.OBSERVACION        := SBobservacion;
 
-                  ut_trace.trace('Insert en LDC_PKG_OR_ITEM ', 10);
-                  ut_trace.trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
+                  pkg_Traza.Trace('Insert en LDC_PKG_OR_ITEM ', 10);
+                  pkg_Traza.Trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
                                  rgData.LDC_PKG_OR_ITEM_ID ||
                                  ' rgData.order_item_id->' ||
                                  rgData.order_item_id ||
@@ -1358,10 +1273,9 @@ cursor cuJobs (nuInd number) is
                 end if;
               end if;
 
-              ----INICIO ARANDA 3224 PARTE 2
             ELSE
 
-              ut_trace.trace('LA DIRECCION DE LA VARIABLE nuAdressId NO EXISTE O NO ES VALIDA',
+              pkg_Traza.Trace('LA DIRECCION DE LA VARIABLE nuAdressId NO EXISTE O NO ES VALIDA',
                              10);
               --persistencia para no generar pago de comisiones en ejecuciones futuras
               rgData.LDC_PKG_OR_ITEM_ID := GE_BOSEQUENCE.FNUGETNEXTVALSEQUENCE('LDC_PKG_OR_ITEM',
@@ -1369,11 +1283,11 @@ cursor cuJobs (nuInd number) is
               rgData.order_item_id      := null;
               rgData.order_id           := null;
               rgData.package_id         := pkg.id;
-              rgData.FECHA              := dald_parameter.fsbgetvalue_chain('FECHA_COM_REG_VENTA');
+              rgData.FECHA              := pkg_BCLD_Parameter.fsbObtieneValorCadena('FECHA_COM_REG_VENTA');
               rgData.OBSERVACION        := 'NO EXISTE DIRECCION VALIDA PARA OBTENER LA LOCALIDAD';
 
-              ut_trace.trace('Insert en LDC_PKG_OR_ITEM ', 10);
-              ut_trace.trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
+              pkg_Traza.Trace('Insert en LDC_PKG_OR_ITEM ', 10);
+              pkg_Traza.Trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
                              rgData.LDC_PKG_OR_ITEM_ID ||
                              ' rgData.order_item_id->' ||
                              rgData.order_item_id || ' rgData.order_id->' ||
@@ -1400,7 +1314,7 @@ cursor cuJobs (nuInd number) is
             END IF; --VALIDACION UBICACION GEOGRAFICA
           ELSE
 
-            ut_trace.trace('LA DIRECCION DE LA VARIABLE nuAdressId NO EXISTE O NO ES VALIDA',
+            pkg_Traza.Trace('LA DIRECCION DE LA VARIABLE nuAdressId NO EXISTE O NO ES VALIDA',
                            10);
             --persistencia para no generar pago de comisiones en ejecuciones futuras
             rgData.LDC_PKG_OR_ITEM_ID := GE_BOSEQUENCE.FNUGETNEXTVALSEQUENCE('LDC_PKG_OR_ITEM',
@@ -1408,11 +1322,11 @@ cursor cuJobs (nuInd number) is
             rgData.order_item_id      := null;
             rgData.order_id           := null;
             rgData.package_id         := pkg.id;
-            rgData.FECHA              := dald_parameter.fsbgetvalue_chain('FECHA_COM_REG_VENTA');
+            rgData.FECHA              := pkg_BCLD_Parameter.fsbObtieneValorCadena('FECHA_COM_REG_VENTA');
             rgData.OBSERVACION        := 'NO EXISTE SEGMENTO PARA LA DIRECCION';
 
-            ut_trace.trace('Insert en LDC_PKG_OR_ITEM ', 10);
-            ut_trace.trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
+            pkg_Traza.Trace('Insert en LDC_PKG_OR_ITEM ', 10);
+            pkg_Traza.Trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
                            rgData.LDC_PKG_OR_ITEM_ID ||
                            ' rgData.order_item_id->' ||
                            rgData.order_item_id || ' rgData.order_id->' ||
@@ -1436,28 +1350,26 @@ cursor cuJobs (nuInd number) is
                rgData.package_id,
                rgData.FECHA,
                rgData.OBSERVACION);
-          END IF; --VALIDACION DEL SEGMENTO DE LA DIRECCION DEL PRODUCTO
-
-          ----FIN CONTROL VALIDACION DE DATA PARTE 2
+          END IF;
 
         END IF;
       exception
 
         when others then
 
-          ut_trace.trace('En ERROR others ', 10);
+          pkg_Traza.Trace('En ERROR others ', 10);
           --persistencia para no generar pago de comisiones en ejecuciones futuras
           rgData.LDC_PKG_OR_ITEM_ID := GE_BOSEQUENCE.FNUGETNEXTVALSEQUENCE('LDC_PKG_OR_ITEM',
                                                                            'SEQ_LDC_PKG_OR_ITEM');
           rgData.order_item_id      := null;
           rgData.order_id           := null;
           rgData.package_id         := pkg.id;
-          rgData.FECHA              := dald_parameter.fsbgetvalue_chain('FECHA_COM_REG_VENTA');
+          rgData.FECHA              := pkg_BCLD_Parameter.fsbObtieneValorCadena('FECHA_COM_REG_VENTA');
           rgData.OBSERVACION        := 'ERROR DURANTE LA EJECUCION DEL PROCESO ' ||
                                        sqlcode || ' - ' || sqlerrm;
 
-          ut_trace.trace('Insert en LDC_PKG_OR_ITEM ', 10);
-          ut_trace.trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
+          pkg_Traza.Trace('Insert en LDC_PKG_OR_ITEM ', 10);
+          pkg_Traza.Trace('rgData.LDC_PKG_OR_ITEM_ID->' ||
                          rgData.LDC_PKG_OR_ITEM_ID ||
                          ' rgData.order_item_id->' || rgData.order_item_id ||
                          ' rgData.order_id->' || rgData.order_id ||
@@ -1494,7 +1406,7 @@ cursor cuJobs (nuInd number) is
     pro_grabalog_comision (innusesion, indtToday, innuNroHilo, 0, 'Genero: ' || nugrabados); 
     pro_grabalog_comision (innusesion, indtToday, innuNroHilo, 2, 'Termino Hilo: ' || innuNroHilo ||
                            ' - Proceso Ok'); 
-    ut_trace.trace('Finalizo LDC_BCSalesCommission.PrGenerateCommission Hilo ' || innuNroHilo, 10);
+    pkg_Traza.Trace('Finalizo LDC_BCSalesCommission.PrGenerateCommission Hilo ' || innuNroHilo, 10);
    
   exception
     WHEN ex.CONTROLLED_ERROR then
@@ -1512,8 +1424,8 @@ cursor cuJobs (nuInd number) is
     Propiedad intelectual de PETI (c).
 
     Unidad         : FnuGetCommissionValue
-    Descripcion    : Funci?n que retorna el valor de la comisi?n de venta al inicio de acuerdo a la
-                     configuraci?n realizada en la forma CTCVE.
+    Descripcion    : Función que retorna el valor de la comisión de venta al inicio de acuerdo a la
+                     configuración realizada en la forma CTCVE.
     Autor          : Sayra Ocoro
     Fecha          : 08/03/2013
 
@@ -1532,12 +1444,15 @@ cursor cuJobs (nuInd number) is
                                         nulo, se cambiar por:  IF cuPlanCommissionId%NOTFOUND THEN
   ******************************************************************/
 
-  function FnuGetCommissionValue(isbTime          IN varchar2,
+    function FnuGetCommissionValue(isbTime          IN varchar2,
                                  inuPackageId     IN mo_packages.package_id%type,
                                  inuAddressId     IN ab_address.address_id%type,
                                  inuProductid     IN pr_product.product_id%Type,
                                  inuOperatingUnit IN or_operating_unit.operating_unit_id%type)
     return RgCommissionRegister is
+    
+    csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'FnuGetCommissionValue';
+        
     RgReturn           RgCommissionRegister;
     nuContractorId     or_operating_unit.contractor_id%type;
     nuCommissionType   LDC_COMISION_PLAN.COMISION_PLAN_ID%type;
@@ -1576,7 +1491,7 @@ cursor cuJobs (nuInd number) is
          and NVL(CATECODI, -1) = NVL(nuCateCodi, -1)
          and NVL(SUCACODI, -1) = NVL(nuSucaCodi, -1);
 
-    --Cursor para obtener los valores para aplicar en el c?lculo de la comisi?n al registro
+    --Cursor para obtener los valores para aplicar en el cálculo de la comisión al registro
     cursor cuCommission(dtAttentionDate    mo_packages.ATTENTION_DATE%type,
                         nuCommissionPlanId LDC_COMISION_PLAN.COMISION_PLAN_ID%type,
                         nuPercent          ldc_info_predio.PORC_PENETRACION%type) is
@@ -1597,28 +1512,27 @@ cursor cuJobs (nuInd number) is
        where PREMISE_ID = nuIdPremise
          and rownum = 1;
     sbCargdoso cargos.cargdoso%type;
-  begin
-    ut_trace.trace('Inicio LDC_BCSalesCommission.FnuGetCommissionValue',
-                   10);
-    --dbms_output.put_line('Inicio LDC_BCSalesCommission.FnuGetCommissionValue');
-    RgReturn.onuCommissionValue := 0;
-    RgReturn.sbIsZone           := 'X';
-    --NIVELES DE VALIDACI?N
-    --POR ZONA -> MERCADO RELEVANTE->CATEGORIA->SUBCATEGORIA->PLAN COMERCIAL
-    --COMODINES: zona, subcategoria,plan comercial, rango % covertura, (% o valor) excluyentes
-    --Obtener id predio
-    nuIdPremise := daab_address.fnugetestate_number(inuAddressId);
-    --dbms_output.put_line('nuIdPremise => '||nuIdPremise);
-    if nuIdPremise is null then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error,
-                                       'No existe predio asociado a la direcci?n ' ||
+    begin
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO); 
+        --dbms_output.put_line(csbMetodo,'FnuGetCommissionValue');
+        RgReturn.onuCommissionValue := 0;
+        RgReturn.sbIsZone           := 'X';
+        --NIVELES DE VALIDACIÓN
+        --POR ZONA -> MERCADO RELEVANTE->CATEGORIA->SUBCATEGORIA->PLAN COMERCIAL
+        --COMODINES: zona, subcategoria,plan comercial, rango % covertura, (% o valor) excluyentes
+        --Obtener id predio
+        nuIdPremise := daab_address.fnugetestate_number(inuAddressId);
+        --dbms_output.put_line('nuIdPremise => '||nuIdPremise);
+        if nuIdPremise is null then
+            ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error,
+                                       'No existe predio asociado a la dirección ' ||
                                        inuAddressId);
-      raise ex.CONTROLLED_ERROR;
-    end if;
+            raise ex.CONTROLLED_ERROR;
+        end if;
+        
     --Obtener zona  porcentaje de cobertura para la zona
     open cuZonePercent(nuIdPremise);
-    fetch cuZonePercent
-      into RgReturn.sbIsZone, nuPercent;
+    fetch cuZonePercent into RgReturn.sbIsZone, nuPercent;
     --dbms_output.put_line('RgReturn.sbIsZone => '||RgReturn.sbIsZone);
     --dbms_output.put_line('nuPercent => '||nuPercent);
     if cuZonePercent%notfound then
@@ -1667,11 +1581,11 @@ cursor cuJobs (nuInd number) is
       ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error,
                                        'La unidad operativa ' ||
                                        inuOperatingUnit ||
-                                       ' no est? asociado a una ?rden de trabajo.');
+                                       ' no está asociado a una órden de trabajo.');
       raise ex.CONTROLLED_ERROR;
     end if;
-    --Obtener tipo de comisi?n para contratista y validar
-    --Validar si se realiz? la configuraci?n para el contratista
+    --Obtener tipo de comisión para contratista y validar
+    --Validar si se realizó la configuración para el contratista
     nuCommissionType := to_number(LDC_BOUTILITIES.fsbGetValorCampoTabla('LDC_INFO_OPER_UNIT',
                                                                         'OPERATING_UNIT_ID',
                                                                         'TIPO_COMISION_ID',
@@ -1695,11 +1609,6 @@ cursor cuJobs (nuInd number) is
                                   AXnuSucaCodi);
           fetch cuPlanCommissionId
             into nuCommissionPlanId;
-          --  dbms_output.put_Line('nuCommissionPlanId => '||nuCommissionPlanId);
-          --EXCEPTION
-          --  WHEN NO_DATA_FOUND THEN
-          -- 12-08-2014  agordillo
-          -- NC 1185, se cambia el bloque excepcion por una validacion IF
           IF cuPlanCommissionId%NOTFOUND THEN
             IF SW = 0 THEN
               AXnuMereCodi := nuMereCodi;
@@ -1730,10 +1639,7 @@ cursor cuJobs (nuInd number) is
         SW := SW + 1;
 
       END LOOP;
-      --dbms_output.put_line('****SW => '||SW);
-      --dbms_output.put_line('****nuCommissionPlanId => '||nuCommissionPlanId);
-      --Se obtiene el valor que se fijo, por porcentaje o por valor fijo
-      --AL INICIO O AL FINAL segun sea el caso=> se debe modificar el cursor
+      
       open cuCommission(dtAttentionDate, nuCommissionPlanId, nuPercent);
       fetch cuCommission
         into nuTotalPercent,
@@ -1752,19 +1658,10 @@ cursor cuJobs (nuInd number) is
         end if;
         return RgReturn;
       else
-        /*
-           emirol --  aranda 3038 (Debe corregirse para que tome s?lo el valor de la venta antes de IVA.).
-                      Solucion: se busca el valor de la venta en la tabla cargos de todos los
-                      conceptos de la venta atravez de la funcion LDC_FNUGETVLRVENTA, recibe
-                      como parametro 'PP-' concatenado con el numero de la solicitud de la vent
-        */
+
         sbCargdoso        := 'PP-' || inuPackageId;
         nuTotalValueValue := LDC_FNUGETVLRVENTA(sbCargdoso);
-      --  dbms_output.put_Line('Porcentaje Total: '||nuTotalPercent);
-      --  dbms_output.put_Line('Porcentaje Inicial: '||nuInitialPercent);
-      --  dbms_output.put_Line('Porcentaje Final: '||nuFinalPercent);
-        -- COMENTADO POR EMIROL para cumplir con el aranda 3038
-        --     nuTotalValueValue := to_number(LDC_BOUTILITIES.fsbGetValorCampoTabla('mo_gas_sale_data','package_id','TOTAL_VALUE',inuPackageId));
+
         if isbTime = 'B' then
       --  dbms_output.put_Line('Tipo: B');
           RgReturn.onuCommissionValue := ((nuTotalPercent / 100) *
@@ -1782,17 +1679,17 @@ cursor cuJobs (nuInd number) is
         return RgReturn;
       end if;
     end if;
-    return RgReturn;
-    ut_trace.trace('Fin LDC_BCSalesCommission.FnuGetCommissionValue', 10);
-  exception
-    WHEN ex.CONTROLLED_ERROR then
-      raise;
-    WHEN others then
-      gw_boerrors.checkerror(SQLCODE, SQLERRM);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN); 
+        return RgReturn;
 
-  end FnuGetCommissionValue;
+    exception
+        WHEN ex.CONTROLLED_ERROR then
+            raise;
+        WHEN others then
+            gw_boerrors.checkerror(SQLCODE, SQLERRM);
+    end FnuGetCommissionValue;
 
-  /*Funci?n que devuelve la versi?n del pkg*/
+  /*Función que devuelve la versión del pkg*/
   FUNCTION fsbVersion RETURN VARCHAR2 IS
   BEGIN
     return CSBVERSION;
@@ -1802,8 +1699,8 @@ cursor cuJobs (nuInd number) is
   Propiedad intelectual de PETI (c).
 
   Unidad         : fnuGetPackagesVR
-  Descripcion    : Funci?n que valida si una solicitud pertence a un tipo de paquete que tiene asociada unas ot
-                   en estado 7 u 8. Se usa en condici?n de visualizaci?n solicitada en la NC 2046
+  Descripcion    : Función que valida si una solicitud pertence a un tipo de paquete que tiene asociada unas ot
+                   en estado 7 u 8. Se usa en condición de visualización solicitada en la NC 2046
   Autor          : Sayra Ocoro
   Fecha          : 05/12/2013
 
@@ -1857,7 +1754,7 @@ cursor cuJobs (nuInd number) is
         AND or_order_activity.order_id = or_order.order_id
         AND instr(sbTaskTypeId, to_char(or_order.task_type_id)) > 0
         AND or_order.order_status_id in
-        (DALD_PARAMETER.fnuGetNumeric_Value('COD_ESTA_BLOQ'));
+        (pkg_BCLD_Parameter.fnuObtieneValorNumerico('COD_ESTA_BLOQ'));
         --Fin NC4298
 
         CURSOR cuPackages
@@ -1872,8 +1769,7 @@ cursor cuJobs (nuInd number) is
         AND or_order_activity.order_id = or_order.order_id
         AND instr(sbTaskTypeId, to_char(or_order.task_type_id)) > 0
         AND or_order.order_status_id in
-        (DALD_PARAMETER.fnuGetNumeric_Value('COD_ESTA_EJEC')--,
-        --DALD_PARAMETER.fnuGetNumeric_Value('ESTADO_CERRADO')
+        (pkg_BCLD_Parameter.fnuObtieneValorNumerico('COD_ESTA_EJEC')
         );
 
 
@@ -1888,14 +1784,13 @@ cursor cuJobs (nuInd number) is
         AND or_order_activity.order_id = or_order.order_id
         AND instr(sbTaskTypeId, to_char(or_order.task_type_id)) > 0
         AND or_order.order_status_id in
-         (DALD_PARAMETER.fnuGetNumeric_Value('ESTADO_CERRADO'))            
-        AND open.DAGE_CAUSAL.FNUGETCLASS_CAUSAL_ID(or_order.causal_id, null) =
-         open.DALD_PARAMETER.fnuGetNumeric_Value('COD_IDE_CLA_CAU_EXITO')
-        ----Fin SS 100-9883*/
+         (pkg_BCLD_Parameter.fnuObtieneValorNumerico('ESTADO_CERRADO'))            
+        AND DAGE_CAUSAL.FNUGETCLASS_CAUSAL_ID(or_order.causal_id, null) =
+         pkg_BCLD_Parameter.fnuObtieneValorNumerico('COD_IDE_CLA_CAU_EXITO')
         ;
       
-        sbTipoSolicitud VARCHAR2(500) := DALD_PARAMETER.fsbGetValue_Chain('LDC_TIPSOLICIANUL',  NULL);  --TICKET 0015 --se almacenan tipo de solicitud a validar
-        sbEstadoOrden VARCHAR2(500) := DALD_PARAMETER.fsbGetValue_Chain('LDC_STAANULORD',  NULL);  --TICKET 0015 --se almacenan estado de las ordenes a validar
+        sbTipoSolicitud VARCHAR2(500) := pkg_BCLD_Parameter.fsbObtieneValorCadena('LDC_TIPSOLICIANUL');  --TICKET 0015 --se almacenan tipo de solicitud a validar
+        sbEstadoOrden VARCHAR2(500) := pkg_BCLD_Parameter.fsbObtieneValorCadena('LDC_STAANULORD');  --TICKET 0015 --se almacenan estado de las ordenes a validar
         csbCodigoCaso CONSTANT VARCHAR2(30) := '000-0015'; --TICKET 0015 --se alamcena codigo del caso
 
         --TICKET 0015 -- se valida si la solicitud tiene ordenes pendiente
@@ -1928,29 +1823,27 @@ cursor cuJobs (nuInd number) is
         nuExistApproved    NUMBER := 0;
 
     BEGIN
-        sbPackagesType := DALD_PARAMETER.fsbGetValue_Chain('ID_PKG_VALIDA_VENTA',
-                                                       NULL);
+        sbPackagesType := pkg_BCLD_Parameter.fsbObtieneValorCadena('ID_PKG_VALIDA_VENTA');
         IF instr(sbPackagesType,
              to_char(damo_packages.fnugetpackage_type_id(inuPackagesId))) > 0 THEN
              
-            sbTaskTypeId := DALD_PARAMETER.fsbGetValue_Chain('ID_TT_VALIDA_VENTA',
-                                                       NULL);
+            sbTaskTypeId := pkg_BCLD_Parameter.fsbObtieneValorCadena('ID_TT_VALIDA_VENTA');
 
-            ut_trace.trace('Solicitud [' || inuPackagesId ||
+            pkg_Traza.Trace('Solicitud [' || inuPackagesId ||
                          '] - Tipo de Trabajo [' || sbTaskTypeId || ']',
                          10);
 
             --NC 4298
-            ut_trace.trace('inicio cuOrdenBloqueada', 10);
+            pkg_Traza.Trace('inicio cuOrdenBloqueada', 10);
             OPEN cuOrdenBloqueada(inuPackagesId, sbTaskTypeId);
             FETCH cuOrdenBloqueada INTO nuCount;
             CLOSE cuOrdenBloqueada;
             
             IF nuCount > 0 THEN
-                ut_trace.trace('Retornar --> ' || inuPackagesId, 10);
+                pkg_Traza.Trace('Retornar --> ' || inuPackagesId, 10);
                 RETURN inuPackagesId;
             END IF;
-            ut_trace.trace('fin cuOrdenBloqueada', 10);
+            pkg_Traza.Trace('fin cuOrdenBloqueada', 10);
             --fin NC4298
 
             --INICIO CASO 100-9983
@@ -1997,35 +1890,35 @@ cursor cuJobs (nuInd number) is
        RETURN inuPackagesId;
     end fnuGetPackagesVR;
 
- /*****************************************************************
-  Propiedad intelectual de PETI (c).
+     /*****************************************************************
+      Propiedad intelectual de PETI (c).
 
-  Unidad         : pro_grabalog_comision
-  Descripcion    : Procedimiento que graba el Log de los Jobs
-  Autor          : F.Castro
-  Fecha          : 07/02/2016
+      Unidad         : pro_grabalog_comision
+      Descripcion    : Procedimiento que graba el Log de los Jobs
+      Autor          : F.Castro
+      Fecha          : 07/02/2016
 
-  Metodos
+      Metodos
 
-  Nombre         :
-  Parametros         Descripcion
-  ============  ===================
+      Nombre         :
+      Parametros         Descripcion
+      ============  ===================
 
 
-  Historia de Modificaciones
-  Fecha             Autor             Modificacion
-  =========         =========         ====================
- 
-  ******************************************************************/
-procedure pro_grabalog_comision (inusesion number, idtfecha date, inuhilo number, 
-                                 inuresult number, isbobse varchar2) is
-PRAGMA AUTONOMOUS_TRANSACTION;                                             
-begin
-  insert into ldc_log_salescomission 
-              (sesion, usuario, fecha_inicio, fecha_final, hilo, resultado, observacion)
-       values (inusesion, user, idtfecha, sysdate, inuhilo, inuresult, isbobse);
-  commit;
-end pro_grabalog_comision;
+      Historia de Modificaciones
+      Fecha             Autor             Modificacion
+      =========         =========         ====================
+     
+      ******************************************************************/
+    procedure pro_grabalog_comision (inusesion number, idtfecha date, inuhilo number, 
+                                     inuresult number, isbobse varchar2) is
+        PRAGMA AUTONOMOUS_TRANSACTION;                                             
+    begin
+        insert into ldc_log_salescomission 
+                  (sesion, usuario, fecha_inicio, fecha_final, hilo, resultado, observacion)
+           values (inusesion, user, idtfecha, sysdate, inuhilo, inuresult, isbobse);
+        commit;
+    end pro_grabalog_comision;
 
 --------------------------------------------------------------------------------------------------------------
     PROCEDURE ProcessGOPCV
@@ -2037,7 +1930,6 @@ end pro_grabalog_comision;
     sbFECHA ge_boInstanceControl.stysbValue;
    
     BEGIN
-
 
         sbFECHA := ge_boInstanceControl.fsbGetFieldValue('SM_INTERFACE', 'NEXT_ATTEMP_DATE');
                 ------------------------------------------------
@@ -2066,3 +1958,4 @@ end pro_grabalog_comision;
     END ProcessGOPCV;
 end LDC_BCSalesCommission;
 /
+

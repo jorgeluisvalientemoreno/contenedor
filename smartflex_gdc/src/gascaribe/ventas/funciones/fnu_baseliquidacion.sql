@@ -21,6 +21,8 @@ CREATE OR REPLACE FUNCTION fnu_baseliquidacion(isbEstado        varchar2,
   09/08/2024    Jorge Valiente                OSF-3113: Setear el valor base liquidacion con el valor total de la actividad
                                                         registrada en la cotizacion relacionada con la orden a legalizar 
                                                         de la venta cotizada 
+  09/08/2024    Jorge Valiente                OSF-3802: Setear el valor base liquidacion con el valor establecido en el ajuste
+  10/06/2025    Jorge Valiente                OSF-4577: Setear el valor base liquidacion al ser ejecutado desde CCQUO
   ===============================================================
   ******************************************************************/
 
@@ -317,6 +319,16 @@ BEGIN
 
   if isbEstado = 'E' then
   
+    --Inicio OSF-4577 
+    IF NVL(nuValorBAse, 0) = 0 THEN
+      pkg_traza.trace('Servicio pkInstanceDataMgr.Getcg_Basevalue',
+                      pkg_traza.cnuNivelTrzDef);
+      pkInstanceDataMgr.Getcg_Basevalue(nuValorBAse);
+      pkg_traza.trace('Valor Base Liquidacion: ' || nuValorBAse,
+                      pkg_traza.cnuNivelTrzDef);
+    END IF;
+    ---Fin OSF-4577
+  
     if sbActividadInterna is null then
       pkg_traza.trace('El parametro ACTIVIDAD_INSTALACION_INTERNA no tiene ningun valor.',
                       pkg_traza.cnuNivelTrzDef);
@@ -340,11 +352,8 @@ BEGIN
       into rfcuGetIVA;
     close cuGetIVA;
   
-    if rfcuGetIVA.Estado <> isbEstado then
-      nuValor := 0;
-    else
-      nuValor := rfcuGetIVA.Iva;
-    end if;
+    nuValor := NVL(rfcuGetIVA.Iva, 0);
+  
   else
   
     if sbActividadInterna is null then
@@ -397,8 +406,15 @@ BEGIN
             pkg_traza.trace('Ejecuta LIQTAXBASEVALUE para obtener valor de ajuste',
                             pkg_traza.cnuNivelTrzDef);
             nuValor := LIQTAXBASEVALUE(NULL, 1, 'N');
+            --Inicio 3802
+            if nvl(nuValorBAse, 0) = 0 then
+              nuValorBAse := nuUltimoCargoAjuste;
+            end if;
+            --Fin 3802
           else
           
+            pkg_traza.trace('Signo Ajuste: ' || sbSignoCargoAjuste,
+                            pkg_traza.cnuNivelTrzDef);
             nuValor := round(nvl((nuUltimoCargoAjuste *
                                  nvl(nuIvaUltVentaCotizada, 0)) / 100,
                                  0),
@@ -407,6 +423,13 @@ BEGIN
             if sbSignoCargoAjuste = 'CR' then
               nuValor := nuValor * -1;
             end if;
+          
+            --Inicio 3802
+            if nvl(nuValorBAse, 0) = 0 then
+              nuValorBAse := nuUltimoCargoAjuste;
+            end if;
+            --Fin 3802
+          
           end if;
         
           pkg_traza.trace('Valor IVA Cargo Base del concepto 291: ' ||
@@ -475,6 +498,6 @@ EXCEPTION
 END fnu_baseliquidacion;
 /
 BEGIN
-    pkg_utilidades.prAplicarPermisos('FNU_BASELIQUIDACION', 'OPEN');
+  pkg_utilidades.prAplicarPermisos('FNU_BASELIQUIDACION', 'OPEN');
 END;
 /

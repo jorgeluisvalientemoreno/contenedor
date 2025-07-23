@@ -14,6 +14,9 @@ Fecha  : 05-10-2012
 
 Historia de Modificaciones
 Fecha        IDEntrega             Modificación
+08-05-2025    felipe.valencia      OSF-3909: Se agrega validación para no actualizar el campo
+                                   TOTAL_DELIVER desde LDISP y adicionalemente se hacen cambios
+                                  por estandares
 07-10-2013   jrobayo.SAO218889     Se elimina la validación al momento de realizar
                                    la inserción de un nuevo subsidio, la cuál verificaba
                                    si la fecha inicial ingresada para el subsidio era menor o
@@ -45,17 +48,17 @@ declare
   sbmaxrecovery      varchar2(100);
   nupaysubrows       number;
   --
-
+    csbNombreTrigger    VARCHAR2(100) := $$PLSQL_UNIT;
+    sbError             VARCHAR2(4000);
+    nuError             NUMBER;
 begin
-  --{
-    -- Lógica del Negocio
-  --}
+    pkg_traza.trace(csbNombreTrigger, pkg_traza.cnuNivelTrzDef, pkg_traza.csbInicio);
 
   if DELETING then
     nusubasig := Ld_BcSubsidy.Fnuexistactivesubasig(:old.subsidy_id);
 
     if nusubasig > Ld_Boconstans.cnuCero then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No se puede borrar el subsidio porque ya se han asignado subsidios de ese tipo');
+      Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No se puede borrar el subsidio porque ya se han asignado subsidios de ese tipo');
     end if;
 
     /*                                Cancelar promoción                  */
@@ -93,51 +96,51 @@ begin
         DALD_deal.getRecord (:new.deal_id, rcdeal);
 
         /*Validar que el convenio se encuentre vigente*/
-       if(nvl(pkerrors.fsbgetapplication,'--') not in ('LDANS','LDRSS')) then
+       if(nvl(pkg_Error.getApplication,'--') not in ('LDANS','LDRSS')) then
         if rcdeal.final_date < sysdate then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'El convenio no se encuentra vigente');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'El convenio no se encuentra vigente');
        end if;
 
        END if;
         /*Validar que el convenio se encuentre activo*/
         if nvl(rcdeal.disable_deal, Ld_Boconstans.csbNo_Action) = Ld_Boconstans.csbAction_Ok and
            rcdeal.disable_date is not null then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'El convenio se encuentra inactivo');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'El convenio se encuentra inactivo');
         end if;
 
         /*Validar fecha de inicio del subsidio no sea menor que la fecha de inicio del convenio*/
         if :new.initial_date < rcdeal.initial_date then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La fecha inicial del subsidio no puede ser menor a la fecha inicial del convenio');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La fecha inicial del subsidio no puede ser menor a la fecha inicial del convenio');
         end if;
 
         /*Validar fecha de inicio del subsidio no sea mayor que la fecha de fin del convenio*/
         if :new.initial_date > rcdeal.final_date then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La fecha inicial del subsidio no puede ser mayor a la fecha final del convenio');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La fecha inicial del subsidio no puede ser mayor a la fecha final del convenio');
         end if;
 
         /*Validar fecha de fin del subsidio no sea mayor a la fecha final del convenio*/
         if :new.final_date > rcdeal.final_date  then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La fecha final del subsidio no puede ser mayor a la fecha final del convenio');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La fecha final del subsidio no puede ser mayor a la fecha final del convenio');
         end if;
 
         /*Validar fecha de fin del subsidio no sea menor a la fecha inicial del convenio*/
         if :new.final_date < rcdeal.initial_date  then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La fecha final del subsidio no puede ser menor a la fecha final del convenio');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La fecha final del subsidio no puede ser menor a la fecha final del convenio');
         end if;
 
         /*Validar fecha de fin del subsidio no sea menor a la fecha inicial del subsidio*/
         if :new.final_date < :new.initial_date  then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La fecha final del subsidio no puede ser menor a la fecha inicial del mismo');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La fecha final del subsidio no puede ser menor a la fecha inicial del mismo');
         end if;
 
         /*Validar fecha de inicio de cobro esté dentro del rango de vigencia del subsidio*/
         if :new.star_collect_date not between :new.initial_date and :new.final_date then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La fecha de inicio de cobro no se encuentra dentro del rango de vigencia del subsidio');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La fecha de inicio de cobro no se encuentra dentro del rango de vigencia del subsidio');
         end if;
 
         /*Validar año de vigencia de los recursos sea válido*/
         if :new.validity_year_means not between ld_boconstans.cnuInitial_Year and ld_boconstans.cnuFinal_Year then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'El año de vigencia de los recursos no es válido');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'El año de vigencia de los recursos no es válido');
         end if;
 
         /*Validar año de vigencia de los recursos se encuentre dentro del rango de vigencia del subsidio*/
@@ -146,42 +149,48 @@ begin
         nuFinal_Year   := to_number(to_char(:new.final_date, 'yyyy'));
 
         if :new.validity_year_means not between nuInitial_Year and nuFinal_Year then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'El año de vigencia de los recursos no se encuentra dentro del rango de vigencia del subsidio');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'El año de vigencia de los recursos no se encuentra dentro del rango de vigencia del subsidio');
         end if;
 
         /*Validar el concepto de exclusión de los atributos: cantidad autorizada y valor autorizado*/
         if :new.authorize_value is null and :new.authorize_quantity is null then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'Debe ingresar la cantidad autorizada o el valor autorizado');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'Debe ingresar la cantidad autorizada o el valor autorizado');
         end if;
 
         /*Validar el concepto de exclusión de los atributos: cantidad autorizada y valor autorizado*/
         if :new.authorize_value is not null and :new.authorize_quantity is not null then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'Debe ingresar la cantidad autorizada o el valor autorizado pero ambos al tiempo no es posible');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'Debe ingresar la cantidad autorizada o el valor autorizado pero ambos al tiempo no es posible');
         end if;
 
         /*Validar el concepto de exclusión de los atributos: cantidad autorizada y valor autorizado*/
         if :new.authorize_quantity <= LD_BOConstans.cnuCero_Value and
            :new.authorize_quantity is not null then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La cantidad autorizada debe ser mayor a cero');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La cantidad autorizada debe ser mayor a cero');
         end if;
 
         /*Validar que el valor autorizado sea mayor a cero*/
         if :new.authorize_value <= LD_BOConstans.cnuCero_Value and
            :new.authorize_value is not null then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'El valor autorizado debe ser mayor a cero');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'El valor autorizado debe ser mayor a cero');
         end if;
 
         /*Validar que el valor autorizado no supere el total del convenio*/
         if :new.authorize_value > rcdeal.total_value and
            :new.authorize_value is not null then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'El valor autorizado no debe superar el total del convenio');
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'El valor autorizado no debe superar el total del convenio');
         end if;
+
+        IF (NVL(pkg_Error.getApplication,'--') in ('LDISP')) THEN
+            IF (NVL(:old.TOTAL_DELIVER,0) <> 0 AND (:old.TOTAL_DELIVER <> :new.TOTAL_DELIVER)) THEN
+                :new.TOTAL_DELIVER := :old.TOTAL_DELIVER;
+            END IF;
+        END IF;
 
         if :new.authorize_quantity IS not null then
 	        :new.TOTAL_AVAILABLE := :new.authorize_quantity - nvl(:new.TOTAL_DELIVER,0);
-		elsif :new.AUTHORIZE_VALUE IS not null then
-		    :new.TOTAL_AVAILABLE := :new.AUTHORIZE_VALUE - nvl(:new.TOTAL_DELIVER,0);
-		END if;
+        elsif :new.AUTHORIZE_VALUE IS not null then
+            :new.TOTAL_AVAILABLE := :new.AUTHORIZE_VALUE - nvl(:new.TOTAL_DELIVER,0);
+        END if;
 
       end if;
 
@@ -205,7 +214,7 @@ begin
         :new.promotion_id := onuPromId;
 
         if onuPromId is null then
-          ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'Error al generar la promoción asociada al subsidio: '||:new.subsidy_id);
+          Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'Error al generar la promoción asociada al subsidio: '||:new.subsidy_id);
         end if;
       end if;
       --
@@ -218,7 +227,7 @@ begin
         if :new.authorize_quantity is not null then
           nuValdetailrows := Ld_BcSubsidy.fnuexiststotaldetail(:new.subsidy_id);
           if nuValdetailrows > LD_BOConstans.cnuCero_Value then
-            ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No es posible actualizar la cantidad autorizada porque existen poblaciones parametrizadas con valor autorizado');
+            Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No es posible actualizar la cantidad autorizada porque existen poblaciones parametrizadas con valor autorizado');
           end if;
         end if;
 
@@ -230,7 +239,7 @@ begin
             nuGet_Val_tot := Ld_BcSubsidy.fnutotalvaluedetail(:new.subsidy_id);
 
             if nuGet_Val_tot > :new.authorize_value then
-              ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No es posible disminuir el valor autorizado porque es menor a la sumatoria de valores autorizados parametrizados en el detalle del subsidio');
+              Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No es posible disminuir el valor autorizado porque es menor a la sumatoria de valores autorizados parametrizados en el detalle del subsidio');
             end if;
           end if;
         end if;
@@ -240,7 +249,7 @@ begin
         if :new.authorize_value is not null then
           nuValdetailrows := Ld_BcSubsidy.fnuexistsquantitydetail(:new.subsidy_id);
           if nuValdetailrows > LD_BOConstans.cnuCero_Value then
-            ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No es posible actualizar el valor autorizado porque existen poblaciones parametrizadas con cantidad autorizada');
+            Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No es posible actualizar el valor autorizado porque existen poblaciones parametrizadas con cantidad autorizada');
           end if;
         end if;
 
@@ -252,7 +261,7 @@ begin
             nuGet_Val_tot := Ld_BcSubsidy.fnutotquantidetail(:new.subsidy_id);
 
             if nuGet_Val_tot > :new.authorize_quantity then
-              ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No es posible disminuir la cantidad autorizada porque es menor a la sumatoria de las cantidades autorizadas parametrizadas en el detalle del subsidio');
+              Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No es posible disminuir la cantidad autorizada porque es menor a la sumatoria de las cantidades autorizadas parametrizadas en el detalle del subsidio');
             end if;
           end if;
         end if;
@@ -262,7 +271,7 @@ begin
           nusubasig := Ld_BcSubsidy.Fnuexistsubasig(:new.subsidy_id);
 
           if nusubasig > Ld_Boconstans.cnuCero then
-            ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No se puede modificar el convenio porque existen subsidios de este tipo asignados');
+            Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No se puede modificar el convenio porque existen subsidios de este tipo asignados');
           end if;
         end if;
 
@@ -273,7 +282,7 @@ begin
           dtlastdate := Ld_BcSubsidy.Fnugetlastdateasigsub(:new.subsidy_id);
 
           if :new.final_date < dtlastdate then
-            ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La fecha de fin de vigencia no puede ser menor que la fecha del último subsidio asignado');
+            Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La fecha de fin de vigencia no puede ser menor que la fecha del último subsidio asignado');
           end if;
 
           /*Validar que la fecha de fin de vigencia no puede ser menor al máximo período parametrizado para los topes de cobro*/
@@ -290,7 +299,7 @@ begin
           dtnewfinaldate := to_date(sbmaxrecovery, 'YYYYMM');
 
           if dtnewfinaldate < dtmaxdate then
-            ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La fecha de fin de vigencia no puede ser menor al máximo período parametrizado para los topes de cobro');
+            Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La fecha de fin de vigencia no puede ser menor al máximo período parametrizado para los topes de cobro');
           end if;
 
         end if;
@@ -300,7 +309,7 @@ begin
           nupaysubrows := Ld_BcSubsidy.Fnugetsubinpaystates(:new.subsidy_id);
 
           if nupaysubrows > Ld_Boconstans.cnuCero then
-            ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No se puede modificar la fecha de inicio de cobro si al menos uno de los subsidios asignados se encuentra en estado: POR COBRAR, COBRADO o PAGADO');
+            Pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No se puede modificar la fecha de inicio de cobro si al menos uno de los subsidios asignados se encuentra en estado: POR COBRAR, COBRADO o PAGADO');
           end if;
         end if;
 
@@ -340,12 +349,19 @@ begin
     end if;
 
   end if;
-  ------------------------------------------------
+  
+    pkg_traza.trace(csbNombreTrigger, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
 Exception
-  When ex.CONTROLLED_ERROR then
-    raise ex.CONTROLLED_ERROR;
-  When others then
-    Errors.setError;
-    raise ex.CONTROLLED_ERROR;
+    WHEN pkg_Error.Controlled_Error  THEN
+        pkg_Error.getError(nuError, sbError);
+        pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
+        pkg_traza.trace(csbNombreTrigger, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
+        RAISE pkg_Error.Controlled_Error;
+    WHEN OTHERS THEN
+        pkg_Error.setError;
+        pkg_Error.getError(nuError, sbError);
+        pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
+        pkg_traza.trace(csbNombreTrigger, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+        RAISE pkg_Error.Controlled_Error;  
 end TRGBIDURLD_SUBSIDYVALIDATE;
 /

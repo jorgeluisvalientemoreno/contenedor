@@ -1,0 +1,1 @@
+select * from ab_address where geograp_location_id  = 9104 

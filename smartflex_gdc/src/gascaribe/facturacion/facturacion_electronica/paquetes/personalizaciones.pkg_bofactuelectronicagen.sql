@@ -3,7 +3,9 @@ create or replace PACKAGE  personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
                                    inuCodigoLote IN  NUMBER,
                                    isbOperacion  IN  VARCHAR2,
                                    inuTipoDocu   IN  NUMBER,
-                                   inuIdReporte  IN NUMBER,
+                                   inuIdReporte  IN  NUMBER,
+								   isbCodEmpresa	 IN  VARCHAR2,
+                                   isbNotaNrefe  IN  VARCHAR2 DEFAULT 'N',
                                    onuError     OUT  NUMBER,
                                    osbError     OUT  VARCHAR2);
  /***************************************************************************
@@ -20,25 +22,29 @@ create or replace PACKAGE  personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
       isbOperacion    Operacion a realizar I - Insertar A -Actualizar
       inuTipoDocu     tipo de documento a generar
       inuIdReporte      id del reporte
+	  isbCodEmpresa		Códig de empresa
+      isbNotaNrefe      indica si la nota es referencia o no
     Parametros de Salida
       onuError        codigo del error
       osbError        mensaje de error
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso       Descripcion
+	JSOTO		20-03-2025	OSF-4104	Se agrega parametro de entrada isbCodEmpresa
+    LJLB        07-03-2025  OSF-4045    se agrega nuevo parametro isbNotaNrefe para validar si la nota es referenciada o no
     LJLB        17-01-2024  OSF-2158    Creacion
   ***************************************************************************/
 END PKG_BOFACTUELECTRONICAGEN;
 /
-create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
+create or replace PACKAGE BODY  personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
  -- Constantes para el control de la traza
   csbSP_NAME        CONSTANT VARCHAR2(100):= $$PLSQL_UNIT;
   -- Identificador del ultimo caso que hizo cambios
-  csbVersion        CONSTANT VARCHAR2(15) := 'OSF-2158';
+  csbVersion        CONSTANT VARCHAR2(15) := 'OSF-4104';
   nuError     NUMBER;
   sbError     VARCHAR(4000);
   nuConsecutivo      NUMBER := 0;
-  
+
   FUNCTION fsbVersion RETURN VARCHAR2 IS
   /***************************************************************************
     Propiedad Intelectual de Gases del Caribe
@@ -73,6 +79,7 @@ create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso       Descripcion
+    LJLB        02-12-2024  OSF-3666    se agrega campo orden de compra 
     LJLB        17-01-2024  OSF-2158    Creacion
   ***************************************************************************/
     csbMT_NAME        VARCHAR2(100) := csbSP_NAME || '.prGeneraEstrCanalUno';
@@ -144,7 +151,7 @@ create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
     itytCanalUno.ValorTotalFacturaMes           ||'|'||
     itytCanalUno.ObservacionNotas               ||'|'||
     itytCanalUno.Calificacion                   ||'|'||
-    itytCanalUno.NoUsar06                       ||'|'||
+    itytCanalUno.ordenCompra                    ||'|'||
     itytCanalUno.NoUsar07                       ||'|'||
     itytCanalUno.NoUsar08                       ||'|'||
     itytCanalUno.NoUsar09                       ||'|'||
@@ -1275,6 +1282,7 @@ create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso       Descripcion
+	jerazomvm	01-07-2025	OSF-4604	Se renombra Opcional81 por InfoFormaPago
     LJLB        23-01-2024  OSF-2158    Creacion
   ***************************************************************************/
     csbMT_NAME        VARCHAR2(100) := csbSP_NAME || '.prGeneraEstrCanalCuatro';
@@ -1283,7 +1291,7 @@ create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
 
      oclDatos := itytCanalSiete.NroCanal||'|'||
             itytCanalSiete.NumeroCompleto||'|'||
-            itytCanalSiete.Opcional81||'|'||
+            itytCanalSiete.InfoFormaPago||'|'||
             itytCanalSiete.Opcional82||'|'||
             itytCanalSiete.Opcional83||'|'||
             itytCanalSiete.Opcional84||'|'||
@@ -1613,7 +1621,9 @@ create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
                                    inuCodigoLote IN  NUMBER,
                                    isbOperacion  IN  VARCHAR2,
                                    inuTipoDocu   IN  NUMBER,
-                                   inuIdReporte  IN NUMBER,
+                                   inuIdReporte  IN  NUMBER,
+								   isbCodEmpresa IN  VARCHAR2,
+                                   isbNotaNrefe  IN  VARCHAR2 DEFAULT 'N',
                                    onuError     OUT  NUMBER,
                                    osbError     OUT  VARCHAR2) IS
  /***************************************************************************
@@ -1629,18 +1639,22 @@ create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
       inuCodigoLote    codigo de lote
       isbOperacion    Operacion a realizar I - Insertar A -Actualizar
       inuIdReporte      id del reporte
+	  isbCodEmpresa		Código de Empresa
+      isbNotaNrefe      indica si la nota es referencia o no
     Parametros de Salida
       onuError        codigo del error
       osbError        mensaje de error
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso       Descripcion
+	JSOTO		17-03-2025	OSF-4104    Se agrega parametro de entrada isbCodEmpresa
+    LJLB        07-03-2025  OSF-4045    se agrega nuevo parametro isbNotaNrefe para validar si la nota es referenciada o no
     LJLB        17-01-2024  OSF-2158    Creacion
   ***************************************************************************/
      csbMT_NAME         VARCHAR2(100) := csbSP_NAME || '.prGenerarEstrFactElec';
 
 
-     
+
      nuIdReporte        NUMBER;
      iregFacturaEle     pkg_factura_elect_general.styFacturaElectronicaGen;
      iregFacturaEleNull pkg_factura_elect_general.styFacturaElectronicaGen;
@@ -1698,6 +1712,7 @@ create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
     IF inuTipoDocu = pkg_bcfactuelectronicagen.cnuTipoDocuFactRecu THEN
         --se carga informacion en memoria de la informacion de la factura
         pkg_bcfactuelectronicagen.prMapearDatosFactura( inuFactura,
+														isbCodEmpresa,
                                                         cblSpool,
                                                         onuError,
                                                         osbError );
@@ -1710,7 +1725,7 @@ create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
         --validar error
         prReportarError;
     ELSIF  inuTipoDocu = pkg_bcfactuelectronicagen.cnuTipoDocuVentas THEN
-        pkg_bcfactuelectronicagen.prInicializarVariables;
+        pkg_bcfactuelectronicagen.prInicializarVariables(isbCodEmpresa);
 
         pkg_bcfactuelectronicagen.prGetInfoValoraReportarVentas ( inuFactura,
                                                                   oblFacturaVenta,
@@ -1723,8 +1738,9 @@ create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
            RETURN;
         END IF;
     ELSIF inuTipoDocu = pkg_bcfactuelectronicagen.cnuTipoDocuNotas THEN
-          pkg_bcfactuelectronicagen.prInicializarVariables;
+          pkg_bcfactuelectronicagen.prInicializarVariables(isbCodEmpresa);
           pkg_bcfactuelectronicagen.prGetInfoValoraReportarNotas( inuFactura,
+                                                                  isbNotaNrefe,
                                                                   onuError,
                                                                   osbError);
         --validar error;
@@ -1799,7 +1815,7 @@ create or replace PACKAGE BODY personalizaciones.PKG_BOFACTUELECTRONICAGEN IS
       pkg_traza.trace(' osbError => ' || osbError, pkg_traza.cnuNivelTrzDef);
        pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
   END prGenerarEstrFactElec;
-END PKG_BOFACTUELECTRONICAGEN;
+END PKG_BOFACTUELECTRONICAGEN; 
 /
 BEGIN
   pkg_utilidades.prAplicarPermisos('PKG_BOFACTUELECTRONICAGEN','PERSONALIZACIONES');

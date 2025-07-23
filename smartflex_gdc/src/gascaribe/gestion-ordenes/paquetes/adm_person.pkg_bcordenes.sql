@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE adm_person.pkg_bcordenes IS
 /*******************************************************************************
-    Fuente=Propiedad Intelectual de Gases del Caribe
-    pkg_bcordenes
+    Propiedad Intelectual de Gases del Caribe
+    Paquete     :   pkg_bcordenes
     Autor       :   Carlos Gonzalez - Horbath
     Fecha       :   02-08-2023
     Descripcion :   Paquete con los metodos para manejo de información sobre las 
@@ -30,6 +30,10 @@ CREATE OR REPLACE PACKAGE adm_person.pkg_bcordenes IS
   Adrianavg     05/06/2024  OSF-2772: Se adiciona método fnuobtienedireccion    
   Dsaltarin     27/11/2024  OSF-3679: Se corrige método fnuobtienedireccion    
   jeerazomvm	09/12/2024	OSF-3725: Se crea la función fsbObtValorDatoAdicional
+  jpinedc       24/01/2025  OSF-3893: Se crea ftbOrdenesPendientesSolicitud
+  jpinedc       19/03/2025  OSF-4042: Se crea fblOrdenTieneActividad
+  pacosta       13/05/2024  OSF-4336: Creacion metodos fnuObtMenorIdActividad y fnuValReconexion
+                                      Creacion variables globales     
 *******************************************************************************/
 
     CURSOR cuRecord(inuOrden IN or_order.order_id%TYPE) IS
@@ -37,9 +41,20 @@ CREATE OR REPLACE PACKAGE adm_person.pkg_bcordenes IS
         FROM or_order
        WHERE order_id = inuOrden;
 
-    SUBTYPE styOrden  IS cuRecord%ROWTYPE;
+    SUBTYPE styOrden  IS cuRecord%ROWTYPE;    
     	   
     TYPE tytbOrden IS TABLE OF styOrden INDEX BY BINARY_INTEGER;
+    
+    -- Obtiene las ordenes pendientes de la solicitud
+    cursor cuOrdPendSolicitud(inuSolicitud number) is
+    select o.order_id, order_status_id, o.operating_unit_id
+    from or_order o, or_order_activity A
+    where a.order_id = o.order_id
+    and a.package_id = inuSolicitud
+    and o.order_status_id NOT IN (8,12);
+            
+    TYPE tytbOrdPendSolicitud IS TABLE OF cuOrdPendSolicitud%ROWTYPE
+    INDEX BY BINARY_INTEGER;
 
     -- Retona el identificador del ultimo caso que hizo cambios
     FUNCTION fsbVersion 
@@ -235,15 +250,57 @@ CREATE OR REPLACE PACKAGE adm_person.pkg_bcordenes IS
 									  isbNombreAtributo	IN ge_attributes.name_attribute%TYPE
 									  )
     RETURN or_requ_data_value.value_1%TYPE;
-        
+    
+    -- Retorna una tabla pl con las ordenes pendientes de la solicitud
+    FUNCTION ftbOrdPendSolicitud( inuSolicitud    IN  or_order_activity.package_id%TYPE)
+    RETURN tytbOrdPendSolicitud;
+    
+    -- Retorna verdadero si la orden tiene la actividad
+    FUNCTION fblOrdenTieneActividad
+    (
+        inuOrden        IN  or_order_activity.order_id%TYPE,
+        inuActividad    IN  or_order_activity.activity_id%TYPE
+    )
+    RETURN BOOLEAN;    
+
+    --Retorna Cliente
+    FUNCTION fnuObtCliente(inuOrden IN or_order_activity.order_id%TYPE)
+        RETURN or_order_activity.subscriber_id%TYPE;
+
+    --Obtiene la actividad asociada a la orden con el menor identificador 
+    FUNCTION fnuObtMenorIdActividad(inuIdOrden IN or_order.order_id%type)
+    RETURN NUMBER;  
+    
+    --Valida orden de reconexion
+    FUNCTION fnuValReconexion(inuIdProducto  IN or_order_activity.product_id%TYPE,
+                              inuIdSolicitud IN or_order_Activity.package_id%TYPE)
+    RETURN NUMBER;        
+
 END pkg_bcordenes;
 /
+
 CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
 
+    --------------------------------------------
     -- Identificador del ultimo caso que hizo cambios
-    csbVersion     VARCHAR2(15) := 'OSF-3725';
+    --------------------------------------------   
+    csbVersion     VARCHAR2(15) := 'OSF-4336';
+
+    --------------------------------------------
     -- Constantes para el control de la traza
-    csbSP_NAME     CONSTANT VARCHAR2(35):= $$PLSQL_UNIT;
+    --------------------------------------------  
+    csbPqt_nombre   CONSTANT VARCHAR2(35):= $$PLSQL_UNIT;
+    cnuNvlTrc       CONSTANT NUMBER        := pkg_traza.cnuNivelTrzDef;
+    csbInicio       CONSTANT VARCHAR2(35)  := pkg_traza.csbInicio;
+    csbFin          CONSTANT VARCHAR2(35)  := pkg_traza.csbFin;
+    csbFin_err      CONSTANT VARCHAR2(35)  := pkg_traza.csbFin_err;
+    csbFin_erc      CONSTANT VARCHAR2(35)  := pkg_traza.csbFin_erc;  
+    
+    -----------------------------------
+    -- Variables privadas del package
+    -----------------------------------
+    nuError		NUMBER;  		
+    sbMensaje   VARCHAR2(1000);   
 
     /***************************************************************************
     Propiedad Intelectual de Gases del Caribe
@@ -278,7 +335,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.causal_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneCausal';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneCausal';
         
         CURSOR cuCausal(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  causal_id
@@ -344,7 +401,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.operating_unit_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneUnidadOperativa';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneUnidadOperativa';
         
         CURSOR cuUnidadOperativa(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  operating_unit_id
@@ -410,7 +467,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.task_type_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneTipoTrabajo';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneTipoTrabajo';
         
         CURSOR cuTipoTrabajo(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  task_type_id
@@ -476,7 +533,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.order_status_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneEstado';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneEstado';
         
         CURSOR cuEstado(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  order_status_id
@@ -542,7 +599,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.created_date%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fdtObtieneFechaCreacion';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fdtObtieneFechaCreacion';
         
         CURSOR cuFechaCreacion(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  created_date
@@ -608,7 +665,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.assigned_date%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fdtObtieneFechaAsigna';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fdtObtieneFechaAsigna';
         
         CURSOR cuFechaAsignacion(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  assigned_date
@@ -674,7 +731,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.legalization_date%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fdtObtieneFechaLegaliza';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fdtObtieneFechaLegaliza';
         
         CURSOR cuFechaLegalizacion(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  legalization_date
@@ -740,7 +797,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.exec_initial_date%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fdtObtieneFechaEjecuIni';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fdtObtieneFechaEjecuIni';
         
         CURSOR cuFechaEjecuIni(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  exec_initial_date
@@ -806,7 +863,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.execution_final_date%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fdtObtieneFechaEjecuFin';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fdtObtieneFechaEjecuFin';
         
         CURSOR cuFechaEjecuFin(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  execution_final_date
@@ -872,7 +929,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.defined_contract_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneContratoContratista';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneContratoContratista';
         
         CURSOR cuContratoContra(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  defined_contract_id
@@ -938,7 +995,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.operating_sector_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneSectorOperativo';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneSectorOperativo';
         
         CURSOR cuSectorOperativo(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  operating_sector_id
@@ -1004,7 +1061,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.geograp_location_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneLocalidad';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneLocalidad';
         
         CURSOR cuLocalidad(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  geograp_location_id
@@ -1070,7 +1127,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.is_pending_liq%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fsbObtienePendLiquidar';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fsbObtienePendLiquidar';
         
         CURSOR cuPendienteLiq(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  is_pending_liq
@@ -1136,7 +1193,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN ge_causal.class_causal_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneClaseCausal';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneClaseCausal';
         
         CURSOR cuClaseCausal(inuCausal IN ge_causal.causal_id%TYPE) IS
             SELECT  class_causal_id
@@ -1202,7 +1259,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order_activity.package_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneSolicitud';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneSolicitud';
         
         CURSOR cuSolicitud(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  package_id
@@ -1269,7 +1326,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order_activity.product_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneProducto';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneProducto';
         
         CURSOR cuProducto(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  product_id
@@ -1336,7 +1393,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order_activity.subscription_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneContrato';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneContrato';
         
         CURSOR cuContrato(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  subscription_id
@@ -1405,7 +1462,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order_activity.order_activity_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneUltActividad';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneUltActividad';
         
     CURSOR cuUltActividad(inuOrden IN or_order.order_id%TYPE) IS
             SELECT    order_activity_id
@@ -1475,7 +1532,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order_activity.activity_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneItemActividad';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneItemActividad';
         
         CURSOR cuActividad(inuActividadOrden IN or_order_activity.order_activity_id%TYPE) IS
             SELECT  activity_id
@@ -1541,7 +1598,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order_comment.order_comment%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneItemActividad';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneItemActividad';
         
         CURSOR cuComentaLega(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  order_comment
@@ -1608,7 +1665,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order_comment.comment_type_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneTipoComenLega';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneTipoComenLega';
         
         CURSOR cuTipoComentaLega(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  comment_type_id
@@ -1672,7 +1729,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
      RETURN or_order.order_id%TYPE IS
 
      -- Nombre de este método
-     csbMT_NAME  VARCHAR2(105) := csbSP_NAME||'.fnuObtenerOTInstanciaLegal';
+     csbMT_NAME  VARCHAR2(105) := csbPqt_nombre||'.fnuObtenerOTInstanciaLegal';
      
      nuOrderId or_order.order_id%TYPE;
      
@@ -1710,7 +1767,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
      RETURN VARCHAR2 IS
 
      -- Nombre de este método
-     csbMT_NAME  VARCHAR2(105) := csbSP_NAME||'.fblObtenerEsNovedad';
+     csbMT_NAME  VARCHAR2(105) := csbPqt_nombre||'.fblObtenerEsNovedad';
      fsbEsNovedad varchar2(2);
 
      BEGIN
@@ -1749,7 +1806,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
      RETURN ge_person.person_id%TYPE IS
 
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtenerPersona';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtenerPersona';
         
         CURSOR cuUnidadOper(inuOrden IN or_order.order_id%TYPE) IS
             SELECT  operating_unit_id
@@ -1832,7 +1889,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
      ***************************************************************************/
                            
               
-        csbMT_NAME  CONSTANT VARCHAR2(100) := csbSP_NAME||'.fnuObtieneOrdenDeActividad';
+        csbMT_NAME  CONSTANT VARCHAR2(100) := csbPqt_nombre||'.fnuObtieneOrdenDeActividad';
         
         cursor cuOrdenId is
           SELECT order_id
@@ -1891,7 +1948,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     FUNCTION frcgetRecord(inuOrden IN or_order.order_id%TYPE)
       RETURN styOrden IS
     
-      csbMT_NAME VARCHAR2(70) := csbSP_NAME || '.frcgetRecord';
+      csbMT_NAME VARCHAR2(70) := csbPqt_nombre || '.frcgetRecord';
     
       rcDatos      cuRecord%ROWTYPE;
       cuRegNulo    cuRecord%ROWTYPE;
@@ -1973,7 +2030,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_order.external_address_id%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fnuObtieneDireccion';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fnuObtieneDireccion';
 
         CURSOR cuDireccion(inuOrden IN or_order.order_id%TYPE) IS
         SELECT  external_address_id
@@ -2064,7 +2121,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
     RETURN or_requ_data_value.value_1%TYPE
     IS
 
-        csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fsbObtValorDatoAdicional';
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fsbObtValorDatoAdicional';
 		
 		sbValorAtributo     or_requ_data_value.value_1%TYPE;
 		rcDataOrden         or_requ_data_value%ROWTYPE;
@@ -2163,7 +2220,300 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcordenes IS
             pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
             RETURN sbValorAtributo;
     END fsbObtValorDatoAdicional;
+
+    -- Retorna una tabla pl con las ordenes pendientes de la solicitud
+    FUNCTION ftbOrdPendSolicitud( inuSolicitud    IN  or_order_activity.package_id%TYPE)
+    RETURN tytbOrdPendSolicitud
+    IS
+
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.ftbOrdPendSolicitud';
+            
+        tbOrdPendSolicitud    tytbOrdPendSolicitud;
+        
+        PROCEDURE prCierracuOrdPendSolicitud
+        IS
+        BEGIN
+            IF cuOrdPendSolicitud%IsOpen THEN
+                CLOSE cuOrdPendSolicitud;
+            END IF;
+        END prCierracuOrdPendSolicitud;
+        
+    BEGIN
+
+        pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+        
+        OPEN cuOrdPendSolicitud( inuSolicitud );
+        FETCH cuOrdPendSolicitud BULK COLLECT INTO tbOrdPendSolicitud;
+        CLOSE cuOrdPendSolicitud;
+            
+        pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+
+        RETURN tbOrdPendSolicitud;
+
+    EXCEPTION
+        WHEN OTHERS THEN
+            pkg_error.SetError;
+            prCierracuOrdPendSolicitud;
+            pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+            RETURN tbOrdPendSolicitud;
+    END ftbOrdPendSolicitud;    
+
+    -- Retorna verdadero si la orden tiene la actividad
+    FUNCTION fblOrdenTieneActividad
+    (
+        inuOrden        IN  or_order_activity.order_id%TYPE,
+        inuActividad    IN  or_order_activity.activity_id%TYPE
+    )
+    RETURN BOOLEAN
+    IS
+
+        csbMT_NAME  VARCHAR2(70) := csbPqt_nombre || '.fblOrdenTieneActividad';
+        
+        CURSOR cuOrdenTieneActividad
+        IS
+        SELECT activity_id
+        FROM or_order_activity oa
+        WHERE oa.order_id = inuOrden
+        AND oa.activity_id = inuActividad;
+            
+        nuActividad    or_order_activity.activity_id%TYPE;
+
+        blOrdenTieneActividad   BOOLEAN;
+        
+        PROCEDURE prCierraCursor
+        IS
+        BEGIN
+            IF cuOrdenTieneActividad%IsOpen THEN
+                CLOSE cuOrdenTieneActividad;
+            END IF;
+        END prCierraCursor;
+        
+    BEGIN
+
+        pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+        
+        OPEN cuOrdenTieneActividad;
+        FETCH cuOrdenTieneActividad INTO nuActividad;
+        CLOSE cuOrdenTieneActividad;
+            
+        blOrdenTieneActividad := nuActividad IS NOT NULL;
+        
+        pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+
+        RETURN blOrdenTieneActividad;
+
+    EXCEPTION
+        WHEN OTHERS THEN
+            pkg_error.SetError;
+            prCierraCursor;
+            pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+            RETURN blOrdenTieneActividad;
+    END fblOrdenTieneActividad;        
     
+  /***************************************************************************
+  Propiedad Intelectual de Gases del Caribe
+  Programa        : fnuObtCliente
+  Descripcion     : Servicio para obtener el cliente asociado a la orden
+  Autor           : Jorge Valiente
+  Fecha           : 07/04/2025
+  caso            : OSF-4187
+  
+  Parametros
+    Entrada
+      inuOrden   Codigo Orden
+          
+  Modificaciones  :
+  Autor       Fecha       Caso    Descripcion
+  ***************************************************************************/
+  FUNCTION fnuObtCliente(inuOrden IN or_order_activity.order_id%TYPE)
+    RETURN or_order_activity.subscriber_id%TYPE IS
+  
+    csbMetodo VARCHAR2(70) := csbPqt_nombre || '.ftbOrdPendSolicitud';
+  
+    nuError NUMBER; -- Codigo de error
+    sbError VARCHAR2(2000); -- Descripcion del error
+  
+    nuCliente or_order_activity.subscriber_id%TYPE;
+  
+    CURSOR cuCliente IS
+      SELECT oa.subscriber_id
+        FROM or_order_activity oa
+       WHERE oa.order_id = inuOrden;
+  
+    PROCEDURE prCierraCursor IS
+    BEGIN
+      IF cuCliente%ISOPEN THEN
+        CLOSE cuCliente;
+      END IF;
+    END prCierraCursor;
+  
+  BEGIN
+  
+    pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+  
+    prCierraCursor;
+  
+    OPEN cuCliente;
+    FETCH cuCliente
+      INTO nuCliente;
+    CLOSE cuCliente;
+  
+    pkg_traza.trace('Codigo Cliente: ' || nuCliente, pkg_traza.cnuNivelTrzDef);
+  
+    pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+  
+    RETURN nuCliente;
+  
+  EXCEPTION
+  
+    --Validación de error controlado
+    WHEN pkg_Error.Controlled_Error THEN
+      pkg_Error.getError(nuError, sbError);
+      pkg_traza.trace('Error: ' || sbError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo,
+                      pkg_traza.cnuNivelTrzDef,
+                      pkg_traza.csbFIN_ERC);
+      RETURN nuCliente;
+    
+    --Validación de error no controlado
+    WHEN OTHERS THEN
+      pkg_Error.setError;
+      pkg_Error.getError(nuError, sbError);
+      pkg_traza.trace('Error: ' || sbError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo,
+                      pkg_traza.cnuNivelTrzDef,
+                      pkg_traza.csbFIN_ERR);
+      RETURN nuCliente;
+    
+  END fnuObtCliente;
+  
+    /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuObtMenorIdActividad
+    Descripcion     : Obtiene la actividad asociada a la orden con el menor identificador
+    Autor           : Paola Acosta
+    Fecha           : 13-05-2025
+    
+    Modificaciones  :
+    Autor       Fecha       Caso     Descripcion
+    PAcosta     13-05-2025  OSF-4336 Creacion
+    ***************************************************************************/
+    FUNCTION fnuObtMenorIdActividad(inuIdOrden IN or_order.order_id%type)
+    RETURN NUMBER
+    IS
+        --Constantes
+        csbMtd_nombre VARCHAR2(70) := csbPqt_nombre || '.fnuObtMenorIdActividad';
+        
+        --Variables
+        onuMenorIdActividad or_order_activity.order_activity_id%type;
+        
+        --Cursores
+        CURSOR cuMenorIdActividad
+        IS
+        SELECT order_activity_id
+        FROM or_order_activity
+        WHERE order_id = inuIdOrden
+        AND register_date = (SELECT MIN (or_order_activity.register_date)
+                             FROM or_order_activity,
+                                  or_order_items
+                             WHERE or_order_activity.order_id = inuIdOrden
+                             AND or_order_items.order_items_id = or_order_activity.order_item_id
+                             AND or_order_items.legal_item_amount <> -1);
+                             
+    BEGIN
+        pkg_traza.trace(csbMtd_nombre, cnuNvlTrc, csbInicio); 
+        
+        OPEN cuMenorIdActividad;
+        FETCH cuMenorIdActividad INTO onuMenorIdActividad;
+                
+        IF cuMenorIdActividad%notfound THEN
+            onuMenorIdActividad := -1;
+        END IF;             
+        
+        CLOSE cuMenorIdActividad;  
+                
+        pkg_traza.trace(csbMtd_nombre, cnuNvlTrc, csbFin);
+        
+        RETURN onuMenorIdActividad;
+        
+    EXCEPTION
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.setError;
+            pkg_error.getError(nuError, sbMensaje);
+            pkg_traza.trace('nuError: ' || nuError || ' sbMensaje: ' || sbMensaje, cnuNvlTrc);
+            pkg_traza.trace(csbMtd_nombre, cnuNvlTrc, csbFin_erc); 
+            RAISE pkg_error.controlled_error;
+        WHEN OTHERS THEN
+            pkg_error.setError;
+            pkg_error.getError(nuError, sbMensaje);
+            pkg_traza.trace('nuError: ' || nuError || ' sbMensaje: ' || sbMensaje, cnuNvlTrc);
+            pkg_traza.trace(csbMtd_nombre, cnuNvlTrc, csbFin_err); 
+            RAISE pkg_error.controlled_error;
+    END fnuObtMenorIdActividad;
+    
+    /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuValReconexion
+    Descripcion     : Valida si la orden de reconexion asociada a la solicitud debe
+                      ser cobrada al cliente como una reconexion desde Centro de
+                      Medicion o desde Acometida.
+    Autor           : Paola Acosta
+    Fecha           : 13-05-2025
+    
+    Modificaciones  :
+    Autor       Fecha       Caso     Descripcion
+    PAcosta     13-05-2025  OSF-4336 Creacion
+    ***************************************************************************/
+    FUNCTION fnuValReconexion(inuIdProducto  IN or_order_activity.product_id%TYPE,
+                              inuIdSolicitud IN or_order_Activity.package_id%TYPE)
+    RETURN NUMBER
+    IS
+        --Constantes
+        csbMtd_nombre CONSTANT VARCHAR2(70) := csbPqt_nombre || '.fnuValReconexion';
+        
+        --Variables
+        sbItemsReconexionCM VARCHAR2(4000) := '|'||pkg_bcld_parameter.fsbobtienevalorcadena('LDC_ITEMS_RECONEXION_CM')||'|';
+        onuReconexionCM number;
+        
+        --Cursores
+        CURSOR cuValReconexion      
+        IS
+        SELECT  COUNT(1)
+        FROM    or_order_activity a,
+                or_order_items b
+        WHERE   a.order_id = b.order_id
+        AND     a.order_activity_id = b.order_activity_id
+        AND     a.product_id = inuIdProducto
+        AND     a.package_id = inuIdSolicitud
+        AND     instr(sbitemsreconexioncm,'|'||b.items_id||'|') > 0
+        AND     b.legal_item_amount = 1;
+                             
+    BEGIN
+        pkg_traza.trace(csbMtd_nombre, cnuNvlTrc, csbInicio); 
+        
+        OPEN cuValReconexion;
+        FETCH cuValReconexion INTO onuReconexionCM;
+        CLOSE cuValReconexion;   
+                     
+        pkg_traza.trace(csbMtd_nombre, cnuNvlTrc, csbFin);
+        
+        RETURN onuReconexionCM;
+        
+    EXCEPTION
+        WHEN pkg_error.controlled_error THEN
+            pkg_error.setError;
+            pkg_error.getError(nuError, sbMensaje);
+            pkg_traza.trace('nuError: ' || nuError || ' sbMensaje: ' || sbMensaje, cnuNvlTrc);
+            pkg_traza.trace(csbMtd_nombre, cnuNvlTrc, csbFin_erc); 
+            RAISE pkg_error.controlled_error;
+        WHEN OTHERS THEN
+            pkg_error.setError;
+            pkg_error.getError(nuError, sbMensaje);
+            pkg_traza.trace('nuError: ' || nuError || ' sbMensaje: ' || sbMensaje, cnuNvlTrc);
+            pkg_traza.trace(csbMtd_nombre, cnuNvlTrc, csbFin_err); 
+            RAISE pkg_error.controlled_error;
+    END fnuValReconexion;
+
 END pkg_bcordenes;
 /
 
@@ -2172,3 +2522,4 @@ BEGIN
     pkg_utilidades.prAplicarPermisos('PKG_BCORDENES', 'ADM_PERSON');
 END;
 /
+

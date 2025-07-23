@@ -68,6 +68,12 @@ CREATE OR REPLACE PACKAGE ldci_pkinterfazactas
                           consulta de la fecha de IC_DECORECO.dcrcfecr por IC_ENCORECO.ecrcfech para poder
                           usar el indice IX_IC_ENCORECO02 que tiene esta tabla por la fecha.
 
+  22/04/2025  EDMLAR      OSF-4197
+                          Se obtiene el CEBE de los registros con items de RETEICA a partir de la tabla LDC_PARAMETROS_ICA,
+                          esto con el fin de evitar que se dupliquen los registros con cuenta contable, tipos de indicadores e 
+                          indicadores iguales pero con CEBE diferente.
+                          Se crea el cursor cuCebeIca
+
   **************************************************************************************************************/
   IS
    gvProvRevCosto           VARCHAR2(100);-- Texto para Idientificar si es Provision o Reversion del Costo
@@ -3350,6 +3356,12 @@ UNION all
                           fnuInterCostoSAP: Se modifica el cursor cuActas, se cambia la restriccion de la 
                           consulta de la fecha de IC_DECORECO.dcrcfecr por IC_ENCORECO.ecrcfech para poder
                           usar el indice IX_IC_ENCORECO02 que tiene esta tabla por la fecha.
+
+  EDMLAR   22/04/2025     OSF-4197
+                          Se obtiene el CEBE de los registros con items de RETEICA a partir de la tabla LDC_PARAMETROS_ICA,
+                          esto con el fin de evitar que se dupliquen los registros con cuenta contable, tipos de indicadores e 
+                          indicadores iguales pero con CEBE diferente.
+                          Se crea el cursor cuCebeIca
   ******************************************************************************/
 
      /*
@@ -3635,6 +3647,24 @@ UNION ALL
       FROM ldci_contranticipo L
      WHERE L.IDCONTRATO = inucontrato;
 
+  --<<
+  -- OSF-4197
+  -- Curso para obtener el CEBE de los RETEICA a partir del item de RETEICA.
+  -->>
+  CURSOR cuCebeIca(inuitem ge_items.items_id%TYPE) IS
+  Select celocebe
+    from open.LDC_PARAMETROS_ICA pi, open.LDCI_CENTBENELOCAL cb, open.ge_items it
+   where pi.items_id = inuitem
+     and geograp_location_id = celoloca
+     and pi.items_id = it.items_id
+     and it.item_classif_id in (SELECT gic.item_classif_id
+													       FROM ge_item_classif gic
+												        WHERE ',' || ldci_pkinterfazsap.vaClasitem23 || ',' LIKE
+															        '%,' || gic.item_classif_id || ',%')
+     and it.items_id != ldci_pkinterfazactas.vaItemIva
+     and rownum = 1;
+
+
   -- Private type declarations
 
 
@@ -3678,6 +3708,11 @@ UNION ALL
   vsbCeco         ldci_incoliqu.centroco%type;
   -- 376
   -->>
+
+
+  --<<
+  -- OSF-4197
+  vaCebe          ldci_centbenelocal.celocebe%TYPE;
 
 
  BEGIN
@@ -3801,6 +3836,10 @@ UNION ALL
           iovactcaitem := NULL;
           iovacuentaiva := NULL;
           ldci_pkinterfazsap.vacuentaIvaIFRS := null;
+          --<<
+          -- OSF-4197
+          vaCebe := NULL;
+
          -- Dbms_Output.Put_Line('la cuenta es '||vtyInfoActas(i).cuenta);
          -- Dbms_Output.Put_Line('Valor parametro '||ldci_pkinterfazsap.vaCuentaParticu);
 
@@ -4074,6 +4113,19 @@ UNION ALL
             --
             --<< END CA-200-2602
 
+
+            --<<
+            -- OSF-4197
+            -->>
+            If ldci_pkinterfazsap.vaCentBen is NULL Then
+              OPEN cuCebeIca(NVL(vtyInfoActas(i).item,0));
+              FETCH cuCebeIca INTO vaCebe;
+              CLOSE cuCebeIca;
+            Else
+              vaCebe := ldci_pkinterfazsap.vaCentBen;
+            End if;
+
+
             --<<
             -- Dcardona
             -- 01/07/2014
@@ -4113,7 +4165,9 @@ UNION ALL
                                                                   NULL,
                                                                   -->>
                                                                   vtyInfoActas(i).dcrcinad,
-                                                                  rc_cuActas.cod_comprobante);
+                                                                  rc_cuActas.cod_comprobante,
+                                                                  -- OSF-4197
+                                                                  vaCebe);
                                                                   
             --<<
             -- CA-376
@@ -4150,7 +4204,9 @@ UNION ALL
                                                                     vsbCeco,
                                                                     -->>                                                                  
                                                                     vtyInfoActas(i).dcrcinad,
-                                                                    rc_cuActas.cod_comprobante);   
+                                                                    rc_cuActas.cod_comprobante,
+                                                                    -- OSF-4197
+                                                                    vaCebe);   
             End If;                                                               
 
             END LOOP;

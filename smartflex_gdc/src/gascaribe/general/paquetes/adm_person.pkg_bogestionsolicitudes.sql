@@ -1,12 +1,20 @@
 CREATE OR REPLACE PACKAGE adm_person.pkg_bogestionsolicitudes AS
 
-  /***************************************************************************
-      Propiedad Intelectual de Gases del Caribe y Efigas
-      Autor : jvaliente
-      Descr : Paquete para el manejo de servicios y logica relacioanda a una solicitud
-      Caso  : OSF-3541
-      Fecha : 19/11/2024 11:06:35
-  ***************************************************************************/
+    /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe y Efigas
+    Autor : jvaliente
+    Descr : Paquete para el manejo de servicios y logica relacioanda a una solicitud
+    Caso  : OSF-3541
+    Fecha : 19/11/2024 11:06:35
+    
+    FECHA       AUTOR       CASO        DESCRIPCION
+    ----------  -------     --------    ---------------------------------------    
+    04/12/2024  PAcosta     OSF-3612    Creación método prcEjecutarMOCNP  
+    28/03/2025  PAcosta     OSF-4151    Creacion constante cnuSolicitudRegistrada  
+    ***************************************************************************/
+    
+    --Constantes
+    cnuSolicitudRegistrada       CONSTANT NUMBER := 13;
 
   ---Servicio para realizar el llamado del metodo MO_BODATA.FNUGETVALUE
   FUNCTION fnuObtValorNumerico(isbEntidad   IN VARCHAR2,
@@ -36,6 +44,11 @@ CREATE OR REPLACE PACKAGE adm_person.pkg_bogestionsolicitudes AS
   PROCEDURE prcObtSubCategoriaPorSolicitud(inuSoliciutd            IN NUMBER,
                                            onuSubcategoriaAnterior OUT NUMBER,
                                            onuSubcategoriaNueva    OUT NUMBER);
+                                           
+  --Servicio para encapsular el llamado al ejecutable desde otro PB									   
+  PROCEDURE prcEjecutarMOCNP (
+								inuNotifica_Log       ge_notification_log.notification_log_id%type
+							 );                                           
 
 END pkg_bogestionsolicitudes;
 /
@@ -411,6 +424,59 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bogestionsolicitudes AS
       RAISE pkg_error.Controlled_Error;
     
   END prcObtSubCategoriaPorSolicitud;
+  
+    /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : prcEjecutarMOCNP
+    Descripcion     : Servicio para hacer el llamado al ejecutable desde otro PB
+    Caso            : OSF-3591
+    Autor           : Jhon Jairo Soto
+    Fecha           : 22-11-2024
+  
+    Parametros
+      Entrada
+       
+      Salida
+  
+    Modificaciones
+    =========================================================
+    Autor       Fecha       Caso       Descripcion
+    PAcosta     04/12/2024  OSF-3612   Migración de la bd de EFG a GDC por ajustes de información de 
+                                       la entidad HOMOLOGACION_SERVICIOS - GDC 
+  ***************************************************************************/
+  PROCEDURE prcEjecutarMOCNP (
+								inuNotifica_Log       ge_notification_log.notification_log_id%type
+							 )
+  IS
+  
+    csbMetodo CONSTANT VARCHAR2(70) := csbSP_NAME ||
+                                       'prcEjecutarMOCNP';
+    nuError NUMBER;
+    sbError VARCHAR2(4000);
+  
+  BEGIN
+  
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+	
+    pkg_traza.trace('Equipos No Conformes inuNotifica_Log ['||inuNotifica_Log||']');
+
+	CC_BOPACKADDIDATE.RUNMOCNP(inuNotifica_Log);
+  
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+  
+  EXCEPTION
+    WHEN pkg_error.Controlled_Error THEN
+      pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+      pkg_Error.getError(nuError, sbError);
+      pkg_traza.trace('Error => ' || sbError, csbNivelTraza);
+      RAISE pkg_error.Controlled_Error;
+    WHEN OTHERS THEN
+      pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
+      pkg_error.setError;
+      pkg_Error.getError(nuError, sbError);
+      pkg_traza.trace('Error => ' || sbError, csbNivelTraza);
+      RAISE pkg_error.Controlled_Error;
+  END prcEjecutarMOCNP;
 
 END pkg_bogestionsolicitudes;
 /

@@ -9,7 +9,7 @@ CREATE OR REPLACE PACKAGE personalizaciones.pkg_xml_soli_facturacion IS
         Fecha           : 28-09-2023
         =========================================================
         Autor       Fecha       Caso        Descripcion
-        Adrianavg   28-09-2023	OSF-1669    Creacion
+        Adrianavg   28-09-2023  OSF-1669    Creacion
 
         Parametros de Entrada
         Parametros de Salida
@@ -26,7 +26,8 @@ FUNCTION getSolicitudCambioUsoServ (inuProducto         IN NUMBER,
                                     inuCategoria        IN NUMBER,
                                     inuSubcategoria     IN NUMBER,
                                     isbResolucion       IN VARCHAR2,
-                                    isbInfoComp         IN VARCHAR2)
+                                    isbInfoComp         IN VARCHAR2,
+                                    isbVisitaCampo      IN VARCHAR2)
                                 RETURN constants_per.tipo_xml_sol%type;
 
 FUNCTION getSolicitudCancelacionPlanCom (idtFechaRegi        IN DATE,
@@ -46,8 +47,6 @@ FUNCTION getSolicitudCancelacionPlanCom (idtFechaRegi        IN DATE,
 
 END pkg_xml_soli_facturacion;
 /
-
-
 CREATE OR REPLACE PACKAGE body personalizaciones.pkg_xml_soli_facturacion IS
 --CONSTANTES
 sbXmlSol  constants_per.tipo_xml_sol%type;
@@ -60,7 +59,7 @@ sbPkgName VARCHAR2(50) := 'PKG_XML_SOLI_FACTURACION';
         Fecha           : 28-09-2023
         =========================================================
         Autor       Fecha       Caso        Descripcion
-        Adrianavg   28-09-2023	OSF-1669    Creacion
+        Adrianavg   28-09-2023  OSF-1669    Creacion
 
         Parametros de Entrada
         Parametro                 Descripcion        
@@ -79,7 +78,8 @@ sbPkgName VARCHAR2(50) := 'PKG_XML_SOLI_FACTURACION';
         Parametros de Salida
         Modificaciones  :
         =========================================================
-        Autor       Fecha       Caso    Descripcion
+        Autor           Fecha       Caso      Descripcion
+        Jorge Valiente  09/12/2024  OSF-3674  Se agrega TAG REALIZO_VISITA_EN_CAMPO para regitro del tramite en XML
     ***************************************************************************/
 FUNCTION getSolicitudCambioUsoServ( inuProducto         IN NUMBER,
                                     idtFechaRegi        IN DATE,
@@ -91,14 +91,19 @@ FUNCTION getSolicitudCambioUsoServ( inuProducto         IN NUMBER,
                                     inuCategoria        IN NUMBER,
                                     inuSubcategoria     IN NUMBER,
                                     isbResolucion       IN VARCHAR2,
-                                    isbInfoComp         IN VARCHAR2)
+                                    isbInfoComp         IN VARCHAR2,
+                                    isbVisitaCampo      IN VARCHAR2)
                                 RETURN constants_per.tipo_xml_sol%type IS
 
      csbMetodo CONSTANT VARCHAR(60) := sbPkgName||'.GETSOLICITUDCAMBIOUSOSERV';
+     nuErrorCode NUMBER; -- se almacena codigo de error
+     sbMensError VARCHAR2(2000); -- se almacena descripcion del error 
+     
 BEGIN
 
-    UT_TRACE.TRACE('INICIO '||csbMetodo||                   
-                    ' inuProducto: '||inuProducto||' '||
+    pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbINICIO);
+    
+    pkg_traza.trace(' inuProducto: '||inuProducto||' '||
                     ' idtFechaRegi: '||idtFechaRegi||' '||
                     ' inuMedioRecepcionId: '||inuMedioRecepcionId||' '||
                     ' inuContactoId: '||inuContactoId||' '||
@@ -108,7 +113,8 @@ BEGIN
                     ' inuCategoria: '||inuCategoria||' '||
                     ' inuSubcategoria: '||inuSubcategoria||' '||
                     ' isbResolucion: '||isbResolucion||' '||
-                    ' isbInfoComp: '||isbInfoComp ,10);
+                    ' isbInfoComp: '||isbInfoComp||' '||
+                    ' isbVisitaCampo: '||isbVisitaCampo ,pkg_traza.cnuNivelTrzDef);
 
     sbXmlSol :=
             '<?xml version="1.0" encoding ="ISO-8859-1"?>
@@ -125,22 +131,36 @@ BEGIN
             <SUBCATEGORY_ID>' ||inuSubcategoria ||'</SUBCATEGORY_ID>
             <NUMERO_DE_RESOLUCION>' ||isbResolucion ||'</NUMERO_DE_RESOLUCION>
             <DOCUMENTACION_COMPLETA>' ||isbInfoComp ||'</DOCUMENTACION_COMPLETA>
+            <REALIZO_VISITA_EN_CAMPO>' ||isbVisitaCampo ||'</REALIZO_VISITA_EN_CAMPO>
             <C_PATRON_10305>
             <C_GENERICO_10317/>
             </C_PATRON_10305>
             </M_PATRON_DE_SERVICIOS_100237>
             </P_CAMBIO_DE_USO_DEL_SERVICIO_100225>';
 
-    UT_TRACE.TRACE('FIN ' ||csbMetodo, 10);
+    pkg_traza.trace(sbXmlSol, pkg_traza.cnuNivelTrzDef); 
+
+    pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+    
     return sbXmlSol;
+
 EXCEPTION
-WHEN PKG_ERROR.CONTROLLED_ERROR THEN
-    UT_TRACE.TRACE('PKG_ERROR.CONTROLLED_ERROR '||csbMetodo, 10);
-    raise PKG_ERROR.CONTROLLED_ERROR;
-WHEN others THEN
-    UT_TRACE.TRACE('others ' ||csbMetodo, 10);
-    Pkg_Error.seterror;
-    raise PKG_ERROR.CONTROLLED_ERROR;
+    WHEN pkg_Error.Controlled_Error THEN
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo,
+                      pkg_traza.cnuNivelTrzDef,
+                      pkg_traza.csbFIN_ERC);                        
+    RAISE pkg_Error.Controlled_Error;
+
+    WHEN OTHERS THEN
+      pkg_Error.setError;
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo,
+                      pkg_traza.cnuNivelTrzDef,
+                      pkg_traza.csbFIN_ERR);
+      RAISE pkg_Error.Controlled_Error; 
 
 END;
 
@@ -152,7 +172,7 @@ END;
         Fecha           : 28-09-2023
         =========================================================
         Autor       Fecha       Caso        Descripcion
-        Adrianavg   28-09-2023	OSF-1669    Creacion
+        Adrianavg   28-09-2023  OSF-1669    Creacion
 
         Parametros de Entrada
         Parametro               Descripcion
@@ -192,9 +212,14 @@ FUNCTION getSolicitudCancelacionPlanCom( idtFechaRegi        IN DATE,
                                  RETURN constants_per.tipo_xml_sol%type IS
 
     csbMetodo CONSTANT VARCHAR(60) := sbPkgName||'.GETSOLICITUDCANCELACIONPLANCOM';
+    nuErrorCode NUMBER; -- se almacena codigo de error
+    sbMensError VARCHAR2(2000); -- se almacena descripcion del error 
+
 BEGIN
-    UT_TRACE.TRACE('INICIO '||csbMetodo||
-                    ' idtFechaRegi: '||idtFechaRegi||' '||
+
+    pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbINICIO);
+
+    pkg_traza.trace(' idtFechaRegi: '||idtFechaRegi||' '||
                     ' inuMedioRecepcionId: '||inuMedioRecepcionId||' '||
                     ' inuContactoId: '||inuContactoId||' '||
                     ' inuDireccion: '||inuDireccion||' '||
@@ -206,7 +231,7 @@ BEGIN
                     ' inuTipoProd: '||inuTipoProd||' '||
                     ' inuPlanComerAnte: '||inuPlanComerAnte||' '||
                     ' inuPlanComerActual: '||inuPlanComerActual||' '||
-                    ' inuRespuesta: '||inuRespuesta ,10);
+                    ' inuRespuesta: '||inuRespuesta , pkg_traza.cnuNivelTrzDef); 
 
     sbXmlSol :=
             '<?xml version="1.0" encoding="utf-8" ?>
@@ -229,16 +254,28 @@ BEGIN
             </M_CAMBIO_DE_PLAN_COMERCIAL_100293>
             </P_CAMBIO_DE_PLAN_DE_COMERCIAL_POR_XML_100298>';
 
-    UT_TRACE.TRACE('FIN ' ||csbMetodo, 10);
+    pkg_traza.trace(sbXmlSol, pkg_traza.cnuNivelTrzDef); 
+    
+    pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
     return sbXmlSol;
+    
 EXCEPTION
-WHEN PKG_ERROR.CONTROLLED_ERROR THEN
-    UT_TRACE.TRACE('PKG_ERROR.CONTROLLED_ERROR '||csbMetodo, 10);
-    raise PKG_ERROR.CONTROLLED_ERROR;
-WHEN others THEN
-    UT_TRACE.TRACE('others ' ||csbMetodo, 10);
-    Pkg_Error.seterror;
-    raise PKG_ERROR.CONTROLLED_ERROR;
+    WHEN pkg_Error.Controlled_Error THEN
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo,
+                      pkg_traza.cnuNivelTrzDef,
+                      pkg_traza.csbFIN_ERC);                        
+    RAISE pkg_Error.Controlled_Error;
+
+    WHEN OTHERS THEN
+      pkg_Error.setError;
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo,
+                      pkg_traza.cnuNivelTrzDef,
+                      pkg_traza.csbFIN_ERR);
+      RAISE pkg_Error.Controlled_Error;
 
 END;
 

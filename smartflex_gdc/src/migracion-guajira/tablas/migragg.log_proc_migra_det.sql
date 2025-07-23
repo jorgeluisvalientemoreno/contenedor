@@ -1,0 +1,63 @@
+--LOG_PROC_MIGRA_DET OSF
+
+DECLARE
+
+  nuconta NUMBER;
+  nuErrorCode NUMBER;
+  sbErrorMessage VARCHAR2(4000);
+  
+BEGIN
+
+    
+	dbms_output.put_Line('INICIO');
+	dbms_output.put_Line('-------------------------------------');
+	
+    SELECT COUNT(*) INTO nuconta
+    FROM Dba_tables
+    WHERE TABLE_NAME = UPPER('LOG_PROC_MIGRA_DET') ;
+	
+	
+	IF nuconta = 0 THEN 
+      
+		dbms_output.put_line('Creando tabla LOG_PROC_MIGRA_DET');
+		-- Create table
+	    EXECUTE IMMEDIATE  'CREATE TABLE MIGRAGG.LOG_PROC_MIGRA_DET (
+							LPMDCODI   NUMBER,
+							LPMDPROG   VARCHAR2(100),
+							LPMDHILO   NUMBER,
+							LPMDUSER   VARCHAR2(50),
+							LPMDTERM   VARCHAR2(50),
+							LPMDSESI   VARCHAR2(50),
+							LPMDFECH   DATE,
+							LPMDERRO   NUMBER,
+							LPMDDESC   VARCHAR2(4000)
+						)';
+							
+		-- Add comments to the table							
+		EXECUTE IMMEDIATE 'COMMENT ON TABLE MIGRAGG.LOG_PROC_MIGRA_DET IS ''Log de errores Proceso Migracion''';					
+							
+		-- Add comments to the columns 
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN MIGRAGG.LOG_PROC_MIGRA_DET.LPMDCODI IS ''Codigo de log''';
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN MIGRAGG.LOG_PROC_MIGRA_DET.LPMDPROG IS ''ID Proceso''';
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN MIGRAGG.LOG_PROC_MIGRA_DET.LPMDHILO IS ''Número de Hilo''';
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN MIGRAGG.LOG_PROC_MIGRA_DET.LPMDUSER IS ''Usuario''';
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN MIGRAGG.LOG_PROC_MIGRA_DET.LPMDTERM IS ''Terminal''';
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN MIGRAGG.LOG_PROC_MIGRA_DET.LPMDSESI IS ''Sesion''';
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN MIGRAGG.LOG_PROC_MIGRA_DET.LPMDFECH IS ''Fecha Registro''';
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN MIGRAGG.LOG_PROC_MIGRA_DET.LPMDERRO IS ''Código de Error''';
+		EXECUTE IMMEDIATE 'COMMENT ON COLUMN MIGRAGG.LOG_PROC_MIGRA_DET.LPMDDESC IS ''Descripción Error''';
+
+
+
+    END IF;
+    dbms_output.put_Line('-------------------------------------');
+    dbms_output.put_Line('FIN');
+
+
+EXCEPTION
+  WHEN OTHERS THEN
+    dbms_output.put_line('ERROR: ' || SQLERRM);
+    ROLLBACK;
+	
+END;
+/

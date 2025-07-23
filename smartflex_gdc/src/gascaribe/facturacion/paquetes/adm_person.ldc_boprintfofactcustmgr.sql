@@ -24,11 +24,16 @@ IS
 										Se reemplaza uso de  EX.CONTROLLED_ERROR por  PKG_ERROR.CONTROLLED_ERROR
 										Se reemplaza uso de  UTL_FILE.FILE_TYPE por  PKG_GESTIONARCHIVOS.STYARCHIVO
 										Se ajusta el manejo de errores y trazas por los personalizados
-  25/06/2024    PAcosta                 OSF-2878: Cambio de esquema ADM_PERSON                                        
+  25/06/2024    PAcosta                 OSF-2878: Cambio de esquema ADM_PERSON              
+  14/01/2025	jerazomvm				OSF-3843: 
+										1. Se crea la variable publica sbDest
+										2. Se crea al procedimiento prcPrintFoByFactSinTermLinea
 **********************************************************************************/
     -----------------------------------
-    -- Variables privadas del package
+    -- Variables publicas del package
     -----------------------------------
+	sbDest		VARCHAR2(32767);
+	
     /*Unidad : Retorna la version */
     FUNCTION fsbVersion
     RETURN VARCHAR2;
@@ -61,6 +66,9 @@ IS
                 guarda en el archivo spool de salida
     */
     PROCEDURE PrintFoByFact(inuFactcodi factura.factcodi%TYPE);
+	
+	-- Procedimiento que realiza la impresión por facturación sin saltos de linea
+	PROCEDURE prcPrintFoByFactSinTermLinea(inuFactcodi factura.factcodi%TYPE);
     
     /*****************************************************************
     SINCECOMP
@@ -101,11 +109,16 @@ IS
   -----------------------------------
   -- Variables privadas del package
   -----------------------------------
-  CSBVERSION          CONSTANT VARCHAR2(10) := 'OSF-2381';
-  cnuOrdEstaRegi      CONSTANT NUMBER := 0;
-  cnuOrdEstaAsig      CONSTANT NUMBER := 5;
-  cnuCommentTypeGen   CONSTANT NUMBER := 83;
-  cnuMaxLength        CONSTANT NUMBER := 32000;
+  CSBVERSION          	CONSTANT VARCHAR2(10) := 'OSF-3843';
+  
+  csbNOMPKG  	 		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.'; -- Constantes para el control de la traza
+  cnuNVLTRC 			CONSTANT NUMBER 		:= pkg_traza.cnuNivelTrzDef;
+  csbInicio 			CONSTANT VARCHAR2(35) 	:= pkg_traza.fsbINICIO;
+  
+  cnuOrdEstaRegi      	CONSTANT NUMBER := 0;
+  cnuOrdEstaAsig      	CONSTANT NUMBER := 5;
+  cnuCommentTypeGen   	CONSTANT NUMBER := 83;
+  cnuMaxLength        	CONSTANT NUMBER := 32000;
 
   /* Mensaje */
   gnuErrorCode    	GE_MESSAGE.message_id%TYPE;
@@ -119,9 +132,7 @@ IS
   iboFilOpen      	BOOLEAN;
   nuPefacodi      	perifact.pefacodi%TYPE;
   nuIdFormato     	ed_formato.formcodi%TYPE;
-  clobDest        	CLOB;
-  
-  csbNOMPKG   CONSTANT VARCHAR2(35):= $$PLSQL_UNIT||'.'; -- Constantes para el control de la traza
+  clobDest			CLOB;
 
   /*****************************************************************
   Propiedad intelectual de CSC.
@@ -476,8 +487,8 @@ IS
   Parametros              Descripcion
   ============         ===================
 
-  Fecha             Autor             Modificacion
-  =========       =========           ====================
+  Fecha         Autor             	Modificacion
+  =========     =========           ====================
   ******************************************************************/
   IS
     -------------------------------------------
@@ -502,10 +513,12 @@ IS
     --LLena el archivo con los datos de CLOB
     LOOP
       sbData := Dbms_Lob.SubStr(clobDest, cnuMaxLength, nuPosicion );
+	  
       EXIT WHEN sbData IS NULL;
+	  
       nuPosicion := nuPosicion + Length(sbData);
       --Escribe en disco
-	  pkg_gestionarchivos.prcescribirlinea_smf(vPrintFactFile,sbData,constants_per.GetTrue);
+	  pkg_gestionarchivos.prcescribirlinea_smf(vPrintFactFile,sbData, constants_per.GetTrue);
       sbData := NULL;
     END LOOP;
 	pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
@@ -646,6 +659,92 @@ IS
 		pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
 		RAISE pkg_error.controlled_error;
   END PrintFoByFact;
+  
+	PROCEDURE prcPrintFoByFactSinTermLinea(inuFactcodi factura.factcodi%TYPE)
+	IS
+	/*****************************************************************
+	  Propiedad intelectual de CSC.
+
+	  Unidad         : prcPrintFoByFactSinTermLinea
+	  Descripcion    : Procedimiento que realiza la impresión por facturación sin saltos de linea
+	  Autor          : Jhon Erazo
+	  Fecha          : 15/01/2025
+
+	  Parametros            Descripcion
+	  ============         	===================
+	  inuFactcodi			Identificador de la factura
+
+	  Historia de Modificaciones
+	  Fecha             Autor             	Modificacion
+	  =========       	=========           ====================
+	  15/01/2025		jerazomvm			OSF-3843: Creación
+	******************************************************************/
+	
+	-------------------------------------------
+    --Types y Subtypes
+    -------------------------------------------
+    rcfactura FACTURA%ROWTYPE;
+    -------------------------------------------
+    --Variables
+    -------------------------------------------
+	csbMetodo 		VARCHAR2(100) := csbNOMPKG||'prcPrintFoByFactSinTermLinea';
+	sbData			VARCHAR2(32767);
+	nuError 		NUMBER;
+    sbError 		VARCHAR2(4000);
+	
+	
+	BEGIN
+
+		pkg_traza.trace(csbMetodo, cnuNVLTRC, csbInicio);    
+		pkg_traza.trace('inuFactcodi['||inuFactcodi||']', cnuNVLTRC);
+
+		rcfactura  := PKTBLFACTURA.frcGetRecord(inuFactcodi,1);
+
+		--Realiza al extraccion de los datos y retorna en CLOB
+		PKBODATAEXTRACTOR.InstanceBaseEntity(rcfactura.factcodi, 'FACTURA', TRUE);  
+		PKBODATAEXTRACTOR.InstanceBaseEntity(rcfactura.factsusc, 'SUSCRIPC', TRUE); 
+    
+		--Setea los valores en la isntancia
+		ge_boinstanceControl.AddAttribute('DATA_EXTRACTOR',NULL,'FACTURA','FACTCODI',rcfactura.factcodi,TRUE);
+		ge_boinstanceControl.AddAttribute('DATA_EXTRACTOR',NULL,'FACTURA','FACTSUSC',rcfactura.factsusc,TRUE);
+
+		pkg_traza.trace('Inicia la extraccion de los datos');
+		PKBODATAEXTRACTOR.ExecuteRules(LDC_BOPRINTFOFACTCUSTMgr.nuIdFormato, sbData);  
+		pkg_traza.trace('Finaliza la extraccion de los datos', cnuNVLTRC);
+
+		--Valida si el CLOB tiene datos
+		IF (sbData IS NULL) THEN
+			RAISE pkg_error.controlled_error;
+		END IF;
+		
+		pkg_traza.trace('Valida el tama?o de la variable sbDest', cnuNVLTRC);
+		
+		IF (cnuMaxLength - (LENGTH(sbDest) + LENGTH(sbData))  < 2000) THEN	
+			sbData := replace(sbData, sbLineFeed, '');
+			sbDest := sbDest || sbData;
+			pkg_gestionarchivos.prcescribirlinea_smf(vPrintFactFile, sbDest, constants_per.GetTrue);
+			sbDest := NULL;
+		ELSE
+			sbDest := sbDest || sbData;
+		END IF;
+		
+		pkg_traza.trace('Generacion del archivo', cnuNVLTRC);
+		
+		pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN);
+  
+	EXCEPTION
+		WHEN pkg_error.controlled_error THEN
+			pkg_error.getError(nuError, sbError);
+			pkg_traza.trace(csbMetodo||' '||sbError);
+			pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERC);
+			RAISE pkg_error.controlled_error;
+		WHEN OTHERS THEN
+			pkg_error.setError;
+			pkg_error.getError(nuError, sbError);
+			pkg_traza.trace(csbMetodo||' '||sbError);
+			pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERR);
+			RAISE pkg_error.controlled_error;
+  END prcPrintFoByFactSinTermLinea;
   
   /*****************************************************************
   SINCECOMP

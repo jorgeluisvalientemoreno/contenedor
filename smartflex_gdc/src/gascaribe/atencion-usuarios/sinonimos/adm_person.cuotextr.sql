@@ -1,5 +1,5 @@
-PROMPT Crea sinonimo objeto dependiente CUOTEXTR
+PROMPT Crea Sinonimo CUOTEXTR
 BEGIN
-    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.CUOTEXTR FOR CUOTEXTR';
+	pkg_Utilidades.prCrearSinonimos( UPPER('CUOTEXTR'), UPPER('OPEN'));
 END;
 /

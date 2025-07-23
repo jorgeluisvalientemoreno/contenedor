@@ -1,0 +1,48 @@
+CREATE OR REPLACE TRIGGER OPEN.TRG_DO_LDCI_INGREVEMI
+    AFTER INSERT OR UPDATE OR DELETE
+    ON OPEN.LDCI_INGREVEMI
+    REFERENCING OLD AS OLD NEW AS NEW
+    FOR EACH ROW
+BEGIN
+
+    DECLARE
+    INVMSESU NUMBER(15);
+    INVMCOGP NUMBER(4);
+    OPERATION VARCHAR2(1);
+
+    BEGIN
+
+    IF INSERTING THEN
+        INVMSESU := :new.INVMSESU;
+        INVMCOGP := :new.INVMCOGP;
+        OPERATION := 'I';
+    ELSIF UPDATING THEN
+        INVMSESU := :new.INVMSESU;
+        INVMCOGP := :new.INVMCOGP;
+        OPERATION := 'U';
+    ELSE
+        INVMSESU := :old.INVMSESU;
+        INVMCOGP := :old.INVMCOGP;
+        OPERATION := 'D';
+    END IF;
+
+    INSERT INTO OPEN.LDCBI_LDCI_INGREVEMI(
+        INVMSESU,
+        INVMCOGP,
+        OPERATION
+    )
+    VALUES (
+        INVMSESU,
+        INVMCOGP,
+        OPERATION
+    );
+
+    EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20000,
+                                'Error en TRG_DO_LDCI_INGREVEMI por -->' || sqlcode ||
+                                chr(13) || sqlerrm);
+    END;
+
+END;
+/

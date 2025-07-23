@@ -30,7 +30,7 @@ CREATE OR REPLACE PACKAGE BODY  personalizaciones.pkg_recofael_log IS
     -- Constantes para el control de la traza
    csbSP_NAME     CONSTANT VARCHAR2(100):= $$PLSQL_UNIT;
    -- Identificador del ultimo caso que hizo cambios
-   csbVersion     CONSTANT VARCHAR2(15) := 'OSF-2158';
+   csbVersion     CONSTANT VARCHAR2(15) := 'OSF-4620';
 
   FUNCTION fsbVersion RETURN VARCHAR2 IS
   /***************************************************************************
@@ -68,6 +68,7 @@ CREATE OR REPLACE PACKAGE BODY  personalizaciones.pkg_recofael_log IS
     =========================================================
     Autor       Fecha       Caso       Descripcion
     LJLB       17-01-2024   OSF-2158    Creacion
+	JSOTO	   20-06-2025   OSF-4620	Se agrega insercion de dato empresa
   ***************************************************************************/
     csbMT_NAME      VARCHAR2(100) := csbSP_NAME || '.prInsRecofaelLog';
   BEGIN
@@ -96,7 +97,8 @@ CREATE OR REPLACE PACKAGE BODY  personalizaciones.pkg_recofael_log IS
                                 operacion,
                                 fecha_registro,
                                 usuario,
-                                terminal
+                                terminal,
+                                empresa
                     ) VALUES (
                         iregRecofaelLog.codigo,
                         iregRecofaelLog.tipo_documento_actual,
@@ -122,7 +124,8 @@ CREATE OR REPLACE PACKAGE BODY  personalizaciones.pkg_recofael_log IS
                         iregRecofaelLog.operacion,
                         SYSDATE,
                         USER,
-                        userenv('TERMINAL')
+                        pkg_session.fsbgetTerminal,
+                        iregRecofaelLog.empresa
                     );
     pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
   EXCEPTION

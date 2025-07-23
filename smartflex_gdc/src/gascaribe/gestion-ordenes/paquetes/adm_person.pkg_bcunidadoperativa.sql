@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE ADM_PERSON.PKG_BCUNIDADOPERATIVA IS
+CREATE OR REPLACE PACKAGE adm_person.pkg_bcunidadoperativa IS
 /*******************************************************************************
     Fuente=Propiedad Intelectual de Gases del Caribe
     pkg_bcordenes
@@ -156,9 +156,15 @@ FUNCTION frfgetUnidadOperativa
   RETURN constants_per.TYREFCURSOR;
 
 
+FUNCTION fsbObtTelefono
+(
+	  inuUnidadOperativa or_operating_unit.operating_unit_id%TYPE
+)
+  RETURN or_operating_unit.phone_number%TYPE;
+
 END PKG_BCUNIDADOPERATIVA;
 /
-CREATE OR REPLACE PACKAGE BODY ADM_PERSON.PKG_BCUNIDADOPERATIVA IS
+CREATE OR REPLACE PACKAGE BODY adm_person.pkg_bcunidadoperativa IS
 
     -- Identificador del ultimo caso que hizo cambios
     csbVersion 	VARCHAR2(15) := 'OSF-1776';
@@ -1440,8 +1446,72 @@ FUNCTION fblExiste
 		RETURN NULL;
 	END;
 
+	FUNCTION fsbObtTelefono
+	(
+		  inuUnidadOperativa or_operating_unit.operating_unit_id%TYPE
+	)
+	  RETURN or_operating_unit.phone_number%TYPE
+	
+	IS
+	
+	/***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fsbObtTelefono 
+    Descripcion     : Consulta el numero telefonico para la unidad operativa 
+    Autor           : Jhon Soto - Horbath
+    Fecha           : 31/01/2025
+	
+	Parametros de entrada
+	inuUnidadOperativa	Id de la Unidad Operativa a consultar en la tabla OR_OPERATING_UNIT
+	
+	Parametros de salida
 
-END PKG_BCUNIDADOPERATIVA;
+	
+    Modificaciones  :
+    Autor       Fecha       Caso     Descripcion
+    jsoto       31/01/2025  OSF-3911 Creacion
+    ***************************************************************************/
+
+	csbMT_NAME  VARCHAR2(70) := csbSP_NAME || '.fsbObtTelefono';
+	
+    nuPhoneNumber 		or_operating_unit.phone_number%TYPE;
+    osbMensError 		VARCHAR2(2000);
+    onuCodError         NUMBER;
+	
+    CURSOR cuUnidadOperativa IS
+    SELECT phone_number
+    FROM or_operating_unit
+    WHERE operating_unit_id = inuUnidadOperativa;
+
+
+    BEGIN
+	
+	   pkg_traza.trace(csbMT_NAME,cnuNVLTRC,csbInicio);
+	   pkg_traza.trace('inuUnidadOperativa: ' || inuUnidadOperativa, cnuNVLTRC);
+	   
+	   IF cuUnidadOperativa%ISOPEN THEN 
+	      CLOSE cuUnidadOperativa;
+	   END IF;
+		
+	   OPEN cuUnidadOperativa;
+	   FETCH cuUnidadOperativa INTO nuPhoneNumber;
+	   CLOSE cuUnidadOperativa;
+
+       pkg_traza.trace('nuPhoneNumber: ' || nuPhoneNumber, cnuNVLTRC);
+	   pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
+
+	   RETURN nuPhoneNumber;
+	   
+    EXCEPTION
+        WHEN OTHERS THEN
+        pkg_error.setError;
+        pkg_error.getError(onuCodError,osbMensError);
+        pkg_traza.trace('Termina con error: '||onuCodError||':'||osbMensError || csbMT_NAME, cnuNVLTRC);
+		pkg_traza.trace(csbMT_NAME, cnuNVLTRC,pkg_traza.csbFIN_ERR); 
+        RETURN nuPhoneNumber;
+	END fsbObtTelefono;
+	
+END pkg_bcunidadoperativa;
 /
 PROMPT Otorgando permisos de ejecución para adm_person.pkg_bcunidadoperativa
 BEGIN

@@ -1752,10 +1752,10 @@ if (not EXP_ACTION_289_.blProcessStatus) then
  return;
 end if;
 
-EXP_ACTION_289_.old_tb1_0(0):=121400673;
+EXP_ACTION_289_.old_tb1_0(0):=121407244;
 EXP_ACTION_289_.tb1_0(0):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 EXP_ACTION_289_.tb1_0(0):=EXP_ACTION_289_.tb1_0(0);
-EXP_ACTION_289_.old_tb1_1(0):='GE_EXEACTION_CT1E121400673'
+EXP_ACTION_289_.old_tb1_1(0):='GE_EXEACTION_CT1E121407244'
 ;
 EXP_ACTION_289_.tb1_1(0):=TO_CHAR(EXP_ACTION_289_.tb1_0(0));
 EXP_ACTION_289_.tb1_2(0):=EXP_ACTION_289_.tb0_0(0);
@@ -1769,9 +1769,9 @@ EXP_ACTION_289_.tb1_2(0),
 'LBTEST'
 ,
 to_date('06-09-2012 15:49:54','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 08:26:12','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 08:26:12','DD-MM-YYYY HH24:MI:SS'),
-'R'
+to_date('02-01-2025 10:44:24','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 10:44:24','DD-MM-YYYY HH24:MI:SS'),
+'G'
 ,
 'N'
 ,
@@ -2212,10 +2212,10 @@ if (not EXP_ACTION_8210_.blProcessStatus) then
  return;
 end if;
 
-EXP_ACTION_8210_.old_tb1_0(0):=121400674;
+EXP_ACTION_8210_.old_tb1_0(0):=121407245;
 EXP_ACTION_8210_.tb1_0(0):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 EXP_ACTION_8210_.tb1_0(0):=EXP_ACTION_8210_.tb1_0(0);
-EXP_ACTION_8210_.old_tb1_1(0):='GE_EXEACTION_CT1E121400674'
+EXP_ACTION_8210_.old_tb1_1(0):='GE_EXEACTION_CT1E121407245'
 ;
 EXP_ACTION_8210_.tb1_1(0):=TO_CHAR(EXP_ACTION_8210_.tb1_0(0));
 EXP_ACTION_8210_.tb1_2(0):=EXP_ACTION_8210_.tb0_0(0);
@@ -2229,8 +2229,8 @@ EXP_ACTION_8210_.tb1_2(0),
 'OPEN'
 ,
 to_date('30-08-2013 16:58:54','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 07:44:24','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 07:44:24','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 10:44:27','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 10:44:27','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -4664,7 +4664,7 @@ if (not EXP_PROCESS_19_.blProcessStatus) then
  return;
 end if;
 
-EXP_PROCESS_19_.old_tb11_0(0):=120196866;
+EXP_PROCESS_19_.old_tb11_0(0):=120198044;
 EXP_PROCESS_19_.tb11_0(0):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_PROCESS_19_.tb11_0(0):=EXP_PROCESS_19_.tb11_0(0);
 ut_trace.trace('insertando tabla: GE_STATEMENT fila (0)',1);
@@ -4673,7 +4673,7 @@ VALUES (EXP_PROCESS_19_.tb11_0(0),
 9,
 'Tipo de Respuesta Electrónica'
 ,
-'SELECT LD_BORTAINTERACCION.fnuValEnvioRtaElect(:INST.EXTERNAL_ID:) TIPO_RTA
+'SELECT pkg_bosolicitud_interaccion.fnuvalenviortaelect(:INST.EXTERNAL_ID:) TIPO_RTA
 FROM DUAL'
 ,
 'Tipo de Respuesta Electrónica'
@@ -4791,7 +4791,7 @@ if (not EXP_PROCESS_19_.blProcessStatus) then
  return;
 end if;
 
-EXP_PROCESS_19_.old_tb11_0(1):=120196867;
+EXP_PROCESS_19_.old_tb11_0(1):=120198045;
 EXP_PROCESS_19_.tb11_0(1):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_PROCESS_19_.tb11_0(1):=EXP_PROCESS_19_.tb11_0(1);
 ut_trace.trace('insertando tabla: GE_STATEMENT fila (1)',1);
@@ -4800,10 +4800,8 @@ VALUES (EXP_PROCESS_19_.tb11_0(1),
 9,
 'Valida que el medio de recepción sea escrito'
 ,
-'SELECT (SELECT Max(decode(b.is_write,'|| chr(39) ||'Y'|| chr(39) ||',1,0)) FROM mo_packages a, ge_reception_type b
-WHERE a.package_id in(SELECT PACKAGE_id FROM mo_packages_asso WHERE package_id_asso = :INST.EXTERNAL_ID:)
-AND a.RECEPTION_TYPE_ID = b.RECEPTION_TYPE_ID) FLAG_VALIDATE
-FROM dual'
+'SELECT pkg_bosolicitud_interaccion.fnuIniValorFlagValidate(:INST.EXTERNAL_ID:) FLAG_VALIDATE
+FROM DUAL'
 ,
 'Valida que el medio de recepción sea escrito'
 );
@@ -4950,7 +4948,7 @@ if (not EXP_PROCESS_19_.blProcessStatus) then
  return;
 end if;
 
-EXP_PROCESS_19_.old_tb11_0(2):=120196868;
+EXP_PROCESS_19_.old_tb11_0(2):=120198046;
 EXP_PROCESS_19_.tb11_0(2):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_PROCESS_19_.tb11_0(2):=EXP_PROCESS_19_.tb11_0(2);
 ut_trace.trace('insertando tabla: GE_STATEMENT fila (2)',1);
@@ -6673,7 +6671,7 @@ if (not EXP_PROCESS_19_.blProcessStatus) then
  return;
 end if;
 
-EXP_PROCESS_19_.old_tb11_0(3):=120196869;
+EXP_PROCESS_19_.old_tb11_0(3):=120198047;
 EXP_PROCESS_19_.tb11_0(3):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_PROCESS_19_.tb11_0(3):=EXP_PROCESS_19_.tb11_0(3);
 ut_trace.trace('insertando tabla: GE_STATEMENT fila (3)',1);
@@ -6743,7 +6741,7 @@ if (not EXP_PROCESS_19_.blProcessStatus) then
  return;
 end if;
 
-EXP_PROCESS_19_.old_tb11_0(4):=120196870;
+EXP_PROCESS_19_.old_tb11_0(4):=120198048;
 EXP_PROCESS_19_.tb11_0(4):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_PROCESS_19_.tb11_0(4):=EXP_PROCESS_19_.tb11_0(4);
 ut_trace.trace('insertando tabla: GE_STATEMENT fila (4)',1);
@@ -8352,7 +8350,7 @@ if (not EXP_UNITTYPE_17_.blProcessStatus) then
  return;
 end if;
 
-EXP_UNITTYPE_17_.old_tb5_0(0):=120196871;
+EXP_UNITTYPE_17_.old_tb5_0(0):=120198049;
 EXP_UNITTYPE_17_.tb5_0(0):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_UNITTYPE_17_.tb5_0(0):=EXP_UNITTYPE_17_.tb5_0(0);
 ut_trace.trace('Actualizar o insertar tabla: GE_STATEMENT fila (0)',1);
@@ -8519,7 +8517,7 @@ if (not EXP_UNITTYPE_17_.blProcessStatus) then
  return;
 end if;
 
-EXP_UNITTYPE_17_.old_tb5_0(1):=120196872;
+EXP_UNITTYPE_17_.old_tb5_0(1):=120198050;
 EXP_UNITTYPE_17_.tb5_0(1):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_UNITTYPE_17_.tb5_0(1):=EXP_UNITTYPE_17_.tb5_0(1);
 ut_trace.trace('Actualizar o insertar tabla: GE_STATEMENT fila (1)',1);
@@ -11792,7 +11790,7 @@ if (not EXP_UNITTYPE_24_.blProcessStatus) then
  return;
 end if;
 
-EXP_UNITTYPE_24_.old_tb1_0(0):=120196873;
+EXP_UNITTYPE_24_.old_tb1_0(0):=120198051;
 EXP_UNITTYPE_24_.tb1_0(0):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_UNITTYPE_24_.tb1_0(0):=EXP_UNITTYPE_24_.tb1_0(0);
 ut_trace.trace('Actualizar o insertar tabla: GE_STATEMENT fila (0)',1);
@@ -11993,7 +11991,7 @@ if (not EXP_UNITTYPE_24_.blProcessStatus) then
  return;
 end if;
 
-EXP_UNITTYPE_24_.old_tb1_0(1):=120196874;
+EXP_UNITTYPE_24_.old_tb1_0(1):=120198052;
 EXP_UNITTYPE_24_.tb1_0(1):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_UNITTYPE_24_.tb1_0(1):=EXP_UNITTYPE_24_.tb1_0(1);
 ut_trace.trace('Actualizar o insertar tabla: GE_STATEMENT fila (1)',1);
@@ -15127,10 +15125,10 @@ if (not EXP_ACTION_53_.blProcessStatus) then
  return;
 end if;
 
-EXP_ACTION_53_.old_tb1_0(0):=121400675;
+EXP_ACTION_53_.old_tb1_0(0):=121407246;
 EXP_ACTION_53_.tb1_0(0):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 EXP_ACTION_53_.tb1_0(0):=EXP_ACTION_53_.tb1_0(0);
-EXP_ACTION_53_.old_tb1_1(0):='GE_EXEACTION_CT1E121400675'
+EXP_ACTION_53_.old_tb1_1(0):='GE_EXEACTION_CT1E121407246'
 ;
 EXP_ACTION_53_.tb1_1(0):=TO_CHAR(EXP_ACTION_53_.tb1_0(0));
 EXP_ACTION_53_.tb1_2(0):=EXP_ACTION_53_.tb0_0(0);
@@ -15144,8 +15142,8 @@ EXP_ACTION_53_.tb1_2(0),
 'LBTEST'
 ,
 to_date('08-03-2012 09:58:48','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 07:46:50','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 07:46:50','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 10:48:11','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 10:48:11','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -19580,10 +19578,10 @@ if (not EXP_ACTION_8168_.blProcessStatus) then
  return;
 end if;
 
-EXP_ACTION_8168_.old_tb1_0(0):=121400676;
+EXP_ACTION_8168_.old_tb1_0(0):=121407247;
 EXP_ACTION_8168_.tb1_0(0):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 EXP_ACTION_8168_.tb1_0(0):=EXP_ACTION_8168_.tb1_0(0);
-EXP_ACTION_8168_.old_tb1_1(0):='GE_EXEACTION_CT1E121400676'
+EXP_ACTION_8168_.old_tb1_1(0):='GE_EXEACTION_CT1E121407247'
 ;
 EXP_ACTION_8168_.tb1_1(0):=TO_CHAR(EXP_ACTION_8168_.tb1_0(0));
 EXP_ACTION_8168_.tb1_2(0):=EXP_ACTION_8168_.tb0_0(0);
@@ -19597,8 +19595,8 @@ EXP_ACTION_8168_.tb1_2(0),
 'LBTEST'
 ,
 to_date('19-10-2012 09:35:26','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 07:48:57','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 07:48:57','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 10:51:33','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 10:51:33','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -28423,7 +28421,7 @@ if (not EXP_PROCESS_27_.blProcessStatus) then
  return;
 end if;
 
-EXP_PROCESS_27_.old_tb10_0(0):=120196875;
+EXP_PROCESS_27_.old_tb10_0(0):=120198053;
 EXP_PROCESS_27_.tb10_0(0):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_PROCESS_27_.tb10_0(0):=EXP_PROCESS_27_.tb10_0(0);
 ut_trace.trace('insertando tabla: GE_STATEMENT fila (0)',1);
@@ -28943,7 +28941,7 @@ if (not EXP_UNITTYPE_43_.blProcessStatus) then
  return;
 end if;
 
-EXP_UNITTYPE_43_.old_tb1_0(0):=120196876;
+EXP_UNITTYPE_43_.old_tb1_0(0):=120198054;
 EXP_UNITTYPE_43_.tb1_0(0):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_UNITTYPE_43_.tb1_0(0):=EXP_UNITTYPE_43_.tb1_0(0);
 ut_trace.trace('Actualizar o insertar tabla: GE_STATEMENT fila (0)',1);
@@ -31997,10 +31995,10 @@ if (not EXP_PROCESS_24_.blProcessStatus) then
  return;
 end if;
 
-EXP_PROCESS_24_.old_tb7_0(0):=121400677;
+EXP_PROCESS_24_.old_tb7_0(0):=121407248;
 EXP_PROCESS_24_.tb7_0(0):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 EXP_PROCESS_24_.tb7_0(0):=EXP_PROCESS_24_.tb7_0(0);
-EXP_PROCESS_24_.old_tb7_1(0):='WFWF_POST_RULECT9E121400677'
+EXP_PROCESS_24_.old_tb7_1(0):='WFWF_POST_RULECT9E121407248'
 ;
 EXP_PROCESS_24_.tb7_1(0):=TO_CHAR(EXP_PROCESS_24_.tb7_0(0));
 EXP_PROCESS_24_.tb7_2(0):=EXP_PROCESS_24_.tb6_0(0);
@@ -32014,8 +32012,8 @@ EXP_PROCESS_24_.tb7_2(0),
 'LBTEST'
 ,
 to_date('13-03-2012 09:52:37','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 07:56:22','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 07:56:22','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 11:01:06','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 11:01:06','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -32451,10 +32449,10 @@ if (not EXP_PROCESS_24_.blProcessStatus) then
  return;
 end if;
 
-EXP_PROCESS_24_.old_tb7_0(1):=121400678;
+EXP_PROCESS_24_.old_tb7_0(1):=121407249;
 EXP_PROCESS_24_.tb7_0(1):=GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION;
 EXP_PROCESS_24_.tb7_0(1):=EXP_PROCESS_24_.tb7_0(1);
-EXP_PROCESS_24_.old_tb7_1(1):='WFWF_POST_RULECT9E121400678'
+EXP_PROCESS_24_.old_tb7_1(1):='WFWF_POST_RULECT9E121407249'
 ;
 EXP_PROCESS_24_.tb7_1(1):=TO_CHAR(EXP_PROCESS_24_.tb7_0(1));
 EXP_PROCESS_24_.tb7_2(1):=EXP_PROCESS_24_.tb6_0(0);
@@ -32468,8 +32466,8 @@ EXP_PROCESS_24_.tb7_2(1),
 'LBTEST'
 ,
 to_date('13-03-2012 15:12:14','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 07:56:22','DD-MM-YYYY HH24:MI:SS'),
-to_date('26-01-2024 07:56:22','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 11:01:07','DD-MM-YYYY HH24:MI:SS'),
+to_date('02-01-2025 11:01:07','DD-MM-YYYY HH24:MI:SS'),
 'G'
 ,
 'N'
@@ -32945,7 +32943,7 @@ if (not EXP_PROCESS_24_.blProcessStatus) then
  return;
 end if;
 
-EXP_PROCESS_24_.old_tb13_0(0):=120196877;
+EXP_PROCESS_24_.old_tb13_0(0):=120198055;
 EXP_PROCESS_24_.tb13_0(0):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_PROCESS_24_.tb13_0(0):=EXP_PROCESS_24_.tb13_0(0);
 ut_trace.trace('insertando tabla: GE_STATEMENT fila (0)',1);
@@ -33283,7 +33281,7 @@ if (not EXP_PROCESS_24_.blProcessStatus) then
  return;
 end if;
 
-EXP_PROCESS_24_.old_tb13_0(1):=120196878;
+EXP_PROCESS_24_.old_tb13_0(1):=120198056;
 EXP_PROCESS_24_.tb13_0(1):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_PROCESS_24_.tb13_0(1):=EXP_PROCESS_24_.tb13_0(1);
 ut_trace.trace('insertando tabla: GE_STATEMENT fila (1)',1);
@@ -34187,7 +34185,7 @@ if (not EXP_UNITTYPE_36_.blProcessStatus) then
  return;
 end if;
 
-EXP_UNITTYPE_36_.old_tb1_0(0):=120196879;
+EXP_UNITTYPE_36_.old_tb1_0(0):=120198057;
 EXP_UNITTYPE_36_.tb1_0(0):=GE_BOSEQUENCE.NEXTGE_STATEMENT;
 EXP_UNITTYPE_36_.tb1_0(0):=EXP_UNITTYPE_36_.tb1_0(0);
 ut_trace.trace('Actualizar o insertar tabla: GE_STATEMENT fila (0)',1);

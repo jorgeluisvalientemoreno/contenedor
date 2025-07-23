@@ -200,9 +200,6 @@ create or replace PACKAGE BODY   personalizaciones.pkg_factura_electronica IS
     pkg_traza.trace('inuContrato => ' || inuContrato, pkg_traza.cnuNivelTrzDef);
     pkg_traza.trace('idtFechaEnvio => ' || idtFechaEnvio, pkg_traza.cnuNivelTrzDef);
     pkg_traza.trace('idtFechaRespuesta => ' || idtFechaRespuesta, pkg_traza.cnuNivelTrzDef);
-    pkg_traza.trace('iclXmlFactelect => ' || iclXmlFactelect, pkg_traza.cnuNivelTrzDef);
-    pkg_traza.trace('iclXmlRespuesta => ' || iclXmlRespuesta, pkg_traza.cnuNivelTrzDef);
-    pkg_traza.trace('isbMensajeRespuesta => ' || isbMensajeRespuesta, pkg_traza.cnuNivelTrzDef);
     pkg_error.prInicializaError(onuError, osbError);
     
     IF inuContrato IS NOT NULL THEN

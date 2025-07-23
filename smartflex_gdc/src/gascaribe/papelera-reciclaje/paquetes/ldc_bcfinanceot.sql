@@ -21,6 +21,7 @@ CREATE OR REPLACE package LDC_BcFinanceOt is
     =========       =========               ====================
     05/12/2014      JCarmona.CAMBIO5648     Modificación método <GetFinanCondbyProd>.
     05/12/2014      JCarmona.CAMBIO5648     Creación método <fnuValReconexion>.
+    07/03/2025      jpinedc.OSF-2204        Se usa script de permisos
   ******************************************************************/
 
   /*****************************************************************
@@ -842,8 +843,12 @@ END FSBVERSION;
 
 end LDC_BcFinanceOt;
 /
-GRANT EXECUTE on LDC_BCFINANCEOT to SYSTEM_OBJ_PRIVS_ROLE;
 GRANT EXECUTE on LDC_BCFINANCEOT to REXEOPEN;
 GRANT EXECUTE on LDC_BCFINANCEOT to RSELSYS;
 GRANT EXECUTE on LDC_BCFINANCEOT to REXEGISOSF;
+/
+Prompt Otorgando permisos sobre OPEN.ldc_bcfinanceot
+BEGIN
+    pkg_Utilidades.prAplicarPermisos(upper('ldc_bcfinanceot'), 'OPEN');
+END;
 /

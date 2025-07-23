@@ -875,7 +875,7 @@ CPTCB_.tb0_1(0),
 'LDC - Crear Producto para Traslado de Cartera FNB'
 ,
 null,
-'42'
+'46'
 ,
 8,
 2,
@@ -889,9 +889,9 @@ null,
 ,
 'Y'
 ,
-591,
+609,
 null,
-to_date('22-08-2018 16:03:48','DD-MM-YYYY HH24:MI:SS'),
+to_date('16-12-2024 15:19:35','DD-MM-YYYY HH24:MI:SS'),
 null);
 
 exception when others then
@@ -934,11 +934,11 @@ CPTCB_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
     <EXECUTABLE_ID>500000000002736</EXECUTABLE_ID>
     <NAME>CPTCB</NAME>
     <DESCRIPTION>LDC - Crear Producto para Traslado de Cartera FNB</DESCRIPTION>
-    <VERSION>42</VERSION>
+    <VERSION>46</VERSION>
     <MODULE>16</MODULE>
     <DIRECT_EXECUTION>Y</DIRECT_EXECUTION>
     <PATH_FILE_HELP/>
-    <OBJECT_NAME>LDC_BOVENTASFNB.PRCREATEPRODUCTFNB</OBJECT_NAME>
+    <OBJECT_NAME>PKG_UICPTCB.PRCOBJETO</OBJECT_NAME>
     <QUERY_NAME/>
     <ALLOW_SCHEDULE>N</ALLOW_SCHEDULE>
     <ALLOW_FREQUENCY>N</ALLOW_FREQUENCY>
@@ -952,9 +952,9 @@ CPTCB_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
     <EXTERNAL_TYPE_ID>500000000002736</EXTERNAL_TYPE_ID>
     <ENTITY_ID>9623</ENTITY_ID>
     <EXTERNAL_ID>500000000002736</EXTERNAL_ID>
-    <FRAME_ID>94940<' ||
-'/FRAME_ID>
-    <IS_UPDATABLE>N</IS_UPDATABLE>
+    <FRAME_ID>94940</FRAME_ID>
+  ' ||
+'  <IS_UPDATABLE>N</IS_UPDATABLE>
     <IS_VISIBLE>N</IS_VISIBLE>
     <REQUIRED>N</REQUIRED>
     <DISPLAY_NAME/>
@@ -980,8 +980,8 @@ CPTCB_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
       <EXTERNAL_TYPE_ID>500000000002736</EXTERNAL_TYPE_ID>
       <FRAME_ID>94940</FRAME_ID>
       <DATA_LENGTH>0</DATA_LENGTH>
-      <DATA_PRECISION>8</D' ||
-'ATA_PRECISION>
+      <DATA_PRECISION>8</DATA_PRECISION' ||
+'>
       <DATA_SCALE>0</DATA_SCALE>
       <DATA_TYPE>NUMBER</DATA_TYPE>
       <DISPLAY_VIEW/>
@@ -993,7 +993,7 @@ CPTCB_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
       <INIT_BASIC_EXP_ID/>
       <VALID_BASIC_EXP_ID/>
       <INIT_EXPRESSION_ID/>
-      <VALID_EXPRESSION_ID>121310646</VALID_EXPRESSION_ID>
+      <VALID_EXPRESSION_ID>121409347</VALID_EXPRESSION_ID>
       <DEFAULT_VALUE/>
       <SELECT_STATEMENT/>
       <SELECT_STATEMENT_ID/>
@@ -1010,8 +1010,8 @@ CPTCB_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
     <ATTRIBUTE>
       <ENTITY_ATTRIBUTE_ID>5024</ENTITY_ATTRIBUTE_ID>
       <CONFIGURATION_ID>-999999996</CONFIGURATION_ID>
-      <ATTRIBUTE_NAME>PRODUCT_TYPE_I' ||
-'D</ATTRIBUTE_NAME>
+      <ATTRIBUTE_NAME>PRODUCT_TYPE_ID</ATTRIBUTE_' ||
+'NAME>
       <ENTITY_ID>5006</ENTITY_ID>
       <ENTITY_NAME>PR_PRODUCT</ENTITY_NAME>
       <PARENT_CONF_ID>-999999998</PARENT_CONF_ID>
@@ -1038,12 +1038,12 @@ CPTCB_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
   FROM open.servicio s
  WHERE s.servcodi IN
                     (
-                     SELECT COLUMN_VAL' ||
-'UE FROM
-                      TABLE(ldc_boutilities.splitstrings(dald_parameter.fsbgetvalue_chain('||chr(38)||'apos;TIPOS_PRODUCTOS_CPTCB_REPETIR'||chr(38)||'apos;,NULL),'||chr(38)||'apos;,'||chr(38)||'apos;))
+                     SELECT COLUMN_VALUE FROM
+     ' ||
+'                 TABLE(ldc_boutilities.splitstrings(dald_parameter.fsbgetvalue_chain('||chr(38)||'apos;TIPOS_PRODUCTOS_CPTCB_REPETIR'||chr(38)||'apos;,NULL),'||chr(38)||'apos;,'||chr(38)||'apos;))
                      )
 ORDER BY ID                     </SELECT_STATEMENT>
-      <SELECT_STATEMENT_ID>120161219</SELECT_STATEMENT_ID>
+      <SELECT_STATEMENT_ID>120198873</SELECT_STATEMENT_ID>
       <TAG_NAME/>
       <PROCESS_SEQUENCE/>
       <STATEMENT_CACHE>N</STATEMENT_CACHE>
@@ -1053,6 +1053,53 @@ ORDER BY ID                     </SELECT_STATEMENT>
       <EXTERNAL_ROOT_ID>6121</EXTERNAL_ROOT_ID>
       <PARENT_ATTRIBUTE_NAME>SUSCCODI</PARENT_ATTRIBUTE_NAME>
       <PARENT_ENTITY_NAME>SUSCRIPC</PARENT_ENTITY_NAME>
+    </ATTRIBUTE>
+    <ATTRIBUTE>
+      <ENTITY_ATTRIBUTE_ID>1309</ENTITY_ATTRIBUTE_ID>
+      <CONFIGURATION_ID>-999999995</CONFIGURATION_ID>
+      <ATTRIBUTE_NAME>COMMERCIAL_PLAN_ID</ATTRIBUTE_NAME>
+      <ENTITY_ID>146</ENTITY_ID>
+      <ENTITY_NAME>CC_COMMERCIAL_PLAN</ENTITY_NAME>
+      <PARENT_CONF_ID>-999999998</PARENT_CONF_ID>
+      <TY' ||
+'PE_ATTRIB_ID>2</TYPE_ATTRIB_ID>
+      <ENTITY_TYPE_ID>3339</ENTITY_TYPE_ID>
+      <EXTERNAL_TYPE_ID>500000000002736</EXTERNAL_TYPE_ID>
+      <FRAME_ID>94940</FRAME_ID>
+      <DATA_LENGTH>0</DATA_LENGTH>
+      <DATA_PRECISION>15</DATA_PRECISION>
+      <DATA_SCALE>0</DATA_SCALE>
+      <DATA_TYPE>NUMBER</DATA_TYPE>
+      <DISPLAY_VIEW>4</DISPLAY_VIEW>
+      <IS_UPDATABLE>Y</IS_UPDATABLE>
+      <IS_VISIBLE>Y</IS_VISIBLE>
+      <REQUIRED>N</REQUIRED>
+      <DISPLAY_ORDER>2</DISPLAY_ORDER>
+      <DISPLAY_NAME>Plan Comercial</DISPLAY_NAME>
+      <INIT_BASIC_EXP_ID/>
+      <VALID_BASIC_EXP_ID/>
+      <INIT_EXPRESSION_ID/>
+      <VALID_EXPRESSION_ID/>
+      <DEFAULT_VALUE/>
+      <SELECT_STATEMENT>SELECT commercial_plan_id ID, name DESCRIPTION
+FROM cc_commercial_plan
+WHERE commercial_plan_id IN 
+(   
+    SELECT  copsplsu 
+    FROM    concplsu 
+    WHERE   copsserv = ge_boInstanceControl.fsbGetFieldValue('||chr(38)||'apos;PR_PRODUCT'||chr(38)||'apos;, '||chr(38)||'apos;PRODUCT_TYPE_ID'||chr(38)||'apos;) 
+    AND     copsserv  NOT IN (7014,705' ||
+'2,7053,7056))</SELECT_STATEMENT>
+      <SELECT_STATEMENT_ID>120198874</SELECT_STATEMENT_ID>
+      <TAG_NAME/>
+      <PROCESS_SEQUENCE/>
+      <STATEMENT_CACHE>N</STATEMENT_CACHE>
+      <USER_DEFAULT_ALLOWED>N</USER_DEFAULT_ALLOWED>
+      <STYLE_CASE>U</STYLE_CASE>
+      <SEQUENCE_ID>4</SEQUENCE_ID>
+      <EXTERNAL_ROOT_ID>6121</EXTERNAL_ROOT_ID>
+      <PARENT_ATTRIBUTE_NAME>PRODUCT_TYPE_ID</PARENT_ATTRIBUTE_NAME>
+      <PARENT_ENTITY_NAME>PR_PRODUCT</PARENT_ENTITY_NAME>
     </ATTRIBUTE>
   </COMPOSITION>
 </PB>
@@ -1066,11 +1113,11 @@ XMLType(CPTCB_.clColumn_0),
 ,
 '1.0.0.0'
 ,
-42,
+46,
 'CPTCB.APP'
 ,
 null,
-'dc189995e00b5f4267c2de49278b8510'
+'3f95f58f426153226ba4510102a2cb43'
 ,
 3);
 
@@ -1090,9 +1137,9 @@ if (not CPTCB_.blProcessStatus) then
  return;
 end if;
  
- ut_trace.trace('Borrando tabla GR_CONFIG_EXPRESSION['||'121310646'||']',1);
+ ut_trace.trace('Borrando tabla GR_CONFIG_EXPRESSION['||'121409347'||']',1);
 delete from GR_CONFIG_EXPRESSION where 
-  OBJECT_NAME = 'FWFW_PROCESS_CT54E121310646';
+  OBJECT_NAME = 'FWFW_PROCESS_CT54E121409347';
 
 ut_trace.trace('Obtiene nueva secuencia de GR_CONFIG_EXPRESSION',1);
 nuNewRule := GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION();
@@ -1100,78 +1147,20 @@ nuNewRule := GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION();
 ut_trace.trace('insertando tabla: GR_CONFIG_EXPRESSION ['||nuNewRule||']',1);
 INSERT INTO GR_CONFIG_EXPRESSION(CONFIG_EXPRESSION_ID,OBJECT_NAME,CONFIGURA_TYPE_ID,EXPRESSION,AUTHOR,CREATION_DATE,GENERATION_DATE,LAST_MODIFI_DATE,STATUS,USED_OTHER_EXPRESION,MODIFICATION_TYPE,PASSWORD,EXECUTION_TYPE,DESCRIPTION,OBJECT_TYPE,CODE) 
 VALUES (nuNewRule, nuNewRule, 54, 
-'nuRetorno = LDC_BOVENTASFNB.FNUVALIDATESUSCRIPTION();if (nuRetorno = 2,SETERRORDESC("El contrato no existe");,if (nuRetorno = 3,SETERRORDESC("El contrato no tiene asociado un producto de gas");,if (nuRetorno = 4,SETERRORDESC("El producto de gas asociado al contrato debe estar activo o suspendido");,if (nuRetorno = 5,SETERRORDESC("El contrato ya tiene 3 tipos de producto FNB");,);););)',
+'PKG_UICPTCB.PRCEXPRESIONVALCONTRATO()',
 'SAYOCORO', to_date('09-01-2014 10:30:37','DD-MM-YYYY HH24:MI:SS'), 
-to_date('09-08-2018 14:56:59','DD-MM-YYYY HH24:MI:SS'), to_date('09-08-2018 14:56:59','DD-MM-YYYY HH24:MI:SS'), 'G', 
+to_date('16-12-2024 14:42:18','DD-MM-YYYY HH24:MI:SS'), to_date('16-12-2024 14:42:18','DD-MM-YYYY HH24:MI:SS'), 'R', 
 'N', 'PU', null, 
 'DS', 'LDC - Valida Contrato CPTCB', 'PP', 
-'CREATE OR REPLACE PROCEDURE FWFW_PROCESS_CT54E121310646(errorNumber OUT NUMBER, errorMessage OUT VARCHAR2)
+'CREATE OR REPLACE PROCEDURE FWFW_PROCESS_CT54E121409347(errorNumber OUT NUMBER, errorMessage OUT VARCHAR2)
 IS
 -- Generated by Code Generator (PVCS Version 1.5)
  -- Open Systems Ltd, Copyright 2003.
 V0 NUMBER;
-nuRetorno NUMBER;
-V1 NUMBER;
-V2 NUMBER;
-V3 VARCHAR2(4000);
-V4 NUMBER;
-V5 NUMBER;
-V6 NUMBER;
-V7 VARCHAR2(4000);
-V8 NUMBER;
-V9 NUMBER;
-V10 NUMBER;
-V11 VARCHAR2(4000);
-V12 NUMBER;
-V13 NUMBER;
-V14 NUMBER;
-V15 VARCHAR2(4000);
-V16 NUMBER;
 
 BEGIN
-V0:=LDC_BOVENTASFNB.FNUVALIDATESUSCRIPTION;
-nuRetorno:=V0;
-V1 := 2;
-IF ( nuRetorno = V1 )
-THEN
-V3 := '|| chr(39) ||'El contrato no existe'|| chr(39) ||';
-SETERRORDESC(V3);
-V2:= 0;
-V4:=V2;
-ELSE
-V5 := 3;
-IF ( nuRetorno = V5 )
-THEN
-V7 := '|| chr(39) ||'El contrato no tiene asociado un producto de gas'|| chr(39) ||';
-SETERRORDESC(V7);
-V6:= 0;
-V8:=V6;
-ELSE
-V9 := 4;
-IF ( nuRetorno = V9 )
-THEN
-V11 := '|| chr(39) ||'El producto de gas asociado al contrato debe estar activo o suspendido'|| chr(39) ||';
-SETERRORDESC(V11);
-V10:= 0;
-V12:=V10;
-ELSE
-V13 := 5;
-IF ( nuRetorno = V13 )
-THEN
-V15 := '|| chr(39) ||'El contrato ya tiene 3 tipos de producto FNB'|| chr(39) ||';
-' ||
-'SETERRORDESC(V15);
-V14:= 0;
-V16:=V14;
-ELSE
-null;
-END IF;
-V12:=V16;
-END IF;
-V8:=V12;
-END IF;
-V4:=V8;
-END IF;
+PKG_UICPTCB.PRCEXPRESIONVALCONTRATO;
+V0:= 0;
 errorNumber := 0;
 errorMessage:= NULL;
 EXCEPTION
@@ -1213,10 +1202,10 @@ end if;
  
   ut_trace.trace('Borrando tabla GE_STATEMENT',1);
   BEGIN
-   delete from GE_STATEMENT where STATEMENT_ID = 120161219 and MODULE_ID = 16 and NAME = 'LDC - Tipos de Producto FNB';
+   delete from GE_STATEMENT where STATEMENT_ID = 120198873 and MODULE_ID = 16 and NAME = 'LDC - Tipos de Producto FNB';
   EXCEPTION
   when ex.RECORD_HAVE_CHILDREN then
-    ut_trace.trace('No se pudo borrar la sentencia: [120161219]',1);
+    ut_trace.trace('No se pudo borrar la sentencia: [120198873]',1);
    null;
   END;
 ut_trace.trace('Obtiene nueva secuencia de GE_STATEMENT',1);
@@ -1238,6 +1227,54 @@ ut_trace.trace('Modificando GE_DISTRIBUTION_FILE',1);
 UPDATE GE_DISTRIBUTION_FILE SET  GE_DISTRIBUTION_FILE.APP_XML = 
   UPDATEXML(GE_DISTRIBUTION_FILE.APP_XML, 
   '//COMPOSITION/ATTRIBUTE[ENTITY_ATTRIBUTE_ID = 5024 and ENTITY_ID = 5006]/SELECT_STATEMENT_ID/text()', 
+  to_char(nuNewStatement)) 
+WHERE GE_DISTRIBUTION_FILE.DISTRIBUTION_FILE_ID = 'CPTCB';
+ 
+ 
+exception when others then
+CPTCB_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+ 
+END; 
+/
+DECLARE
+ nuNewStatement number; 
+ 
+BEGIN 
+ 
+if (not CPTCB_.blProcessStatus) then
+ return;
+end if;
+ 
+  ut_trace.trace('Borrando tabla GE_STATEMENT',1);
+  BEGIN
+   delete from GE_STATEMENT where STATEMENT_ID = 120198874 and MODULE_ID = 16 and NAME = 'Lista de valores plan comercial CPTCB';
+  EXCEPTION
+  when ex.RECORD_HAVE_CHILDREN then
+    ut_trace.trace('No se pudo borrar la sentencia: [120198874]',1);
+   null;
+  END;
+ut_trace.trace('Obtiene nueva secuencia de GE_STATEMENT',1);
+nuNewStatement := GE_BOSEQUENCE.NEXTGE_STATEMENT();
+
+ut_trace.trace('insertando tabla: GE_STATEMENT ['||nuNewStatement||']',1);
+INSERT INTO GE_STATEMENT(STATEMENT_ID, MODULE_ID, DESCRIPTION, STATEMENT, NAME)  
+VALUES (nuNewStatement, 16, 'Lista de valores plan comercial CPTCB', 
+'SELECT commercial_plan_id ID, name DESCRIPTION
+FROM cc_commercial_plan
+WHERE commercial_plan_id IN 
+(   
+    SELECT  copsplsu 
+    FROM    concplsu 
+    WHERE   copsserv = ge_boInstanceControl.fsbGetFieldValue('|| chr(39) ||'PR_PRODUCT'|| chr(39) ||', '|| chr(39) ||'PRODUCT_TYPE_ID'|| chr(39) ||') 
+    AND     copsserv  NOT IN (7014,7052,7053,7056))', 'Lista de valores plan comercial CPTCB'); 
+
+ut_trace.trace('Modificando GE_DISTRIBUTION_FILE',1);
+UPDATE GE_DISTRIBUTION_FILE SET  GE_DISTRIBUTION_FILE.APP_XML = 
+  UPDATEXML(GE_DISTRIBUTION_FILE.APP_XML, 
+  '//COMPOSITION/ATTRIBUTE[ENTITY_ATTRIBUTE_ID = 1309 and ENTITY_ID = 146]/SELECT_STATEMENT_ID/text()', 
   to_char(nuNewStatement)) 
 WHERE GE_DISTRIBUTION_FILE.DISTRIBUTION_FILE_ID = 'CPTCB';
  

@@ -1,5 +1,13 @@
 DECLARE
   nuConta NUMBER;
+  nuExiste 	NUMBER;
+  
+	cursor cuDatos(sbCampo VARCHAR2) is
+	select count(1)
+	  from dba_tab_columns
+	 where table_name='RECOFAEL_LOG'
+	   and column_name= sbCampo;
+	   
 BEGIN
 
  SELECT COUNT(*) INTO nuConta
@@ -64,5 +72,27 @@ BEGIN
 	  pkg_utilidades.prAplicarPermisos('RECOFAEL_LOG','PERSONALIZACIONES');
 	END;
   END IF;
+  
+     -- Agregar Columna Empresa
+
+  	OPEN cuDatos('EMPRESA');
+	FETCH cuDatos INTO nuExiste;
+	CLOSE cuDatos;
+
+	IF nuExiste = 0 THEN
+	
+		EXECUTE IMMEDIATE 
+		'alter table PERSONALIZACIONES.RECOFAEL_LOG
+		add(
+			"EMPRESA" VARCHAR2(10)
+			)';
+
+
+		   EXECUTE IMMEDIATE 'COMMENT ON COLUMN PERSONALIZACIONES.RECOFAEL_LOG.EMPRESA IS ' || '''' || 'Empresa'|| '''';
+
+  
+	END IF;
+	
+  
 END;
 /

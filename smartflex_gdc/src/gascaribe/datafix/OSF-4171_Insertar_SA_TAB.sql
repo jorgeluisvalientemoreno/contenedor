@@ -1,0 +1,37 @@
+
+declare
+ nuConta  NUMBER;
+ 
+ CURSOR cuExiste IS
+  SELECT COUNT(1)
+  FROM SA_TAB
+  WHERE APLICA_EXECUTABLE = 'CNCRM' AND PROCESS_NAME = 'P_SOLICITUD_DE_EXENCION_DE_CONTRIBUCION_DECRETO_654_DE_2013_100320'; 
+  
+BEGIN
+
+OPEN cuExiste; 
+FETCH cuExiste INTO nuConta; 
+CLOSE cuExiste; 
+
+IF nuConta = 0 THEN	
+
+INSERT INTO SA_TAB 
+VALUES
+( 
+    SEQ_SA_TAB.NEXTVAL,
+    'PRODUCT',
+    'P_SOLICITUD_DE_EXENCION_DE_CONTRIBUCION_DECRETO_654_DE_2013_100320',
+    'CNCRM',
+    NULL,
+    NULL,
+    0,
+    NULL,
+    ':PRODUCT_TYPE: in (SELECT upper(servcodi||'' - ''||UPPER(servdesc)) FROM servicio WHERE servtxml in (''PR_GAS_7014''))'
+); 
+
+END IF;
+
+COMMIT;
+
+END;
+/

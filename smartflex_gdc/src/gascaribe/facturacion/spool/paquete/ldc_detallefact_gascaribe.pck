@@ -10,6 +10,8 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   Historia de Modificaciones
   Fecha         Autor               Modificacion
   -------------------------------------------------
+  27/02/2025    jcatuche        OSF-4049: Se ajusta la siguiente función
+                                    [fnuGetProducto]
   29/08/2023    diana.montes    OSF-1462: Se modifica cursor cusaldoanterior para que no tenga en cuenta
                                 cuenta de cobro cuyo saldo sea menor al valor en reclamo y Ajustes de
                                 validación.
@@ -223,7 +225,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   **************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfdatosgenerales(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfdatosgenerales(orfcursor OUT constants_per.tyRefCursor);
   /**************************************************************************
   Propiedad Intelectual de PETI
 
@@ -238,7 +240,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   **************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfdatoslecturas(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfdatoslecturas(orfcursor OUT constants_per.tyRefCursor);
   /****************************************************************************************************
   Propiedad Intelectual de PETI
 
@@ -257,7 +259,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   *****************************************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- FUNCTION frfcambiociclo(inufactsusc IN NUMBER) RETURN constants.tyrefcursor;
+ FUNCTION frfcambiociclo(inufactsusc IN NUMBER) RETURN constants_per.tyRefCursor;
   /**************************************************************************
   Propiedad Intelectual de PETI
 
@@ -272,7 +274,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   **************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfdatosconsumohist(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfdatosconsumohist(orfcursor OUT constants_per.tyRefCursor);
   /**************************************************************************
   Propiedad Intelectual de PETI
 
@@ -287,7 +289,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   **************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfdatosrevision(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfdatosrevision(orfcursor OUT constants_per.tyRefCursor);
   /**************************************************************************
   Propiedad Intelectual de PETI
 
@@ -302,7 +304,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   **************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfdatosconceptos(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfdatosconceptos(orfcursor OUT constants_per.tyRefCursor);
   /**************************************************************************
   Propiedad Intelectual de PETI
 
@@ -336,7 +338,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
  ******************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfdatosconcestadocuenta(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfdatosconcestadocuenta(orfcursor OUT constants_per.tyRefCursor);
   /*****************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -355,7 +357,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   ******************************************************************/
   ------------------------------------------------------------------------------------------------------------------------
 
-  PROCEDURE rfconcepparcial(orfcursor OUT constants.tyrefcursor);
+  PROCEDURE rfconcepparcial(orfcursor OUT constants_per.tyRefCursor);
    /**************************************************************************
    Propiedad Intelectual de PETI
 
@@ -370,7 +372,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   **************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfrangosconsumo(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfrangosconsumo(orfcursor OUT constants_per.tyRefCursor);
   /**************************************************************************
   Propiedad Intelectual de PETI
 
@@ -401,7 +403,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   **************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfgetvalcostcompvalid(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfgetvalcostcompvalid(orfcursor OUT constants_per.tyRefCursor);
    /**************************************************************************
     Propiedad Intelectual de PETI
 
@@ -416,7 +418,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
    **************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfdatoscodbarras(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfdatoscodbarras(orfcursor OUT constants_per.tyRefCursor);
   /*****************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -435,7 +437,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   ******************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfdatosbarcode(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfdatosbarcode(orfcursor OUT constants_per.tyRefCursor);
   /**************************************************************************
    Propiedad Intelectual de PETI
 
@@ -450,7 +452,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   **************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfgetvalrates(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfgetvalrates(orfcursor OUT constants_per.tyRefCursor);
   /**************************************************************************
   Propiedad Intelectual de PETI
 
@@ -589,10 +591,10 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
  FUNCTION fnuObservNoLectConsec RETURN NUMBER;
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE proDatosSpool(orfcursor OUT constants.tyRefCursor);
+ PROCEDURE proDatosSpool(orfcursor OUT constants_per.tyRefCursor);
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfdatosconsumos(orfcursor OUT constants.tyrefcursor);
+ PROCEDURE rfdatosconsumos(orfcursor OUT constants_per.tyRefCursor);
   /**************************************************************************
     Propiedad Intelectual de PETI
 
@@ -623,7 +625,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
   **************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE RfMarcaAguaDuplicado(orfcursor OUT constants.tyRefCursor);
+ PROCEDURE RfMarcaAguaDuplicado(orfcursor OUT constants_per.tyRefCursor);
   /*****************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -641,7 +643,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
  ******************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE RfProteccion_Datos(orfcursor OUT constants.tyRefCursor);
+ PROCEDURE RfProteccion_Datos(orfcursor OUT constants_per.tyRefCursor);
   /*****************************************************************
    Propiedad intelectual de PETI (c).
 
@@ -661,7 +663,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
  ******************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE RfDatosAdicionales(orfcursor OUT constants.tyRefCursor);
+ PROCEDURE RfDatosAdicionales(orfcursor OUT constants_per.tyRefCursor);
   /*****************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -753,7 +755,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
  *****************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE RfDatosCuenxCobrTt(orfcursor OUT constants.tyRefCursor);
+ PROCEDURE RfDatosCuenxCobrTt(orfcursor OUT constants_per.tyRefCursor);
   /*****************************************************************
     Propiedad intelectual de GDC (c).
 
@@ -771,7 +773,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
  ******************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE RfDatosFinanEspecial(orfcursor OUT constants.tyRefCursor);
+ PROCEDURE RfDatosFinanEspecial(orfcursor OUT constants_per.tyRefCursor);
  /*****************************************************************
     Propiedad intelectual de GDC (c).
 
@@ -790,7 +792,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
  ******************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE RfDatosMedMalubi(orfcursor OUT constants.tyRefCursor);
+ PROCEDURE RfDatosMedMalubi(orfcursor OUT constants_per.tyRefCursor);
   /*********************************************************************************
     Propiedad intelectual de GDC (c).
 
@@ -811,7 +813,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
  **********************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfdatosimpresiondig(orfcursorimpdig OUT constants.tyRefCursor);
+ PROCEDURE rfdatosimpresiondig(orfcursorimpdig OUT constants_per.tyRefCursor);
  /******************************************************************************************
   Propiedad intelectual de GDC (c).
 
@@ -831,7 +833,7 @@ create or replace PACKAGE ldc_detallefact_gascaribe IS
  ******************************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE rfLastPayment(orfcursor OUT constants.tyRefCursor);
+ PROCEDURE rfLastPayment(orfcursor OUT constants_per.tyRefCursor);
  /*********************************************************************************************************
   Propiedad intelectual de GDC (c).
 
@@ -860,7 +862,7 @@ FUNCTION fnuObtPuntos(inuContrato IN NUMBER) RETURN NUMBER;
  Autor          : Carlos Gonzalez (Horbath)
  ******************************************************************/
 
- PROCEDURE rfGetSaldoAnterior(orfcursorsaldoante OUT constants.tyRefCursor);
+ PROCEDURE rfGetSaldoAnterior(orfcursorsaldoante OUT constants_per.tyRefCursor);
  /******************************************************************************************
   Propiedad intelectual de GDC (c).
 
@@ -879,7 +881,7 @@ FUNCTION fnuObtPuntos(inuContrato IN NUMBER) RETURN NUMBER;
  ******************************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
 
- PROCEDURE prcGetInfoAdicional(orfcursorinfoadic OUT constants.tyRefCursor);
+ PROCEDURE prcGetInfoAdicional(orfcursorinfoadic OUT constants_per.tyRefCursor);
  /******************************************************************************************
   Propiedad intelectual de GDC (c).
 
@@ -901,9 +903,22 @@ END ldc_detallefact_gascaribe;
 create or replace PACKAGE BODY LDC_DetalleFact_GasCaribe IS
 
   csbBSS_FAC_SMS_200849 CONSTANT VARCHAR2(20) := 'BSS_FAC_SMS_200849_5';
-  cnuCategoriaInd       CONSTANT servsusc.sesucate%TYPE := dald_parameter.fnuGetNumeric_Value('CODIGO_CATE_INDUSTRIAL',
-                                                                                              0);
-  gsbPaquete VARCHAR2(30) := 'LDC_DetalleFact_GasCaribe';
+  cnuCategoriaInd       CONSTANT servsusc.sesucate%TYPE := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('CODIGO_CATE_INDUSTRIAL'     );
+
+
+
+
+    -- Constantes para el control de la traza
+    csbSP_NAME          CONSTANT VARCHAR2(32)       := $$PLSQL_UNIT||'.';          -- Constante para nombre de objeto
+    cnuNivelTraza       CONSTANT NUMBER(2)          := pkg_traza.cnuNivelTrzDef;    -- Nivel de traza para este objeto.
+    csbSP_NAME          CONSTANT VARCHAR2(32)       := $$PLSQL_UNIT||'.';          -- Constante para nombre de objeto
+    cnuNivelTraza       CONSTANT NUMBER(2)          := pkg_traza.cnuNivelTrzDef;    -- Nivel de traza para este objeto.
+    csbInicio           CONSTANT VARCHAR2(4)        := pkg_traza.fsbINICIO;         -- Indica inicio de método
+    csbFin              CONSTANT VARCHAR2(4)        := pkg_traza.fsbFIN;            -- Indica Fin de método ok
+    csbFin_Erc          CONSTANT VARCHAR2(4)        := pkg_traza.fsbFIN_ERC;        -- Indica fin de método con error controlado
+    csbFin_Err          CONSTANT VARCHAR2(4)        := pkg_traza.fsbFIN_ERR;        -- Indica fin de método con error no controlado
+
+
  /********************************************************************************************************************************
   Propiedad intelectual de PETI.
 
@@ -982,7 +997,7 @@ create or replace PACKAGE BODY LDC_DetalleFact_GasCaribe IS
   ----------------------------------------------------------------------
   -- Constantes
   ----------------------------------------------------------------------
-  csbVersion CONSTANT VARCHAR2(50) := 'OSF-1462';
+  csbVersion CONSTANT VARCHAR2(50) := 'OSF-4454';
 
   ----------------------------------------------------------------------
   -- Variables
@@ -997,9 +1012,9 @@ create or replace PACKAGE BODY LDC_DetalleFact_GasCaribe IS
 ---------------------------------------------------------------------------------------------
 FUNCTION fsbVersion RETURN VARCHAR2 IS
 BEGIN
-    ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fsbVersion'  );
+    PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fsbVersion'  );
     RETURN csbVersion;
-    ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbVersion'  );
+    PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbVersion'  );
 END fsbVersion;
 
 ---------------------------------------------------------------------------------------------
@@ -1021,17 +1036,17 @@ FUNCTION fnuProductoPrincipal(
  -----------  -------------------    -------------------------------------
  18-08-2016   Sandra Muñoz           Creacion
 ***********************************************************************************************/
-nuServGas           ld_parameter.numeric_value%TYPE := dald_parameter.fnuGetNumeric_Value('COD_SERV_GAS');
+nuServGas           ld_parameter.numeric_value%TYPE := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('COD_SERV_GAS');
 nuProductoPrincipal servsusc.sesunuse%TYPE; -- Servicio principal
 BEGIN
-    ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fnuProductoPrincipal'  );
+    PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fnuProductoPrincipal'  );
     nuProductoPrincipal := NULL;
     SELECT sesunuse INTO nuProductoPrincipal
         FROM servsusc
         WHERE sesususc = inuContrato
         AND sesuserv = nuServGas;
     RETURN nuProductoPrincipal;
-    ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fnuProductoPrincipal'  );
+    PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fnuProductoPrincipal'  );
     EXCEPTION
         WHEN OTHERS THEN
         RETURN NULL;
@@ -1072,8 +1087,8 @@ FUNCTION fsbRutaReparto(
                                         cursores
     19-08-2016   Sandra Muñoz           Creacion
 ********************************************************************************************************************/
-nuCategoriaComercial   ld_parameter.numeric_value%TYPE := dald_parameter.fnuGetNumeric_Value('COMMERCIAL_CATEGORY'); -- Categoria comercial
-nuCategoriaResidencial ld_parameter.numeric_value%TYPE := dald_parameter.fnuGetNumeric_Value('RESIDEN_CATEGORY'); -- Categoria residencial
+nuCategoriaComercial   ld_parameter.numeric_value%TYPE := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('COMMERCIAL_CATEGORY'); -- Categoria comercial
+nuCategoriaResidencial ld_parameter.numeric_value%TYPE := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('RESIDEN_CATEGORY'); -- Categoria residencial
 nuDireccionProducto    pr_product.address_id%TYPE; -- Direccion del producto
 nuDireccionContrato    suscripc.susciddi%TYPE; -- Direccion del contrato
 nuCicloContrato        ab_segments.ciclcodi%TYPE; -- Ciclo contrato
@@ -1082,7 +1097,7 @@ sbRuta                 VARCHAR2(500); -- Ruta de reparto
 nuCategoria            pr_product.category_id%TYPE; -- Categoria
 nuRutaContrato         ab_segments.route_id%TYPE; -- Ruta del contrato
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fsbRutaReparto'  );
+ PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fsbRutaReparto'  );
  -- Buscar la ruta actual ya la informacion del producto y contrato
  SELECT ab_contrato.ciclcodi
        ,ab_producto.ciclcodi
@@ -1123,7 +1138,7 @@ BEGIN
   END IF;
  END IF;
 RETURN sbRuta; -- Devuelve null si no cumple para enviar -1
-ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbRutaReparto'  );
+PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbRutaReparto'  );
 EXCEPTION
  WHEN OTHERS THEN
   RETURN NULL;
@@ -1154,7 +1169,7 @@ FUNCTION fsbGetEncabezado RETURN VARCHAR2 IS
 ************************************************************************************************************/
 sbEncabezado VARCHAR2(4000);
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabezado'  );
+ PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabezado'  );
  sbEncabezado := 'NUMERO_FACT|FAC_NO|F_D_EMISON|MES_FAC|PERIODO_FACT|F_D_VENC|DIAS_CONSUMO|COD_DE_SERVICIO|CUPON|NOMBRE_SUSC|DIR_ENTREGA|' ||
                  'LOCALIDAD|USO|ESTRATO|CICLO|RUTA|MESES_DEUDA|NUM_CONTROL|PERIODO_CONSUMO|SALDO_A_FAVOR|SALDO_ANT|FECHA_SUSPENSION|VALOR_RECL|' ||
                  'TOTAL_A_PAGAR|PAGO_SIN_RECARGO|CONDICION_PAGO|IDENTIFICA|TIPO_DE_PRODUCTO|';
@@ -1171,7 +1186,7 @@ BEGIN
                 'VAL_CONSUMO6|LIM_INFERIOR7|LIM_SUPERIOR7|VALOR_UNID7|RCONSUMO7|VAL_CONSUMO7|COMPCOST|VALORESREF|VALCALC|CODIGO_1|CODIGO_2|' ||
                 'CODIGO_3|CODIGO_4|CODIGO_BARRAS|TASA_ULTIMA|TASA_PROMEDIO|VISIBLE|IMPRESO|PROTECCION_ESTADO|DIRECCION_PRODUCTO|CAUSA_DESVIACION|PAGARE_UNICO|' ||
                 'CAMBIOUSO|ACUMU_TARITT|FINAESPE|MED_MAL_UBICADO|IMPRIMEFACT|VALOR_ULT_PAGO|FECHA_ULT_PAGO|TOTAL|IVA|SUBTOTAL|CARGOSMES|CANTIDAD_CONC|SALDO_ANTE|';
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabezado'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabezado'  );
  RETURN sbEncabezado;
 
 END fsbGetEncabezado;
@@ -1192,13 +1207,13 @@ FUNCTION fsbGetEncabConc1 RETURN VARCHAR2 IS
 *************************************************************************/
 sbEncabezado VARCHAR2(4000);
 BEGIN
-  ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabConc1'  );
+  PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabConc1'  );
   sbEncabezado := 'CONC1|DESC_CONCEP1|SALDO_ANT1|CAPITAL1|INTERES1|TOTAL1|SALDO_DIF1|UNID1|CANT1|UNIT1|IVA1|CUOTAS1|CONC2|DESC_CONCEP2|SALDO_ANT2|CAPITAL2|INTERES2|TOTAL2|SALDO_DIF2|UNID2|CANT2|UNIT2|IVA2|CUOTAS2|CONC3|DESC_CONCEP3|SALDO_ANT3|CAPITAL3|INTERES3|TOTAL3|SALDO_DIF3|UNID3|CANT3|UNIT3|IVA3|CUOTAS3|CONC4|DESC_CONCEP4|SALDO_ANT4|CAPITAL4|INTERES4|TOTAL4|SALDO_DIF4|UNID4|CANT4|UNIT4|IVA4|CUOTAS4|' ||
                     'CONC5|DESC_CONCEP5|SALDO_ANT5|CAPITAL5|INTERES5|TOTAL5|SALDO_DIF5|UNID5|CANT5|UNIT5|IVA5|CUOTAS5|CONC6|DESC_CONCEP6|SALDO_ANT6|CAPITAL6|INTERES6|TOTAL6|SALDO_DIF6|UNID6|CANT6|UNIT6|IVA6|CUOTAS6|CONC7|DESC_CONCEP7|SALDO_ANT7|CAPITAL7|INTERES7|TOTAL7|SALDO_DIF7|UNID7|CANT7|UNIT7|IVA7|CUOTAS7|CONC8|DESC_CONCEP8|SALDO_ANT8|CAPITAL8|INTERES8|TOTAL8|SALDO_DIF8|UNID8|CANT8|UNIT8|IVA8|CUOTAS8|' ||
                     'CONC9|DESC_CONCEP9|SALDO_ANT9|CAPITAL9|INTERES9|TOTAL9|SALDO_DIF9|UNID9|CANT9|UNIT9|IVA9|CUOTAS9|CONC10|DESC_CONCEP10|SALDO_ANT10|CAPITAL10|INTERES10|TOTAL10|SALDO_DIF10|UNID10|CANT10|UNIT10|IVA10|CUOTAS10|CONC11|DESC_CONCEP11|SALDO_ANT11|CAPITAL11|INTERES11|TOTAL11|SALDO_DIF11|UNID11|CANT11|UNIT11|IVA11|CUOTAS11|CONC12|DESC_CONCEP12|SALDO_ANT12|CAPITAL12|INTERES12|TOTAL12|SALDO_DIF12|UNID12|CANT12|UNIT12|IVA12|CUOTAS12|' ||
                     'CONC13|DESC_CONCEP13|SALDO_ANT13|CAPITAL13|INTERES13|TOTAL13|SALDO_DIF13|UNID13|CANT13|UNIT13|IVA13|CUOTAS13|CONC14|DESC_CONCEP14|SALDO_ANT14|CAPITAL14|INTERES14|TOTAL14|SALDO_DIF14|UNID14|CANT14|UNIT14|IVA14|CUOTAS14|CONC15|DESC_CONCEP15|SALDO_ANT15|CAPITAL15|INTERES15|TOTAL15|SALDO_DIF15|UNID15|CANT15|UNIT15|IVA15|CUOTAS15|CONC16|DESC_CONCEP16|SALDO_ANT16|CAPITAL16|INTERES16|TOTAL16|SALDO_DIF16|UNID16|CANT16|UNIT16|IVA16|CUOTAS16|' ||
                     'CONC17|DESC_CONCEP17|SALDO_ANT17|CAPITAL17|INTERES17|TOTAL17|SALDO_DIF17|UNID17|CANT17|UNIT17|IVA17|CUOTAS17|CONC18|DESC_CONCEP18|SALDO_ANT18|CAPITAL18|INTERES18|TOTAL18|SALDO_DIF18|UNID18|CANT18|UNIT18|IVA18|CUOTAS18|CONC19|DESC_CONCEP19|SALDO_ANT19|CAPITAL19|INTERES19|TOTAL19|SALDO_DIF19|UNID19|CANT19|UNIT19|IVA19|CUOTAS19|';--CONC20|DESC_CONCEP20|SALDO_ANT20|CAPITAL20|INTERES20|TOTAL20|SALDO_DIF20|UNID20|CANT20|UNIT20|IVA20|CUOTAS20|';*/
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabConc1'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabConc1'  );
  RETURN sbEncabezado;
 END fsbGetEncabConc1;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1218,14 +1233,14 @@ FUNCTION fsbGetEncabConc2 RETURN VARCHAR2 IS
 **************************************************************************/
 sbEncabezado VARCHAR2(4000);
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabConc2'  );
+ PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabConc2'  );
  sbEncabezado := 'CONC20|DESC_CONCEP20|SALDO_ANT20|CAPITAL20|INTERES20|TOTAL20|SALDO_DIF20|UNID20|CANT20|UNIT20|IVA20|CUOTAS20|CONC21|DESC_CONCEP21|SALDO_ANT21|CAPITAL21|INTERES21|TOTAL21|SALDO_DIF21|UNID21|CANT21|UNIT21|IVA21|CUOTAS21|CONC22|DESC_CONCEP22|SALDO_ANT22|CAPITAL22|INTERES22|TOTAL22|SALDO_DIF22|UNID22|CANT22|UNIT22|IVA22|CUOTAS22|CONC23|DESC_CONCEP23|SALDO_ANT23|CAPITAL23|INTERES23|TOTAL23|SALDO_DIF23|UNID23|CANT23|UNIT23|IVA23|CUOTAS23|CONC24|DESC_CONCEP24|SALDO_ANT24|CAPITAL24|INTERES24|TOTAL24|SALDO_DIF24|UNID24|CANT24|UNIT24|IVA24|CUOTAS24|' ||
 'CONC25|DESC_CONCEP25|SALDO_ANT25|CAPITAL25|INTERES25|TOTAL25|SALDO_DIF25|UNID25|CANT25|UNIT25|IVA25|CUOTAS25|CONC26|DESC_CONCEP26|SALDO_ANT26|CAPITAL26|INTERES26|TOTAL26|SALDO_DIF26|UNID26|CANT26|UNIT26|IVA26|CUOTAS26|CONC27|DESC_CONCEP27|SALDO_ANT27|CAPITAL27|INTERES27|TOTAL27|SALDO_DIF27|UNID27|CANT27|UNIT27|IVA27|CUOTAS27|CONC28|DESC_CONCEP28|SALDO_ANT28|CAPITAL28|INTERES28|TOTAL28|SALDO_DIF28|UNID28|CANT28|UNIT28|IVA28|CUOTAS28|' ||
 'CONC29|DESC_CONCEP29|SALDO_ANT29|CAPITAL29|INTERES29|TOTAL29|SALDO_DIF29|UNID29|CANT29|UNIT29|IVA29|CUOTAS29|CONC30|DESC_CONCEP30|SALDO_ANT30|CAPITAL30|INTERES30|TOTAL30|SALDO_DIF30|UNID30|CANT30|UNIT30|IVA30|CUOTAS30|CONC31|DESC_CONCEP31|SALDO_ANT31|CAPITAL31|INTERES31|TOTAL31|SALDO_DIF31|UNID31|CANT31|UNIT31|IVA31|CUOTAS31|CONC32|DESC_CONCEP32|SALDO_ANT32|CAPITAL32|INTERES32|TOTAL32|SALDO_DIF32|UNID32|CANT32|UNIT32|IVA32|CUOTAS32|' ||
 'CONC33|DESC_CONCEP33|SALDO_ANT33|CAPITAL33|INTERES33|TOTAL33|SALDO_DIF33|UNID33|CANT33|UNIT33|IVA33|CUOTAS33|CONC34|DESC_CONCEP34|SALDO_ANT34|CAPITAL34|INTERES34|TOTAL34|SALDO_DIF34|UNID34|CANT34|UNIT34|IVA34|CUOTAS34|CONC35|DESC_CONCEP35|SALDO_ANT35|CAPITAL35|INTERES35|TOTAL35|SALDO_DIF35|UNID35|CANT35|UNIT35|IVA35|CUOTAS35|CONC36|DESC_CONCEP36|SALDO_ANT36|CAPITAL36|INTERES36|TOTAL36|SALDO_DIF36|UNID36|CANT36|UNIT36|IVA36|CUOTAS36|' ||
 'CONC37|DESC_CONCEP37|SALDO_ANT37|CAPITAL37|INTERES37|TOTAL37|SALDO_DIF37|UNID37|CANT37|UNIT37|IVA37|CUOTAS37|';
 
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabConc2'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabConc2'  );
  RETURN sbEncabezado;
 END fsbGetEncabConc2;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1245,14 +1260,14 @@ FUNCTION fsbGetEncabConc3 RETURN VARCHAR2 IS
 **************************************************************************/
 sbEncabezado VARCHAR2(4000);
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabConc3'  );
+ PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabConc3'  );
  sbEncabezado := 'CONC38|DESC_CONCEP38|SALDO_ANT38|CAPITAL38|INTERES38|TOTAL38|SALDO_DIF38|UNID38|CANT38|UNIT38|IVA38|CUOTAS38|CONC39|DESC_CONCEP39|SALDO_ANT39|CAPITAL39|INTERES39|TOTAL39|SALDO_DIF39|UNID39|CANT39|UNIT39|IVA39|CUOTAS39|CONC40|DESC_CONCEP40|SALDO_ANT40|CAPITAL40|INTERES40|TOTAL40|SALDO_DIF40|UNID40|CANT40|UNIT40|IVA40|CUOTAS40|CONC41|DESC_CONCEP41|SALDO_ANT41|CAPITAL41|INTERES41|TOTAL41|SALDO_DIF41|UNID41|CANT41|UNIT41|IVA41|CUOTAS41|CONC42|DESC_CONCEP42|SALDO_ANT42|CAPITAL42|INTERES42|TOTAL42|SALDO_DIF42|UNID42|CANT42|UNIT42|IVA42|CUOTAS42|CONC43|DESC_CONCEP43|SALDO_ANT43|CAPITAL43|INTERES43|TOTAL43|SALDO_DIF43|UNID43|CANT43|UNIT43|IVA43|CUOTAS43|CONC44|DESC_CONCEP44|SALDO_ANT44|CAPITAL44|INTERES44|TOTAL44|SALDO_DIF44|UNID44|CANT44|UNIT44|IVA44|CUOTAS44|' ||
                 'CONC45|DESC_CONCEP45|SALDO_ANT45|CAPITAL45|INTERES45|TOTAL45|SALDO_DIF45|UNID45|CANT45|UNIT45|IVA45|CUOTAS45|CONC46|DESC_CONCEP46|SALDO_ANT46|CAPITAL46|INTERES46|TOTAL46|SALDO_DIF46|UNID46|CANT46|UNIT46|IVA46|CUOTAS46|CONC47|DESC_CONCEP47|SALDO_ANT47|CAPITAL47|INTERES47|TOTAL47|SALDO_DIF47|UNID47|CANT47|UNIT47|IVA47|CUOTAS47|CONC48|DESC_CONCEP48|SALDO_ANT48|CAPITAL48|INTERES48|TOTAL48|SALDO_DIF48|UNID48|CANT48|UNIT48|IVA48|CUOTAS48|' ||
                 'CONC49|DESC_CONCEP49|SALDO_ANT49|CAPITAL49|INTERES49|TOTAL49|SALDO_DIF49|UNID49|CANT49|UNIT49|IVA49|CUOTAS49|CONC50|DESC_CONCEP50|SALDO_ANT50|CAPITAL50|INTERES50|TOTAL50|SALDO_DIF50|UNID50|CANT50|UNIT50|IVA50|CUOTAS50|CONC51|DESC_CONCEP51|SALDO_ANT51|CAPITAL51|INTERES51|TOTAL51|SALDO_DIF51|UNID51|CANT51|UNIT51|IVA51|CUOTAS51|CONC52|DESC_CONCEP52|SALDO_ANT52|CAPITAL52|INTERES52|TOTAL52|SALDO_DIF52|UNID52|CANT52|UNIT52|IVA52|CUOTAS52|' ||
                 'CONC53|DESC_CONCEP53|SALDO_ANT53|CAPITAL53|INTERES53|TOTAL53|SALDO_DIF53|UNID53|CANT53|UNIT53|IVA53|CUOTAS53|CONC54|DESC_CONCEP54|SALDO_ANT54|CAPITAL54|INTERES54|TOTAL54|SALDO_DIF54|UNID54|CANT54|UNIT54|IVA54|CUOTAS54|CONC55|DESC_CONCEP55|SALDO_ANT55|CAPITAL55|INTERES55|TOTAL55|SALDO_DIF55|UNID55|CANT55|UNIT55|IVA55|CUOTAS55|';
 
 
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabConc3'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabConc3'  );
  RETURN sbEncabezado;
 END fsbGetEncabConc3;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1275,13 +1290,13 @@ FUNCTION fsbGetEncabConc4 RETURN VARCHAR2 IS
 *********************************************************************************************************/
 sbEncabezado VARCHAR2(4000);
 BEGIN
-ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabConc4'  );
+PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabConc4'  );
  sbEncabezado := 'CONC56|DESC_CONCEP56|SALDO_ANT56|CAPITAL56|INTERES56|TOTAL56|SALDO_DIF56|UNID56|CANT56|UNIT56|IVA56|CUOTAS56|CONC57|DESC_CONCEP57|SALDO_ANT57|CAPITAL57|INTERES57|TOTAL57|SALDO_DIF57|UNID57|CANT57|UNIT57|IVA57|CUOTAS57|CONC58|DESC_CONCEP58|SALDO_ANT58|CAPITAL58|INTERES58|TOTAL58|SALDO_DIF58|UNID58|CANT58|UNIT58|IVA58|CUOTAS58|CONC59|DESC_CONCEP59|SALDO_ANT59|CAPITAL59|INTERES59|TOTAL59|SALDO_DIF59|UNID59|CANT59|UNIT59|IVA59|CUOTAS59|'||
                 'CONC60|DESC_CONCEP60|SALDO_ANT60|CAPITAL60|INTERES60|TOTAL60|SALDO_DIF60|UNID60|CANT60|UNIT60|IVA60|CUOTAS60|CONC61|DESC_CONCEP61|SALDO_ANT61|CAPITAL61|INTERES61|TOTAL61|SALDO_DIF61|UNID61|CANT61|UNIT61|IVA61|CUOTAS61|CONC62|DESC_CONCEP62|SALDO_ANT62|CAPITAL62|INTERES62|TOTAL62|SALDO_DIF62|UNID62|CANT62|UNIT62|IVA62|CUOTAS62|' ||
                 'CONC63|DESC_CONCEP63|SALDO_ANT63|CAPITAL63|INTERES63|TOTAL63|SALDO_DIF63|UNID63|CANT63|UNIT63|IVA63|CUOTAS63|CONC64|DESC_CONCEP64|SALDO_ANT64|CAPITAL64|INTERES64|TOTAL64|SALDO_DIF64|UNID64|CANT64|UNIT64|IVA64|CUOTAS64|CONC65|DESC_CONCEP65|SALDO_ANT65|CAPITAL65|INTERES65|TOTAL65|SALDO_DIF65|UNID65|CANT65|UNIT65|IVA65|CUOTAS65|CONC66|DESC_CONCEP66|SALDO_ANT66|CAPITAL66|INTERES66|TOTAL66|SALDO_DIF66|UNID66|CANT66|UNIT66|IVA66|CUOTAS66|' ||
                 'CONC67|DESC_CONCEP67|SALDO_ANT67|CAPITAL67|INTERES67|TOTAL67|SALDO_DIF67|UNID67|CANT67|UNIT67|IVA67|CUOTAS67|CONC68|DESC_CONCEP68|SALDO_ANT68|CAPITAL68|INTERES68|TOTAL68|SALDO_DIF68|UNID68|CANT68|UNIT68|IVA68|CUOTAS68|CONC69|DESC_CONCEP69|SALDO_ANT69|CAPITAL69|INTERES69|TOTAL69|SALDO_DIF69|UNID69|CANT69|UNIT69|IVA69|CUOTAS69|CONC70|DESC_CONCEP70|SALDO_ANT70|CAPITAL70|INTERES70|TOTAL70|SALDO_DIF70|UNID70|CANT70|UNIT70|IVA70|CUOTAS70|' ||
                 'CONC71|DESC_CONCEP71|SALDO_ANT71|CAPITAL71|INTERES71|TOTAL71|SALDO_DIF71|UNID71|CANT71|UNIT71|IVA71|CUOTAS71|CONC72|DESC_CONCEP72|SALDO_ANT72|CAPITAL72|INTERES72|TOTAL72|SALDO_DIF72|UNID72|CANT72|UNIT72|IVA72|CUOTAS72|CONC73|DESC_CONCEP73|SALDO_ANT73|CAPITAL73|INTERES73|TOTAL73|SALDO_DIF73|UNID73|CANT73|UNIT73|IVA73|CUOTAS73|';
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabConc4'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabConc4'  );
  RETURN sbEncabezado;
 END fsbGetEncabConc4;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1301,61 +1316,127 @@ FUNCTION fsbGetEncabConc5 RETURN VARCHAR2 IS
 *********************************************************************************************************/
 sbEncabezado VARCHAR2(4000);
 BEGIN
-ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabConc5'  );
+PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fsbGetEncabConc5'  );
  sbEncabezado := 'CONC74|DESC_CONCEP74|SALDO_ANT74|CAPITAL74|INTERES74|TOTAL74|SALDO_DIF74|UNID74|CANT74|UNIT74|IVA74|CUOTAS74|' ||
                 'CONC75|DESC_CONCEP75|SALDO_ANT75|CAPITAL75|INTERES75|TOTAL75|SALDO_DIF75|UNID75|CANT75|UNIT75|IVA75|CUOTAS75|CONC76|DESC_CONCEP76|SALDO_ANT76|CAPITAL76|INTERES76|TOTAL76|SALDO_DIF76|UNID76|CANT76|UNIT76|IVA76|CUOTAS76|CONC77|DESC_CONCEP77|SALDO_ANT77|CAPITAL77|INTERES77|TOTAL77|SALDO_DIF77|UNID77|CANT77|UNIT77|IVA77|CUOTAS77|CONC78|DESC_CONCEP78|SALDO_ANT78|CAPITAL78|INTERES78|TOTAL78|SALDO_DIF78|UNID78|CANT78|UNIT78|IVA78|CUOTAS78|CALIFICACION|';
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabConc5'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbGetEncabConc5'  );
  RETURN sbEncabezado;
 END fsbGetEncabConc5;
 
 FUNCTION fnuGetProducto(inuFactura IN factura.factcodi%TYPE) RETURN NUMBER IS
 /**************************************************************************
-  Propiedad Intelectual de PETI
+    Propiedad Intelectual de PETI
 
-  Funcion     :   fnuGetProducto
-  Descripcion :   Obtiene el producto asociado al contrato
-  Autor       :   Gabriel Gamarra - Horbath Technologies
+    Funcion     :   fnuGetProducto
+    Descripcion :   Obtiene el producto asociado al contrato
+    Autor       :   Gabriel Gamarra - Horbath Technologies
 
-  Historia de Modificaciones
-  Fecha               Autor              Modificacion
-  =========           =========          ====================
-  11-11-2014          ggamarra           Creacion
+    Historia de Modificaciones
+    Fecha                 Autor               Modificacion
+    =========             =========           ====================
+    11-11-2014            ggamarra            Creacion
+    27/02/2025            jcatuche            OSF-4049: Se cambia validación de servicio suscrito de gas desde la factura
+                                              Si el servicio no se encuentra en las cuentas de la factura, se busca en el contrato de la factura
 *****************************************************************************/
-nuSesunuse servsusc.sesunuse%TYPE;
-BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fnuGetProducto'  );
- -- Inicialmente se consulta si tiene producto de GAS
- BEGIN
-  SELECT sesunuse INTO nuSesunuse
+    csbMetodo       CONSTANT VARCHAR2(70) := csbSP_NAME||'fnuGetProducto';
+    nuServGas       NUMBER := constants_per.COD_SERVICIO_GAS;
+
+
+    cursor cuServGas(inuControl number default 0) is
+    SELECT sesunuse
     FROM servsusc, cuencobr
-   WHERE sesunuse = cuconuse
-     AND cucofact = inuFactura
-     AND sesuserv = dald_parameter.fnuGetNumeric_Value('COD_SERV_GAS')
-     AND rownum = 1;
- EXCEPTION
-  WHEN no_data_found THEN
-      nuSesunuse := -1;
- END;
- -- Si no tiene producto de GAS se selecciona cualquier producto del contrato
- IF (nuSesunuse = -1) THEN
-  BEGIN
-   SELECT cuconuse INTO nusesunuse
-     FROM cuencobr
-    WHERE cucofact = inuFactura
-      AND rownum = 1;
-  EXCEPTION
-   WHEN no_data_found THEN
-       nuSesunuse := 0;
-  END;
- END IF;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fnuGetProducto'  );
- RETURN nuSesunuse;
+    WHERE sesunuse = cuconuse
+    AND cucofact = inuFactura
+    AND sesuserv = case when inuControl = 0 then nuServGas else sesuserv end
+    AND sesuserv = case when inuControl = 0 then nuServGas else sesuserv end
+    AND rownum = 1;
+
+
+    cursor cuServGasContrato is
+    SELECT sesunuse
+    FROM servsusc,confesco
+    WHERE sesususc = pkg_factura.fnuObtFACTSUSC(inuFactura)
+    AND sesuserv = nuServGas
+    AND coeccodi = sesuesco
+    AND coecserv = sesuserv
+    AND coecfact = 'S'
+    order by sesunuse desc;
+
+
+    nuSesunuse servsusc.sesunuse%TYPE;
+
+
+    nuError         NUMBER;
+    sbError         VARCHAR2(4000);
+
+
+BEGIN
+    pkg_traza.trace(csbMetodo, cnuNivelTraza, csbInicio);
+    pkg_traza.trace('inuFactura <= '||inuFactura, cnuNivelTraza );
+
+
+    -- Inicialmente se consulta si tiene producto de GAS
+    IF cuServGas%isopen THEN CLOSE cuServGas; END IF;
+
+
+    OPEN cuServGas;
+    FETCH cuServGas INTO nuSesunuse;
+    CLOSE cuServGas;
+
+
+  -- Si no tiene producto de GAS se selecciona cualquier producto del contrato
+    IF (NVL(nuSesunuse,-1) = -1) THEN
+
+
+        IF cuServGasContrato%isopen THEN CLOSE cuServGasContrato; END IF;
+
+
+        OPEN cuServGasContrato;
+        FETCH cuServGasContrato INTO nuSesunuse;
+        CLOSE cuServGasContrato;
+
+
+        IF (NVL(nuSesunuse,-1) = -1) THEN
+
+
+            IF cuServGas%isopen THEN CLOSE cuServGas; END IF;
+
+
+            OPEN cuServGas(1);
+            FETCH cuServGas INTO nuSesunuse;
+            CLOSE cuServGas;
+
+
+            IF (NVL(nuSesunuse,-1) = -1) THEN
+
+
+                nuSesunuse := 0;
+
+
+            END IF;
+
+
+        END IF;
+    END IF;
+
+
+    pkg_traza.trace(csbMetodo, cnuNivelTraza, csbFin);
+    pkg_traza.trace('nuSesunuse => '||nuSesunuse, cnuNivelTraza );
+    RETURN nuSesunuse;
+
+
 EXCEPTION
- WHEN pkg_error.CONTROLLED_ERROR THEN
-  RAISE pkg_error.CONTROLLED_ERROR;
- WHEN OTHERS THEN
-   Pkg_Error.setError;
-   RAISE pkg_error.CONTROLLED_ERROR;
+    WHEN pkg_error.CONTROLLED_ERROR THEN
+        pkg_traza.trace(csbMetodo, cnuNivelTraza, csbFin_ERC);
+        pkg_Error.getError(nuError,sbError);
+        pkg_traza.trace('sbError: '||sbError, cnuNivelTraza );
+        RAISE pkg_error.Controlled_Error;
+    WHEN OTHERS THEN
+        pkg_traza.trace(csbMetodo, cnuNivelTraza, csbFin_ERR);
+        pkg_error.setError;
+        pkg_Error.getError(nuError,sbError);
+        pkg_traza.trace('sbError: '||sbError, cnuNivelTraza );
+        RAISE pkg_error.Controlled_Error;
 END fnuGetProducto;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1380,7 +1461,7 @@ nuCuentaSaldo NUMBER;
 nuDifeSaldo   NUMBER;
 nuSuspende    NUMBER;
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fnuFechaSuspension'  );
+ PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fnuFechaSuspension'  );
  SELECT /*+ index(cuencobr IX_CUENCOBR03)*/
        COUNT(1) INTO nuCuentaSaldo
    FROM cuencobr c
@@ -1400,7 +1481,7 @@ BEGIN
  ELSE
      nuSuspende := 0;
  END IF;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fnuFechaSuspension'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fnuFechaSuspension'  );
  RETURN nuSuspende;
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -1432,7 +1513,7 @@ FUNCTION fnumesesdeuda(inususccodi suscripc.susccodi%TYPE) RETURN NUMBER IS
 *****************************************************************************************/
 numesesdeuda NUMBER;
 BEGIN
-ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fnumesesdeuda'  );
+PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fnumesesdeuda'  );
  SELECT MAX(cuentas) INTO numesesdeuda
    FROM (
          SELECT sesunuse, COUNT(1) cuentas
@@ -1441,7 +1522,7 @@ ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fnumesesdeuda'  );
             AND sesususc = inususccodi
             AND (nvl(cucosacu, 0) - nvl(cucovare, 0) - nvl(cucovrap, 0)) > 0
           GROUP BY sesunuse);
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fnumesesdeuda'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fnumesesdeuda'  );
  RETURN numesesdeuda;
 EXCEPTION
  WHEN OTHERS THEN
@@ -1469,9 +1550,9 @@ FUNCTION fblNoRegulado(inuSusccodi suscripc.susccodi%TYPE) RETURN BOOLEAN IS
                                                    de tipo de producto 7014
 ******************************************************************************************************/
 nuCategori  NUMBER;
-sbParameter ld_parameter.value_chain%TYPE := dald_parameter.fsbGetValue_Chain('CATEG_IDUSTRIA_NO_REG');
+sbParameter ld_parameter.value_chain%TYPE := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('CATEG_IDUSTRIA_NO_REG');
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fblNoRegulado'  );
+ PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fblNoRegulado'  );
  SELECT sesucate INTO nuCategori
    FROM servsusc
   WHERE sesususc = inuSusccodi
@@ -1482,7 +1563,7 @@ BEGIN
   RETURN TRUE;
  END IF;
  RETURN FALSE;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fblNoRegulado'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fblNoRegulado'  );
 EXCEPTION
  WHEN OTHERS THEN
   RETURN FALSE;
@@ -1490,7 +1571,7 @@ END fblNoRegulado;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 PROCEDURE rfdatosgenerales(
-                           orfcursor OUT constants.tyRefCursor
+                           orfcursor OUT constants_per.tyRefCursor
                           ) IS
 /****************************************************************************************************************
   Propiedad intelectual de PETI (c).
@@ -1514,22 +1595,22 @@ PROCEDURE rfdatosgenerales(
  sbFactsusc      ge_boInstanceControl.stysbValue;
  blnregulado     BOOLEAN;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.rfdatosgenerales', 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.rfdatosgenerales', 15);
  -- Obtiene el identificador de la factura instanciada
- sbFactcodi  := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro sbFactcodi : '||sbFactcodi, 15);
- sbFactsusc  := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('Parametro sbFactsusc : '||sbFactsusc, 15);
+ sbFactcodi  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro sbFactcodi : '||sbFactcodi, 15);
+ sbFactsusc  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro sbFactsusc : '||sbFactsusc, 15);
  blnregulado := fblnoregulado(sbfactsusc);
  -- Se obtiene resultado
- ut_trace.trace('Se ejecuta el procedimiento : ldc_pkgprocefactspoolatencli.rfdatosgenerales', 15);
+ PKG_TRAZA.TRACE('Se ejecuta el procedimiento : ldc_pkgprocefactspoolatencli.rfdatosgenerales', 15);
  ldc_pkgprocefactspoolatencli.rfdatosgenerales(
                                                sbFactcodi
                                               ,sbFactsusc
                                               ,blnregulado
                                               ,orfcursor
                                               );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.rfdatosgenerales', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.rfdatosgenerales', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -1568,8 +1649,8 @@ FUNCTION fnuLecturaAnterior(
 nuLectAnterior lectelme.leemleto%TYPE;
 dtFechaPefa    lectelme.leemfele%TYPE;
 BEGIN
- ut_trace.trace('INICIA LDC_DetalleFact_GasCaribe.fnuLecturaAnterior',15);
- ut_trace.trace('LDC_DetalleFact_GasCaribe.fnuLecturaAnterior inuPeriodoFact ' ||inuPeriodoFact,15);
+ PKG_TRAZA.TRACE('INICIA LDC_DetalleFact_GasCaribe.fnuLecturaAnterior',15);
+ PKG_TRAZA.TRACE('LDC_DetalleFact_GasCaribe.fnuLecturaAnterior inuPeriodoFact ' ||inuPeriodoFact,15);
  -- Se consulta la fecha de lectura del periodo de facturacion actual que se esta procesando
  BEGIN
   SELECT Trunc(leemfele) INTO dtFechaPefa
@@ -1606,7 +1687,7 @@ EXCEPTION
  WHEN No_Data_Found THEN
    nuLectAnterior := NULL;
 END;
-ut_trace.trace('FIN LDC_DetalleFact_GasCaribe.fnuLecturaAnterior', 15);
+PKG_TRAZA.TRACE('FIN LDC_DetalleFact_GasCaribe.fnuLecturaAnterior', 15);
 RETURN nuLectAnterior;
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -1619,7 +1700,7 @@ EXCEPTION
 END fnuLecturaAnterior;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfDatosLecturas(orfcursor OUT constants.tyRefCursor) AS
+PROCEDURE RfDatosLecturas(orfcursor OUT constants_per.tyRefCursor) AS
 /**********************************************************************************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -1646,20 +1727,20 @@ blnregulado BOOLEAN;
 nuSesunuse  servsusc.sesunuse%TYPE;
 nucicloc    NUMBER;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.rfdatoslecturas', 15);
- sbFactcodi    := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro : sbFactcodi : '||sbFactcodi, 15);
- sbFactsusc    := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('Parametro : sbFactsusc : '||sbFactsusc, 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.rfdatoslecturas', 15);
+ sbFactcodi    := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro : sbFactcodi : '||sbFactcodi, 15);
+ sbFactsusc    := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro : sbFactsusc : '||sbFactsusc, 15);
  blNRegulado   := fblNoRegulado(sbFactsusc);
- ut_trace.trace('Parametro : blNRegulado : ', 15);
+ PKG_TRAZA.TRACE('Parametro : blNRegulado : ', 15);
  nuSesunuse    := fnuGetProducto(sbFactcodi);
- ut_trace.trace('Parametro : nuSesunuse : '||nuSesunuse, 15);
+ PKG_TRAZA.TRACE('Parametro : nuSesunuse : '||nuSesunuse, 15);
  nucicloc      := nvl(pktblservsusc.fnugetbillingcycle(nuSesunuse), -1);
- ut_trace.trace('Parametro : nucicloc : '||nucicloc, 15);
- sbfactpefa    := obtenervalorinstancia('FACTURA', 'FACTPEFA');
- ut_trace.trace('Parametro : sbfactpefa : '||sbfactpefa, 15);
- ut_trace.trace('Ejecucion ldc_pkgprocefactspoolfac.rfdatoslecturas', 15);
+ PKG_TRAZA.TRACE('Parametro : nucicloc : '||nucicloc, 15);
+ sbfactpefa    := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTPEFA');
+ PKG_TRAZA.TRACE('Parametro : sbfactpefa : '||sbfactpefa, 15);
+ PKG_TRAZA.TRACE('Ejecucion ldc_pkgprocefactspoolfac.rfdatoslecturas', 15);
  ldc_pkgprocefactspoolfac.rfdatoslecturas(
                                           sbFactcodi
                                          ,sbfactpefa
@@ -1668,7 +1749,7 @@ BEGIN
                                          ,nucicloc
                                          ,orfcursor
                                          );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.rfdatoslecturas', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.rfdatoslecturas', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
    RAISE pkg_error.CONTROLLED_ERROR;
@@ -1678,7 +1759,7 @@ EXCEPTION
 END RfDatosLecturas;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-FUNCTION frfCambioCiclo(inufactsusc IN NUMBER) RETURN constants.tyRefCursor IS
+FUNCTION frfCambioCiclo(inufactsusc IN NUMBER) RETURN constants_per.tyRefCursor IS
 /**********************************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -1694,9 +1775,9 @@ FUNCTION frfCambioCiclo(inufactsusc IN NUMBER) RETURN constants.tyRefCursor IS
   =========       =========           ====================
   11/11/2014      ggamarra           Creacion.
 *************************************************************************************/
-ofrPeriodos constants.tyRefCursor;
+ofrPeriodos constants_per.tyRefCursor;
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.frfCambioCiclo'  );
+ PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.frfCambioCiclo'  );
  OPEN ofrPeriodos FOR
   SELECT factpefa
             FROM(
@@ -1708,7 +1789,7 @@ BEGIN
                   ORDER BY factfege DESC
                  )
    WHERE rownum < 8;
-   ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.frfCambioCiclo'  );
+   PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.frfCambioCiclo'  );
 RETURN ofrPeriodos;
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -1737,7 +1818,7 @@ FUNCTION fsbGetFechaPermmyyyy(inupefacodi IN perifact.pefacodi%TYPE) RETURN VARC
 *************************************************************************/
 sbFechaPeriodo VARCHAR2(20);
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fsbGetFechaPermmyyyy'  );
+ PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fsbGetFechaPermmyyyy'  );
  IF (inupefacodi != -1) THEN
   SELECT to_char(to_date(pefames || '/' || pefaano, 'mm/yyyy'),'MON-YY')
     INTO sbFechaPeriodo
@@ -1746,7 +1827,7 @@ BEGIN
  ELSE
   sbFechaPeriodo := '';
  END IF;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbGetFechaPermmyyyy'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbGetFechaPermmyyyy'  );
  RETURN sbFechaPeriodo;
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -1780,7 +1861,7 @@ FUNCTION fnuGetConsumoResidencial(
 ********************************************************************************/
 nuConsumo conssesu.cosscoca%TYPE;
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fnuGetConsumoResidencial'  );
+ PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fnuGetConsumoResidencial'  );
  BEGIN
   SELECT cosssuma INTO nuConsumo
     FROM vw_cmprodconsumptions
@@ -1791,7 +1872,7 @@ BEGIN
   WHEN no_data_found THEN
       nuConsumo := 0;
  END;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fnuGetConsumoResidencial'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fnuGetConsumoResidencial'  );
  RETURN nuConsumo;
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -1803,7 +1884,7 @@ EXCEPTION
 END fnuGetConsumoResidencial;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE rfdatosconsumohist(orfcursor OUT constants.tyrefcursor) AS
+PROCEDURE rfdatosconsumohist(orfcursor OUT constants_per.tyRefCursor) AS
 /*********************************************************************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -1827,10 +1908,10 @@ sbfactpefa  ge_boinstancecontrol.stysbvalue;
 sbfactcodi  ge_boinstancecontrol.stysbvalue;
 blnregulado BOOLEAN;
 BEGIN
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist',15);
- sbfactsusc  := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- sbfactpefa  := obtenervalorinstancia('FACTURA', 'FACTPEFA');
- sbfactcodi  := obtenervalorinstancia('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist',15);
+ sbfactsusc  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ sbfactpefa  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTPEFA');
+ sbfactcodi  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
  blnregulado := fblnoregulado(sbfactsusc);
  ldc_pkgprocefactspoolconsu.rfdatosconsumohist(
                                                sbfactsusc
@@ -1839,7 +1920,7 @@ BEGIN
                                               ,blnregulado
                                               ,orfcursor
                                               );
- ut_trace.trace('Fin LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist', 15);
+ PKG_TRAZA.TRACE('Fin LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -1849,7 +1930,7 @@ EXCEPTION
 END rfdatosconsumohist;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfDatosRevision(orfcursor OUT constants.tyRefCursor) IS
+PROCEDURE RfDatosRevision(orfcursor OUT constants_per.tyRefCursor) IS
 /****************************************************************************************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -1885,22 +1966,22 @@ PROCEDURE RfDatosRevision(orfcursor OUT constants.tyRefCursor) IS
   11/11/2014      ggamarra           Creacion.
 ****************************************************************************************************************************************/
 BEGIN
- ut_trace.trace('INICIO ldc_detallefact_gascaribe.RfDatosRevision', 3);
+ PKG_TRAZA.TRACE('INICIO ldc_detallefact_gascaribe.RfDatosRevision', 3);
   ldc_pkgprocrevperfact.RfDatosRevision(orfcursor);
- ut_trace.trace('FIN ldc_detallefact_gascaribe.RfDatosRevision', 3);
+ PKG_TRAZA.TRACE('FIN ldc_detallefact_gascaribe.RfDatosRevision', 3);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
-  ut_trace.trace('ERROR CONTROLLED_ERROR ldc_detallefact_gascaribe.RfDatosRevision', 3);
+  PKG_TRAZA.TRACE('ERROR CONTROLLED_ERROR ldc_detallefact_gascaribe.RfDatosRevision', 3);
   RAISE pkg_error.CONTROLLED_ERROR;
  WHEN OTHERS THEN
-  ut_trace.trace('ERROR OTHERS ldc_detallefact_gascaribe.RfDatosRevision',1);
+  PKG_TRAZA.TRACE('ERROR OTHERS ldc_detallefact_gascaribe.RfDatosRevision',1);
   Pkg_Error.setError;
   RAISE pkg_error.CONTROLLED_ERROR;
 END RfDatosRevision;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 PROCEDURE rfdatosconceptos(
-                           orfcursor OUT constants.tyRefCursor
+                           orfcursor OUT constants_per.tyRefCursor
                            ) IS
 /*****************************************************************************************************************
     Propiedad intelectual de PETI (c).
@@ -1923,22 +2004,22 @@ PROCEDURE rfdatosconceptos(
  sbFactsusc  ge_boInstanceControl.stysbValue;
  blNRegulado BOOLEAN;
 BEGIN
- ut_trace.trace('INICIO LDC_DetalleFact_GasCaribe.RfDatosConceptos',15);
+ PKG_TRAZA.TRACE('INICIO LDC_DetalleFact_GasCaribe.RfDatosConceptos',15);
  -- Obtiene el identificador de la factura instanciada
- sbFactsusc  := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('parametro sbFactsusc : '||sbFactsusc, 15);
+ sbFactsusc  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('parametro sbFactsusc : '||sbFactsusc, 15);
  blNRegulado := fblNoRegulado(sbFactsusc);
  ldc_pkgprocefactspoolfac.RfDatosConceptos(
                                            blNRegulado
                                           ,orfcursor
                                           );
- ut_trace.trace('FIN LDC_DetalleFact_GasCaribe.RfDatosConceptos', 15);
+ PKG_TRAZA.TRACE('FIN LDC_DetalleFact_GasCaribe.RfDatosConceptos', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
-  ut_trace.trace('ERROR CONTROLLED_ERROR', 5);
+  PKG_TRAZA.TRACE('ERROR CONTROLLED_ERROR', 5);
    RAISE pkg_error.CONTROLLED_ERROR;
  WHEN OTHERS THEN
-  ut_trace.trace('ERROR OTHERS', 5);
+  PKG_TRAZA.TRACE('ERROR OTHERS', 5);
   Pkg_Error.setError;
   RAISE pkg_error.CONTROLLED_ERROR;
 END RfDatosConceptos;
@@ -1954,6 +2035,10 @@ FUNCTION fnuCanConceptos RETURN NUMBER AS
 
   Fecha           Autor               Modificacion
   =========       =========           ====================
+  21-05-2025      LJLB                OSF-4456: se ajusta consulta de no regulado para agregar nuevos campos solicitados de cuotas y saldo
+                                    diferido
+  20-11-2024      LJLB                OSF-3617: se quita de la agrupacion de cargos el campo doc_soporte, para el cursor de
+                                        usuarios no regulados.
   09-10-2024      LJLB                OSF-3434: se cambia consulta de cantidad de concepto
   12-09-2016      Sandra Muñoz        Se agrupan los registros del concepto brilla para obtener
                                       el total de conceptos
@@ -1963,30 +2048,30 @@ FUNCTION fnuCanConceptos RETURN NUMBER AS
 sbFactsusc            ge_boInstanceControl.stysbValue;
 blNRegulado           BOOLEAN;
 nuCanConceptos        NUMBER;
-nuServicioBrilla      ld_parameter.numeric_value%TYPE := dald_parameter.fnuGetNumeric_Value('COD_PRODUCT_TYPE_BRILLA'); -- CA200-342. Producto brilla
+nuServicioBrilla      ld_parameter.numeric_value%TYPE := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('COD_PRODUCT_TYPE_BRILLA'); -- CA200-342. Producto brilla
 nuAplicaEntrega200342 NUMBER;
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fnuCanConceptos'  );
+ PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fnuCanConceptos'  );
  -- Obtiene el identificador de la factura instanciada
- sbFactsusc  := obtenervalorinstancia('FACTURA', 'FACTSUSC');
+ sbFactsusc  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
  blNRegulado := fblNoRegulado(sbFactsusc);
  IF NOT blNRegulado THEN
   nuAplicaEntrega200342 := 1;
   SELECT COUNT(1) INTO nuCanConceptos
-   from ( SELECT * 
+   from ( SELECT *
          FROM ( SELECT etiqueta
-                       ,nvl(concepto_id, decode(etiqueta, 31, -1,33, -2, -3 )) concepto_id 
+                       ,nvl(concepto_id, decode(etiqueta, 31, -1,33, -2, -3 )) concepto_id
                        ,desc_concep
                        ,to_char(saldo_ant, 'FM999,999,999,990') saldo_ant
                        ,to_char(capital, 'FM999,999,999,990') capital
                        ,to_char(interes, 'FM999,999,999,990') interes
                        ,to_char(total, 'FM999,999,999,990') total
-                       ,to_char(saldo_dif, 'FM999,999,999,990') saldo_dif                       
+                       ,to_char(saldo_dif, 'FM999,999,999,990') saldo_dif
                        ,unidad_items
                        ,cantidad
-                       ,to_char(valor_unitario, 'FM999,999,999,990') valor_unitario  
-                       ,to_char(valor_iva, 'FM999,999,999,990') valor_iva               
-                       ,cuotas       
+                       ,to_char(valor_unitario, 'FM999,999,999,990') valor_unitario
+                       ,to_char(valor_iva, 'FM999,999,999,990') valor_iva
+                       ,cuotas
                FROM (
                      SELECT id etiqueta
                            , MAX(concepto_id) concepto_id--decode(id, 31, -1,33, -2, -3 ))) concepto_id
@@ -2047,7 +2132,7 @@ BEGIN
                    WHERE lcft.servicio = 7055
                      AND nuAplicaEntrega200342 = 1
                      AND id IS NOT NULL
-                     and not exists (select 1 from concbali, concepto where concbali.COBLCOBA =  concepto_id  AND concepto.conccodi = COBLCONC AND CONCTICL = 4)          
+                     and not exists (select 1 from concbali, concepto where concbali.COBLCOBA =  concepto_id  AND concepto.conccodi = COBLCONC AND CONCTICL = 4)
                    GROUP BY id, concepto, cuotas_pendientes
                    UNION ALL
                    SELECT id etiqueta
@@ -2096,41 +2181,62 @@ BEGIN
  ELSE
   SELECT COUNT(1) INTO nuCanConceptos
     FROM (
-           SELECT * 
-          FROM ( SELECT etiqueta
-                        ,concepto_id
-                        ,desc_concep
-                        ,saldo_ant
-                        ,capital
-                        ,interes
-                        ,total
-                        ,saldo_dif        
-                        ,unidad_items
-                        ,cantidad
-                        ,to_char(valor_unitario, 'FM999,999,999,990') valor_unitario   
-                        ,to_char(valor_iva, 'FM999,999,999,990') valor_iva          
-                        ,cuotas        
-                 FROM (
-                       SELECT id etiqueta
-                             ,MAX(nvl(concepto_id, decode(id, 31, -1,33, -2, -3 )))  concepto_id
-                             ,concepto desc_concep
-                             ,NULL saldo_ant
-                             ,to_char(SUM(valor_mes), 'FM999,999,999,990') capital
-                             ,to_char(SUM(amortizacion), 'FM999,999,999,990') interes
-                             ,to_char(SUM(presente_mes), 'FM999,999,999,990') total
-                             ,to_char(SUM(saldo_diferido), 'FM999,999,999,990') saldo_dif
-                             ,ltrim(rtrim(to_char(MAX(producto),'FM999,999,999,990'))) cuotas
-                             ,unidad_items
-                             ,cantidad
-                             ,sum(valor_iva) valor_iva
-                             ,SUM(valor_unitario) valor_unitario
-                             ,MAX(orden_concepto) orden
-                         FROM ldc_conc_factura_temp
-                        WHERE conc_signo NOT IN ('SA', 'PA')
-                        GROUP BY id, concepto, doc_soporte, cau_cargo, unidad_items, cantidad
-                        ORDER BY orden ))     );
+          SELECT *
+		  FROM ( SELECT etiqueta
+						,concepto_id
+						,desc_concep
+						,saldo_ant
+						,capital
+						,interes
+						,total
+						,saldo_dif
+						,unidad_items
+						,cantidad
+						,to_char(valor_unitario, 'FM999,999,999,990') valor_unitario
+						,to_char(valor_iva, 'FM999,999,999,990') valor_iva
+						,cuotas
+				 FROM (
+					   SELECT id etiqueta
+							 ,MAX(nvl(concepto_id, decode(id, 31, -1,33, -2, -3 )))  concepto_id
+							 ,concepto desc_concep
+							 ,NULL saldo_ant
+							 ,to_char(SUM(valor_mes), 'FM999,999,999,990') capital
+							 ,to_char(SUM(amortizacion), 'FM999,999,999,990') interes
+							 ,to_char(SUM(presente_mes), 'FM999,999,999,990') total
+							 ,to_char(SUM(saldo_diferido), 'FM999,999,999,990') saldo_dif
+							 ,ltrim(rtrim(to_char(MAX(cuotas_pendientes),'FM999,999,999,990'))) cuotas
+							 ,unidad_items
+							 ,cantidad
+							 ,sum(valor_iva) valor_iva
+							 ,SUM(valor_unitario) valor_unitario
+							 ,MAX(orden_concepto) orden
+						 FROM ldc_conc_factura_temp
+						WHERE conc_signo NOT IN ('SA', 'PA')
+						 and not exists (select 1 from concbali, concepto where concbali.COBLCOBA =  concepto_id  and concepto.conccodi = COBLCONC and CONCTICL = 4)
+						GROUP BY id, concepto,  cau_cargo, cuotas_pendientes, unidad_items, cantidad
+						union all
+						SELECT id etiqueta
+							 ,MAX(nvl(concepto_id, decode(id, 31, -1,33, -2, -3 )))  concepto_id
+							 ,concepto desc_concep
+							 ,NULL saldo_ant
+							 ,to_char(SUM(valor_mes), 'FM999,999,999,990') capital
+							 ,to_char(SUM(amortizacion), 'FM999,999,999,990') interes
+							 ,to_char(SUM(presente_mes), 'FM999,999,999,990') total
+							 ,to_char(SUM(saldo_diferido), 'FM999,999,999,990') saldo_dif
+							 ,ltrim(rtrim(to_char(MAX(cuotas_pendientes),'FM999,999,999,990'))) cuotas
+							 ,unidad_items
+							 ,cantidad
+							 ,sum(valor_iva) valor_iva
+							 ,SUM(valor_unitario) valor_unitario
+							 ,MAX(orden_concepto) orden
+						 FROM ldc_conc_factura_temp
+						WHERE conc_signo NOT IN ('SA', 'PA')
+						 and  exists (select 1 from concbali, concepto where concbali.COBLCOBA =  concepto_id  and concepto.conccodi = COBLCONC and CONCTICL = 4)
+						GROUP BY id, concepto,  cau_cargo,  unidad_items, cantidad
+						ORDER BY orden
+					))   );
  END IF;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fnuCanConceptos'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fnuCanConceptos'  );
  RETURN nuCanConceptos;
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -2143,7 +2249,7 @@ EXCEPTION
 END fnuCanConceptos;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfDatosConcEstadoCuenta(orfcursor OUT constants.tyRefCursor) IS
+PROCEDURE RfDatosConcEstadoCuenta(orfcursor OUT constants_per.tyRefCursor) IS
 /**********************************************************************************************************************************
     Propiedad intelectual de PETI (c).
 
@@ -2173,26 +2279,26 @@ blNRegulado BOOLEAN;
 -- Numero de detalles del bloque de cargos
 nuRegistrosHoja       NUMBER := 30;
 nuRegBlanks           NUMBER;
-nuServicioBrilla      ld_parameter.numeric_value%TYPE := dald_parameter.fnuGetNumeric_Value('COD_PRODUCT_TYPE_BRILLA'); -- CA200-342. Producto brilla
+nuServicioBrilla      ld_parameter.numeric_value%TYPE := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('COD_PRODUCT_TYPE_BRILLA'); -- CA200-342. Producto brilla
 nuAplicaEntrega200342 NUMBER;
 BEGIN
- ut_trace.trace('INICIO LDC_DetalleFact_GasCaribe.RfDatosConcEstadoCuenta', 5);
+ PKG_TRAZA.TRACE('INICIO LDC_DetalleFact_GasCaribe.RfDatosConcEstadoCuenta', 5);
  -- Obtiene el identificador de la factura instanciada
- sbFactcodi  := obtenervalorinstancia('FACTURA', 'FACTCODI');
- sbFactsusc  := obtenervalorinstancia('FACTURA', 'FACTSUSC');
+ sbFactcodi  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ sbFactsusc  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
  blNRegulado := fblNoRegulado(sbFactsusc);
- ut_trace.trace('sbFactcodi: '||sbFactcodi, 5);
- ut_trace.trace('sbFactsusc: '||sbFactsusc, 5);
+ PKG_TRAZA.TRACE('sbFactcodi: '||sbFactcodi, 5);
+ PKG_TRAZA.TRACE('sbFactsusc: '||sbFactsusc, 5);
  IF NOT blNRegulado THEN
   IF MOD(gnuConcNumber, nuRegistrosHoja) = 0 THEN
     nuRegBlanks := 0;
   ELSE
     nuRegBlanks := nuRegistrosHoja - MOD(gnuConcNumber, nuRegistrosHoja);
   END IF;
-  ut_trace.trace('gnuConcNumber: '||gnuConcNumber, 5);
-  ut_trace.trace('nuRegBlanks: '||nuRegBlanks, 5);
+  PKG_TRAZA.TRACE('gnuConcNumber: '||gnuConcNumber, 5);
+  PKG_TRAZA.TRACE('nuRegBlanks: '||nuRegBlanks, 5);
   nuAplicaEntrega200342 := 1;
-  ut_trace.trace('nuAplicaEntrega200342: '||nuAplicaEntrega200342, 5);
+  PKG_TRAZA.TRACE('nuAplicaEntrega200342: '||nuAplicaEntrega200342, 5);
  OPEN orfcursor FOR
   SELECT etiqueta
         ,desc_concep
@@ -2245,7 +2351,7 @@ BEGIN
           FROM servsusc
          WHERE rownum <= nuRegBlanks;
  ELSE
-  ut_trace.trace('blNRegulado', 5);
+  PKG_TRAZA.TRACE('blNRegulado', 5);
   OPEN orfcursor FOR
     SELECT etiqueta
          ,desc_concep
@@ -2267,17 +2373,17 @@ BEGIN
                  ,MAX(orden_concepto) orden
              FROM ldc_conc_factura_temp
             WHERE conc_signo NOT IN ('PA', 'SA')
-            GROUP BY id, concepto, doc_soporte, cau_cargo
+            GROUP BY id, concepto,  cau_cargo
             ORDER BY orden
            );
  END IF;
- ut_trace.trace('FIN LDC_DetalleFact_GasCaribe.RfDatosConcEstadoCuenta', 5);
+ PKG_TRAZA.TRACE('FIN LDC_DetalleFact_GasCaribe.RfDatosConcEstadoCuenta', 5);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
-  ut_trace.trace('ERROR CONTROLLED_ERROR', 5);
+  PKG_TRAZA.TRACE('ERROR CONTROLLED_ERROR', 5);
   RAISE pkg_error.CONTROLLED_ERROR;
  WHEN OTHERS THEN
-  ut_trace.trace('ERROR OTHERS', 5);
+  PKG_TRAZA.TRACE('ERROR OTHERS', 5);
   Pkg_Error.setError;
   RAISE pkg_error.CONTROLLED_ERROR;
 END rfdatosconcestadocuenta;
@@ -2309,11 +2415,11 @@ sbPeriodo VARCHAR2(4000);
             AND cargpefa = pefacodi
             AND cargdoso = 'FD-'||to_char(inuDiferido));
 BEGIN
-  ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fsbGetPeriodo'  );
+  PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fsbGetPeriodo'  );
   OPEN cuGetPeriodo;
  FETCH cuGetPeriodo INTO sbPeriodo;
  CLOSE cuGetPeriodo;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbGetPeriodo'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbGetPeriodo'  );
  RETURN sbPeriodo;
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -2324,7 +2430,7 @@ EXCEPTION
 END fsbGetPeriodo;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfConcepParcial(orfcursor OUT constants.tyRefCursor) IS
+PROCEDURE RfConcepParcial(orfcursor OUT constants_per.tyRefCursor) IS
 /***********************************************************************************************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -2347,25 +2453,25 @@ sbFactcodi  ge_boInstanceControl.stysbValue;
 sbFactsusc  ge_boInstanceControl.stysbValue;
 blNRegulado BOOLEAN;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.RfConcepParcial', 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.RfConcepParcial', 15);
  -- Obtiene el identificador de la factura instanciada
- sbFactcodi  := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro sbFactcodi : '||sbFactcodi, 15);
- sbFactsusc  := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('Parametro sbFactsusc : '||sbFactsusc, 15);
+ sbFactcodi  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro sbFactcodi : '||sbFactcodi, 15);
+ sbFactsusc  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro sbFactsusc : '||sbFactsusc, 15);
  blNRegulado := fblNoRegulado(sbFactsusc);
- ut_trace.trace('Ejecutamos el procedimiento : ldc_pkgprocefactspoolfac.rfconcepparcial', 15);
+ PKG_TRAZA.TRACE('Ejecutamos el procedimiento : ldc_pkgprocefactspoolfac.rfconcepparcial', 15);
  ldc_pkgprocefactspoolfac.rfconcepparcial(
                                           sbFactcodi
                                          ,sbFactsusc
                                          ,blNRegulado
                                          ,orfcursor
                                          );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.RfConcepParcial', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.RfConcepParcial', 15);
 END RfConcepParcial;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfRangosConsumo(orfcursor OUT constants.tyRefCursor) IS
+PROCEDURE RfRangosConsumo(orfcursor OUT constants_per.tyRefCursor) IS
   /**************************************************************************
   Propiedad Intelectual de PETI
 
@@ -2386,19 +2492,19 @@ PROCEDURE RfRangosConsumo(orfcursor OUT constants.tyRefCursor) IS
  blNRegulado    BOOLEAN;
  sbAplicaNET ge_boInstanceControl.stysbValue;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.RfRangosConsumo', 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.RfRangosConsumo', 15);
  -- Obtiene el identificador de la factura instanciada
- sbFactcodi := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro sbFactcodi : '||sbFactcodi, 15);
- sbFactsusc := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('Parametro sbFactsusc : '||sbFactsusc, 15);
- sbAplicaNET := obtenervalorinstancia('FACTURA', 'APLICA');
- ut_trace.trace('Parametro sbAplicaNET : '||sbAplicaNET, 15);
+ sbFactcodi := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro sbFactcodi : '||sbFactcodi, 15);
+ sbFactsusc := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro sbFactsusc : '||sbFactsusc, 15);
+ sbAplicaNET := API_OBTENERVALORINSTANCIA('FACTURA', 'APLICA');
+ PKG_TRAZA.TRACE('Parametro sbAplicaNET : '||sbAplicaNET, 15);
  IF sbAplicaNET IS NULL THEN
     sbAplicaNET := '0';
  END IF;
  blNRegulado := fblNoRegulado(sbFactsusc);
- ut_trace.trace('Ejecutamos ldc_pkgprocefactspoolfac.rfrangosconsumo', 15);
+ PKG_TRAZA.TRACE('Ejecutamos ldc_pkgprocefactspoolfac.rfrangosconsumo', 15);
  ldc_pkgprocefactspoolfac.rfrangosconsumo(
                                           sbFactcodi
                                          ,sbFactsusc
@@ -2406,7 +2512,7 @@ BEGIN
                                          ,sbAplicaNET
                                          ,orfcursor
                                         );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.RfRangosConsumo', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.RfRangosConsumo', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -2434,13 +2540,13 @@ FUNCTION fnuConceptoComponent(isbComponente IN VARCHAR2) RETURN NUMBER IS
 nuConcepto      NUMBER;
 nuEqComponentes NUMBER := 15000;
 BEGIN
-  ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.fnuConceptoComponent'  );
+  PKG_TRAZA.TRACE('Inicia LDC_DetalleFact_GasCaribe.fnuConceptoComponent'  );
   -- Consulta los componentes de costo
  SELECT to_number(target_value) INTO nuConcepto
    FROM ge_equivalenc_values
   WHERE equivalence_set_id = nuEqComponentes
     AND upper(origin_value) LIKE '%' || upper(isbComponente) || '%';
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fnuConceptoComponent'  );
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fnuConceptoComponent'  );
  RETURN nuConcepto;
 EXCEPTION
  WHEN no_data_found THEN
@@ -2452,7 +2558,7 @@ EXCEPTION
 END fnuConceptoComponent;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE rfGetValCostCompValid(orfcursor OUT constants.tyRefCursor) AS
+PROCEDURE rfGetValCostCompValid(orfcursor OUT constants_per.tyRefCursor) AS
 /**********************************************************************************************************************************************
   Propiedad Intelectual de PETI
 
@@ -2472,22 +2578,22 @@ sbFactsusc   ge_boInstanceControl.stysbValue;
 nuProducto   servsusc.sesunuse%TYPE;
 blNoRegulada BOOLEAN;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.rfGetValCostCompValid', 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.rfGetValCostCompValid', 15);
  --Obtiene el identificador de la factura de la instancia
- sbFactcodi   := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro sbFactcodi : '||sbFactcodi, 15);
- sbFactsusc   := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('Parametro sbFactsusc : '||sbFactsusc, 15);
+ sbFactcodi   := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro sbFactcodi : '||sbFactcodi, 15);
+ sbFactsusc   := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro sbFactsusc : '||sbFactsusc, 15);
  nuProducto   := fnuGetProducto(sbFactcodi);
- ut_trace.trace('Parametro nuProducto : '||nuProducto, 15);
+ PKG_TRAZA.TRACE('Parametro nuProducto : '||nuProducto, 15);
  blNoRegulada := fblNoRegulado(sbFactsusc);
- ut_trace.trace('Ejecutamos : ldc_pkgprocefactspoolfac.rfgetvalcostcompvalid', 15);
+ PKG_TRAZA.TRACE('Ejecutamos : ldc_pkgprocefactspoolfac.rfgetvalcostcompvalid', 15);
  ldc_pkgprocefactspoolfac.rfgetvalcostcompvalid(
                                                   nuProducto
                                                  ,blNoRegulada
                                                  ,orfcursor
                                                  );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.rfGetValCostCompValid', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.rfGetValCostCompValid', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -2497,7 +2603,7 @@ EXCEPTION
 END rfGetValCostCompValid;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE rfGetValRates(orfcursor OUT constants.tyRefCursor) AS
+PROCEDURE rfGetValRates(orfcursor OUT constants_per.tyRefCursor) AS
 /*************************************************************************************************************
   Propiedad Intelectual de PETI
 
@@ -2516,21 +2622,21 @@ sbFactcodi   ge_boInstanceControl.stysbValue;
 sbFactsusc   ge_boInstanceControl.stysbValue;
 blNoRegulada BOOLEAN;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.rfGetValRates', 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.rfGetValRates', 15);
  --Obtiene el identificador de la factura de la instancia
- sbFactcodi   := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro sbFactcodi : '||sbFactcodi, 15);
- sbFactsusc   := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('Parametro sbFactsusc : '||sbFactsusc, 15);
+ sbFactcodi   := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro sbFactcodi : '||sbFactcodi, 15);
+ sbFactsusc   := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro sbFactsusc : '||sbFactsusc, 15);
  blNoRegulada := fblNoRegulado(sbFactsusc);
  -- Obtenemos resultado
- ut_trace.trace('Se ejecuta el procedimiento : ldc_pkgprocefactspoolcart.rfgetvalrates', 15);
+ PKG_TRAZA.TRACE('Se ejecuta el procedimiento : ldc_pkgprocefactspoolcart.rfgetvalrates', 15);
  ldc_pkgprocefactspoolcart.rfgetvalrates
                                         (
                                          blNoRegulada
                                         ,orfcursor
                                         );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.rfGetValRates', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.rfGetValRates', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -2540,7 +2646,7 @@ EXCEPTION
 END rfGetValRates;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfDatosCodBarras(orfcursor OUT constants.tyRefCursor) AS
+PROCEDURE RfDatosCodBarras(orfcursor OUT constants_per.tyRefCursor) AS
 /******************************************************************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -2562,15 +2668,15 @@ PROCEDURE RfDatosCodBarras(orfcursor OUT constants.tyRefCursor) AS
 ******************************************************************************************************************/
 sbFactcodi  ge_boInstanceControl.stysbValue;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.RfDatosCodBarras', 15);
- sbFactcodi  := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro sbFactcodi : '||sbFactcodi, 15);
- ut_trace.trace('Ejecutamos : ldc_pkgprocefactspoolfac.RfDatosCodBarras ', 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.RfDatosCodBarras', 15);
+ sbFactcodi  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro sbFactcodi : '||sbFactcodi, 15);
+ PKG_TRAZA.TRACE('Ejecutamos : ldc_pkgprocefactspoolfac.RfDatosCodBarras ', 15);
  ldc_pkgprocefactspoolfac.RfDatosCodBarras(
                                             sbFactcodi
                                            ,orfcursor
                                            );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.RfDatosCodBarras', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.RfDatosCodBarras', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
    RAISE pkg_error.CONTROLLED_ERROR;
@@ -2580,7 +2686,7 @@ EXCEPTION
 END RfDatosCodBarras;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfDatosBarCode(orfcursor OUT constants.tyRefCursor) AS
+PROCEDURE RfDatosBarCode(orfcursor OUT constants_per.tyRefCursor) AS
 /************************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -2596,27 +2702,57 @@ PROCEDURE RfDatosBarCode(orfcursor OUT constants.tyRefCursor) AS
   Fecha             Autor             Modificacion
   =========       =========           ====================
   11/11/2014      ggamarra             Creación.
+  28/05/2025	    jsoto			          OSF-4272
+                                      Se cambia cursor por llamado a utilidad
+                                      pkg_bcImpresionCodigoBarras.ftbDatosCodigoBarras para obtener los
+                                      datos para el código de barras
+
 ****************************************************************************/
-sbFactcodi  ge_boInstanceControl.stysbValue;
+sbFactcodi  		ge_boInstanceControl.stysbValue;
+sbFactPefa			ge_boInstanceControl.stysbValue;
+dtFechaVencFactura	DATE;
+tbCodigoBarras 		pkg_bcImpresionCodigoBarras.tytbDatosCodBarras;
+sbCodEmpresa		empresa.codigo%TYPE;
+nuIndice			NUMBER;
+rcPeriodo			pkg_perifact.sbtRegPeriodofact;
+
+sbFactcodi  		ge_boInstanceControl.stysbValue;
+sbFactPefa			ge_boInstanceControl.stysbValue;
+dtFechaVencFactura	DATE;
+tbCodigoBarras 		pkg_bcImpresionCodigoBarras.tytbDatosCodBarras;
+sbCodEmpresa		empresa.codigo%TYPE;
+nuIndice			NUMBER;
+rcPeriodo			pkg_perifact.sbtRegPeriodofact;
+
 BEGIN
- ut_trace.trace('Inicia LDC_DetalleFact_GasCaribe.RfDatosBarCode'  );
- sbFactcodi  := obtenervalorinstancia('FACTURA', 'FACTCODI');
- OPEN orfcursor FOR
-  SELECT code, NULL image
-    FROM (
-          SELECT '415' ||
-                 dald_parameter.fsbGetValue_Chain('COD_EAN_CODIGO_BARRAS') ||
-                 '8020' || lpad(cuponume, 10, '0') || chr(200) || '3900' ||
-                 lpad(cupovalo, 10, '0') || chr(200) || '96' ||
-                 to_char(cucofeve, 'yyyymmdd') code
-            FROM factura, cuencobr, cupon
-           WHERE factcodi = sbFactcodi
-             AND cupodocu = factcodi
-             AND cuponume = pkbobillprintheaderrules.fsbgetcoupon()
-             AND factcodi = cucofact
-         )
-   WHERE rownum = 1;
-   ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.RfDatosBarCode'  );
+
+	pkg_traza.trace('Inicia LDC_DetalleFact_GasCaribe.RfDatosBarCode'  );
+
+	sbFactcodi := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+	sbFactPefa := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTPEFA');
+
+	rcPeriodo := pkg_perifact.frcObtInfoPeriodo(TO_NUMBER(sbFactPefa));
+
+	dtFechaVencFactura := rcPeriodo.pefafepa;
+
+	sbCodEmpresa 		:= pkg_boconsultaempresa.fsbObtEmpresaFactura(sbFactcodi);
+
+	tbCodigoBarras := pkg_bcImpresionCodigoBarras.ftbDatosCodigoBarras(pkbobillprintheaderrules.fsbgetcoupon(),dtFechaVencFactura,sbCodEmpresa);
+
+	nuIndice := tbCodigoBarras.FIRST;
+
+	IF nuIndice IS NOT NULL THEN
+
+		pkg_traza.trace('tbCodigoBarras(nuIndice).codigo_4 '||tbCodigoBarras(nuIndice).codigo_4);
+
+		OPEN orfcursor FOR
+		SELECT tbCodigoBarras(nuIndice).codigo_codificado code, NULL image
+		FROM dual;
+
+	END IF;
+
+   pkg_traza.trace('Fin LDC_DetalleFact_GasCaribe.RfDatosBarCode'  );
+
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -2658,14 +2794,14 @@ PROCEDURE insld_cupon_causal(
                                       se agrega a la proceso de impresion de Gases del Caribe.
 *****************************************************************************************************************************/
 BEGIN
- ut_trace.trace('INICIO LDC_DetalleFact_GasCaribe.insld_cupon_causal', 2);
- ut_trace.trace('inuPackageTypeId:' || inuPackageTypeId, 2);
- ut_trace.trace(' - inuCausalId:' || inuCausalId, 2);
+ PKG_TRAZA.TRACE('INICIO LDC_DetalleFact_GasCaribe.insld_cupon_causal', 2);
+ PKG_TRAZA.TRACE('inuPackageTypeId:' || inuPackageTypeId, 2);
+ PKG_TRAZA.TRACE(' - inuCausalId:' || inuCausalId, 2);
  ldc_duplicado_meses_ant.gTipoSolicitud := inuPackageTypeId;
  glPackage_type_Cupon_id := inuPackageTypeId;
  glCausal_Cupon_id       := inuCausalId;
  glPackage_Cupon_id      := inuPackagesId;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.insld_cupon_causal', 2);
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.insld_cupon_causal', 2);
 EXCEPTION
  WHEN OTHERS THEN
   Pkg_Error.setError;
@@ -2724,17 +2860,19 @@ CURSOR cuUoBySol(
      AND lptou.items_id = ooa.activity_id
      AND lpta.package_type_assign_id = lptou.package_type_assign_id
      AND lpta.package_type_id =
-         decode(damo_packages.fnugetpackage_type_id(ooa.package_id,
-                                                    NULL),
+         decode(PKG_BCSOLICITUDES.FNUGETTIPOSOLICITUD(ooa.package_id
+                                                    ),
                 NULL,
                 -1,
-                damo_packages.fnugetpackage_type_id(ooa.package_id, NULL))
+                PKG_BCSOLICITUDES.FNUGETTIPOSOLICITUD(ooa.package_id))
      AND lptou.operating_unit_id NOT IN
          (SELECT lc.operating_unit_id
             FROM ldc_caruniope lc
            WHERE lc.activo = 'N');
 
 tempCuUoBySol cuUoBySol%ROWTYPE;
+
+sbTipoSolicitud VARCHAR2(4000) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('COD_TIPO_SOL_ASIG');
 
 -- Cursor para validar la categoria a la que pertenece el suscriptor
 CURSOR cuCategoria(nuproduct_id or_order_activity.product_id%TYPE,
@@ -2747,17 +2885,15 @@ CURSOR cuCategoria(nuproduct_id or_order_activity.product_id%TYPE,
                                FROM pr_product pp1
                               WHERE pp1.address_id = nuaddress_id
                                 AND pp1.product_type_id IN
-                                    (SELECT to_number(column_value)
-                                       FROM TABLE(ldc_boutilities.splitstrings(dald_parameter.fsbgetvalue_chain('COD_TIPO_SOL_ASIG',
-                                                                                                                NULL),
-                                                                               ',')))
+                                    ( SELECT to_number(regexp_substr(sbTipoSolicitud,  '[^,]+',   1, LEVEL)) AS tipoSOLI
+                                        FROM dual
+                                        CONNECT BY regexp_substr(sbTipoSolicitud, '[^,]+', 1, LEVEL) IS NOT NULL  )
                                 AND rownum = 1),
                             nuproduct_id)
  AND pp.product_type_id IN
-     (SELECT to_number(column_value)
-        FROM TABLE(ldc_boutilities.splitstrings(dald_parameter.fsbgetvalue_chain('COD_TIPO_SOL_ASIG',
-                                                                                 NULL),
-                                                ',')))
+     (  SELECT to_number(regexp_substr(sbTipoSolicitud, '[^,]+',   1, LEVEL)) AS tipoSOLI
+        FROM dual
+        CONNECT BY regexp_substr(sbTipoSolicitud, '[^,]+', 1, LEVEL) IS NOT NULL )
  AND rownum = 1;
 
  tempCuCategoria cucategoria%ROWTYPE;
@@ -2778,7 +2914,7 @@ CURSOR cuTipoProducto(nuProduct_id or_order_activity.product_id%TYPE) IS
  SELECT NVL(p.product_type_id, 0) tipo_producto
    FROM pr_product p
   WHERE p.product_id = nuProduct_id
-    AND p.product_type_id = dald_parameter.fnuGetNumeric_Value('COD_PRO_GEN', NULL);
+    AND p.product_type_id = PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('COD_PRO_GEN');
 
 rtCuTipoProducto cuTipoProducto%ROWTYPE;
 
@@ -2816,7 +2952,7 @@ nuOperating_zone_id   or_operating_unit.operating_zone_id%TYPE;
 nuControlCicloUobysol NUMBER;
 sbCuadrilla           or_operating_unit.name%TYPE; -- Codigo alterno o nombre de la cuadrilla
 BEGIN
- ut_trace.trace('INICIO LDC_DetalleFact_GasCaribe.fsbCuadrillaReparto', 2);
+ PKG_TRAZA.TRACE('INICIO LDC_DetalleFact_GasCaribe.fsbCuadrillaReparto', 2);
  FOR tempcuuobysol IN cuuobysol(inuorden, NULL) LOOP
   nucontrolciclouobysol := 1;
    OPEN culdc_caruniope(tempcuuobysol.operating_unit_id);
@@ -2828,7 +2964,8 @@ BEGIN
   CLOSE cucategoria;
   sbUNIDoperativa := NULL;
   --LLOZADA: Se obtiene el tipo de solicitud
-  nuPackType := damo_packages.fnugetpackage_type_id(NULL, NULL);
+  nuPackType := pkg_bcsolicitudes.fnugettiposolicitud(NULL);
+  nuPackType := pkg_bcsolicitudes.fnugettiposolicitud(NULL);
   IF nuPackType IS NOT NULL THEN
     --LLOZADA: Se abre el cursor para obtener el tipo de trabajo configurado
     OPEN cuConfMulti(nuPackType);
@@ -2869,7 +3006,7 @@ BEGIN
       IF cutipoproducto%FOUND THEN
          OPEN cusegmentocategoria(tempcuuobysol.address_id);
         FETCH cusegmentocategoria INTO rtcusegmentocategoria;
-              ut_trace.trace('LA CATEGIRIA DEL PRODUCTO GENERICO ES [' ||
+              PKG_TRAZA.TRACE('LA CATEGIRIA DEL PRODUCTO GENERICO ES [' ||
                              rtcusegmentocategoria.categoria || ']',
                              10);
         CLOSE cusegmentocategoria;
@@ -2902,7 +3039,7 @@ BEGIN
   END IF; --VALIDACION SBUNIDOPERATIVA IS NULL
   CLOSE culdc_caruniope;
  END LOOP;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbCuadrillaReparto', 2);
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbCuadrillaReparto', 2);
  RETURN NULL;
 EXCEPTION
  WHEN OTHERS THEN
@@ -2936,12 +3073,12 @@ nuExiste             NUMBER; -- Indica si un elemento existe en la bd
 nuTipoTrabajoReparto ld_parameter.numeric_value%TYPE; -- Tipo de trabajo
 exError              EXCEPTION;
 BEGIN
- ut_trace.trace('INICIO LDC_DetalleFact_GasCaribe.fsbCuadrillaReparto', 2);
- sbFactsusc := obtenervalorinstancia('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('INICIO LDC_DetalleFact_GasCaribe.fsbCuadrillaReparto', 2);
+ sbFactsusc := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
  BEGIN
   -- Identificar el tipo de trabajo usado para reparto de facturas
   BEGIN
-   nuTipoTrabajoReparto := dald_parameter.fnuGetNumeric_Value('TIPO_TRABAJO_REPARTO');
+   nuTipoTrabajoReparto := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('TIPO_TRABAJO_REPARTO');
   EXCEPTION
    WHEN OTHERS THEN
     RAISE exError;
@@ -2976,7 +3113,7 @@ BEGIN
    WHEN exError THEN
     sbCuadrilla := NULL;
    END;
-   ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbCuadrillaReparto', 2);
+   PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbCuadrillaReparto', 2);
  RETURN sbCuadrilla;
 EXCEPTION
  WHEN OTHERS THEN
@@ -3033,12 +3170,12 @@ CURSOR cuLecturas IS
     AND l.leempecs <= inuPeriodoConsumo -- Anterior al periodo evaluado
   ORDER BY l.leempecs DESC, l.leempefa DESC, l.leemfele DESC;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.fnuObservNoLectConsec',1);
- ut_trace.trace('Entrega ' || csbBSS_FAC_SMS_200849 || ' aplicada', 10);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.fnuObservNoLectConsec',1);
+ PKG_TRAZA.TRACE('Entrega ' || csbBSS_FAC_SMS_200849 || ' aplicada', 10);
  -- Obtener el valor del parametro SPOOL_OBSERV_CONSECUTIVAS el cual almacena las observaciones
  -- de no lectura a evaluar
  BEGIN
-  sbObservAEvaluar := dald_parameter.fsbGetValue_Chain(inuparameter_id => 'SPOOL_OBSERV_CONSECUTIVAS');
+  sbObservAEvaluar := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('SPOOL_OBSERV_CONSECUTIVAS');
  EXCEPTION
   WHEN OTHERS THEN
    sbError := 'No fue posible consultar el parametro SPOOL_OBSERV_CONSECUTIVAS. ' ;
@@ -3048,11 +3185,11 @@ BEGIN
    sbError := 'No se ha definido un valor para el parametro ' ||sbObservAEvaluar;
    RAISE pkg_error.CONTROLLED_ERROR;
  END IF;
- ut_trace.trace('sbObservAEvaluar ' || sbObservAEvaluar, 10);
+ PKG_TRAZA.TRACE('sbObservAEvaluar ' || sbObservAEvaluar, 10);
  -- Obtener el valor del parametro SPOOL_NRO_OBSERV_CONSECUTIVAS el cual almacena el numero
  -- de periodos a evaluar
  BEGIN
-  nuCantPeriodos := dald_parameter.fnuGetNumeric_Value(inuparameter_id => 'SPOOL_NRO_OBSERV_CONSECUTIVAS');
+  nuCantPeriodos := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('SPOOL_NRO_OBSERV_CONSECUTIVAS');
  EXCEPTION
   WHEN OTHERS THEN
    sbError := 'No fue posible consultar el parametro SPOOL_NRO_OBSERV_CONSECUTIVAS. ';
@@ -3062,7 +3199,7 @@ BEGIN
    sbError := 'No se ha definido un valor para el parametro ' ||nuCantPeriodos;
    RAISE pkg_error.CONTROLLED_ERROR;
  END IF;
- ut_trace.trace('nuCantPeriodos ' || nuCantPeriodos, 10);
+ PKG_TRAZA.TRACE('nuCantPeriodos ' || nuCantPeriodos, 10);
  -- Evaluar si existen las observaciones de no lectura en periodos consecutivos
  sbTieneLectConsecutivas := 'S';
  nuPeriodo               := 1;
@@ -3101,12 +3238,12 @@ BEGIN
  RETURN NULL;
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
-   ut_trace.trace(sbError, 10);
+   PKG_TRAZA.TRACE(sbError, 10);
    RETURN NULL;
  WHEN OTHERS THEN
   Pkg_Error.setError;
   pkg_error.geterror(onuError, sberror);
-  ut_trace.trace('Error no controlado en ldc_detallefact_gascaribee.fsbTieneOservLecturaConsec' || '. ' ||sberror,10);
+  PKG_TRAZA.TRACE('Error no controlado en ldc_detallefact_gascaribee.fsbTieneOservLecturaConsec' || '. ' ||sberror,10);
   RETURN NULL;
 END fnuObservNoLectConsec;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3133,11 +3270,11 @@ nuObservacionConsecutiva lectelme.leemoble%TYPE; -- Observacion no lectura
 nuProductoPrincipal      servsusc.sesunuse%TYPE; -- Producto personal
 exError                  EXCEPTION;
 BEGIN
- sbFactcodi          := obtenervalorinstancia('FACTURA', 'FACTCODI');
- sbFactsusc          := obtenervalorinstancia('FACTURA', 'FACTSUSC');
+ sbFactcodi          := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ sbFactsusc          := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
  nuProductoPrincipal := fnuProductoPrincipal(inuContrato => sbFactsusc);
  BEGIN
-  ut_trace.trace('INICIO LDC_DetalleFact_GasCaribe.fnuObservNoLectConsec', 2);
+  PKG_TRAZA.TRACE('INICIO LDC_DetalleFact_GasCaribe.fnuObservNoLectConsec', 2);
   SELECT ldc_detallefact_gascaribe.fnuObservNoLectConsec(inuperiodoconsumo => pc.pecscons,
                                                          inuproducto       => s.sesunuse)
     INTO nuObservacionConsecutiva
@@ -3159,7 +3296,7 @@ BEGIN
     WHEN OTHERS THEN
      NULL;
    END;
-   ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fnuObservNoLectConsec', 2);
+   PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fnuObservNoLectConsec', 2);
 RETURN nuObservacionConsecutiva;
 EXCEPTION
  WHEN OTHERS THEN
@@ -3167,7 +3304,7 @@ EXCEPTION
 END fnuObservNoLectConsec;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE proDatosSpool(orfcursor OUT constants.tyRefCursor) IS
+PROCEDURE proDatosSpool(orfcursor OUT constants_per.tyRefCursor) IS
 /***************************************************************************************
  Propiedad intelectual de Gases del Caribe.
 
@@ -3190,26 +3327,26 @@ exError EXCEPTION; -- Error controlado
 onuError             NUMBER;
 
 BEGIN
- ut_trace.trace('INICIO ' || gsbPaquete || '.' || sbProceso);
+ PKG_TRAZA.TRACE('INICIO ' || csbSP_NAME || sbProceso);
  OPEN orfcursor FOR
   SELECT nvl(ldc_detallefact_gascaribe.fsbCuadrillaReparto, ' ') cuadrilla_reparto
         ,nvl(to_char(ldc_detallefact_gascaribe.fnuObservNoLectConsec),' ') observ_no_lect_consec
     FROM dual;
-  ut_trace.trace('FIN ' || gsbPaquete || '.' || sbProceso);
+  PKG_TRAZA.TRACE('FIN ' || csbSP_NAME || sbProceso);
 EXCEPTION
  WHEN exError THEN
-  ut_trace.trace('TERMINO CON ERROR ' || gsbPaquete || '.' ||sbProceso || '(' || nuPaso || '):' || sbError);
+  PKG_TRAZA.TRACE('TERMINO CON ERROR ' || csbSP_NAME ||sbProceso || '(' || nuPaso || '):' || sbError);
    pkg_error.setErrorMessage(isbMsgErrr =>sbError);
  WHEN OTHERS THEN
   Pkg_Error.setError;
   pkg_error.geterror(onuError, sbError);
-  sbError := 'TERMINO CON ERROR NO CONTROLADO  ' || gsbPaquete || '.' ||sbProceso || '(' || nuPaso || '): ' || sbError;
-  ut_trace.trace(sbError,1);
+  sbError := 'TERMINO CON ERROR NO CONTROLADO  ' || csbSP_NAME ||sbProceso || '(' || nuPaso || '): ' || sbError;
+  PKG_TRAZA.TRACE(sbError,1);
   pkg_error.setErrorMessage(isbMsgErrr =>sbError);
 END proDatosSpool;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE rfdatosconsumos(orfcursor OUT constants.tyrefcursor) AS
+PROCEDURE rfdatosconsumos(orfcursor OUT constants_per.tyRefCursor) AS
 /******************************************************************************************************
   Propiedad Intelectual de PETI
 
@@ -3251,7 +3388,7 @@ presion             NUMBER;
 calculo_cons        VARCHAR2(50);
 equival_kwh         VARCHAR2(50);
 nuCategoria         servsusc.sesucate%TYPE;
-par_pod_calor       NUMBER := dald_parameter.fnugetnumeric_value('FIDF_POD_CALORIFICO');
+par_pod_calor       NUMBER := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('FIDF_POD_CALORIFICO');
 nucicloc            NUMBER;
 nuproduct           NUMBER;
 blnregulado         BOOLEAN;
@@ -3304,7 +3441,7 @@ tbperconsumo tytbperiodos;
 tbperfactura tytbperiodos;
 
 tbperiodos tytbperiodos;
-frperiodos constants.tyrefcursor;
+frperiodos constants_per.tyRefCursor;
 
 nuperfactactual perifact.pefacodi%TYPE;
 nuperfactprev   perifact.pefacodi%TYPE;
@@ -3354,14 +3491,14 @@ CURSOR cuconsumo(nuproducto NUMBER, tbperi tytbperiodos) IS
                               tbperi(6))
            GROUP BY pecscons);
 BEGIN
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist.getHistoricos',15);
+ PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist.getHistoricos',15);
  nuciclof := nuciclo;
  -- Periodo de facturacion Actual
- nuperfactactual := nuperiodo; -- obtenervalorinstancia('FACTURA','FACTPEFA');
+ nuperfactactual := nuperiodo; -- API_OBTENERVALORINSTANCIA('FACTURA','FACTPEFA');
  -- Obtiene los periodos facturados
  frperiodos := frfcambiociclo(nucontrato);
  FETCH frperiodos BULK COLLECT INTO tbperiodos;
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Inicio Obtiene los ultimos 6 periodos facturados',15);
+ PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Inicio Obtiene los ultimos 6 periodos facturados',15);
  -- Obtiene los ultimos 6 periodos facturados
  FOR i IN 1 .. 6 LOOP
   -- Periodo de Facturacion Anterior
@@ -3398,23 +3535,23 @@ BEGIN
   -- El Anterior queda actual para hayar los anteriores
   nuperfactactual := nuperfactprev;
  END LOOP;
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Fin  Obtiene los ultimos 6 periodos facturados',15);
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Inicio recorre el cursor cuconsumo',15);
+ PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Fin  Obtiene los ultimos 6 periodos facturados',15);
+ PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Inicio recorre el cursor cuconsumo',15);
  FOR i IN cuconsumo(nuproducto, tbperconsumo) LOOP
-  ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_1',15);
+  PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_1',15);
   consumo_mes_1 := nvl(i.consumo_1, 0);
-  ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_2',15);
+  PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_2',15);
   consumo_mes_2 := nvl(i.consumo_2, 0);
-  ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_3',15);
+  PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_3',15);
   consumo_mes_3 := nvl(i.consumo_3, 0);
-  ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_4',15);
+  PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_4',15);
   consumo_mes_4 := nvl(i.consumo_4, 0);
-  ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_5',15);
+  PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_5',15);
   consumo_mes_5 := nvl(i.consumo_5, 0);
-  ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_6',15);
+  PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_6',15);
   consumo_mes_6 := nvl(i.consumo_6, 0);
  END LOOP;
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Fin recorre el cursor cuconsumo',15);
+ PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Fin recorre el cursor cuconsumo',15);
  -- Hayando meses
  fecha_cons_mes_1 := fsbgetfechapermmyyyy(tbperfactura(1));
  fecha_cons_mes_2 := fsbgetfechapermmyyyy(tbperfactura(2));
@@ -3422,13 +3559,13 @@ BEGIN
  fecha_cons_mes_4 := fsbgetfechapermmyyyy(tbperfactura(4));
  fecha_cons_mes_5 := fsbgetfechapermmyyyy(tbperfactura(5));
  fecha_cons_mes_6 := fsbgetfechapermmyyyy(tbperfactura(6));
- ut_trace.trace('Fin LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist.getHistoricos',15);
+ PKG_TRAZA.TRACE('Fin LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist.getHistoricos',15);
 END gethistoricos;
 BEGIN
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist',15);
- sbfactcodi  := obtenervalorinstancia('FACTURA', 'FACTCODI');
- sbfactsusc  := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- sbfactpefa  := obtenervalorinstancia('FACTURA', 'FACTPEFA');
+ PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist',15);
+ sbfactcodi  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ sbfactsusc  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ sbfactpefa  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTPEFA');
  nuproduct   := fnugetproducto(sbfactcodi);
  nuCategoria := pktblservsusc.fnugetcategory(nuproduct);
  blnregulado := fblnoregulado(sbfactsusc);
@@ -3443,7 +3580,7 @@ BEGIN
      nuperidocons := -1;
   END;
   gethistoricos(sbfactsusc, nuproduct, nucicloc, sbfactpefa);
-  ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist Obtener el origen del consumo',15);
+  PKG_TRAZA.TRACE('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist Obtener el origen del consumo',15);
   -- Obtener el origen del consumo
   BEGIN
    SELECT decode(cossmecc, 1, 'LEC.MEDIDOR', 'ESTIMADO') INTO calculo_cons
@@ -3455,14 +3592,18 @@ BEGIN
    WHEN OTHERS THEN
     calculo_cons := NULL;
   END;
-  ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist VAlidacion ciclo asociado',15);
+  PKG_TRAZA.TRACE('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist VAlidacion ciclo asociado',15);
   IF calculo_cons IS NOT NULL THEN
    SELECT COUNT(*) INTO vnucite
-     FROM TABLE(ldc_boutilities.splitstrings(dald_parameter.fsbGetValue_Chain('CICLO_TELEMEDIDOS_GDC'),
-                                                  ','))
-    WHERE column_value = pktblservsusc.fnugetsesucicl(nuproduct);
+   FROM(  SELECT to_number(regexp_substr(PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('CICLO_TELEMEDIDOS_GDC'),
+                                           '[^,]+',
+                                           1,
+                                           LEVEL)) AS ciclo
+              FROM dual
+            CONNECT BY regexp_substr(PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('CICLO_TELEMEDIDOS_GDC'), '[^,]+', 1, LEVEL) IS NOT NULL)
+    WHERE ciclo = PKG_BCPRODUCTO.FNUCICLOFACTURACION(nuproduct);
   END IF;
-  ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 1 ', 15);
+  PKG_TRAZA.TRACE('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 1 ', 15);
   BEGIN
    SELECT consumo_act
          ,to_char(fac_correccion, '0.9999')
@@ -3485,7 +3626,7 @@ BEGIN
             FROM factura f
            INNER JOIN servsusc s
               ON (sesususc = factsusc AND
-                  sesuserv = dald_parameter.fnugetnumeric_value('COD_SERV_GAS'))
+                  sesuserv = PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('COD_SERV_GAS'))
                   LEFT OUTER JOIN conssesu c
               ON (c.cosssesu = s.sesunuse AND c.cosspefa = f.factpefa AND cossmecc = 4)
             LEFT OUTER JOIN cm_facocoss
@@ -3493,11 +3634,11 @@ BEGIN
            WHERE factcodi = sbfactcodi),
                perifact
          WHERE pefacodi = sbfactpefa;
-    ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 2 ',15);
+    PKG_TRAZA.TRACE('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 2 ',15);
     BEGIN
-     nugeoloc := daab_address.fnugetgeograp_location_id(dapr_product.fnugetaddress_id(nuproduct,0),0);
+     nugeoloc := PKG_BCDIRECCIONES.FNUGETLOCALIDAD(PKG_BCPRODUCTO.FNUIDDIRECCINSTALACION(nuproduct));
     END;
-    ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 3',15);
+    PKG_TRAZA.TRACE('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 3',15);
     --se consulta presion
      OPEN cucm_vavafacoP(nuproduct);
     FETCH cucm_vavafacoP INTO presion;
@@ -3511,7 +3652,7 @@ BEGIN
       CLOSE cucm_vavafacoPl;
     END IF;
    CLOSE cucm_vavafacoP;
-   ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 4',15);
+   PKG_TRAZA.TRACE('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 4',15);
     --se consulta la temperatura configurada por el producto
     OPEN cucm_vavafacoPt(nuproduct);
    FETCH cucm_vavafacoPt INTO temperatura;
@@ -3592,7 +3733,7 @@ BEGIN
             FROM dual
           )
   ORDER BY orden_consumo DESC;
-  ut_trace.trace('Fin LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist', 15);
+  PKG_TRAZA.TRACE('Fin LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -3632,15 +3773,15 @@ CURSOR cusaldoanterior is
 
 rfcusaldoanterior cusaldoanterior%rowtype;
 BEGIN
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.FnuGetSaldoAnterior',15);
- ut_trace.trace('Contrato[' || InuContrato || ']', 15);
- ut_trace.trace('Factura[' || InuFactura || ']', 15);
- ut_trace.trace('Servicio[' || Inusesunuse || ']', 15);
+ PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.FnuGetSaldoAnterior',15);
+ PKG_TRAZA.TRACE('Contrato[' || InuContrato || ']', 15);
+ PKG_TRAZA.TRACE('Factura[' || InuFactura || ']', 15);
+ PKG_TRAZA.TRACE('Servicio[' || Inusesunuse || ']', 15);
   OPEN cusaldoanterior;
  FETCH cusaldoanterior INTO rfcusaldoanterior;
  CLOSE cusaldoanterior;
  RETURN nvl(rfcusaldoanterior.saldo_ant, 0);
- ut_trace.trace('Fin LDC_DETALLEFACT_GASCARIBE.FnuGetSaldoAnterior', 15);
+ PKG_TRAZA.TRACE('Fin LDC_DETALLEFACT_GASCARIBE.FnuGetSaldoAnterior', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RETURN 0;
@@ -3649,7 +3790,7 @@ EXCEPTION
 END FnuGetSaldoAnterior;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfMarcaAguaDuplicado(orfcursor OUT constants.tyRefCursor) AS
+PROCEDURE RfMarcaAguaDuplicado(orfcursor OUT constants_per.tyRefCursor) AS
 /*****************************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -3666,17 +3807,17 @@ PROCEDURE RfMarcaAguaDuplicado(orfcursor OUT constants.tyRefCursor) AS
   =========       =========           ====================
 *****************************************************************************/
 BEGIN
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.RfMarcaAguaDuplicado',15);
+ PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.RfMarcaAguaDuplicado',15);
  OPEN orfcursor FOR
   SELECT nvl(visible, 0) visible, impreso
     FROM (
-          SELECT dald_parameter.fnuGetNumeric_Value('DUPLICADO_WATERMARK',NULL) AS visible
+          SELECT PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('DUPLICADO_WATERMARK') AS visible
                 ,g.name_ AS impreso
             FROM ge_person g
-           WHERE g.person_id = ge_bopersonal.fnugetpersonid
+           WHERE g.person_id = PKG_BOPERSONAL.FNUGETPERSONAID
          )
    WHERE rownum = 1;
-  ut_trace.trace('Fin LDC_DETALLEFACT_GASCARIBE.RfMarcaAguaDuplicado',15);
+  PKG_TRAZA.TRACE('Fin LDC_DETALLEFACT_GASCARIBE.RfMarcaAguaDuplicado',15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   OPEN orfcursor FOR
@@ -3687,7 +3828,7 @@ EXCEPTION
 END RfMarcaAguaDuplicado;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfProteccion_Datos(orfcursor OUT constants.tyRefCursor) AS
+PROCEDURE RfProteccion_Datos(orfcursor OUT constants_per.tyRefCursor) AS
 /******************************************************************************************
   Propiedad intelectual de PETI (c).
 
@@ -3709,19 +3850,19 @@ PROCEDURE RfProteccion_Datos(orfcursor OUT constants.tyRefCursor) AS
 sbFactcodi ge_boInstanceControl.stysbValue;
 sbFactsusc ge_boInstanceControl.stysbValue;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.RfProteccion_Datos', 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.RfProteccion_Datos', 15);
  --Obtiene el identificador de la factura de la instancia
- sbFactcodi := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro sbFactcodi : '||sbFactcodi, 15);
- sbFactsusc := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('Parametro sbFactsusc : '||sbFactsusc, 15);
+ sbFactcodi := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro sbFactcodi : '||sbFactcodi, 15);
+ sbFactsusc := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro sbFactsusc : '||sbFactsusc, 15);
  -- Obtenemos resultado
- ut_trace.trace('Ejecutamos el procedimiento : ldc_pkgprocefactspoolatencli.RfProteccion_Datos ', 15);
+ PKG_TRAZA.TRACE('Ejecutamos el procedimiento : ldc_pkgprocefactspoolatencli.RfProteccion_Datos ', 15);
  ldc_pkgprocefactspoolatencli.RfProteccion_Datos(
                                                  sbFactsusc
                                                 ,orfcursor
                                                 );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.RfProteccion_Datos', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.RfProteccion_Datos', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -3731,7 +3872,7 @@ END RfProteccion_Datos;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 PROCEDURE RfDatosAdicionales(
-                             orfcursor OUT constants.tyRefCursor
+                             orfcursor OUT constants_per.tyRefCursor
                             ) IS
 /**********************************************************************************************************************
   Propiedad intelectual de PETI (c).
@@ -3756,17 +3897,17 @@ PROCEDURE RfDatosAdicionales(
  sbPeriodo   ge_boInstanceControl.stysbValue;
  blNRegulado BOOLEAN;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.rfdatosadicionales',15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.rfdatosadicionales',15);
  -- Obtiene el identificador de la factura instanciada
- sbFactcodi  := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro sbFactcodi: '||sbFactcodi,15);
- sbFactsusc  := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('Parametro sbFactsusc: '||sbFactsusc,15);
- sbPeriodo   := obtenervalorinstancia('FACTURA', 'FACTPEFA');
- ut_trace.trace('Parametro sbPeriodo: '||sbPeriodo,15);
+ sbFactcodi  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro sbFactcodi: '||sbFactcodi,15);
+ sbFactsusc  := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro sbFactsusc: '||sbFactsusc,15);
+ sbPeriodo   := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTPEFA');
+ PKG_TRAZA.TRACE('Parametro sbPeriodo: '||sbPeriodo,15);
  blNRegulado := fblNoRegulado(sbFactsusc);
  -- Obtenemos resultado
- ut_trace.trace('Ejecutamos el procedimiento : ldc_pkgprocefactspoolconsu.RfDatosAdicionales',15);
+ PKG_TRAZA.TRACE('Ejecutamos el procedimiento : ldc_pkgprocefactspoolconsu.RfDatosAdicionales',15);
  ldc_pkgprocefactspoolconsu.RfDatosAdicionales
                                               (
                                                sbFactcodi
@@ -3775,7 +3916,7 @@ BEGIN
                                               ,blNRegulado
                                               ,orfcursor
                                               );
- ut_trace.trace('Fin LDC_DETALLEFACT_GASCARIBE.RfDatosAdicionales',15);
+ PKG_TRAZA.TRACE('Fin LDC_DETALLEFACT_GASCARIBE.RfDatosAdicionales',15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -3801,18 +3942,20 @@ FUNCTION FSBCategoriaUNICO(inucategoria NUMBER, inusubcategoria NUMBER) RETURN V
   Fecha             Autor             Modificacion
   =========       =========           ====================
 ****************************************************************************************/
-CURSOR cuexiste IS
+ sbCategorias VARCHAR2(4000) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('COD_CAT_SPO_GDC');
+ CURSOR cuexiste IS
  SELECT count(1) cantidad
    FROM dual
-  WHERE inucategoria IN (SELECT to_number(column_value)
-                           FROM TABLE(ldc_boutilities.splitstrings(dald_parameter.fsbgetvalue_chain('COD_CAT_SPO_GDC',
-                                                                                         NULL),
-                                                        ',')));
+  WHERE inucategoria IN (
+                SELECT to_number(regexp_substr(sbCategorias,
+                                           '[^,]+',     1,  LEVEL)) AS categoria
+                FROM dual
+                CONNECT BY regexp_substr(sbCategorias, '[^,]+', 1, LEVEL) IS NOT NULL);
 
     rfcuexiste cuexiste%ROWTYPE;
     sbunico varchar(4000) := NULL;
 BEGIN
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.FSBCategoriaUNICO',15);
+ PKG_TRAZA.TRACE('Inicio LDC_DETALLEFACT_GASCARIBE.FSBCategoriaUNICO',15);
  sbunico := upper( pktblsubcateg.fsbgetdescription(
                                                   inucategoria
                                                  ,inusubcategoria
@@ -3826,7 +3969,7 @@ BEGIN
   END IF;
  END IF;
  CLOSE cuexiste;
- ut_trace.trace('Fin LDC_DETALLEFACT_GASCARIBE.FSBCategoriaUNICO',15);
+ PKG_TRAZA.TRACE('Fin LDC_DETALLEFACT_GASCARIBE.FSBCategoriaUNICO',15);
  RETURN sbunico;
 EXCEPTION
  WHEN OTHERS THEN
@@ -3854,21 +3997,22 @@ FUNCTION fsbgetCalifVariConsumos(
   =========       =========           ====================
   18/09/2017      llozada           Creacion.
 *****************************************************************************/
+sbCalificaciones VARCHAR2(4000) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('COD_CAL_VAR_CON_GDC');
+
 CURSOR cuexiste(inucalvarcon number) IS
  SELECT count(1) cantidad
    FROM dual
   WHERE InuCalVarCon IN
        (
-        SELECT to_number(column_value)
-          FROM TABLE(ldc_boutilities.splitstrings(dald_parameter.fsbgetvalue_chain('COD_CAL_VAR_CON_GDC',
-                                                                                         NULL),
-                                                        ',')));
+       SELECT to_number(regexp_substr(sbCalificaciones, '[^,]+',     1,  LEVEL)) AS categoria
+        FROM dual
+        CONNECT BY regexp_substr(sbCalificaciones, '[^,]+', 1, LEVEL) IS NOT NULL);
 rfcuexiste         cuexiste%rowtype;
 nuvariacion        conssesu.cosscavc%TYPE;
 sbcausa_desviacion VARCHAR2(4000) := ' ';
 BEGIN
  BEGIN
-  ut_trace.trace('INICIO LDC_DetalleFact_GasCaribe.fsbgetCalifVariConsumos', 2);
+  PKG_TRAZA.TRACE('INICIO LDC_DetalleFact_GasCaribe.fsbgetCalifVariConsumos', 2);
   SELECT cosscavc INTO nuVariacion
     FROM vw_cmprodconsumptions
    WHERE cosssesu = inusesunuse
@@ -3886,7 +4030,7 @@ BEGIN
   WHEN no_data_found THEN
    sbcausa_desviacion := ' ';
  END;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fsbgetCalifVariConsumos', 2);
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fsbgetCalifVariConsumos', 2);
  RETURN sbcausa_desviacion;
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -3920,7 +4064,7 @@ BEGIN
 END fsbFormatoCupoBrilla;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfDatosCuenxCobrTt(orfcursor OUT constants.tyRefCursor) IS
+PROCEDURE RfDatosCuenxCobrTt(orfcursor OUT constants_per.tyRefCursor) IS
 /*************************************************************************************************
  Propiedad intelectual de GDC (c).
 
@@ -3941,16 +4085,16 @@ PROCEDURE RfDatosCuenxCobrTt(orfcursor OUT constants.tyRefCursor) IS
 *************************************************************************************************/
 sbFactsusc  ge_boInstanceControl.stysbValue;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.RfDatosCuenxCobrTt', 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.RfDatosCuenxCobrTt', 15);
  -- Obtiene el identificador del contrato instanciado
- sbFactsusc := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('Parametro sbFactsusc : '||sbFactsusc, 15);
- ut_trace.trace('Ejecutamos : ldc_pkgprocefactspoolfac.RfDatosCuenxCobrTt ', 15);
+ sbFactsusc := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro sbFactsusc : '||sbFactsusc, 15);
+ PKG_TRAZA.TRACE('Ejecutamos : ldc_pkgprocefactspoolfac.RfDatosCuenxCobrTt ', 15);
  ldc_pkgprocefactspoolfac.RfDatosCuenxCobrTt(
                                               sbFactsusc
                                              ,orfcursor
                                              );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.RfDatosCuenxCobrTt', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.RfDatosCuenxCobrTt', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -3960,7 +4104,7 @@ EXCEPTION
 END RfDatosCuenxCobrTt;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfDatosFinanEspecial(orfcursor OUT constants.tyRefCursor) Is
+PROCEDURE RfDatosFinanEspecial(orfcursor OUT constants_per.tyRefCursor) Is
 /****************************************************************************************************************************
     Propiedad intelectual de GDC (c).
 
@@ -3984,17 +4128,17 @@ PROCEDURE RfDatosFinanEspecial(orfcursor OUT constants.tyRefCursor) Is
 ****************************************************************************************************************************/
 sbFactura ge_boInstanceControl.stysbValue;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.RfDatosFinanEspecial', 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.RfDatosFinanEspecial', 15);
  -- Obtiene el identificador del contrato instanciado
- sbFactura := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro sbFactura : '||sbFactura, 15);
+ sbFactura := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro sbFactura : '||sbFactura, 15);
  -- Obtenemos resultado
- ut_trace.trace('Ejecutamos el procedimiento : ldc_pkgprocefactspoolcart.RfDatosFinanEspecial', 15);
+ PKG_TRAZA.TRACE('Ejecutamos el procedimiento : ldc_pkgprocefactspoolcart.RfDatosFinanEspecial', 15);
  ldc_pkgprocefactspoolcart.RfDatosFinanEspecial(
                                                 sbFactura
                                                ,orfcursor
                                                );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.RfDatosFinanEspecial', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.RfDatosFinanEspecial', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -4004,7 +4148,7 @@ EXCEPTION
 END RfDatosFinanEspecial;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfDatosMedMalubi(orfcursor OUT constants.tyRefCursor) IS
+PROCEDURE RfDatosMedMalubi(orfcursor OUT constants_per.tyRefCursor) IS
 /***************************************************************************************************************
     Propiedad intelectual de GDC (c).
 
@@ -4029,21 +4173,21 @@ sbfactpefa ge_boinstancecontrol.stysbvalue;
 sbfactcodi ge_boinstancecontrol.stysbvalue;
 nuproduct  servsusc.sesunuse%TYPE;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.RfDatosMedMalubi', 15);
- sbfactcodi := obtenervalorinstancia('FACTURA', 'FACTCODI');
- ut_trace.trace('Parametro sbFactcodi : '||sbFactcodi, 15);
- sbfactpefa := obtenervalorinstancia('FACTURA', 'FACTPEFA');
- ut_trace.trace('Parametro sbfactpefa : '||sbfactpefa, 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.RfDatosMedMalubi', 15);
+ sbfactcodi := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTCODI');
+ PKG_TRAZA.TRACE('Parametro sbFactcodi : '||sbFactcodi, 15);
+ sbfactpefa := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTPEFA');
+ PKG_TRAZA.TRACE('Parametro sbfactpefa : '||sbfactpefa, 15);
  nuproduct  := fnugetproducto(sbfactcodi);
- ut_trace.trace('Parametro nuproduct : '||nuproduct, 15);
+ PKG_TRAZA.TRACE('Parametro nuproduct : '||nuproduct, 15);
  -- Obtenemos resultado
- ut_trace.trace('Ejecutamos el procedimiento : ldc_pkgprocefactspoolconsu.RfDatosMedMalubi', 15);
+ PKG_TRAZA.TRACE('Ejecutamos el procedimiento : ldc_pkgprocefactspoolconsu.RfDatosMedMalubi', 15);
  ldc_pkgprocefactspoolconsu.RfDatosMedMalubi(
                                              sbfactpefa
                                             ,nuproduct
                                             ,orfcursor
                                             );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.RfDatosMedMalubi', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.RfDatosMedMalubi', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
      RAISE pkg_error.CONTROLLED_ERROR;
@@ -4053,7 +4197,7 @@ EXCEPTION
 END RfDatosMedMalubi;
 
 ---------------------------------------------------------------------------------------------------------------------------
-PROCEDURE rfdatosimpresiondig(orfcursorimpdig OUT constants.tyRefCursor) IS
+PROCEDURE rfdatosimpresiondig(orfcursorimpdig OUT constants_per.tyRefCursor) IS
 /*******************************************************************************************************************
   Propiedad intelectual de GDC (c).
 
@@ -4077,16 +4221,16 @@ PROCEDURE rfdatosimpresiondig(orfcursorimpdig OUT constants.tyRefCursor) IS
 sbFactsusc ge_boInstanceControl.stysbValue;
 nmsusccodi suscripc.susccodi%TYPE;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.rfdatosimpresiondig', 15);
- sbFactsusc := obtenervalorinstancia('FACTURA', 'FACTSUSC');
- ut_trace.trace('Parametro sbFactsusc : '||sbFactsusc, 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.rfdatosimpresiondig', 15);
+ sbFactsusc := API_OBTENERVALORINSTANCIA('FACTURA', 'FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro sbFactsusc : '||sbFactsusc, 15);
  nmsusccodi := to_number(sbFactsusc);
- ut_trace.trace('ejecutamos el procedimiento : ldc_pkgprocefactspoolfac.rfdatosimpresiondig', 15);
+ PKG_TRAZA.TRACE('ejecutamos el procedimiento : ldc_pkgprocefactspoolfac.rfdatosimpresiondig', 15);
  ldc_pkgprocefactspoolfac.rfdatosimpresiondig(
                                                nmsusccodi
                                               ,orfcursorimpdig
                                               );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.rfdatosimpresiondig', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.rfdatosimpresiondig', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
      RAISE pkg_error.CONTROLLED_ERROR;
@@ -4096,7 +4240,7 @@ EXCEPTION
  END rfdatosimpresiondig;
 --------------------------------------------------------------------------------------------------------------
 
-PROCEDURE rfLastPayment(orfcursor OUT constants.tyRefCursor) AS
+PROCEDURE rfLastPayment(orfcursor OUT constants_per.tyRefCursor) AS
  /*********************************************************************************************************
   Propiedad intelectual de GDC (c).
 
@@ -4117,16 +4261,16 @@ PROCEDURE rfLastPayment(orfcursor OUT constants.tyRefCursor) AS
 
 sbFactsusc  ge_boInstanceControl.stysbValue;
 BEGIN
- ut_trace.trace('Inicio ldc_detallefact_gascaribe.rfLastPayment', 15);
+ PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.rfLastPayment', 15);
  --Obtiene el identificador de la factura de la instancia
- sbFactsusc := obtenervalorinstancia('FACTURA','FACTSUSC');
- ut_trace.trace('Parametro sbFactsusc : '||sbFactsusc, 15);
- ut_trace.trace('Ejecutamos el procedimiento : ldc_pkgprocefactspoolfac.rfLastPayment', 15);
+ sbFactsusc := API_OBTENERVALORINSTANCIA('FACTURA','FACTSUSC');
+ PKG_TRAZA.TRACE('Parametro sbFactsusc : '||sbFactsusc, 15);
+ PKG_TRAZA.TRACE('Ejecutamos el procedimiento : ldc_pkgprocefactspoolfac.rfLastPayment', 15);
  ldc_pkgprocefactspoolfac.rfLastPayment(
                                         sbFactsusc
                                        ,orfcursor
                                        );
- ut_trace.trace('Fin ldc_detallefact_gascaribe.rfLastPayment', 15);
+ PKG_TRAZA.TRACE('Fin ldc_detallefact_gascaribe.rfLastPayment', 15);
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
   RAISE pkg_error.CONTROLLED_ERROR;
@@ -4158,11 +4302,11 @@ FUNCTION fnuObtPuntos(inuContrato IN NUMBER) RETURN NUMBER IS
     FROM ldc_movi_puntos_portal
    WHERE contrato = inuContrato;
 BEGIN
-  ut_trace.trace('INICIO LDC_DetalleFact_GasCaribe.fnuObtPuntos', 2);
+  PKG_TRAZA.TRACE('INICIO LDC_DetalleFact_GasCaribe.fnuObtPuntos', 2);
   OPEN cuObtPuntos(inuContrato);
  FETCH cuObtPuntos INTO nuPuntos;
  CLOSE cuObtPuntos;
- ut_trace.trace('Fin LDC_DetalleFact_GasCaribe.fnuObtPuntos', 2);
+ PKG_TRAZA.TRACE('Fin LDC_DetalleFact_GasCaribe.fnuObtPuntos', 2);
  RETURN nuPuntos;
 EXCEPTION
  WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -4173,7 +4317,7 @@ EXCEPTION
   RETURN nuPuntos;
 END fnuObtPuntos;
 --------------------------------------------------------------------------------------------------------------
- PROCEDURE rfGetSaldoAnterior(orfcursorsaldoante OUT constants.tyRefCursor) IS
+ PROCEDURE rfGetSaldoAnterior(orfcursorsaldoante OUT constants_per.tyRefCursor) IS
  /******************************************************************************************
   Propiedad intelectual de GDC (c).
 
@@ -4192,9 +4336,9 @@ END fnuObtPuntos;
  ******************************************************************************************/
  ------------------------------------------------------------------------------------------------------------------------
  BEGIN
-   ut_trace.trace('Inicio ldc_detallefact_gascaribe.rfGetSaldoAnterior', 15);
+   PKG_TRAZA.TRACE('Inicio ldc_detallefact_gascaribe.rfGetSaldoAnterior', 15);
    ldc_pkgprocefactspoolfac.rfGetSaldoAnterior(orfcursorsaldoante);
-   ut_trace.trace('FIN ldc_detallefact_gascaribe.rfGetSaldoAnterior', 15);
+   PKG_TRAZA.TRACE('FIN ldc_detallefact_gascaribe.rfGetSaldoAnterior', 15);
  EXCEPTION
    WHEN pkg_error.CONTROLLED_ERROR THEN
     RAISE pkg_error.CONTROLLED_ERROR;
@@ -4203,7 +4347,7 @@ END fnuObtPuntos;
     RAISE pkg_error.CONTROLLED_ERROR;
  END rfGetSaldoAnterior;
 
- PROCEDURE prcGetInfoAdicional(orfcursorinfoadic OUT constants.tyRefCursor) IS
+ PROCEDURE prcGetInfoAdicional(orfcursorinfoadic OUT constants_per.tyRefCursor) IS
  /******************************************************************************************
   Propiedad intelectual de GDC (c).
 
@@ -4220,7 +4364,7 @@ END fnuObtPuntos;
   Fecha             Autor             Modificacion
   =========       =========           ====================
  ******************************************************************************************/
-  csbMT_NAME      VARCHAR2(100) := gsbPaquete || '.prcGetInfoAdicional';
+  csbMT_NAME      VARCHAR2(100) := csbSP_NAME || 'prcGetInfoAdicional';
   nuError NUMBER;
   sbError VARCHAR2(4000);
 
@@ -4228,7 +4372,7 @@ END fnuObtPuntos;
 
  BEGIN
      pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
-     sbFactcodi := obtenervalorinstancia('FACTURA','FACTCODI');
+     sbFactcodi := API_OBTENERVALORINSTANCIA('FACTURA','FACTCODI');
      ldc_pkgprocefactspoolfac.prcGetInfoAdicional(sbFactcodi, orfcursorinfoadic);
      pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
  EXCEPTION

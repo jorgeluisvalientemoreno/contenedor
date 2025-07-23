@@ -2,7 +2,7 @@ CREATE OR REPLACE TRIGGER personalizaciones.trg_au_cambia_estado_predio
 AFTER UPDATE OF SESUESFN ON SERVSUSC
 REFERENCING OLD AS OLD NEW AS NEW
 FOR EACH ROW
-WHEN (NEW.SESUESFN = 'C' OR  OLD.SESUESFN = 'C')
+WHEN ((NEW.SESUESFN = 'C' AND  OLD.SESUESFN != 'C') OR (NEW.SESUESFN != 'C' AND  OLD.SESUESFN = 'C'))
 DECLARE
 /************************************************************************************************************
   Autor       : Luis Felipe Valencia
@@ -15,6 +15,10 @@ DECLARE
   Fecha               Autor                             Modificacion
   =========           =========                      ====================
   18-10-2024          felipe.valencia                Creción
+  17-12-2024          felipe.valencia                OSF-3743: Se modificara para hacer la actualización
+                                                     de información del predio en GIS
+  29-01/2024          felipe.valencia                Se realiza actualización de condiciones de
+                                                     disparo del trigger  
  *************************************************************************************************************/
     --Constantes
 	csbMT_NAME          VARCHAR2(100) := $$PLSQL_UNIT;
@@ -23,37 +27,27 @@ DECLARE
 	sbError             VARCHAR(4000);
 	nuError             NUMBER;
     
-    nuInfoPredioId      ldc_info_predio.ldc_info_predio_id%TYPE;
-
-    nuDireccion         ab_address.address_id%TYPE;
-
     -- Producto a procesar
     nuProducto          servsusc.sesunuse%type;
+    sbCastigado         VARCHAR2(2);
     csbNivelTraza           CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
     
 BEGIN
     pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);  
 
-    nuProducto := :NEW.sesunuse; 
+    nuProducto := :NEW.sesunuse;
 
-    nuDireccion := pkg_bcproducto.fnuiddireccinstalacion(nuProducto);
-
-    pkg_Traza.trace('Direccion del producto ['||nuDireccion||']',csbNivelTraza);
-
-    nuInfoPredioId := pkg_bcInfoPredio.fnuObtieneInfoPredio(nuDireccion);
-
-    IF (nuInfoPredioId IS NOT NULL) THEN
-        IF ( :NEW.sesuesfn = 'C') THEN  
-            pkg_Traza.trace('Marca producto en ldc_infor_predio castigado S', csbNivelTraza );
-            pkg_ldc_info_predio.prcActualizaCastigo(nuInfoPredioId,'S');
-        ELSIF (:OLD.sesuesfn = 'C') THEN
-            pkg_Traza.trace('Marca producto en ldc_infor_predio castigado N', csbNivelTraza );
-            pkg_ldc_info_predio.prcActualizaCastigo(nuInfoPredioId,'N');
-        END IF;
+    IF ( :NEW.sesuesfn = 'C') THEN  
+        pkg_Traza.trace('Marca producto en ldc_infor_predio castigado S', csbNivelTraza );
+        sbCastigado := 'S';
+    ELSIF (:OLD.sesuesfn = 'C') THEN
+        pkg_Traza.trace('Marca producto en ldc_infor_predio castigado N', csbNivelTraza );
+        sbCastigado := 'N';
     END IF;
-    
-    pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
-    
+
+    pkg_boinfopredio.prcActualizaPredioCastigado(nuProducto,sbCastigado);
+
+    pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);    
 EXCEPTION
     WHEN pkg_error.controlled_error  THEN
           pkg_error.geterror(nuerror, sberror);

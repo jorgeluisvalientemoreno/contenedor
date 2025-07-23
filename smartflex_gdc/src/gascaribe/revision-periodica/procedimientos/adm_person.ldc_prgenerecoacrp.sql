@@ -5,48 +5,47 @@ CREATE OR REPLACE PROCEDURE ADM_PERSON.LDC_PRGENERECOACRP IS
   Proceso     : LDC_PRGENERECOACRP
   Ticket      : 547
   Descripcion : plugin que se encargue de generar la solicitud de acometida
-
+  
   Parametros Entrada
-
+  
   Valor de salida
-
+  
   HISTORIA DE MODIFICACIONES
   FECHA        AUTOR       DESCRIPCION
-  25/11/2021   DANVAL      CA 833_1 : La orden instanciada se validara en OR_REQU_DATA_VALUE para ver si posee el dato adicional definido en el par�metro DATOADICION_UNIDADOPER si existe se registrar� en la tabla LDC_ORDENTRAMITERP
-  28/02/2022   JORVAL      GLPI 949: Agrega comentario de la solciitud asociada a la orden legalizada a la nueva solicitud generada
+  25/11/2021   DANVAL      CA 833_1 : La orden instanciada se validara en OR_REQU_DATA_VALUE para ver si
+                           posee el dato adicional definido en el parametro DATOADICION_UNIDADOPER
+                           si existe se registrara en la tabla LDC_ORDENTRAMITERP
+  28/02/2022   JORVAL      GLPI 949: Agrega comentario de la solciitud asociada a la orden legalizada a la
+                           nueva solicitud generada
+  28/02/2022   JORVAL      OSF-3821: Agregar logica de asignacion automatica con el servicio ldc_procrearegasiunioprevper
+                           Establecer pautas tecnicas
   ***************************************************************************/
   --CA 833_1
-  sbDatoAdicional   open.ldc_pararepe.paravast%type := open.DALDC_PARAREPE.fsbGetPARAVAST('DATOADICION_UNIDADOPER',
-                                                                                          NULL);
-  nuCodDatoAdicic   open.ldc_pararepe.parevanu%type := open.DALDC_PARAREPE.fnuGetPAREVANU('COD_DATOADICION_UNIDADOPER',
-                                                                                          NULL);
+  sbDatoAdicional ldc_pararepe.paravast%type := pkg_bcldc_pararepe.fsbobtienevalorcadena('DATOADICION_UNIDADOPER');
+  nuCodDatoAdicic ldc_pararepe.parevanu%type := pkg_bcldc_pararepe.fnuobtienevalornumerico('COD_DATOADICION_UNIDADOPER');
 
-  sbTipoTrabFalloRP open.ldc_pararepe.paravast%type := DALDC_PARAREPE.FSBGETPARAVAST('TIPOTRABAJO_FALLORP',
-                                                                                     NULL);
-  sbCausalFalloRP   open.ldc_pararepe.paravast%type := DALDC_PARAREPE.FSBGETPARAVAST('CAUSAL_FALLORP',
-                                                                                     NULL);
-  sbAplica833       varchar2(1);
-  nuTipoTrabFalloRP number;
-  nuCausalFalloRP   number;
-  nuCausal          number;
-  NUUNITOPERADDDATA number;
-  sbValorPRCDA      varchar2(2000);
+  sbTipoTrabFalloRP ldc_pararepe.paravast%TYPE := pkg_bcldc_pararepe.fsbobtienevalorcadena('TIPOTRABAJO_FALLORP');
+  sbCausalFalloRP   ldc_pararepe.paravast%TYPE := pkg_bcldc_pararepe.fsbobtienevalorcadena('CAUSAL_FALLORP');
+
+  nuTipoTrabFalloRP NUMBER;
+  nuCausalFalloRP   NUMBER;
+  nuCausal          NUMBER;
+  NUUNITOPERADDDATA NUMBER;
+  sbValorPRCDA      VARCHAR2(2000);
   --
-  numedRecRp       open.ldc_pararepe.parevanu%type;
-  sbTiTrPortal     open.ldc_pararepe.paravast%type := open.DALDC_PARAREPE.fsbGetPARAVAST('LDC_TIPOTRABPORTAL',
-                                                                                         NULL);
-  nuExisteOU        number;
-  nuestadoProducto open.pr_product.product_status_id%type;
-  nuEstacort       open.servsusc.sesuesco%type;
-  sbEstadoFina     open.servsusc.sesuesfn%type;
-  nuTitrOt         open.or_order.task_type_id%type;
-  nuSoliOt         open.mo_packages.package_id%type;
-  nuPackageId      number;
-  nuMotiveId       number;
-  nuOrderId        number;
-  nuProducto       number;
-  ONUERRORCODE     number := null;
-  OSBERRORMESSAGE  varchar2(4000);
+  numedRecRp       ldc_pararepe.parevanu%TYPE;
+  sbTiTrPortal     ldc_pararepe.paravast%TYPE := pkg_bcldc_pararepe.fsbobtienevalorcadena('LDC_TIPOTRABPORTAL');
+  nuestadoProducto pr_product.product_status_id%TYPE;
+  nuEstacort       servsusc.sesuesco%TYPE;
+  sbEstadoFina     servsusc.sesuesfn%TYPE;
+  nuTitrOt         or_order.task_type_id%TYPE;
+  nuSoliOt         mo_packages.package_id%TYPE;
+  nuPackageId      NUMBER;
+  nuMotiveId       NUMBER;
+  nuOrderId        NUMBER;
+  nuProducto       NUMBER;
+  ONUERRORCODE     NUMBER := NULL;
+  OSBERRORMESSAGE  VARCHAR2(4000);
 
   --se consulta cargos de certificacion
   CURSOR cuGetProducto IS
@@ -71,64 +70,74 @@ CREATE OR REPLACE PROCEDURE ADM_PERSON.LDC_PRGENERECOACRP IS
        and pr.SUBSCRIPTION_ID = sc.SUSCCODI
        and pr.product_id = nuproducto;
 
-  regProducto cudatosXml%rowtype;
-  sbComment   varchar2(4000);
-  sbComment1  varchar2(4000);
-  sbmensa     varchar2(4000);
-  nuTipoTrabajo     open.or_task_Type.task_Type_id%type;
+  regProducto cudatosXml%ROWTYPE;
+  sbComment   VARCHAR2(4000);
+  sbComment1  VARCHAR2(4000);
+  sbmensa     VARCHAR2(4000);
 
-  --
+  --OSF-3821
+  CURSOR cuExisteValorNumerico(nuValor NUMBER, sbCadena VARCHAR2) IS
+    SELECT COUNT(1) cantidad
+      FROM dual
+     WHERE nuValor IN
+           (SELECT to_number(regexp_substr(sbCadena, '[^,]+', 1, LEVEL)) AS column_value
+              FROM dual
+            CONNECT BY regexp_substr(sbCadena, '[^,]+', 1, LEVEL) IS NOT NULL);
+
+  csbMetodo CONSTANT VARCHAR2(100) := $$PLSQL_UNIT;
+  cnuNVLTRC CONSTANT NUMBER := pkg_traza.cnuNivelTrzDef;
+  csbInicio CONSTANT VARCHAR2(35) := pkg_traza.fsbINICIO;
+  csbFin    CONSTANT VARCHAR2(35) := pkg_traza.fsbFIN;
+  nuExisteTT NUMBER;
+
+  sbFlag ldc_conftitra_caus_asig_aut.asig_auto%TYPE;
 
 BEGIN
 
-  nuOrderId := or_bolegalizeorder.fnuGetCurrentOrder; -- Obtenemos la orden que se esta legalizando
-  nuTitrOt  := daor_order.fnugettask_type_id(nuOrderId, null);
-  if instr(sbTiTrPortal, nuTitrOt || ',') > 0 then
-    numedRecRp := DALDC_PARAREPE.FNUGETPAREVANU('LDC_MEDIRECERP', null);
+  pkg_traza.trace(csbMetodo, cnuNVLTRC, csbInicio);
+
+  nuOrderId := pkg_bcordenes.fnuobtenerotinstancialegal; -- Obtenemos la orden que se esta legalizando
+  pkg_traza.trace('Orden: ' || nuOrderId, cnuNVLTRC);
+
+  nuTitrOt := pkg_bcordenes.fnuobtienetipotrabajo(nuOrderId);
+  pkg_traza.trace('Tipo Trabajo: ' || nuTitrOt, cnuNVLTRC);
+
+  OPEN cuExisteValorNumerico(nuTitrOt, sbTiTrPortal);
+  FETCH cuExisteValorNumerico
+    INTO nuExisteTT;
+  CLOSE cuExisteValorNumerico;
+
+  IF nuExisteTT > 0 THEN
+    numedRecRp := pkg_bcldc_pararepe.fnuobtienevalornumerico('LDC_MEDIRECERP');
   else
     numedRecRp := 10;
   end if;
+  pkg_traza.trace('Medio Recepcion: ' || numedRecRp, cnuNVLTRC);
+
   --se obtiene producto
   OPEN cuGetProducto;
   FETCH cuGetProducto
     INTO nuProducto, nuestadoProducto, sbEstadoFina, nuEstacort;
   IF cuGetProducto%NOTFOUND THEN
-    ERRORS.SETERROR(2741,
-                    'Orden de trabajo [' || nuOrderId ||
-                    '] no tiene informacion de producto.');
-    RAISE ex.controlled_error;
+    Pkg_Error.SetErrorMessage(isbMsgErrr => 'Orden de trabajo [' ||
+                                            nuOrderId ||
+                                            '] no tiene informacion de producto.');
   END IF;
   CLOSE cuGetProducto;
 
-  begin
-    insert into ldc_ordenes_rp
-      (product_id, order_id, package_id)
-    values
-      (nuProducto, nuOrderId, nuSoliOt);
-  exception
-    when others then
-      errors.seterror;
-      raise ex.CONTROLLED_ERROR;
-  end;
+  pkg_traza.trace('Producto: ' || nuProducto, cnuNVLTRC);
+  pkg_traza.trace('Solicitud Ot Legalizada: ' || nuSoliOt, cnuNVLTRC);
 
-  -- Consultamos que marca tiene el producto
+  pkg_LDC_ORDENES_RP.prcInstarRegistro(nuProducto, nuOrderId, nuSoliOt);
 
   --CAMBIO 949
   --Obtener comentario de la solicitude asociada a la orden legalizada.
-  begin
-    select mp.comment_ into sbComment1
-      from open.Or_Order_Activity ooa, open.mo_packages mp
-     where ooa.package_id = mp.package_id
-       and ooa.order_id = nuOrderId;
+  sbComment1 := pkg_bcsolicitudes.fsbGetComentario(pkg_bcordenes.fnuObtieneSolicitud(nuOrderId));
 
-  exception
-    when others then
-      sbComment1 := null;
-  end;
-  ---------------------
-
-  sbComment := SUBSTR('Solicitud generada por proceso LDC_PRGENESOLSACRP, legalizacion de la orden [' ||
-               nuOrderId || '] ' || sbComment1,0,1999);
+  sbComment := SUBSTR('Solicitud generada por proceso LDC_PRGENERECOACRP, legalizacion de la orden [' ||
+                      nuOrderId || '] ' || sbComment1,
+                      0,
+                      1999);
 
   open cudatosXml;
   fetch cudatosXml
@@ -152,94 +161,91 @@ BEGIN
                                        ONUERRORCODE,
                                        OSBERRORMESSAGE);
 
-  if ONUERRORCODE <> 0 then
-    ldc_pkgrepegelerecoysusp.proRegistraLogLegOrdRecoSusp('LDC_PRGENERECOACRP',
-                                                          SYSDATE,
-                                                          nuOrderId,
-                                                          null,
-                                                          'Error al generar proceso de Rp [' ||
-                                                          OSBERRORMESSAGE || ']',
-                                                          USER);
-    ERRORS.SETERROR(2741,
-                    'Error al generar proceso de Rp [' || OSBERRORMESSAGE || ']');
-    RAISE ex.controlled_error;
-  else
-    --CA 833_1
-      IF FBLAPLICAENTREGAXCASO('0000833') THEN
+  pkg_traza.trace('Solicitud Generada: ' || nuPackageId, cnuNVLTRC);
+  pkg_traza.trace('Codigo Error: ' || ONUERRORCODE, cnuNVLTRC);
+  pkg_traza.trace('Mensaje Error: ' || OSBERRORMESSAGE, cnuNVLTRC);
 
-        sbAplica833:='S';
-        /*Si el Tipo de Trabajo est� definido en el  Par�metro TIPOTRABAJO_OPERARP y la causal es de �xito*/
-        nuExisteOU := 0;
-        sbValorPRCDA := open.ldc_boordenes.fsbDatoAdicTmpOrden(nuOrderId,nuCodDatoAdicic,TRIM(sbDatoAdicional));
-        if sbValorPRCDA is not null then
-           nuUnitOperAdddata := to_number(sbValorPRCDA);
-           if daor_operating_unit.fblexist(nuUnitOperAdddata ) then
-              nuExisteOU :=1;
-           else
-              nuExisteOU :=0;
-              sbmensa := 'Proceso termino con errores : La Unidad Operativa [' ||
-                         NUUNITOPERADDDATA ||
-                         '] registrada en el Dato Adicional [' ||
-                         sbDatoAdicional || '] no existe';
-              ge_boerrors.seterrorcodeargument(ld_boconstans.cnugeneric_error,
-                                               sbmensa);
-              RAISE ex.controlled_error;
-           end if;
-        end if;
-        select count(1)
-          into nuTipoTrabFalloRP
-          from dual
-         where nuTitrOt in
-               (SELECT to_number(column_value)
-                  FROM TABLE(open.ldc_boutilities.splitstrings(sbTipoTrabFalloRP,
-                                                               ',')));
-        nuCausal := Daor_order.fnugetCausal_id(nuOrderId, null);
-        select count(1)
-          into nuCausalFalloRP
-          from dual
-         where nuCausal in
-               (SELECT to_number(column_value)
-                  FROM TABLE(open.ldc_boutilities.splitstrings(sbCausalFalloRP,
-                                                               ',')));
-        nuCausal := Daor_order.fnugetCausal_id(nuOrderId, null);
-        select count(1)
-          into nuCausalFalloRP
-          from dual
-         where nuCausal in
-               (SELECT to_number(column_value)
-                  FROM TABLE(open.ldc_boutilities.splitstrings(sbCausalFalloRP,
-                                                               ',')));
-         if nuTipoTrabFalloRP > 0 and nuCausalFalloRP > 0 and NUUNITOPERADDDATA is not null  then
-            nuCausal := daor_order.fnugetcausal_id(nuOrderId, null);
-            insert into LDC_ORDENTRAMITERP
-              (ORDEN, TIPOTRABAJO, CAUSAL, SOLICITUD, UNIDADOPERA)
-            values
-              (nuOrderId, nuTitrOt, nuCausal, nuPackageId, NUUNITOPERADDDATA);
-         end if;
-      else
-       sbAplica833 :='N';
-      end if;
-      /*Se consultar� la orden instanciada para validar si en la tabla OR_REQU_DATA_VALUE posee el dato adicional definido en el par�metro DATOADICION_UNIDADOPER, este ser� guardado en la variable NUUNITOPERADDDATA si existe*/
-  end if;
+  IF ONUERRORCODE <> 0 THEN
+    PKG_LDC_LOGERRLEORRESU.PRC_INS_LDC_LOGERRLEORRESU(NULL,
+                                                      nuOrderId,
+                                                      'LDC_PRGENERECOACRP',
+                                                      'Error al generar proceso de Rp [' ||
+                                                      OSBERRORMESSAGE || ']',
+                                                      SYSDATE,
+                                                      USER);
+    Pkg_Error.SetErrorMessage(isbMsgErrr => 'Error al generar proceso de Rp [' ||
+                                            OSBERRORMESSAGE || ']');
+  ELSE
+  
+    /*Si el Tipo de Trabajo esta definido en el  Parametro TIPOTRABAJO_OPERARP y la causal es de Exito*/
+    sbValorPRCDA := ldc_boordenes.fsbDatoAdicTmpOrden(nuOrderId,
+                                                      nuCodDatoAdicic,
+                                                      TRIM(sbDatoAdicional));
+    IF sbValorPRCDA IS NOT NULL THEN
+      nuUnitOperAdddata := to_number(sbValorPRCDA);
+      IF pkg_bcunidadoperativa.fblexiste(nuUnitOperAdddata) = FALSE THEN
+        sbmensa := 'Proceso termino con errores: La Unidad Operativa [' ||
+                   NUUNITOPERADDDATA ||
+                   '] registrada en el Dato Adicional [' || sbDatoAdicional ||
+                   '] no existe';
+        Pkg_Error.SetErrorMessage(isbMsgErrr => sbmensa);
+      END IF;
+    END IF;
+  
+    OPEN cuExisteValorNumerico(nuTitrOt, sbTipoTrabFalloRP);
+    FETCH cuExisteValorNumerico
+      INTO nuTipoTrabFalloRP;
+    CLOSE cuExisteValorNumerico;
+  
+    nuCausal := PKG_BCORDENES.FNUOBTIENECAUSAL(nuOrderId);
+    OPEN cuExisteValorNumerico(nuCausal, sbCausalFalloRP);
+    FETCH cuExisteValorNumerico
+      INTO nuCausalFalloRP;
+    CLOSE cuExisteValorNumerico;
+  
+    IF nuTipoTrabFalloRP > 0 AND nuCausalFalloRP > 0 AND
+       NUUNITOPERADDDATA IS NOT NULL THEN
+      nuCausal := PKG_BCORDENES.FNUOBTIENECAUSAL(nuOrderId);
+      pkg_ldc_ordentramiterp.prcInsertaRegistro(nuOrderId,
+                                                nuTitrOt,
+                                                nuCausal,
+                                                nuPackageId,
+                                                NUUNITOPERADDDATA);
+    END IF;
+  
+    --Inicio OSF-3821
+    pkg_traza.trace('Tipo Trabajo: ' || nuTitrOt, cnuNVLTRC);    
+    pkg_traza.trace('Causal: ' || nuCausal, cnuNVLTRC);    
+    
+    sbflag := ldc_fsbretornaaplicaasigauto(nuTitrOt, nuCausal);
+    pkg_traza.trace('sbflag: ' || sbflag, cnuNVLTRC);    
+    IF nvl(sbflag, 'N') = 'S' THEN
+      ldc_procrearegasiunioprevper(NUUNITOPERADDDATA,
+                                   nuProducto,
+                                   nuTitrOt,
+                                   nuOrderId,
+                                   nuPackageId);
+    END IF;
+    --Fin OSF-3821
+  
+  END IF;
 
-    --
+  pkg_LDC_ORDENES_RP.prBorRegistro(nuProducto, nuOrderId, nuSoliOt);
 
-  begin
-    delete ldc_ordenes_rp
-     where product_id = nuProducto
-       and order_id = nuOrderId
-       and nvl(package_id, 0) = nvl(nuSoliOt, 0);
-  exception
-    when others then
-      errors.seterror;
-      raise ex.CONTROLLED_ERROR;
-  end;
+  pkg_traza.trace(csbMetodo, cnuNVLTRC, csbFin);
+
 EXCEPTION
-  when ex.CONTROLLED_ERROR then
-    raise ex.CONTROLLED_ERROR;
-  when OTHERS then
-    errors.seterror;
-    raise ex.CONTROLLED_ERROR;
+  WHEN pkg_error.CONTROLLED_ERROR THEN
+    pkg_Error.getError(OnuErrorCode, OsbErrorMessage);
+    pkg_traza.trace('Error: ' || OsbErrorMessage, cnuNVLTRC);
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERC);
+    RAISE pkg_error.CONTROLLED_ERROR;
+  WHEN OTHERS THEN
+    pkg_Error.setError;
+    pkg_Error.getError(OnuErrorCode, OsbErrorMessage);
+    pkg_traza.trace('Error: ' || OsbErrorMessage, cnuNVLTRC);
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERR);
+    RAISE pkg_error.CONTROLLED_ERROR;
 END LDC_PRGENERECOACRP;
 /
 BEGIN

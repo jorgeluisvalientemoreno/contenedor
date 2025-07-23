@@ -9,37 +9,47 @@ CREATE OR REPLACE PACKAGE LDCI_PKRESERVAMATERIAL AS
 
   Historia de Modificaciones
   Autor           Fecha       Descripcion
-  Eduardo Aguera  02/07/2015  Cambio 8136. proNotificaReservas. Se optimiza consulta de XML utilizando cursor con XMLTable para obtener las solicitudes.
+  Eduardo Aguera  02/07/2015  Cambio 8136. proNotificaReservas. Se optimiza consulta de XML utilizando CURSOR con XMLTable para obtener las solicitudes.
   dsaltarin		  02/06/2020  Cambio 380. proEnviarSolicitud. Se cambia la forma del xml para devolver seriales.
   jpinedc         27/05/2024  OSF-2603: Se ajusta proNotificaExepcion  
+  jpinedc         15/04/2025  OSF-4245: * Se borra sbPrefijoLDC ya que se obtiene en cursor
+                                        * Se borra sbEntrega380 ya que la entrega por caso 0000380 
+                                          aplica para GdC
+                                        * Se borra sbAplicaE380 ya que tiene valor S para GdC
+                                        * Se borra sbAplicaOSF200 ya que OSF-200 aplica para GdC
+                                        * Se ajusta proCargaVarGlobal
+                                        * Se ajusta proEnviarSolicitud 
+                                        * Se ajusta proNotificaDocumentosERP
 */
 
   -- procedimeinto que notifica las devoluciones pendientes
-  procedure proNotificaDevoluciones;
+  PROCEDURE proNotificaDevoluciones;
 
   -- procedimeinto que notifica las reservas
-  procedure proNotificaReservas;
+  PROCEDURE proNotificaReservas;
 
   -- procedimiento que se ejecutara como JOB para el despacho de solicitudes
-  procedure proNotificaDocumentosERP;
+  PROCEDURE proNotificaDocumentosERP;
 
     -- procedimeinto que registra un documento en transito
-  procedure proCreaDocuTran(inuDOTRDOCU      in  LDCI_DOCUTRAN.DOTRDOCU%type,
-                            onuErrorCode    out GE_ERROR_LOG.ERROR_LOG_ID%type,
-                            osbErrorMessage out GE_ERROR_LOG.DESCRIPTION%type);
+  PROCEDURE proCreaDocuTran(inuDOTRDOCU      in  LDCI_DOCUTRAN.DOTRDOCU%TYPE,
+                            onuErrorCode    out GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+                            osbErrorMessage out GE_ERROR_LOG.DESCRIPTION%TYPE);
 
-  procedure proElimDocuTran(inuDOTRDOCU      in  LDCI_DOCUTRAN.DOTRDOCU%type,
-                            onuErrorCode    out GE_ERROR_LOG.ERROR_LOG_ID%type,
-                            osbErrorMessage out GE_ERROR_LOG.DESCRIPTION%type);
+  PROCEDURE proElimDocuTran(inuDOTRDOCU      in  LDCI_DOCUTRAN.DOTRDOCU%TYPE,
+                            onuErrorCode    out GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+                            osbErrorMessage out GE_ERROR_LOG.DESCRIPTION%TYPE);
 
-  procedure proNotificaExepcion(inuDocumento     in NUMBER,
+  PROCEDURE proNotificaExepcion(inuDocumento     in NUMBER,
                                 isbAsunto        in VARCHAR2,
                                 isbMesExcepcion  in VARCHAR2)  ;
 
-  function fsbGetDocuTran(inuDOTRDOCU in LDCI_DOCUTRAN.DOTRDOCU%type) return VARCHAR2;
+  FUNCTION fsbGetDocuTran(inuDOTRDOCU in LDCI_DOCUTRAN.DOTRDOCU%TYPE) RETURN VARCHAR2;
 
-  Function fsbGETxmlserializados(sboperacion VARCHAR2,nucodumento NUMBER,nuitemspa NUMBER) Return VARCHAR2;
-  Function fsbGETobtultserial(sbseri VARCHAR2) Return VARCHAR2;
+  FUNCTION fsbGETxmlserializados(sboperacion VARCHAR2,nucodumento NUMBER,nuitemspa NUMBER) RETURN VARCHAR2;
+  
+  FUNCTION fsbGETobtultserial(sbseri VARCHAR2) RETURN VARCHAR2;
+  
   FUNCTION fsbGETobtmarcultserial(sbseri VARCHAR2) RETURN VARCHAR2;
 
 END LDCI_PKRESERVAMATERIAL;
@@ -50,77 +60,81 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
     csbSP_NAME		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.';
     csbNivelTraza    CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
     
-  -- Carga variables globales
-  sbInputMsgType  LDCI_CARASEWE.CASEVALO%type;
-  sbNameSpace     LDCI_CARASEWE.CASEVALO%type;
-  sbUrlWS         LDCI_CARASEWE.CASEVALO%type;
-  sbUrlDesti      LDCI_CARASEWE.CASEVALO%type;
-  sbSoapActi      LDCI_CARASEWE.CASEVALO%type;
-  sbProtocol      LDCI_CARASEWE.CASEVALO%type;
-  sbHost          LDCI_CARASEWE.CASEVALO%type;
-  sbPuerto        LDCI_CARASEWE.CASEVALO%type;
-  sbClasSolMat    LDCI_CARASEWE.CASEVALO%type;
-  sbClasDevMat    LDCI_CARASEWE.CASEVALO%type;
-  sbClasSolHer    LDCI_CARASEWE.CASEVALO%type;
-  sbClasDevHer    LDCI_CARASEWE.CASEVALO%type;
-  sbPrefijoLDC    LDCI_CARASEWE.CASEVALO%type;
-  sbDefiSewe      LDCI_DEFISEWE.DESECODI%type;
-  sbClasSolMatAct LDCI_DEFISEWE.DESECODI%type; --#OYM_CEV_3429_1
-  sbClasDevMatAct LDCI_DEFISEWE.DESECODI%type; --#OYM_CEV_3429_1
-  sbLstCentSolInv LDCI_DEFISEWE.DESECODI%type; --#OYM_CEV_5028_1: #ifrs #471: Listado de UO proveedor logistico para solicitud de inventario
-  sbLstCentSolAct LDCI_DEFISEWE.DESECODI%type; --#OYM_CEV_5028_1: #ifrs #471: Listado de UO proveedor logistico para solicitud de activos
-  sbEntrega380		ldc_versionentrega.nombre_entrega%type :='0000380';
-  sbAplicaE380    varchar2(1);
-  sbValidaHerr    varchar2(1);
-  sbAplicaOSF200  varchar2(1) := 'N';
+    -- Carga variables globales
+    sbInputMsgType  LDCI_CARASEWE.CASEVALO%TYPE;
+    sbNameSpace     LDCI_CARASEWE.CASEVALO%TYPE;
+    sbUrlWS         LDCI_CARASEWE.CASEVALO%TYPE;
+    sbUrlDesti      LDCI_CARASEWE.CASEVALO%TYPE;
+    sbSoapActi      LDCI_CARASEWE.CASEVALO%TYPE;
+    sbProtocol      LDCI_CARASEWE.CASEVALO%TYPE;
+    sbHost          LDCI_CARASEWE.CASEVALO%TYPE;
+    sbPuerto        LDCI_CARASEWE.CASEVALO%TYPE;
+    sbClasSolMat    LDCI_CARASEWE.CASEVALO%TYPE;
+    sbClasDevMat    LDCI_CARASEWE.CASEVALO%TYPE;
+    sbClasSolHer    LDCI_CARASEWE.CASEVALO%TYPE;
+    sbClasDevHer    LDCI_CARASEWE.CASEVALO%TYPE;
+    sbDefiSewe      LDCI_DEFISEWE.DESECODI%TYPE;
+    sbClasSolMatAct LDCI_DEFISEWE.DESECODI%TYPE; --#OYM_CEV_3429_1
+    sbClasDevMatAct LDCI_DEFISEWE.DESECODI%TYPE; --#OYM_CEV_3429_1
+    sbLstCentSolInv LDCI_DEFISEWE.DESECODI%TYPE; --#OYM_CEV_5028_1: #ifrs #471: Listado de UO proveedor logistico para solicitud de inventario
+    sbLstCentSolAct LDCI_DEFISEWE.DESECODI%TYPE; --#OYM_CEV_5028_1: #ifrs #471: Listado de UO proveedor logistico para solicitud de activos
 
-  procedure proValidaClaseValoraProvLogis(inuIdProvLogistico    in NUMBER,
+    sbValidaHerr    varchar2(1);
+
+    PROCEDURE proValidaClaseValoraProvLogis(inuIdProvLogistico    in NUMBER,
                                          sbCLASS_ASSESSMENT_ID out VARCHAR2,
                                          onuErrorCode          out NUMBER,
                                          osbErrorMessage       out VARCHAR2) as
-  /*
+    /*
      PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A E.S.P
      FUNCION    : LDCI_PKRESERVAMATERIAL.proValidaClaseValoraProvLogis
-     AUTOR      : Carlos E. Virgen Londo?o <carlos.virgen@olsoftware.com>
+     AUTOR      : Carlos E. Virgen Londoño <carlos.virgen@olsoftware.com>
      FECHA      : 14/11/2014
      RICEF      : OYM_CEV_5028_1
      DESCRIPCION: Valida la clase de valoracion del proveedor  logistico
 
     Historia de Modificaciones
     Autor     Fecha      Descripcion
-  */
+    */
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'proValidaClaseValoraProvLogis';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);     
+    BEGIN
 
-  begin
-        --#OYM_CEV_5028_1: Determina si el proveedor logistico es Activos o Inventarios
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+            
+        -- Determina si el proveedor logistico es Activos o Inventarios
         onuErrorCode := 0;
-        if (instr(LDCI_PKRESERVAMATERIAL.sbLstCentSolInv, inuIdProvLogistico) <> 0
-         and instr(LDCI_PKRESERVAMATERIAL.sbLstCentSolAct, inuIdProvLogistico) <> 0) then
+        IF (INSTR(LDCI_PKRESERVAMATERIAL.sbLstCentSolInv, inuIdProvLogistico) <> 0
+         AND INSTR(LDCI_PKRESERVAMATERIAL.sbLstCentSolAct, inuIdProvLogistico) <> 0) THEN
             onuErrorCode := -1;
             osbErrorMessage := '[proNotificaDevoluciones] La unidad operativa proveedor logistico (' || to_char(inuIdProvLogistico)   ||
                                ') esta configurada como Inventario y Activo. (Forma GEMCSW; Id Servicio WS_RESERVA_MATERIALES, WS_TRASLADO_MATERIALES; Id parametros LST_CENTROS_SOL_INV, LST_CENTROS_SOL_ACT)';
-        else
-            if (instr(LDCI_PKRESERVAMATERIAL.sbLstCentSolInv, inuIdProvLogistico) <> 0) then
+        ELSE
+            IF (INSTR(LDCI_PKRESERVAMATERIAL.sbLstCentSolInv, inuIdProvLogistico) <> 0) THEN
                --Clase de valoracion Inventario
                sbCLASS_ASSESSMENT_ID := 'I';
-            else
-                if (instr(LDCI_PKRESERVAMATERIAL.sbLstCentSolAct, inuIdProvLogistico) <> 0) then
+            ELSE
+                IF (INSTR(LDCI_PKRESERVAMATERIAL.sbLstCentSolAct, inuIdProvLogistico) <> 0) THEN
                    --Clase de valoracion Activo
                    sbCLASS_ASSESSMENT_ID := 'A';
-                else
+                ELSE
                     onuErrorCode := -1;
                     osbErrorMessage := '[proNotificaDevoluciones] La unidad operativa proveedor logistico (' || to_char(inuIdProvLogistico)   ||
                                        ') no esta configurada como Inventario o Activo. (Forma GEMCSW; Id Servicio WS_RESERVA_MATERIALES, WS_TRASLADO_MATERIALES; Id parametros LST_CENTROS_SOL_INV, LST_CENTROS_SOL_ACT)';
 
 
-                end if;--if (instr(LDCI_PKRESERVAMATERIAL.sbLstCentSolInv, inuIdProvLogistico) <> 0) then
-            end if;--if (instr(LDCI_PKRESERVAMATERIAL.sbLstCentSolInv, inuIdProvLogistico) <> 0) then
-        end if; -- if (instr(LDCI_PKRESERVAMATERIAL.sbLstCentSolInv, inuIdProvLogistico) <> 0 ...
+                END IF;
+            END IF;
+        END IF;
 
-  end proValidaClaseValoraProvLogis;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+        
+    END proValidaClaseValoraProvLogis;
 
-  procedure proNotificaExepcion(inuDocumento     in NUMBER,
-                                 isbAsunto        in VARCHAR2,
-                                                              isbMesExcepcion  in VARCHAR2) as
+    PROCEDURE proNotificaExepcion(  inuDocumento     in NUMBER,
+                                    isbAsunto        in VARCHAR2,
+                                    isbMesExcepcion  in VARCHAR2) as
       /*
           PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A E.S.P
           FUNCION    : proNotificaExepcion
@@ -139,22 +153,22 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
         sbError         VARCHAR2(4000); 
     
         -- define cursores
-        cursor cuGE_ITEMS_DOCUMENTO(inuID_ITEMS_DOCUMENTO GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%type) is
-         select doc.ID_ITEMS_DOCUMENTO, typ.DESCRIPTION, doc.OPERATING_UNIT_ID, ori.NAME ORINAME, doc.DESTINO_OPER_UNI_ID, des.NAME DESNAME, doc.USER_ID, doc.FECHA, doc.TERMINAL_ID
-           from GE_ITEMS_DOCUMENTO doc,
+        CURSOR cuGE_ITEMS_DOCUMENTO(inuID_ITEMS_DOCUMENTO GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE) IS
+         SELECT doc.ID_ITEMS_DOCUMENTO, typ.DESCRIPTION, doc.OPERATING_UNIT_ID, ori.NAME ORINAME, doc.DESTINO_OPER_UNI_ID, des.NAME DESNAME, doc.USER_ID, doc.FECHA, doc.TERMINAL_ID
+           FROM GE_ITEMS_DOCUMENTO doc,
                 GE_DOCUMENT_TYPE typ,
                 OR_OPERATING_UNIT ori,
                 OR_OPERATING_UNIT des
-          where doc.DOCUMENT_TYPE_ID = typ.DOCUMENT_TYPE_ID
-            and doc.OPERATING_UNIT_ID = ori.OPERATING_UNIT_ID
-            and doc.DESTINO_OPER_UNI_ID = des.OPERATING_UNIT_ID
-                    and ID_ITEMS_DOCUMENTO = inuID_ITEMS_DOCUMENTO;
+          WHERE doc.DOCUMENT_TYPE_ID = typ.DOCUMENT_TYPE_ID
+            AND doc.OPERATING_UNIT_ID = ori.OPERATING_UNIT_ID
+            AND doc.DESTINO_OPER_UNI_ID = des.OPERATING_UNIT_ID
+                    AND ID_ITEMS_DOCUMENTO = inuID_ITEMS_DOCUMENTO;
 
-        --cursor datos de la persona
-        cursor cuGE_PERSON(inuUSER_ID GE_PERSON.USER_ID%type) is
-                select *
-                        from GE_PERSON g
-                        where g.USER_ID = inuUSER_ID;
+        --CURSOR datos de la persona
+        CURSOR cuGE_PERSON(inuUSER_ID GE_PERSON.USER_ID%TYPE) IS
+                SELECT *
+                        FROM GE_PERSON g
+                        WHERE g.USER_ID = inuUSER_ID;
 
         -- tipo registro
         reGE_PERSON          cuGE_PERSON%rowtype;
@@ -164,21 +178,21 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
     
         sbMensCorreo    VARCHAR2(4000);
         
-    begin
+    BEGIN
 
         pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
         
         -- abre el registro del documento con excepciones
-        open cuGE_ITEMS_DOCUMENTO(inuDocumento);
-        fetch cuGE_ITEMS_DOCUMENTO into reGE_ITEMS_DOCUMENTO;
-        close cuGE_ITEMS_DOCUMENTO;
+        OPEN cuGE_ITEMS_DOCUMENTO(inuDocumento);
+        FETCH cuGE_ITEMS_DOCUMENTO INTO reGE_ITEMS_DOCUMENTO;
+        CLOSE cuGE_ITEMS_DOCUMENTO;
 
         --determina el usuario que esta realizando la operacion
-        open cuGE_PERSON(reGE_ITEMS_DOCUMENTO.USER_ID);
-        fetch cuGE_PERSON into reGE_PERSON;
-        close cuGE_PERSON;
+        OPEN cuGE_PERSON(reGE_ITEMS_DOCUMENTO.USER_ID);
+        FETCH cuGE_PERSON INTO reGE_PERSON;
+        CLOSE cuGE_PERSON;
 
-        if (reGE_PERSON.E_MAIL is not null or reGE_PERSON.E_MAIL <> '') then
+        IF (reGE_PERSON.E_MAIL IS not null or reGE_PERSON.E_MAIL <> '') THEN
 
             -- genera el cuerpo del correo
             sbMensCorreo := sbMensCorreo ||'<html><body>';
@@ -228,7 +242,7 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
                 isbMensaje          => sbMensCorreo
             );        
               
-        else
+        ELSE
             sbMensCorreo := 'El usuario ' || reGE_PERSON.PERSON_ID || '-' || reGE_PERSON.NAME_ ||' no tiene configurado el correo electrónico.';
 
             pkg_Correo.prcEnviaCorreo
@@ -238,7 +252,7 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
                 isbAsunto           => 'Usuario sin correo electrónico ('|| reGE_PERSON.NAME_ || ')',
                 isbMensaje          => sbMensCorreo
             );   
-        end if;
+        END IF;
         
         pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);         
 
@@ -254,8 +268,7 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
             pkg_Error.getError(nuError,sbError);
             pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
             RAISE pkg_error.Controlled_Error;
-    end proNotificaExepcion;
-
+    END proNotificaExepcion;
 
     FUNCTION fsbValidaCadena(isbCadena VARCHAR2) RETURN VARCHAR2 IS
     /*
@@ -271,32 +284,43 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
       Autor    Fecha       Descripcion
       carlosvl 12/08/2011  Se hace la validacion de datos.
     */
-      osbCadena  VARCHAR2(100); -- SD 77654 LJL -- Se almacena la cadena que se va a retornar
-      nuLong    NUMBER DEFAULT 0;
-      onuErrorCode    GE_ERROR_LOG.ERROR_LOG_ID%TYPE;
-      osbErrorMessage GE_ERROR_LOG.DESCRIPTION%TYPE;
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fsbValidaCadena';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);  
+            
+        osbCadena  VARCHAR2(100); -- SD 77654 LJL -- Se almacena la cadena que se va a retornar
+        nuLong    NUMBER DEFAULT 0;
+        onuErrorCode    GE_ERROR_LOG.ERROR_LOG_ID%TYPE;
+        osbErrorMessage GE_ERROR_LOG.DESCRIPTION%TYPE;
     BEGIN
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+            
         nuLong    := LENGTH(isbCadena);
         osbCadena := NULL;
+        
         IF nuLong >= 50 THEN
-        nuLong := 49;
+            nuLong := 49;
         END IF;
+        
         FOR j IN 1..nuLong LOOP
-        IF substr(isbCadena,j,1) IN('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0','/') THEN
-        osbCadena := osbCadena||substr(upper(isbCadena),j,1);
-      ELSE
-        osbCadena := osbCadena||' ';
-      END IF;
+            IF substr(isbCadena,j,1) IN('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0','/') THEN
+                osbCadena := osbCadena||substr(upper(isbCadena),j,1);
+            ELSE
+                osbCadena := osbCadena||' ';
+            END IF;
         END LOOP;
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+                
         RETURN osbCadena;
+    
     EXCEPTION
         WHEN OTHERS THEN
-          pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-          Errors.seterror;
-          Errors.geterror (onuErrorCode, osbErrorMessage);
-          commit; --rollback;
+          pkg_Error.setError;
+          pkg_Error.getError (onuErrorCode, osbErrorMessage);
+          commit;
     END fsbValidaCadena;
-
 
     -- CA. 200-638
     -- valida si existe item configurada en la forma LDCITUNRA (saldos por UO)
@@ -307,31 +331,41 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
     )
     RETURN boolean
     IS
+
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fblValidExistItem';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);  
+            
         blResult    boolean;
         nuCant      number;
-
+        
+        CURSOR cuCantLdc_salitemsunidop
+        IS
+        SELECT count(1)
+        FROM ldc_salitemsunidop
+        WHERE items_id = inuItem
+        AND operating_unit_id = inuUnOP;
+        
     BEGIN
 
-        select count(1)
-        into nuCant
-        from ldc_salitemsunidop
-        where items_id = inuItem
-        and operating_unit_id = inuUnOP;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+        
+        OPEN cuCantLdc_salitemsunidop;
+        FETCH cuCantLdc_salitemsunidop INTO nuCant;
+        CLOSE cuCantLdc_salitemsunidop;
+        
+        blResult := nuCant > 0;
 
-        if (nuCant > 0) then
-            blResult    := true;
-        elsif (nuCant = 0) then
-            blResult    := false;
-        end if;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+        
+        RETURN blResult;
 
-        return blResult;
-
-    end FBLVALIDEXISTITEM;
+    END FBLVALIDEXISTITEM;
 
 
-  procedure proCreaDocuTran(inuDOTRDOCU      in  LDCI_DOCUTRAN.DOTRDOCU%type,
-                                                      onuErrorCode    out GE_ERROR_LOG.ERROR_LOG_ID%type,
-                                                      osbErrorMessage out GE_ERROR_LOG.DESCRIPTION%type) as
+    PROCEDURE proCreaDocuTran(inuDOTRDOCU      in  LDCI_DOCUTRAN.DOTRDOCU%TYPE,
+                                                      onuErrorCode    out GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+                                                      osbErrorMessage out GE_ERROR_LOG.DESCRIPTION%TYPE) as
       /*
           PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A E.S.P
           FUNCION    : proCreaDocuTran
@@ -344,24 +378,31 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
         Autor    Fecha       Descripcion
         carlosvl 12/08/2011  Se hace la validacion de datos.
       */
-  begin
-         onuErrorCode    := 0;
-              osbErrorMessage := null;
-         -- realiza la insercion sobre la tabla LDCI_DOCUTRAN
-         insert into LDCI_DOCUTRAN(DOTRDOCU,DOTRFECR)
-                values (inuDOTRDOCU, SYSDATE);
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fblValidExistItem';
+              
+    BEGIN
 
-  exception
-    when others  then
-      pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-      Errors.seterror;
-      Errors.geterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
-    end proCreaDocuTran;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
 
-  procedure proElimDocuTran(inuDOTRDOCU      in  LDCI_DOCUTRAN.DOTRDOCU%type,
-                                                      onuErrorCode    out GE_ERROR_LOG.ERROR_LOG_ID%type,
-                                                      osbErrorMessage out GE_ERROR_LOG.DESCRIPTION%type) as
+        onuErrorCode    := 0;
+        osbErrorMessage := null;
+        
+        -- realiza la insercion sobre la tabla LDCI_DOCUTRAN
+        INSERT INTO LDCI_DOCUTRAN(DOTRDOCU,DOTRFECR)
+        values (inuDOTRDOCU, SYSDATE);
+                
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);                
+
+    EXCEPTION
+        WHEN OTHERS  THEN
+            pkg_Error.setError;
+            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+            commit;
+    END proCreaDocuTran;
+
+    PROCEDURE proElimDocuTran(inuDOTRDOCU      in  LDCI_DOCUTRAN.DOTRDOCU%TYPE,
+                                                      onuErrorCode    out GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+                                                      osbErrorMessage out GE_ERROR_LOG.DESCRIPTION%TYPE) as
       /*
           PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A E.S.P
           FUNCION    : proElimDocuTran
@@ -374,23 +415,30 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
         Autor    Fecha       Descripcion
         carlosvl 12/08/2011  Se hace la validacion de datos.
       */
-  begin
-         onuErrorCode    := 0;
-              osbErrorMessage := null;
-         -- elimina el registro de la tabla
-         delete LDCI_DOCUTRAN
-                where DOTRDOCU = inuDOTRDOCU;
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'proElimDocuTran';
+      
+    BEGIN
 
-  exception
-    when others  then
-      pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-      Errors.seterror;
-      Errors.geterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
-    end proElimDocuTran;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);    
+    
+        onuErrorCode    := 0;
+        osbErrorMessage := null;
+        
+        -- elimina el registro de la tabla
+        DELETE LDCI_DOCUTRAN
+        WHERE DOTRDOCU = inuDOTRDOCU;
 
-  function fsbGetDocuTran(inuDOTRDOCU in LDCI_DOCUTRAN.DOTRDOCU%type)
-        return VARCHAR2    is
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+
+    EXCEPTION
+        WHEN OTHERS  THEN
+            pkg_Error.setError;
+            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+            commit;
+    END proElimDocuTran;
+
+    FUNCTION fsbGetDocuTran(inuDOTRDOCU in LDCI_DOCUTRAN.DOTRDOCU%TYPE)
+    RETURN VARCHAR2    IS
       /*
           PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A E.S.P
           FUNCION    : fsbGetDocuTran
@@ -403,434 +451,424 @@ CREATE OR REPLACE PACKAGE BODY LDCI_PKRESERVAMATERIAL AS
         Autor    Fecha       Descripcion
         carlosvl 12/08/2011  Se hace la validacion de datos.
       */
-    -- cursor del documento en transito
-       cursor cuDocuTran(inuDOTRDOCU LDCI_DOCUTRAN.DOTRDOCU%type) is
-          select *
-             from LDCI_DOCUTRAN
-            where DOTRDOCU = inuDOTRDOCU;
+
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fsbGetDocuTran';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);
+              
+        -- CURSOR del documento en transito
+        CURSOR cuDocuTran(inuDOTRDOCU LDCI_DOCUTRAN.DOTRDOCU%TYPE) IS
+        SELECT *
+        FROM LDCI_DOCUTRAN
+        WHERE DOTRDOCU = inuDOTRDOCU;
 
         sbFlagDocuTran VARCHAR2(1);
-    begin
+    BEGIN
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);      
+    
         sbFlagDocuTran := 'N';
-      for reDocuTran in cuDocuTran(inuDOTRDOCU) loop
+        
+        FOR reDocuTran in cuDocuTran(inuDOTRDOCU) LOOP
             sbFlagDocuTran := 'S';
-        end loop;-- for reDocuTran in cuDocuTran(inuDOTRDOCU) loop
+        END LOOP;
 
-        return sbFlagDocuTran;
-    end fsbGetDocuTran;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+        
+        RETURN sbFlagDocuTran;
+        
+    END fsbGetDocuTran;
 
-  procedure proCargaVarGlobal(isbCASECODI in LDCI_CARASEWE.CASECODI%type) as
-  /*
-     PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A E.S.P
-     FUNCION    : proCargaVarGlobal
-     AUTOR      : OLSoftware / Carlos E. Virgen
-     FECHA      : 25/02/2012
-     RICEF      : I005; I006
-     DESCRIPCION: Limpia y carga las variables globales
+    PROCEDURE proCargaVarGlobal(isbCASECODI in LDCI_CARASEWE.CASECODI%TYPE ) as
+    /*
+        PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A E.S.P
+        FUNCION    : proCargaVarGlobal
+        AUTOR      : OLSoftware / Carlos E. Virgen
+        FECHA      : 25/02/2012
+        RICEF      : I005; I006
+        DESCRIPCION: Limpia y carga las variables globales
 
-    Historia de Modificaciones
-    Autor   Fecha   Descripcion
-  */
+        Historia de Modificaciones
+        Autor   Fecha       Descripcion
+        jpinedc 16/04/2025  Se borran las referencias a sbPrefijoLDC   
+    */
 
-    onuErrorCode      ge_error_log.Error_log_id%TYPE;
-    osbErrorMessage   ge_error_log.description%TYPE;
-  errorPara01  EXCEPTION;        -- Excepcion que verifica que ingresen los parametros de entrada
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'proCargaVarGlobal';
 
-  begin
-      LDCI_PKRESERVAMATERIAL.sbInputMsgType  := null;
-      LDCI_PKRESERVAMATERIAL.sbNameSpace     := null;
-      LDCI_PKRESERVAMATERIAL.sbUrlWS         := null;
-      LDCI_PKRESERVAMATERIAL.sbUrlDesti      := null;
-      LDCI_PKRESERVAMATERIAL.sbSoapActi      := null;
-      LDCI_PKRESERVAMATERIAL.sbProtocol      := null;
-      LDCI_PKRESERVAMATERIAL.sbHost          := null;
-      LDCI_PKRESERVAMATERIAL.sbPuerto        := null;
-      LDCI_PKRESERVAMATERIAL.sbClasSolMat    := null;
-      LDCI_PKRESERVAMATERIAL.sbClasDevMat    := null;
-      LDCI_PKRESERVAMATERIAL.sbClasSolMatAct := null; --#OYM_CEV_3429_1
-      LDCI_PKRESERVAMATERIAL.sbClasDevMatAct := null; --#OYM_CEV_3429_1
-      LDCI_PKRESERVAMATERIAL.sbLstCentSolInv := null; --#OYM_CEV_5028_1: #ifrs #471
-      LDCI_PKRESERVAMATERIAL.sbLstCentSolAct := null; --#OYM_CEV_5028_1: #ifrs #471
-      LDCI_PKRESERVAMATERIAL.sbClasSolHer    := null;
-      LDCI_PKRESERVAMATERIAL.sbClasDevHer    := null;
-      LDCI_PKRESERVAMATERIAL.sbPrefijoLDC    := null;
-      LDCI_PKRESERVAMATERIAL.sbDefiSewe       := null;
+        onuErrorCode      ge_error_log.Error_log_id%TYPE;
+        osbErrorMessage   ge_error_log.description%TYPE;
+        errorPara01  EXCEPTION;        -- Excepcion que verifica que ingresen los parametros de entrada
 
+    BEGIN
+    
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+        
+        LDCI_PKRESERVAMATERIAL.sbInputMsgType  := null;
+        LDCI_PKRESERVAMATERIAL.sbNameSpace     := null;
+        LDCI_PKRESERVAMATERIAL.sbUrlWS         := null;
+        LDCI_PKRESERVAMATERIAL.sbUrlDesti      := null;
+        LDCI_PKRESERVAMATERIAL.sbSoapActi      := null;
+        LDCI_PKRESERVAMATERIAL.sbProtocol      := null;
+        LDCI_PKRESERVAMATERIAL.sbHost          := null;
+        LDCI_PKRESERVAMATERIAL.sbPuerto        := null;
+        LDCI_PKRESERVAMATERIAL.sbClasSolMat    := null;
+        LDCI_PKRESERVAMATERIAL.sbClasDevMat    := null;
+        LDCI_PKRESERVAMATERIAL.sbClasSolMatAct := null;
+        LDCI_PKRESERVAMATERIAL.sbClasDevMatAct := null;
+        LDCI_PKRESERVAMATERIAL.sbLstCentSolInv := null;
+        LDCI_PKRESERVAMATERIAL.sbLstCentSolAct := null;
+        LDCI_PKRESERVAMATERIAL.sbClasSolHer    := null;
+        LDCI_PKRESERVAMATERIAL.sbClasDevHer    := null;
+        LDCI_PKRESERVAMATERIAL.sbDefiSewe       := null;
 
-      LDCI_PKRESERVAMATERIAL.sbDefiSewe := isbCASECODI;
-      -- carga los parametos de la interfaz
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'INPUT_MESSAGE_TYPE', LDCI_PKRESERVAMATERIAL.sbInputMsgType, osbErrorMessage);
-      if(osbErrorMessage != '0') then
+        LDCI_PKRESERVAMATERIAL.sbDefiSewe := isbCASECODI;
+        
+        -- carga los parametos de la interfaz
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'INPUT_MESSAGE_TYPE', LDCI_PKRESERVAMATERIAL.sbInputMsgType, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
            RAISE errorPara01;
-      end if;--if(osbErrorMessage != '0') then
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'NAMESPACE', LDCI_PKRESERVAMATERIAL.sbNameSpace, osbErrorMessage);
-      if(osbErrorMessage != '0') then
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'NAMESPACE', LDCI_PKRESERVAMATERIAL.sbNameSpace, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
            RAISE errorPara01;
-      end if;--if(osbErrorMessage != '0') then
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'WSURL', LDCI_PKRESERVAMATERIAL.sbUrlWS, osbErrorMessage);
-      if(osbErrorMessage != '0') then
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'WSURL', LDCI_PKRESERVAMATERIAL.sbUrlWS, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
            RAISE errorPara01;
-      end if;--if(osbErrorMessage != '0') then
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'SOAPACTION', LDCI_PKRESERVAMATERIAL.sbSoapActi, osbErrorMessage);
-      if(osbErrorMessage != '0') then
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'SOAPACTION', LDCI_PKRESERVAMATERIAL.sbSoapActi, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
            RAISE errorPara01;
-      end if;--if(osbErrorMessage != '0') then
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'PROTOCOLO', LDCI_PKRESERVAMATERIAL.sbProtocol, osbErrorMessage);
-      if(osbErrorMessage != '0') then
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'PROTOCOLO', LDCI_PKRESERVAMATERIAL.sbProtocol, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
            RAISE errorPara01;
-      end if;--if(osbErrorMessage != '0') then
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'PUERTO', LDCI_PKRESERVAMATERIAL.sbPuerto, osbErrorMessage);
-      if(osbErrorMessage != '0') then
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'PUERTO', LDCI_PKRESERVAMATERIAL.sbPuerto, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
            RAISE errorPara01;
-      end if;--if(osbErrorMessage != '0') then
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'HOST', LDCI_PKRESERVAMATERIAL.sbHost, osbErrorMessage);
-      if(osbErrorMessage != '0') then
-           Raise Errorpara01;
-      end if;
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'HOST', LDCI_PKRESERVAMATERIAL.sbHost, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
+           RAISE Errorpara01;
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLS_MOVI_MATERIAL', LDCI_PKRESERVAMATERIAL.sbClasSolMat, osbErrorMessage);
-      if(osbErrorMessage != '0') then
-           Raise Errorpara01;
-      end if;
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLS_MOVI_MATERIAL', LDCI_PKRESERVAMATERIAL.sbClasSolMat, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
+           RAISE Errorpara01;
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLS_MOVI_DEVOLUCION_MAT', LDCI_PKRESERVAMATERIAL.sbClasDevMat, osbErrorMessage);
-      if(osbErrorMessage != '0') then
-           Raise Errorpara01;
-      end if;
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLS_MOVI_DEVOLUCION_MAT', LDCI_PKRESERVAMATERIAL.sbClasDevMat, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
+           RAISE Errorpara01;
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLS_MOVI_HERRAMIENTA', LDCI_PKRESERVAMATERIAL.sbClasSolHer, osbErrorMessage);
-      if(osbErrorMessage != '0') then
-           Raise Errorpara01;
-      end if;
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLS_MOVI_HERRAMIENTA', LDCI_PKRESERVAMATERIAL.sbClasSolHer, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
+           RAISE Errorpara01;
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLS_MOVI_DEVOLUCION_HER', LDCI_PKRESERVAMATERIAL.sbClasDevHer, osbErrorMessage);
-      if(osbErrorMessage != '0') then
-           Raise Errorpara01;
-      end if;
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLS_MOVI_DEVOLUCION_HER', LDCI_PKRESERVAMATERIAL.sbClasDevHer, osbErrorMessage);
+        IF(osbErrorMessage != '0') THEN
+           RAISE Errorpara01;
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'PREFIJO_LDC', LDCI_PKRESERVAMATERIAL.sbPrefijoLDC, osbErrorMessage);
-      if(osbErrorMessage != '0') then
-           Raise Errorpara01;
-      end if;
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLSM_SOLI_ACT', LDCI_PKRESERVAMATERIAL.sbClasSolMatAct, osbErrorMessage); --#OYM_CEV_3429_1
+        IF(osbErrorMessage != '0') THEN
+           RAISE Errorpara01;
+        END IF;
 
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLSM_DEVO_ACT', LDCI_PKRESERVAMATERIAL.sbClasDevMatAct, osbErrorMessage); --#OYM_CEV_3429_1
+        IF(osbErrorMessage != '0') THEN
+           RAISE Errorpara01;
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLSM_SOLI_ACT', LDCI_PKRESERVAMATERIAL.sbClasSolMatAct, osbErrorMessage); --#OYM_CEV_3429_1
-      if(osbErrorMessage != '0') then
-           Raise Errorpara01;
-      end if;
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'LST_CENTROS_SOL_INV', LDCI_PKRESERVAMATERIAL.sbLstCentSolInv, osbErrorMessage); --#OYM_CEV_5028_1: #ifrs #471
+        IF(osbErrorMessage != '0') THEN
+           RAISE Errorpara01;
+        END IF;
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'CLSM_DEVO_ACT', LDCI_PKRESERVAMATERIAL.sbClasDevMatAct, osbErrorMessage); --#OYM_CEV_3429_1
-      if(osbErrorMessage != '0') then
-           Raise Errorpara01;
-      end if;
+        LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'LST_CENTROS_SOL_ACT', LDCI_PKRESERVAMATERIAL.sbLstCentSolAct, osbErrorMessage); --#OYM_CEV_5028_1: #ifrs #471
+        IF(osbErrorMessage != '0') THEN
+           RAISE Errorpara01;
+        END IF;
 
+        LDCI_PKRESERVAMATERIAL.Sburldesti := Lower(LDCI_PKRESERVAMATERIAL.Sbprotocol) || '://' || LDCI_PKRESERVAMATERIAL.Sbhost || ':' || LDCI_PKRESERVAMATERIAL.Sbpuerto || '/' || LDCI_PKRESERVAMATERIAL.Sburlws;
+        LDCI_PKRESERVAMATERIAL.sbUrlDesti := trim(LDCI_PKRESERVAMATERIAL.sbUrlDesti);
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'LST_CENTROS_SOL_INV', LDCI_PKRESERVAMATERIAL.sbLstCentSolInv, osbErrorMessage); --#OYM_CEV_5028_1: #ifrs #471
-      if(osbErrorMessage != '0') then
-           Raise Errorpara01;
-      end if;
+        sbValidaHerr := nvl(pkg_BCLd_Parameter.fsbObtieneValorCadena('LDC_CUENTA_HERR_DEVOLU'),'N');
 
-      LDCI_PKWEBSERVUTILS.proCaraServWeb(isbCASECODI, 'LST_CENTROS_SOL_ACT', LDCI_PKRESERVAMATERIAL.sbLstCentSolAct, osbErrorMessage); --#OYM_CEV_5028_1: #ifrs #471
-      if(osbErrorMessage != '0') then
-           Raise Errorpara01;
-      end if;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+        
+    EXCEPTION
+        WHEN Errorpara01 THEN
+            Errors.seterror (-1, 'ERROR: [LDCI_PKRESERVAMATERIAL.proCargaVarGlobal]: Cargando el parametro :' || osbErrorMessage);
+            commit;
+        WHEN OTHERS  THEN
+            pkg_Error.setError;
+            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+            commit;
+    END proCargaVarGlobal;
 
-      LDCI_PKRESERVAMATERIAL.Sburldesti := Lower(LDCI_PKRESERVAMATERIAL.Sbprotocol) || '://' || LDCI_PKRESERVAMATERIAL.Sbhost || ':' || LDCI_PKRESERVAMATERIAL.Sbpuerto || '/' || LDCI_PKRESERVAMATERIAL.Sburlws;
-      LDCI_PKRESERVAMATERIAL.sbUrlDesti := trim(LDCI_PKRESERVAMATERIAL.sbUrlDesti);
+    PROCEDURE proEnviarSolicitud
+    (
+            reserva                in  VARCHAR2,
+            isbOperacion           in  VARCHAR2,
+            flagherramienta        in  VARCHAR,
+            inuProcCodi            in  NUMBER,
+            isbCLASS_ASSESSMENT_ID in  LDCI_CLVAUNOP.CLASS_ASSESSMENT_ID%TYPE,
+            onuErrorCode           out ge_error_log.Error_log_id%TYPE,
+            osbErrorMessage        out ge_error_log.description%TYPE
+    ) 
+    As
+    /*
+    PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
 
-      --380
-      If fblAplicaEntregaxCaso(sbEntrega380) Then
-         sbAplicaE380:='S';
-      Else
-         sbAplicaE380:='N';
-      End If;
-      sbValidaHerr := nvl(open.dald_parameter.fsbGetValue_Chain('LDC_CUENTA_HERR_DEVOLU',NULL),'N');
-      --380
+    PROCEDIMIENTO : proEnviarSolicitud
+    AUTOR : MAURICIO FERNANDO ORTIZ
+    FECHA : 10/12/2012
+    RICEF         : I005; I006
+    DESCRIPCION    : Procedimiento para enviar la interfaz
 
+    Parametros de Entrada
+    reserva in varchar2
+    flagherramienta in varchar
 
-  Exception
-    When Errorpara01 then
-      Errors.seterror (-1, 'ERROR: [LDCI_PKRESERVAMATERIAL.proCargaVarGlobal]: Cargando el parametro :' || osbErrorMessage);
-      commit; --rollback;
-    when others  then
-      pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-      Errors.seterror;
-      Errors.geterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
-  end proCargaVarGlobal;
-
-Procedure proEnviarSolicitud(reserva                in  VARCHAR2,
-                             isbOperacion           in  VARCHAR2,
-                             flagherramienta        in  VARCHAR,
-                             inuProcCodi            in  NUMBER,
-                             isbCLASS_ASSESSMENT_ID in  LDCI_CLVAUNOP.CLASS_ASSESSMENT_ID%type, --#OYM_CEV_3429_1
-                             onuErrorCode           out ge_error_log.Error_log_id%TYPE,
-                             osbErrorMessage        out ge_error_log.description%TYPE) As
-
-  /*
-   PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
-
-   PROCEDIMIENTO : proEnviarSolicitud
-       AUTOR : MAURICIO FERNANDO ORTIZ
-       FECHA : 10/12/2012
-     RICEF         : I005; I006
-   DESCRIPCION    : Procedimiento para enviar la interfaz
-
-   Parametros de Entrada
-   reserva in varchar2
-   flagherramienta in varchar
-
-   Parametros de Salida
+    Parametros de Salida
      onuErrorCode out number
      osbErrorMessage out varchar
-   Historia de Modificaciones
+    Historia de Modificaciones
 
-   Autor        Fecha   Descripcion.
-  carlosvl 17/09/2013  NC-622: Se ajusta la generacion de la etiqueta "ResFront" para enviarlo del modo
-                         [Letra(s) que identifican la empresa]-[Tipo de Movimiento]-[Numero de la Solicitud]/[Nombre del solicitante]
-  carlosvl 25022015    NC-25022015: Se modifica el formato de '9999999999999.99' a '9999999999990.99'
-  dsaltarin 02/06/2020  Cambio 380. Se cambia la forma del xml para devolver seriales.
-  dsaltarin 01/04/2022  OSF-200. Se envian 3 decimales en la cantidad en lugar de 2
-  */
-   cursor cuLDCI_RESERVAMAT(sbRESERVA VARCHAR2) is  --#NC:1456,1457,1458: 20-08-2014: carlos.virgen: Mejora Validaci??n del centro de costo, solicitud de herramienta
-        select RESERVA, UNIDAD_OPE, NAME, CENTRO_COSTO
-            from LDCI_RESERVAMAT, OR_OPERATING_UNIT
-            where OPERATING_UNIT_ID = UNIDAD_OPE
-                and RESERVA = sbRESERVA;
-  -- variables
-    sbErrMens      VARCHAR2(500);
-    sbClasMov      LDCI_CARASEWE.CASEVALO%type;
-    Sbmens         VARCHAR2(4000);
-    onuMesacodi     NUMBER;
-    sbcondicionHta VARCHAR2(100);
+    Autor       Fecha       Caso        Descripcion.
+    carlosvl    17/09/2013  NC-622:     Se ajusta la generacion de la etiqueta "ResFront" para enviarlo del modo
+                                        [Letra(s) que identifican la empresa]-[Tipo de Movimiento]-[Numero de la Solicitud]/[Nombre del solicitante]
+    carlosvl    25022015    NC-25022015 Se modifica el formato de '9999999999999.99' a '9999999999990.99'
+    dsaltarin   02/06/2020  Cambio 380  Se cambia la forma del xml para devolver seriales.
+    dsaltarin   01/04/2022  OSF-200     Se envian 3 decimales en la cantidad en lugar de 2
+    jpinedc     16/04/2025  OSF-4245    Se reemplaza sbPrefijoLDC por base_admin.empresa. 
+                                        Se quita referencia a sbAplicaOSF200 ya que aplica para GdC
+    */
 
-    --Variables mensajes SOAP
-    L_Payload     CLOB;
-    l_response    CLOB;
-    qryCtx        DBMS_XMLGEN.ctxHandle;
-    reLDCI_RESERVAMAT cuLDCI_RESERVAMAT%rowtype; --#NC:1456,1457,1458: 20-08-2014: carlos.virgen: Mejora Validaci??n del centro de costo, solicitud de herramienta
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'proEnviarSolicitud';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000); 
+        
+        CURSOR cuLDCI_RESERVAMAT(sbRESERVA VARCHAR2) IS
+        SELECT RESERVA, UNIDAD_OPE, NAME, CENTRO_COSTO
+        FROM LDCI_RESERVAMAT, OR_OPERATING_UNIT
+        WHERE OPERATING_UNIT_ID = UNIDAD_OPE
+        AND RESERVA = sbRESERVA;
+        
+        -- variables
+        sbErrMens      VARCHAR2(500);
+        sbClasMov      LDCI_CARASEWE.CASEVALO%TYPE;
+        Sbmens         VARCHAR2(4000);
+        onuMesacodi     NUMBER;
+        sbcondicionHta VARCHAR2(100);
 
-  -- excepciones
-    errorPara01             EXCEPTION;  -- Excepcion que verifica que ingresen los parametros de entrada
-    Excepnoprocesoregi      EXCEPTION;   -- Excepcion que valida si proceso registros la consulta
-    excepNoProcesoSOAP      EXCEPTION;   -- Excepcion que valida si proceso peticion SOAP
-    exce_ValidaCentroCosto  EXCEPTION;   --#NC:1456,1457,1458: 20-08-2014: carlos.virgen: Mejora Validaci??n del centro de costo, solicitud de herramienta
-    sbFormato               VARCHAR2(1000);
+        --Variables mensajes SOAP
+        L_Payload     CLOB;
+        l_response    CLOB;
+        qryCtx        DBMS_XMLGEN.ctxHandle;
+        reLDCI_RESERVAMAT cuLDCI_RESERVAMAT%rowtype;
 
-Begin
-  if sbAplicaOSF200 ='S' then
-      sbFormato :='9999999999990.999';
-  else
-      sbFormato :='9999999999990.99';
-  end if;
-  -- valida si el campo de reserva esta lleno
-  if (reserva is not null) then
-      if (flagherramienta = 'S') then --#NC:1456,1457,1458: 20-08-2014: carlos.virgen: Mejora Validaci??n del centro de costo, solicitud de herramienta
-            open cuLDCI_RESERVAMAT(reserva);
-            fetch cuLDCI_RESERVAMAT into reLDCI_RESERVAMAT;
-            close cuLDCI_RESERVAMAT;
+        -- excepciones
+        errorPara01             EXCEPTION;  -- Excepcion que verifica que ingresen los parametros de entrada
+        Excepnoprocesoregi      EXCEPTION;   -- Excepcion que valida si proceso registros la consulta
+        excepNoProcesoSOAP      EXCEPTION;   -- Excepcion que valida si proceso peticion SOAP
+        exce_ValidaCentroCosto  EXCEPTION;
+        sbFormato               VARCHAR2(1000);
 
-            if (reLDCI_RESERVAMAT.CENTRO_COSTO is null or reLDCI_RESERVAMAT.CENTRO_COSTO = '' or reLDCI_RESERVAMAT.CENTRO_COSTO = '-1') then
-              raise exce_ValidaCentroCosto;
-      end if; --if (reLDCI_RESERVAMAT.CENTRO_COSTO ...
-        end if; --if (flagherramienta = 'S')
+    BEGIN
+    
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+                
+        sbFormato :='9999999999990.999';
+        
+        -- valida si el campo de reserva esta lleno
+        IF (reserva IS not null) THEN
+        
+            IF (flagherramienta = 'S') THEN
+                OPEN cuLDCI_RESERVAMAT(reserva);
+                FETCH cuLDCI_RESERVAMAT INTO reLDCI_RESERVAMAT;
+                CLOSE cuLDCI_RESERVAMAT;
 
-        -- Si es una Reserva
-    if (isbOperacion = 'RES') then
+                IF (reLDCI_RESERVAMAT.CENTRO_COSTO IS null or reLDCI_RESERVAMAT.CENTRO_COSTO = '' or reLDCI_RESERVAMAT.CENTRO_COSTO = '-1') THEN
+                  RAISE exce_ValidaCentroCosto;
+                END IF;
+                
+            END IF;
 
-            if (isbCLASS_ASSESSMENT_ID = 'I') then --#OYM_CEV_3429_1: Valida la clase de valoracion INVENTARIO
-                    select decode(Flagherramienta, 'N', LDCI_PKRESERVAMATERIAL.sbClasSolMat, 'S', LDCI_PKRESERVAMATERIAL.sbClasSolHer, LDCI_PKRESERVAMATERIAL.sbClasSolMat) into sbClasMov
-                        from dual;
-                else
-                        if (isbCLASS_ASSESSMENT_ID = 'A') then --#OYM_CEV_3429_1: Valida la clase de valoracion ACTIVO
-                            select decode(Flagherramienta, 'N', LDCI_PKRESERVAMATERIAL.sbClasSolMatAct, 'S', LDCI_PKRESERVAMATERIAL.sbClasSolHer, LDCI_PKRESERVAMATERIAL.sbClasSolMatAct) into sbClasMov
-                                from dual;
-                        end if;--if (isbCLASS_ASSESSMENT_ID = 'A')
-            end if;--if (isbCLASS_ASSESSMENT_ID = 'I') then
-    else
-            if (isbCLASS_ASSESSMENT_ID = 'I') then --#OYM_CEV_3429_1: Valida la clase de valoracion INVENTARIO
-                    select decode(Flagherramienta, 'N', LDCI_PKRESERVAMATERIAL.sbClasDevMat, 'S', LDCI_PKRESERVAMATERIAL.sbClasDevHer, LDCI_PKRESERVAMATERIAL.sbClasDevMat) into sbClasMov
-                        from dual;
-                else
-                        if (isbCLASS_ASSESSMENT_ID = 'A') then --#OYM_CEV_3429_1: Valida la clase de valoracion ACTIVO
-                            select decode(Flagherramienta, 'N', LDCI_PKRESERVAMATERIAL.sbClasDevMatAct, 'S', LDCI_PKRESERVAMATERIAL.sbClasDevHer, LDCI_PKRESERVAMATERIAL.sbClasDevMatAct) into sbClasMov
-                                from dual;
-                        end if;--if (isbCLASS_ASSESSMENT_ID = 'A') then
-            end if;--if (isbCLASS_ASSESSMENT_ID = 'I') then
-    end if;--if (isbOperacion = 'RES') then
-    -- Genera el mensaje XML
-	if sbAplicaE380 = 'N'   then
+            -- Si es una Reserva
+            IF (isbOperacion = 'RES') THEN
 
-		Qryctx :=  Dbms_Xmlgen.Newcontext ('Select ''' || sbClasMov || ''' As "ClasMov",
-			  Rs.UNIDAD_OPE As "AlmCont",
-			  substr(:sbPrefijoLDC || ''-'' || ''' || sbClasMov || ''' || ''-'' || Rs.RESERVA || ''/'' || Uo.OPERATING_UNIT_ID || '' '' || Uo.NAME,1,40) As "ResFront",
-			  decode(:flagHerramienta, ''N'', NULL, ''S'', Rs.Centro_Costo, NULL) "CenCosto",
-			  CURSOR (Select Dt.CODIGO_ITEM As "Material",
-										  trim(to_char(NVL(Dt.CANTIDAD,0),'||sbFormato||')) As "Cantidad",
-										  Dt.CENTRO "CentroSAP",
-										  case
-											 when Dt.COSTO_ERP <= 0 then NULL
-											   else  trim(to_char(NVL(Dt.COSTO_ERP, NULL),''9999999999990.99'')) end As "Costo",
-											   NVL(OPEN.LDCI_PKRESERVAMATERIAL.fsbGETxmlserializados(''DEV'',Dt.RESERVA,Dt.CODIGO_ITEM),NULL)
-								From LDCI_DET_RESERVAMAT Dt
-							  Where Rs.RESERVA = Dt.RESERVA
-							  and Dt.ES_HERRAMIENTA = ''' ||Flagherramienta || ''') As "Detalle"
-				  From LDCI_RESERVAMAT Rs, OR_OPERATING_UNIT Uo
-				  where Rs.RESERVA = ' || to_char(reserva) ||
-				  'and Rs.UNIDAD_OPE = Uo.OPERATING_UNIT_ID');
-	else
-		Qryctx :=  Dbms_Xmlgen.Newcontext ('Select ''' || sbClasMov || ''' As "ClasMov",
-          Rs.UNIDAD_OPE As "AlmCont",
-          substr(:sbPrefijoLDC || ''-'' || ''' || sbClasMov || ''' || ''-'' || Rs.RESERVA || ''/'' || Uo.OPERATING_UNIT_ID || '' '' || Uo.NAME,1,40) As "ResFront",
-          decode(:flagHerramienta, ''N'', NULL, ''S'', Rs.Centro_Costo, NULL) "CenCosto",
-          CURSOR (Select Dt.CODIGO_ITEM As "Material",
-                                      trim(to_char(NVL(Dt.CANTIDAD,0),'||sbFormato||')) As "Cantidad",
-                                      Dt.CENTRO "CentroSAP",
-                                      case
-                                         when Dt.COSTO_ERP <= 0 then NULL
-                                           else  trim(to_char(NVL(Dt.COSTO_ERP, NULL),''9999999999990.99'')) end As "Costo",
-                                           cursor(  select ldci_pkreservamaterial.fsbgetobtultserial(s.serie)   AS "Serie"
-                                                   ,ldci_pkreservamaterial.fsbGETobtmarcultserial(serie) AS "Marca"
-                                                                              from or_uni_item_bala_mov k,
-                                                                                   open.ge_items_seriado s
-                                                                            where k.id_items_documento = dt.reserva
-                                                                              AND k.items_id           = dt.codigo_item
-                                                                              AND k.movement_type      = ''D''
-                                                                              AND k.id_items_seriado   = s.id_items_seriado
-                                                                              and rs.clase_mov=''DEV'')  as "Seriales"
-                            From LDCI_DET_RESERVAMAT Dt, open.ge_items i
-                          Where Rs.RESERVA = Dt.RESERVA
-                            and Dt.item_id=i.items_id
-                              and Dt.ES_HERRAMIENTA = ''' ||Flagherramienta || ''') As "Detalle"
-      From LDCI_RESERVAMAT Rs, OR_OPERATING_UNIT Uo
-      where Rs.RESERVA = ' || to_char(reserva) ||
-      'and Rs.UNIDAD_OPE = Uo.OPERATING_UNIT_ID');
-	end if;
+                IF (isbCLASS_ASSESSMENT_ID = 'I') THEN
+                    sbClasMov := CASE Flagherramienta WHEN 'N' THEN sbClasSolMat WHEN 'S' THEN sbClasSolHer ELSE sbClasSolMat END;
+                ELSE
+                    IF (isbCLASS_ASSESSMENT_ID = 'A') THEN
+                        sbClasMov := CASE Flagherramienta WHEN 'N' THEN sbClasSolMatAct WHEN 'S' THEN sbClasSolHer ELSE sbClasSolMatAct END;
+                    END IF;
+                END IF;
+            ELSE
+                IF (isbCLASS_ASSESSMENT_ID = 'I') THEN
+                    sbClasMov := CASE Flagherramienta WHEN 'N' THEN sbClasDevMat WHEN 'S' THEN sbClasDevHer ELSE sbClasDevMat END;
+                ELSE
+                    IF (isbCLASS_ASSESSMENT_ID = 'A') THEN
+                        sbClasMov := CASE Flagherramienta WHEN 'N' THEN sbClasDevMatAct WHEN 'S' THEN sbClasDevHer ELSE sbClasDevMatAct END;
+                    END IF;
+                END IF;
+            END IF;
+    
+            -- Genera el mensaje XML
+            Qryctx :=  Dbms_Xmlgen.Newcontext ('SELECT ''' || sbClasMov || ''' As "ClasMov",
+              Rs.UNIDAD_OPE As "AlmCont",
+              substr(Ba.empresa || ''-'' || ''' || sbClasMov || ''' || ''-'' || Rs.RESERVA || ''/'' || Uo.OPERATING_UNIT_ID || '' '' || Uo.NAME,1,40) As "ResFront",
+              decode(:flagHerramienta, ''N'', NULL, ''S'', Rs.Centro_Costo, NULL) "CenCosto",
+              CURSOR (SELECT Dt.CODIGO_ITEM As "Material",
+                                          trim(to_char(NVL(Dt.CANTIDAD,0),'||sbFormato||')) As "Cantidad",
+                                          Dt.CENTRO "CentroSAP",
+                                          case
+                                             WHEN Dt.COSTO_ERP <= 0 THEN NULL
+                                               ELSE  trim(to_char(NVL(Dt.COSTO_ERP, NULL),''9999999999990.99'')) END As "Costo",
+                                               CURSOR(  SELECT ldci_pkreservamaterial.fsbgetobtultserial(s.serie)   AS "Serie"
+                                                       ,ldci_pkreservamaterial.fsbGETobtmarcultserial(serie) AS "Marca"
+                                                                                  FROM or_uni_item_bala_mov k,
+                                                                                       ge_items_seriado s
+                                                                                WHERE k.id_items_documento = dt.reserva
+                                                                                  AND k.items_id           = dt.codigo_item
+                                                                                  AND k.movement_type      = ''D''
+                                                                                  AND k.id_items_seriado   = s.id_items_seriado
+                                                                                  AND rs.clase_mov=''DEV'')  as "Seriales"
+                                FROM LDCI_DET_RESERVAMAT Dt, ge_items i
+                              WHERE Rs.RESERVA = Dt.RESERVA
+                                AND Dt.item_id=i.items_id
+                                  AND Dt.ES_HERRAMIENTA = ''' ||Flagherramienta || ''') As "Detalle"
+            FROM LDCI_RESERVAMAT Rs, OR_OPERATING_UNIT Uo, BASE_ADMIN ba
+            WHERE Rs.RESERVA = ' || to_char(reserva) ||
+            'AND Rs.UNIDAD_OPE = Uo.OPERATING_UNIT_ID
+            AND Ba.base_administrativa = Uo.admin_base_id');
 
+             -- Asigna el valor de la variable :flagHerramienta
+            DBMS_XMLGEN.setBindvalue (qryCtx, 'flagHerramienta', flagHerramienta);
 
-     -- Asigna el valor de la variable :flagHerramienta
-    DBMS_XMLGEN.setBindvalue (qryCtx, 'flagHerramienta', flagHerramienta);
-    DBMS_XMLGEN.setBindvalue (qryCtx, 'sbPrefijoLDC', LDCI_PKRESERVAMATERIAL.sbPrefijoLDC);
+            Dbms_Xmlgen.setRowSetTag(Qryctx, LDCI_PKRESERVAMATERIAL.sbInputMsgType);
+            DBMS_XMLGEN.setRowTag(qryCtx, '');
+            dbms_xmlgen.setConvertSpecialChars(qryCtx, FALSE);
 
-    Dbms_Xmlgen.setRowSetTag(Qryctx, LDCI_PKRESERVAMATERIAL.sbInputMsgType);
-    DBMS_XMLGEN.setRowTag(qryCtx, '');
-    --Dbms_Xmlgen.setNullHandling(qryCtx, 0);
-    dbms_xmlgen.setConvertSpecialChars(qryCtx, FALSE);
+            l_payload := dbms_xmlgen.getXML(qryCtx);
+            l_payload := REPLACE(l_payload,'<NVL_x0028_OPEN.LDCI_PKRESERVAMATERIA>',NULL);
+            l_payload := REPLACE(l_payload,'</NVL_x0028_OPEN.LDCI_PKRESERVAMATERIA>',NULL);
+            l_payload := l_payload;
 
-    l_payload := dbms_xmlgen.getXML(qryCtx);
-    l_payload := REPLACE(l_payload,'<NVL_x0028_OPEN.LDCI_PKRESERVAMATERIA>',NULL);
-    l_payload := REPLACE(l_payload,'</NVL_x0028_OPEN.LDCI_PKRESERVAMATERIA>',NULL);
-    l_payload := l_payload;
+            L_Payload := REPLACE(L_Payload, '<Seriales_ROW>', '<Serial>');
+            L_Payload := REPLACE(L_Payload, '</Seriales_ROW>', '</Serial>');
+            L_Payload := REPLACE(L_Payload, '<Seriales>'||chr(10)||chr(32)||chr(32)||chr(32)||'</Seriales>', '');
+            
+            --Valida si proceso registros
+            IF(DBMS_XMLGEN.getNumRowsProcessed(qryCtx) = 0) THEN
+                 RAISE excepNoProcesoRegi;
+            END IF;
 
-    if sbAplicaE380 = 'S' then
-       L_Payload := REPLACE(L_Payload, '<Seriales_ROW>', '<Serial>');
-	     L_Payload := REPLACE(L_Payload, '</Seriales_ROW>', '</Serial>');
-	     L_Payload := REPLACE(L_Payload, '<Seriales>'||chr(10)||chr(32)||chr(32)||chr(32)||'</Seriales>', '');
-    end if;
-    --Valida si proceso registros
-    if(DBMS_XMLGEN.getNumRowsProcessed(qryCtx) = 0) then
-         RAISE excepNoProcesoRegi;
-    end if;--if(DBMS_XMLGEN.getNumRowsProcessed(qryCtx) = 0) then
+            dbms_xmlgen.closeContext(qryCtx);
 
-    dbms_xmlgen.closeContext(qryCtx);
+            L_Payload := Replace(L_Payload, '<?xml version="1.0"?>');
+            l_payload := replace(l_payload, '<Detalle>');
+            l_payload := replace(l_payload, '</Detalle>');
 
-    L_Payload := Replace(L_Payload, '<?xml version="1.0"?>');
-    l_payload := replace(l_payload, '<Detalle>');
-    l_payload := replace(l_payload, '</Detalle>');
+            l_payload := replace(l_payload, '<Detalle_ROW>',  '<Detalle>');
+            l_payload := replace(l_payload, '</Detalle_ROW>', '</Detalle>');
+            L_Payload := Trim(L_Payload);
+            pkg_Traza.Trace('[ln395] proEnviarSolicitud L_Payload: ' || chr(13) || L_Payload, csbNivelTraza);
 
-    l_payload := replace(l_payload, '<Detalle_ROW>',  '<Detalle>');
-    l_payload := replace(l_payload, '</Detalle_ROW>', '</Detalle>');
-    --L_Payload := '<urn:NotificarOrdenesLectura>' || L_Payload || '</urn:NotificarOrdenesLectura>';
-    L_Payload := Trim(L_Payload);
-    --dbms_output.put_line('[ln395] proEnviarSolicitud L_Payload: ' || chr(13) || L_Payload);
+            --Hace el consumo del servicio Web
+            LDCI_PKSOAPAPI.Prosetprotocol(LDCI_PKRESERVAMATERIAL.Sbprotocol);
 
+            l_response := LDCI_PKSOAPAPI.fsbSoapSegmentedCall(l_payload,
+                                                            LDCI_PKRESERVAMATERIAL.sbUrlDesti,
+                                                            LDCI_PKRESERVAMATERIAL.sbSoapActi,
+                                                            LDCI_PKRESERVAMATERIAL.sbNameSpace);
 
-    --Hace el consumo del servicio Web
-    LDCI_PKSOAPAPI.Prosetprotocol(LDCI_PKRESERVAMATERIAL.Sbprotocol);
+            --Valida el proceso de peticion SOAP
+            IF (LDCI_PKSOAPAPI.Boolsoaperror Or LDCI_PKSOAPAPI.Boolhttperror) THEN
 
+                LDCI_PKMESAWS.PROCREAMENSENVIO( IDTMESAFECH       => SYSDATE,
+                                                ISBMESADEFI       => LDCI_PKRESERVAMATERIAL.sbDefiSewe,
+                                                INUMESAESTADO     => -1,
+                                                INUMESAPROC       => inuProcCodi,
+                                                ICBMESAXMLENV     => null,
+                                                ICDMESAXMLPAYLOAD => L_Payload,
+                                                INUMESATAMLOT     => 1,
+                                                INUMESALOTACT     => 1,
+                                                ONUMESACODI       => onuMesacodi,
+                                                ONUERRORCODE      => onuErrorCode,
+                                                OSBERRORMESSAGE   => osbErrorMessage);
+                RAISE excepNoProcesoSOAP;
+                
+            ELSE
 
-    l_response := LDCI_PKSOAPAPI.fsbSoapSegmentedCall(l_payload,
-                                                                                                            LDCI_PKRESERVAMATERIAL.sbUrlDesti,
-                                                                                                            LDCI_PKRESERVAMATERIAL.sbSoapActi,
-                                                                                                            LDCI_PKRESERVAMATERIAL.sbNameSpace);
+                LDCI_PKMESAWS.PROACTUESTAPROC(  INUPROCCODI     => inuProcCodi,
+                                                IDTPROCFEFI     => sysdate,
+                                                ISBPROCESTA     => 'F',
+                                                ONUERRORCODE    => ONUERRORCODE,
+                                                OSBERRORMESSAGE => OSBERRORMESSAGE);
 
+                LDCI_PKMESAWS.PROCREAMENSENVIO( IDTMESAFECH       => SYSDATE,
+                                                  ISBMESADEFI       => LDCI_PKRESERVAMATERIAL.sbDefiSewe,
+                                                  INUMESAESTADO     => 1,
+                                                  INUMESAPROC       => inuProcCodi,
+                                                  ICBMESAXMLENV     => null,
+                                                  ICDMESAXMLPAYLOAD => L_Payload,
+                                                  INUMESATAMLOT     => 1,
+                                                  INUMESALOTACT     => 1,
+                                                  ONUMESACODI       => onuMesacodi,
+                                                  ONUERRORCODE      => onuErrorCode,
+                                                  OSBERRORMESSAGE   => osbErrorMessage);
+            END IF;
+            
+        END IF;
+        
+        onuErrorCode := 0;
 
-    --Valida el proceso de peticion SOAP
-    If (LDCI_PKSOAPAPI.Boolsoaperror Or LDCI_PKSOAPAPI.Boolhttperror) Then
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+                
+    EXCEPTION
+        WHEN exce_ValidaCentroCosto THEN
+            onuErrorCode := -1;
+            osbErrorMessage := '[LDCI_PKRESERVAMATERIAL.proEnviarSolicitud] La unidad operativa (' || to_char(reLDCI_RESERVAMAT.UNIDAD_OPE) || reLDCI_RESERVAMAT.NAME   || ') y Num Reserva ('||to_char(reLDCI_RESERVAMAT.RESERVA) ||') no tiene configurado el Centro de Costo o esta configurado en el Centro de Costo -1. (Forma GEMCUO)';
+            Errors.seterror (onuErrorCode, osbErrorMessage);
+            pkg_Traza.Trace('[691]' || osbErrorMessage,csbNivelTraza);
+            commit;
+            LDCI_PKRESERVAMATERIAL.proNotificaExepcion(to_number(reserva), 'Valida configuración centro de costo por unidad operativa',  osbErrorMessage);
 
-              LDCI_PKMESAWS.PROCREAMENSENVIO(IDTMESAFECH       => SYSDATE,
-                                                                            ISBMESADEFI       => LDCI_PKRESERVAMATERIAL.sbDefiSewe,
-                                                                            INUMESAESTADO     => -1,
-                                                                            INUMESAPROC       => inuProcCodi,
-                                                                            ICBMESAXMLENV     => null,
-                                                                            ICDMESAXMLPAYLOAD => L_Payload,
-                                                                            INUMESATAMLOT     => 1,
-                                                                            INUMESALOTACT     => 1,
-                                                                            ONUMESACODI       => onuMesacodi,
-                                                                            ONUERRORCODE      => onuErrorCode,
-                                                                            OSBERRORMESSAGE   => osbErrorMessage);
-       raise excepNoProcesoSOAP;
-        else
+        WHEN excepNoProcesoRegi THEN
+            osbErrorMessage := 'ERROR: [LDCI_PKRESERVAMATERIAL.proEnviarSolicitud]: La consulta no ha arrojo registros: ' || chr(13) || DBMS_UTILITY.format_error_backtrace;
+            onuErrorCode:= -1;
+            Errors.seterror (onuErrorCode, osbErrorMessage);
+            pkg_Traza.Trace('[698]' || osbErrorMessage,csbNivelTraza);
+            commit;
 
-                LDCI_PKMESAWS.PROACTUESTAPROC(INUPROCCODI     => inuProcCodi,
-                                                                            IDTPROCFEFI     => sysdate,
-                                                                            ISBPROCESTA     => 'F',
-                                                                            ONUERRORCODE    => ONUERRORCODE,
-                                                                            OSBERRORMESSAGE => OSBERRORMESSAGE);
+        WHEN excepNoProcesoSOAP THEN
+            osbErrorMessage := 'ERROR: [LDCI_PKRESERVAMATERIAL.proEnviarSolicitud]: Ocurrio un error en procesamiento SOAP.' || Dbms_Utility.Format_Error_Backtrace;
+            onuErrorCode:= -1;
+            Errors.seterror (onuErrorCode, osbErrorMessage);
+            pkg_Traza.Trace('[706]' || osbErrorMessage,csbNivelTraza);
+            commit;
+            
+        WHEN OTHERS  THEN
+            pkg_Error.setError;
+            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+            pkg_Traza.Trace('[712]' || osbErrorMessage,csbNivelTraza);
+            commit;            
+    END proEnviarSolicitud;
 
-                LDCI_PKMESAWS.PROCREAMENSENVIO(IDTMESAFECH       => SYSDATE,
-                                                                              ISBMESADEFI       => LDCI_PKRESERVAMATERIAL.sbDefiSewe,
-                                                                              INUMESAESTADO     => 1,
-                                                                              INUMESAPROC       => inuProcCodi,
-                                                                              ICBMESAXMLENV     => null,
-                                                                              ICDMESAXMLPAYLOAD => L_Payload,
-                                                                              INUMESATAMLOT     => 1,
-                                                                              INUMESALOTACT     => 1,
-                                                                              ONUMESACODI       => onuMesacodi,
-                                                                              ONUERRORCODE      => onuErrorCode,
-                                                                              OSBERRORMESSAGE   => osbErrorMessage);
-    end if; -- If (LDCI_PKSOAPAPI.Boolsoaperror ...
-   end if;--if (reserva is not null) then
-   onuErrorCode := 0;
-Exception
-
-  when exce_ValidaCentroCosto then --#NC:1456,1457,1458: 20-08-2014: carlos.virgen: Mejora Validaci??n del centro de costo, solicitud de herramienta
-       onuErrorCode := -1;
-       osbErrorMessage := '[LDCI_PKRESERVAMATERIAL.proEnviarSolicitud] La unidad operativa (' || to_char(reLDCI_RESERVAMAT.UNIDAD_OPE) || reLDCI_RESERVAMAT.NAME   || ') y Num Reserva ('||to_char(reLDCI_RESERVAMAT.RESERVA) ||') no tiene configurado el Centro de Costo o esta configurado en el Centro de Costo -1. (Forma GEMCUO)';
-      Errors.seterror (onuErrorCode, osbErrorMessage);
---dbms_output.put_line('[691]' || osbErrorMessage);
-      commit; --rollback;
-            LDCI_PKRESERVAMATERIAL.proNotificaExepcion(to_number(reserva), 'Valida configuraci??n centro de costo por unidad operativa',  osbErrorMessage);
-
-  WHEN excepNoProcesoRegi THEN
-        osbErrorMessage := 'ERROR: [LDCI_PKRESERVAMATERIAL.proEnviarSolicitud]: La consulta no ha arrojo registros: ' || chr(13) || DBMS_UTILITY.format_error_backtrace;
-        onuErrorCode:= -1;
-        Errors.seterror (onuErrorCode, osbErrorMessage);
---dbms_output.put_line('[698]' || osbErrorMessage);
-        commit; --rollback;
-
-    WHEN excepNoProcesoSOAP THEN
-        osbErrorMessage := 'ERROR: [LDCI_PKRESERVAMATERIAL.proEnviarSolicitud]: Ocurrio un error en procesamiento SOAP.' || Dbms_Utility.Format_Error_Backtrace;
-        onuErrorCode:= -1;
-        Errors.seterror (onuErrorCode, osbErrorMessage);
---dbms_output.put_line('[706]' || osbErrorMessage);
-        commit; --rollback;
-  when others  then
-        pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-        Errors.seterror;
-        Errors.geterror (onuErrorCode, osbErrorMessage);
---dbms_output.put_line('[712]' || osbErrorMessage);
-        commit; --rollback;
-End proEnviarSolicitud;
-
-Function fnuObtenerClasificacionItem(Itemid Number, itemcode varchar2)
-  Return Number As
+    FUNCTION fnuObtenerClasificacionItem(Itemid Number, itemcode varchar2)
+    RETURN Number As
   /*
    PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
 
@@ -850,108 +888,135 @@ Function fnuObtenerClasificacionItem(Itemid Number, itemcode varchar2)
 
    Autor        Fecha       Descripcion.
   */
-    doc       DBMS_XMLDOM.DOMDocument;
-    ndoc      DBMS_XMLDOM.DOMNode;
-    docelem   DBMS_XMLDOM.DOMElement;
-    node      DBMS_XMLDOM.DOMNode;
-    childnode DBMS_XMLDOM.DOMNode;
-    Nodelist  Dbms_Xmldom.Domnodelist;
-    Buf             Varchar2(2000);
-    oclXMLItemsData CLOB;
-    Onuerrorcode    ge_error_log.Error_log_id%TYPE;
-    Osberrormessage ge_error_log.description%TYPE;
-    resultado       number;
-  Begin
-     -- carga item
-     OS_GET_ITEM(Itemid, itemcode, Oclxmlitemsdata, Onuerrorcode, Osberrormessage);
-     If Onuerrorcode = 0 Then
-       /* PROCESAR XML Y OBTENER CLASIFICACION*/
-        -- Create DOMDocument handle
-        doc     := DBMS_XMLDOM.newDOMDocument(Oclxmlitemsdata);
-        ndoc    := DBMS_XMLDOM.makeNode(doc);
 
-        Dbms_Xmldom.Writetobuffer(Ndoc, Buf);
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fnuObtenerClasificacionItem';
+          
+        doc       DBMS_XMLDOM.DOMDocument;
+        ndoc      DBMS_XMLDOM.DOMNode;
+        docelem   DBMS_XMLDOM.DOMElement;
+        node      DBMS_XMLDOM.DOMNode;
+        childnode DBMS_XMLDOM.DOMNode;
+        Nodelist  Dbms_Xmldom.Domnodelist;
+        Buf             Varchar2(2000);
+        oclXMLItemsData CLOB;
+        Onuerrorcode    ge_error_log.Error_log_id%TYPE;
+        Osberrormessage ge_error_log.description%TYPE;
+        resultado       number;
+    BEGIN
 
-        docelem := DBMS_XMLDOM.getDocumentElement(doc);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+           
+        -- carga item
+        API_GET_ITEM(Itemid, itemcode, Oclxmlitemsdata, Onuerrorcode, Osberrormessage);
+        
+        IF Onuerrorcode = 0 THEN
+            /* PROCESAR XML Y OBTENER CLASIFICACION*/
+            doc     := DBMS_XMLDOM.newDOMDocument(Oclxmlitemsdata);
+            ndoc    := DBMS_XMLDOM.makeNode(doc);
 
-        -- Access element
-        Nodelist  := Dbms_Xmldom.Getelementsbytagname(Docelem, 'ITEM_CLASS');
-        Node      := Dbms_Xmldom.Item(Nodelist, 0);
-        Childnode := Dbms_Xmldom.Getfirstchild(Node);
-        resultado := to_number(Dbms_Xmldom.Getnodevalue(Childnode));
-     End If; -- If Onuerrorcode = 0 Then
+            Dbms_Xmldom.Writetobuffer(Ndoc, Buf);
 
-     -- retorna clasificacion de item
-     Return Resultado;
-  exception
-  when others  then
-      pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-      Errors.seterror;
-      Errors.geterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
-  end fnuObtenerClasificacionItem;
+            docelem := DBMS_XMLDOM.getDocumentElement(doc);
 
-  Function fnuExisteDocumento(Sbdocuemento Varchar2)
-    Return Number Is
-    Resultado Number := -1;
+            -- Access element
+            Nodelist  := Dbms_Xmldom.Getelementsbytagname(Docelem, 'ITEM_CLASS');
+            Node      := Dbms_Xmldom.Item(Nodelist, 0);
+            Childnode := Dbms_Xmldom.Getfirstchild(Node);
+            resultado := to_number(Dbms_Xmldom.Getnodevalue(Childnode));
+            
+        END IF;
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+        
+        -- retorna clasificacion de item
+        RETURN Resultado;
+        
+    EXCEPTION
+        WHEN OTHERS  THEN
+            pkg_Error.setError;
+            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+            commit;
+    END fnuObtenerClasificacionItem;
+
+    FUNCTION fnuExisteDocumento(Sbdocuemento Varchar2)
+    RETURN Number IS
+    
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fnuExisteDocumento';
+            
+        Resultado Number := -1;
         onuErrorCode      ge_error_log.Error_log_id%TYPE;
         osbErrorMessage   ge_error_log.description%TYPE;
 
-    Cursor Cudocumento Is
-      Select *
-        From Ldci_Reservamat
-       Where Reserva = Sbdocuemento;
+        CURSOR Cudocumento IS
+        SELECT *
+        FROM Ldci_Reservamat
+        WHERE Reserva = Sbdocuemento;
 
-    recCudocumento Cudocumento%rowtype;
-  Begin
-    /*abrir cursor y valdar*/
-    Open Cudocumento;
-    Fetch Cudocumento Into Reccudocumento;
+        recCudocumento Cudocumento%rowtype;
+        
+    BEGIN
 
-    If Cudocumento%Found Then
-      Resultado := 0;
-    end if;
-    close Cudocumento;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+            
+        /*abrir CURSOR y valdar*/
+        OPEN Cudocumento;
+        FETCH Cudocumento INTO Reccudocumento;
+        CLOSE Cudocumento;
 
-    return resultado;
-  exception
-  when others  then
-      pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-      Errors.seterror;
-      Errors.geterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
-  end fnuExisteDocumento;
+        IF Reccudocumento.Reserva IS NOT NULL THEN
+            Resultado := 0;
+        END IF;
+        
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+        
+        RETURN resultado;
+        
+    EXCEPTION
+        WHEN OTHERS  THEN
+            pkg_Error.setError;
+            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+            commit;
+    END fnuExisteDocumento;
 
-   Function fnuExisteDocumentoitem(Sbdocuemento in Varchar2,
-                                   sbCodItem    in VARCHAR2) Return Number Is
-    Resultado Number := -1;
-    onuErrorCode      ge_error_log.Error_log_id%TYPE;
-    osbErrorMessage   ge_error_log.description%TYPE;
-  -- cursor
-    Cursor Cudocumento Is
-     Select *
-     From LDCI_DET_RESERVAMAT Where Reserva = Sbdocuemento and Codigo_Item = sbCodItem;
-    recCudocumento Cudocumento%rowtype;
-  Begin
-    /*abrir cursor y valdar*/
-    Open Cudocumento;
-    Fetch Cudocumento Into Reccudocumento;
+    FUNCTION fnuExisteDocumentoitem(Sbdocuemento in Varchar2,
+                                   sbCodItem    in VARCHAR2) RETURN Number IS
 
-    If Cudocumento%Found Then
-      Resultado := 0;
-    end if;
-    close Cudocumento;
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fnuExisteDocumentoitem';
+                                   
+        Resultado Number := -1;
+        onuErrorCode      ge_error_log.Error_log_id%TYPE;
+        osbErrorMessage   ge_error_log.description%TYPE;
+        
+        -- CURSOR
+        CURSOR Cudocumento IS
+        SELECT *
+        FROM LDCI_DET_RESERVAMAT WHERE Reserva = Sbdocuemento AND Codigo_Item = sbCodItem;
+        recCudocumento Cudocumento%rowtype;
+    BEGIN
 
-    Return Resultado;
-  exception
-  when others  then
-      pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-      Errors.seterror;
-      Errors.geterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
-  end fnuExisteDocumentoitem;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+            
+        /*abrir CURSOR y valdar*/
+        OPEN Cudocumento;
+        FETCH Cudocumento INTO Reccudocumento;
+        CLOSE Cudocumento;
 
-Procedure proNotificaDevoluciones As
+        IF Reccudocumento.Reserva IS NOT NULL THEN
+            Resultado := 0;
+        END IF;
+        
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+        
+        RETURN Resultado;
+        
+    EXCEPTION
+        WHEN OTHERS  THEN
+            pkg_Error.setError;
+            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+            commit;
+    END fnuExisteDocumentoitem;
+
+    PROCEDURE proNotificaDevoluciones As
     /*
       PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
 
@@ -971,66 +1036,56 @@ Procedure proNotificaDevoluciones As
 
     */
 
-    -- definicion de variables
-    Iclxmlsearchtransit   Clob;
-    Oclxmltransititems    Clob;
-    Onuerrorcode          ge_error_log.Error_log_id%TYPE;
-    osbErrorMessage       ge_error_log.description%TYPE;
-    Docitem               Dbms_Xmldom.Domdocument;
-    Ndocitem              Dbms_Xmldom.Domnode;
-    Docelemitem             Dbms_Xmldom.Domelement;
-    Nodeitem                Dbms_Xmldom.Domnode;
-    Nodelistitem            Dbms_Xmldom.Domnodelist;
-    Nodelisteleitem        Dbms_Xmldom.Domnodelist;
-    Nodedummy              Dbms_Xmldom.Domnode;
-    Bufitem                 Varchar2(32767);
-    clBufitem                 CLOB; --#144122: Se implementa variable clob para el procesamiento del XML
-    sbItemcode              varchar2(60);
-    Nucantidad              Number;
-    sbReferencia            LDCI_RESERVAMAT.RESERVA%type;
-    Nucosto                 Number;
-    nuIduniopera            Number;
-    nuDocumento           NUMBER;
-    Nuclassitem             number;
-    sbFlagHta               varchar2(1);
-    nuDatos               number;
-    sbCECOCODI            LDCI_CECOUNIOPER.CECOCODI%type;
-    nuCantMate            number;
-    nuCantHerr            number;
-    onuProcCodi           NUMBER;
-    icbProcPara           CLOB;
-    sbCLASS_ASSESSMENT_ID LDCI_CLVAUNOP.CLASS_ASSESSMENT_ID%type; --#OYM_CEV_3429_1
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fnuExisteDocumentoitem';
+        
+        -- definicion de variables
+        Iclxmlsearchtransit   Clob;
+        Oclxmltransititems    Clob;
+        Onuerrorcode          ge_error_log.Error_log_id%TYPE;
+        osbErrorMessage       ge_error_log.description%TYPE;
+        Docitem               Dbms_Xmldom.Domdocument;
+        Ndocitem              Dbms_Xmldom.Domnode;
+        Docelemitem             Dbms_Xmldom.Domelement;
+        Nodeitem                Dbms_Xmldom.Domnode;
+        Nodelistitem            Dbms_Xmldom.Domnodelist;
+        Nodelisteleitem        Dbms_Xmldom.Domnodelist;
+        Nodedummy              Dbms_Xmldom.Domnode;
+        Bufitem                 Varchar2(32767);
+        clBufitem                 CLOB; --#144122: Se implementa variable clob para el procesamiento del XML
+        sbItemcode              varchar2(60);
+        Nucantidad              Number;
+        sbReferencia            LDCI_RESERVAMAT.RESERVA%TYPE;
+        Nucosto                 Number;
+        nuIduniopera            Number;
+        nuDocumento           NUMBER;
+        Nuclassitem             number;
+        sbFlagHta               varchar2(1);
+        nuDatos               number;
+        sbCECOCODI            LDCI_CECOUNIOPER.CECOCODI%TYPE;
+        nuCantMate            number;
+        nuCantHerr            number;
+        onuProcCodi           NUMBER;
+        icbProcPara           CLOB;
+        sbCLASS_ASSESSMENT_ID LDCI_CLVAUNOP.CLASS_ASSESSMENT_ID%TYPE;
 
-    -- definicion de cursores
-    -- cursor de las unidades operativas
-    Cursor Cuunidadesoper Is
-        select distinct Opeu.OPERATING_UNIT_ID  as PROVEEDOR_LOGISTICO,
-               Opeu.OPER_UNIT_CODE     as PROVEEDOR_CODE
-       from GE_ITEMS_DOCUMENTO Docu, OR_OPERATING_UNIT Opeu
-      where Opeu.OPER_UNIT_CLASSIF_ID = 11
-        and Docu.DESTINO_OPER_UNI_ID = Opeu.OPERATING_UNIT_ID
-        and Docu.DOCUMENT_TYPE_ID = 105
-        and Docu.ID_ITEMS_DOCUMENTO not in (select DOTRDOCU from LDCI_DOCUTRAN);
+        -- definicion de cursores
+        -- CURSOR de las unidades operativas
+        CURSOR Cuunidadesoper IS
+            SELECT distinct Opeu.OPERATING_UNIT_ID  as PROVEEDOR_LOGISTICO,
+                   Opeu.OPER_UNIT_CODE     as PROVEEDOR_CODE
+           FROM GE_ITEMS_DOCUMENTO Docu, OR_OPERATING_UNIT Opeu
+          WHERE Opeu.OPER_UNIT_CLASSIF_ID = 11
+            AND Docu.DESTINO_OPER_UNI_ID = Opeu.OPERATING_UNIT_ID
+            AND Docu.DOCUMENT_TYPE_ID = 105
+            AND Docu.ID_ITEMS_DOCUMENTO not in (SELECT DOTRDOCU FROM LDCI_DOCUTRAN);
 
-/*        select Docu.ID_ITEMS_DOCUMENTO as DOCUMENTO,
-                   Docu.OPERATING_UNIT_ID  as UNIDAD_OPERATIVA,
-                    Opeu.OPERATING_UNIT_ID  as PROVEEDOR_LOGISTICO,
-                    Opeu.OPER_UNIT_CODE     as PROVEEDOR_CODE,
-                    Docu.DOCUMENT_TYPE_ID     as TIPO_DOCUMENTO
-      from GE_ITEMS_DOCUMENTO Docu, OR_OPERATING_UNIT Opeu
-      where Opeu.OPER_UNIT_CLASSIF_ID = 11
-        and Docu.DESTINO_OPER_UNI_ID = Opeu.OPERATING_UNIT_ID
-        and Docu.DOCUMENT_TYPE_ID = 105
-        and Docu.ID_ITEMS_DOCUMENTO not in (select DOTRDOCU from LDCI_DOCUTRAN)
-        order by Opeu.OPERATING_UNIT_ID , Docu.ID_ITEMS_DOCUMENTO;*/
+        recCuunidadesoper Cuunidadesoper%rowtype;
 
-    recCuunidadesoper Cuunidadesoper%rowtype;
-
-        -- cursor de los items en transito
-      cursor cuTRANSIT_ITEM(clXML in CLOB) is
+        -- CURSOR de los items en transito
+        CURSOR cuTRANSIT_ITEM(clXML in CLOB) IS
                 SELECT ITEMS.*
                     FROM XMLTable('/TRANSIT_ITEMS/ITEMS' PASSING XMLType(clXML)
-                        COLUMNS row_num for ordinality,
+                        COLUMNS row_num FOR ordinality,
                                 "ITEM_CODE"       NUMBER PATH 'ITEM_CODE',
                                         "ITEM_ID"         NUMBER PATH 'ITEM_ID',
                                         "ITEM_CLASSIF_ID"  NUMBER PATH 'ITEM_CLASSIF_ID',
@@ -1040,435 +1095,427 @@ Procedure proNotificaDevoluciones As
                                         "ORIG_OPER_UNIT"   NUMBER PATH 'ORIG_OPER_UNIT',
                                         "TARG_OPER_UNIT"   NUMBER PATH 'TARG_OPER_UNIT') AS ITEMS;
 
-    -- cursor del centro de costo
-    cursor cuLDCI_CECOUNIOPER(inuID_ITEMS_DOCUMENTO GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%type) is
-      select DOCU.OPERATING_UNIT_ID   as UNIDAD_OPERATIVA,
-                    CECO.CECOCODI            as CENTRO_COSTO/*,
-                    CLVA.CLASS_ASSESSMENT_ID as CLASE_VALORACION  200-798*/  --#OYM_CEV_3429_1
-              from GE_ITEMS_DOCUMENTO DOCU,
-                        LDCI_CECOUNIOPER CECO/*,
-                        LDCI_CLVAUNOP    CLVA ca 200-798*/ --#OYM_CEV_3429_1
-            where Docu.ID_ITEMS_DOCUMENTO = inuID_ITEMS_DOCUMENTO
-                and CECO.OPERATING_UNIT_ID = DOCU.OPERATING_UNIT_ID
-                --and CLVA.OPERATING_UNIT_ID = DOCU.OPERATING_UNIT_ID ca 200-798
-                ;  --#OYM_CEV_3429_1
+        -- CURSOR del centro de costo
+        CURSOR cuLDCI_CECOUNIOPER(inuID_ITEMS_DOCUMENTO GE_ITEMS_DOCUMENTO.ID_ITEMS_DOCUMENTO%TYPE) IS
+        SELECT DOCU.OPERATING_UNIT_ID   as UNIDAD_OPERATIVA,
+                    CECO.CECOCODI            as CENTRO_COSTO
+              FROM GE_ITEMS_DOCUMENTO DOCU,
+                        LDCI_CECOUNIOPER CECO
+            WHERE Docu.ID_ITEMS_DOCUMENTO = inuID_ITEMS_DOCUMENTO
+                AND CECO.OPERATING_UNIT_ID = DOCU.OPERATING_UNIT_ID
+                ;
 
-    --- cursor temporal
-    cursor cuLDCI_RESERVAMAT(nuPROVEEDOR_LOG LDCI_RESERVAMAT.PROVEEDOR_LOG%type) is
-      select RESERVA
-        from LDCI_RESERVAMAT
-          where PROVEEDOR_LOG = nuPROVEEDOR_LOG;
+        --- CURSOR temporal
+        CURSOR cuLDCI_RESERVAMAT(nuPROVEEDOR_LOG LDCI_RESERVAMAT.PROVEEDOR_LOG%TYPE) IS
+        SELECT RESERVA
+        FROM LDCI_RESERVAMAT
+        WHERE PROVEEDOR_LOG = nuPROVEEDOR_LOG;
 
-    -- excepciones
-    exce_proEnviarSolicitud    exception;
-    exce_ValidaCentroCosto     exception;
-    exce_OS_GET_TRANSIT_ITEM   exception;
-  exce_ValidaClaseValoracion exception;    --#OYM_CEV_3429_1
-Begin
-   -- carga las variables requeridas para las solicitudes
-   proCargaVarGlobal('WS_TRASLADO_MATERIALES');
+        -- excepciones
+        exce_proEnviarSolicitud    EXCEPTION;
+        exce_ValidaCentroCosto     EXCEPTION;
+        exce_OS_GET_TRANSIT_ITEM   EXCEPTION;
+        exce_ValidaClaseValoracion EXCEPTION;
 
-   -- obtienes los items en transito;
-   For Reccuunidadesoper In Cuunidadesoper Loop
-   --dbms_output.put_line('[Reccuunidadesoper.PROVEEDOR_LOGISTICO]' || Reccuunidadesoper.PROVEEDOR_LOGISTICO);
+        CURSOR cuCantHerrMateReservados( isbReserva VARCHAR2)
+        IS
+        SELECT sum(decode(i.item_classif_id,3,1,0)) herra, sum(decode(i.item_classif_id, 3,0,1)) mate
+        FROM LDCI_DET_RESERVAMAT r, ge_items i
+        WHERE r.reserva= isbReserva
+        AND r.item_id=i.items_id;        
+        
+    BEGIN
 
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+            
+        -- carga las variables requeridas para las solicitudes
+        proCargaVarGlobal('WS_TRASLADO_MATERIALES');
 
-    Iclxmlsearchtransit := '<?xml version="1.0"?><SEARCH_TRANSIT_ITEM><OPERATING_UNIT>' || Reccuunidadesoper.PROVEEDOR_LOGISTICO ||'</OPERATING_UNIT></SEARCH_TRANSIT_ITEM>';
+        -- obtienes los items en transito;
+        FOR Reccuunidadesoper In Cuunidadesoper LOOP
+            pkg_Traza.Trace('[Reccuunidadesoper.PROVEEDOR_LOGISTICO]' || Reccuunidadesoper.PROVEEDOR_LOGISTICO,csbNivelTraza);
 
-    OS_GET_TRANSIT_ITEM(ICLXMLSEARCHTRANSIT, OCLXMLTRANSITITEMS, ONUERRORCODE, OSBERRORMESSAGE);
-    If Onuerrorcode = 0 Then
-                                  --#144122 Se comenta el bloque de codigo que generar la excepcion
-                      /* extrae los items en transito
-                      Docitem     := Dbms_Xmldom.Newdomdocument(Oclxmltransititems);
-                      ndocitem    := DBMS_XMLDOM.makeNode(docitem);
+            Iclxmlsearchtransit := '<?xml version="1.0"?><SEARCH_TRANSIT_ITEM><OPERATING_UNIT>' || Reccuunidadesoper.PROVEEDOR_LOGISTICO ||'</OPERATING_UNIT></SEARCH_TRANSIT_ITEM>';
 
-                      Dbms_Xmldom.Writetobuffer(Ndocitem, Bufitem);
+            API_GET_TRANSIT_ITEM(ICLXMLSEARCHTRANSIT, OCLXMLTRANSITITEMS, ONUERRORCODE, OSBERRORMESSAGE);
+        
+            IF Onuerrorcode = 0 THEN
 
+                -- inicializa el control de las solicitudes mezcladas
+                nuCantMate := 0;
+                nuCantHerr := 0;
+                sbReferencia := null;
 
-                      Docelemitem := Dbms_Xmldom.Getdocumentelement(Docitem);
+                FOR reTRANSIT_ITEM in cuTRANSIT_ITEM(oclXmltransititems) LOOP
 
-                      Nodelistitem := Dbms_Xmldom.Getelementsbytagname(Docelemitem, 'ITEMS');
-                      nuDatos := dbms_xmldom.getlength(Nodelistitem);
+                    -- VALIDAR SI EXISTE REGISTRO
+                    IF fnuExisteDocumento(to_char(reTRANSIT_ITEM.DOCUMENT_ID)) != 0 THEN
 
-                      if (nuDatos <> 0) then*/
+                        -- carga la informacion del centro de costo
+                        OPEN cuLDCI_CECOUNIOPER(reTRANSIT_ITEM.DOCUMENT_ID);
+                        FETCH cuLDCI_CECOUNIOPER INTO nuidUniopera, sbCECOCODI/*, sbCLASS_ASSESSMENT_ID caso ca 200-798*/ /*--#OYM_CEV_3429_1*/;
+                        CLOSE cuLDCI_CECOUNIOPER;
 
-                      -- inicializa el control de las solicitudes mezcladas
-                      nuCantMate := 0;
-                      nuCantHerr := 0;
-                      sbReferencia := null;
-                              for reTRANSIT_ITEM in cuTRANSIT_ITEM(oclXmltransititems) loop
+                        --#OYM_CEV_5028_1: Determina si el proveedor logistico es Activos o Inventarios
+                        proValidaClaseValoraProvLogis(Reccuunidadesoper.PROVEEDOR_LOGISTICO,
+                                                    sbCLASS_ASSESSMENT_ID,
+                                                    onuErrorCode,
+                                                    osbErrorMessage);
+                                            
+                        IF (onuErrorCode <> 0) THEN
+                          nuDocumento  := reTRANSIT_ITEM.DOCUMENT_ID;
+                          RAISE exce_ValidaClaseValoracion;
+                        END IF;
 
-                                      -- VALIDAR SI EXISTE REGISTRO
-                                      If fnuExisteDocumento(to_char(reTRANSIT_ITEM.DOCUMENT_ID)) != 0 Then
+                        IF (sbCECOCODI IS null or sbCECOCODI = '') THEN
+                            nuDocumento  := reTRANSIT_ITEM.DOCUMENT_ID;
+                            nuIduniopera := reTRANSIT_ITEM.TARG_OPER_UNIT;
+                        END IF;
 
-                                                  -- carga la informacion del centro de costo
-                                                  open cuLDCI_CECOUNIOPER(reTRANSIT_ITEM.DOCUMENT_ID);
-                                                  fetch cuLDCI_CECOUNIOPER into nuidUniopera, sbCECOCODI/*, sbCLASS_ASSESSMENT_ID caso ca 200-798*/ /*--#OYM_CEV_3429_1*/;
-                                                  close cuLDCI_CECOUNIOPER;
+                        icbProcPara:= '  <PARAMETROS>
+                                              <PARAMETRO>
+                                                  <NOMBRE>DOCUMENT_ID</NOMBRE>
+                                                  <VALOR>' || reTRANSIT_ITEM.DOCUMENT_ID || '</VALOR>
+                                              </PARAMETRO>
+                                              <PARAMETRO>
+                                                  <NOMBRE>PROVEEDOR_LOGISTICO</NOMBRE>
+                                                  <VALOR>' || Reccuunidadesoper.PROVEEDOR_LOGISTICO || '</VALOR>
+                                              </PARAMETRO>
+                                            </PARAMETROS>';
 
-                                                  --#OYM_CEV_5028_1: Determina si el proveedor logistico es Activos o Inventarios
-                                                  proValidaClaseValoraProvLogis(Reccuunidadesoper.PROVEEDOR_LOGISTICO,
-                                                                                sbCLASS_ASSESSMENT_ID,
-                                                                                onuErrorCode,
-                                                                                osbErrorMessage);
-                                                  if (onuErrorCode <> 0) then
-                                                      nuDocumento  := reTRANSIT_ITEM.DOCUMENT_ID;
-                                                      raise exce_ValidaClaseValoracion;
-                                                  end if; --if (onuErrorCode <> 0) then
+                        -- crea el identificado de proceso para la interfaz
+                        LDCI_PKMESAWS.PROCREAESTAPROC(ISBPROCDEFI     => 'WS_TRASLADO_MATERIALES',
+                                                ICBPROCPARA     => icbProcPara,
+                                                IDTPROCFEIN     => SYSDATE,
+                                                ISBPROCESTA     => 'P',
+                                                ISBPROCUSUA     => null,
+                                                ISBPROCTERM     => null,
+                                                ISBPROCPROG     => null,
+                                                ONUPROCCODI     => onuProcCodi,
+                                                ONUERRORCODE    => ONUERRORCODE,
+                                                OSBERRORMESSAGE => OSBERRORMESSAGE);
 
-                                                  /*#OYM_CEV_5028_1: #ifrs #471: Se desactiva la validacion de la clase de valoracion
-                                                  if (sbCLASS_ASSESSMENT_ID is null or sbCLASS_ASSESSMENT_ID = '') then --#OYM_CEV_3429_1: Valida la clase de valoracion
-                                                      nuDocumento  := reTRANSIT_ITEM.DOCUMENT_ID;
-                                                      nuIduniopera := reTRANSIT_ITEM.TARG_OPER_UNIT;
-                                                      raise exce_ValidaClaseValoracion;
-                                                  end if;--if (sbCLASS_ASSESSMENT_ID is not null or sbCLASS_ASSESSMENT_ID <> '') then*/
+                        /*SI NO EXISTE, CREAR CABECERA*/
+                        /*GUARDAR CABECERA DE LA RESERVA*/
+                        INSERT INTO LDCI_RESERVAMAT (RESERVA,
+                                                    UNIDAD_OPE,
+                                                    ALMACEN_CON,
+                                                    CLASE_MOV,
+                                                    CENTRO_COSTO,
+                                                    FECHA_ENTREGA,
+                                                    PROVEEDOR_LOG)
+                                    VALUES (to_char(reTRANSIT_ITEM.DOCUMENT_ID),
+                                                  reTRANSIT_ITEM.TARG_OPER_UNIT,
+                                                  reTRANSIT_ITEM.TARG_OPER_UNIT,
+                                                  'DEV',
+                                                  sbCECOCODI,
+                                                  CURRENT_DATE,
+                                                  Reccuunidadesoper.PROVEEDOR_LOGISTICO);
 
-                                                  if (sbCECOCODI is null or sbCECOCODI = '') then
-                                                      nuDocumento  := reTRANSIT_ITEM.DOCUMENT_ID;
-                                                      nuIduniopera := reTRANSIT_ITEM.TARG_OPER_UNIT;
-                                                      --raise exce_ValidaCentroCosto; --#NC:1456,1457,1458: 20-08-2014: carlos.virgen: Se comenta la validacion anterior
-                                                  end if;--if (sbCECOCODI is not null or sbCECOCODI <> '') then
+                        -- asigna el documento procesado
+                        sbReferencia := to_char(reTRANSIT_ITEM.DOCUMENT_ID);
+                    
+                    END IF; -- IF fnuExisteDocumento(Sbreferencia) != 0 THEN
 
-                                                  icbProcPara:= '  <PARAMETROS>
-                                                                                  <PARAMETRO>
-                                                                                      <NOMBRE>DOCUMENT_ID</NOMBRE>
-                                                                                      <VALOR>' || reTRANSIT_ITEM.DOCUMENT_ID || '</VALOR>
-                                                                                  </PARAMETRO>
-                                                                                  <PARAMETRO>
-                                                                                      <NOMBRE>PROVEEDOR_LOGISTICO</NOMBRE>
-                                                                                      <VALOR>' || Reccuunidadesoper.PROVEEDOR_LOGISTICO || '</VALOR>
-                                                                                  </PARAMETRO>
-                                                                                </PARAMETROS>';
+                    -- Valia que el documento no este en transito para no ser reenviado
+                    IF ( LDCI_PKRESERVAMATERIAL.fsbGetDocuTran(reTRANSIT_ITEM.DOCUMENT_ID) <> 'S') THEN
+                        -- determina la cantidad de materiales / herrameintas en la solcitud
+                        IF (reTRANSIT_ITEM.ITEM_CLASSIF_ID = 3) THEN
+                            sbFlagHta := 'S';
+                            nuCantHerr  := nuCantHerr + 1;
+                        ELSE
+                            nuCantMate  := nuCantMate + 1;
+                        END IF;
+                    END IF;
 
+                    pkg_Traza.Trace('#NC-XXX [ln821] ---------------------------------------',csbNivelTraza);
+                    pkg_Traza.Trace('#NC-XXX [ln822] nuCantMate: ' || nuCantMate,csbNivelTraza);
+                    pkg_Traza.Trace('#NC-XXX [ln823] nuCantHerr: ' || nuCantHerr,csbNivelTraza);
+                    pkg_Traza.Trace('#NC-XXX [ln823] DOCUMENT_ID: ' || reTRANSIT_ITEM.DOCUMENT_ID,csbNivelTraza);
+                    pkg_Traza.Trace('#NC-XXX [ln823] ITEM_ID: ' || reTRANSIT_ITEM.ITEM_ID,csbNivelTraza);
+                    pkg_Traza.Trace('#NC-XXX [ln823] fsbGetDocuTran: ' || LDCI_PKRESERVAMATERIAL.fsbGetDocuTran(reTRANSIT_ITEM.DOCUMENT_ID),csbNivelTraza);
+                    pkg_Traza.Trace('#NC-XXX [ln824] ---------------------------------------',csbNivelTraza);
 
+                    IF fnuExisteDocumentoitem(to_char(reTRANSIT_ITEM.DOCUMENT_ID), to_char(reTRANSIT_ITEM.ITEM_CODE))  != 0 THEN
+                        /* CREAR DETALLE */
+                        INSERT INTO LDCI_DET_RESERVAMAT ( RESERVA,
+                                ITEM_ID,
+                                CODIGO_ITEM,
+                                CANTIDAD,
+                                COSTO_OS,
+                                COSTO_ERP,
+                                CENTRO,
+                                ES_HERRAMIENTA)
+                              values (reTRANSIT_ITEM.DOCUMENT_ID,
+                                  reTRANSIT_ITEM.ITEM_CODE /*ITEM_ID*/,
+                                  reTRANSIT_ITEM.ITEM_CODE /*ITEM_ID*/,
+                                  reTRANSIT_ITEM.TRANSIT_QUANTITY,
+                                  reTRANSIT_ITEM.VALUE, --#OYM_CEV_5028_1 : reTRANSIT_ITEM.TRANSIT_QUANTITY * reTRANSIT_ITEM.VALUE
+                                  reTRANSIT_ITEM.VALUE, --#OYM_CEV_5028_1 : reTRANSIT_ITEM.TRANSIT_QUANTITY * reTRANSIT_ITEM.VALUE
+                                  Reccuunidadesoper.PROVEEDOR_CODE,
+                                  decode(reTRANSIT_ITEM.ITEM_CLASSIF_ID, 3, 'S', 'N'));
+                    ELSE
+                    
+                        -- si el item es seriado incrementa la cantidad segun el numero de items a devolver
+                        IF (reTRANSIT_ITEM.ITEM_CLASSIF_ID = 21) THEN
+                            pkg_Traza.Trace('----------------------------------------------------------------------------------',csbNivelTraza);
+                            pkg_Traza.Trace('[reTRANSIT_ITEM.ITEM_CODE]' || reTRANSIT_ITEM.ITEM_CODE,csbNivelTraza);
+                            pkg_Traza.Trace('[reTRANSIT_ITEM.ITEM_CLASSIF_ID]' || reTRANSIT_ITEM.ITEM_CLASSIF_ID,csbNivelTraza);
+                            pkg_Traza.Trace('[reTRANSIT_ITEM.TRANSIT_QUANTITY]' || reTRANSIT_ITEM.TRANSIT_QUANTITY,csbNivelTraza);
+                            pkg_Traza.Trace('[reTRANSIT_ITEM.VALUE]' || reTRANSIT_ITEM.VALUE,csbNivelTraza);
 
-                                                  -- crea el identificado de proceso para la interfaz
-                                                  LDCI_PKMESAWS.PROCREAESTAPROC(ISBPROCDEFI     => 'WS_TRASLADO_MATERIALES',
-                                                                                ICBPROCPARA     => icbProcPara,
-                                                                                IDTPROCFEIN     => SYSDATE,
-                                                                                ISBPROCESTA     => 'P',
-                                                                                ISBPROCUSUA     => null,
-                                                                                ISBPROCTERM     => null,
-                                                                                ISBPROCPROG     => null,
-                                                                                ONUPROCCODI     => onuProcCodi,
-                                                                                ONUERRORCODE    => ONUERRORCODE,
-                                                                                OSBERRORMESSAGE => OSBERRORMESSAGE);
+                            -- realiza le update a la tabla LDCI_DET_RESERVAMAT
+                            update LDCI_DET_RESERVAMAT set CANTIDAD  = CANTIDAD  + reTRANSIT_ITEM.TRANSIT_QUANTITY,
+                             COSTO_OS  = COSTO_OS  + reTRANSIT_ITEM.VALUE,
+                            COSTO_ERP = COSTO_ERP + reTRANSIT_ITEM.VALUE
+                            WHERE RESERVA = reTRANSIT_ITEM.DOCUMENT_ID
+                            AND ITEM_ID = reTRANSIT_ITEM.ITEM_CODE;
+                        END IF;
+                    END IF;
+                END LOOP;
 
-                                                  /*SI NO EXISTE, CREAR CABECERA*/
-                                                  /*GUARDAR CABECERA DE LA RESERVA*/
-                                                  Insert Into LDCI_RESERVAMAT (RESERVA,
-                                                                                UNIDAD_OPE,
-                                                                                ALMACEN_CON,
-                                                                                CLASE_MOV,
-                                                                                CENTRO_COSTO,
-                                                                                FECHA_ENTREGA,
-                                                                                PROVEEDOR_LOG)
-                                                                VALUES (to_char(reTRANSIT_ITEM.DOCUMENT_ID),
-                                                                              reTRANSIT_ITEM.TARG_OPER_UNIT,
-                                                                              reTRANSIT_ITEM.TARG_OPER_UNIT,
-                                                                              'DEV',
-                                                                              sbCECOCODI,
-                                                                              CURRENT_DATE,
-                                                                              Reccuunidadesoper.PROVEEDOR_LOGISTICO);
+                FOR reLDCI_RESERVAMAT in cuLDCI_RESERVAMAT(Reccuunidadesoper.PROVEEDOR_LOGISTICO) LOOP
 
-                                                    -- asigna el documento procesado
-                                                    sbReferencia := to_char(reTRANSIT_ITEM.DOCUMENT_ID);
-                                      end if; -- If fnuExisteDocumento(Sbreferencia) != 0 Then
+                    BEGIN
 
-                   -- Valia que el documento no este en transito para no ser reenviado
-                   if ( LDCI_PKRESERVAMATERIAL.fsbGetDocuTran(reTRANSIT_ITEM.DOCUMENT_ID) <> 'S') then
-                     -- determina la cantidad de materiales / herrameintas en la solcitud
-                     If (reTRANSIT_ITEM.ITEM_CLASSIF_ID = 3) Then
-                         sbFlagHta := 'S';
-                         nuCantHerr  := nuCantHerr + 1;
-                     else
-                         nuCantMate  := nuCantMate + 1;
-                     end if; -- If (reTRANSIT_ITEM.ITEM_CLASSIF_ID = 3) Then
-                   end if;--if ( LDCI_PKRESERVAMATERIAL.fsbGetDocuTran(reTRANSIT_ITEM.DOCUMENT_ID) <> 'S') then
+                        IF sbValidaHerr = 'S' THEN
 
---dbms_output.put_line('#NC-XXX [ln821] ---------------------------------------');
---dbms_output.put_line('#NC-XXX [ln822] nuCantMate: ' || nuCantMate);
---dbms_output.put_line('#NC-XXX [ln823] nuCantHerr: ' || nuCantHerr);
---dbms_output.put_line('#NC-XXX [ln823] DOCUMENT_ID: ' || reTRANSIT_ITEM.DOCUMENT_ID);
---dbms_output.put_line('#NC-XXX [ln823] ITEM_ID: ' || reTRANSIT_ITEM.ITEM_ID);
---dbms_output.put_line('#NC-XXX [ln823] fsbGetDocuTran: ' || LDCI_PKRESERVAMATERIAL.fsbGetDocuTran(reTRANSIT_ITEM.DOCUMENT_ID));
---dbms_output.put_line('#NC-XXX [ln824] ---------------------------------------');
+                            OPEN cuCantHerrMateReservados(reLDCI_RESERVAMAT.RESERVA);
+                            FETCH cuCantHerrMateReservados INTO nuCantHerr,  nuCantMate;
+                            CLOSE cuCantHerrMateReservados;
+                            
+                        END IF;
 
-                   -- NC-10902013: carlosvl: 10-09-2013: Se hace el cambio para enviar a consultar ITEM_CODE y no ITEM_ID
-           --If fnuExisteDocumentoitem(to_char(reTRANSIT_ITEM.DOCUMENT_ID), to_char(reTRANSIT_ITEM.ITEM_ID))  != 0 Then
-           If fnuExisteDocumentoitem(to_char(reTRANSIT_ITEM.DOCUMENT_ID), to_char(reTRANSIT_ITEM.ITEM_CODE))  != 0 Then
-            /* CREAR DETALLE */
-            Insert Into LDCI_DET_RESERVAMAT ( RESERVA,
-                            ITEM_ID,
-                            CODIGO_ITEM,
-                            CANTIDAD,
-                            COSTO_OS,
-                            COSTO_ERP,
-                            CENTRO,
-                            ES_HERRAMIENTA)
-                          values (reTRANSIT_ITEM.DOCUMENT_ID,
-                              reTRANSIT_ITEM.ITEM_CODE /*ITEM_ID*/,
-                              reTRANSIT_ITEM.ITEM_CODE /*ITEM_ID*/,
-                              reTRANSIT_ITEM.TRANSIT_QUANTITY,
-                              reTRANSIT_ITEM.VALUE, --#OYM_CEV_5028_1 : reTRANSIT_ITEM.TRANSIT_QUANTITY * reTRANSIT_ITEM.VALUE
-                              reTRANSIT_ITEM.VALUE, --#OYM_CEV_5028_1 : reTRANSIT_ITEM.TRANSIT_QUANTITY * reTRANSIT_ITEM.VALUE
-                              Reccuunidadesoper.PROVEEDOR_CODE,
-                              decode(reTRANSIT_ITEM.ITEM_CLASSIF_ID, 3, 'S', 'N'));
-           Else
-            -- si el item es seriado incrementa la cantidad segun el numero de items a devolver
-            if (reTRANSIT_ITEM.ITEM_CLASSIF_ID = 21) then
---dbms_output.put_line('----------------------------------------------------------------------------------');
---dbms_output.put_line('[reTRANSIT_ITEM.ITEM_CODE]' || reTRANSIT_ITEM.ITEM_CODE);
---dbms_output.put_line('[reTRANSIT_ITEM.ITEM_CLASSIF_ID]' || reTRANSIT_ITEM.ITEM_CLASSIF_ID);
---dbms_output.put_line('[reTRANSIT_ITEM.TRANSIT_QUANTITY]' || reTRANSIT_ITEM.TRANSIT_QUANTITY);
---dbms_output.put_line('[reTRANSIT_ITEM.VALUE]' || reTRANSIT_ITEM.VALUE);
+                        IF (LDCI_PKRESERVAMATERIAL.fsbGetDocuTran(to_number(reLDCI_RESERVAMAT.RESERVA)) <> 'S') THEN
+                            -- valia si la solicitud tiene mezcla de materiales y herramientas
+                            IF (nuCantMate <> 0 AND nuCantHerr <> 0) THEN
+                                -- solicitud de herramientas
+                                proEnviarSolicitud(reLDCI_RESERVAMAT.RESERVA, 'DEV', 'S', onuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/,Onuerrorcode, Osberrormessage);
+                                IF Onuerrorcode <> 0 THEN
+                                    RAISE exce_proEnviarSolicitud;
+                                END IF;
 
-            -- realiza le update a la tabla LDCI_DET_RESERVAMAT
-            update LDCI_DET_RESERVAMAT set CANTIDAD  = CANTIDAD  + reTRANSIT_ITEM.TRANSIT_QUANTITY,
-             COSTO_OS  = COSTO_OS  + reTRANSIT_ITEM.VALUE, --#OYM_CEV_5028_1 : reTRANSIT_ITEM.TRANSIT_QUANTITY * reTRANSIT_ITEM.VALUE
-            COSTO_ERP = COSTO_ERP + reTRANSIT_ITEM.VALUE  --#OYM_CEV_5028_1 : reTRANSIT_ITEM.TRANSIT_QUANTITY * reTRANSIT_ITEM.VALUE
-            where RESERVA = reTRANSIT_ITEM.DOCUMENT_ID
-            and ITEM_ID = reTRANSIT_ITEM.ITEM_CODE /*ITEM_ID*/;
-            end if;--if (reTRANSIT_ITEM.ITEM_CLASSIF_ID = 21) then
-           END IF; -- If fnuExisteDocumentoitem(Sbreferencia, Sbitemcode)  != 0 Then
+                                -- solicitud de materiales
+                                proEnviarSolicitud(reLDCI_RESERVAMAT.RESERVA, 'DEV', 'N', onuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/,Onuerrorcode, Osberrormessage);
+                                IF Onuerrorcode <> 0 THEN
+                                    RAISE exce_proEnviarSolicitud;
+                                END IF;
+                            
+                            END IF;
 
-         end loop;--for reTRANSIT_ITEM in cuTRANSIT_ITEM(oclXmltransititems) loop
+                            -- solicitud de solo materiales
+                            IF (nuCantMate <> 0 AND nuCantHerr = 0) THEN
+                                -- solicitud de materiales
+                                proEnviarSolicitud(reLDCI_RESERVAMAT.RESERVA, 'DEV', 'N', onuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/,Onuerrorcode, Osberrormessage);
+                                IF Onuerrorcode <> 0 THEN
+                                    RAISE exce_proEnviarSolicitud;
+                                END IF;
+                            END IF;
 
-               for reLDCI_RESERVAMAT in cuLDCI_RESERVAMAT(Reccuunidadesoper.PROVEEDOR_LOGISTICO) loop
+                            -- solicitud de solo herramientas
+                            IF (nuCantMate = 0 AND nuCantHerr <> 0) THEN
+                                -- solicitud de herramientas
+                                proEnviarSolicitud(reLDCI_RESERVAMAT.RESERVA, 'DEV', 'S', onuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/,Onuerrorcode, Osberrormessage);
+                                IF Onuerrorcode <> 0 THEN
+                                    RAISE exce_proEnviarSolicitud;
+                                END IF;
+                            END IF;
 
-               BEGIN
-               --380
-               If sbValidaHerr = 'S' Then
-                 select sum(decode(i.item_classif_id,3,1,0)) herra, sum(decode(i.item_classif_id, 3,0,1)) mate
-                   into nuCantHerr,  nuCantMate
-                 from open.LDCI_DET_RESERVAMAT r, open.ge_items i
-                 where r.reserva=reLDCI_RESERVAMAT.RESERVA
-                   and r.item_id=i.items_id;
-               End If;
-               --380
-          if (LDCI_PKRESERVAMATERIAL.fsbGetDocuTran(to_number(reLDCI_RESERVAMAT.RESERVA)) <> 'S') then
-                -- valia si la solicitud tiene mezcla de materiales y herramientas
-                if (nuCantMate <> 0 and nuCantHerr <> 0) then
-                  -- solicitud de herramientas
-                  proEnviarSolicitud(reLDCI_RESERVAMAT.RESERVA, 'DEV', 'S', onuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/,Onuerrorcode, Osberrormessage);
-                  If Onuerrorcode <> 0 Then --#NC:1456,1457,1458:
-                    raise exce_proEnviarSolicitud;
-                  End If; -- If Onuerrorcode = 0 Then
+                            -- crea el documento en transito
+                            LDCI_PKRESERVAMATERIAL.proCreaDocuTran(to_number(reLDCI_RESERVAMAT.RESERVA), onuErrorCode, osbErrorMessage);
 
-                  -- solicitud de materiales
-                  proEnviarSolicitud(reLDCI_RESERVAMAT.RESERVA, 'DEV', 'N', onuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/,Onuerrorcode, Osberrormessage);
-                  If Onuerrorcode <> 0 Then --#NC:1456,1457,1458:
-                    raise exce_proEnviarSolicitud;
-                  End If; -- If Onuerrorcode = 0 Then
-                end if; -- if (nuCantMate <> 0 and nuCantHerr <> 0) then
+                            IF Onuerrorcode = 0 THEN
+                                commit;
+                            ELSE
+                                RAISE exce_proEnviarSolicitud;
+                            END IF;
+                        
+                        ELSE
+                            commit;
+                        END IF;
+                        
+                    EXCEPTION
+                        WHEN exce_proEnviarSolicitud THEN
+                            pkg_Traza.Trace('[1174 exce_proEnviarSolicitud]' || osbErrorMessage,csbNivelTraza);
+                            Errors.seterror (onuErrorCode, osbErrorMessage);
+                            commit;
+                        WHEN exce_ValidaClaseValoracion THEN
+                            onuErrorCode := -1;
+                            pkg_Traza.Trace('[1174 exce_ValidaClaseValoracion]' || osbErrorMessage,csbNivelTraza);
+                            Errors.seterror (onuErrorCode, osbErrorMessage);
+                            commit;
+                            LDCI_PKRESERVAMATERIAL.proNotificaExepcion(nuDocumento, 'Valida clase de valoracion (Valoracion Separada)',  osbErrorMessage);
 
-                -- solicitud de solo materiales
-                if (nuCantMate <> 0 and nuCantHerr = 0) then
-                  -- solicitud de materiales
-                  proEnviarSolicitud(reLDCI_RESERVAMAT.RESERVA, 'DEV', 'N', onuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/,Onuerrorcode, Osberrormessage);
-                  If Onuerrorcode <> 0 Then --#NC:1456,1457,1458:
-                    raise exce_proEnviarSolicitud;
-                  End If; -- If Onuerrorcode = 0 Then
-                end if;--if (nuCantMate <> 0 and nuCantHerr = 0) then
+                        WHEN exce_ValidaCentroCosto THEN
+                            pkg_Traza.Trace('[1174 exce_ValidaCentroCosto]' || osbErrorMessage,csbNivelTraza);
+                            onuErrorCode := -1;
+                            osbErrorMessage := '[proNotificaDevoluciones] La unidad operativa (' || to_char(nuIduniopera)   || ') no tiene configurado el Centro de Costo. (Forma GEMCUO)';
+                            Errors.seterror (onuErrorCode, osbErrorMessage);
+                            commit;
+                            LDCI_PKRESERVAMATERIAL.proNotificaExepcion(nuDocumento, 'Valida configuración centro de costo por unidad operativa',  osbErrorMessage);
 
-                -- solicitud de solo herramientas
-                if (nuCantMate = 0 and nuCantHerr <> 0) then
-                  -- solicitud de herramientas
-                  proEnviarSolicitud(reLDCI_RESERVAMAT.RESERVA, 'DEV', 'S', onuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/,Onuerrorcode, Osberrormessage);
-                  If Onuerrorcode <> 0 Then --#NC:1456,1457,1458:
-                    raise exce_proEnviarSolicitud;
-                  End If; -- If Onuerrorcode = 0 Then
-                end if;--if (nuCantMate = 0 and nuCantHerr <> 0) then
+                        WHEN OTHERS THEN
+                            pkg_Error.setError;
+                            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+                            commit;
+                    END;
 
-                -- crea el documento en transito
-                LDCI_PKRESERVAMATERIAL.proCreaDocuTran(to_number(reLDCI_RESERVAMAT.RESERVA), onuErrorCode, osbErrorMessage);
+                END LOOP;
 
-                If Onuerrorcode = 0 Then
-                  commit;
-                Else
-                  raise exce_proEnviarSolicitud;
-                END IF; -- If Onuerrorcode = 0 Then
-          else
-                commit;
-          end if;-- if (LDCI_PKRESERVAMATERIAL.fsbGetDocuTran(to_number(sbReferencia)) <> 'S') then
-          exception
-  when exce_proEnviarSolicitud then
---dbms_output.put_line('[1174 exce_proEnviarSolicitud]' || osbErrorMessage);
-      Errors.seterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
+            ELSE
+                RAISE exce_OS_GET_TRANSIT_ITEM;
+            END IF;
+        
+        END LOOP;
 
-  when exce_ValidaClaseValoracion then --#OYM_CEV_3429_1
-       onuErrorCode := -1;
---dbms_output.put_line('[1174 exce_ValidaClaseValoracion]' || osbErrorMessage);
-       Errors.seterror (onuErrorCode, osbErrorMessage);
-       commit; --rollback;
-       LDCI_PKRESERVAMATERIAL.proNotificaExepcion(nuDocumento, 'Valida clase de valoracion (Valoracion Separada)',  osbErrorMessage);
+        DELETE FROM LDCI_DET_RESERVAMAT;
+        DELETE FROM LDCI_RESERVAMAT;
+        commit;
 
-  when exce_ValidaCentroCosto then
---dbms_output.put_line('[1174 exce_ValidaCentroCosto]' || osbErrorMessage);
-       onuErrorCode := -1;
-       osbErrorMessage := '[proNotificaDevoluciones] La unidad operativa (' || to_char(nuIduniopera)   || ') no tiene configurado el Centro de Costo. (Forma GEMCUO)';
-      Errors.seterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
-            LDCI_PKRESERVAMATERIAL.proNotificaExepcion(nuDocumento, 'Valida configuraci??n centro de costo por unidad operativa',  osbErrorMessage);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+           
+    EXCEPTION
+        WHEN exce_proEnviarSolicitud THEN
+            pkg_Traza.Trace('[1174 exce_proEnviarSolicitud]' || osbErrorMessage,csbNivelTraza);
+            Errors.seterror (onuErrorCode, osbErrorMessage);
+            commit;
 
-  when others then
-      pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-      Errors.seterror;
-      Errors.geterror (onuErrorCode, osbErrorMessage);
-      commit;
-    END;
+        WHEN exce_ValidaClaseValoracion THEN
+           onuErrorCode := -1;
+           pkg_Traza.Trace('[1174 exce_ValidaClaseValoracion]' || osbErrorMessage,csbNivelTraza);
+           Errors.seterror (onuErrorCode, osbErrorMessage);
+           commit;
+           LDCI_PKRESERVAMATERIAL.proNotificaExepcion(nuDocumento, 'Valida clase de valoracion (Valoracion Separada)',  osbErrorMessage);
 
-           end loop;--for reLDCI_RESERVAMAT in cuLDCI_RESERVAMAT(Reccuunidadesoper.PROVEEDOR_LOGISTICO) loop
+        WHEN exce_ValidaCentroCosto THEN
+            pkg_Traza.Trace('[1174 exce_ValidaCentroCosto]' || osbErrorMessage,csbNivelTraza);
+            onuErrorCode := -1;
+            osbErrorMessage := '[proNotificaDevoluciones] La unidad operativa (' || to_char(nuIduniopera)   || ') no tiene configurado el Centro de Costo. (Forma GEMCUO)';
+            Errors.seterror (onuErrorCode, osbErrorMessage);
+            commit;
+            LDCI_PKRESERVAMATERIAL.proNotificaExepcion(nuDocumento, 'Valida configuración centro de costo por unidad operativa',  osbErrorMessage);
 
-                              --DBMS_XMLDOM.freeDocument(docitem); #144122: Se comenta el codigo
-                      --end if;--if (nuDatos <> 0) then                    #144122: Se comenta el codigo
-    else
-      raise exce_OS_GET_TRANSIT_ITEM;
-    END IF; -- If Onuerrorcode = 0 Then
-   end loop; -- For Reccuunidadesoper In Cuunidadesoper Loop
+        WHEN OTHERS THEN
+            pkg_Error.setError;
+            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+            commit;
+            pkg_Traza.Trace('[1190_SQLERRM]' || SQLERRM,csbNivelTraza);
+    END proNotificaDevoluciones;
 
-   delete from LDCI_DET_RESERVAMAT;
-   delete from LDCI_RESERVAMAT;
-   commit;
-exception
-  when exce_proEnviarSolicitud then
---dbms_output.put_line('[1174 exce_proEnviarSolicitud]' || osbErrorMessage);
-      Errors.seterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
-
-  when exce_ValidaClaseValoracion then --#OYM_CEV_3429_1
-       onuErrorCode := -1;
---dbms_output.put_line('[1174 exce_ValidaClaseValoracion]' || osbErrorMessage);
-       Errors.seterror (onuErrorCode, osbErrorMessage);
-       commit; --rollback;
-       LDCI_PKRESERVAMATERIAL.proNotificaExepcion(nuDocumento, 'Valida clase de valoracion (Valoracion Separada)',  osbErrorMessage);
-
-  when exce_ValidaCentroCosto then
---dbms_output.put_line('[1174 exce_ValidaCentroCosto]' || osbErrorMessage);
-       onuErrorCode := -1;
-       osbErrorMessage := '[proNotificaDevoluciones] La unidad operativa (' || to_char(nuIduniopera)   || ') no tiene configurado el Centro de Costo. (Forma GEMCUO)';
-      Errors.seterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
-            LDCI_PKRESERVAMATERIAL.proNotificaExepcion(nuDocumento, 'Valida configuraci??n centro de costo por unidad operativa',  osbErrorMessage);
-
-  when others then
-      pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-      Errors.seterror;
-      Errors.geterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
---dbms_output.put_line('[1190_SQLERRM]' || SQLERRM);
-
-END proNotificaDevoluciones;
-
-
-Procedure proConfirmarReserva(Reserva       in  VARCHAR2,
+    PROCEDURE proConfirmarReserva(Reserva       in  VARCHAR2,
                                                           inuProcCodi   in  NUMBER,
                              onuErrorCode out GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
                                     osbErrorMessage Out ge_error_log.description%TYPE) As
-/*
- PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
+    /*
+     PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
 
-    FUNCION : proConfirmarReserva
-    AUTOR : MAURICIO FERNANDO ORTIZ
-    FECHA : 10/12/2012
-    RICEF      : I005
-    DESCRIPCION : Procedimiento para confirmar reservas en el sistema smartflex
+        FUNCION : proConfirmarReserva
+        AUTOR : MAURICIO FERNANDO ORTIZ
+        FECHA : 10/12/2012
+        RICEF      : I005
+        DESCRIPCION : Procedimiento para confirmar reservas en el sistema smartflex
 
- Parametros de Entrada
-    Reserva In varchar2
- Parametros de Salida
-   Nucodigo Out Number
-   Sbmsj Out Varchar
- Historia de Modificaciones
+     Parametros de Entrada
+        Reserva In varchar2
+     Parametros de Salida
+       Nucodigo Out Number
+       Sbmsj Out Varchar
+     Historia de Modificaciones
 
- Autor                                       Fecha       Descripcion.
- carlos.virgen<carlos.virgen@olsfotware.com> 28-08-2014  #NC:1534 1535 1536: se coloca el codigo de homoloacion en la consulta GE_ITEMS.CODE
-  */
- -- define variables
- L_Payload     clob;
- Qryctx        Dbms_Xmlgen.Ctxhandle;
- Sberrmens Varchar2(500);
+     Autor                                       Fecha       Descripcion.
+     carlos.virgen<carlos.virgen@olsfotware.com> 28-08-2014  #NC:1534 1535 1536: se coloca el codigo de homoloacion en la consulta GE_ITEMS.CODE
+      */
 
- -- excepciones
- Excepnoprocesoregi  Exception;   -- Excepcion que valida si proceso registros la consulta
- exce_OS_SET_REQUEST_CONF exception;
-Begin
-   -- inicializa la variable de retorno
-   onuErrorCode := 0;
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'proConfirmarReserva';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);
+              
+        -- define variables
+        L_Payload     clob;
+        Qryctx        Dbms_Xmlgen.Ctxhandle;
+        Sberrmens Varchar2(500);
+        
+        -- excepciones
+        Excepnoprocesoregi  EXCEPTION;   -- Excepcion que valida si proceso registros la consulta
+        exce_OS_SET_REQUEST_CONF EXCEPTION;
+    BEGIN
 
-   -- Genera el mensaje XML
-      Qryctx :=  Dbms_Xmlgen.Newcontext ('Select RS.RESERVA    As "DOCUMENT_ID",
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+        
+        -- inicializa la variable de retorno
+        onuErrorCode := 0;
+
+        -- Genera el mensaje XML
+        Qryctx :=  Dbms_Xmlgen.Newcontext ('SELECT RS.RESERVA    As "DOCUMENT_ID",
                                                                                             RS.UNIDAD_OPE As "OPERATING_UNIT_ID",
                                                                                             CURRENT_DATE as "DELIVERYDATE",
-                                                                          Cursor (Select /*DT.ITEM_ID #NC:1534 1535 1536*/ ITEM.CODE as "ITEM_CODE",
+                                                                          CURSOR (SELECT /*DT.ITEM_ID #NC:1534 1535 1536*/ ITEM.CODE as "ITEM_CODE",
                                                                                                         DT.CANTIDAD As "QUANTITY",
                                                                                                         DT.COSTO_OS as "COST"
-                                                                                          From LDCI_DET_RESERVAMAT Dt, GE_ITEMS ITEM
-                                                                                          Where RS.RESERVA = DT.RESERVA
-                                                                                            and DT.ITEM_ID = ITEM.ITEMS_ID /*#NC:1534 1535 1536*/ ) As "ITEMS"
-                                                                          From LDCI_RESERVAMAT Rs
-                                                                          where RS.RESERVA = ' || reserva );
+                                                                                          FROM LDCI_DET_RESERVAMAT Dt, GE_ITEMS ITEM
+                                                                                          WHERE RS.RESERVA = DT.RESERVA
+                                                                                            AND DT.ITEM_ID = ITEM.ITEMS_ID /*#NC:1534 1535 1536*/ ) As "ITEMS"
+                                                                          FROM LDCI_RESERVAMAT Rs
+                                                                          WHERE RS.RESERVA = ' || reserva );
 
-    Dbms_Xmlgen.Setrowsettag(Qryctx, 'REQUEST_CONF');
-    --DBMS_XMLGEN.setRowTag(qryCtx, '');
-    Dbms_Xmlgen.setNullHandling(qryCtx, 0);
+        Dbms_Xmlgen.Setrowsettag(Qryctx, 'REQUEST_CONF');
+        --DBMS_XMLGEN.setRowTag(qryCtx, '');
+        Dbms_Xmlgen.setNullHandling(qryCtx, 0);
 
-    l_payload := dbms_xmlgen.getXML(qryCtx);
+        l_payload := dbms_xmlgen.getXML(qryCtx);
 
-    --Valida si proceso registros
-    if(DBMS_XMLGEN.getNumRowsProcessed(qryCtx) = 0) then
-         RAISE excepNoProcesoRegi;
-    end if;--if(DBMS_XMLGEN.getNumRowsProcessed(qryCtx) = 0) then
+        --Valida si proceso registros
+        IF(DBMS_XMLGEN.getNumRowsProcessed(qryCtx) = 0) THEN
+             RAISE excepNoProcesoRegi;
+        END IF;
 
-    dbms_xmlgen.closeContext(qryCtx);
+        dbms_xmlgen.closeContext(qryCtx);
 
-    L_Payload := Replace(L_Payload, '<ROW>', '<DOCUMENT>');
-    L_Payload := Replace(L_Payload, '</DELIVERYDATE>', '</DELIVERYDATE>' ||chr(13) || '</DOCUMENT>');
-    L_Payload := Replace(L_Payload, '</ROW>','');
+        L_Payload := Replace(L_Payload, '<ROW>', '<DOCUMENT>');
+        L_Payload := Replace(L_Payload, '</DELIVERYDATE>', '</DELIVERYDATE>' ||chr(13) || '</DOCUMENT>');
+        L_Payload := Replace(L_Payload, '</ROW>','');
 
-    l_payload := replace(l_payload, '<ITEMS_ROW>',  '<ITEM>');
-    l_payload := replace(l_payload, '</ITEMS_ROW>', '</ITEM>');
-    L_Payload := Trim(L_Payload);
+        l_payload := replace(l_payload, '<ITEMS_ROW>',  '<ITEM>');
+        l_payload := replace(l_payload, '</ITEMS_ROW>', '</ITEM>');
+        L_Payload := Trim(L_Payload);
 
-     -- hace el llamado al API
-    OS_SET_REQUEST_CONF(L_Payload, onuErrorCode , osbErrorMessage);
-        --dbms_output.put_line('[1186.proConfirmarReserva.OS_SET_REQUEST_CONF << L_Payload] ' || chr(13) || L_Payload);
-        --dbms_output.put_line('[1186.proConfirmarReserva.OS_SET_REQUEST_CONF >> onuErrorCode] ' || onuErrorCode);
-        --dbms_output.put_line('[1186.proConfirmarReserva.OS_SET_REQUEST_CONF >> osbErrorMessage] ' || osbErrorMessage);
+        -- hace el llamado al API
+        API_SET_REQUEST_CONF(L_Payload, onuErrorCode , osbErrorMessage);
+        pkg_Traza.Trace('[1186.proConfirmarReserva.API_SET_REQUEST_CONF << L_Payload] ' || chr(13) || L_Payload, csbNivelTraza);
+        pkg_Traza.Trace('[1186.proConfirmarReserva.API_SET_REQUEST_CONF >> onuErrorCode] ' || onuErrorCode, csbNivelTraza);
+        pkg_Traza.Trace('[1186.proConfirmarReserva.API_SET_REQUEST_CONF >> osbErrorMessage] ' || osbErrorMessage, csbNivelTraza);
 
-        if (onuErrorCode <> 0) then
-              raise exce_OS_SET_REQUEST_CONF;
-        end if;--if (onuErrorCode <> 0) then
+        IF (onuErrorCode <> 0) THEN
+            RAISE exce_OS_SET_REQUEST_CONF;
+        END IF;
 
-EXCEPTION
- WHEN exce_OS_SET_REQUEST_CONF THEN
-      Errors.seterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
 
- WHEN excepNoProcesoRegi THEN
-       onuErrorCode := -1;
-       osbErrorMessage := 'ERROR: [LDCI_PKRESERVAMATERIAL.proConfirmarReserva]: La consulta no ha arrojo registros' || Dbms_Utility.Format_Error_Backtrace;
-       Errors.seterror (onuErrorCode, osbErrorMessage);
-       --dbms_output.put_line('[1186.proConfirmarReserva.OS_SET_REQUEST_CONF << osbErrorMessage1] ' || chr(13) || osbErrorMessage);
-       commit; --rollback;
+    EXCEPTION
+        WHEN exce_OS_SET_REQUEST_CONF THEN
+            Errors.seterror (onuErrorCode, osbErrorMessage);
+            commit;
 
- when others  then
-      pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-      Errors.seterror;
-      Errors.geterror (onuErrorCode, osbErrorMessage);
-      --dbms_output.put_line('[1186.proConfirmarReserva.OS_SET_REQUEST_CONF << osbErrorMessage2] ' || chr(13) || osbErrorMessage);
-      commit; --rollback;
-
-end proConfirmarReserva;
-
+        WHEN excepNoProcesoRegi THEN
+            onuErrorCode := -1;
+            osbErrorMessage := 'ERROR: [LDCI_PKRESERVAMATERIAL.proConfirmarReserva]: La consulta no ha arrojo registros' || Dbms_Utility.Format_Error_Backtrace;
+            Errors.seterror (onuErrorCode, osbErrorMessage);
+            pkg_Traza.Trace('[1186.proConfirmarReserva.OS_SET_REQUEST_CONF << osbErrorMessage1] ' || chr(13) || osbErrorMessage,csbNivelTraza);
+            commit;
+            
+        WHEN OTHERS  THEN
+            pkg_Error.setError;
+            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+            pkg_Traza.Trace('[1186.proConfirmarReserva.OS_SET_REQUEST_CONF << osbErrorMessage2] ' || chr(13) || osbErrorMessage, csbNivelTraza);
+            commit;
+    END proConfirmarReserva;
 
     PROCEDURE proProcesaReserva
     (
         Items_Documento_Id  in VARCHAR2,
         inuProcCodi         in NUMBER,
-        onuErrorCode        out GE_ERROR_LOG.ERROR_LOG_ID%type,
-        osbErrorMessage     out GE_ERROR_LOG.DESCRIPTION%type
+        onuErrorCode        out GE_ERROR_LOG.ERROR_LOG_ID%TYPE,
+        osbErrorMessage     out GE_ERROR_LOG.DESCRIPTION%TYPE
     )
     AS
         /*
@@ -1488,26 +1535,25 @@ end proConfirmarReserva;
         Historia de Modificaciones
 
         Autor                                         Fecha       Descripcion.
-        carlos.virgen <carlos.virgen@olsoftware.com>  20-08-2014 #NC:1456,1457,1458: Mejora Validaci??n del centro de costo, solicitud de herramienta
+        carlos.virgen <carlos.virgen@olsoftware.com>  20-08-2014 #NC:1456,1457,1458: Mejora Validación del centro de costo, solicitud de herramienta
         carlos.virgen<carlos.virgen@olsoftware.com>   13-11-2014 #OYM_CEV_5028_1: #ifrs #471: Se desactiva la version inicial de la clase de valoracion.
-        oparra                                        02-03-2017 CA. 200-638 -  Requisiciones autom?ticas
+        oparra                                        02-03-2017 CA. 200-638 -  Requisiciones automáticas
         */
+        
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'proProcesaReserva';
 
         Osbrequest Varchar2(32000);
         Nuoperunitid Number;
         Nuerpoperunitid Number;
-        --Dtdate date;
 
         Docitem       Dbms_Xmldom.Domdocument;
         Ndocitem      Dbms_Xmldom.Domnode;
         Docelemitem   Dbms_Xmldom.Domelement;
         Nodeitem      Dbms_Xmldom.Domnode;
 
-        -- CA. 200-638
         nuJob_id        number;
         nuUser_id       number;
         nuUnidadOper    number;
-        --
 
         Nuitemid    number(15);
         Sbitemcode  varchar2(60);
@@ -1529,43 +1575,45 @@ end proConfirmarReserva;
         Nodelisteleitem  Dbms_Xmldom.Domnodelist;
         nodedummy Dbms_Xmldom.Domnode;
 
-        sbOPER_UNIT_CODE OR_OPERATING_UNIT.OPER_UNIT_CODE%type;
-        sbCECOCODI       LDCI_CECOUNIOPER.CECOCODI%type;
-        sbCLASS_ASSESSMENT_ID LDCI_CLVAUNOP.CLASS_ASSESSMENT_ID%type; --#OYM_CEV_3429_1
+        sbOPER_UNIT_CODE OR_OPERATING_UNIT.OPER_UNIT_CODE%TYPE;
+        sbCECOCODI       LDCI_CECOUNIOPER.CECOCODI%TYPE;
+        sbCLASS_ASSESSMENT_ID LDCI_CLVAUNOP.CLASS_ASSESSMENT_ID%TYPE; --#OYM_CEV_3429_1
 
-        -- cursor de la unidad operativa
-        Cursor cuUnidadOperativa(inuOPERATING_UNIT_ID OR_OPERATING_UNIT.OPERATING_UNIT_ID%type) Is
-          Select OPER_UNIT_CODE
-            From OR_OPERATING_UNIT
-            Where OPERATING_UNIT_ID = inuOPERATING_UNIT_ID;
+        -- CURSOR de la unidad operativa
+        CURSOR cuUnidadOperativa(inuOPERATING_UNIT_ID OR_OPERATING_UNIT.OPERATING_UNIT_ID%TYPE) IS
+          SELECT OPER_UNIT_CODE
+            FROM OR_OPERATING_UNIT
+            WHERE OPERATING_UNIT_ID = inuOPERATING_UNIT_ID;
 
-        -- cursor del centro de costo
-        cursor cuLDCI_CECOUNIOPER(isbCECOCODI LDCI_CECOUNIOPER.CECOCODI%type) is
-        select CECOCODI
-                from LDCI_CECOUNIOPER
-              where OPERATING_UNIT_ID = isbCECOCODI;
+        -- CURSOR del centro de costo
+        CURSOR cuLDCI_CECOUNIOPER(isbCECOCODI LDCI_CECOUNIOPER.CECOCODI%TYPE) IS
+        SELECT CECOCODI
+                FROM LDCI_CECOUNIOPER
+              WHERE OPERATING_UNIT_ID = isbCECOCODI;
 
-        --#OYM_CEV_3429_1: Cursor de la clase de valoracion por unidad operativa
-        cursor cuLDCI_CLVAUNOP(inuOPERATING_UNIT_ID LDCI_CLVAUNOP.OPERATING_UNIT_ID%type) is  --#OYM_CEV_3429_1
-        select CLASS_ASSESSMENT_ID
-          from LDCI_CLVAUNOP
-         where OPERATING_UNIT_ID = inuOPERATING_UNIT_ID;
+        --#OYM_CEV_3429_1: CURSOR de la clase de valoracion por unidad operativa
+        CURSOR cuLDCI_CLVAUNOP(inuOPERATING_UNIT_ID LDCI_CLVAUNOP.OPERATING_UNIT_ID%TYPE) IS  --#OYM_CEV_3429_1
+        SELECT CLASS_ASSESSMENT_ID
+          FROM LDCI_CLVAUNOP
+         WHERE OPERATING_UNIT_ID = inuOPERATING_UNIT_ID;
 
-        exce_proEnviarSolicitud    exception;
-        exce_proConfirmarReserva   exception;
-        exce_OS_GET_REQUEST        exception;
-        exce_ValidaCentroCosto     exception;
-        exce_ValidaClaseValoracion exception;    --#OYM_CEV_3429_1
+        exce_proEnviarSolicitud    EXCEPTION;
+        exce_proConfirmarReserva   EXCEPTION;
+        exce_OS_GET_REQUEST        EXCEPTION;
+        exce_ValidaCentroCosto     EXCEPTION;
+        exce_ValidaClaseValoracion EXCEPTION;    --#OYM_CEV_3429_1
 
     BEGIN
 
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+        
         -- CA. 200-638: obetener valor parametro
-        nuJob_id    := dald_parameter.fnugetnumeric_value('LDC_ID_USARIOJOB');
+        nuJob_id    := pkg_BCLd_Parameter.fnuObtieneValorNumerico('LDC_ID_USARIOJOB');
 
         -- inicializa variable de salida
         onuErrorcode := 0;
         -- llamado original al API de OPEN
-        OS_GET_REQUEST(to_number(Items_Documento_Id), Osbrequest,
+        API_GET_REQUEST(to_number(Items_Documento_Id), Osbrequest,
                                 Onuerrorcode, Osberrormessage);
             -- Create DOMDocument handle
           Docitem     := Dbms_Xmldom.Newdomdocument(Osbrequest);
@@ -1582,49 +1630,36 @@ end proConfirmarReserva;
           nuerpoperunitid := to_number(Dbms_Xmldom.Getnodevalue(Dbms_Xmldom.Getfirstchild(nodedummy)));
 
           -- determina el codigo del centro de distribucion
-          open cuUnidadOperativa(nuerpoperunitid);
-          fetch cuUnidadOperativa into sbOPER_UNIT_CODE;
-          close cuUnidadOperativa;
+          OPEN cuUnidadOperativa(nuerpoperunitid);
+          FETCH cuUnidadOperativa INTO sbOPER_UNIT_CODE;
+          CLOSE cuUnidadOperativa;
 
           -- carga la informacion del centro de costo
-          open cuLDCI_CECOUNIOPER(Nuoperunitid);
-          fetch cuLDCI_CECOUNIOPER into sbCECOCODI;
-          close cuLDCI_CECOUNIOPER;
-
-          /*#OYM_CEV_5028_1: #ifrs #471: Se desactiva la version inicial de la clase de valoracion.
-          open cuLDCI_CLVAUNOP(Nuoperunitid); --#OYM_CEV_3429_1: Carga el valor de la clase de valoracion
-          fetch cuLDCI_CLVAUNOP into sbCLASS_ASSESSMENT_ID;
-          close cuLDCI_CLVAUNOP;*/
+          OPEN cuLDCI_CECOUNIOPER(Nuoperunitid);
+          FETCH cuLDCI_CECOUNIOPER INTO sbCECOCODI;
+          CLOSE cuLDCI_CECOUNIOPER;
 
           Nodelistitem := Dbms_Xmldom.Getelementsbytagname(Docelemitem, 'DATE');
           Nodedummy := Dbms_Xmldom.Item(Nodelistitem, 0);
-          --dtdate  := to_date(Dbms_Xmldom.Getnodevalue(Dbms_Xmldom.Getfirstchild(nodedummy)), 'DD/MM/YYYY');
 
           --#OYM_CEV_5028_1: Determina si el proveedor logistico es Activos o Inventarios
           proValidaClaseValoraProvLogis(nuERPOperUnitId,
                                         sbCLASS_ASSESSMENT_ID,
                                         onuErrorCode,
                                         osbErrorMessage);
-          if (onuErrorCode <> 0) then
-              raise exce_ValidaClaseValoracion;
-          end if; --if (onuErrorCode <> 0) then
+          IF (onuErrorCode <> 0) THEN
+              RAISE exce_ValidaClaseValoracion;
+          END IF; --IF (onuErrorCode <> 0) THEN
 
-          /*#OYM_CEV_5028_1: #ifrs #471: Se desactiva la version inicial de la clase de valoracion.
-          if (sbCLASS_ASSESSMENT_ID is null or sbCLASS_ASSESSMENT_ID = '') then --#OYM_CEV_3429_1: Valida la clase de valoracion
-              raise exce_ValidaClaseValoracion;
-          end if;--if (sbCLASS_ASSESSMENT_ID is not null or sbCLASS_ASSESSMENT_ID <> '') then*/
-
-        -- valida que la unidad operativa tenga configurado el centro de costo
-        --if (sbCECOCODI is not null or sbCECOCODI <> '') then --#NC:1456,1457,1458: 20-08-2014: carlos.virgen: Mejora Se comenta la validacion anteriro
             /*GUARDAR CABECERA DE LA RESERVA*/
-          insert into LDCI_RESERVAMAT (RESERVA, UNIDAD_OPE, ALMACEN_CON, CLASE_MOV, CENTRO_COSTO, FECHA_ENTREGA)
+          INSERT INTO LDCI_RESERVAMAT (RESERVA, UNIDAD_OPE, ALMACEN_CON, CLASE_MOV, CENTRO_COSTO, FECHA_ENTREGA)
                  values (Items_Documento_Id, Nuoperunitid, nuerpoperunitid, 'PRU', sbCECOCODI, CURRENT_DATE);
 
           Nodelistitem := Dbms_Xmldom.Getelementsbytagname(Docelemitem, 'ITEM');
           nuCantMate := 0;
           nuCantHerr := 0;
                             -- recorre los items
-          For Contadoritem In 1..Dbms_Xmldom.Getlength(Nodelistitem) Loop
+          FOR Contadoritem In 1..Dbms_Xmldom.Getlength(Nodelistitem) LOOP
                 Nodeitem := Dbms_Xmldom.Item(Nodelistitem, Contadoritem - 1);
                 /*OBTENGO ELMENTOS DE ITEM*/
                 Nodelisteleitem := Dbms_Xmldom.Getchildnodes(Nodeitem);
@@ -1633,18 +1668,16 @@ end proConfirmarReserva;
                 Nodedummy := Dbms_Xmldom.Item(Nodelisteleitem, 0);
                 nuitemid  := to_number(Dbms_Xmldom.Getnodevalue(Dbms_Xmldom.Getfirstchild(nodedummy)));
 
-                /* ejecutar os_get_item*/
                 /* para saber si es una herramienta la clasificacion del item es 3 */
                 Nuclassitem := fnuObtenerClasificacionItem(Nuitemid, null);
-                --os_get_item(nuitemid, null, oclXMLItemsData, Onuerrorcode, Osberrormessage);
 
-                If Nuclassitem = 3 Then
+                IF Nuclassitem = 3 THEN
                     /* ES UNA HERRAMIENTA*/
                     Sbflaghta := 'S';
                     nuCantHerr := nuCantHerr + 1;
-                Else
+                ELSE
                       nuCantMate := nuCantMate + 1;
-                End If; -- If Nuclassitem = 3 Then
+                END IF; -- IF Nuclassitem = 3 THEN
 
                 Nodedummy   := Dbms_Xmldom.Item(Nodelisteleitem, 1);
                 sbitemcode  := Dbms_Xmldom.Getnodevalue(Dbms_Xmldom.Getfirstchild(Nodedummy));
@@ -1662,145 +1695,138 @@ end proConfirmarReserva;
                 -- obtiene la unidad operativa de la reserva
                 nuUnidadOper    :=  dage_items_documento.fnugetoperating_unit_id(Items_Documento_Id);
 
-                if (nuUser_id = nuJob_id) then
+                IF (nuUser_id = nuJob_id) THEN
 
-                    if (fblValidExistItem(nuitemid,nuUnidadOper)) then
+                    IF (fblValidExistItem(nuitemid,nuUnidadOper)) THEN
 
-                        insert into LDCI_DET_RESERVAMAT (Reserva, Item_Id, Codigo_Item, Cantidad, Costo_Os, Costo_Erp, Centro, Es_Herramienta)
+                        INSERT INTO LDCI_DET_RESERVAMAT (Reserva, Item_Id, Codigo_Item, Cantidad, Costo_Os, Costo_Erp, Centro, Es_Herramienta)
                         values (Items_Documento_Id, nuitemid, sbitemcode, nuitemcant, nuitemcosto, null, sbOPER_UNIT_CODE, decode(Nuclassitem, 3, 'S', 'N'));
 
                         -- actualizar cupo en la tabla de pedidos
                         update ge_items_request
                         set confirmed_amount = 0,
                             confirmed_cost = 0
-                        where items_id = nuitemid
-                        and id_items_documento = Items_Documento_Id;
+                        WHERE items_id = nuitemid
+                        AND id_items_documento = Items_Documento_Id;
 
-                    end if;
+                    END IF;
 
-                else
+                ELSE
                 /** Fin validacion CA 200-638  **/
 
-                    insert into LDCI_DET_RESERVAMAT (Reserva, Item_Id, Codigo_Item, Cantidad, Costo_Os, Costo_Erp, Centro, Es_Herramienta)
+                    INSERT INTO LDCI_DET_RESERVAMAT (Reserva, Item_Id, Codigo_Item, Cantidad, Costo_Os, Costo_Erp, Centro, Es_Herramienta)
                     values (Items_Documento_Id, nuitemid, sbitemcode, nuitemcant, nuitemcosto, null, sbOPER_UNIT_CODE, decode(Nuclassitem, 3, 'S', 'N'));
 
-                end if;
+                END IF;
 
-          end loop;--For Contadoritem In 1..Dbms_Xmldom.Getlength(Nodelistitem) Loop
+          END LOOP;--FOR Contadoritem In 1..Dbms_Xmldom.Getlength(Nodelistitem) LOOP
           DBMS_XMLDOM.freeDocument(docitem);
 
-          If Onuerrorcode = 0 Then
+          IF Onuerrorcode = 0 THEN
                 -- valida si la solicitud tiene mezcla de materiales y herramientas
-                if (nuCantMate <> 0 and nuCantHerr <> 0) then
+                IF (nuCantMate <> 0 AND nuCantHerr <> 0) THEN
                         -- solicitud de herramintas
-                        --dbms_lock.sleep(15);
                         proEnviarSolicitud(Items_Documento_Id, 'RES', 'S', inuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/, Onuerrorcode, Osberrormessage);
-                        If (Onuerrorcode) <> 0 Then --#NC:1456,1457,1458:
-                              raise exce_proEnviarSolicitud;
-                        End If; -- If (Onuerrorcode) = 0 Then;
-
+                        IF (Onuerrorcode) <> 0 THEN
+                              RAISE exce_proEnviarSolicitud;
+                        END IF;
+                        
                         -- solicitu de materiales
                         proEnviarSolicitud(Items_Documento_Id, 'RES', 'N', inuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/, Onuerrorcode, Osberrormessage);
-                        If (Onuerrorcode) <> 0 Then --#NC:1456,1457,1458:
-                              raise exce_proEnviarSolicitud;
-                        End If; -- If (Onuerrorcode) = 0 Then;
-                end if; -- if (nuCantMate <> 0 and nuCantHerr <> 0) then
+                        IF (Onuerrorcode) <> 0 THEN
+                              RAISE exce_proEnviarSolicitud;
+                        END IF;
+                END IF;
 
                 -- solicitud de solo materiales
-                if (nuCantMate <> 0 and nuCantHerr = 0) then
+                IF (nuCantMate <> 0 AND nuCantHerr = 0) THEN
                         proEnviarSolicitud(Items_Documento_Id, 'RES', 'N', inuProcCodi, sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/, Onuerrorcode, Osberrormessage);
-                        If (Onuerrorcode) <> 0 Then --#NC:1456,1457,1458:
-                              raise exce_proEnviarSolicitud;
-                        End If; -- If (Onuerrorcode) = 0 Then;
-                end if;--if (nuCantMate <> 0 and nuCantHerr = 0) then
+                        IF (Onuerrorcode) <> 0 THEN
+                              RAISE exce_proEnviarSolicitud;
+                        END IF;
+                END IF;
 
                 -- solicitud de solo herramientas
-                if (nuCantMate = 0 and nuCantHerr <> 0) then
+                IF (nuCantMate = 0 AND nuCantHerr <> 0) THEN
                         proEnviarSolicitud(Items_Documento_Id, 'RES', 'S', inuProcCodi , sbCLASS_ASSESSMENT_ID /*#OYM_CEV_3429_1*/,Onuerrorcode, Osberrormessage);
 
-                        If (Onuerrorcode) <> 0 Then --#NC:1456,1457,1458:
-                              raise exce_proEnviarSolicitud;
-                        End If; -- If (Onuerrorcode) = 0 Then;
-                end if;--if (nuCantMate = 0 and nuCantHerr <> 0) then
+                        IF (Onuerrorcode) <> 0 THEN
+                              RAISE exce_proEnviarSolicitud;
+                        END IF;
+                END IF;
 
-                If (Onuerrorcode) = 0 Then
+                IF (Onuerrorcode) = 0 THEN
                       -- hace la confirmacion de la solicitud llamado al API OS_SET_REQUEST_CONF
                       proConfirmarReserva(Items_Documento_Id, inuProcCodi, Onuerrorcode, Osberrormessage);
-                      If (Onuerrorcode) = 0 Then
+                      IF (Onuerrorcode) = 0 THEN
                         commit;
-                      Else
+                      ELSE
                         -- guarda la excepcion
-                        raise exce_proConfirmarReserva ;
-                      End If; -- If (Onuerrorcode) = 0 Then;
-                Else
+                        RAISE exce_proConfirmarReserva ;
+                      END IF;
+                ELSE
                       -- guarda la excepcion
-                      raise exce_proEnviarSolicitud;
-                End If; -- If (Onuerrorcode) = 0 Then;
-         Else
+                      RAISE exce_proEnviarSolicitud;
+                END IF;
+         ELSE
                 -- guarda la excepcion
-                raise exce_OS_GET_REQUEST;
-         End If; -- If Onuerrorcode = 0 Then;
+                RAISE exce_OS_GET_REQUEST;
+         END IF;
 
-        --#NC:1456,1457,1458: 20-08-2014: carlos.virgen: Mejora Se comenta la validacion anteriro
-         --#NC:1456,1457,1458 else
-             -- guarda la excepcion
-          --#NC:1456,1457,1458   raise exce_ValidaCentroCosto;
-        --#NC:1456,1457,1458 end if;--if (sbCECOCODI is not null or sbCECOCODI <> '') then
-
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+        
     EXCEPTION
-        When exce_proConfirmarReserva THEN
+        WHEN exce_proConfirmarReserva THEN
           Errors.seterror (onuErrorCode, osbErrorMessage);
-          commit; --rollback;
+          commit;
 
-        When exce_proEnviarSolicitud THEN
-
+        WHEN exce_proEnviarSolicitud THEN
           Errors.seterror (onuErrorCode, osbErrorMessage);
-          commit; --rollback;
+          commit;
 
-        When exce_OS_GET_REQUEST THEN
+        WHEN exce_OS_GET_REQUEST THEN
           Errors.seterror (onuErrorCode, osbErrorMessage);
-          commit; --rollback;
+          commit;
 
-        When exce_ValidaClaseValoracion THEN --#OYM_CEV_3429_1
+        WHEN exce_ValidaClaseValoracion THEN
           Errors.seterror (onuErrorCode, osbErrorMessage);
-          commit; --rollback;
-          LDCI_PKRESERVAMATERIAL.proNotificaExepcion(to_number(Items_Documento_Id), 'Valida configuraci??n centro de costo por unidad operativa',  osbErrorMessage);
+          commit;
+          LDCI_PKRESERVAMATERIAL.proNotificaExepcion(to_number(Items_Documento_Id), 'Valida configuración centro de costo por unidad operativa',  osbErrorMessage);
 
-        When exce_ValidaCentroCosto THEN
+        WHEN exce_ValidaCentroCosto THEN
            onuErrorCode := -1;
            osbErrorMessage := '[proNotificaReservas] La unidad operativa (' || to_char(Nuoperunitid)   || ') no tiene configurado el Centro de Costo. (Forma GEMCUO)';
           Errors.seterror (onuErrorCode, osbErrorMessage);
-          commit; --rollback;
-                LDCI_PKRESERVAMATERIAL.proNotificaExepcion(to_number(Items_Documento_Id), 'Valida configuraci??n centro de costo por unidad operativa',  osbErrorMessage);
+          commit;
+          LDCI_PKRESERVAMATERIAL.proNotificaExepcion(to_number(Items_Documento_Id), 'Valida configuración centro de costo por unidad operativa',  osbErrorMessage);
 
-        When Others THEN
-          pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-          Errors.seterror;
-          Errors.geterror (onuErrorCode, osbErrorMessage);
-          commit; --rollback;
+        WHEN OTHERS THEN
+          pkg_Error.setError;
+          pkg_Error.getError (onuErrorCode, osbErrorMessage);
+          commit;
     END proProcesaReserva;
 
+    PROCEDURE proNotificaReservas As
+    /*
+    PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
 
-  Procedure proNotificaReservas As
-   /*
-   PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
+    FUNCION : proNotificaReservas
+    AUTOR : MAURICIO FERNANDO ORTIZ
+    FECHA : 10/12/2012
+    RICEF      : I005
+    DESCRIPCION : Procedimiento general par ala notificacion de reservas
 
-  FUNCION : proNotificaReservas
-  AUTOR : MAURICIO FERNANDO ORTIZ
-  FECHA : 10/12/2012
-  RICEF      : I005
-  DESCRIPCION : Procedimiento general par ala notificacion de reservas
+    Parametros de Entrada
 
-   Parametros de Entrada
+    Parametros de Salida
 
-   Parametros de Salida
+    Historia de Modificaciones
+    Autor           Fecha       Descripcion.
+    Eduardo Aguera  02/07/2015  Cambio 8136. Se optimiza consulta de XML utilizando CURSOR con XMLTable para obtener las solicitudes.
+    */
 
-   Historia de Modificaciones
-   Autor           Fecha       Descripcion.
-   Eduardo Aguera  02/07/2015  Cambio 8136. Se optimiza consulta de XML utilizando cursor con XMLTable para obtener las solicitudes.
-
-
-  */
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'proNotificaReservas';
+            
         Inuopeuniterp_Id   NUMBER(15);
         Osbrequestsregs    VARCHAR2(32000);
         Onuerrorcode       NUMBER(15);
@@ -1817,7 +1843,6 @@ end proConfirmarReserva;
         Osbrequest         Varchar2(32000);
         Nuoperunitid       Number;
         Nuerpoperunitid    Number;
-        --Dtdate             date;
         Docitem            Dbms_Xmldom.Domdocument;
         Ndocitem           Dbms_Xmldom.Domnode;
         Docelemitem        Dbms_Xmldom.Domelement;
@@ -1839,72 +1864,44 @@ end proConfirmarReserva;
         icbProcPara        CLOB;
 
         -- definicion de cursores
-        -- cursor de las unidades operativas
-        cursor cuUnidadOperativa Is
-                Select OPERATING_UNIT_ID, OPER_UNIT_CODE
-                    From OR_OPERATING_UNIT
-                    Where OPER_UNIT_CLASSIF_ID = 11;
+        -- CURSOR de las unidades operativas
+        CURSOR cuUnidadOperativa IS
+                SELECT OPERATING_UNIT_ID, OPER_UNIT_CODE
+                    FROM OR_OPERATING_UNIT
+                    WHERE OPER_UNIT_CLASSIF_ID = 11;
 
         reUnidadOperativa cuUnidadOperativa%rowtype;
 
-
-        -- cursor de las solicitudes
-        cursor cuREQUEST_REG(clXML in CLOB) is
+        -- CURSOR de las solicitudes
+        CURSOR cuREQUEST_REG(clXML in CLOB) IS
           SELECT REQUEST.*
           FROM XMLTable('/REQUESTS_REG/ITEMS_DOCUMENTO_ID' PASSING XMLType(clXML)
                         COLUMNS
                         ITEMS_DOCUMENTO_ID NUMBER PATH '.'
                        ) AS REQUEST;
 
+    BEGIN
 
-  Begin
-    -- carga las variables requeridas para las solicitudes
-    proCargaVarGlobal('WS_RESERVA_MATERIALES');
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+            
+        -- carga las variables requeridas para las solicitudes
+        proCargaVarGlobal('WS_RESERVA_MATERIALES');
 
+        -- recorre las unidades operativas de tipo 17 - CUARDILLA
+        FOR reUnidadOperativa in cuUnidadOperativa LOOP
+        
+            -- carga las solicitudes
+            API_GET_REQUESTS_REG(reUnidadOperativa.OPERATING_UNIT_ID,
+                                OSBREQUESTSREGS,
+                                ONUERRORCODE,
+                                OSBERRORMESSAGE);
+         
+            -- recorre el listado de las reservas pendientes
+            FOR reREQUEST_REG in cuREQUEST_REG(OSBREQUESTSREGS) LOOP
 
-    -- recorre las unidades operativas de tipo 17 - CUARDILLA
-    for reUnidadOperativa in cuUnidadOperativa loop
-        -- carga las solicitudes
-        OS_GET_REQUESTS_REG(reUnidadOperativa.OPERATING_UNIT_ID,
-                            OSBREQUESTSREGS,
-                            ONUERRORCODE,
-                            OSBERRORMESSAGE);
-
-        -- Create DOMDocument handle
-    /*
-        doc     := DBMS_XMLDOM.newDOMDocument(Osbrequestsregs);
-        ndoc    := DBMS_XMLDOM.makeNode(doc);
-
-        Dbms_Xmldom.Writetobuffer(Ndoc, Buf);
-        docelem := DBMS_XMLDOM.getDocumentElement(doc);
-
-        -- Access element
-        Nodelist := Dbms_Xmldom.Getelementsbytagname(Docelem, 'ITEMS_DOCUMENTO_ID');
-        */ --8136 EDUAGU: Se comentarea esta seccion para optimizar procesamiento XML
-    IF not fblAplicaEntrega('SAP_SD_VBG_200798_1') then
-
-        doc     := DBMS_XMLDOM.newDOMDocument(Osbrequestsregs);
-        ndoc    := DBMS_XMLDOM.makeNode(doc);
-
-        Dbms_Xmldom.Writetobuffer(Ndoc, Buf);
-        docelem := DBMS_XMLDOM.getDocumentElement(doc);
-
-        -- Access element
-        Nodelist := Dbms_Xmldom.Getelementsbytagname(Docelem, 'ITEMS_DOCUMENTO_ID');
-
-     end if;
-        -- recorre el listado de las reservas pendientes
-        For reREQUEST_REG in cuREQUEST_REG(OSBREQUESTSREGS) loop
-          --For Contador In 1..Dbms_Xmldom.Getlength(Nodelist) Loop
-
-
-          -- extrae el codigo de la reserva a procesar
-          --Node               := Dbms_Xmldom.Item(Nodelist, Contador - 1);
-          --Childnode          := Dbms_Xmldom.Getfirstchild(Node);
-          --Items_Documento_Id := to_number(Dbms_Xmldom.Getnodevalue(Childnode));
-          Items_Documento_Id := reREQUEST_REG.ITEMS_DOCUMENTO_ID;
-
-              icbProcPara:= '<PARAMETROS>
+                Items_Documento_Id := reREQUEST_REG.ITEMS_DOCUMENTO_ID;
+            
+                icbProcPara:= '<PARAMETROS>
                                                     <PARAMETRO>
                                                         <NOMBRE>ITEMS_DOCUMENTO_ID</NOMBRE>
                                                         <VALOR>' || Items_Documento_Id ||'</VALOR>
@@ -1916,8 +1913,8 @@ end proConfirmarReserva;
                                                 </PARAMETROS>';
 
 
-                   -- crea el identificado de proceso para la interfaz
-                    LDCI_PKMESAWS.PROCREAESTAPROC(ISBPROCDEFI     => 'WS_RESERVA_MATERIALES',
+                -- crea el identificado de proceso para la interfaz
+                LDCI_PKMESAWS.PROCREAESTAPROC(ISBPROCDEFI     => 'WS_RESERVA_MATERIALES',
                                                                                 ICBPROCPARA     => icbProcPara,
                                                                                 IDTPROCFEIN     => SYSDATE,
                                                                                 ISBPROCESTA     => 'P',
@@ -1928,32 +1925,34 @@ end proConfirmarReserva;
                                                                                 ONUERRORCODE    => ONUERRORCODE,
                                                                                 OSBERRORMESSAGE => OSBERRORMESSAGE);
 
-          /*Procesar reserva, carga maestro, detalle, confirmar items y enviar*/
-          proProcesaReserva(Items_Documento_Id, onuProcCodi, Onuerrorcode, Osberrormessage );
+                /*Procesar reserva, carga maestro, detalle, confirmar items y enviar*/
+                proProcesaReserva(Items_Documento_Id, onuProcCodi, Onuerrorcode, Osberrormessage );
 
-          /*si hay herramientas enviar y confirmar herramientas*/
-        End Loop;-- For Contador In 1..Dbms_Xmldom.Getlength(Nodelist) Loop
+              /*si hay herramientas enviar y confirmar herramientas*/
+            END LOOP;-- FOR Contador In 1..Dbms_Xmldom.Getlength(Nodelist) LOOP
 
-    end loop; -- for reUnidadOperativa in cuUnidadOperativa loop
+        END LOOP; -- FOR reUnidadOperativa in cuUnidadOperativa LOOP
 
-  -- elimina los registros de la tabla de procesamiento
-    delete from LDCI_DET_RESERVAMAT;
-    delete from LDCI_RESERVAMAT;
-     commit;
+        -- elimina los registros de la tabla de procesamiento
+        DELETE FROM LDCI_DET_RESERVAMAT;
+        DELETE FROM LDCI_RESERVAMAT;
+        commit;
+     
         -- libera el archivo XML
-    DBMS_XMLDOM.freeDocument(doc);
-  exception
-  when others  then
-      pkErrors.NotifyError (pkErrors.fsbLastObject, SQLERRM, osbErrorMessage);
-      Errors.seterror;
-      Errors.geterror (onuErrorCode, osbErrorMessage);
-      commit; --rollback;
-  END proNotificaReservas;
+        DBMS_XMLDOM.freeDocument(doc);
 
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+            
+    EXCEPTION
+        WHEN OTHERS  THEN
+            pkg_Error.setError;
+            pkg_Error.getError (onuErrorCode, osbErrorMessage);
+            commit;
+    END proNotificaReservas;
 
-  Procedure proNotificaDocumentosERP As
-   /*
-   PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
+    PROCEDURE proNotificaDocumentosERP As
+    /*
+    PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
 
     FUNCION : LDCI_PKRESERVAMATERIAL.proNotificaDocumentosERP
     AUTOR : MAURICIO FERNANDO ORTIZ
@@ -1962,175 +1961,236 @@ end proConfirmarReserva;
     DESCRIPCION : Procedimiento general par la notificacion de reservas y
                   devoluciones de material
 
-   Parametros de Entrada
+    Parametros de Entrada
 
-   Parametros de Salida
+    Parametros de Salida
 
-   Historia de Modificaciones
+    Historia de Modificaciones
 
-   Autor        Fecha       Descripcion.
-   dsaltarin   01/04/2022   OSF-200 Se carga variable global sbAplicaOSF200 para validar si la entrega aplicar para la gasera.
-  */
-  Begin
-    if fblaplicaentregaxcaso('OSF-200') then
-       sbAplicaOSF200 :='S';
-    else
-       sbAplicaOSF200 :='N';
-    end if;
-    LDCI_PKRESERVAMATERIAL.proNotificaReservas;
-    LDCI_PKRESERVAMATERIAL.proNotificaDevoluciones;
-  end proNotificaDocumentosERP;
-FUNCTION fsbGETobtultserial(sbseri VARCHAR2) RETURN VARCHAR2 AS
-/********************************************************************************************************
-    Autor       : John Jairo Jimenez Marimon
-    Fecha       : 2018-06-01
-    Descripcion : Obtenemos el ultimo serial despachado
+    Autor        Fecha       Caso       Descripcion.
+    dsaltarin   01/04/2022   OSF-200    Se carga variable global sbAplicaOSF200 
+                                        para validar si la entrega aplicar 
+                                        para la gasera.
+    jpinedc     16/04/2025   OSF-4245   Se quita referencias a sbAplicaOSF200 ya 
+                                        que OSF-200 aplica para GdC
+    */
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'proNotificaDocumentosERP';
+        
+    BEGIN
 
-    Parametros Entrada
-     sboperacion  Operacion si es Devolucion o Reserva
-     nucodumento  Documento
-     nuitemspa    Item's seriados
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+            
+        LDCI_PKRESERVAMATERIAL.proNotificaReservas;
+        LDCI_PKRESERVAMATERIAL.proNotificaDevoluciones;
+        
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
+                    
+    END proNotificaDocumentosERP;
+  
+    FUNCTION fsbGETobtultserial(sbseri VARCHAR2) RETURN VARCHAR2 AS
+    /********************************************************************************************************
+        Autor       : John Jairo Jimenez Marimon
+        Fecha       : 2018-06-01
+        Descripcion : Obtenemos el ultimo serial despachado
 
-    Valor de salida
+        Parametros Entrada
+         sboperacion  Operacion si es Devolucion o Reserva
+         nucodumento  Documento
+         nuitemspa    Item's seriados
 
-   HISTORIA DE MODIFICACIONES
-     FECHA        AUTOR   DESCRIPCION
-*********************************************************************************************************/
- sbvaserie    ge_items_seriado.serie%TYPE;
- sbvaseriesap ldci_seridmit.seriestr%TYPE;
-BEGIN
- sbvaserie := TRIM(sbseri);
- BEGIN
-  SELECT serie_sap INTO sbvaseriesap
-    FROM(
-         SELECT t.serimmit,t.serinume,t.seriestr serie_sap,m.mmitfecr
-           FROM ldci_seridmit t,ldci_intemmit m
-          WHERE t.serinume = sbvaserie
+        Valor de salida
+
+       HISTORIA DE MODIFICACIONES
+         FECHA        AUTOR   DESCRIPCION
+    *********************************************************************************************************/
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fsbGETobtultserial';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);   
+        
+        sbvaserie    ge_items_seriado.serie%TYPE;
+        sbvaseriesap ldci_seridmit.seriestr%TYPE;
+
+        CURSOR cuSerieSAP
+        IS
+        SELECT serie_sap
+        FROM
+        (
+            SELECT t.serimmit,t.serinume,t.seriestr serie_sap,m.mmitfecr
+            FROM ldci_seridmit t,ldci_intemmit m
+            WHERE t.serinume = sbvaserie
             AND t.serimmit = m.mmitcodi
-          ORDER BY m.mmitfecr DESC
-         )
-   WHERE ROWNUM = 1;
- EXCEPTION
-  WHEN no_data_found THEN
-   sbvaseriesap := 'NULO';
- END;
- RETURN sbvaseriesap;
-EXCEPTION
- WHEN OTHERS THEN
-  sbvaseriesap := 'NULO';
-  RETURN sbvaseriesap;
-END fsbGETobtultserial;
-FUNCTION fsbGETobtmarcultserial(sbseri VARCHAR2) RETURN VARCHAR2 AS
-  /********************************************************************************************************
-    Autor       : John Jairo Jimenez Marimon
-    Fecha       : 2018-06-01
-    Descripcion : Obtenemos la marca del ultimo serial despachado
+            ORDER BY m.mmitfecr DESC
+        )
+        WHERE ROWNUM = 1;
+        
+    BEGIN
+    
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+            
+        sbvaserie := TRIM(sbseri);
+        
+        OPEN cuSerieSAP;
+        FETCH cuSerieSAP INTO sbvaseriesap;
+        CLOSE cuSerieSAP;
+        
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+        
+        RETURN sbvaseriesap;
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+            sbvaseriesap := 'NULO';
+            RETURN sbvaseriesap;
+    END fsbGETobtultserial;
 
-    Parametros Entrada
-     sboperacion  Operacion si es Devolucion o Reserva
-     nucodumento  Documento
-     nuitemspa    Item's seriados
+    FUNCTION fsbGETobtmarcultserial(sbseri VARCHAR2) RETURN VARCHAR2 AS
+      /********************************************************************************************************
+        Autor       : John Jairo Jimenez Marimon
+        Fecha       : 2018-06-01
+        Descripcion : Obtenemos la marca del ultimo serial despachado
 
-    Valor de salida
+        Parametros Entrada
+         sboperacion  Operacion si es Devolucion o Reserva
+         nucodumento  Documento
+         nuitemspa    Item's seriados
 
-   HISTORIA DE MODIFICACIONES
-     FECHA        AUTOR   DESCRIPCION
-*********************************************************************************************************/
- sbvaserie       ge_items_seriado.serie%TYPE;
- sbvasbmarcadesc ldci_marca.marcdesc%TYPE;
-BEGIN
- sbvaserie := TRIM(sbseri);
- BEGIN
- SELECT (SELECT mc.marcdesc FROM ldci_marca mc WHERE mc.marccodi = marca_) INTO sbvasbmarcadesc
-   FROM(
-        SELECT marca_
-          FROM(
-               SELECT t.serimmit,t.serinume,t.serimarc marca_,t.seriestr serie_sap,m.mmitfecr
-                 FROM ldci_seridmit t,ldci_intemmit m
+        Valor de salida
+
+       HISTORIA DE MODIFICACIONES
+         FECHA        AUTOR   DESCRIPCION
+    *********************************************************************************************************/
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fsbGETobtmarcultserial';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);  
+    
+        sbvaserie       ge_items_seriado.serie%TYPE;
+        sbvasbmarcadesc ldci_marca.marcdesc%TYPE;
+        
+        CURSOR cuDescMarca
+        IS
+        SELECT (SELECT mc.marcdesc FROM ldci_marca mc WHERE mc.marccodi = marca_)
+        FROM
+        (
+            SELECT marca_
+            FROM
+            (
+                SELECT t.serimmit,t.serinume,t.serimarc marca_,t.seriestr serie_sap,m.mmitfecr
+                FROM ldci_seridmit t,ldci_intemmit m
                 WHERE t.serinume = sbvaserie
-                  AND t.serimmit = m.mmitcodi
+                AND t.serimmit = m.mmitcodi
                 ORDER BY m.mmitfecr DESC
-               )
-         WHERE rownum = 1
+            )
+            WHERE rownum = 1
         ) ;
- EXCEPTION
-  WHEN no_data_found THEN
-   sbvasbmarcadesc := 'NULO';
- END;
- RETURN sbvasbmarcadesc;
-EXCEPTION
- WHEN OTHERS THEN
-  sbvasbmarcadesc := 'NULO';
-  RETURN sbvasbmarcadesc;
-END fsbGETobtmarcultserial;
-Function fsbGETxmlserializados(sboperacion VARCHAR2,nucodumento NUMBER,nuitemspa NUMBER) Return VARCHAR2 AS
-/********************************************************************************************************
-    Autor       : John Jairo Jimenez Marimon
-    Fecha       : 2018-03-22
-    Descripcion : Genera XML para los item's seriados que se envian SAP para las devoluciones
+        
+    BEGIN
+    
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+            
+        sbvaserie := TRIM(sbseri);
+        
+        OPEN cuDescMarca;
+        FETCH cuDescMarca INTO sbvasbmarcadesc;
+        CLOSE cuDescMarca;
 
-    Parametros Entrada
-     sboperacion  Operacion si es Devolucion o Reserva
-     nucodumento  Documento
-     nuitemspa    Item's seriados
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+          
+        RETURN sbvasbmarcadesc;
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+            sbvasbmarcadesc := 'NULO';
+            RETURN sbvasbmarcadesc;
+    END fsbGETobtmarcultserial;
 
-    Valor de salida
+    FUNCTION fsbGETxmlserializados(sboperacion VARCHAR2,nucodumento NUMBER,nuitemspa NUMBER) RETURN VARCHAR2 AS
+    /********************************************************************************************************
+        Autor       : John Jairo Jimenez Marimon
+        Fecha       : 2018-03-22
+        Descripcion : Genera XML para los item's seriados que se envian SAP para las devoluciones
 
-   HISTORIA DE MODIFICACIONES
-     FECHA        AUTOR   DESCRIPCION
-*********************************************************************************************************/
-qryCtx     dbms_xmlgen.ctxhandle;
-L_Payload  CLOB;
-rfConsulta Constants.tyRefCursor;
-l_offset   NUMBER DEFAULT 1;
-nuconta    NUMBER(15) DEFAULT 0;
-BEGIN
- IF sboperacion = 'DEV' THEN
-  nuconta := 0;
-  SELECT COUNT(1) INTO nuconta
-    FROM(
+        Parametros Entrada
+         sboperacion  Operacion si es Devolucion o Reserva
+         nucodumento  Documento
+         nuitemspa    Item's seriados
+
+        Valor de salida
+
+       HISTORIA DE MODIFICACIONES
+         FECHA        AUTOR   DESCRIPCION
+    *********************************************************************************************************/
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fsbGETxmlserializados';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000);  
+        
+        qryCtx     dbms_xmlgen.ctxhandle;
+        L_Payload  CLOB;
+        rfConsulta CONSTANTS_PER.TYREFCURSOR;
+        l_offset   NUMBER DEFAULT 1;
+        nuconta    NUMBER(15) DEFAULT 0;
+        
+        CURSOR cuCantMovDecrPorDocumento
+        IS
+        SELECT COUNT(1)
+        FROM(
          SELECT ldci_pkreservamaterial.fsbgetobtultserial(s.serie)   AS "Serie"
                ,ldci_pkreservamaterial.fsbGETobtmarcultserial(serie) AS "Marca"
            FROM or_uni_item_bala_mov  k
-               ,open.ge_items_seriado s
+               ,ge_items_seriado s
           WHERE k.id_items_documento = nucodumento
             AND k.items_id           = nuitemspa
             AND k.movement_type      = 'D'
             AND k.id_items_seriado   = s.id_items_seriado
         )
-   WHERE "Serie" <> 'NULO' AND "Marca" <> 'NULO';
-  L_Payload := NULL;
-  IF nuconta >= 1 THEN
-   OPEN rfConsulta for
-    SELECT ldci_pkreservamaterial.fsbgetobtultserial(s.serie)   AS "Serie"
-          ,ldci_pkreservamaterial.fsbGETobtmarcultserial(serie) AS "Marca"
-      FROM or_uni_item_bala_mov  k
-          ,open.ge_items_seriado s
-     WHERE k.id_items_documento = nucodumento
-       AND k.items_id           = nuitemspa
-       AND k.movement_type      = 'D'
-       AND k.id_items_seriado   = s.id_items_seriado;
-    qryCtx := Dbms_Xmlgen.Newcontext(rfConsulta);
-    Dbms_Xmlgen.setNullHandling(qryCtx, 2);
-    l_payload := dbms_xmlgen.getXML(qryCtx);
-    dbms_xmlgen.closeContext(qryCtx);
-    L_Payload := REPLACE(L_Payload, '<?xml version="1.0"?>');
-    L_Payload := REPLACE(L_Payload, '<ROWSET', '<Seriales');
-    L_Payload := REPLACE(L_Payload, '</ROWSET>', '</Seriales>');
-    L_Payload := REPLACE(L_Payload, '<ROW>', '<Serial>');
-    L_Payload := REPLACE(L_Payload, '</ROW>', '</Serial>');
-    L_Payload := TRIM(L_Payload);
-   /* LOOP
-     EXIT WHEN l_offset > dbms_lob.getlength(L_Payload);
-     dbms_output.put_line( dbms_lob.substr( L_Payload, 255, l_offset ) );
-     l_offset := l_offset + 255;
-    END LOOP;*/
-    RETURN L_Payload;
-  ELSE
-   RETURN L_Payload;
-  END IF;
- END IF;
-END fsbGETxmlserializados;
-End LDCI_PKRESERVAMATERIAL;
+        WHERE "Serie" <> 'NULO' AND "Marca" <> 'NULO';        
+        
+    BEGIN
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+
+        L_Payload := NULL;
+                        
+        IF sboperacion = 'DEV' THEN
+        
+            nuconta := 0;
+            
+            OPEN cuCantMovDecrPorDocumento;
+            FETCH cuCantMovDecrPorDocumento INTO nuconta;
+            CLOSE cuCantMovDecrPorDocumento;
+                                    
+            IF nuconta >= 1 THEN
+            
+                OPEN rfConsulta FOR
+                SELECT ldci_pkreservamaterial.fsbgetobtultserial(s.serie)   AS "Serie"
+                ,ldci_pkreservamaterial.fsbGETobtmarcultserial(serie) AS "Marca"
+                FROM or_uni_item_bala_mov  k
+                ,ge_items_seriado s
+                WHERE k.id_items_documento = nucodumento
+                AND k.items_id           = nuitemspa
+                AND k.movement_type      = 'D'
+                AND k.id_items_seriado   = s.id_items_seriado;
+                
+                qryCtx := Dbms_Xmlgen.Newcontext(rfConsulta);
+                Dbms_Xmlgen.setNullHandling(qryCtx, 2);
+                l_payload := dbms_xmlgen.getXML(qryCtx);
+                dbms_xmlgen.closeContext(qryCtx);
+                L_Payload := REPLACE(L_Payload, '<?xml version="1.0"?>');
+                L_Payload := REPLACE(L_Payload, '<ROWSET', '<Seriales');
+                L_Payload := REPLACE(L_Payload, '</ROWSET>', '</Seriales>');
+                L_Payload := REPLACE(L_Payload, '<ROW>', '<Serial>');
+                L_Payload := REPLACE(L_Payload, '</ROW>', '</Serial>');
+                L_Payload := TRIM(L_Payload);
+                
+            END IF;
+            
+        END IF;
+
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+                
+        RETURN L_Payload;
+        
+    END fsbGETxmlserializados;
+    
+END LDCI_PKRESERVAMATERIAL;
 /
 

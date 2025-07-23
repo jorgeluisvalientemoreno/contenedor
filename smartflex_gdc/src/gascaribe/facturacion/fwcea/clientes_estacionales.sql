@@ -122,6 +122,7 @@ BEGIN
   CLIENTES_ESTACIONAL_.tbEntityAttributeName(90200322) := 'CLIENTES_ESTACIONALES@FECHA_INICIAL_VIGENCIA'; 
   CLIENTES_ESTACIONAL_.tbEntityAttributeName(90200323) := 'CLIENTES_ESTACIONALES@FECHA_FINAL_VIGENCIA'; 
   CLIENTES_ESTACIONAL_.tbEntityAttributeName(90200324) := 'CLIENTES_ESTACIONALES@ACTIVO'; 
+  CLIENTES_ESTACIONAL_.tbEntityAttributeName(90200412) := 'CLIENTES_ESTACIONALES@FECHA_INACTIVACION'; 
 END;
 /
 
@@ -828,6 +829,101 @@ ut_trace.trace('**ERROR:'||sqlerrm);
 raise;
 END;
 /
+BEGIN
+
+if (not CLIENTES_ESTACIONAL_.blProcessStatus) then
+ return;
+end if;
+
+CLIENTES_ESTACIONAL_.tb2_0(6):=CLIENTES_ESTACIONAL_.tb0_1(0);
+CLIENTES_ESTACIONAL_.old_tb2_1(6):=90200412;
+CLIENTES_ESTACIONAL_.tb2_1(6):=GE_BOCATALOG.FNUGETIDSEQFROMCATALOG(CLIENTES_ESTACIONAL_.TBENTITYATTRIBUTENAME(CLIENTES_ESTACIONAL_.old_tb2_1(6)), 'ATTRIBUTE', GE_BOSEQUENCE.NEXTGE_ENTITY_ATTRIBUTES);
+CLIENTES_ESTACIONAL_.tb2_1(6):=CLIENTES_ESTACIONAL_.tb2_1(6);
+ut_trace.trace('Actualizar o insertar tabla: GE_ENTITY_ATTRIBUTES fila (6)',1);
+UPDATE GE_ENTITY_ATTRIBUTES SET ENTITY_ID=CLIENTES_ESTACIONAL_.tb2_0(6),
+ENTITY_ATTRIBUTE_ID=CLIENTES_ESTACIONAL_.tb2_1(6),
+INIT_EXPRESSION_ID=null,
+VALID_EXPRESSION_ID=null,
+GI_COMPONENT_ID=null,
+MASK_ID=null,
+REFERENCE=null,
+ATTRIBUTE_TYPE_ID=3,
+TECHNICAL_NAME='FECHA_INACTIVACION'
+,
+SECUENCE_=6,
+KEY_='N'
+,
+IS_NULL='Y'
+,
+DISPLAY_NAME='Fecha de inactivaci贸n'
+,
+VIEWER_DISPLAY='Y'
+,
+PRECISION=null,
+DEFAULT_VALUE=null,
+SCALE=null,
+LENGTH=7,
+COMMENT_=null,
+TAG_ELEMENT=null,
+STATUS='G'
+,
+IS_DESCRIPTION='N'
+,
+IS_LOV_DESCRIPTION='N'
+,
+IS_CHECK_BOX='N'
+,
+CHECKED_VALUE=null,
+UNCHECKED_VALUE=null,
+PROTECTOR_TEXT=null
+ WHERE ENTITY_ATTRIBUTE_ID = CLIENTES_ESTACIONAL_.tb2_1(6);
+if not (sql%found) then
+INSERT INTO GE_ENTITY_ATTRIBUTES(ENTITY_ID,ENTITY_ATTRIBUTE_ID,INIT_EXPRESSION_ID,VALID_EXPRESSION_ID,GI_COMPONENT_ID,MASK_ID,REFERENCE,ATTRIBUTE_TYPE_ID,TECHNICAL_NAME,SECUENCE_,KEY_,IS_NULL,DISPLAY_NAME,VIEWER_DISPLAY,PRECISION,DEFAULT_VALUE,SCALE,LENGTH,COMMENT_,TAG_ELEMENT,STATUS,IS_DESCRIPTION,IS_LOV_DESCRIPTION,IS_CHECK_BOX,CHECKED_VALUE,UNCHECKED_VALUE,PROTECTOR_TEXT) 
+VALUES (CLIENTES_ESTACIONAL_.tb2_0(6),
+CLIENTES_ESTACIONAL_.tb2_1(6),
+null,
+null,
+null,
+null,
+null,
+3,
+'FECHA_INACTIVACION'
+,
+6,
+'N'
+,
+'Y'
+,
+'Fecha de inactivaci贸n'
+,
+'Y'
+,
+null,
+null,
+null,
+7,
+null,
+null,
+'G'
+,
+'N'
+,
+'N'
+,
+'N'
+,
+null,
+null,
+null);
+end if;
+
+exception when others then
+CLIENTES_ESTACIONAL_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
 DECLARE
   nuerr number;
   sberr varchar2(4000);
@@ -841,11 +937,11 @@ end if;
 EXCEPTION
   when ex.CONTROLLED_ERROR then
      Errors.GetError(nuerr, sberr);
-     ut_trace.trace('Error en actualizaci髇 de referencias ' || nuerr || '-' || sberr);
+     ut_trace.trace('Error en actualizaci贸n de referencias ' || nuerr || '-' || sberr);
   when others then
      Errors.setError;
      Errors.GetError(nuerr, sberr);
-     ut_trace.trace('Error en actualizaci髇 de referencias ' || nuerr || '-' || sberr);
+     ut_trace.trace('Error en actualizaci贸n de referencias ' || nuerr || '-' || sberr);
 END;
 /
 

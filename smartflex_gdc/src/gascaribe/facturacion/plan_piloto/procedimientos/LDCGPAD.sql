@@ -11,54 +11,40 @@ create or replace PROCEDURE LDCGPAD(inuProgramacion  in ge_process_schedule.proc
   ============         ===================
   Fecha             Autor             Modificacion
   =========       =========           ====================
+  22/01/2025      LJLB                OSF-3650: se modifica proceso para aplicar pautas tecnicas
   ******************************************************************/
+ csbMT_NAME      VARCHAR2(100) := 'LDCGPAD';
  nuHilos          NUMBER := 1;
  nuLogProceso     ge_log_process.log_process_id%TYPE;
- nutsess          NUMBER;
- sbparuser        VARCHAR2(30);
  nuerror          NUMBER;
  sbError          VARCHAR2(4000);
- nuvaano          NUMBER(4);
- nuvames          NUMBER(2);
- 
- CURSOR cugetContratos IS
- SELECT *
- FROM ldc_contabdi;
+ sbParametros     ge_process_schedule.parameters_%TYPE; 
+ sbCiclo          ge_process_schedule.parameters_%TYPE; 
  
 BEGIN
-  ge_boschedule.AddLogToScheduleProcess(inuProgramacion,nuHilos,nuLogProceso);
-   
-  SELECT USERENV('SESSIONID'), USER, TO_CHAR(SYSDATE, 'YYYY'),TO_CHAR(SYSDATE, 'MM')  
-        INTO nutsess,sbparuser, nuvaano, nuvames
-  FROM dual;
-  ldc_proinsertaestaprog(nuvaano,nuvames,'LDCGPAD','En ejecucion',nutsess,sbparuser);
-  LDC_PKGESTIONABONDECONS.nuIdReporte :=  LDC_PKGESTIONABONDECONS.fnuCrReportHeader;
+  pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+  pkg_gestionprocesosprogramados.prc_agregalogalproceso(inuProgramacion,nuHilos,nuLogProceso);
+  sbParametros := pkg_gestionprocesosprogramados.fsbObtParametrosProceso(inuProgramacion);
   
-  FOR reg IN cugetContratos LOOP
-      nuerror := 0;
-      LDC_PKGESTIONABONDECONS.prGeneraAbonDiferido( REG.CONTRATO,nuerror, sbError);
-      IF nuerror = 0 THEN
-         COMMIT;
-      ELSE
-        LDC_PKGESTIONABONDECONS.nuConsecutivo := LDC_PKGESTIONABONDECONS.nuConsecutivo  + 1;
-        LDC_PKGESTIONABONDECONS.crReportDetail(LDC_PKGESTIONABONDECONS.nuIdReporte,
-                                               REG.CONTRATO,
-                                               sbError,
-                                               'S');
-        ROLLBACK;
-      END IF;
-  END LOOP;
+  pkg_traza.trace(' sbParametros => ' || sbParametros, pkg_traza.cnuNivelTrzDef);
+  sbCiclo := pkg_gestionprocesosprogramados.fsbObtValorParametroProceso (  sbParametros, 'PEFACICL');    
+  pkg_uildcgpad.prcObjeto(to_number(sbCiclo));
   
-  ldc_proactualizaestaprog(nutsess,sbError,'LDCGPAD','OK');
-  ge_boschedule.changelogProcessStatus(nuLogProceso,'F');
+  pkg_gestionprocesosprogramados.prc_actestadologproceso(nuLogProceso,'F');
+  pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
 EXCEPTION
- WHEN OTHERS THEN
-    Errors.setError;
-    Errors.getError(nuerror, sbError);
-    ldc_proactualizaestaprog(nutsess,sbError,'LDCGPAD','con errores');
-    ge_boschedule.changelogProcessStatus(nuLogProceso,'F');
-    RAISE ex.controlled_error;
+    WHEN pkg_error.CONTROLLED_ERROR THEN
+        pkg_error.geterror(nuError,sbError);
+        pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+        pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
+        pkg_gestionprocesosprogramados.prc_actestadologproceso(nuLogProceso,'F');
+        RAISE pkg_error.CONTROLLED_ERROR;
+    WHEN OTHERS THEN
+        pkg_error.setError;
+        pkg_error.geterror(nuError,sbError);
+        pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+        pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+        pkg_gestionprocesosprogramados.prc_actestadologproceso(nuLogProceso,'F');
+        RAISE pkg_error.CONTROLLED_ERROR;
 END LDCGPAD;
-/
-GRANT EXECUTE ON LDCGPAD TO SYSTEM_OBJ_PRIVS_ROLE
 /

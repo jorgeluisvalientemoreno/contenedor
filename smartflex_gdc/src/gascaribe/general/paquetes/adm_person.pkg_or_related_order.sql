@@ -75,7 +75,11 @@ CREATE OR REPLACE PACKAGE adm_person.pkg_or_related_order AS
     );
  
     PROCEDURE prActRegistro( ircRegistro OR_RELATED_ORDER%ROWTYPE);
- 
+
+  --Funcion que retorna orden padre relacionada con al orden Hija
+  FUNCTION fnuObtOrdenPadre(inuOrdenHija NUMBER)
+    RETURN OR_RELATED_ORDER.ORDER_ID%TYPE;
+
 END pkg_or_related_order;
 /
 CREATE OR REPLACE PACKAGE BODY adm_person.pkg_or_related_order AS
@@ -471,7 +475,61 @@ CREATE OR REPLACE PACKAGE BODY adm_person.pkg_or_related_order AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prActRegistro;
- 
+
+  /***************************************************************************
+  Propiedad Intelectual de Gases del Caribe
+  Funcion     : fnuObtOrdenPadre
+  Descripcion : Servicio que retorna orden padre relacionada con al orden Hija
+  Autor       : Jorge Valiente
+  Fecha       : 19-02-2025
+  
+  Parametros de Entrada
+             inuOrdenHija  Orden Hija
+  
+  Parametros de Salida
+             nuOrdenPadre  Orden Padre
+                  
+  Modificaciones  :
+    Fecha               Autor                Modificacion
+  =========           =========          ====================
+  ***************************************************************************/
+  FUNCTION fnuObtOrdenPadre(inuOrdenHija NUMBER)
+    RETURN OR_RELATED_ORDER.ORDER_ID%TYPE IS
+    csbMetodo CONSTANT VARCHAR2(70) := csbSP_NAME || 'fnuObtOrdenPadre';
+    nuError NUMBER;
+    sbError VARCHAR2(4000);
+  
+    nuOrdenPadre NUMBER := NULL;
+  
+    CURSOR cuOrdenPadre IS
+      SELECT tb.order_id
+        FROM OR_RELATED_ORDER tb
+       WHERE RELATED_ORDER_ID = inuOrdenHija;
+  
+  BEGIN
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+  
+    OPEN cuOrdenPadre;
+    FETCH cuOrdenPadre
+      INTO nuOrdenPadre;
+    CLOSE cuOrdenPadre;
+  
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+    RETURN nuOrdenPadre;
+  EXCEPTION
+    WHEN pkg_error.Controlled_Error THEN
+      pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+      pkg_Error.getError(nuError, sbError);
+      pkg_traza.trace('Error => ' || sbError, csbNivelTraza);
+      RETURN nuOrdenPadre;
+    WHEN OTHERS THEN
+      pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
+      pkg_error.setError;
+      pkg_Error.getError(nuError, sbError);
+      pkg_traza.trace('Error => ' || sbError, csbNivelTraza);
+      RETURN nuOrdenPadre;
+  END fnuObtOrdenPadre;
+
 END pkg_or_related_order;
 /
 BEGIN

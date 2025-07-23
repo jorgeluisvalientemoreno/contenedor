@@ -12,7 +12,8 @@ create or replace package adm_person.pkg_utilidades IS
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso    	Descripcion
-    Adrianavg   30/04/2024  OSF-2645    Quitar permisos al usuario INNOVACION en prAplicarPermisos y prCrearSinonimos    
+    Adrianavg   30/04/2024  OSF-2645    Quitar permisos al usuario INNOVACION en prAplicarPermisos y prCrearSinonimos
+    jpinedc     06/02/2025  OSF-3940    Se modifica prCrearSinonimos
   ***************************************************************************/
 
   PROCEDURE prCrearSinonimos( isbObjeto   IN  VARCHAR2,
@@ -89,6 +90,7 @@ create or replace package adm_person.pkg_utilidades IS
   ***************************************************************************/
 END pkg_utilidades;
 /
+
 create or replace package body     adm_person.pkg_utilidades IS
   /***************************************************************************
     Propiedad Intelectual de Gases del Caribe
@@ -125,6 +127,8 @@ create or replace package body     adm_person.pkg_utilidades IS
 	jsoto		23/08/2024  OSF-3137  Se obtiene el tipo de objeto para condicionar a que si esquema es open
 									  y el tipo de objeto es diferente de TABLA O VISTA no se cree el sinónimo
 									  en personalizaciones.
+    jpinedc     06/02/2025  OSF-3940  Se agrega la creación de sinónimos para objetos del esquema MULTIEMPRESA
+									  
   ***************************************************************************/
 
     sbTipoObje      VARCHAR2(4000);
@@ -164,6 +168,12 @@ create or replace package body     adm_person.pkg_utilidades IS
     END IF;
 
     IF isbEsquema = 'INNOVACION' THEN
+        execute immediate 'CREATE OR REPLACE SYNONYM open.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto;
+        execute immediate 'CREATE OR REPLACE SYNONYM personalizaciones.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto;
+        execute immediate 'CREATE OR REPLACE SYNONYM adm_person.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto;
+    END IF;
+    
+    IF isbEsquema = 'MULTIEMPRESA' THEN
         execute immediate 'CREATE OR REPLACE SYNONYM open.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto;
         execute immediate 'CREATE OR REPLACE SYNONYM personalizaciones.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto;
         execute immediate 'CREATE OR REPLACE SYNONYM adm_person.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto;
@@ -287,6 +297,8 @@ create or replace package body     adm_person.pkg_utilidades IS
 
 END pkg_utilidades;
 /
+
 GRANT EXECUTE ON adm_person.pkg_utilidades TO SYSTEM_OBJ_PRIVS_ROLE;
 GRANT EXECUTE ON adm_person.pkg_utilidades TO PERSONALIZACIONES;
 /
+

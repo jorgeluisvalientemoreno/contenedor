@@ -14,13 +14,14 @@ CREATE OR REPLACE PACKAGE "LDC_BOVENTASFNB" AS
    Historia de Modificaciones
      Fecha             Autor                Modificacion
    =========         =========            ====================
-   05-06-2015      ABaldovino ARA 6798    Se modifica el metodo <<prEntregaArticulos>>
-   10-02-2015       Llozada               Se modifica el metodo <<prUpdateFNB_SVI>>
-   10/Oct/2022     Edmundo Lara           OSF-557: Se quita la validacion de que un contrato no permita crear un nuevo producto
+   05-06-2015       ABaldovino ARA 6798     Se modifica el metodo <<prEntregaArticulos>>
+   10-02-2015       Llozada                 Se modifica el metodo <<prUpdateFNB_SVI>>
+   10/Oct/2022      Edmundo Lara            OSF-557: Se quita la validacion de que un contrato no permita crear un nuevo producto
                                                    si ya tiene creado uno en los servicios;
                                                    7056 Brilla Promigas
                                                    7055 Brilla GDCA
                                                    7053 Brilla Seguros.
+    10/07/2024      jpinedc                 OSF-2204: Se modifica prMultaMalaAsesoria
   **************************************************************************/
 
   -- Obtiene la Version actual del Paquete
@@ -229,6 +230,7 @@ CREATE OR REPLACE PACKAGE "LDC_BOVENTASFNB" AS
 
 END LDC_BOVENTASFNB;
 /
+
 CREATE OR REPLACE PACKAGE BODY "LDC_BOVENTASFNB" AS
   /**************************************************************************
    Propiedad intelectual de Gases de Occidente.
@@ -1649,9 +1651,11 @@ EXCEPTION
 
   Historial de Modificaciones
   =========================================================================
-     Fecha                Autor              Descripcion
-  17-01-2014           Sayra Ocoro         Se CREA la logica para un objeto de legalizacion
-                                           que soluciona la NC 2459_2
+    Fecha               Autor               Descripcion
+    17-01-2014          Sayra Ocoro         Se CREA la logica para un objeto de legalizacion
+                                            que soluciona la NC 2459_2
+    10/07/2024          jpinedc             OSF-2204: Se modifca llamado a api_registernovelty
+                                            agregando onuOrdenNovedad
    ****************************************************************/
   procedure prMultaMalaAsesoria is
 
@@ -1820,7 +1824,7 @@ EXCEPTION
                  idtDate := SYSDATE;
                  nuOperatingUnitId := pkg_bcsolicitudes.fnuGetPuntoVenta(nusolicitudvta);
                  pkg_traza.trace('nuOperatingUnitId => '||nuOperatingUnitId, cnuNVLTRC);
-				 api_registernovelty(nuOperatingUnitId,nuMalaAsesoria,NULL,NULL,onuValue,NULL,nuIdComisionVenta,'Multa por Mala Asesoria','N',onuErrorCode,osbErrorMessage);
+				 api_registernovelty (nuOperatingUnitId,nuMalaAsesoria,NULL,NULL,onuValue,NULL,nuIdComisionVenta,'Multa por Mala Asesoria','N',nuOrdenNovedad,onuErrorCode,osbErrorMessage);
 				 if (onuErrorCode <> 0) then
                       rollback;
           			  pkg_error.setErrorMessage(onuErrorCode, osbErrorMessage);
@@ -2043,3 +2047,4 @@ EXCEPTION
 
 END LDC_BOVENTASFNB;
 /
+

@@ -12,6 +12,9 @@ CREATE OR REPLACE PACKAGE personalizaciones.pkg_bocambio_de_uso AS
   --Servicio para obtener la SubCategoria del lado de manzana configurada en el segmento de la direccion
   FUNCTION fnuObtieneSubCategoria(inuMotivo NUMBER) RETURN number;
 
+  -- Servicio para obtener la respuesta si requiere o no visita a campo
+  FUNCTION fnuRequiereVisitaCampo(inuPACKAGE_ID NUMBER) RETURN NUMBER;
+
 END pkg_bocambio_de_uso;
 /
 CREATE OR REPLACE PACKAGE BODY personalizaciones.pkg_bocambio_de_uso AS
@@ -28,7 +31,7 @@ CREATE OR REPLACE PACKAGE BODY personalizaciones.pkg_bocambio_de_uso AS
   
     Parametros
       Entrada
-        inuDireccion        Codigo Motivo
+        inuMotivo           Codigo Motivo
         
       Salida
         nuSubcategoria      Codigo de SubCategoria
@@ -155,6 +158,101 @@ CREATE OR REPLACE PACKAGE BODY personalizaciones.pkg_bocambio_de_uso AS
       pkg_traza.trace('Error => ' || sbError, csbNivelTraza);
       RETURN null;
   END fnuObtieneSubCategoria;
+
+  /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuRequiereVisitaCampo
+    Descripcion     : Servicio para obtener la respuesta si requiere o no visita a campo
+    Autor           : Jorge Valiente
+    Fecha           : 29-11-2024
+  
+    Parametros
+      Entrada
+        inuPACKAGE_ID        Codigo solicitud
+        
+      Salida
+        nuRealizo_Visita     1 ? Requiere Visita
+                             0 - No Requiere Visita
+  
+    Modificaciones
+    =========================================================
+    Autor       Fecha       Caso       Descripcion
+  ***************************************************************************/
+  FUNCTION fnuRequiereVisitaCampo(inuPackage_Id NUMBER) RETURN NUMBER IS
+    csbMetodo CONSTANT VARCHAR2(70) := csbSP_NAME ||
+                                       'fnuRequiereVisitaCampo';
+    nuError          NUMBER;
+    sbError          VARCHAR2(4000);
+    sbRealizo_Visita VARCHAR2(1);
+    nuRealizo_Visita NUMBER := 1;
+  
+    nuMedioRecepcion       NUMBER;
+    nuExisteMedioRecepcion NUMBER;
+    nuExisteCategoria      NUMBER;
+    nuMotivo               NUMBER;
+    nuCategoriaMotivo      NUMBER;
+  
+    sbREALIZO_VISITA_EN_CAMPO VARCHAR2(50) := 'REALIZO_VISITA_EN_CAMPO';
+  
+  BEGIN
+  
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+  
+    pkg_traza.trace('Solicitud: ' || inuPackage_Id, csbNivelTraza);
+  
+    nuMotivo := pkg_bcsolicitudes.fnuObtenerMotivoDeSolicitud(inuPackage_Id);
+    pkg_traza.trace('Motivo: ' || nuMotivo, csbNivelTraza);
+  
+    nuCategoriaMotivo := pkg_bcsolicitudes.fnuObtCategoriaDeMotivo(nuMotivo);
+    pkg_traza.trace('Categoria Inicial: ' || nuCategoriaMotivo,
+                    csbNivelTraza);
+  
+    --Establece si existe el valor en el parametro
+    nuExisteCategoria := pkg_parametros.fnuValidaSiExisteCadena('VALIDA_CATEG_CAMBIO_USO',
+                                                                ',',
+                                                                nuCategoriaMotivo);
+  
+    IF nuExisteCategoria > 0 THEN
+    
+      nuMedioRecepcion := pkg_bcsolicitudes.fnuGetMedioRecepcion(inuPackage_Id);
+      pkg_traza.trace('Medio de Recepcion: ' || nuMedioRecepcion,
+                      csbNivelTraza);
+    
+      nuExisteMedioRecepcion := pkg_parametros.fnuValidaSiExisteCadena('MEDIO_RECEPCION_VALIDA_VISITA_CAMPO',
+                                                                       ',',
+                                                                       nuMedioRecepcion);
+      IF nuExisteMedioRecepcion > 0 THEN
+      
+        sbRealizo_Visita := pkg_info_adicional_solicitud.fsbObtVALOR(inuPackage_Id,
+                                                                     sbREALIZO_VISITA_EN_CAMPO);
+        pkg_traza.trace('Realizo visita: ' || sbRealizo_Visita,
+                        csbNivelTraza);
+        IF sbRealizo_Visita = 'S' THEN
+          nuRealizo_Visita := 0;
+        END IF; --Fin de IF sbRealizo_Visita <> 'N' THEN
+      
+      END IF; --Fin de validacion IF nuExisteMedioRecepcion > 0 THEN
+    
+    END IF; --Fin de validacion IF nuExisteCategoria > 0 THEN
+  
+    pkg_traza.trace('Valor retornado: ' || nuRealizo_Visita, csbNivelTraza);
+  
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+    RETURN nuRealizo_Visita;
+  
+  EXCEPTION
+    WHEN pkg_error.Controlled_Error THEN
+      pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+      pkg_Error.getError(nuError, sbError);
+      pkg_traza.trace('sbError => ' || sbError, csbNivelTraza);
+      RAISE pkg_error.Controlled_Error;
+    WHEN OTHERS THEN
+      pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
+      pkg_error.setError;
+      pkg_Error.getError(nuError, sbError);
+      pkg_traza.trace('sbError => ' || sbError, csbNivelTraza);
+      RAISE pkg_error.Controlled_Error;
+  END fnuRequiereVisitaCampo;
 
 END pkg_bocambio_de_uso;
 /

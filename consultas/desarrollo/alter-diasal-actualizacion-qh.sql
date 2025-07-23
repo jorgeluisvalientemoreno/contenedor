@@ -100,3 +100,11 @@ set suscmail = null
 where suscmail is not null 
 
 commit;
+/
+begin
+  dbms_scheduler.disable('ADM_PERSON.JOB_NOTAS_FACTELECGEN');
+  dbms_scheduler.disable('ADM_PERSON.JOB_VENTAS_ELECGEN');
+  dbms_scheduler.disable('ADM_PERSON.JOB_FACTURACION_ELECGEN');
+  dbms_scheduler.disable('ADM_PERSON.JOB_ELIMFACTURACION_ELECGEN');
+end;
+/

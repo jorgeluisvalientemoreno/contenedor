@@ -1,0 +1,30 @@
+declare
+ nuConta  NUMBER;
+ 
+ CURSOR cuExiste(fsbObjeto VARCHAR2) IS
+  SELECT COUNT(1)
+  FROM HOMOLOGACION_SERVICIOS
+  WHERE SERVICIO_ORIGEN = fsbObjeto; 
+  
+BEGIN
+
+	dbms_output.put_line('---- Inicio Insert HOMOLOGACION_SERVICIOS OSF-4480 ----');
+
+	OPEN cuExiste('PKBOBILLPRINTUTILITIES.FSBGENDELIVERYORDER');  
+	FETCH cuExiste INTO nuConta; 
+	CLOSE cuExiste; 
+	
+	IF nuConta = 0 THEN	
+		Insert into HOMOLOGACION_SERVICIOS
+		   (ESQUEMA_ORIGEN, SERVICIO_ORIGEN, DESCRIPCION_ORIGEN, ESQUEMA_DESTINO, SERVICIO_DESTINO, 
+			DESCRIPCION_DESTINO)
+		 Values
+		   ('OPEN', 'PKBOBILLPRINTUTILITIES.FSBGENDELIVERYORDER', 'Obtiene la orden de reparto generada', 
+		    'ADM_PERSON', 'PKG_BOGESTION_FACTURACION.FSBOBTGENERARORDENREPARTO', 'Obtiene la orden de reparto generada');
+		COMMIT;
+	END IF;
+	
+	dbms_output.put_line('---- Fin Insert HOMOLOGACION_SERVICIOS OSF-4480 ----');
+	
+end;
+/

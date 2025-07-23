@@ -12,7 +12,10 @@ cursor cuInvalidos is
 select owner,object_name, 'alter '||decode(object_type,'PACKAGE BODY','PACKAGE',object_type)|| ' ' || owner ||'.'||object_name || ' compile'||decode(object_type,'PACKAGE BODY',' BODY','') COMPILA_OBJETO
   from dba_objects
  where status = 'INVALID'
- and owner in ('OPEN','PERSONALIZACIONES','ADM_PERSON');
+ and owner in ('OPEN','PERSONALIZACIONES','ADM_PERSON','MULTIEMPRESA','HOMOLOGACION','MIGRAGG');
+
+  total_compilados NUMBER; 
+  
 begin
   for reg in cuInvalidos loop 
     begin
@@ -25,6 +28,11 @@ begin
         dbms_output.put_line(reg.owner||'.'||reg.object_name||': '||sqlerrm);
     end;
   end loop;
+  DBMS_OUTPUT.PUT_LINE('Inicia funcion recompilar_sinonimos_invalidos ');
+  total_compilados := sys.recompilar_sinonimos_invalidos;
+  DBMS_OUTPUT.PUT_LINE('Total de sinónimos recompilados: ' || total_compilados);
+
+  
 end;
 /
 

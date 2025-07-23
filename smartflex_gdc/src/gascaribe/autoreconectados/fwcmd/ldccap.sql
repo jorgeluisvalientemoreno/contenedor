@@ -325,7 +325,7 @@ null,
 'Y'
 ,
 99,
-null,
+'C',
 to_date('18-03-2024 07:28:46','DD-MM-YYYY HH24:MI:SS'),
 null);
 

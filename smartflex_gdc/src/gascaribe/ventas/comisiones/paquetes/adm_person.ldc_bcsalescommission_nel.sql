@@ -40,6 +40,7 @@ CREATE OR REPLACE PACKAGE adm_person.LDC_BCSALESCOMMISSION_NEL is
                                                 por PKG_BOGESTION_ORDENES.PRCACTUALIZADIRECCION
                                                 * Se reemplaza DAMO_PACKAGES.FDTGETREQUEST_DATE por
                                                 PKG_BCSOLICITUDES.FDTGETFECHAREGISTRO                                                                                            
+  18/06/2025      jpinedc            OSF-4555: * Se borra csbNitSurtigas
   ******************************************************************/
 
   TYPE RgCommissionRegister IS RECORD(
@@ -261,18 +262,9 @@ CREATE OR REPLACE PACKAGE BODY adm_person.LDC_BCSALESCOMMISSION_NEL is
     csbNivelTraza    CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
 
     /*Variable global*/
-    CSBVERSION CONSTANT varchar2(40) := 'LDC_BCSALESCOMMISSION_NEL_10';
-
-    -- Nit Gaseras Empresas
-    csbNitSurtigas  CONSTANT sistema.sistnitc%type := '890400869-9';
-    csbNitGasCaribe CONSTANT sistema.sistnitc%type := '890101691-2';
+    CSBVERSION CONSTANT varchar2(40) := 'OSF-4555';
 
     csbLDC_CONTRA_SIN_DIGIT_INDEX CONSTANT ld_parameter.value_chain%TYPE := pkg_BCLD_Parameter.fsbObtieneValorCadena('LDC_CONTRA_SIN_DIGIT_INDEX');
-
-    -- Cursor para consultar el NIT de la Empresa
-    CURSOR cuNitEmpresa is
-    select sistnitc from sistema;
-
 	
     gsbProgram           VARCHAR2(2000) := 'GOPCVNEL';	
 	
@@ -698,7 +690,6 @@ CREATE OR REPLACE PACKAGE BODY adm_person.LDC_BCSALESCOMMISSION_NEL is
     dtToday                date := sysdate;
 
     sbPackagesType         varchar2(3000);
-    sbNitEmpresa           sistema.sistnitc%type;
 
     nuTotReg               number;
     nusesion               number;
@@ -777,16 +768,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.LDC_BCSALESCOMMISSION_NEL is
 
         pro_grabalog_comision (nusesion, dtToday, 0, 0, 'Inicia Proceso');
 
-        open cuNitEmpresa;
-        fetch cuNitEmpresa into sbNitEmpresa;
-        close cuNitEmpresa;
-
-        -- TEAM 33: Validacion segun empresa
-        if sbNitEmpresa = csbNitSurtigas or sbNitEmpresa = csbNitGasCaribe then
-          sbPackagesType := pkg_BCLD_Parameter.fsbObtieneValorCadena('ID_SOLIC_VENTA_GAS_CONST');
-        else
-          sbPackagesType := pkg_BCLD_Parameter.fsbObtieneValorCadena('ID_PKG_SOLIC_VENTA_GAS');
-        end if;
+        sbPackagesType := pkg_BCLD_Parameter.fsbObtieneValorCadena('ID_SOLIC_VENTA_GAS_CONST');
 
         --Obtener la fecha de la ultima ejecucion del proceso
         if (dald_parameter.fblexist('FECHA_COM_REG_VENTA') = FALSE) then

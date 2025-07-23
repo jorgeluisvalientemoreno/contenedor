@@ -7,29 +7,42 @@ set timing on
 execute dbms_application_info.set_action('APLICANDO SAO');
 select to_char(sysdate,'yyyy-mm-dd hh:mi:ss p.m.') fecha_inicio from dual;
 
-declare
-  cursor cuInvalidos is
-  select owner,object_type, object_name
-    from dba_objects
-  where status = 'INVALID'
-  and owner in ('OPEN','PERSONALIZACIONES','ADM_PERSON');
+DECLARE
+  CURSOR cuInvalidos IS
+    SELECT  owner, object_type, object_name
+    FROM    dba_objects
+    WHERE   status = 'INVALID'
+    AND     owner IN ('OPEN','PERSONALIZACIONES','ADM_PERSON','MULTIEMPRESA','HOMOLOGACION','MIGRAGG');
 
-  nuCantidad number;
-begin
-  select count(1)
-    into nuCantidad
-    from dba_objects
-   where status = 'INVALID'
-     and owner in ('OPEN','PERSONALIZACIONES','ADM_PERSON');
+  TYPE tytbObjetosInvalidos IS TABLE OF cuInvalidos%ROWTYPE INDEX BY BINARY_INTEGER;
+
+  tbObjetosInvalidos tytbObjetosInvalidos;
+  nuCantidad  NUMBER;
+  nuIndex     BINARY_INTEGER;
+
+BEGIN
+  
+  OPEN cuInvalidos;
+  FETCH cuInvalidos BULK COLLECT INTO tbObjetosInvalidos;
+  CLOSE cuInvalidos;
+
+  nuCantidad := tbObjetosInvalidos.COUNT;
+
   dbms_output.put_line('Hay '||nuCantidad||' objetos invalidos.');
 
-  if nuCantidad > 0 then
+  IF (nuCantidad > 0) THEN
+    
     dbms_output.put_line('OWNER|TIPO|NOMBRE');
-    for reg in cuInvalidos loop 
-      dbms_output.put_line(reg.owner||'|'||reg.object_type||'|'||reg.object_name);
-    end loop;
-  end if;
-end;
+    
+    nuIndex := tbObjetosInvalidos.first;
+    LOOP
+        EXIT WHEN nuIndex IS NULL;
+        dbms_output.put_line(tbObjetosInvalidos(nuIndex).owner||'|'||tbObjetosInvalidos(nuIndex).object_type||'|'||tbObjetosInvalidos(nuIndex).object_name);
+
+        nuIndex := tbObjetosInvalidos.NEXT(nuIndex);
+    END LOOP;
+  END IF;
+END;
 /
 
 select to_char(sysdate,'yyyy-mm-dd hh:mi:ss p.m.') fecha_fin from dual;

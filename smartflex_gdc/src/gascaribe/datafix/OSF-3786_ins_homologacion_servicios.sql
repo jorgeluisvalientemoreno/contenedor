@@ -1,0 +1,48 @@
+DECLARE 
+    
+    nuCant  NUMBER;
+    
+    CURSOR cuExisteReg(isbservicio_origen IN homologacion_servicios.servicio_origen%TYPE,
+                       isbservicio_destino IN homologacion_servicios.servicio_destino%TYPE)
+    IS
+    SELECT COUNT(*)    
+    FROM   homologacion_servicios 
+    WHERE  servicio_origen = isbservicio_origen
+    AND    servicio_destino = isbservicio_destino;    
+
+BEGIN
+    -------1    
+    OPEN cuExisteReg('MO_BOACTIONCREATEPLANWF.PROCESSACTION', 'PKG_BOGESTION_FLUJOS.PRCCREACIONPLANWF');
+    FETCH cuExisteReg INTO nuCant;
+    CLOSE cuExisteReg;
+    
+    IF nuCant = 0 THEN   
+        --MO_BOACTIONCREATEPLANWF.PROCESSACTION
+        Insert into HOMOLOGACION_SERVICIOS (ESQUEMA_ORIGEN,SERVICIO_ORIGEN,DESCRIPCION_ORIGEN,ESQUEMA_DESTINO,SERVICIO_DESTINO,DESCRIPCION_DESTINO,OBSERVACION) values ('OPEN','MO_BOACTIONCREATEPLANWF.PROCESSACTION','Creación de Plan en WF','ADM_PERSON','PKG_BOGESTION_FLUJOS.PRCCREARFLUJO',null,null);
+    ELSE
+        update HOMOLOGACION_SERVICIOS set SERVICIO_DESTINO = 'PKG_BOGESTION_FLUJOS.PRCCREARFLUJO' where servicio_origen = 'MO_BOACTIONCREATEPLANWF.PROCESSACTION' and servicio_destino = 'PKG_BOGESTION_FLUJOS.PRCCREACIONPLANWF';
+    END IF; 
+    
+    -------2    
+    OPEN cuExisteReg('WF_BOCONSTANTS.CNUSUCCESS', 'PKG_BOGESTION_FLUJOS.CNUEXITO');
+    FETCH cuExisteReg INTO nuCant;
+    CLOSE cuExisteReg;
+    
+    IF nuCant = 0 THEN   
+        --WF_BOCONSTANTS.CNUSUCCESS
+        Insert into HOMOLOGACION_SERVICIOS (ESQUEMA_ORIGEN,SERVICIO_ORIGEN,DESCRIPCION_ORIGEN,ESQUEMA_DESTINO,SERVICIO_DESTINO,DESCRIPCION_DESTINO,OBSERVACION) values ('OPEN','WF_BOCONSTANTS.CNUSUCCESS','Constante de exito','ADM_PERSON','PKG_BOGESTION_FLUJOS.CNUEXITO',null,null);
+    END IF;
+    
+    -------3    
+    OPEN cuExisteReg('WF_BOCONSTANTS.CNUFAIL', 'PKG_BOGESTION_FLUJOS.CNUFALLO');
+    FETCH cuExisteReg INTO nuCant;
+    CLOSE cuExisteReg;
+    
+    IF nuCant = 0 THEN   
+        --WF_BOCONSTANTS.CNUFAIL
+        Insert into HOMOLOGACION_SERVICIOS (ESQUEMA_ORIGEN,SERVICIO_ORIGEN,DESCRIPCION_ORIGEN,ESQUEMA_DESTINO,SERVICIO_DESTINO,DESCRIPCION_DESTINO,OBSERVACION) values ('OPEN','WF_BOCONSTANTS.CNUFAIL','Constante de fallo','ADM_PERSON','PKG_BOGESTION_FLUJOS.CNUFALLO',null,null);
+    END IF;
+    
+    COMMIT;
+END;
+/

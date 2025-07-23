@@ -33,6 +33,8 @@ create or replace PROCEDURE adm_person.ldc_creatramitereparacionrp AS
                                           +Cambio el uso de ldc_boutilities.splitstrings x regexp_substr
                                           +Eliminación de variables no utilizadas.
     15/05/20234         Adrianavg         OSF-2673: Se migra del esquema OPEN al esquema ADM_PERSON
+	20/12/2024			jerazomvm		  OSF-3775: 1. Se reemplaza el llamado de ldc_retornacomentotlega por pkg_bcordenes.fsbObtieneComenLega
+													2. Se ajusta el substr del comentario, para que no supere el tamaño de 2000 caracteres.	
   **************************************************************************/
    csbNOMPROCEDIMIENTO          	CONSTANT VARCHAR2(35):= $$PLSQL_UNIT; -- Constantes para el control de la traza
    csbVAL_TRAMITES_NUEVOS_FLUJOS  CONSTANT ld_parameter.value_chain%type := dald_parameter.fsbgetvalue_chain('VAL_TRAMITES_NUEVOS_FLUJOS',NULL) ;
@@ -146,261 +148,291 @@ function fnuValDireccion(inuproducto in pr_product.product_id%type) return numbe
 
    
 BEGIN
-  pkg_traza.trace(csbNOMPROCEDIMIENTO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbINICIO);
-  
-  --Obtener el identificador de la orden  que se encuentra en la instancia
-  nuorden := pkg_bcordenes.fnuobtenerotinstancialegal;
 
-  -- Inicializamos el proceso
-  sbProceso := csbNOMPROCEDIMIENTO||TO_CHAR(SYSDATE,'DDMMYYYYHH24MISS');
+	pkg_traza.trace(csbNOMPROCEDIMIENTO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbINICIO);
   
-  pkg_estaproc.prinsertaestaproc(sbProceso,                          
-                                 NULL
-                                 ); --767
-  nucausalorder := pkg_bcordenes.fnuobtienecausal(nuorden);
+	--Obtener el identificador de la orden  que se encuentra en la instancia
+	nuorden := pkg_bcordenes.fnuobtenerotinstancialegal;
+	pkg_traza.trace('Numero de la Orden:' || nuorden, pkg_traza.cnuNivelTrzDef);
+
+	-- Inicializamos el proceso
+	sbProceso := csbNOMPROCEDIMIENTO||TO_CHAR(SYSDATE,'DDMMYYYYHH24MISS');
   
-  pkg_traza.trace('Numero de la Orden:' || nuorden,pkg_traza.cnuNivelTrzDef);
+	pkg_estaproc.prinsertaestaproc(sbProceso,                          
+								   NULL
+                                   ); --767
+								   
+	nucausalorder := pkg_bcordenes.fnuobtienecausal(nuorden);
+	pkg_traza.trace('nucausalorder:' || nucausalorder, pkg_traza.cnuNivelTrzDef);
 
     --Si el Tipo de Trabajo está definido en el  Parámetro TIPOTRABAJO_OPERARP y la causal es de éxito
     nuExisteOU := 0;
-    sbValorPRCDA := ldc_boordenes.fsbDatoAdicTmpOrden(nuorden,nuCodDatoAdicic,TRIM(sbDatoAdicional));
-    if sbValorPRCDA is not null then
-       nuUnitOperAdddata := to_number(sbValorPRCDA);
-       if pkg_bcunidadoperativa.fblexiste(nuUnitOperAdddata ) then
-          nuExisteOU :=1;
-       else
-          nuExisteOU :=0;
-          sbmensa := 'Proceso termino con errores : La Unidad Operativa [' ||
-                     NUUNITOPERADDDATA ||
-                     '] registrada en el Dato Adicional [' ||
-                     sbDatoAdicional || '] no existe';
-          pkg_error.setErrorMessage(isbMsgErrr => sbmensa); 
+	
+	sbValorPRCDA := ldc_boordenes.fsbDatoAdicTmpOrden(nuorden,nuCodDatoAdicic,TRIM(sbDatoAdicional));
+	pkg_traza.trace('sbValorPRCDA:' || sbValorPRCDA, pkg_traza.cnuNivelTrzDef);
+    
+	if sbValorPRCDA is not null then
+		nuUnitOperAdddata := to_number(sbValorPRCDA);
+       
+		if pkg_bcunidadoperativa.fblexiste(nuUnitOperAdddata ) then
+			nuExisteOU :=1;
+		else
+			nuExisteOU :=0;
+			
+			sbmensa := 'Proceso termino con errores : La Unidad Operativa [' ||
+						NUUNITOPERADDDATA ||
+						'] registrada en el Dato Adicional [' ||
+						sbDatoAdicional || '] no existe';
+						
+			pkg_error.setErrorMessage(isbMsgErrr => sbmensa); 
           
        end if;
-    end if;
+	end if;
+	
     nuTipoTrabajo := pkg_bcordenes.fnuobtienetipotrabajo(nuorden);
+	pkg_traza.trace('nuTipoTrabajo:' || nuTipoTrabajo, pkg_traza.cnuNivelTrzDef);
+	
     select count(1)
-      into nuTipoTrabOperaRP
-      from dual
-     where nuTipoTrabajo in (
-                            SELECT to_number(regexp_substr(sbTipoTrabOperaRP,'[^,]+', 1, LEVEL)) AS vlrColumna
-                              FROM dual
-                           CONNECT BY regexp_substr(sbTipoTrabOperaRP, '[^,]+', 1, LEVEL) IS NOT NULL   
-                            )  
-     ;
+    into nuTipoTrabOperaRP
+    from dual
+    where nuTipoTrabajo in (SELECT to_number(regexp_substr(sbTipoTrabOperaRP,'[^,]+', 1, LEVEL)) AS vlrColumna
+                            FROM dual
+                            CONNECT BY regexp_substr(sbTipoTrabOperaRP, '[^,]+', 1, LEVEL) IS NOT NULL   
+                           );
 
-      nuTipoCausal := pkg_bcordenes.fnuobtieneclasecausal(nucausalorder);
+	nuTipoCausal := pkg_bcordenes.fnuobtieneclasecausal(nucausalorder);
+	pkg_traza.trace('nuTipoCausal:' || nuTipoCausal, pkg_traza.cnuNivelTrzDef);
 
 
-  -- obtenemos el producto y el paquete
-  OPEN cuproducto(nuorden);
-  FETCH cuProducto
-    INTO nuproductid,
-         nucontratoid,
-         nutasktypeid,
-         nupakageid,
-         nucliente,
-         nuunidadoperativa,
-         dtExecFinal --caso: 0000767
-  ;
+	-- obtenemos el producto y el paquete
+	OPEN cuproducto(nuorden);
+	FETCH cuProducto INTO nuproductid,
+						  nucontratoid,
+						  nutasktypeid,
+						  nupakageid,
+						  nucliente,
+						  nuunidadoperativa,
+						  dtExecFinal; --caso: 0000767
 
-  IF cuProducto%NOTFOUND THEN
 
-    sbmensa := 'Proceso termino con errores : ' ||
-               'El cursor cuProducto no arrojo datos con el # de orden' ||
-               to_char(nuorden);
+	IF cuProducto%NOTFOUND THEN
+
+		sbmensa := 'Proceso termino con errores : ' ||
+				   'El cursor cuProducto no arrojo datos con el # de orden' ||
+				   to_char(nuorden);
     
   
-    pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
-                                    isbEstado      => 'OK',
-                                    isbObservacion => sbmensa
-                                    );
+		pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
+										 isbEstado      => 'OK',
+										 isbObservacion => sbmensa
+										 );
                               
      
-    CLOSE cuproducto;
-    pkg_error.setErrorMessage(isbMsgErrr => sbmensa);
+		CLOSE cuproducto;
+		pkg_error.setErrorMessage(isbMsgErrr => sbmensa);
 
-  END IF;
+	END IF;
 
   
-  pkg_traza.trace('Salio cursor cuProducto, nuProductId: ' || nuProductId ||
-                 'nuContratoId:' || 'nuTaskTypeId:' || nuTaskTypeId,pkg_traza.cnuNivelTrzDef);
-  --Inicio caso:0000767
-  -- Se valida si el producto de la orden es apto para generar tramite de rp   
-  IF NUUNITOPERADDDATA is null THEN
-    IF FBLGENERATRAMITEREPARA(nutasktypeid, nuProductId, dtExecFinal) =
-       FALSE THEN      
-      pkg_traza.trace('LDC_CREATRAMITEREPARACIONRP: No genera tramite de RP',pkg_traza.cnuNivelTrzDef);
+	pkg_traza.trace('Salio cursor cuProducto, nuProductId: ' || nuProductId ||
+					'nuContratoId:' || 'nuTaskTypeId:' || nuTaskTypeId,pkg_traza.cnuNivelTrzDef);
+  
+	--Inicio caso:0000767
+	-- Se valida si el producto de la orden es apto para generar tramite de rp   
+	IF NUUNITOPERADDDATA is null THEN
+	
+		IF FBLGENERATRAMITEREPARA(nutasktypeid, nuProductId, dtExecFinal) =
+			FALSE THEN      
+			pkg_traza.trace('LDC_CREATRAMITEREPARACIONRP: No genera tramite de RP',pkg_traza.cnuNivelTrzDef);
       
-      sbmensa := 'OT:' || nuorden ||
-                 '.Usuario vencido no se genera tramite : ';
+			sbmensa := 'OT:' || nuorden ||
+					   '.Usuario vencido no se genera tramite : ';
       
           
-      pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
-                                      isbEstado      => 'OK',
-                                      isbObservacion => sbmensa
-                                     );
+			pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
+											 isbEstado      => 'OK',
+											 isbObservacion => sbmensa
+											 );
 
-      GOTO NoGeneraRp;
-    END IF;
-  END IF;
-  --fin caso:0000767
-  -- Actualizamos las solicitud que se esta legalizando para que no salga como pendiente
-  UPDATE mo_packages m
-     SET m.motive_status_id = 14
-   WHERE m.package_id = nupakageid;
+			GOTO NoGeneraRp;
+		END IF;
+	END IF;
+	
+	--fin caso:0000767
+	-- Actualizamos las solicitud que se esta legalizando para que no salga como pendiente
+	UPDATE mo_packages m
+    SET m.motive_status_id = 14
+	WHERE m.package_id = nupakageid;
 
-  -- Buscamos solicitudes de revisión periodica generadas
-  sbsolicitudes := NULL;
+	-- Buscamos solicitudes de revisión periodica generadas
+	sbsolicitudes := NULL;
 
-  FOR i IN cusolicitudesabiertas(nuproductid) LOOP
-    IF sbsolicitudes IS NULL THEN
-      sbsolicitudes := i.colsolicitud;
-    ELSE
-      sbsolicitudes := sbsolicitudes || ',' || to_char(i.colsolicitud);
-    END IF;
+	FOR i IN cusolicitudesabiertas(nuproductid) LOOP
+		
+		IF sbsolicitudes IS NULL THEN
+			sbsolicitudes := i.colsolicitud;
+		ELSE
+			sbsolicitudes := sbsolicitudes || ',' || to_char(i.colsolicitud);
+		END IF;
 
-  END LOOP;
+	END LOOP;
+	
+	pkg_traza.trace('sbsolicitudes:' || sbsolicitudes, pkg_traza.cnuNivelTrzDef);
 
-  IF TRIM(sbsolicitudes) IS NULL THEN
+	IF TRIM(sbsolicitudes) IS NULL THEN
 
-    -- Obtenemos los datos de la solicitud de visita de verificacion para generar el tramite de defecto critico
-    sbdireccionparseada := NULL;
-    nudireccion := NULL;
-    nulocalidad := NULL;
-    nucategoria := NULL;
-    nusubcategori := NULL;
+		-- Obtenemos los datos de la solicitud de visita de verificacion para generar el tramite de defecto critico
+		sbdireccionparseada := NULL;
+		nudireccion 		:= NULL;
+		nulocalidad 		:= NULL;
+		nucategoria 		:= NULL;
+		nusubcategori 		:= NULL;
  
-    sw := fnuValDireccion(nuproductid);--Retorna cero cuando no encuentra datos.
-    IF sw = 1 THEN
-      nupackageid    := NULL;
-      numotiveid     := NULL;
-      nuerrorcode    := NULL;
-      sberrormessage := NULL;
-      sbcomment      := substr(ldc_retornacomentotlega(nuorden), 1, 2000) ||
-                        dald_parameter.fsbGetValue_Chain('COMENTARIO_REPARACION_PRP') ||
-                        ' AL LEGALIZAR ORDEN : ' || to_char(nuorden) ||
-                        ' CON CAUSAL : ' || to_char(nucausalorder);
+		sw := fnuValDireccion(nuproductid);--Retorna cero cuando no encuentra datos.
+		
+		IF sw = 1 THEN
+			nupackageid    := NULL;
+			numotiveid     := NULL;
+			nuerrorcode    := NULL;
+			sberrormessage := NULL;
+			sbcomment      := substr(pkg_bcordenes.fsbObtieneComenLega(nuorden), 1, 1800) 	|| ' ' || 
+							  dald_parameter.fsbGetValue_Chain('COMENTARIO_REPARACION_PRP') ||
+							  ' AL LEGALIZAR ORDEN: ' || to_char(nuorden) ||
+							  ' CON CAUSAL: ' || to_char(nucausalorder);
+							  
+			pkg_traza.trace('sbcomment:' || sbcomment, pkg_traza.cnuNivelTrzDef);
 
-      numediorecepcion := dald_parameter.fnuGetNumeric_Value('MEDIO_RECEPCION_REPARACION_PRP');
-         
-      sbcomment  := substr(pkg_bcunidadoperativa.fsbgetnombre(nuunidadoperativa) || '-' ||
-                           sbcomment,
-                           1,
-                           1999);
-      nupackageid := LDC_PKGESTIONLEGAORRP.FNUGETSOLIREPA(nuproductid,
-                                                         nucontratoid,
-                                                         nucliente,
-                                                         numediorecepcion,
-                                                         sbcomment,
-                                                         sbdireccionparseada,
-                                                         nudireccion,
-                                                         nulocalidad,
-                                                         nucategoria,
-                                                         nusubcategori,
-                                                         nuerrorcode,
-                                                         sberrormessage);
+			numediorecepcion := dald_parameter.fnuGetNumeric_Value('MEDIO_RECEPCION_REPARACION_PRP');
+			pkg_traza.trace('numediorecepcion:' || numediorecepcion, pkg_traza.cnuNivelTrzDef);
+			 
+			sbcomment  := substr(pkg_bcunidadoperativa.fsbgetnombre(nuunidadoperativa) || ' - ' ||
+							     sbcomment,
+							     1,
+							     1999
+								 );
+			pkg_traza.trace('sbcomment:' || sbcomment, pkg_traza.cnuNivelTrzDef);				   
+							   
+			nupackageid := LDC_PKGESTIONLEGAORRP.FNUGETSOLIREPA(nuproductid,
+																nucontratoid,
+																nucliente,
+																numediorecepcion,
+																sbcomment,
+																sbdireccionparseada,
+																nudireccion,
+																nulocalidad,
+																nucategoria,
+																nusubcategori,
+																nuerrorcode,
+																sberrormessage
+																);
 
-      IF nupackageid IS NULL THEN
-          sbmensa := 'OT:' || nuorden || '.Proceso termino con errores : ' ||
-                  'Error al generar la solicitud de reparacion prp. Codigo error : ' ||
-                  to_char(nuerrorcode) || ' Mensaje de error : ' ||
-                  sberrormessage;
+			IF nupackageid IS NULL THEN
+				sbmensa := 'OT:' || nuorden || '.Proceso termino con errores : ' ||
+						   'Error al generar la solicitud de reparacion prp. Codigo error : ' ||
+						   to_char(nuerrorcode) || ' Mensaje de error : ' ||
+						   sberrormessage;
+						   
+				pkg_traza.trace('sbmensa:' || sbmensa, pkg_traza.cnuNivelTrzDef);
      
-          pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
-                                          isbEstado      => 'OK',
-                                          isbObservacion => sbmensa
-                                         );
+				pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
+												 isbEstado      => 'OK',
+												 isbObservacion => sbmensa
+												 );
                                        
-      ELSE
-         sbflag := ldc_fsbretornaaplicaasigauto(nutasktypeid,
-                                              nucausalorder);
-         IF nvl(sbflag, 'N') = 'S' THEN
-            ldc_procrearegasiunioprevper(nuunidadoperativa,
-                                      nuproductid,
-                                      nutasktypeid,
-                                      nuorden,
-                                      nupackageid);
-        END IF;
-        sbmensa := 'OT:' || nuorden ||
-                  '.Proceso termino Ok. Se genero la solicitud Nro : ' ||
-                  to_char(nupackageid);
-        pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
-                                         isbEstado      => 'OK',
-                                         isbObservacion => sbmensa
-                                        );
-      END IF;
-      --CA 833_1
-      --Se registrará en la tabla LDC_ORDENTRAMITERP la Orden legalizada, Tipo de Trabajo de la orden, 
-      --Causal de legalización de la orden, el Id de la Solicitud Generada y el NUUNITOPERADDDATA (Unidad Operativa del dato adicional)
-      --Se modifica el sitio de la validacion pues dependiendo de la aplicacion de una entrega se aplica este codigo       
-      IF (nuTipoTrabOperaRP > 0 and nuTipoCausal = 1) THEN
-          IF nupackageid is not null THEN
-            if NUUNITOPERADDDATA is not null then
-              insert into LDC_ORDENTRAMITERP
-                (ORDEN, TIPOTRABAJO, CAUSAL, SOLICITUD, UNIDADOPERA)
-              values
-                (nuorden,
-                nuTipoTrabajo,
-                nucausalorder,
-                nupackageid,
-                NUUNITOPERADDDATA);
-            end if;
-          end if;
-      end if;
-    ELSE
-        sbmensa := 'OT:' || nuorden || '.Proceso termino con errores : ' ||
-                   'No se encontraron datos de la solicitud asociada a la orden # ' ||
-                   to_char(nuorden);
+			ELSE
+				sbflag := ldc_fsbretornaaplicaasigauto(nutasktypeid,
+													   nucausalorder
+													   );
+													   
+				IF nvl(sbflag, 'N') = 'S' THEN
+					ldc_procrearegasiunioprevper(nuunidadoperativa,
+												 nuproductid,
+												 nutasktypeid,
+												 nuorden,
+												 nupackageid
+												 );
+				END IF;
+        
+				sbmensa := 'OT:' || nuorden ||
+					   '.Proceso termino Ok. Se genero la solicitud Nro : ' ||
+					    to_char(nupackageid);
+				  
+				pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
+												 isbEstado      => 'OK',
+												 isbObservacion => sbmensa
+												 );
+			END IF;
+      
+			--CA 833_1
+			--Se registrará en la tabla LDC_ORDENTRAMITERP la Orden legalizada, Tipo de Trabajo de la orden, 
+			--Causal de legalización de la orden, el Id de la Solicitud Generada y el NUUNITOPERADDDATA (Unidad Operativa del dato adicional)
+			--Se modifica el sitio de la validacion pues dependiendo de la aplicacion de una entrega se aplica este codigo       
+			IF (nuTipoTrabOperaRP > 0 and nuTipoCausal = 1) THEN
+			
+				IF nupackageid is not null THEN
+				
+					if NUUNITOPERADDDATA is not null then
+						insert into LDC_ORDENTRAMITERP (ORDEN, TIPOTRABAJO, CAUSAL, SOLICITUD, UNIDADOPERA)
+						values (nuorden, nuTipoTrabajo, nucausalorder, nupackageid, NUUNITOPERADDDATA);
+					end if;
+				
+				end if;
+			end if;
+		
+		ELSE
+			sbmensa := 'OT:' || nuorden || '.Proceso termino con errores : ' ||
+					   'No se encontraron datos de la solicitud asociada a la orden # ' ||
+					   to_char(nuorden);
     
-      pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
-                                      isbEstado      => 'OK',
-                                      isbObservacion => sbmensa
-                                     );
+			pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
+											 isbEstado      => 'OK',
+											 isbObservacion => sbmensa
+											 );
 
-    END IF;
-  ELSE
-      sbmensa := 'OT:' || nuorden ||
-                '.Error al generar la solicitud para el producto : ' ||
-                to_char(nuproductid) ||
-                ' Tiene las siguientes solicitudes de revisi?n periodica en estado registradas : ' ||
-                TRIM(sbsolicitudes);
+		END IF;
+	ELSE
+		sbmensa := 'OT:' || nuorden ||
+                   '.Error al generar la solicitud para el producto : ' ||
+				   to_char(nuproductid) ||
+                   ' Tiene las siguientes solicitudes de revisi?n periodica en estado registradas : ' ||
+                   TRIM(sbsolicitudes);
 
         
-      pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
-                                      isbEstado      => 'OK',
-                                      isbObservacion => sbmensa
-                                     );
+		pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
+										 isbEstado      => 'OK',
+										 isbObservacion => sbmensa
+										 );
 
 
-  END IF;
-  <<NoGeneraRp>> --caso:767  
-  pkg_traza.trace(csbNOMPROCEDIMIENTO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN);
+	END IF;
+	
+	<<NoGeneraRp>> --caso:767  
+	
+	pkg_traza.trace(csbNOMPROCEDIMIENTO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN);
 
 EXCEPTION
-
-  WHEN PKG_ERROR.CONTROLLED_ERROR THEN
-    pkg_error.geterror(nuErrorCode, sbmensa);
-    pkg_traza.trace('nuErrorCode:'||nuErrorCode||'-'||sbmensa,pkg_traza.cnuNivelTrzDef);
-    pkg_traza.trace(csbNOMPROCEDIMIENTO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERC);
+	WHEN PKG_ERROR.CONTROLLED_ERROR THEN
+		pkg_error.geterror(nuErrorCode, sbmensa);
+		pkg_traza.trace('nuErrorCode:'||nuErrorCode||'-'||sbmensa,pkg_traza.cnuNivelTrzDef);
+		pkg_traza.trace(csbNOMPROCEDIMIENTO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERC);
    
-    pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
-                                      isbEstado      => 'OK',
-                                      isbObservacion => sbmensa
-                                     );   
-    RAISE PKG_ERROR.CONTROLLED_ERROR;
-  WHEN OTHERS THEN
-    sbmensa := 'Proceso termino con Errores. ' || SQLERRM;    
+		pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
+										 isbEstado      => 'OK',
+										 isbObservacion => sbmensa
+										 );   
+		RAISE PKG_ERROR.CONTROLLED_ERROR;
+	WHEN OTHERS THEN
+		sbmensa := 'Proceso termino con Errores. ' || SQLERRM;    
     
-    pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
-                                     isbEstado      => 'OK',
-                                     isbObservacion => sbmensa
-                                    );                                  
-    pkg_error.seterror;
-    pkg_error.geterror(nuErrorCode, sbmensa);
-    pkg_traza.trace('nuErrorCode:'||nuErrorCode||'-'||sbmensa,pkg_traza.cnuNivelTrzDef);
-    pkg_traza.trace(csbNOMPROCEDIMIENTO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
-    RAISE PKG_ERROR.CONTROLLED_ERROR;
+		pkg_estaproc.prActualizaEstaproc(isbProceso     => sbProceso,
+										 isbEstado      => 'OK',
+										 isbObservacion => sbmensa
+										);                                  
+		pkg_error.seterror;
+		pkg_error.geterror(nuErrorCode, sbmensa);
+		pkg_traza.trace('nuErrorCode:'||nuErrorCode||'-'||sbmensa,pkg_traza.cnuNivelTrzDef);
+		pkg_traza.trace(csbNOMPROCEDIMIENTO,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
+		RAISE PKG_ERROR.CONTROLLED_ERROR;
 
 END LDC_CREATRAMITEREPARACIONRP;
 /

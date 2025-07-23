@@ -8,6 +8,12 @@ CREATE OR REPLACE PACKAGE adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
         Tabla : LDC_ACTAS_APLICA_PROC_OFERT
         Caso  : OSF-2204
         Fecha : 12/07/2024 08:02:38
+        Modificaciones
+        Fecha       Autor       Caso        Descrición
+        17/03/2025  jpinedc     OSF-4123    * Se modifica prInsRegistro
+                                            * Se borran ftbObtRowIdsxCond,
+                                            ftbObtRegistrosxCond, 
+                                            prBorRegistroxCond          
     ***************************************************************************/
     CURSOR cuRegistroRId
     (
@@ -31,147 +37,90 @@ CREATE OR REPLACE PACKAGE adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
         ACTA = inuACTA AND
         PROCEJEC = isbPROCEJEC
         FOR UPDATE NOWAIT;
-     
-    FUNCTION ftbObtRowIdsxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRowIds;
-    FUNCTION ftbObtRegistrosxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRegistros;
+
+    -- Obtiene el registro y el RowID
     FUNCTION frcObtRegistroRId(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2, iblBloquea BOOLEAN DEFAULT FALSE
     ) RETURN cuRegistroRId%ROWTYPE;
  
+    -- Retorna verdadero si existe un registro con la llave primaria
     FUNCTION fblExiste(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
     ) RETURN BOOLEAN;
- 
+
+    -- Eleva mensaje de error si NO existe un registro con la llave primaria 
     PROCEDURE prValExiste(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
     );
  
-    PROCEDURE prinsRegistro( ircRegistro LDC_ACTAS_APLICA_PROC_OFERT%ROWTYPE, oRowId OUT ROWID);
- 
+    -- Inserta un registro en LDC_ACTAS_APLICA_PROC_OFERT
+    PROCEDURE prinsRegistro( ircRegistro LDC_ACTAS_APLICA_PROC_OFERT%ROWTYPE);
+
+    -- Borra el registro que tenga la la llave primaria  
     PROCEDURE prBorRegistro(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
     );
- 
+
+    -- Borra el registro que tenga el RowId   
     PROCEDURE prBorRegistroxRowId(
         iRowId ROWID
     );
  
-    PROCEDURE prBorRegistroxCond(
-        isbCondicion VARCHAR2,
-        inuCantMaxima NUMBER DEFAULT 10
-    );
- 
+    -- Obtiene el valor de la columna NOVGENERA
     FUNCTION fnuObtNOVGENERA(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
         ) RETURN LDC_ACTAS_APLICA_PROC_OFERT.NOVGENERA%TYPE;
- 
+
+    -- Obtiene el valor de la columna TOTAL_NOVE 
     FUNCTION fnuObtTOTAL_NOVE(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
         ) RETURN LDC_ACTAS_APLICA_PROC_OFERT.TOTAL_NOVE%TYPE;
  
+    -- Obtiene el valor de la columna USUARIO
     FUNCTION fsbObtUSUARIO(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
         ) RETURN LDC_ACTAS_APLICA_PROC_OFERT.USUARIO%TYPE;
- 
+
+    -- Obtiene el valor de la columna FECHA
     FUNCTION fdtObtFECHA(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
         ) RETURN LDC_ACTAS_APLICA_PROC_OFERT.FECHA%TYPE;
  
+    -- Actualiza el valor de la columna NOVGENERA
     PROCEDURE prAcNOVGENERA(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2,
         inuNOVGENERA    NUMBER
     );
  
+    -- Actualiza el valor de la columna TOTAL_NOVE
     PROCEDURE prAcTOTAL_NOVE(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2,
         inuTOTAL_NOVE    NUMBER
     );
  
+    -- Actualiza el valor de la columna USUARIO
     PROCEDURE prAcUSUARIO(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2,
         isbUSUARIO    VARCHAR2
     );
  
+    -- Actualiza el valor de la columna FECHA
     PROCEDURE prAcFECHA(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2,
         idtFECHA    DATE
     );
  
+    -- Actualiza las columnas cuyo valor ha cambiado
     PROCEDURE prActRegistro( ircRegistro LDC_ACTAS_APLICA_PROC_OFERT%ROWTYPE);
  
 END PKG_LDC_ACTAS_APLICA_PROC_OFER;
 /
+
 CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
     csbSP_NAME		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.';
     csbNivelTraza    CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
-    FUNCTION ftbObtRowIdsxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRowIds IS
-        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'ftbObtRowIdsxCond';
-        nuError         NUMBER;
-        sbError         VARCHAR2(4000);
-        tbRowIds tytbRowIds;
-        sbSentencia VARCHAR2(32000);
-        crfRowIds sys_refcursor;
-    BEGIN
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-        sbSentencia := 'SELECT tb.ROWID FROM LDC_ACTAS_APLICA_PROC_OFERT tb WHERE ';
-        sbSentencia := sbSentencia ||isbCondicion;
-        OPEN crfRowIds FOR sbSentencia;
-        FETCH crfRowIds BULK COLLECT INTO tbRowIds;
-        CLOSE crfRowIds;
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-        RETURN tbRowIds;
-        EXCEPTION
-            WHEN pkg_error.Controlled_Error THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-            WHEN OTHERS THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-                pkg_error.setError;
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-    END ftbObtRowIdsxCond;
- 
-    FUNCTION ftbObtRegistrosxCond(
-        isbCondicion VARCHAR2
-    ) RETURN tytbRegistros IS
-        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'ftbObtRegistrosxCond';
-        nuError         NUMBER;
-        sbError         VARCHAR2(4000);
-        tbRegistros  tytbRegistros;
-        sbSentencia VARCHAR2(32000);
-        crfRegistros sys_refcursor;
-    BEGIN
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-        sbSentencia := 'SELECT tb.* FROM LDC_ACTAS_APLICA_PROC_OFERT tb WHERE ';
-        sbSentencia := sbSentencia ||isbCondicion;
-        OPEN crfRegistros FOR sbSentencia;
-        FETCH crfRegistros BULK COLLECT INTO tbRegistros;
-        CLOSE crfRegistros;
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-    RETURN tbRegistros;
-        EXCEPTION
-            WHEN pkg_error.Controlled_Error THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-            WHEN OTHERS THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-                pkg_error.setError;
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-    END ftbObtRegistrosxCond;
- 
+
+    -- Obtiene el registro y el RowID
     FUNCTION frcObtRegistroRId(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2, iblBloquea BOOLEAN DEFAULT FALSE
     ) RETURN cuRegistroRId%ROWTYPE IS
@@ -205,7 +154,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END frcObtRegistroRId;
- 
+
+    -- Retorna verdadero si existe un registro con la llave primaria 
     FUNCTION fblExiste(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
     ) RETURN BOOLEAN IS
@@ -232,6 +182,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 RAISE pkg_error.Controlled_Error;
     END fblExiste;
  
+    -- Eleva mensaje de error si NO existe un registro con la llave primaria 
     PROCEDURE prValExiste(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
     ) IS
@@ -257,8 +208,9 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prValExiste;
- 
-    PROCEDURE prInsRegistro( ircRegistro LDC_ACTAS_APLICA_PROC_OFERT%ROWTYPE, oRowId OUT ROWID) IS
+
+    -- Inserta un registro en LDC_ACTAS_APLICA_PROC_OFERT 
+    PROCEDURE prInsRegistro( ircRegistro LDC_ACTAS_APLICA_PROC_OFERT%ROWTYPE ) IS
         csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prInsRegistro';
         nuError         NUMBER;
         sbError         VARCHAR2(4000);
@@ -269,7 +221,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
         )
         VALUES (
             ircRegistro.ACTA,ircRegistro.PROCEJEC,ircRegistro.NOVGENERA,ircRegistro.TOTAL_NOVE,ircRegistro.USUARIO,ircRegistro.FECHA
-        ) RETURNING ROWID INTO oRowId;
+        );
         pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
         EXCEPTION
             WHEN pkg_error.Controlled_Error THEN
@@ -284,7 +236,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prInsRegistro;
- 
+
+    -- Borra el registro que tenga la la llave primaria   
     PROCEDURE prBorRegistro(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
     ) IS
@@ -314,7 +267,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prBorRegistro;
- 
+
+    -- Borra el registro que tenga el RowId    
     PROCEDURE prBorRegistroxRowId(
         iRowId ROWID
     ) IS
@@ -341,43 +295,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prBorRegistroxRowId;
- 
-    PROCEDURE prBorRegistroxCond(
-        isbCondicion VARCHAR2,
-        inuCantMaxima NUMBER DEFAULT 10
-    ) IS
-        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prBorRegistroxCond';
-        nuError         NUMBER;
-        sbError         VARCHAR2(4000);
-        tbRowIds tytbRowIds;
-    BEGIN
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-        IF isbCondicion IS NULL THEN
-            pkg_error.setErrorMessage( isbMsgErrr => 'Debe proporcionarse una condición para el borrado');
-        ELSE
-            tbRowIds := ftbObtRowIdsxCond(isbCondicion);
-            IF tbRowIds.COUNT > inuCantMaxima THEN
-                pkg_error.setErrorMessage( isbMsgErrr => 'Se intentan borrar ['||tbRowIds.COUNT||']inuCantMaxima['||inuCantMaxima||']');
-            ELSE
-                FOR ind IN 1..tbRowIds.COUNT LOOP
-                    prBorRegistroxRowId(tbRowIds(ind));
-                END LOOP;
-            END IF;
-        END IF;
-        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-        EXCEPTION
-            WHEN pkg_error.Controlled_Error THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-            WHEN OTHERS THEN
-                pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-                pkg_error.setError;
-                pkg_Error.getError(nuError,sbError);
-                pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
-                RAISE pkg_error.Controlled_Error;
-    END prBorRegistroxCond;
+
+    -- Obtiene el valor de la columna NOVGENERA
     FUNCTION fnuObtNOVGENERA(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
         ) RETURN LDC_ACTAS_APLICA_PROC_OFERT.NOVGENERA%TYPE
@@ -404,7 +323,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtNOVGENERA;
- 
+
+    -- Obtiene el valor de la columna TOTAL_NOVE  
     FUNCTION fnuObtTOTAL_NOVE(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
         ) RETURN LDC_ACTAS_APLICA_PROC_OFERT.TOTAL_NOVE%TYPE
@@ -431,7 +351,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fnuObtTOTAL_NOVE;
- 
+
+    -- Obtiene el valor de la columna USUARIO 
     FUNCTION fsbObtUSUARIO(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
         ) RETURN LDC_ACTAS_APLICA_PROC_OFERT.USUARIO%TYPE
@@ -458,7 +379,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fsbObtUSUARIO;
- 
+
+    -- Obtiene el valor de la columna FECHA 
     FUNCTION fdtObtFECHA(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2
         ) RETURN LDC_ACTAS_APLICA_PROC_OFERT.FECHA%TYPE
@@ -485,7 +407,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END fdtObtFECHA;
- 
+
+    -- Actualiza el valor de la columna NOVGENERA 
     PROCEDURE prAcNOVGENERA(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2,
         inuNOVGENERA    NUMBER
@@ -517,7 +440,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcNOVGENERA;
- 
+
+    -- Actualiza el valor de la columna TOTAL_NOVE 
     PROCEDURE prAcTOTAL_NOVE(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2,
         inuTOTAL_NOVE    NUMBER
@@ -549,7 +473,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcTOTAL_NOVE;
- 
+
+    -- Actualiza el valor de la columna USUARIO 
     PROCEDURE prAcUSUARIO(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2,
         isbUSUARIO    VARCHAR2
@@ -581,7 +506,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcUSUARIO;
- 
+
+    -- Actualiza el valor de la columna FECHA 
     PROCEDURE prAcFECHA(
         inuACTA    NUMBER,isbPROCEJEC    VARCHAR2,
         idtFECHA    DATE
@@ -737,7 +663,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
                 pkg_traza.trace('sbError => '||sbError, csbNivelTraza );
                 RAISE pkg_error.Controlled_Error;
     END prAcFECHA_RId;
- 
+
+    -- Actualiza las columnas cuyo valor ha cambiado 
     PROCEDURE prActRegistro( ircRegistro LDC_ACTAS_APLICA_PROC_OFERT%ROWTYPE) IS
         csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME||'prActRegistro';
         nuError         NUMBER;
@@ -789,8 +716,10 @@ CREATE OR REPLACE PACKAGE BODY adm_person.PKG_LDC_ACTAS_APLICA_PROC_OFER AS
  
 END PKG_LDC_ACTAS_APLICA_PROC_OFER;
 /
+
 BEGIN
     -- OSF-2204
     pkg_Utilidades.prAplicarPermisos( UPPER('PKG_LDC_ACTAS_APLICA_PROC_OFER'), UPPER('adm_person'));
 END;
 /
+

@@ -1,0 +1,49 @@
+DECLARE
+
+    nuConta NUMBER;
+
+    CURSOR cuDatosGdCa
+    IS
+	SELECT SUBABANC BANCO, SUBACODI SUCURSAL, 'GDCA' EMPRESA
+	FROM SUCUBANC;
+    
+	CURSOR cuExiste (inuBanco IN NUMBER, isbSucursal IN VARCHAR2) 
+	IS
+	SELECT COUNT(*)
+	FROM MULTIEMPRESA.SUCURSAL_BANCARIA
+	WHERE BANCO = inuBanco
+	AND SUCURSAL = isbSucursal;
+    
+    rcDatosGdCa cuDatosGdCa%ROWTYPE;
+    
+BEGIN
+
+
+    FOR rcDatosGdCa IN cuDatosGdCa LOOP
+	
+		OPEN cuExiste(rcDatosGdCa.banco,rcDatosGdCa.sucursal);
+		FETCH cuExiste INTO nuConta;
+		CLOSE cuExiste;
+	
+		IF nuConta = 0 THEN	
+
+			BEGIN
+			
+				INSERT INTO MULTIEMPRESA.SUCURSAL_BANCARIA VALUES rcDatosGdCa;
+				
+				COMMIT;
+
+				--DBMS_OUTPUT.PUT_LINE('INFO:INSERCION EN SUCURSAL_BANCARIA BANCO-SUCURSAL[' || rcDatosGdCa.BANCO||'-'||rcDatosGdCa.SUCURSAL || '][OK]' ); 
+				
+			EXCEPTION
+				WHEN OTHERS THEN
+					DBMS_OUTPUT.PUT_LINE('ERROR:INSERCION EN SUCURSAL_BANCARIA BANCO-SUCURSAL[' || rcDatosGdCa.BANCO||'-'||rcDatosGdCa.SUCURSAL || '][' || SQLERRM || ']' ); 
+					ROLLBACK;
+			END;
+
+		END IF;
+        
+    END LOOP;
+
+END;
+/

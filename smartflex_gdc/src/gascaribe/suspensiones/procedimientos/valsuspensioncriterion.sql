@@ -1,4 +1,4 @@
-CREATE OR REPLACE PROCEDURE ValSuspensionCriterion
+create or replace PROCEDURE ValSuspensionCriterion
 IS
 
      /*****************************************************************
@@ -14,6 +14,14 @@ IS
     Historia de Modificaciones
     Fecha             Autor               Modificacion
     ==========        ==================  ======================================
+	25-11-2024		  jerazomvm				OSF-3646: 1. Se reemplaza los procedimientos ya homologados en
+														 la tabla homologacion_servicios.
+													  2. Se elimina la logica del aplica entrega para 
+														 BSS_CAR_FCF_2002085_3 y BSS_CAR_HJM_2002722_1
+													  3. Se modifica el procedimiento GenerateClosedOrder
+													  4. Se obtiene el plan de facturación y se compara con el
+														 parametro PLAN_FACTU_MEDIDOR_PREPAGO.
+													  5. Se modifica el procedimiento GenerateClosedOrder
     15-07-2019		  HJM CA-200-2722	  Deshabilita la validación del proceso pkbovalidsuspcrit.fboValidateZeroCons
     02-10-2018        FCastro CA-200-2085  El numero de cuentas vencidas obtenido por el servicio
                                            de producto pkboexpiredaccounts.fnuperiodswithexpaccounts
@@ -46,7 +54,10 @@ IS
                                           de cuentas con saldo
     11-04-2012        lgranada.SAO179856  Creacion
     ******************************************************************/
-
+	
+	csbMetodo            CONSTANT VARCHAR2(32)  := $$PLSQL_UNIT;
+    csbNivelTraza        CONSTANT NUMBER(2)     := pkg_traza.cnuNivelTrzDef; 
+    csbInicio   	     CONSTANT VARCHAR2(35) 	:= pkg_traza.csbINICIO;   
 
     -- Registro con informacion del proceso actual
     rcCurrentInstance      pkSuspConnService.tyMemoryVar;
@@ -80,16 +91,24 @@ IS
     nuCurrentRefinan       number;
     -- Numero de cuentas vencidas
     nuAccountsbalance      number:= 0;
+	-- Codigo parametro PLAN_FACTU_MEDIDOR_PREPAGO
+	nuParamPlanMediPrepa	ld_parameter.numeric_value%type;
+	-- Plan De facturación
+	nuPlanFacturacion		servsusc.sesuplfa%TYPE;
+	-- Codigo del error 
+    nuErrorCode         	ge_message.message_id%type;
+	-- Descripción plan de facturacion
+	sbDescriPlanFactura		plansusc.plsudesc%type;
+	-- Mensaje de error 
+    sbErrorMessage     		ge_error_log.description%type;
+
     -- Indicador de encolamiento de suspensiones
-    sbEncolamiento         ld_parameter.value_chain%type;
+    sbEncolamiento         	ld_parameter.value_chain%type;
 
     -- Flag: Determina si el producto debe ser suspendido
-    boSuspendProduct       boolean;
+    boSuspendProduct       	boolean;
 
-    dtCuentaReciente       date; --NLCZ
-
-    csbEntrega2002085          CONSTANT VARCHAR2(100) := 'BSS_CAR_FCF_2002085_3';
-    csbEntrega2002722	CONSTANT VARCHAR2(100) := 'BSS_CAR_HJM_2002722_1';
+    dtCuentaReciente       	date; --NLCZ
 
     /*****************************************************************
     Propiedad intelectual Proyecto PETI.
@@ -103,6 +122,8 @@ IS
 
     Historia de Modificaciones
     Fecha             Autor                 Modificacion
+	25-11-2024		  jerazomvm				OSF-3646: 1. Se reemplaza los procedimientos ya homologados en
+														 la tabla homologacion_servicios.
     31-10-2014        acardenas.NC3484      Creacion
     */
 
@@ -111,6 +132,9 @@ IS
         inuproductId    in      servsusc.sesunuse%type
     )
     IS
+	
+		csbMetodoGeneraClosedOrder       CONSTANT VARCHAR2(70) 	:= csbMetodo || '.GenerateClosedOrder';
+		
         /* Fecha de la utima orden de traza */
         dtTraceOrderDate    date;
         /* Informacion parametrizada para las ordenes de traza */
@@ -133,10 +157,6 @@ IS
         nuItemAmount        OR_order_items.legal_item_amount%type;
         /* Tabla: Datos extraidos de la informacion parametrizada */
         tbTraceOrderData    ut_string.TyTb_String;
-        /* Codigo del error */
-        nuErrorCode         ge_message.message_id%type;
-        /* Mensaje de error */
-        sbErrorMessage     ge_error_log.description%type;
 
         CURSOR cuLastDateOrder
         (
@@ -155,35 +175,38 @@ IS
 
     BEGIN
     --{
-        ut_trace.Trace('Inicio ValSuspensionCriterion.GenerateClosedOrder',4);
-        ut_trace.Trace('Producto['||inuProductId||']',5);
+	
+		pkg_traza.trace(csbMetodoGeneraClosedOrder, csbNivelTraza, csbInicio);
+		
+        pkg_traza.Trace('Producto['||inuProductId||']',csbNivelTraza);
 
         /* Se obtiene la informacion de la orden de traza del valor del parametro LDC_ORDEN_TRAZA_SUSP*/
-        sbTraceOrderData := dald_parameter.fsbGetValue_Chain('LDC_ORDEN_TRAZA_SUSP');
+        sbTraceOrderData := pkg_bcld_parameter.fsbObtieneValorCadena('LDC_ORDEN_TRAZA_SUSP');
         ut_string.ExtString(sbTraceOrderData,'|',tbTraceOrderData);
+		pkg_traza.trace('sbTraceOrderData: ' || sbTraceOrderData, csbNivelTraza); 
 
         /* Extrae informacion de la actividad de traza */
         if(tbTraceOrderData.EXISTS(1)) then
             nuTraceActivity := to_number(tbTraceOrderData(1));
-            ut_trace.Trace('Actividad de traza['||nuTraceActivity||']',5);
+            pkg_traza.Trace('Actividad de traza['||nuTraceActivity||']', csbNivelTraza);
         end if;
 
         /* Extrae informacion de la unidad operativa */
         if(tbTraceOrderData.EXISTS(2)) then
             nuOperatingUnit := to_number(tbTraceOrderData(2));
-            ut_trace.Trace('Unidad Operativa['||nuOperatingUnit||']',5);
+            pkg_traza.Trace('Unidad Operativa['||nuOperatingUnit||']', csbNivelTraza);
         end if;
 
         /* Extrae informacion de la persona */
         if(tbTraceOrderData.EXISTS(3)) then
             nuPersonId := to_number(tbTraceOrderData(3));
-            ut_trace.Trace('Persona que Legaliza['||nuPersonId||']',5);
+            pkg_traza.Trace('Persona que Legaliza['||nuPersonId||']', csbNivelTraza);
         end if;
 
         /* Extrae informacion de la causal */
         if(tbTraceOrderData.EXISTS(4)) then
             nuCausalId := to_number(tbTraceOrderData(4));
-            ut_trace.Trace('Causal de Legalizacion['||nuCausalId||']',5);
+            pkg_traza.Trace('Causal de Legalizacion['||nuCausalId||']', csbNivelTraza);
         end if;
 
         -- Verifica si el CURSOR esta abierto
@@ -196,101 +219,134 @@ IS
         fetch   cuLastDateOrder INTO dtTraceOrderDate;
         close   cuLastDateOrder;
 
-        ut_trace.Trace('Fecha de la ultima orden de traza['||dtTraceOrderDate||']',5);
+        pkg_traza.Trace('Fecha de la ultima orden de traza['||dtTraceOrderDate||']', csbNivelTraza);
 
         /* Si no existe orden de traza para el producto, o ya han transcurridos 30 dias
            desde la ultima orden generada. Crea la orden cerrada */
-        if (dtTraceOrderDate is null) OR ((sysdate - dtTraceOrderDate) >= 30)
-        then
+        if (dtTraceOrderDate is null) OR ((sysdate - dtTraceOrderDate) >= 30) then
             /* Obtiene la direccion de instalacion del producto */
-            nuAddressId := dapr_product.fnuGetAddress_Id(inuProductId);
-            ut_trace.Trace('Direccion Instalacion Producto['||nuAddressId||']',5);
+            nuAddressId := pkg_bcproducto.fnuIdDireccInstalacion(inuProductId);
+            pkg_traza.Trace('Direccion Instalacion Producto['||nuAddressId||']', csbNivelTraza);
 
             -- Establece cantidad a legalizar dependiendo de la clase de causal
-            nuClassCausal   :=  dage_causal.fnugetclass_causal_id(nuCausalId);
+            nuClassCausal   :=  pkg_bcordenes.fnuObtieneClaseCausal(nuCausalId);
+			pkg_traza.trace('nuClassCausal: ' || nuClassCausal, csbNivelTraza); 
 
             if  nuClassCausal = ge_boconstants.cnuTRUE then
                 nuItemAmount := ge_boconstants.cnuTRUE;
             else
                 nuItemAmount := ge_boconstants.cnuFALSE;
             END if;
+			pkg_traza.trace('nuItemAmount: ' || nuItemAmount, csbNivelTraza); 
 
             -- se llama al metodo encargado de validar los datos para la
             -- creacion de la orden de traza.
             or_boorder.ValidCloseOrderData
             (
-                 inuOperUnitId=>nuOperatingUnit,
-                 inuActivity=>nuTraceActivity,
-                 inuAddressId=>nuAddressId,
-                 idtFinishDate=>sysdate,
-                 inuItemAmount=>nuItemAmount,
-                 inuRefValue=>null,
-                 inuCausal=>nuCausalId,
-                 inuRelationType=>null,
-                 ionuOrderId=>nuOrderId,
-                 inuOrderRelaId=>null,
-                 inuCommentTypeId=>null,
-                 isbComment=>null,
-                 inuPersonId=>nuPersonId
+                 inuOperUnitId		=> nuOperatingUnit,
+                 inuActivity		=> nuTraceActivity,
+                 inuAddressId		=> nuAddressId,
+                 idtFinishDate		=> sysdate,
+                 inuItemAmount		=> nuItemAmount,
+                 inuRefValue		=> null,
+                 inuCausal			=> nuCausalId,
+                 inuRelationType	=> null,
+                 ionuOrderId		=> nuOrderId,
+                 inuOrderRelaId		=> null,
+                 inuCommentTypeId	=> null,
+                 isbComment			=> null,
+                 inuPersonId		=> nuPersonId
             );
 
             -- Se crea la orden de traza cerrada.
             or_boorder.CloseOrderWithProduct
             (
-                 inuOperUnitId=>nuOperatingUnit,
-                 inuActivity=>nuTraceActivity,
-                 inuAddressId=>nuAddressId,
-                 idtFinishDate=>sysdate,
-                 inuItemAmount=>nuItemAmount,
-                 inuRefValue=>null,
-                 inuCausalId=>nuCausalId,
-                 inuRelationType=>null,
-                 ionuOrderId=>nuOrderId,
-                 inuOrderRelaId=>null,
-                 inuCommentTypeId=>null,
-                 isbComment=>null,
-                 inuPersonId=>nuPersonId,
-                 inuProductId => inuProductId
+                 inuOperUnitId		=> nuOperatingUnit,
+                 inuActivity		=> nuTraceActivity,
+                 inuAddressId		=> nuAddressId,
+                 idtFinishDate		=> sysdate,
+                 inuItemAmount		=> nuItemAmount,
+                 inuRefValue		=> null,
+                 inuCausalId		=> nuCausalId,
+                 inuRelationType	=> null,
+                 ionuOrderId		=> nuOrderId,
+                 inuOrderRelaId		=> null,
+                 inuCommentTypeId	=> null,
+                 isbComment			=> null,
+                 inuPersonId		=> nuPersonId,
+                 inuProductId 		=> inuProductId
             );
 
-            ut_trace.Trace('Orden de Traza['||nuOrderId||']',5);
+            pkg_traza.Trace('Orden de Traza['||nuOrderId||']', csbNivelTraza);
 
             /* Realiza persistencia en base de datos */
             pkgeneralservices.committransaction;
 
         END if;
 
-        ut_trace.Trace('Fin ValSuspensionCriterion.GenerateClosedOrder',4);
+        pkg_traza.trace(csbMetodoGeneraClosedOrder, csbNivelTraza, pkg_traza.csbFIN);
 
     EXCEPTION
-        when LOGIN_DENIED OR pkConstante.exERROR_LEVEL2 OR ex.CONTROLLED_ERROR then
-            raise;
+        when LOGIN_DENIED OR pkConstante.exERROR_LEVEL2 OR pkg_error.CONTROLLED_ERROR then
+			pkg_error.setError;
+			pkg_Error.getError(nuErrorCode, sbErrorMessage);
+			pkg_traza.trace('nuErrorCode: ' || nuErrorCode || ' sbErrorMessage: ' || sbErrorMessage, csbNivelTraza);
+			pkg_traza.trace(csbMetodoGeneraClosedOrder, csbNivelTraza, pkg_traza.csbFIN_ERC); 
+            raise pkg_error.CONTROLLED_ERROR;
         when OTHERS then
-            Errors.SetError;
-            raise ex.CONTROLLED_ERROR;
+            pkg_Error.SetError;
+			pkg_Error.getError(nuErrorCode, sbErrorMessage);
+			pkg_traza.trace('nuErrorCode: ' || nuErrorCode || ' sbErrorMessage: ' || sbErrorMessage, csbNivelTraza);
+			pkg_traza.trace(csbMetodoGeneraClosedOrder, csbNivelTraza, pkg_traza.csbFIN_ERR);
+            raise pkg_error.CONTROLLED_ERROR;
     END GenerateClosedOrder;
 
 BEGIN
 
-    ut_trace.trace('Inicio Procedimiento ValSuspensionCriterion', 5);
+	pkg_traza.trace(csbMetodo, csbNivelTraza, csbInicio);
+
+    pkg_traza.trace('Inicio Procedimiento ValSuspensionCriterion', csbNivelTraza);
 
     -- Obtiene los datos de la instancia actual a procesar
     rcCurrentInstance := pkSuspConnService.frcGetInstanceData;
 
     -- Obtiene el identificador del Producto
     nuNumeServ := rcCurrentInstance.nuNumeServ;
+	pkg_traza.trace('nuNumeServ: ' || nuNumeServ, csbNivelTraza); 
+	
+	-- Obtiene el plan de facturación del producto
+	nuPlanFacturacion	:= pkg_bcproducto.fnuPlanFacturacion(nuNumeServ);
+	pkg_traza.trace('nuPlanFacturacion: ' || nuPlanFacturacion, csbNivelTraza); 
+	
+	-- Obtiene el valor del parametro PLAN_FACTU_MEDIDOR_PREPAGO
+	nuParamPlanMediPrepa := pkg_bcld_parameter.fnuObtieneValorNumerico('PLAN_FACTU_MEDIDOR_PREPAGO');
+	pkg_traza.trace('nuParamPlanMediPrepa: ' || nuParamPlanMediPrepa, csbNivelTraza); 
+	
+	-- Si el plan de facturación del producto es igual al del parametro PLAN_FACTU_MEDIDOR_PREPAGO
+	IF (nuPlanFacturacion = nuParamPlanMediPrepa) THEN
+		pkg_traza.trace('Fin Procedimiento ValSuspensionCriterion - No Suspender Producto por plan de facturación', csbNivelTraza);
+		
+		sbDescriPlanFactura := pkg_plansusc.fsbObtDescripcion(nuPlanFacturacion);
+		pkg_traza.trace('sbDescriPlanFactura: ' || sbDescriPlanFactura, csbNivelTraza); 
+		
+        pkg_error.setErrorMessage(2741, 'No es posible suspender el producto ['||nuNumeServ||'] perteneciente al plan de facturación ['||nuPlanFacturacion||'] - ['||sbDescriPlanFactura||']');
+	END IF;
 
     -- Obtiene la Categoria del Producto
-    nuCategory := pr_bosuspendcriterions.fnuGetServiceCategory (nuNumeServ);
+    nuCategory := pkg_bcproducto.FNUCATEGORIA(nuNumeServ);
+	pkg_traza.trace('nuCategory: ' || nuCategory, csbNivelTraza); 
 
     -- Obtiene la SubCategoria del Producto
-    nuSubCategory := pr_bosuspendcriterions.fnuGetServiceSubCateg (nuNumeServ);
+    nuSubCategory := pkg_bcproducto.fnuSubCategoria(nuNumeServ);
+	pkg_traza.trace('nuSubCategory: ' || nuSubCategory, csbNivelTraza); 
 
     -- Obtiene el Estado de Corte del Producto
-    nuCutStatus := pr_bosuspendcriterions.fnuGetServiceCutState (nuNumeServ);
+    nuCutStatus := pkg_bcproducto.fnuEstadoCorte(nuNumeServ);
+	pkg_traza.trace('nuCutStatus: ' || nuCutStatus, csbNivelTraza); 
 
     -- Obtiene el Ciclo de Facturacion del Producto
-    nuBillCycle := pr_bosuspendcriterions.fnuGetServiceBillCycle (nuNumeServ);
+    nuBillCycle := pkg_bcproducto.fnuCicloFacturacion(nuNumeServ);
+	pkg_traza.trace('nuBillCycle: ' || nuBillCycle, csbNivelTraza); 
 
     -- Obtiene el Departamento asociado a la direccion del producto
     nuDepartment := pr_bosuspendcriterions.fnuGetProductDepartmen (nuNumeServ);
@@ -299,14 +355,16 @@ BEGIN
     if nuDepartment IS null then
        nuDepartment := 0;
     END if;
+	pkg_traza.trace('nuDepartment: ' || nuDepartment, csbNivelTraza); 
 
     -- Obtiene la Localidad asociada a la direccion del producto
-    nuLocality := pr_bosuspendcriterions.fnuGetProductLocality (nuNumeServ);
+	nuLocality := pkg_bcproducto.fnuObtenerLocalidad(nuNumeServ);
 
     -- Si no existe Localidad asigna por defecto 0
     if nuLocality IS null then
        nuLocality := 0;
     END if;
+	pkg_traza.trace('nuLocality: ' || nuLocality, csbNivelTraza); 
 
     -- Obtiene el Barrio asociado a la direccion del producto
     nuNeighborthood := pr_bosuspendcriterions.fnuGetProductNeighbort (nuNumeServ);
@@ -315,6 +373,7 @@ BEGIN
     if nuNeighborthood IS null then
        nuNeighborthood := 0;
     END if;
+	pkg_traza.trace('nuNeighborthood: ' || nuNeighborthood, csbNivelTraza); 
 
     -- Obtiene el Sector operativo asociado a la localidad del producto
     nuOperatingSector := pr_bosuspendcriterions.fnuGetProductOperSect (nuNumeServ);
@@ -323,36 +382,36 @@ BEGIN
     if nuOperatingSector IS null then
        nuOperatingSector := 0;
     END if;
+	pkg_traza.trace('nuOperatingSector: ' || nuOperatingSector, csbNivelTraza); 
 
     -- Obtiene el Estado del producto
-    nuProductStatus := pr_bosuspendcriterions.fnuGetProductStatus (nuNumeServ);
+    nuProductStatus := pkg_bcproducto.fnuEstadoProducto(nuNumeServ);
+	pkg_traza.trace('nuProductStatus: ' || nuProductStatus, csbNivelTraza); 
 
     -- Obtiene la Deuda corriente asociada al Producto
     nuProductBalance := pr_bosuspendcriterions.fnuGetProductBalance (nuNumeServ);
+	pkg_traza.trace('nuProductBalance: ' || nuProductBalance, csbNivelTraza); 
 
     -- Obtiene la Deuda Vencida asociada al Producto
     nuProductExpBalance := pr_bosuspendcriterions.fnuGetProductExpBalanc (nuNumeServ);
+	pkg_traza.trace('nuProductExpBalance: ' || nuProductExpBalance, csbNivelTraza); 
 
     -- Obtiene el Estado Financiero del Producto
-    sbFinancialStatus := pr_bosuspendcriterions.fsbGetFinancialStatus (nuNumeServ);
+    sbFinancialStatus := pkg_bcproducto.fsbEstadoFinanciero(nuNumeServ);
+	pkg_traza.trace('sbFinancialStatus: ' || sbFinancialStatus, csbNivelTraza); 
 
     -- Obtiene el indicador de refinanciacion con saldo del producto
     nuCurrentRefinan :=  pkboValidSuspCrit.fnuCurrentRefinan(nuNumeServ);
+	pkg_traza.trace('nuCurrentRefinan: ' || nuCurrentRefinan, csbNivelTraza); 
 
     -- Obtiene el numero de periodos del producto con al menos una cuenta vencida
-    -- CA 200-2085
-    IF OPEN.fblAplicaEntrega(csbEntrega2002085) THEN
-       nuAccountsbalance := pkbovalidsuspcrit.fnuNroCuentasVenc(nuNumeServ);
-    ELSE
-       nuAccountsbalance := pkboexpiredaccounts.fnuperiodswithexpaccounts(nuNumeServ);
-    END IF;
-
-    -- agordillo RQ1004 PETI se realiza el paso parametro del nuAccountsbalance
-    -- asociado al criterio del campo CRSUCOPA.CSCPCACC
+	nuAccountsbalance := pkbovalidsuspcrit.fnuNroCuentasVenc(nuNumeServ);
+	pkg_traza.trace('nuAccountsbalance: ' || nuAccountsbalance, csbNivelTraza); 
 
     -- CA-200-596
     -- Obtiene la fecha de vencimiento de la cuenta de cobro mas reciente
     dtCuentaReciente := pkbovalidsuspcrit.fdtGetFecVenCuenCobro(nuNumeServ);
+	pkg_traza.trace('dtCuentaReciente: ' || dtCuentaReciente, csbNivelTraza); 
 
     -------------
 
@@ -377,31 +436,28 @@ BEGIN
     /* Si el producto no cumple con ninguno de los grupos de criterios configurados, se detiene el proceso de
        suspension */
     if ( not boSuspendProduct ) then
-        ut_trace.trace('Fin Procedimiento ValSuspensionCriterion - No Suspender Producto por Criterios', 5);
+        pkg_traza.trace('Fin Procedimiento ValSuspensionCriterion - No Suspender Producto por Criterios', csbNivelTraza);
         -- El producto %s1 no cumple con los criterios configurados para suspension
-        Errors.SetError (901467, nuNumeServ);
-        raise ex.CONTROLLED_ERROR;
+        pkg_error.setErrorMessage(901467, nuNumeServ);
     end if;
 
     /* Valida si el producto se encuentra en consumo cero */
 
-   /*200-2722: Se agrega condición para validar si el cambio 200-2272 aplica. Este cambio deshabilita la validación del proceso de consumo cero */
-   IF NOT OPEN.fblAplicaEntrega(csbEntrega2002722) THEN
-	    boSuspendProduct := pkbovalidsuspcrit.fboValidateZeroCons(nuNumeServ);
+	/*200-2722: Se agrega condición para validar si el cambio 200-2272 aplica. Este cambio deshabilita la validación del proceso de consumo cero */
+	boSuspendProduct := pkbovalidsuspcrit.fboValidateZeroCons(nuNumeServ);
 
-	    /* Si el producto se encuentra en consumo cero, se detiene el proceso de suspension */
-	    if (boSuspendProduct) then
-	        ut_trace.trace('Fin Procedimiento ValSuspensionCriterion - No Suspender Producto por Consumo cero', 5);
-	        -- No se puede continuar con el proceso de suspension para el producto %s1
-	        Errors.SetError (901468, nuNumeServ);
-	        raise ex.CONTROLLED_ERROR;
-	    end if;
-    END IF;
+	/* Si el producto se encuentra en consumo cero, se detiene el proceso de suspension */
+	if (boSuspendProduct) then
+		pkg_traza.trace('Fin Procedimiento ValSuspensionCriterion - No Suspender Producto por Consumo cero', csbNivelTraza);
+	    -- No se puede continuar con el proceso de suspension para el producto %s1
+	    pkg_error.setErrorMessage(901468, nuNumeServ);
+	end if;
 
     /* En este punto el producto cumple con TODOS los criterios de Suspension */
 
     -- Obtiene el indicador de encolamiento de suspensiones
-    sbEncolamiento := dald_parameter.fsbGetValue_Chain('LDC_ENCOLA_SUSPENSIONES');
+    sbEncolamiento := pkg_bcld_parameter.fsbObtieneValorCadena('LDC_ENCOLA_SUSPENSIONES');
+	pkg_traza.trace('sbEncolamiento: ' || sbEncolamiento, csbNivelTraza); 
 
     /*  Si no se realiza encolamiento de suspensiones y el producto ya esta suspendido,
         se genera una orden cerrada y se retorna error
@@ -411,23 +467,27 @@ BEGIN
         -- Genera orden de traza por encolamiento
         GenerateClosedOrder(nuNumeServ);
 
-        ut_trace.trace('Fin Procedimiento ValSuspensionCriterion - No Suspender Producto por encolamiento', 5);
-        Errors.SetError (2741, 'No se realiza encolamiento de suspensiones. El producto ['||nuNumeServ||'] se encuentra suspendido por otra area.');
-        raise ex.CONTROLLED_ERROR;
+        pkg_traza.trace('Fin Procedimiento ValSuspensionCriterion - No Suspender Producto por encolamiento', csbNivelTraza);
+        pkg_error.setErrorMessage(2741, 'No se realiza encolamiento de suspensiones. El producto ['||nuNumeServ||'] se encuentra suspendido por otra area.');
     END if;
 
-    ut_trace.trace('Fin Procedimiento ValSuspensionCriterion - Suspender Producto', 5);
+	pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
 
     RETURN;
 
 EXCEPTION
-
-    when ex.CONTROLLED_ERROR then
-        raise ex.CONTROLLED_ERROR;
-
-    when others then
-        Errors.setError;
-        raise ex.CONTROLLED_ERROR;
+	WHEN pkg_error.CONTROLLED_ERROR THEN
+		pkg_error.setError;
+		pkg_Error.getError(nuErrorCode, sbErrorMessage);
+		pkg_traza.trace('nuErrorCode: ' || nuErrorCode || ' sbErrorMessage: ' || sbErrorMessage, csbNivelTraza);
+		pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC); 
+		RAISE pkg_error.CONTROLLED_ERROR;
+	WHEN others THEN
+		pkg_Error.setError;
+		pkg_Error.getError(nuErrorCode, sbErrorMessage);
+		pkg_traza.trace('nuErrorCode: ' || nuErrorCode || ' sbErrorMessage: ' || sbErrorMessage, csbNivelTraza);
+		pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR); 
+		RAISE pkg_Error.Controlled_Error;	
 
 END ValSuspensionCriterion;
 /

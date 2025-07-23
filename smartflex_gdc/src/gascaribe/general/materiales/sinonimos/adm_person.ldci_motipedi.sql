@@ -1,5 +1,6 @@
-PROMPT Crea Sinonimo a tabla ldci_motipedi
+Prompt Creando sinonimos privados para sobre OPEN.ldci_motipedi
 BEGIN
-    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.LDCI_MOTIPEDI FOR LDCI_MOTIPEDI';
+    -- OSF-4259
+    pkg_Utilidades.prCrearSinonimos(upper('ldci_motipedi'), upper('OPEN'));
 END;
 /

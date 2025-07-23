@@ -6,7 +6,7 @@ DECLARE
 
 BEGIN
   
-  dbms_output.put_Line('INICIO Programar JOB por DB');
+  dbms_output.put_Line('INICIO DesProgramacion JOB por DB');
 
   SELECT COUNT(*)
     INTO nuConta
@@ -17,22 +17,8 @@ BEGIN
     dbms_scheduler.drop_job(job_name => 'LDC_ANULAR_ORDENES_PERSECU');
     dbms_output.put_Line('JOB LDC_ANULAR_ORDENES_PERSECU Procesando....');
   END IF;
-
-  BEGIN
-    Dbms_Scheduler.Create_Job(Job_Name        => 'LDC_ANULAR_ORDENES_PERSECU',
-                              Job_Type        => 'PLSQL_BLOCK',
-                              Job_Action      => 'Begin LDC_BOPERSECUCION.PRANULA_ORDENES_PERSECUCION; End;',
-                              Start_Date      => NULL,
-                              Repeat_Interval => 'FREQ=HOURLY',
-                              End_Date        => NULL,
-                              Comments        => 'Job para anular ordenes de persecucion por pago',
-                              Enabled         => TRUE,
-                              Auto_Drop       => FALSE);
-							  
-	dbms_output.put_Line('Job llamado LDC_ANULAR_ORDENES_PERSECU creado con exito');
-  END;
-  
-  dbms_output.put_Line('FIN Programar JOB por DB');
+   
+  dbms_output.put_Line('FIN DesProgramamacion JOB por DB');
   
   COMMIT;
 

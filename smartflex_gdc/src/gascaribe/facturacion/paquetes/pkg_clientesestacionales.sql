@@ -9,6 +9,16 @@ IS
         Logica clientes estacionales
     </Descripcion>
     <Historial>
+		<Modificacion Autor="Jhon.Erazo" Fecha="06-12-2024" Inc="OSF-3713" Empresa="GDC">
+			1. Se renombran los procedimiento
+				- prc_ObtieneFechaRegistro por prcObtieneFechaRegistro
+				- prc_ObtiFechaIniVigenc por prcObtiFechaIniVigenc
+				- prc_ObtiFechaFinVigenc por prcObtiFechaFinVigenc
+				- prc_valProductoEsGas por prcvalProductoEsGas
+				- prc_updClienteEstacional por prcActClienteEstacional
+				- prc_validaFechafinalVig por prcvalidaFechafinalVig
+			2. Se elimina el procedimiento prc_ObtieneActivoClieEsta
+        </Modificacion>
            <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
                Creación
            </Modificacion>
@@ -44,7 +54,7 @@ IS
 	
 	/**************************************************************************
     <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_valProductoEsGas </Unidad>
+    <Unidad> prcvalProductoEsGas </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 4-10-2024 </Fecha>
     <Descripcion> 
@@ -52,10 +62,9 @@ IS
     </Descripcion>
 	<parametros>
 		Entrada: 
-			inuProductoId Identificador del producto
 		
 		Salida:
-			osbEsGAs		Valida si el producto es gas(Y/N)
+		
 	</parametros>
     <Historial>
            <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
@@ -64,13 +73,11 @@ IS
     </Historial>
     </FUNCTION>
     **************************************************************************/
-    PROCEDURE prc_valProductoEsGas(inuProductoId	IN pr_product.product_id%TYPE,
-								   osbEsGAs			OUT VARCHAR2
-								   );
+    PROCEDURE prcvalProductoEsGas;
 	
 	/**************************************************************************
-    <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_ObtieneFechaRegistro </Unidad>
+    <PROCEDURE Fuente="Propiedad Intelectual de <Empresa>">
+    <Unidad> prcObtieneFechaRegistro </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 9-10-2024 </Fecha>
     <Descripcion> 
@@ -78,23 +85,25 @@ IS
     </Descripcion>
 	<parametros>
 		Entrada: 
-			inuContratoId Identificador del contrato
 		
 		Salida:
+		
 	</parametros>
     <Historial>
-           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
-               Creación
-           </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="12-12-2024" Inc="OSF-3713" Empresa="GDC">
+			1. Se renombra por el procedimiento prcObtieneFechaRegistro
+        </Modificacion>
+        <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
+			Creación
+        </Modificacion>
     </Historial>
-    </FUNCTION>
+    </PROCEDURE>
     **************************************************************************/
-    FUNCTION prc_ObtieneFechaRegistro(inuContratoId	IN pr_product.subscription_id%TYPE)
-	RETURN DATE;
+    PROCEDURE prcObtieneFechaRegistro;
 	
 	/**************************************************************************
-    <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_ObtiFechaIniVigenc </Unidad>
+    <PROCEDURE Fuente="Propiedad Intelectual de <Empresa>">
+    <Unidad> prcObtiFechaIniVigenc </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 9-10-2024 </Fecha>
     <Descripcion> 
@@ -105,53 +114,30 @@ IS
                Creación
            </Modificacion>
     </Historial>
-    </FUNCTION>
+    </PROCEDURE>
     **************************************************************************/
-    FUNCTION prc_ObtiFechaIniVigenc(inuContratoId	IN pr_product.subscription_id%TYPE)
-	RETURN DATE;
-	
-	/**************************************************************************
-    <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_ObtiFechaFinVigenc </Unidad>
-    <Autor> Jhon Eduar Erazo</Autor>
-    <Fecha> 9-10-2024 </Fecha>
-    <Descripcion> 
-        Retorna la fecha final de vigencia
-    </Descripcion>
-    <Historial>
-           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
-               Creación
-           </Modificacion>
-    </Historial>
-    </FUNCTION>
-    **************************************************************************/
-    FUNCTION prc_ObtiFechaFinVigenc(inuContratoId	IN pr_product.subscription_id%TYPE)
-	RETURN DATE;
-	
-	/**************************************************************************
-    <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_ObtieneActivoClieEsta </Unidad>
-    <Autor> Jhon Eduar Erazo</Autor>
-    <Fecha> 9-10-2024 </Fecha>
-    <Descripcion> 
-        Retorna la fecha final de vigencia
-    </Descripcion>
-    <Historial>
-           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
-               Creación
-           </Modificacion>
-    </Historial>
-    </FUNCTION>
-    **************************************************************************/
-    FUNCTION prc_ObtieneActivoClieEsta
-    (
-        inuContratoId	IN pr_product.subscription_id%TYPE
-    )
-	RETURN VARCHAR2;
+    PROCEDURE prcObtiFechaIniVigenc;
 	
 	/**************************************************************************
     <PROCEDURE Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_updClienteEstacional </Unidad>
+    <Unidad> prcObtiFechaFinVigenc </Unidad>
+    <Autor> Jhon Eduar Erazo</Autor>
+    <Fecha> 9-10-2024 </Fecha>
+    <Descripcion> 
+        Retorna la fecha final de vigencia
+    </Descripcion>
+    <Historial>
+           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
+               Creación
+           </Modificacion>
+    </Historial>
+    </PROCEDURE>
+    **************************************************************************/
+    PROCEDURE prcObtiFechaFinVigenc;
+	
+	/**************************************************************************
+    <PROCEDURE Fuente="Propiedad Intelectual de <Empresa>">
+    <Unidad> prcActClienteEstacional </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 4-10-2024 </Fecha>
     <Descripcion> 
@@ -159,12 +145,9 @@ IS
     </Descripcion>
 	<parametros>
 		Entrada: 
-			inuContratoId 			Identificador del contrato
-			idtFechinicialVige		Fecha inicial de vigencia
-			idtFechaFinalVig		Fecha final de vigencia
-			isbActivo				Flag activo (S/N)
 			
 		Salida:
+		
 	</parametros>
     <Historial>
            <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
@@ -173,15 +156,11 @@ IS
     </Historial>
     </FUNCTION>
     **************************************************************************/
-    PROCEDURE prc_updClienteEstacional(inuContratoId		IN pr_product.subscription_id%TYPE,
-									   idtFechinicialVige	IN DATE,
-									   idtFechaFinalVig		IN DATE,
-									   isbActivo			IN VARCHAR2
-									   );
+    PROCEDURE prcActClienteEstacional;
 									   
 	/**************************************************************************
     <PROCEDURE Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_validaFechafinalVig </Unidad>
+    <Unidad> prcvalidaFechafinalVig </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 4-10-2024 </Fecha>
     <Descripcion> 
@@ -189,11 +168,9 @@ IS
     </Descripcion>
 	<parametros>
 		Entrada: 
-			idtFechaIniVige			Fecha inicial de vigencia
-			idtFechafinVige			Fecha final de vigencia
 			
 		Salida:
-			osbCumpleFecha			Flag cumple con la fecha (S/N)
+		
 	</parametros>
     <Historial>
            <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
@@ -202,10 +179,7 @@ IS
     </Historial>
     </FUNCTION>
     **************************************************************************/
-    PROCEDURE prc_validaFechafinalVig(idtFechaIniVige	IN  DATE,
-									  idtFechafinVige	IN  DATE,
-									  osbCumpleFecha	OUT VARCHAR2
-									  );								   
+    PROCEDURE prcvalidaFechafinalVig;								   
 	
 END PKG_CLIENTESESTACIONALES;
 /
@@ -270,7 +244,7 @@ IS
 	
 	/**************************************************************************
     <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_valProductoEsGas </Unidad>
+    <Unidad> prcvalProductoEsGas </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 4-10-2024 </Fecha>
     <Descripcion> 
@@ -278,39 +252,45 @@ IS
     </Descripcion>
 	<parametros>
 		Entrada: 
-			inuProductoId Identificador del producto
 		
 		Salida:
-			osbEsGAs		Valida si el producto es gas(Y/N)
+		
 	</parametros>
     <Historial>
-           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
-               Creación
-           </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="12-12-2024" Inc="OSF-3713" Empresa="GDC">
+			1. Se renombra por el procedimiento prcvalProductoEsGas
+			2. Se elimina los parametros de entrada inuProductoId y osbEsGAs
+			3. Se obtiene el producto de la instancia
+        </Modificacion>
+        <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
+			Creación
+        </Modificacion>
     </Historial>
     </FUNCTION>
     **************************************************************************/
-    PROCEDURE prc_valProductoEsGas(inuProductoId	IN pr_product.product_id%TYPE,
-								   osbEsGAs			OUT VARCHAR2
-								   )
+    PROCEDURE prcvalProductoEsGas
     IS
 	
-		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prc_valProductoEsGas';
+		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prcvalProductoEsGas';
 		
-		nuError				NUMBER;  
-		sbmensaje			VARCHAR2(1000);  
+		nuError			NUMBER;  
+		nuProducto		pr_product.product_id%TYPE;
+		sbmensaje		VARCHAR2(1000);  
         
     BEGIN
 		
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);
 		
-		pkg_traza.trace('inuProductoId: ' || inuProductoId, cnuNVLTRC);
+		-- Obtiene el producto 
+		PRC_OBTIENEVALORINSTANCIA('WORK_INSTANCE',
+								  NULL,
+								  'PR_PRODUCT',
+								  'PRODUCT_ID',
+								  nuProducto
+								  );
+		pkg_traza.trace('nuProducto: ' || nuProducto, cnuNVLTRC);
 		
-		pkg_boclientesestacionales.prc_valProductoEsGas(inuProductoId,
-														osbEsGAs
-														);
-		
-		pkg_traza.trace('El producto es gas: ' || osbEsGAs, cnuNVLTRC);
+		pkg_boclientesestacionales.prcvalProductoEsGas(nuProducto);
         
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
 
@@ -327,11 +307,11 @@ IS
 			pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
 			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
 			RAISE pkg_Error.Controlled_Error;
-    END prc_valProductoEsGas;
+    END prcvalProductoEsGas;
 	
 	/**************************************************************************
-    <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_ObtieneFechaRegistro </Unidad>
+    <PROCEDURE Fuente="Propiedad Intelectual de <Empresa>">
+    <Unidad> prcObtieneFechaRegistro </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 9-10-2024 </Fecha>
     <Descripcion> 
@@ -339,27 +319,30 @@ IS
     </Descripcion>
 	<parametros>
 		Entrada: 
-			inuContratoId Identificador del contrato
 		
 		Salida:
+		
 	</parametros>
     <Historial>
-           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
-               Creación
-           </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="12-12-2024" Inc="OSF-3713" Empresa="GDC">
+			1. Se renombra por el procedimiento prcObtieneFechaRegistro
+			2. Se elimina el parametro de entrada inuContratoId
+			3. Se obtiene el contrato de la instancia
+			4. Instancia la fecha de registro
+        </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
+			Creación
+        </Modificacion>
     </Historial>
-    </FUNCTION>
+    </PROCEDURE>
     **************************************************************************/
-    FUNCTION prc_ObtieneFechaRegistro
-    (
-        inuContratoId	IN pr_product.subscription_id%TYPE
-    )
-	RETURN DATE
+    PROCEDURE prcObtieneFechaRegistro
     IS
 	
-		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prc_ObtieneFechaRegistro';
+		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prcObtieneFechaRegistro';
 		
-		nuError				NUMBER;  
+		nuError				NUMBER;
+		nuContrato			suscripc.susccodi%type;
 		dtFechadeRegistro	DATE := NULL;
 		sbmensaje			VARCHAR2(1000);  
         
@@ -367,15 +350,24 @@ IS
 		
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);
 		
-		pkg_traza.trace('inuContratoId: ' || inuContratoId, cnuNVLTRC);
+		-- Obtiene el contrato 
+		PRC_OBTIENEVALORINSTANCIA('WORK_INSTANCE',
+								  NULL,
+								  'SUSCRIPC',
+								  'SUSCCODI',
+								  nuContrato
+								  );
+		pkg_traza.trace('nuContrato: ' || nuContrato, cnuNVLTRC);
 		
-		dtFechadeRegistro := pkg_boclientesestacionales.fdt_ObtieneFechaRegistro(inuContratoId);
+		-- Obtiene la fecha de registro
+		dtFechadeRegistro := pkg_boclientesestacionales.fdtObtieneFechaRegistro(nuContrato);
 		
 		pkg_traza.trace('dtFechadeRegistro: ' || dtFechadeRegistro, cnuNVLTRC);
+		
+		-- Instancia la fecha de registro
+		GE_BOINSTANCECONTROL.SETENTITYATTRIBUTE(dtFechadeRegistro);
         
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
-		
-		RETURN dtFechadeRegistro;
 
     EXCEPTION
 		WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -390,11 +382,11 @@ IS
 			pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
 			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
 			RAISE pkg_Error.Controlled_Error;
-    END prc_ObtieneFechaRegistro;
+    END prcObtieneFechaRegistro;
 	
 	/**************************************************************************
-    <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_ObtiFechaIniVigenc </Unidad>
+    <PROCEDURE Fuente="Propiedad Intelectual de <Empresa>">
+    <Unidad> prcObtiFechaIniVigenc </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 9-10-2024 </Fecha>
     <Descripcion> 
@@ -402,27 +394,30 @@ IS
     </Descripcion>
 	<parametros>
 		Entrada: 
-			inuContratoId Identificador del contrato
 		
 		Salida:
+		
 	</parametros>
     <Historial>
-           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
-               Creación
-           </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="12-12-2024" Inc="OSF-3713" Empresa="GDC">
+			1. Se renombra por el procedimiento prcObtiFechaIniVigenc
+			2. Se elimina el parametro de entrada inuContratoId
+			3. Se obtiene el contrato de la instancia
+			4. Instancia la fecha de registro
+        </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
+			Creación
+        </Modificacion>
     </Historial>
-    </FUNCTION>
+    </PROCEDURE>
     **************************************************************************/
-    FUNCTION prc_ObtiFechaIniVigenc
-    (
-        inuContratoId	IN pr_product.subscription_id%TYPE
-    )
-	RETURN DATE
+    PROCEDURE prcObtiFechaIniVigenc
     IS
 	
-		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prc_ObtiFechaIniVigenc';
+		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prcObtiFechaIniVigenc';
 		
 		nuError				NUMBER;  
+		nuContrato			suscripc.susccodi%type;
 		dtFechaIniVigencia	DATE := NULL;
 		sbmensaje			VARCHAR2(1000);   
         
@@ -430,15 +425,24 @@ IS
 		
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);
 		
-		pkg_traza.trace('inuContratoId: ' || inuContratoId, cnuNVLTRC);
+		-- Obtiene el contrato 
+		PRC_OBTIENEVALORINSTANCIA('WORK_INSTANCE',
+								  NULL,
+								  'SUSCRIPC',
+								  'SUSCCODI',
+								  nuContrato
+								  );
+		pkg_traza.trace('nuContrato: ' || nuContrato, cnuNVLTRC);
 		
-		dtFechaIniVigencia := pkg_boclientesestacionales.fdt_ObtiFechaIniVigenc(inuContratoId);
+		-- Obtiene la fecha inicial de vigencia
+		dtFechaIniVigencia := pkg_boclientesestacionales.fdtObtiFechaIniVigenc(nuContrato);
 		
 		pkg_traza.trace('dtFechaIniVigencia: ' || dtFechaIniVigencia, cnuNVLTRC);
+		
+		-- Instancia la fecha de registro
+		GE_BOINSTANCECONTROL.SETENTITYATTRIBUTE(dtFechaIniVigencia);
         
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
-		
-		RETURN dtFechaIniVigencia;
 
     EXCEPTION
 		WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -453,11 +457,11 @@ IS
 			pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
 			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
 			RAISE pkg_Error.Controlled_Error;
-    END prc_ObtiFechaIniVigenc;
+    END prcObtiFechaIniVigenc;
 	
 	/**************************************************************************
-    <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_ObtiFechaFinVigenc </Unidad>
+    <PROCEDURE Fuente="Propiedad Intelectual de <Empresa>">
+    <Unidad> prcObtiFechaFinVigenc </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 9-10-2024 </Fecha>
     <Descripcion> 
@@ -465,27 +469,30 @@ IS
     </Descripcion>
 	<parametros>
 		Entrada: 
-			inuContratoId Identificador del contrato
 		
 		Salida:
+		
 	</parametros>
     <Historial>
-           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
-               Creación
-           </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="12-12-2024" Inc="OSF-3713" Empresa="GDC">
+			1. Se renombra por el procedimiento prcObtiFechaFinVigenc
+			2. Se elimina el parametro de entrada inuContratoId
+			3. Se obtiene el contrato de la instancia
+			4. Instancia la fecha de registro
+        </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
+			Creación
+        </Modificacion>
     </Historial>
-    </FUNCTION>
+    </PROCEDURE>
     **************************************************************************/
-    FUNCTION prc_ObtiFechaFinVigenc
-    (
-        inuContratoId	IN pr_product.subscription_id%TYPE
-    )
-	RETURN DATE
+    PROCEDURE prcObtiFechaFinVigenc
     IS
 	
-		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prc_ObtiFechaFinVigenc';
+		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prcObtiFechaFinVigenc';
 		
 		nuError				NUMBER;  
+		nuContrato			suscripc.susccodi%type;
 		dtFechaFinVigencia	DATE := NULL;
 		sbmensaje			VARCHAR2(1000);
 
@@ -493,15 +500,24 @@ IS
 		
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);
 		
-		pkg_traza.trace('inuContratoId: ' || inuContratoId, cnuNVLTRC);
+		-- Obtiene el contrato 
+		PRC_OBTIENEVALORINSTANCIA('WORK_INSTANCE',
+								  NULL,
+								  'SUSCRIPC',
+								  'SUSCCODI',
+								  nuContrato
+								  );
+		pkg_traza.trace('nuContrato: ' || nuContrato, cnuNVLTRC);
 		
-		dtFechaFinVigencia := pkg_boclientesestacionales.fdt_ObtiFechaFinVigenc(inuContratoId);
+		-- Obtiene la fecha final de vigencia
+		dtFechaFinVigencia := pkg_boclientesestacionales.fdtObtiFechaFinVigenc(nuContrato);
 		
 		pkg_traza.trace('dtFechaFinVigencia: ' || dtFechaFinVigencia, cnuNVLTRC);
+		
+		-- Instancia la fecha de registro
+		GE_BOINSTANCECONTROL.SETENTITYATTRIBUTE(dtFechaFinVigencia);
         
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
-		
-		RETURN dtFechaFinVigencia;
 
     EXCEPTION
 		WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -516,74 +532,11 @@ IS
 			pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
 			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
 			RAISE pkg_Error.Controlled_Error;
-    END prc_ObtiFechaFinVigenc;
-	
-	/**************************************************************************
-    <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_ObtieneActivoClieEsta </Unidad>
-    <Autor> Jhon Eduar Erazo</Autor>
-    <Fecha> 9-10-2024 </Fecha>
-    <Descripcion> 
-        Retorna la fecha final de vigencia
-    </Descripcion>
-	<parametros>
-		Entrada: 
-			inuContratoId Identificador del contrato
-		
-		Salida:
-	</parametros>
-    <Historial>
-           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
-               Creación
-           </Modificacion>
-    </Historial>
-    </FUNCTION>
-    **************************************************************************/
-    FUNCTION prc_ObtieneActivoClieEsta
-    (
-        inuContratoId	IN pr_product.subscription_id%TYPE
-    )
-	RETURN VARCHAR2
-    IS
-	
-		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prc_ObtieneActivoClieEsta';
-		
-		nuError				NUMBER;  
-		sbClienteActivo		DATE := NULL;
-		sbmensaje			VARCHAR2(1000);     
-        
-    BEGIN
-		
-		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);
-		
-		pkg_traza.trace('inuContratoId: ' || inuContratoId, cnuNVLTRC);
-		
-		sbClienteActivo := pkg_boclientesestacionales.fsb_ObtieneActivoClieEsta(inuContratoId);
-		
-		pkg_traza.trace('sbClienteActivo: ' || sbClienteActivo, cnuNVLTRC);
-        
-		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
-		
-		RETURN sbClienteActivo;
-
-    EXCEPTION
-		WHEN pkg_error.CONTROLLED_ERROR THEN
-			pkg_error.setError;
-			pkg_Error.getError(nuError, sbmensaje);
-			pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
-			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERC); 
-			RAISE pkg_error.CONTROLLED_ERROR;
-		WHEN others THEN
-			pkg_Error.setError;
-			pkg_Error.getError(nuError, sbmensaje);
-			pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
-			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
-			RAISE pkg_Error.Controlled_Error;
-    END prc_ObtieneActivoClieEsta;
+    END prcObtiFechaFinVigenc;
 	
 	/**************************************************************************
     <PROCEDURE Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_updClienteEstacional </Unidad>
+    <Unidad> prcActClienteEstacional </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 4-10-2024 </Fecha>
     <Descripcion> 
@@ -591,48 +544,93 @@ IS
     </Descripcion>
 	<parametros>
 		Entrada: 
-			inuContratoId 			Identificador del contrato
-			idtFechinicialVige		Fecha inicial de vigencia
-			idtFechaFinalVig		Fecha final de vigencia
-			isbActivo				Flag activo (S/N)
 			
 		Salida:
+		
 	</parametros>
     <Historial>
-           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
-               Creación
-           </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="12-12-2024" Inc="OSF-3713" Empresa="GDC">
+			1. Se renombra por el procedimiento prcActClienteEstacional
+			2. Se elimina los parametros de entrada inuContratoId, idtFechinicialVige, 
+			   idtFechaFinalVig y isbActivo.
+			3. Se obtiene el contrato, producto, fecha inicial de vigencia, fecha final de vigencia
+			   y flag activo de la instancia
+        </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
+			Creación
+        </Modificacion>
     </Historial>
-    </FUNCTION>
+    </PROCEDURE>
     **************************************************************************/
-    PROCEDURE prc_updClienteEstacional(inuContratoId		IN pr_product.subscription_id%TYPE,
-									   idtFechinicialVige	IN DATE,
-									   idtFechaFinalVig		IN DATE,
-									   isbActivo			IN VARCHAR2
-									   )
+    PROCEDURE prcActClienteEstacional
     IS
 	
-		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prc_updClienteEstacional';
+		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prcActClienteEstacional';
 		
 		nuError				NUMBER;  
-		nuTipoProducto		servsusc.sesuserv%TYPE;
-		nutipoGas			NUMBER := 0;
-		sbmensaje			VARCHAR2(1000);  
+		nuContrato			suscripc.susccodi%type;
+		nuProduct_id		pr_product.product_id%TYPE;
+		sbmensaje			VARCHAR2(1000); 
+		sbActivo			VARCHAR2(1); 
+		dtFechaInicial		DATE;
+		dtFechaFinal		DATE;
         
     BEGIN
 		
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);
+						
+		-- Obtiene el contrato
+		PRC_OBTIENEVALORINSTANCIA('WORK_INSTANCE',
+								  NULL,
+								  'SUSCRIPC',
+								  'SUSCCODI',
+								  nuContrato
+								  );
+		pkg_traza.trace('nuContrato: ' || nuContrato, cnuNVLTRC);
 		
-		pkg_traza.trace('inuContratoId: ' 		|| inuContratoId || CHR(10) ||
-						'idtFechinicialVige : ' || idtFechinicialVige || CHR(10) ||
-						'idtFechaFinalVig : ' 	|| idtFechaFinalVig || CHR(10) ||
-						'isbActivo : ' 			|| isbActivo, cnuNVLTRC);
+		-- Obtiene el producto 
+		PRC_OBTIENEVALORINSTANCIA('WORK_INSTANCE',
+								  NULL,
+								  'PR_PRODUCT',
+								  'PRODUCT_ID',
+								  nuProduct_id
+								  );
+		pkg_traza.trace('nuProduct_id: ' || nuProduct_id, cnuNVLTRC);
 		
-		pkg_boclientesestacionales.prc_updClienteEstacional(inuContratoId,
-															to_date(idtFechinicialVige),
-															to_date(idtFechaFinalVig),
-															isbActivo
-															);
+		-- Obtiene la fecha inicial de vigencia
+		PRC_OBTIENEVALORINSTANCIA('M_INSTALACION_DE_GAS_100334-2',
+								  NULL,
+								  'MO_PROCESS',
+								  'INITIAL_DATE',
+								  dtFechaInicial
+								  );
+		pkg_traza.trace('dtFechaInicial: ' || dtFechaInicial, cnuNVLTRC);
+		
+		-- Obtiene la fecha final de vigencia
+		PRC_OBTIENEVALORINSTANCIA('M_INSTALACION_DE_GAS_100334-2',
+								  NULL,
+								  'MO_PROCESS',
+								  'FINAL_DATE',
+								  dtFechaFinal
+								  );
+		pkg_traza.trace('dtFechaFinal: ' || dtFechaFinal, cnuNVLTRC);
+		
+		-- Obtiene el valor de activo
+		PRC_OBTIENEVALORINSTANCIA('M_INSTALACION_DE_GAS_100334-2',
+								  NULL,
+								  'MO_PROCESS',
+								  'FLAG',
+								  sbActivo
+								  );
+		pkg_traza.trace('sbActivo: ' || sbActivo, cnuNVLTRC);
+		
+		-- Actualiza el cliente estacional
+		pkg_boclientesestacionales.prcActClienteEstacional(nuContrato,
+														   nuProduct_id,
+														   to_date(dtFechaInicial),
+														   to_date(dtFechaFinal),
+														   sbActivo
+														   );
         
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
 
@@ -649,11 +647,11 @@ IS
 			pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
 			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
 			RAISE pkg_Error.Controlled_Error;
-    END prc_updClienteEstacional;
+    END prcActClienteEstacional;
 	
 	/**************************************************************************
     <PROCEDURE Fuente="Propiedad Intelectual de <Empresa>">
-    <Unidad> prc_validaFechafinalVig </Unidad>
+    <Unidad> prcvalidaFechafinalVig </Unidad>
     <Autor> Jhon Eduar Erazo</Autor>
     <Fecha> 4-10-2024 </Fecha>
     <Descripcion> 
@@ -661,41 +659,59 @@ IS
     </Descripcion>
 	<parametros>
 		Entrada: 
-			idtFechaIniVige			Fecha inicial de vigencia
-			idtFechafinVige			Fecha final de vigencia
 			
 		Salida:
-			osbCumpleFecha			Flag cumple con la fecha (S/N)
+		
 	</parametros>
     <Historial>
-           <Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
-               Creación
-           </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="12-12-2024" Inc="OSF-3713" Empresa="GDC">
+			1. Se renombra por el procedimiento prcvalidaFechafinalVig
+			2. Se elimina los parametros de entrada idtFechaIniVige y idtFechafinVige.
+			2. Se elimina el parametro de salida osbCumpleFecha.
+			3. Se obtiene la fecha inicial de vigencia y fecha final de vigencia de la instancia
+        </Modificacion>
+		<Modificacion Autor="Jhon.Erazo" Fecha="4-10-2024" Inc="OSF-3241" Empresa="GDC">
+			Creación
+        </Modificacion>
     </Historial>
-    </FUNCTION>
+    </PROCEDURE>
     **************************************************************************/
-    PROCEDURE prc_validaFechafinalVig(idtFechaIniVige	IN  DATE,
-									  idtFechafinVige	IN  DATE,
-									  osbCumpleFecha	OUT VARCHAR2
-									  )
+    PROCEDURE prcvalidaFechafinalVig
     IS
 	
-		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prc_validaFechafinalVig';
+		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'prcvalidaFechafinalVig';
 		
 		nuError				NUMBER;  
 		sbmensaje			VARCHAR2(1000);  
+		dtFechaInicial		DATE;
+		dtFechaFinal		DATE;
         
     BEGIN
 		
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);
+						
+		-- Obtiene la fecha inicial de vigencia
+		PRC_OBTIENEVALORINSTANCIA('M_INSTALACION_DE_GAS_100334-2',
+								  NULL,
+								  'MO_PROCESS',
+								  'INITIAL_DATE',
+								  dtFechaInicial
+								  );
+		pkg_traza.trace('dtFechaInicial: ' || dtFechaInicial, cnuNVLTRC);
 		
-		pkg_traza.trace('idtFechaIniVige : ' 	|| idtFechaIniVige 	|| CHR(10) ||
-						'idtFechafinVige : ' 	|| idtFechafinVige, cnuNVLTRC);
+		-- Obtiene la fecha final de vigencia
+		PRC_OBTIENEVALORINSTANCIA('M_INSTALACION_DE_GAS_100334-2',
+								  NULL,
+								  'MO_PROCESS',
+								  'FINAL_DATE',
+								  dtFechaFinal
+								  );
+		pkg_traza.trace('dtFechaFinal: ' || dtFechaFinal, cnuNVLTRC);				
 		
-		pkg_boclientesestacionales.prc_validaFechafinalVig(TO_DATE(idtFechaIniVige),
-														   TO_DATE(idtFechafinVige),
-														   osbCumpleFecha
-														  );
+		-- Valida la fecha final de vigencia
+		pkg_boclientesestacionales.prcvalidaFechafinalVig(TO_DATE(dtFechaInicial),
+														   TO_DATE(dtFechaFinal)
+														   );
         
 		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
 
@@ -712,7 +728,7 @@ IS
 			pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
 			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
 			RAISE pkg_Error.Controlled_Error;
-    END prc_validaFechafinalVig;
+    END prcvalidaFechafinalVig;
 	
 END PKG_CLIENTESESTACIONALES;
 /

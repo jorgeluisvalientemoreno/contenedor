@@ -2,7 +2,7 @@ CREATE OR REPLACE PACKAGE adm_person.ic_bocompletserviceint_gdca AS
 /*
     Propiedad intelectual de Open International Systems. (c).
 
-    Package	    :   IC_BOCompletServiceInt
+    Package	    :   IC_BOCompletServiceInt_GdCa
 
     Descripcion	:   Objeto de negocio para la Interfaz de servicios cumplidos
 
@@ -11,6 +11,10 @@ CREATE OR REPLACE PACKAGE adm_person.ic_bocompletserviceint_gdca AS
 
     Historia de Modificaciones
     Fecha	   IDEntrega
+    
+    17-06-2025  jpinedc     OSF-4555:   * Se modifica TemprInsertConstAccCharges 
+                                        * Se modifica TemprInsertMigraCharges
+                                        * Se modifica GetNitbyConcept
     18-06-2024  Adrianavg   OSF-2798: Se migra del esquema OPEN al esquema ADM_PERSON
     
     18-03-2014  arendon.SAO235707
@@ -50,9 +54,6 @@ CREATE OR REPLACE PACKAGE adm_person.ic_bocompletserviceint_gdca AS
     -------------------
     -- Colecciones
     -------------------
-    --<<
-    -- CA-730
-    --
     -- Registro para movimientos de facturacion (cargos)
     type tyrcChargesMovs is record
     (
@@ -85,8 +86,6 @@ CREATE OR REPLACE PACKAGE adm_person.ic_bocompletserviceint_gdca AS
 
     -- Tabla para movimientos de facturacion (cargos)
     type tytbChargesMovs is table of tyrcChargesMovs index by binary_integer;
-    --
-    -- CA-730-->>
 
     -------------------
     -- Metodos
@@ -180,6 +179,7 @@ CREATE OR REPLACE PACKAGE adm_person.ic_bocompletserviceint_gdca AS
 
 END IC_BOCompletServiceInt_Gdca;
 /
+
 CREATE OR REPLACE PACKAGE BODY adm_person.IC_BOCompletServiceInt_Gdca AS
 --ProcessBill_Gdca
 /*
@@ -211,8 +211,11 @@ CREATE OR REPLACE PACKAGE BODY adm_person.IC_BOCompletServiceInt_Gdca AS
     -- Constantes
     -------------------
 
+    csbSP_NAME		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.';
+    csbNivelTraza    CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
+        
     /* Version de paquete */
-    csbVERSION          constant varchar2(250) := '3762';
+    csbVERSION          constant varchar2(250) := 'OSF-4555';
 
     /* Mnemonico del proceso de reversion de Servicios Cumplidos */
     csbROLLBACK_PROCESS constant varchar2(10) := 'ICBRSC';
@@ -2877,16 +2880,17 @@ CREATE OR REPLACE PACKAGE BODY adm_person.IC_BOCompletServiceInt_Gdca AS
             Fecha       :   27-07-2012 15:09:42
 
             Historia de Modificaciones
-            Fecha       IDEntrega
-
-            27-07-2012  arendon.SAO185253
-            Creacion.
+            Fecha       Autor       Caso        Descripcion
+            27-07-2012  arendon     SAO185253   Creacion.
+            03-07-2025  jpinedc     OSF-4555    Se agrega inuDepartamento para
+                                                obtener el nit de la empresa
         */
         PROCEDURE GetNitbyConcept
         (
-            inuService    in    servempr.seemserv%type,
-            inuConcept    in    concepto.conccodi%type,
-            osbNit       out    ic_movimien.movinips%type
+            inuService      in      servempr.seemserv%type,
+            inuConcept      in      concepto.conccodi%type,
+            inuDepartamento in      ge_geogra_location.geograp_location_id%type,
+            osbNit          out     ic_movimien.movinips%type
         )
         IS
             -- Registro de servicio pktblservicio
@@ -2909,10 +2913,10 @@ CREATE OR REPLACE PACKAGE BODY adm_person.IC_BOCompletServiceInt_Gdca AS
                         osbNit := pktblTerccobr.frcGetRecord(rcServicio.servteco).teconit;
                     END if;
 
-                else  -- Obtiene nit de la empresa del usuario que ejecuta el proceso.
+                else
 
                     -- Nit de la empreas
-                    osbNit := pktblSistema.frcGetRecord(Sa_bosystem.fnuGetUserCompanyId).sistnitc;
+                    osbNit :=  pkg_Empresa.fsbObtNitEmpresa( pkg_Empresa.fsbObtEmpresaDepartamento( inuDepartamento ) );
 
                 END if;
 
@@ -3090,6 +3094,7 @@ CREATE OR REPLACE PACKAGE BODY adm_person.IC_BOCompletServiceInt_Gdca AS
             (
                 inuServ,
                 inuConcept,
+                inuDepartam,
                 sbNitTerc
             );
 
@@ -5006,297 +5011,165 @@ CREATE OR REPLACE PACKAGE BODY adm_person.IC_BOCompletServiceInt_Gdca AS
         Se Valida el proceso de generar el servicio cumplido por orden de trabajo legalizada de acuerdo al
         ultimo cambio que se presento en la certifiacion previa, se corrige el proceso para que el proceso
         se ejecute por hilos.
+        
+        17-06-2025  OSF-4555    jpinedc
+        Se modifica cuDatos para obtener el departamento y la localidad de la
+        direccion de instalación del producto        
 
     */
     PROCEDURE TemprInsertConstAccCharges
     (
          idtfechafin     iN  Date,
-         --<<
-         -- CA-730
          inuThreads      in  number,
          inuThread       in  number
-         -->>
     )
     IS
-    --
-    --<< CA-448
-    Vsbttinter        ldci_carasewe.casevalo%type;
-    Vsbttcxc          ldci_carasewe.casevalo%type;
-    Vsbttcertp        ldci_carasewe.casevalo%type;
-    Vsbttotapoy       ldci_carasewe.casevalo%type;
-    Vsbfecotapo       ldci_carasewe.casevalo%type;
-    Vsbfeciniot       ldci_carasewe.casevalo%type;
-    --
-    --<
-    -- CA - 730
-    --
-    Cursor CuDatos IS
-        select A.PRODUCT_ID, 7014,
-               sesucate, sesusuca, ca.cargconc, 53, 'DB',
-               (ca.cargvalo/ca.cargunid) val1, (ca.cargvalo/ca.cargunid) val2,
-               cargdoso, o2.legalization_date, 'ICBISC', ca.cargpefa,
-               71 ,
-               'TRM', 'N',
-               ca.cargpeco,
-               ca.cargcoll,
-               GC.GEO_LOCA_FATHER_ID,   -- DPTO
-               ab.geograp_location_id,  -- LOCA
-               susccodi,
-               ca.cargunid, 'SC'
-          from open.or_order o2
-         inner join open.ge_causal c ON c.causal_id = o2.causal_id and c.class_causal_id = 1
-         inner join open.or_order_activity a ON a.order_id = o2.order_id
-         inner join open.or_task_type tt ON tt.task_type_id = o2.task_type_id
-         inner join open.mo_packages m ON m.package_id = a.package_id and m.package_type_id = 323
-         inner join open.cargos ca ON cargdoso = 'PP-'||a.package_id and cargconc = tt.concept and cargcaca = 53
-         inner join open.concepto ON conccodi = cargconc and concclco in (4,19,400)
-         inner join open.servsusc sc ON sc.sesunuse = a.product_id
-         inner join open.suscripc su ON su.susccodi = sc.sesususc
-         inner join open.ab_address ab ON ab.address_id = su.susciddi
-         inner join open.ge_geogra_location gc ON GC.GEOGRAP_LOCATION_ID = ab.geograp_location_id
-         where trunc(o2.legalization_date) >= idtfechafin
-           and trunc(o2.legalization_date) <  idtfechafin + 1
-           and o2.order_status_id = 8
-           and (
-                (o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                       FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttinter),',') )) and
-                 concclco in (19) and -- Interna
-                 a.product_id not in (select act.product_id
-                                        from open.or_order_activity act, open.or_order oo
-                                       where act.product_id = a.product_id
-                                         and oo.task_type_id in (SELECT (COLUMN_VALUE)
-                                                                   FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttotapoy),',') ))
-                                         and act.order_id = oo.order_id
-                                         and oo.legalization_date < to_date(Vsbfecotapo)
-                                     )
-                )
-              OR
-                (
-                  o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                        FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcxc),',') )) and
-                  concclCo = 4 -- cxc
-                )
-              OR
-                (
-                  o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                          FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcertp),',')) ) and
-                  concclco = 400 AND -- Cert Previa
-                  o2.causal_id = 9944
-                )
-               )
-           AND o2.order_id not in (select oo.related_order_id
-                                     from open.OR_related_order oo
-                                    where oo.related_order_id = o2.order_id
-                                      and oo.rela_order_type_id in (13,14)
-                                  )
-           AND a.product_id NOT IN (SELECT hcecnuse
-                                      FROM open.hicaesco h
-                                     WHERE hcecfech < to_date(Vsbfeciniot)
-                                       AND hcecnuse = a.product_id
-                                       AND hcececan = 96
-                                       AND hcececac = 1
-                                       AND hcecserv = 7014)
-           AND MOD(a.product_id, inuThreads) + 1 = inuThread;
-    -- CA - 730
-    -->>
 
-    errored varchar2(4000);
-    osbErrorMessage   VARCHAR2(2000);
-    -->>
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'TemprInsertConstAccCharges';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000); 
+        
+        Vsbttinter        ldci_carasewe.casevalo%type;
+        Vsbttcxc          ldci_carasewe.casevalo%type;
+        Vsbttcertp        ldci_carasewe.casevalo%type;
+        Vsbttotapoy       ldci_carasewe.casevalo%type;
+        Vsbfecotapo       ldci_carasewe.casevalo%type;
+        Vsbfeciniot       ldci_carasewe.casevalo%type;
+
+        Cursor CuDatos IS
+            select A.PRODUCT_ID, 7014,
+                   sesucate, sesusuca, ca.cargconc, 53, 'DB',
+                   (ca.cargvalo/ca.cargunid) val1, (ca.cargvalo/ca.cargunid) val2,
+                   cargdoso, o2.legalization_date, 'ICBISC', ca.cargpefa,
+                   71 ,
+                   'TRM', 'N',
+                   ca.cargpeco,
+                   ca.cargcoll,
+                   GC.GEO_LOCA_FATHER_ID,   -- DPTO
+                   ab.geograp_location_id,  -- LOCA
+                   sc.sesususc susccodi,
+                   ca.cargunid, 'SC'
+              from open.or_order o2
+             inner join open.ge_causal c ON c.causal_id = o2.causal_id and c.class_causal_id = 1
+             inner join open.or_order_activity a ON a.order_id = o2.order_id
+             inner join open.or_task_type tt ON tt.task_type_id = o2.task_type_id
+             inner join open.mo_packages m ON m.package_id = a.package_id and m.package_type_id = 323
+             inner join open.cargos ca ON cargdoso = 'PP-'||a.package_id and cargconc = tt.concept and cargcaca = 53
+             inner join open.concepto ON conccodi = cargconc and concclco in (4,19,400)
+             inner join open.servsusc sc ON sc.sesunuse = a.product_id
+             inner join open.pr_product pr ON pr.product_id = a.product_id
+             inner join open.ab_address ab ON ab.address_id = pr.address_id
+             inner join open.ge_geogra_location gc ON GC.GEOGRAP_LOCATION_ID = ab.geograp_location_id
+             where trunc(o2.legalization_date) >= idtfechafin
+               and trunc(o2.legalization_date) <  idtfechafin + 1
+               and o2.order_status_id = 8
+               and (
+                    (o2.task_type_id IN (SELECT (COLUMN_VALUE)
+                                           FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttinter),',') )) and
+                     concclco in (19) and -- Interna
+                     a.product_id not in (select act.product_id
+                                            from open.or_order_activity act, open.or_order oo
+                                           where act.product_id = a.product_id
+                                             and oo.task_type_id in (SELECT (COLUMN_VALUE)
+                                                                       FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttotapoy),',') ))
+                                             and act.order_id = oo.order_id
+                                             and oo.legalization_date < to_date(Vsbfecotapo)
+                                         )
+                    )
+                  OR
+                    (
+                      o2.task_type_id IN (SELECT (COLUMN_VALUE)
+                                            FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcxc),',') )) and
+                      concclCo = 4 -- cxc
+                    )
+                  OR
+                    (
+                      o2.task_type_id IN (SELECT (COLUMN_VALUE)
+                                              FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcertp),',')) ) and
+                      concclco = 400 AND -- Cert Previa
+                      o2.causal_id = 9944
+                    )
+                   )
+               AND o2.order_id not in (select oo.related_order_id
+                                         from open.OR_related_order oo
+                                        where oo.related_order_id = o2.order_id
+                                          and oo.rela_order_type_id in (13,14)
+                                      )
+               AND a.product_id NOT IN (SELECT hcecnuse
+                                          FROM open.hicaesco h
+                                         WHERE hcecfech < to_date(Vsbfeciniot)
+                                           AND hcecnuse = a.product_id
+                                           AND hcececan = 96
+                                           AND hcececac = 1
+                                           AND hcecserv = 7014)
+               AND MOD(a.product_id, inuThreads) + 1 = inuThread;
+
+        osbErrorMessage   VARCHAR2(2000);
+
     BEGIN
 
-    --<< CA-448
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'FECHA_FIN_ORDEN_DE_APOYO', Vsbfecotapo, osbErrorMessage);
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'FECHA_INICIO_INGRESO_X_ORDEN', Vsbfeciniot, osbErrorMessage);
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_C_X_C', Vsbttcxc, osbErrorMessage);
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_INTERNA', Vsbttinter, osbErrorMessage);
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPO_DE_TRABAJO_CERTIF_PREVIA', Vsbttcertp, osbErrorMessage);
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_OT_APOYO', Vsbttotapoy, osbErrorMessage);
-    -->>
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);  
+    
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'FECHA_FIN_ORDEN_DE_APOYO', Vsbfecotapo, osbErrorMessage);
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'FECHA_INICIO_INGRESO_X_ORDEN', Vsbfeciniot, osbErrorMessage);
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_C_X_C', Vsbttcxc, osbErrorMessage);
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_INTERNA', Vsbttinter, osbErrorMessage);
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPO_DE_TRABAJO_CERTIF_PREVIA', Vsbttcertp, osbErrorMessage);
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_OT_APOYO', Vsbttotapoy, osbErrorMessage);
 
-        pkErrors.Push
-        (
-            'IC_BCCompletServiceInt.TemprInsertConstAccCharges'
-        );
+        For reg In Cudatos Loop
 
-    For reg In Cudatos Loop
+            INSERT
+            INTO    tmp_cargproc
+            (
+                cargnuse, cargcicl, cargfact, cargcuco, cargserv,
+                cargcate, cargsuca, cargconc, cargcaca, cargsign,
+                cargvalo, cargimp1,  cargiva, cargunme, cargcodo,
+                cargdoso, cargfecr, cargfeco, cargprog, cargpefa,
+                cargano,  cargmes,  cargsoci, cargfech, cargusua,
+                cargterm, cargflfa, cargpete, cargteco, cargpeco,
+                cargcoll, cargdepa, cargloca, cargzoco, cargsusc,
+                cargunid, cargfopa
+            )
+            Values
+            (
+                reg.PRODUCT_ID, -1, 0, -1, 7014,
+                reg.sesucate, reg.sesusuca, reg.cargconc, 53, 'DB',
+                reg.val1, reg.val2, 0, 0, 0,
+                reg.cargdoso, reg.legalization_date, reg.legalization_date, 'ICBISC', reg.cargpefa,
+                0, 71 , 0, reg.legalization_date, 'ICBISC',
+                'TRM', 'N',
+                0, 0, reg.cargpeco,
+                reg.cargcoll,
+                reg.geo_loca_father_id,
+                reg.geograp_location_id,
+                0,
+                reg.susccodi,
+                reg.cargunid,
+                'SC');
 
-        INSERT
-        INTO    tmp_cargproc
-        (
-            cargnuse, cargcicl, cargfact, cargcuco, cargserv,
-            cargcate, cargsuca, cargconc, cargcaca, cargsign,
-            cargvalo, cargimp1,  cargiva, cargunme, cargcodo,
-            cargdoso, cargfecr, cargfeco, cargprog, cargpefa,
-            cargano,  cargmes,  cargsoci, cargfech, cargusua,
-            cargterm, cargflfa, cargpete, cargteco, cargpeco,
-            cargcoll, cargdepa, cargloca, cargzoco, cargsusc,
-            cargunid, cargfopa
-        )
-        --<<
-        -- CA-730
-        Values
-        (
-            reg.PRODUCT_ID, -1, 0, -1, 7014,
-            reg.sesucate, reg.sesusuca, reg.cargconc, 53, 'DB',
-            reg.val1, reg.val2, 0, 0, 0,
-            reg.cargdoso, reg.legalization_date, reg.legalization_date, 'ICBISC', reg.cargpefa,
-            0, 71 , 0, reg.legalization_date, 'ICBISC',
-            'TRM', 'N',
-            0, 0, reg.cargpeco,
-            reg.cargcoll,
-            reg.geo_loca_father_id,
-            reg.geograp_location_id,
-            0,
-            reg.susccodi,
-            reg.cargunid,
-            'SC');
-        -- CA-730
-        -- >>
-        --<
-        -- CA -730
-        -- Se coloca en comentario la manera de insertar en le tabla, esto se pasa a un cursor
-        /*
-        select A.PRODUCT_ID, -1, 0, -1, 7014,
-               sesucate, sesusuca, ca.cargconc, 53, 'DB',
-               (ca.cargvalo/ca.cargunid), (ca.cargvalo/ca.cargunid), 0, 0, 0,
-               cargdoso, o2.legalization_date, o2.legalization_date, 'ICBISC', ca.cargpefa,
-               0, 71 , 0, o2.legalization_date, 'ICBISC',
-               'TRM', 'N', -- m.cargtipr,
-               --open.pkBOAccountingInterface.fsbGetProdAddressType(A.PRODUCT_ID),
-               0, 0, ca.cargpeco,
-               ca.cargcoll,
-               --open.pkBOAccountingInterface.fnuProductRetire(A.PRODUCT_ID) cargcoll,
-               0,
-               ab.geograp_location_id,
-               0, --open.ab_address.neighborthood_id,
-               susccodi,
-               ca.cargunid, 'SC'
-          /* CA-448
-          from open.mo_packages p, open.or_order_Activity a, open.or_order o, open.or_task_type tt, open.cargos m,
-               open.servsusc, open.ab_address, open.suscripc, open.ge_subscriber g
-         where o.legalization_date >= idtfechafin
-           and o.legalization_date <  idtfechafin + 1
-           and o.order_status_id = 8
-           and a.order_id = o.order_id
-           and p.package_id = a.package_id
-           and p.package_type_id = 323
-           and a.task_type_id IN (12150, 12152, 12153,
-                                  10268, 10495, 12149, 12151, 12154,
-                                  10348, 12162)
-           and a.task_type_id = tt.task_type_id
-           and cargdoso = 'PP-'|| p.package_id
-           and tt.concept = cargconc
-           AND o.CAUSAL_ID  IN (select c.causal_id from open.ge_causal c where c.causal_id = o.CAUSAL_ID and c.class_causal_id = 1)
-           AND a.product_id NOT IN (SELECT hcecnuse
-                                      FROM open.hicaesco h
-                                     WHERE hcecfech < '01-08-2019' --'Fecha_Final 23:59:59'
-                                       AND hcecnuse = a.product_id
-                                       AND hcececan = 96
-                                       AND hcececac = 1
-                                       AND hcecserv = 7014)
-           AND sesunuse     =  A.PRODUCT_ID
-           AND sesususc     =  susccodi
-           AND suscclie     =  g.subscriber_id
-           AND g.address_id =  ab_address.address_id
-           AND o.order_id not in (select oo.related_order_id
-                                    from open.OR_related_order oo
-                                   where oo.related_order_id = o.order_id
-                                     and oo.rela_order_type_id in (13,14)
-                                 );
-         --
-         --<< CA-448
-         --
-          from open.or_order o2
-         inner join open.ge_causal c ON c.causal_id = o2.causal_id and c.class_causal_id = 1
-         inner join open.or_order_activity a ON a.order_id = o2.order_id
-         inner join open.or_task_type tt ON tt.task_type_id = o2.task_type_id
-         inner join open.mo_packages m ON m.package_id = a.package_id and m.package_type_id = 323
-         inner join open.cargos ca ON cargdoso = 'PP-'||a.package_id and cargconc = tt.concept
-         inner join open.concepto ON conccodi = cargconc and concclco in (4,19,400)
-         inner join open.servsusc sc ON sc.sesunuse = a.product_id
-         inner join open.suscripc su ON su.susccodi = sc.sesususc
-         inner join open.ab_address ab ON ab.address_id = su.susciddi
-         where trunc(o2.legalization_date) >= idtfechafin
-           and trunc(o2.legalization_date) <  idtfechafin + 1
-           and o2.order_status_id = 8
-        --   and trunc(o2.created_date ) <   dtfefefin + 1
-           and (
-                (o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                       FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttinter),',') )) and
-                 concclco in (19) and -- Interna
-                 a.product_id not in (select act.product_id
-                                        from open.or_order_activity act, open.or_order oo
-                                       where act.product_id = a.product_id
-                                         and oo.task_type_id in (SELECT (COLUMN_VALUE)
-                                                                   FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttotapoy),',') ))
-                                         and act.order_id = oo.order_id
-                                         and oo.legalization_date < to_date(Vsbfecotapo)
-                                     )
-                )
-              OR
-                (
-                  o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                        FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcxc),',') )) and
-                  concclCo = 4 -- cxc
-                )
-              OR
-                (
-                  o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                          FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcertp),',')) ) and
-                  concclco = 400 -- Cert Previa
-                )
-               )
-           AND o2.order_id not in (select oo.related_order_id
-                                     from open.OR_related_order oo
-                                    where oo.related_order_id = o2.order_id
-                                      and oo.rela_order_type_id in (13,14)
-                                  )
-           AND a.product_id NOT IN (SELECT hcecnuse
-                                      FROM open.hicaesco h
-                                     WHERE hcecfech < to_date(Vsbfeciniot)
-                                       AND hcecnuse = a.product_id
-                                       AND hcececan = 96
-                                       AND hcececac = 1
-                                       AND hcecserv = 7014);
-        */
-        --  CA - 730
-        -- >
+        End loop;
 
-      End loop;
-
-        pkErrors.Pop;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);  
 
     EXCEPTION
-        when LOGIN_DENIED then
-            pkErrors.Pop;
-            raise LOGIN_DENIED;
-        when pkConstante.exERROR_LEVEL2 then
-            pkErrors.Pop;
-            raise pkConstante.exERROR_LEVEL2;
-        when OTHERS then
-          errored := sqlerrm;
-            pkErrors.NotifyError
-            (
-                pkErrors.fsbLastObject        ,
-                sqlerrm                       ,
-                IC_BOCompletServiceInt_Gdca.sbErrMsg
-            );
-            pkErrors.Pop;
-            raise_application_error
-            (
-                pkConstante.nuERROR_LEVEL2    ,
-                IC_BOCompletServiceInt_Gdca.sbErrMsg
-            );
+        WHEN pkg_error.Controlled_Error THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+            pkg_Error.getError(nuError,sbError);        
+            pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
+            RAISE pkg_error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);          
+            pkg_error.setError;
+            pkg_Error.getError(nuError,sbError);
+            pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
+            RAISE pkg_error.Controlled_Error;
     END TemprInsertConstAccCharges;
 
 
     PROCEDURE TemprInsertMigraCharges(idtfechafin  IN Date,
-                                      --<<
-                                      -- CA-730
                                       inuThreads   in  number,
                                       inuThread    in  number
-                                      -->>
                                       )
     /**********************************************************************
     	Propiedad intelectual de
@@ -5316,325 +5189,175 @@ CREATE OR REPLACE PACKAGE BODY adm_person.IC_BOCompletServiceInt_Gdca AS
 
     	HISTORIA DE MODIFICACIONES
     	Autor       Fecha       Modificacion
-      ----------- ----------  ---------------------------------------------
-      Dcardona    23/05/2014  Aranda: 6038
-                              Se ajusta para que no se inserten algunos datos vacios (NULL)
-                              y para obtener el plan comercial de constructoras de un parametro
+        ----------- ----------  ---------------------------------------------
+        Dcardona    23/05/2014  Aranda: 6038
+                                Se ajusta para que no se inserten algunos datos vacios (NULL)
+                                y para obtener el plan comercial de constructoras de un parametro
 
-      HT          18-05-2021  CA-730
-                              Se Valida el proceso de generar el servicio cumplido por orden de trabajo
-                              legalizada de acuerdo al ultimo cambio que se presento en la certifiacion
-                              previa, se corrige el proceso para que el proceso se ejecute por hilos.
-
+        HT          18-05-2021  CA-730
+                                Se Valida el proceso de generar el servicio cumplido por orden de trabajo
+                                legalizada de acuerdo al ultimo cambio que se presento en la certifiacion
+                                previa, se corrige el proceso para que el proceso se ejecute por hilos.
+        jpinedc     17-06-2025  OSF-4555: Se modifica cuDatos para obtener el departamento y 
+                                la localidad de la direccion de instalación del producto
     ***********************************************************************/
     IS
 
-      --<<
-      -- Variables
-      -->>
-      vaPlanCial   VARCHAR2(1000);
-      vaError      VARCHAR2(3000);
-      nuPlanCial   mo_motive.commercial_plan_id%TYPE;
-      vnucatego    servsusc.sesucate%type;
-      vnucatere    constant servsusc.sesucate%type := 1; -- Residencial
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'TemprInsertMigraCharges';
+        nuError         NUMBER;
+        sbError         VARCHAR2(4000); 
+        
+        -- Variables
+        vaPlanCial   VARCHAR2(1000);
+        vaError      VARCHAR2(3000);
+        nuPlanCial   mo_motive.commercial_plan_id%TYPE;
+        vnucatego    servsusc.sesucate%type;
+        vnucatere    constant servsusc.sesucate%type := 1; -- Residencial
 
-      --<< CA-448
-      Vsbttinter        ldci_carasewe.casevalo%type;
-      Vsbttcxc          ldci_carasewe.casevalo%type;
-      Vsbttcertp        ldci_carasewe.casevalo%type;
-      Vsbttotapoy       ldci_carasewe.casevalo%type;
-      Vsbfecotapo       ldci_carasewe.casevalo%type;
-      Vsbfeciniot       ldci_carasewe.casevalo%type;
+        Vsbttinter        ldci_carasewe.casevalo%type;
+        Vsbttcxc          ldci_carasewe.casevalo%type;
+        Vsbttcertp        ldci_carasewe.casevalo%type;
+        Vsbttotapoy       ldci_carasewe.casevalo%type;
+        Vsbfecotapo       ldci_carasewe.casevalo%type;
+        Vsbfeciniot       ldci_carasewe.casevalo%type;
 
-    --<<
-    -- CA-730
-    --
-    -- Consulta Servicio Cumplido Migrado
-    Cursor CuDatos IS
-      select A.PRODUCT_ID, 7014,
-             sesucate, sesusuca, invmconc, 53, 'DB',
-             invmvain,
-             idtfechafin, 'ICBISC',
-             71,
-             'TRM', 'N',
-             gc.geo_loca_father_id,   -- DPTO
-             ab.geograp_location_id,  -- LOCA
-             susccodi,
-             'MC'
-         from open.or_order o2
-         inner join open.ge_causal c ON c.causal_id = o2.causal_id and c.class_causal_id = 1
-         inner join open.or_order_activity a ON a.order_id = o2.order_id
-         inner join open.mo_packages m on m.package_id = a.package_id and m.package_type_id = 100271 -- 323
-         inner join open.Ldci_Ingrevemi mi ON mi.invmsesu = a.product_id
-         inner join open.concepto o ON conccodi = mi.invmconc
-         inner join open.servsusc sc ON sc.sesunuse = a.product_id
-         inner join open.suscripc su ON su.susccodi = sc.sesususc
-         inner join open.ab_address ab ON ab.address_id = su.susciddi
-         inner join open.ge_geogra_location gc ON GC.GEOGRAP_LOCATION_ID = ab.geograp_location_id
-         where trunc(o2.legalization_date) >= idtfechafin
-           and trunc(o2.legalization_date) <  idtfechafin + 1
-           and o2.order_status_id = 8
-           and (
-                  (
-                   o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                         FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttinter),',') )) and
-                   concclco in (19) and -- Interna
-                   a.product_id not in (select act.product_id
-                                           from open.or_order_activity act, open.or_order oo
-                                          where act.product_id = a.product_id
-                                            and oo.task_type_id in (SELECT (COLUMN_VALUE)
-                                                                      FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttotapoy),',') ))
-                                            and act.order_id = oo.order_id
-                                            and oo.legalization_date < to_date(Vsbfecotapo)
-                                        )
-                  )
-              OR
-                (
-                 o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                       FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcxc),',') )) and
-                 concclCo = 4 -- cxc
-                )
-              OR
-                (
-                 o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                       FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcertp),',')) ) and
-                 concclco = 400 AND-- Cert Previa
-                 o2.causal_id = 9944
-                )
-               )
-           AND o2.order_id not in (select oo.related_order_id
-                                     from open.OR_related_order oo
-                                    where oo.related_order_id = o2.order_id
-                                      and oo.rela_order_type_id in (13,14)
-                                  )
-           AND a.product_id NOT IN (SELECT hcecnuse
-                                      FROM open.hicaesco h
-                                     WHERE hcecfech < to_date(Vsbfeciniot)
-                                       AND hcecnuse = a.product_id
-                                       AND hcececan = 96
-                                       AND hcececac = 1
-                                       AND hcecserv = 7014)
-           AND MOD(a.product_id, inuThreads) + 1 = inuThread;
+        -- Consulta Servicio Cumplido Migrado
+        Cursor CuDatos IS
+          select A.PRODUCT_ID, 7014,
+                 sesucate, sesusuca, invmconc, 53, 'DB',
+                 invmvain,
+                 idtfechafin, 'ICBISC',
+                 71,
+                 'TRM', 'N',
+                 gc.geo_loca_father_id,   -- DPTO
+                 ab.geograp_location_id,  -- LOCA
+                 sc.sesususc susccodi,
+                 'MC'
+             from open.or_order o2
+             inner join open.ge_causal c ON c.causal_id = o2.causal_id and c.class_causal_id = 1
+             inner join open.or_order_activity a ON a.order_id = o2.order_id
+             inner join open.mo_packages m on m.package_id = a.package_id and m.package_type_id = 100271 -- 323
+             inner join open.Ldci_Ingrevemi mi ON mi.invmsesu = a.product_id
+             inner join open.concepto o ON conccodi = mi.invmconc
+             inner join open.servsusc sc ON sc.sesunuse = a.product_id
+             inner join open.pr_product pr ON pr.product_id = a.product_id
+             inner join open.ab_address ab ON ab.address_id = pr.product_id
+             inner join open.ge_geogra_location gc ON GC.GEOGRAP_LOCATION_ID = ab.geograp_location_id
+             where trunc(o2.legalization_date) >= idtfechafin
+               and trunc(o2.legalization_date) <  idtfechafin + 1
+               and o2.order_status_id = 8
+               and (
+                      (
+                       o2.task_type_id IN (SELECT (COLUMN_VALUE)
+                                             FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttinter),',') )) and
+                       concclco in (19) and -- Interna
+                       a.product_id not in (select act.product_id
+                                               from open.or_order_activity act, open.or_order oo
+                                              where act.product_id = a.product_id
+                                                and oo.task_type_id in (SELECT (COLUMN_VALUE)
+                                                                          FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttotapoy),',') ))
+                                                and act.order_id = oo.order_id
+                                                and oo.legalization_date < to_date(Vsbfecotapo)
+                                            )
+                      )
+                  OR
+                    (
+                     o2.task_type_id IN (SELECT (COLUMN_VALUE)
+                                           FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcxc),',') )) and
+                     concclCo = 4 -- cxc
+                    )
+                  OR
+                    (
+                     o2.task_type_id IN (SELECT (COLUMN_VALUE)
+                                           FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcertp),',')) ) and
+                     concclco = 400 AND-- Cert Previa
+                     o2.causal_id = 9944
+                    )
+                   )
+               AND o2.order_id not in (select oo.related_order_id
+                                         from open.OR_related_order oo
+                                        where oo.related_order_id = o2.order_id
+                                          and oo.rela_order_type_id in (13,14)
+                                      )
+               AND a.product_id NOT IN (SELECT hcecnuse
+                                          FROM open.hicaesco h
+                                         WHERE hcecfech < to_date(Vsbfeciniot)
+                                           AND hcecnuse = a.product_id
+                                           AND hcececan = 96
+                                           AND hcececac = 1
+                                           AND hcecserv = 7014)
+               AND MOD(a.product_id, inuThreads) + 1 = inuThread;
 
-           -- CA-730
-           -->>
 
-      osbErrorMessage   VARCHAR2(2000);
-      -->>
+        osbErrorMessage   VARCHAR2(2000);
 
     BEGIN
 
-    --<<
-    -- Se obtiene el plan comercial de constructoras
-    -->>
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'PLAN_CCIAL_CONST', vaPlanCial, IC_BOCompletServiceInt_Gdca.sbErrMsg);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO); 
+        
+        -- Se obtiene el plan comercial de constructoras
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'PLAN_CCIAL_CONST', vaPlanCial, IC_BOCompletServiceInt_Gdca.sbErrMsg);
 
-    --<< CA-448
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'FECHA_FIN_ORDEN_DE_APOYO', Vsbfecotapo, osbErrorMessage);
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'FECHA_INICIO_INGRESO_X_ORDEN', Vsbfeciniot, osbErrorMessage);
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_C_X_C', Vsbttcxc, osbErrorMessage);
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_INTERNA', Vsbttinter, osbErrorMessage);
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPO_DE_TRABAJO_CERTIF_PREVIA', Vsbttcertp, osbErrorMessage);
-    ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_OT_APOYO', Vsbttotapoy, osbErrorMessage);
-    -->>
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'FECHA_FIN_ORDEN_DE_APOYO', Vsbfecotapo, osbErrorMessage);
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'FECHA_INICIO_INGRESO_X_ORDEN', Vsbfeciniot, osbErrorMessage);
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_C_X_C', Vsbttcxc, osbErrorMessage);
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_INTERNA', Vsbttinter, osbErrorMessage);
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPO_DE_TRABAJO_CERTIF_PREVIA', Vsbttcertp, osbErrorMessage);
+        ldci_pkwebservutils.proCaraServWeb('WS_COSTOS', 'TIPOS_DE_TRABAJOS_OT_APOYO', Vsbttotapoy, osbErrorMessage);
 
-    --<<
-    -- Se convierte a numerico el valor del parametro
-    -->>
-    nuPlanCial := to_number(vaPlanCial);
-    --<<
-    -->>
+        -- Se convierte a numerico el valor del parametro
+        nuPlanCial := to_number(vaPlanCial);
 
-    --
-    pkErrors.Push
-    (
-        'IC_BCCompletServiceInt.TemprInsertMigraCharges'
-    );
-     --<
-     -- llevamos todo el ingreso
-     -->
-    FOr reg in CUDatos Loop
+        -- llevamos todo el ingreso
+        FOr reg in CUDatos Loop
 
-       INSERT
-       INTO    open.tmp_cargproc
-       (
-          cargnuse, cargcicl, cargfact, cargcuco, cargserv,
-          cargcate, cargsuca, cargconc, cargcaca, cargsign,
-          cargvalo, cargimp1,  cargiva, cargunme, cargcodo,
-          cargdoso, cargfecr, cargfeco, cargprog, cargpefa,
-          cargano, cargmes, cargsoci, cargfech, cargusua,
-          cargterm, cargflfa, cargpete, cargteco, cargpeco,
-          cargcoll, cargdepa, cargloca, cargzoco, cargsusc,
-          cargunid, cargfopa
-       )
-       --<<
-       -- CA-730
-       VALUES
-       --<<
-       -- CA-730
-       (
-        -- Consulta Servicio Cumplido Migrado
-               reg.PRODUCT_ID, -1, 0, -1, 7014,
-               reg.sesucate, reg.sesusuca, reg.invmconc, 53, 'DB',
-               reg.invmvain, reg.invmvain, 0, 0, 0,
-               0, idtfechafin, idtfechafin, 'ICBISC', 0,
-               0, 71, 0, idtfechafin, 'ICBISC',
-               'TRM', 'N',
-               0, 0, 0, 0,
-               reg.geo_loca_father_id,
-               reg.geograp_location_id,
-               0,
-               reg.susccodi,
-               0,
-               'MC'
-       );
-       --
-       -- CA-730
-       -->>
-      --<<
-      -- CA-730
-      --
-      /*
-      -- Consulta Servicio Cumplido Migrado
-      select A.PRODUCT_ID, -1, 0, -1, 7014,
-             sesucate, sesusuca, invmconc, 53, 'DB',
-             invmvain, invmvain, 0, 0, 0,
-             0, idtfechafin, idtfechafin, 'ICBISC', 0,
-             0, 71, 0, idtfechafin, 'ICBISC',
-             'TRM', 'N',
-             --open.pkBOAccountingInterface.fsbGetProdAddressType(A.PRODUCT_ID),
-             0, 0, 0, 0,
-             --open.pkBOAccountingInterface.fnuProductRetire(A.PRODUCT_ID) cargcoll,
-             0,
-             ab.geograp_location_id,
-             0, --open.ab_address.neighborthood_id,
-             susccodi,
-             0, 'MC'
-      -- CA-448
-      /*
-        from open.mo_packages p, open.or_order_Activity a, open.or_order o, open.Ldci_Ingrevemi m,
-             open.servsusc, open.ab_address, open.suscripc, open.ge_subscriber g
-       where o.legalization_date >= idtfechafin
-         and o.legalization_date <  idtfechafin + 1
-         and o.order_status_id = 8
-         and a.order_id = o.order_id
-         and p.package_id = a.package_id
-         and p.package_type_id = 100271
-         and (
-              (a.task_type_id IN (12150, 12152, 12153) and
-               m.invmconc = 30)
-            OR
-              (a.task_type_id IN (10268, 10495, 12149, 12151, 12154) and
-               m.invmconc = 19)
-            OR
-              (a.task_type_id IN (10348, 12162) and
-               m.invmconc = 674)
-             )
-         AND o.CAUSAL_ID  IN (select c.causal_id from open.ge_causal c where c.causal_id = o.CAUSAL_ID and c.class_causal_id = 1)
-         AND a.product_id NOT IN (SELECT hcecnuse
-                                    FROM open.hicaesco h
-                                   WHERE hcecfech < '01-08-2019' --'Fecha_Final 23:59:59'
-                                     AND hcecnuse = a.product_id
-                                     AND hcececan = 96
-                                     AND hcececac = 1
-                                     AND hcecserv = 7014)
-         AND A.PRODUCT_ID =  m.invmsesu
-         AND m.invmconc  in  (19, 30, 674) -- conceptos fijos en la tabla migrada
-         AND sesunuse     =  invmsesu
-         AND sesususc     =  susccodi
-         AND suscclie     =  g.subscriber_id
-         AND g.address_id =  ab_address.address_id
-         AND o.order_id not in (select oo.related_order_id
-                                  from open.OR_related_order oo
-                                 where oo.related_order_id = o.order_id
-                                   and oo.rela_order_type_id in (13,14)
-                               );
-         from open.or_order o2
-         inner join open.ge_causal c ON c.causal_id = o2.causal_id and c.class_causal_id = 1
-         inner join open.or_order_activity a ON a.order_id = o2.order_id
-         inner join open.mo_packages m on m.package_id = a.package_id and m.package_type_id = 100271 -- 323
-         inner join open.Ldci_Ingrevemi mi ON mi.invmsesu = a.product_id
-         inner join open.concepto o ON conccodi = mi.invmconc
-         inner join open.servsusc sc ON sc.sesunuse = a.product_id
-         inner join open.suscripc su ON su.susccodi = sc.sesususc
-         inner join open.ab_address ab ON ab.address_id = su.susciddi
-         where trunc(o2.legalization_date) >= idtfechafin
-           and trunc(o2.legalization_date) <  idtfechafin + 1
-           and o2.order_status_id = 8
-        --   and trunc(o2.created_date ) <=  '01-03-2019' --dtfefefin
-           and (
-                  (
-                   o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                         FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttinter),',') )) and
-                   concclco in (19) and -- Interna
-                   a.product_id not in (select act.product_id
-                                           from open.or_order_activity act, open.or_order oo
-                                          where act.product_id = a.product_id
-                                            and oo.task_type_id in (SELECT (COLUMN_VALUE)
-                                                                      FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttotapoy),',') ))
-                                            and act.order_id = oo.order_id
-                                            and oo.legalization_date < to_date(Vsbfecotapo)
-                                        )
-                  )
-              OR
-                (
-                 o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                       FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcxc),',') )) and
-                 concclCo = 4 -- cxc
-                )
-              OR
-                (
-                 o2.task_type_id IN (SELECT (COLUMN_VALUE)
-                                       FROM TABLE (open.LDC_BOUTILITIES.SPLITSTRINGS((Vsbttcertp),',')) ) and
-                 concclco = 400 -- Cert Previa
-                )
-               )
-           AND o2.order_id not in (select oo.related_order_id
-                                     from open.OR_related_order oo
-                                    where oo.related_order_id = o2.order_id
-                                      and oo.rela_order_type_id in (13,14)
-                                  )
-           AND a.product_id NOT IN (SELECT hcecnuse
-                                      FROM open.hicaesco h
-                                     WHERE hcecfech < to_date(Vsbfeciniot)
-                                       AND hcecnuse = a.product_id
-                                       AND hcececan = 96
-                                       AND hcececac = 1
-                                       AND hcecserv = 7014);
-         -- CA - 730
-         -->>
-       */
+           INSERT
+           INTO    open.tmp_cargproc
+           (
+              cargnuse, cargcicl, cargfact, cargcuco, cargserv,
+              cargcate, cargsuca, cargconc, cargcaca, cargsign,
+              cargvalo, cargimp1,  cargiva, cargunme, cargcodo,
+              cargdoso, cargfecr, cargfeco, cargprog, cargpefa,
+              cargano, cargmes, cargsoci, cargfech, cargusua,
+              cargterm, cargflfa, cargpete, cargteco, cargpeco,
+              cargcoll, cargdepa, cargloca, cargzoco, cargsusc,
+              cargunid, cargfopa
+           )
+           VALUES
+           (
+            -- Consulta Servicio Cumplido Migrado
+                   reg.PRODUCT_ID, -1, 0, -1, 7014,
+                   reg.sesucate, reg.sesusuca, reg.invmconc, 53, 'DB',
+                   reg.invmvain, reg.invmvain, 0, 0, 0,
+                   0, idtfechafin, idtfechafin, 'ICBISC', 0,
+                   0, 71, 0, idtfechafin, 'ICBISC',
+                   'TRM', 'N',
+                   0, 0, 0, 0,
+                   reg.geo_loca_father_id,
+                   reg.geograp_location_id,
+                   0,
+                   reg.susccodi,
+                   0,
+                   'MC'
+           );
 
+        End Loop;
 
-    End Loop;
-
-           -->>
-
-    pkErrors.Pop;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN); 
 
     EXCEPTION
-        when LOGIN_DENIED then
-            pkErrors.Pop;
-            raise LOGIN_DENIED;
-        when pkConstante.exERROR_LEVEL2 then
-            pkErrors.Pop;
-            raise pkConstante.exERROR_LEVEL2;
-        when OTHERS then
-            vaError := sqlerrm;
-            pkErrors.NotifyError
-            (
-                pkErrors.fsbLastObject        ,
-                sqlerrm                       ,
-                IC_BOCompletServiceInt_Gdca.sbErrMsg
-            );
-            pkErrors.Pop;
-            raise_application_error
-            (
-                pkConstante.nuERROR_LEVEL2    ,
-                IC_BOCompletServiceInt_Gdca.sbErrMsg
-            );
+        WHEN pkg_error.Controlled_Error THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+            pkg_Error.getError(nuError,sbError);        
+            pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
+            RAISE pkg_error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);          
+            pkg_error.setError;
+            pkg_Error.getError(nuError,sbError);
+            pkg_traza.trace('sbError => ' || sbError, csbNivelTraza );
+            RAISE pkg_error.Controlled_Error;
     END TemprInsertMigraCharges;
-
 
     /*
         Propiedad intelectual de Open Systems (c).
@@ -5763,14 +5486,6 @@ CREATE OR REPLACE PACKAGE BODY adm_person.IC_BOCompletServiceInt_Gdca AS
                 dtCurrent
             );
 
-            -------------------
-            -- ACTAS
-            -------------------
-            /*ValProcess
-            (
-                cnuDOC_TYPE_CERTF,
-                dtCurrent
-            );*/
 
             -------------------
             -- NOTAS
@@ -5878,8 +5593,10 @@ CREATE OR REPLACE PACKAGE BODY adm_person.IC_BOCompletServiceInt_Gdca AS
 
 END IC_BOCompletServiceInt_Gdca;
 /
+
 PROMPT OTORGA PERMISOS ESQUEMA sobre IC_BOCOMPLETSERVICEINT_GDCA
 BEGIN
     pkg_utilidades.prAplicarPermisos('IC_BOCOMPLETSERVICEINT_GDCA', 'ADM_PERSON'); 
 END;
-/  
+/
+

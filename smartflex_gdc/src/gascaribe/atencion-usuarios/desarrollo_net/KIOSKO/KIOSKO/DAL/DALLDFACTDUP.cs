@@ -72,39 +72,48 @@ namespace KIOSKO.DAL
                 OpenDataBase.db.AddOutParameter(cmdCommand, "onuErrorCode", DbType.Int64, 10);
                 OpenDataBase.db.AddOutParameter(cmdCommand, "osbErrorMessage", DbType.String, 255);
                 OpenDataBase.db.AddInParameter(cmdCommand, "ISBSISTEMA", DbType.String, "N");
-                OpenDataBase.db.LoadDataSet(cmdCommand, dsgeneral, tablas);
-                Respuestas.osbseguroliberty = string.IsNullOrEmpty(Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbseguroliberty"))) ? "" : Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbseguroliberty"));
-                Respuestas.osbordensusp = string.IsNullOrEmpty(Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbordensusp"))) ? "" : Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbordensusp"));
-                Respuestas.osbprocfact = string.IsNullOrEmpty(Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbprocfact"))) ? "" : Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbprocfact"));
-                Respuestas.osbimprimir = string.IsNullOrEmpty(Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbimprimir"))) ? "" : Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbimprimir"));
-                Int64? valor = null;
-                Respuestas.onuErrorCode = string.IsNullOrEmpty(OpenDataBase.db.GetParameterValue(cmdCommand, "onuErrorCode").ToString()) ? valor : Convert.ToInt64(OpenDataBase.db.GetParameterValue(cmdCommand, "onuErrorCode").ToString());
-                Respuestas.osbErrorMessage = string.IsNullOrEmpty(Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbErrorMessage"))) ? "" : Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbErrorMessage"));
-
-                //Caso 200-2574 - Danval - 24-04-19
-                //se arma el codigo y agrega la imagen al cursor en forma de datos
-                String cadena = "415" + dsgeneral.Tables["codigos"].Rows[0].ItemArray[0].ToString() + "8020" + dsgeneral.Tables["codigos"].Rows[0].ItemArray[1].ToString() + "s3900" + dsgeneral.Tables["codigos"].Rows[0].ItemArray[2].ToString() + "s96" + dsgeneral.Tables["codigos"].Rows[0].ItemArray[3].ToString();
-                String[] tipos = { "String" };
-                String[] campos = { };
-                String[] valoresF = { cadena };
-using (DbCommand cmdCommand_1 = OpenDataBase.db.GetStoredProcCommand(BL.BLCONSULTAS.codigoBarra))
+                //OSF-3938
+                //Adicion de control de error try
+                try
                 {
-                    OpenDataBase.db.AddInParameter(cmdCommand_1, "isbCadeOrig", DbType.String, Convert.ToString(cadena));
-                    OpenDataBase.db.AddParameter(cmdCommand_1, @"RETURN_VALUE", DbType.String, ParameterDirection.ReturnValue, string.Empty, DataRowVersion.Default, null);
-                    OpenDataBase.db.ExecuteNonQuery(cmdCommand_1);
-                    cadena = OpenDataBase.db.GetParameterValue(cmdCommand_1, @"RETURN_VALUE").ToString();
+                    OpenDataBase.db.LoadDataSet(cmdCommand, dsgeneral, tablas);
+
+                    Respuestas.osbseguroliberty = string.IsNullOrEmpty(Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbseguroliberty"))) ? "" : Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbseguroliberty"));
+                    Respuestas.osbordensusp = string.IsNullOrEmpty(Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbordensusp"))) ? "" : Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbordensusp"));
+                    Respuestas.osbprocfact = string.IsNullOrEmpty(Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbprocfact"))) ? "" : Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbprocfact"));
+                    Respuestas.osbimprimir = string.IsNullOrEmpty(Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbimprimir"))) ? "" : Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbimprimir"));
+                    Int64? valor = null;
+                    Respuestas.onuErrorCode = string.IsNullOrEmpty(OpenDataBase.db.GetParameterValue(cmdCommand, "onuErrorCode").ToString()) ? valor : Convert.ToInt64(OpenDataBase.db.GetParameterValue(cmdCommand, "onuErrorCode").ToString());
+                    Respuestas.osbErrorMessage = string.IsNullOrEmpty(Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbErrorMessage"))) ? "" : Convert.ToString(OpenDataBase.db.GetParameterValue(cmdCommand, "osbErrorMessage"));
+
+                    //Caso 200-2574 - Danval - 24-04-19
+                    //se arma el codigo y agrega la imagen al cursor en forma de datos
+                    String cadena = "415" + dsgeneral.Tables["codigos"].Rows[0].ItemArray[0].ToString() + "8020" + dsgeneral.Tables["codigos"].Rows[0].ItemArray[1].ToString() + "s3900" + dsgeneral.Tables["codigos"].Rows[0].ItemArray[2].ToString() + "s96" + dsgeneral.Tables["codigos"].Rows[0].ItemArray[3].ToString();
+                    String[] tipos = { "String" };
+                    String[] campos = { };
+                    String[] valoresF = { cadena };
+                    using (DbCommand cmdCommand_1 = OpenDataBase.db.GetStoredProcCommand(BL.BLCONSULTAS.codigoBarra))
+                    {
+                        OpenDataBase.db.AddInParameter(cmdCommand_1, "isbCadeOrig", DbType.String, Convert.ToString(cadena));
+                        OpenDataBase.db.AddParameter(cmdCommand_1, @"RETURN_VALUE", DbType.String, ParameterDirection.ReturnValue, string.Empty, DataRowVersion.Default, null);
+                        OpenDataBase.db.ExecuteNonQuery(cmdCommand_1);
+                        cadena = OpenDataBase.db.GetParameterValue(cmdCommand_1, @"RETURN_VALUE").ToString();
+                    }
+                    DataTable data = new DataTable();
+                    DataRow row;
+                    data.TableName = "imagen";
+                    data.Columns.Add("codigo_barra_formateado", System.Type.GetType("System.Byte[]"));
+                    data.Columns.Add("codigo_texto");
+                    row = data.NewRow();
+                    row[0] = convertirTextoImagen(cadena);
+                    row[1] = cadena;
+                    data.Rows.Add(row);
+                    dsgeneral.Tables.Add(data);
+                    //
                 }
-DataTable data = new DataTable();
-                DataRow row;
-                data.TableName = "imagen";
-                data.Columns.Add("codigo_barra_formateado", System.Type.GetType("System.Byte[]"));
-                data.Columns.Add("codigo_texto");
-                row = data.NewRow();
-                row[0] = convertirTextoImagen(cadena);
-                row[1] = cadena;
-                data.Rows.Add(row);
-                dsgeneral.Tables.Add(data);
-                //
+                catch
+                {
+                }
 
                 Respuestas.datos = dsgeneral;
             }

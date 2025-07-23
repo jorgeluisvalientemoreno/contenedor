@@ -52,7 +52,14 @@ CREATE OR REPLACE PACKAGE pkg_truncate_tablas_open IS
   
   PROCEDURE prcldc_notas_masivas;
 
-  PROCEDURE prcldc_cargosfact_castigo_tmp;  
+  PROCEDURE prcldc_cargosfact_castigo_tmp; 
+
+  PROCEDURE prcldc_snapshotcreg_tmp;
+
+  PROCEDURE prcLdc_FormTemp;
+  
+  PROCEDURE prcLdc_Datos_Certificado_met;
+  
 
 END pkg_truncate_tablas_open;
 /
@@ -60,7 +67,7 @@ END pkg_truncate_tablas_open;
 CREATE OR REPLACE PACKAGE BODY pkg_truncate_tablas_open IS
 
     -- Identificador del ultimo caso que hizo cambios
-    csbVersion     VARCHAR2(15) := 'OSF-3126';
+    csbVersion     VARCHAR2(15) := 'OSF-3693';
     -- Constantes para el control de la traza
     csbSP_NAME     CONSTANT VARCHAR2(35):= $$PLSQL_UNIT;
     /***************************************************************************
@@ -758,6 +765,127 @@ CREATE OR REPLACE PACKAGE BODY pkg_truncate_tablas_open IS
             pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
             RAISE pkg_Error.Controlled_Error;   
     END prcldc_cargosfact_castigo_tmp;    
+
+    PROCEDURE prcldc_snapshotcreg_tmp
+    IS
+    /***************************************************************************
+      Propiedad Intelectual de Gases del Caribe
+      Programa        : prcldc_snapshotcreg_tmp
+      Descripcion     : Proceso para truncar tabla ldc_snapshotcreg_tmp
+      Autor           : Jhon Soto
+      Fecha           : 27-09-2024
+
+      Parametros de Entrada     
+        isbTabla       nombre de la tabla
+      Parametros de Salida
+
+      Modificaciones  :
+      =========================================================
+      Autor         Fecha       Caso        Descripcion
+      jsoto         27/09/2024  OSF-3388    Creación
+    ***************************************************************************/
+        sbError             VARCHAR2(4000);
+        nuError             NUMBER;   
+        csbMetodo  CONSTANT VARCHAR2(100) := csbSP_NAME||'prcldc_snapshotcreg_tmp';
+    BEGIN
+        pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+
+        EXECUTE IMMEDIATE 'TRUNCATE TABLE LDC_SNAPSHOTCREG_TMP';
+        pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+    EXCEPTION
+        WHEN pkg_Error.Controlled_Error  THEN
+            pkg_Error.getError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
+            RAISE pkg_Error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_Error.setError;
+            pkg_Error.getError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+            RAISE pkg_Error.Controlled_Error;   
+    END prcldc_snapshotcreg_tmp;
+
+
+    PROCEDURE prcLdc_Formtemp
+    IS
+    /***************************************************************************
+      Propiedad Intelectual de Gases del Caribe
+      Programa        : prcLdc_Formtemp
+      Descripcion     : Proceso para truncar tabla Ldc_FormTemp
+      Autor           : Jhon Soto
+      Fecha           : 26-12-2024
+
+      Parametros de Entrada     
+        isbTabla       nombre de la tabla
+      Parametros de Salida
+
+      Modificaciones  :
+      =========================================================
+      Autor         Fecha       Caso        Descripcion
+      jsoto         26/12/2024  OSF-3911    Creación
+    ***************************************************************************/
+        sbError             VARCHAR2(4000);
+        nuError             NUMBER;   
+        csbMetodo  CONSTANT VARCHAR2(100) := csbSP_NAME||'prcLdc_Formtemp';
+    BEGIN
+        pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+
+        EXECUTE IMMEDIATE 'TRUNCATE TABLE LDC_FORMTEMP';
+        pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+    EXCEPTION
+        WHEN pkg_Error.Controlled_Error  THEN
+            pkg_Error.getError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
+            RAISE pkg_Error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_Error.setError;
+            pkg_Error.getError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+            RAISE pkg_Error.Controlled_Error;   
+    END prcLdc_Formtemp;
+
+    PROCEDURE prcLdc_Datos_Certificado_met
+    IS
+    /***************************************************************************
+      Propiedad Intelectual de Gases del Caribe
+      Programa        : prcLdc_Datos_Certificado_met
+      Descripcion     : Proceso para truncar tabla LDC_DATOS_CERTIFICADO_MET
+      Autor           : Jhon Soto
+      Fecha           : 31-01-2025
+
+      Parametros de Entrada     
+        isbTabla       nombre de la tabla
+      Parametros de Salida
+
+      Modificaciones  :
+      =========================================================
+      Autor         Fecha       Caso        Descripcion
+      jsoto         31/01/2025  OSF-3911    Creación
+    ***************************************************************************/
+        sbError             VARCHAR2(4000);
+        nuError             NUMBER;   
+        csbMetodo  CONSTANT VARCHAR2(100) := csbSP_NAME||'prcLdc_Datos_Certificado_met';
+    BEGIN
+        pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+
+        EXECUTE IMMEDIATE 'TRUNCATE TABLE LDC_DATOS_CERTIFICADO_MET';
+        pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+    EXCEPTION
+        WHEN pkg_Error.Controlled_Error  THEN
+            pkg_Error.getError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
+            RAISE pkg_Error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_Error.setError;
+            pkg_Error.getError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+            RAISE pkg_Error.Controlled_Error;   
+    END prcLdc_Datos_Certificado_met;
 
 END pkg_truncate_tablas_open;
 /

@@ -1,5 +1,13 @@
 DECLARE
   nuConta NUMBER;
+  nuExiste 	NUMBER;
+  
+	cursor cuDatos(sbCampo VARCHAR2) is
+	select count(1)
+	  from dba_tab_columns
+	 where table_name='RECOFAEL'
+	   and column_name= sbCampo;
+  
 BEGIN
 
  SELECT COUNT(*) INTO nuConta
@@ -35,15 +43,40 @@ BEGIN
 	EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.ultimo_cons IS 'Ultimo Consecutivo'#';
 	EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.estado IS 'Estado A -Activo I - Inactivo'#';
 	EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.fecha_resolucion IS 'Fecha de Resolucion'#';
-  EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.fecha_ini_vigencia IS 'Fecha Inicio Vigencia'#';
-  EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.fecha_fin_vigencia IS 'Fecha Fin Vigencia'#';
-  EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.fecha_registro IS 'Fecha de registro'#';
+	EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.fecha_ini_vigencia IS 'Fecha Inicio Vigencia'#';
+	EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.fecha_fin_vigencia IS 'Fecha Fin Vigencia'#';
+	EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.fecha_registro IS 'Fecha de registro'#';
 	EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.usuario IS 'Usuario'#';
 	EXECUTE IMMEDIATE q'#COMMENT ON COLUMN recofael.terminal IS 'Terminal'#';
 	EXECUTE IMMEDIATE q'#COMMENT ON TABLE recofael IS 'Resolucion de Consecutivo Facturacion Electronica'#';	
+	
+
+
+  END IF;
+  
+   -- Agregar Columna Empresa
+
+  	OPEN cuDatos('EMPRESA');
+	FETCH cuDatos INTO nuExiste;
+	CLOSE cuDatos;
+
+	IF nuExiste = 0 THEN
+	
+		EXECUTE IMMEDIATE 
+		'alter table RECOFAEL
+		add(
+			"EMPRESA" VARCHAR2(10) DEFAULT' || ''''||'GDCA'||''''|| 'NOT NULL
+			)';
+
+
+		   EXECUTE IMMEDIATE 'COMMENT ON COLUMN OPEN.RECOFAEL.EMPRESA IS ' || '''' || 'Empresa' || '''';
+
+  
+	END IF;
+	
 	BEGIN
 	  pkg_utilidades.prAplicarPermisos('RECOFAEL','OPEN');
 	END;
-  END IF;
+	
 END;
 /

@@ -1,5 +1,5 @@
-PROMPT Crea sinonimo objeto dependiente FUNCIONA
+PROMPT Crea Sinonimo a Tabla FUNCIONA
 BEGIN
-    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.FUNCIONA FOR FUNCIONA';
+    pkg_utilidades.prCrearSinonimos( upper('FUNCIONA'), 'OPEN');
 END;
 /

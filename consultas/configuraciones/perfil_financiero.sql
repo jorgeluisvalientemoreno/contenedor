@@ -8,3 +8,13 @@
        SELECT *
        FROM GE_FINANCIAL_PROFILE
        WHERE ACTION_AMOUNT_ID =5;
+
+
+/*
+1-Monto Financianciaciones
+2-Monto transaccion en Caja
+3-Monto novedad a contratista
+4-Montos notas de facturación
+5-Monto devolucion saldo a favor
+6-Monto de negocicion de deuda.
+*/

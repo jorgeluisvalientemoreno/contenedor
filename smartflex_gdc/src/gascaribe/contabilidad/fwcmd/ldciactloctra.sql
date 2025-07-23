@@ -1,0 +1,1562 @@
+BEGIN
+setsystemenviroment;
+END;
+/
+
+
+BEGIN
+sa_bocreatePackages.CreatePackage('LDCIACTLOCTRA_',
+'CREATE OR REPLACE PACKAGE LDCIACTLOCTRA_ IS ' || chr(10) ||
+'blProcessStatus boolean := true; ' || chr(10) ||
+'type tySA_EXECUTABLERowId is table of rowid index by varchar2(100); ' || chr(10) ||
+'tbSA_EXECUTABLERowId tySA_EXECUTABLERowId;type tySA_ENT_ROLE_EXECRowId is table of rowid index by varchar2(100); ' || chr(10) ||
+'tbSA_ENT_ROLE_EXECRowId tySA_ENT_ROLE_EXECRowId;type tySA_ROLE_EXECUTABLESRowId is table of rowid index by varchar2(100); ' || chr(10) ||
+'tbSA_ROLE_EXECUTABLESRowId tySA_ROLE_EXECUTABLESRowId;type tySA_EXEC_ENTITIESRowId is table of rowid index by varchar2(100); ' || chr(10) ||
+'tbSA_EXEC_ENTITIESRowId tySA_EXEC_ENTITIESRowId;type tySA_MENU_OPTIONRowId is table of rowid index by varchar2(100); ' || chr(10) ||
+'tbSA_MENU_OPTIONRowId tySA_MENU_OPTIONRowId;type tyGI_ENTITY_DISP_DATARowId is table of rowid index by varchar2(100); ' || chr(10) ||
+'tbGI_ENTITY_DISP_DATARowId tyGI_ENTITY_DISP_DATARowId;type tyGI_ATTRIB_DISP_DATARowId is table of rowid index by varchar2(100); ' || chr(10) ||
+'tbGI_ATTRIB_DISP_DATARowId tyGI_ATTRIB_DISP_DATARowId;type ty0_0 is table of SA_EXECUTABLE.NAME%type index by binary_integer; ' || chr(10) ||
+'old_tb0_0 ty0_0; ' || chr(10) ||
+'tb0_0 ty0_0;type ty0_1 is table of SA_EXECUTABLE.EXECUTABLE_ID%type index by binary_integer; ' || chr(10) ||
+'old_tb0_1 ty0_1; ' || chr(10) ||
+'tb0_1 ty0_1;type ty1_0 is table of SA_ROLE_EXECUTABLES.ROLE_ID%type index by binary_integer; ' || chr(10) ||
+'old_tb1_0 ty1_0; ' || chr(10) ||
+'tb1_0 ty1_0;type ty1_1 is table of SA_ROLE_EXECUTABLES.EXECUTABLE_ID%type index by binary_integer; ' || chr(10) ||
+'old_tb1_1 ty1_1; ' || chr(10) ||
+'tb1_1 ty1_1;type ty2_0 is table of GI_ENTITY_DISP_DATA.EXECUTABLE_ID%type index by binary_integer; ' || chr(10) ||
+'old_tb2_0 ty2_0; ' || chr(10) ||
+'tb2_0 ty2_0;type ty2_1 is table of GI_ENTITY_DISP_DATA.ENTITY_ID%type index by binary_integer; ' || chr(10) ||
+'old_tb2_1 ty2_1; ' || chr(10) ||
+'tb2_1 ty2_1;type ty2_2 is table of GI_ENTITY_DISP_DATA.PARENT_ENTITY_ID%type index by binary_integer; ' || chr(10) ||
+'old_tb2_2 ty2_2; ' || chr(10) ||
+'tb2_2 ty2_2;type ty3_0 is table of GI_ATTRIB_DISP_DATA.EXECUTABLE_ID%type index by binary_integer; ' || chr(10) ||
+'old_tb3_0 ty3_0; ' || chr(10) ||
+'tb3_0 ty3_0;type ty3_1 is table of GI_ATTRIB_DISP_DATA.ENTITY_ID%type index by binary_integer; ' || chr(10) ||
+'old_tb3_1 ty3_1; ' || chr(10) ||
+'tb3_1 ty3_1;type ty3_2 is table of GI_ATTRIB_DISP_DATA.ENTITY_ATTRIBUTE_ID%type index by binary_integer; ' || chr(10) ||
+'old_tb3_2 ty3_2; ' || chr(10) ||
+'tb3_2 ty3_2; ' || chr(10) ||
+'  executableName ge_catalog.tag_name%type := ''LDCIACTLOCTRA''; ' || chr(10) ||
+'  type tyCatalogTagName is table of ge_catalog.tag_name%type index by varchar2(200); ' || chr(10) ||
+'  tbEntityName tyCatalogTagName; ' || chr(10) ||
+'  tbEntityAttributeName tyCatalogTagName; ' || chr(10) ||
+'CURSOR cuRoleExecutables ' || chr(10) ||
+'IS ' || chr(10) ||
+'SELECT b.name, a.executable_id, a.role_id ' || chr(10) ||
+'FROM sa_role_executables a, sa_executable b ' || chr(10) ||
+'WHERE a.executable_id = b.executable_id ' || chr(10) ||
+'and a.executable_id in  ' || chr(10) ||
+'( ' || chr(10) ||
+'SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME=''LDCIACTLOCTRA'' ' || chr(10) ||
+'); ' || chr(10) ||
+'CURSOR cuUserExceptions  ' || chr(10) ||
+'IS  ' || chr(10) ||
+'SELECT b.name,a.executable_id,a.user_id,a.status,a.usr_exc_type_id,a.comment_ ' || chr(10) ||
+'FROM sa_user_exceptions a, sa_executable b ' || chr(10) ||
+'WHERE a.executable_id = b.executable_id ' || chr(10) ||
+'and b.executable_id in ' || chr(10) ||
+'( ' || chr(10) ||
+'SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME=''LDCIACTLOCTRA'' ' || chr(10) ||
+'); ' || chr(10) ||
+'CURSOR cuExecEntities  ' || chr(10) ||
+'IS  ' || chr(10) ||
+'SELECT b.name,a.executable_id,a.entity_id ' || chr(10) ||
+'FROM sa_exec_entities a, sa_executable b ' || chr(10) ||
+'WHERE a.executable_id = b.executable_id ' || chr(10) ||
+'and b.executable_id in ' || chr(10) ||
+'( ' || chr(10) ||
+'SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME=''LDCIACTLOCTRA'' ' || chr(10) ||
+'); ' || chr(10) ||
+'type tyRoleExecutables IS table of cuRoleExecutables%rowtype index BY binary_integer; ' || chr(10) ||
+'tbRoleExecutables  tyRoleExecutables; ' || chr(10) ||
+'type tyUserExceptions IS table of cuUserExceptions%rowtype index BY binary_integer; ' || chr(10) ||
+'tbUserException tyUserExceptions; ' || chr(10) ||
+'type tyExecEntities IS table of cuExecEntities%rowtype index BY binary_integer; ' || chr(10) ||
+'tbExecEntities  tyExecEntities; ' || chr(10) ||
+'rcRoleExecutables cuRoleExecutables%rowtype; ' || chr(10) ||
+'rcUserExceptions  cuUserExceptions%rowtype; ' || chr(10) ||
+'rcExecEntities  cuExecEntities%rowtype; ' || chr(10) ||
+' ' || chr(10) ||
+'END LDCIACTLOCTRA_;');
+END;
+/
+
+
+BEGIN ut_trace.trace('********************Comenzar proceso de objeto:LDCIACTLOCTRA_******************************'); END;
+/
+
+declare 
+nuIndex binary_integer:=0;
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+Open LDCIACTLOCTRA_.cuRoleExecutables;
+loop
+ fetch LDCIACTLOCTRA_.cuRoleExecutables INTO LDCIACTLOCTRA_.rcRoleExecutables;
+ exit when  LDCIACTLOCTRA_.cuRoleExecutables%notfound;
+ LDCIACTLOCTRA_.tbRoleExecutables(nuIndex) := LDCIACTLOCTRA_.rcRoleExecutables;
+ nuIndex := nuIndex + 1;
+END loop;
+close LDCIACTLOCTRA_.cuRoleExecutables;
+nuIndex := 0;
+Open LDCIACTLOCTRA_.cuUserExceptions ;
+loop
+ fetch LDCIACTLOCTRA_.cuUserExceptions INTO  LDCIACTLOCTRA_.rcUserExceptions;
+ exit when LDCIACTLOCTRA_.cuUserExceptions%notfound;
+ LDCIACTLOCTRA_.tbUserException(nuIndex):=LDCIACTLOCTRA_.rcUserExceptions;
+ nuIndex := nuIndex + 1;
+END loop;
+close LDCIACTLOCTRA_.cuUserExceptions;
+nuIndex := 0;
+Open LDCIACTLOCTRA_.cuExecEntities ;
+loop
+ fetch LDCIACTLOCTRA_.cuExecEntities INTO  LDCIACTLOCTRA_.rcExecEntities;
+ exit when LDCIACTLOCTRA_.cuExecEntities%notfound;
+ LDCIACTLOCTRA_.tbExecEntities(nuIndex):=LDCIACTLOCTRA_.rcExecEntities;
+ nuIndex := nuIndex + 1;
+END loop;
+close LDCIACTLOCTRA_.cuExecEntities;
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+DELETE FROM sa_role_executables
+WHERE executable_id in
+(
+ SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME='LDCIACTLOCTRA'
+);
+DELETE FROM sa_user_exceptions
+WHERE executable_id in
+(
+ SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME='LDCIACTLOCTRA'
+);
+DELETE FROM sa_exec_entities
+WHERE executable_id in
+(
+ SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME='LDCIACTLOCTRA'
+);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+
+
+BEGIN 
+   LDCIACTLOCTRA_.tbEntityName(3047) := 'GE_GEOGRA_LOCATION';
+   LDCIACTLOCTRA_.tbEntityAttributeName(3236) := 'GE_GEOGRA_LOCATION@GEOGRAP_LOCATION_ID';
+   LDCIACTLOCTRA_.tbEntityAttributeName(3237) := 'GE_GEOGRA_LOCATION@DESCRIPTION';
+   LDCIACTLOCTRA_.tbEntityAttributeName(3238) := 'GE_GEOGRA_LOCATION@ICON';
+   LDCIACTLOCTRA_.tbEntityAttributeName(3239) := 'GE_GEOGRA_LOCATION@GEO_LOCA_FATHER_ID';
+   LDCIACTLOCTRA_.tbEntityAttributeName(3240) := 'GE_GEOGRA_LOCATION@GEOG_LOCA_AREA_TYPE';
+   LDCIACTLOCTRA_.tbEntityAttributeName(3241) := 'GE_GEOGRA_LOCATION@ASSIGN_LEVEL';
+   LDCIACTLOCTRA_.tbEntityAttributeName(3242) := 'GE_GEOGRA_LOCATION@DISPLAY_DESCRIPTION';
+   LDCIACTLOCTRA_.tbEntityAttributeName(3455) := 'GE_GEOGRA_LOCATION@PREFIX_ZIP_CODE';
+   LDCIACTLOCTRA_.tbEntityAttributeName(93930) := 'GE_GEOGRA_LOCATION@SHAPE';
+   LDCIACTLOCTRA_.tbEntityAttributeName(97819) := 'GE_GEOGRA_LOCATION@NORMALIZED';
+   LDCIACTLOCTRA_.tbEntityAttributeName(104865) := 'GE_GEOGRA_LOCATION@OPERATING_SECTOR_ID';
+   LDCIACTLOCTRA_.tbEntityAttributeName(106228) := 'GE_GEOGRA_LOCATION@TIME_ZONE';
+   LDCIACTLOCTRA_.tbEntityAttributeName(106229) := 'GE_GEOGRA_LOCATION@AREA_CODE';
+   LDCIACTLOCTRA_.tbEntityAttributeName(106230) := 'GE_GEOGRA_LOCATION@PREFIX_AREA_CODE';
+   LDCIACTLOCTRA_.tbEntityAttributeName(244562) := 'GE_GEOGRA_LOCATION@ADITIONAL_DATA';
+ 
+   LDCIACTLOCTRA_.tbEntityName(41) := 'LDCI_ACTIUBGTTRA';
+   LDCIACTLOCTRA_.tbEntityAttributeName(90050210) := 'LDCI_ACTIUBGTTRA@ACBGDPTO';
+   LDCIACTLOCTRA_.tbEntityAttributeName(90050211) := 'LDCI_ACTIUBGTTRA@ACBGLOCA';
+   LDCIACTLOCTRA_.tbEntityAttributeName(90050212) := 'LDCI_ACTIUBGTTRA@ACBGTITR';
+   LDCIACTLOCTRA_.tbEntityAttributeName(90050213) := 'LDCI_ACTIUBGTTRA@ACBGACTI';
+   LDCIACTLOCTRA_.tbEntityAttributeName(90050214) := 'LDCI_ACTIUBGTTRA@ACBGSUBN';
+   LDCIACTLOCTRA_.tbEntityAttributeName(90200859) := 'LDCI_ACTIUBGTTRA@ACBGSOCI';
+   LDCIACTLOCTRA_.tbEntityAttributeName(90050215) := 'LDCI_ACTIUBGTTRA@ACBGORIN';
+ 
+END; 
+/
+
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+  ut_trace.trace('Borrando tabla SA_ENT_ROLE_EXEC',1);
+  DELETE FROM SA_ENT_ROLE_EXEC WHERE (EXECUTABLE_ID) in (SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME='LDCIACTLOCTRA');
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END; 
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+  ut_trace.trace('Borrando tabla SA_ROLE_EXECUTABLES',1);
+  DELETE FROM SA_ROLE_EXECUTABLES WHERE (EXECUTABLE_ID) in (SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME='LDCIACTLOCTRA') AND ROLE_ID=1;
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END; 
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+  ut_trace.trace('Borrando tabla SA_EXEC_ENTITIES',1);
+  DELETE FROM SA_EXEC_ENTITIES WHERE (EXECUTABLE_ID) in (SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME='LDCIACTLOCTRA');
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END; 
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+  ut_trace.trace('Borrando tabla SA_MENU_OPTION',1);
+  DELETE FROM SA_MENU_OPTION WHERE (EXECUTABLE_ID) in (SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME='LDCIACTLOCTRA');
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END; 
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+  ut_trace.trace('Borrando tabla GI_ATTRIB_DISP_DATA',1);
+  DELETE FROM GI_ATTRIB_DISP_DATA WHERE (EXECUTABLE_ID,ENTITY_ID) in (SELECT EXECUTABLE_ID,ENTITY_ID FROM GI_ENTITY_DISP_DATA WHERE (EXECUTABLE_ID) in (SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME='LDCIACTLOCTRA'));
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END; 
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+  ut_trace.trace('Borrando tabla GI_ENTITY_DISP_DATA',1);
+  DELETE FROM GI_ENTITY_DISP_DATA WHERE (EXECUTABLE_ID) in (SELECT EXECUTABLE_ID FROM SA_EXECUTABLE WHERE NAME='LDCIACTLOCTRA');
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END; 
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+  ut_trace.trace('Borrando tabla SA_EXECUTABLE',1);
+  DELETE FROM SA_EXECUTABLE WHERE NAME='LDCIACTLOCTRA';
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END; 
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.old_tb0_0(0):='LDCIACTLOCTRA'
+;
+LDCIACTLOCTRA_.tb0_0(0):=UPPER(LDCIACTLOCTRA_.old_tb0_0(0));
+LDCIACTLOCTRA_.old_tb0_1(0):=500000000005413;
+LDCIACTLOCTRA_.tb0_1(0):=GE_BOCATALOG.FNUGETIDSEQFROMCATALOG(LDCIACTLOCTRA_.tb0_0(0), 'EXECUTABLE', 'SA_BOEXECUTABLE.GETNEXTID');
+LDCIACTLOCTRA_.tb0_1(0):=LDCIACTLOCTRA_.tb0_1(0);
+ut_trace.trace('insertando tabla: SA_EXECUTABLE fila (0)',1);
+INSERT INTO SA_EXECUTABLE(NAME,EXECUTABLE_ID,DESCRIPTION,PATH,VERSION,EXECUTABLE_TYPE_ID,EXEC_OPER_TYPE_ID,MODULE_ID,SUBSYSTEM_ID,PARENT_EXECUTABLE_ID,LAST_RECORD_ALLOWED,PATH_FILE_HELP,WITHOUT_RESTR_POLICY,DIRECT_EXECUTION,TIMES_EXECUTED,EXEC_OWNER,LAST_DATE_EXECUTED,CLASS_ID) 
+VALUES (LDCIACTLOCTRA_.tb0_0(0),
+LDCIACTLOCTRA_.tb0_1(0),
+'Activo por Localidad'
+,
+null,
+'11'
+,
+8,
+2,
+38,
+1,
+1345,
+'Y'
+,
+null,
+'N'
+,
+'Y'
+,
+731,
+'C'
+,
+to_date('20-06-2025 10:57:20','DD-MM-YYYY HH24:MI:SS'),
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb1_0(0):=1;
+LDCIACTLOCTRA_.tb1_1(0):=LDCIACTLOCTRA_.tb0_1(0);
+ut_trace.trace('insertando tabla: SA_ROLE_EXECUTABLES fila (0)',1);
+INSERT INTO SA_ROLE_EXECUTABLES(ROLE_ID,EXECUTABLE_ID) 
+VALUES (LDCIACTLOCTRA_.tb1_0(0),
+LDCIACTLOCTRA_.tb1_1(0));
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb2_0(0):=LDCIACTLOCTRA_.tb0_1(0);
+LDCIACTLOCTRA_.old_tb2_1(0):=3047;
+LDCIACTLOCTRA_.tb2_1(0):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYNAME(LDCIACTLOCTRA_.old_tb2_1(0)), 'ENTITY');
+LDCIACTLOCTRA_.tb2_1(0):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb2_2(0):=null;
+LDCIACTLOCTRA_.tb2_2(0):=CASE WHEN (LDCIACTLOCTRA_.old_tb2_2(0) IS NULL) THEN NULL ELSE
+ GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYNAME(LDCIACTLOCTRA_.old_tb2_2(0)), 'ENTITY') END;
+ut_trace.trace('insertando tabla: GI_ENTITY_DISP_DATA fila (0)',1);
+INSERT INTO GI_ENTITY_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,PARENT_ENTITY_ID,DISPLAY_TYPE,LEVEL_,POSITION_IN_LEVEL,ICON_,DEFAULT_WHERE,JOIN_CONDITION,READ_ONLY,ALLOW_INSERT,ALLOW_DELETE,CONFIGURA_TYPE_ID) 
+VALUES (LDCIACTLOCTRA_.tb2_0(0),
+LDCIACTLOCTRA_.tb2_1(0),
+LDCIACTLOCTRA_.tb2_2(0),
+'G'
+,
+0,
+0,
+null,
+' GE_GEOGRA_LOCATION.GEOG_LOCA_AREA_TYPE  = 3'
+,
+null,
+'Y'
+,
+'Y'
+,
+'Y'
+,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(0):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(0):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(0):=3236;
+LDCIACTLOCTRA_.tb3_2(0):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(0)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(0):=LDCIACTLOCTRA_.tb3_2(0);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (0)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(0),
+LDCIACTLOCTRA_.tb3_1(0),
+LDCIACTLOCTRA_.tb3_2(0),
+0,
+'Y'
+,
+'Y'
+,
+'N'
+,
+'SELECT  GEOGRAP_LOCATION_ID "CÓDIGO" , DESCRIPTION "DESCRIPCIÓN"  FROM GE_GEOGRA_LOCATION WHERE GEOG_LOCA_AREA_TYPE = 3 '
+,
+'N'
+,
+'CÓDIGO'
+,
+'DESCRIPCIÓN'
+,
+'GEOGRAP_LOCATION_ID Código|DESCRIPTION Descripción|'
+,
+'FROM GE_GEOGRA_LOCATION|'
+,
+'WHERE GEOG_LOCA_AREA_TYPE = 3|'
+,
+null,
+null,
+'U'
+,
+null,
+'A'
+,
+null,
+1);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(1):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(1):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(1):=3237;
+LDCIACTLOCTRA_.tb3_2(1):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(1)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(1):=LDCIACTLOCTRA_.tb3_2(1);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (1)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(1),
+LDCIACTLOCTRA_.tb3_1(1),
+LDCIACTLOCTRA_.tb3_2(1),
+1,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(2):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(2):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(2):=3238;
+LDCIACTLOCTRA_.tb3_2(2):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(2)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(2):=LDCIACTLOCTRA_.tb3_2(2);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (2)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(2),
+LDCIACTLOCTRA_.tb3_1(2),
+LDCIACTLOCTRA_.tb3_2(2),
+2,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(3):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(3):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(3):=3239;
+LDCIACTLOCTRA_.tb3_2(3):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(3)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(3):=LDCIACTLOCTRA_.tb3_2(3);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (3)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(3),
+LDCIACTLOCTRA_.tb3_1(3),
+LDCIACTLOCTRA_.tb3_2(3),
+3,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(4):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(4):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(4):=3240;
+LDCIACTLOCTRA_.tb3_2(4):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(4)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(4):=LDCIACTLOCTRA_.tb3_2(4);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (4)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(4),
+LDCIACTLOCTRA_.tb3_1(4),
+LDCIACTLOCTRA_.tb3_2(4),
+4,
+'N'
+,
+'Y'
+,
+'N'
+,
+'SELECT GEOG_LOCA_AREA_TYPE "Código",DESCRIPTION "Descripción" FROM GE_GEOGRA_LOCA_TYPE'
+,
+'N'
+,
+'Código'
+,
+'Descripción'
+,
+'GEOG_LOCA_AREA_TYPE Código|DESCRIPTION Descripción|'
+,
+'FROM GE_GEOGRA_LOCA_TYPE'
+,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(5):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(5):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(5):=3241;
+LDCIACTLOCTRA_.tb3_2(5):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(5)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(5):=LDCIACTLOCTRA_.tb3_2(5);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (5)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(5),
+LDCIACTLOCTRA_.tb3_1(5),
+LDCIACTLOCTRA_.tb3_2(5),
+5,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(6):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(6):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(6):=3242;
+LDCIACTLOCTRA_.tb3_2(6):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(6)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(6):=LDCIACTLOCTRA_.tb3_2(6);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (6)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(6),
+LDCIACTLOCTRA_.tb3_1(6),
+LDCIACTLOCTRA_.tb3_2(6),
+6,
+'Y'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(7):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(7):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(7):=3455;
+LDCIACTLOCTRA_.tb3_2(7):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(7)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(7):=LDCIACTLOCTRA_.tb3_2(7);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (7)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(7),
+LDCIACTLOCTRA_.tb3_1(7),
+LDCIACTLOCTRA_.tb3_2(7),
+7,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(8):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(8):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(8):=93930;
+LDCIACTLOCTRA_.tb3_2(8):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(8)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(8):=LDCIACTLOCTRA_.tb3_2(8);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (8)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(8),
+LDCIACTLOCTRA_.tb3_1(8),
+LDCIACTLOCTRA_.tb3_2(8),
+8,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(9):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(9):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(9):=97819;
+LDCIACTLOCTRA_.tb3_2(9):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(9)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(9):=LDCIACTLOCTRA_.tb3_2(9);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (9)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(9),
+LDCIACTLOCTRA_.tb3_1(9),
+LDCIACTLOCTRA_.tb3_2(9),
+9,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(10):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(10):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(10):=104865;
+LDCIACTLOCTRA_.tb3_2(10):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(10)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(10):=LDCIACTLOCTRA_.tb3_2(10);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (10)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(10),
+LDCIACTLOCTRA_.tb3_1(10),
+LDCIACTLOCTRA_.tb3_2(10),
+10,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(11):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(11):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(11):=106228;
+LDCIACTLOCTRA_.tb3_2(11):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(11)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(11):=LDCIACTLOCTRA_.tb3_2(11);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (11)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(11),
+LDCIACTLOCTRA_.tb3_1(11),
+LDCIACTLOCTRA_.tb3_2(11),
+11,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(12):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(12):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(12):=106229;
+LDCIACTLOCTRA_.tb3_2(12):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(12)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(12):=LDCIACTLOCTRA_.tb3_2(12);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (12)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(12),
+LDCIACTLOCTRA_.tb3_1(12),
+LDCIACTLOCTRA_.tb3_2(12),
+12,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(13):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(13):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(13):=106230;
+LDCIACTLOCTRA_.tb3_2(13):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(13)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(13):=LDCIACTLOCTRA_.tb3_2(13);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (13)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(13),
+LDCIACTLOCTRA_.tb3_1(13),
+LDCIACTLOCTRA_.tb3_2(13),
+13,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(14):=LDCIACTLOCTRA_.tb2_0(0);
+LDCIACTLOCTRA_.tb3_1(14):=LDCIACTLOCTRA_.tb2_1(0);
+LDCIACTLOCTRA_.old_tb3_2(14):=244562;
+LDCIACTLOCTRA_.tb3_2(14):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(14)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(14):=LDCIACTLOCTRA_.tb3_2(14);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (14)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(14),
+LDCIACTLOCTRA_.tb3_1(14),
+LDCIACTLOCTRA_.tb3_2(14),
+14,
+'N'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb2_0(1):=LDCIACTLOCTRA_.tb0_1(0);
+LDCIACTLOCTRA_.old_tb2_1(1):=41;
+LDCIACTLOCTRA_.tb2_1(1):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYNAME(LDCIACTLOCTRA_.old_tb2_1(1)), 'ENTITY');
+LDCIACTLOCTRA_.tb2_1(1):=LDCIACTLOCTRA_.tb2_1(1);
+LDCIACTLOCTRA_.old_tb2_2(1):=3047;
+LDCIACTLOCTRA_.tb2_2(1):=CASE WHEN (LDCIACTLOCTRA_.old_tb2_2(1) IS NULL) THEN NULL ELSE
+ GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYNAME(LDCIACTLOCTRA_.old_tb2_2(1)), 'ENTITY') END;
+ut_trace.trace('insertando tabla: GI_ENTITY_DISP_DATA fila (1)',1);
+INSERT INTO GI_ENTITY_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,PARENT_ENTITY_ID,DISPLAY_TYPE,LEVEL_,POSITION_IN_LEVEL,ICON_,DEFAULT_WHERE,JOIN_CONDITION,READ_ONLY,ALLOW_INSERT,ALLOW_DELETE,CONFIGURA_TYPE_ID) 
+VALUES (LDCIACTLOCTRA_.tb2_0(1),
+LDCIACTLOCTRA_.tb2_1(1),
+LDCIACTLOCTRA_.tb2_2(1),
+'G'
+,
+1,
+0,
+null,
+null,
+' LDCI_ACTIUBGTTRA.ACBGLOCA  =  GE_GEOGRA_LOCATION.GEOGRAP_LOCATION_ID'
+,
+'Y'
+,
+'Y'
+,
+'Y'
+,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(15):=LDCIACTLOCTRA_.tb2_0(1);
+LDCIACTLOCTRA_.tb3_1(15):=LDCIACTLOCTRA_.tb2_1(1);
+LDCIACTLOCTRA_.old_tb3_2(15):=90050210;
+LDCIACTLOCTRA_.tb3_2(15):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(15)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(15):=LDCIACTLOCTRA_.tb3_2(15);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (15)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(15),
+LDCIACTLOCTRA_.tb3_1(15),
+LDCIACTLOCTRA_.tb3_2(15),
+0,
+'Y'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(16):=LDCIACTLOCTRA_.tb2_0(1);
+LDCIACTLOCTRA_.tb3_1(16):=LDCIACTLOCTRA_.tb2_1(1);
+LDCIACTLOCTRA_.old_tb3_2(16):=90050211;
+LDCIACTLOCTRA_.tb3_2(16):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(16)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(16):=LDCIACTLOCTRA_.tb3_2(16);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (16)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(16),
+LDCIACTLOCTRA_.tb3_1(16),
+LDCIACTLOCTRA_.tb3_2(16),
+1,
+'Y'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(17):=LDCIACTLOCTRA_.tb2_0(1);
+LDCIACTLOCTRA_.tb3_1(17):=LDCIACTLOCTRA_.tb2_1(1);
+LDCIACTLOCTRA_.old_tb3_2(17):=90050212;
+LDCIACTLOCTRA_.tb3_2(17):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(17)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(17):=LDCIACTLOCTRA_.tb3_2(17);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (17)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(17),
+LDCIACTLOCTRA_.tb3_1(17),
+LDCIACTLOCTRA_.tb3_2(17),
+2,
+'Y'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(18):=LDCIACTLOCTRA_.tb2_0(1);
+LDCIACTLOCTRA_.tb3_1(18):=LDCIACTLOCTRA_.tb2_1(1);
+LDCIACTLOCTRA_.old_tb3_2(18):=90050213;
+LDCIACTLOCTRA_.tb3_2(18):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(18)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(18):=LDCIACTLOCTRA_.tb3_2(18);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (18)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(18),
+LDCIACTLOCTRA_.tb3_1(18),
+LDCIACTLOCTRA_.tb3_2(18),
+3,
+'Y'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(19):=LDCIACTLOCTRA_.tb2_0(1);
+LDCIACTLOCTRA_.tb3_1(19):=LDCIACTLOCTRA_.tb2_1(1);
+LDCIACTLOCTRA_.old_tb3_2(19):=90050214;
+LDCIACTLOCTRA_.tb3_2(19):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(19)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(19):=LDCIACTLOCTRA_.tb3_2(19);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (19)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(19),
+LDCIACTLOCTRA_.tb3_1(19),
+LDCIACTLOCTRA_.tb3_2(19),
+4,
+'Y'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(20):=LDCIACTLOCTRA_.tb2_0(1);
+LDCIACTLOCTRA_.tb3_1(20):=LDCIACTLOCTRA_.tb2_1(1);
+LDCIACTLOCTRA_.old_tb3_2(20):=90050215;
+LDCIACTLOCTRA_.tb3_2(20):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(20)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(20):=LDCIACTLOCTRA_.tb3_2(20);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (20)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(20),
+LDCIACTLOCTRA_.tb3_1(20),
+LDCIACTLOCTRA_.tb3_2(20),
+6,
+'Y'
+,
+'Y'
+,
+'N'
+,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+
+LDCIACTLOCTRA_.tb3_0(21):=LDCIACTLOCTRA_.tb2_0(1);
+LDCIACTLOCTRA_.tb3_1(21):=LDCIACTLOCTRA_.tb2_1(1);
+LDCIACTLOCTRA_.old_tb3_2(21):=90200859;
+LDCIACTLOCTRA_.tb3_2(21):=GE_BOCATALOG.FNUGETIDFROMCATALOG(LDCIACTLOCTRA_.TBENTITYATTRIBUTENAME(LDCIACTLOCTRA_.old_tb3_2(21)), 'ATTRIBUTE');
+LDCIACTLOCTRA_.tb3_2(21):=LDCIACTLOCTRA_.tb3_2(21);
+ut_trace.trace('insertando tabla: GI_ATTRIB_DISP_DATA fila (21)',1);
+INSERT INTO GI_ATTRIB_DISP_DATA(EXECUTABLE_ID,ENTITY_ID,ENTITY_ATTRIBUTE_ID,POSITION,VISIBLE_,ALLOW_UPDATE,USE_RULE_EDITOR,LIST_OF_VALUES,LIST_OF_VALUE_TYPE,LIST_OF_VALUE_CODE,LIST_OF_VALUE_DESC,LIST_OF_VALUE_ATTR,LIST_OF_VALUE_FROM,LIST_OF_VALUE_WHERE,LIST_OF_VALUE_ORDER,LIST_OF_VALUE_P_ATTR,STYLE_CASE,NUMERATOR_SEQ,SELECTION_ORDER,CONFIGURA_TYPE_ID,SEL_ORDER_SEQ) 
+VALUES (LDCIACTLOCTRA_.tb3_0(21),
+LDCIACTLOCTRA_.tb3_1(21),
+LDCIACTLOCTRA_.tb3_2(21),
+5,
+'Y'
+,
+'Y'
+,
+'N'
+,
+'SELECT  CODIGO "CODIGO EMPRESA" , NOMBRE "NOMBRE EMPRESA"  FROM VW_EMPRESA '
+,
+'N'
+,
+'CODIGO EMPRESA'
+,
+'NOMBRE EMPRESA'
+,
+'CODIGO Codigo Empresa|NOMBRE Nombre Empresa|'
+,
+'FROM VW_EMPRESA|'
+,
+null,
+null,
+null,
+'U'
+,
+null,
+null,
+null,
+null);
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+
+DECLARE
+type tyExecutableEquivalence IS table of sa_executable.executable_id%type index BY sa_executable.name%type;
+tbExecutableEquivalence tyExecutableEquivalence;
+nuNewExecutableId sa_executable.executable_id%type;
+nuIndex binary_integer;
+nuRecCount binary_integer;
+FUNCTION fnuGetNewExecutableId(isbExecutableName in sa_executable.name%type)
+ return sa_executable.executable_id%type
+IS
+nuIndexInternal binary_integer;
+BEGIN
+ IF (tbExecutableEquivalence.exists(isbExecutableName)) THEN
+  return tbExecutableEquivalence(isbExecutableName);
+ END IF;
+ tbExecutableEquivalence(isbExecutableName) := null;
+ nuIndexInternal := LDCIACTLOCTRA_.tb0_0.first;
+ while nuIndexInternal IS NOT null loop
+  IF (LDCIACTLOCTRA_.tb0_0(nuIndexInternal)=isbExecutableName ) THEN
+   IF (LDCIACTLOCTRA_.tb0_1.exists(nuIndexInternal)) then
+    tbExecutableEquivalence(isbExecutableName) := LDCIACTLOCTRA_.tb0_1(nuIndexInternal);
+   END IF;
+   exit;
+  END IF;
+  nuIndexInternal := LDCIACTLOCTRA_.tb0_0.next(nuIndexInternal);
+ END loop; 
+ return tbExecutableEquivalence(isbExecutableName);
+END;
+BEGIN
+
+if (not LDCIACTLOCTRA_.blProcessStatus) then
+ return;
+end if;
+nuIndex :=  LDCIACTLOCTRA_.tbRoleExecutables.first;
+while nuIndex IS NOT null loop
+ if (LDCIACTLOCTRA_.tbRoleExecutables(nuIndex).role_id!=1) then
+  nuNewExecutableId := fnuGetNewExecutableId(LDCIACTLOCTRA_.tbRoleExecutables(nuIndex).name);
+  IF nuNewExecutableId is not null then
+    INSERT INTO sa_role_executables (role_id, executable_id)
+    VALUES (LDCIACTLOCTRA_.tbRoleExecutables(nuIndex).role_id, nuNewExecutableId);
+  END IF;
+  end if;
+ nuIndex := LDCIACTLOCTRA_.tbRoleExecutables.next(nuIndex);
+END loop;
+nuIndex :=  LDCIACTLOCTRA_.tbUserException.first;
+while nuIndex IS NOT null loop
+ nuNewExecutableId := fnuGetNewExecutableId(LDCIACTLOCTRA_.tbUserException(nuIndex).name);
+ IF nuNewExecutableId is not null then
+  insert INTO sa_user_exceptions (executable_id, user_id, status, usr_exc_type_id, comment_)
+  VALUES (nuNewExecutableId ,LDCIACTLOCTRA_.tbUserException(nuIndex).user_id, LDCIACTLOCTRA_.tbUserException(nuIndex).status , LDCIACTLOCTRA_.tbUserException(nuIndex).usr_exc_type_id, LDCIACTLOCTRA_.tbUserException(nuIndex).comment_);
+ END IF;
+ nuIndex := LDCIACTLOCTRA_.tbUserException.next(nuIndex);
+END loop;
+nuIndex :=  LDCIACTLOCTRA_.tbExecEntities.first;
+while nuIndex IS NOT null loop
+ nuNewExecutableId := fnuGetNewExecutableId(LDCIACTLOCTRA_.tbExecEntities(nuIndex).name);
+ IF nuNewExecutableId is not null then
+  select count(1) into nuRecCount
+ from sa_exec_entities
+  where executable_id = nuNewExecutableId and entity_id = LDCIACTLOCTRA_.tbExecEntities(nuIndex).entity_id;
+  IF nuRecCount = 0 then
+    insert INTO sa_exec_entities (executable_id, entity_id )
+    VALUES (nuNewExecutableId ,LDCIACTLOCTRA_.tbExecEntities(nuIndex).entity_id );
+  END IF;
+ END IF;
+ nuIndex := LDCIACTLOCTRA_.tbExecEntities.next(nuIndex);
+END loop;
+
+exception when others then
+LDCIACTLOCTRA_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+
+
+COMMIT
+/
+
+begin
+SA_BOCreatePackages.DropPackage('LDCIACTLOCTRA_');
+end;
+/
+
+BEGIN ut_trace.trace('********************FIN  proceso de objeto:LDCIACTLOCTRA_******************************'); end;
+/
+

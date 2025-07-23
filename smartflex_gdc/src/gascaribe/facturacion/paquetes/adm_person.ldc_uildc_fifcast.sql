@@ -9,10 +9,11 @@ IS
     Fecha          : 01-12-2017
 
     Historia de Modificaciones
-    Fecha       Autor                       Modificaci?n
-    =========   =========                   ====================
-    01-12-2017  Mmejia                      Creaci?n.
-    14-08-2024  jpinedc                     OSF-3126: Se modifica Process
+    Fecha       Autor                   Modificaci?n
+    =========   =========               ====================
+    01-12-2017  Mmejia                  Creaci?n.
+    14-08-2024  jpinedc                 OSF-3126: Se modifica Process
+	15/01/2025	jerazomvm				OSF-3843: Se modifica el procedimiento Process
     ******************************************************************/
 
     --------------------------------------------
@@ -80,7 +81,11 @@ CREATE OR REPLACE PACKAGE BODY adm_person.ldc_uildc_fifcast
     --------------------------------------------
     -- Constantes VERSION DEL PAQUETE
     --------------------------------------------
-    csbVERSION          CONSTANT VARCHAR2(10) := 'OSF-3126';
+    csbVERSION          CONSTANT VARCHAR2(10) := 'OSF-3843';
+	
+	csbNOMPKG  	 		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.'; -- Constantes para el control de la traza
+	cnuNVLTRC 			CONSTANT NUMBER 		:= pkg_traza.cnuNivelTrzDef;
+	csbInicio 			CONSTANT VARCHAR2(35) 	:= pkg_traza.fsbINICIO;
     -----------------------------------
     -- Variables privadas del package
     -----------------------------------
@@ -151,6 +156,11 @@ CREATE OR REPLACE PACKAGE BODY adm_person.ldc_uildc_fifcast
     16-08-2015   Daniel Valiente        Se agrega el ingreso del Encabezado al archivo
     14-08-2024   jpinedc                Se cambia truncate por
                                         pkg_truncate_tablas_open.prcldc_cargosfact_castigo_tmp
+	15-01-2025	 jerazomvm				OSF-3843: 
+										1. Se reemplaza el llenado del encabezado cldata por LDC_BOPRINTFOFACTCUSTMGR.sbDest y
+											se elimina el llamado al proceso LDC_BOPRINTFOFACTCUSTMgr.ClobWriteT(ClData);
+										2. Se reemplaza el llamado del procedimiento LDC_BOPRINTFOFACTCUSTMgr.PrintFoByFact por 
+											LDC_BOPRINTFOFACTCUSTMgr.prcPrintFoByFactSinTermLinea
     ***************************************************************/
     PROCEDURE Process(
                       inuPefaCicl IN  perifact.pefacicl%TYPE,
@@ -165,6 +175,9 @@ CREATE OR REPLACE PACKAGE BODY adm_person.ldc_uildc_fifcast
                       isbCiclo    IN  varchar2
                       )
     IS
+	
+		csbMetodo 		VARCHAR2(100) := csbNOMPKG||'Process';
+		
       sbProgramName       estaprog.esprprog%TYPE;
       sbExecutableName    sa_executable.name%TYPE :='LDC_FIFCAST';
       nuTotalRecords      NUMBER;
@@ -182,7 +195,8 @@ CREATE OR REPLACE PACKAGE BODY adm_person.ldc_uildc_fifcast
 
       nuFacturaCast       NUMBER; -- id de la cuenta de cobro -> nueva secuencia
 
-      sberror             VARCHAR2(2000);
+      nuError 				NUMBER;
+	  sberror             	VARCHAR2(2000);
 
       nucontproce         number;
       sbFactError         VARCHAR2(1000) := null;
@@ -206,9 +220,9 @@ CREATE OR REPLACE PACKAGE BODY adm_person.ldc_uildc_fifcast
              ca.cargconc    Concepto,
              Decode(ca.cargsign,'DB','CR','CR','DB') signo_fact,
              SUM(ca.cargvalo)VALOR_FACT
-        FROM open.cargos ca,
-             open.servsusc ss,
-             open.concepto co
+        FROM cargos ca,
+             servsusc ss,
+             concepto co
        WHERE ca.cargnuse = ss.sesunuse
          AND ca.cargconc = co.conccodi
          AND ca.cargtipr = 'P'
@@ -251,31 +265,39 @@ CREATE OR REPLACE PACKAGE BODY adm_person.ldc_uildc_fifcast
        --Caso 200-1685
        ClData Clob;
        --
-    BEGIN
-    --to_date(sbCPSCFEIN,'dd/mm/yyyy hh24:mi:ss')
+	BEGIN
+	
+		pkg_traza.trace(csbMetodo, cnuNVLTRC, csbInicio);  
+		
+		pkg_traza.trace('inuPefaCicl ' 	|| inuPefaCicl 	|| chr(10) || 
+						'idaPefafimo ' 	|| idaPefafimo 	|| chr(10) || 
+						'idaPefaffmo ' 	|| idaPefaffmo 	|| chr(10) || 
+						'inuDepartam ' 	|| inuDepartam 	|| chr(10) || 
+						'inuLocalida ' 	|| inuLocalida 	|| chr(10) || 
+						'isbDepto ' 	|| isbDepto 	|| chr(10) || 
+						'isbLocalida ' 	|| isbLocalida 	|| chr(10) || 
+						'isbContrato ' 	|| isbContrato 	|| chr(10) || 
+						'isbRuta ' 		|| isbRuta 		|| chr(10) || 
+						'isbCiclo ' 	|| isbCiclo, cnuNVLTRC);
 
-      PKERRORS.PUSH('LDC_UILDC_FIFCAST.BeforeExe');
-      PKERRORS.POP;
-      ut_trace.trace('INICIO LDC_UILDC_FIFCAST.Process', 10);
+		PKERRORS.PUSH('LDC_UILDC_FIFCAST.BeforeExe');
+		PKERRORS.POP;
+
+		-- Crea el nombre del proceso
+		sbProgramName := sbExecutableName||Sqesprprog.NEXTVAL;
+		pkg_traza.trace('Nombre del proceso: '||sbProgramName, cnuNVLTRC);
+
+		-- Registra Log en Estaprog
+		Pkstatusexeprogrammgr.Addrecord(sbProgramName, 'Inicia busqueda de Castigados...', 0);
+		Pkgeneralservices.Committransaction;
+
+		tbdetafactCast.delete;
+		tbcu_DataCobro.delete;
+
+		pkg_traza.trace('Armado del SQL dinamico', cnuNVLTRC);
 
 
-      -- Crea el nombre del proceso
-      sbProgramName := sbExecutableName||Sqesprprog.NEXTVAL;
-      ut_trace.trace('Nombre del proceso: '||sbProgramName, 10);
-
-      -- Registra Log en Estaprog
-      Pkstatusexeprogrammgr.Addrecord(sbProgramName, 'Inicia busquede de Castigados...', 0);
-      Pkgeneralservices.Committransaction;
-
-
-
-      tbdetafactCast.delete;
-      tbcu_DataCobro.delete;
-
-      ut_trace.trace('LDC_UILDC_FIFCAST.Process Armado del SQL dinamico', 10);
-
-
-      -- Si el criterio es por fechas
+		-- Si el criterio es por fechas
 
       SELECT 'WITH clientes AS
       (
@@ -306,325 +328,257 @@ CREATE OR REPLACE PACKAGE BODY adm_person.ldc_uildc_fifcast
           AND ca.cargnuse = ss.sesunuse
         GROUP BY ss.sesususc,ca.cargcaca,cl.fecha_castigo' INTO sbsql FROM dual;
 
-        Dbms_Output.Put_Line(sbsql);
+		pkg_traza.trace('sbsql: ' || sbsql, cnuNVLTRC);
 
-      ut_trace.trace('LDC_UILDC_FIFCAST.Process. Obtiene los registros a procesar', 10);
+		pkg_traza.trace('Obtiene los registros a procesar', cnuNVLTRC);
 
-      -- Obtiene la cantidad de clientes castigados para la fecha pasada como parametro
-      OPEN cuClienCast FOR sbsql;
-      LOOP
-      FETCH cuClienCast  INTO tbClienteCast(idx);
-            idx := idx + 1;
+		-- Obtiene la cantidad de clientes castigados para la fecha pasada como parametro
+		OPEN cuClienCast FOR sbsql;
+		LOOP
+		FETCH cuClienCast  INTO tbClienteCast(idx);
+			idx := idx + 1;
             EXIT WHEN cuClienCast%NOTFOUND;
-      END LOOP;
-      CLOSE cuClienCast;
+		END LOOP;
+		CLOSE cuClienCast;
 
-      -- Total de contratos a procesar
-      nuTotalRecords := tbClienteCast.Count();
+		-- Total de contratos a procesar
+		nuTotalRecords := tbClienteCast.Count();
 
+		pkg_traza.trace('Inicia el armado de cargos para cobro', cnuNVLTRC);
+      
+		-- Arma los cargos
+		IF(nuTotalRecords > 0)THEN
 
-      ut_trace.trace('LDC_UILDC_FIFCAST.Process Inicia el armado de cargos para cobro', 10);
-      -- Arma los cargos
-      IF(nuTotalRecords > 0)THEN
+			-- Actualiza registro de seguimiento en ESTAPROG
+			Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Inicia busqueda de cargos ...',nuTotalRecords, 0);
+			Pkgeneralservices.Committransaction;
 
-        -- Actualiza registro de seguimiento en ESTAPROG
-        Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Inicia busquede de cargos ...',nuTotalRecords, 0);
-        Pkgeneralservices.Committransaction;
+			-- registros a procesar
+			nuRegistros :=  0;
 
-         -- registros a procesar
-         nuRegistros :=  0;
+			BEGIN
 
-         BEGIN
+				FOR nuIndex IN tbClienteCast.FIRST..tbClienteCast.LAST LOOP
 
-         FOR nuIndex IN tbClienteCast.FIRST..tbClienteCast.LAST LOOP
+					-- crea el consecutivo de la cuenta
+					nuFacturaCast := ldc_seq_facturacastig.nextval;
 
-             -- crea el consecutivo de la cuenta
-             nuFacturaCast := ldc_seq_facturacastig.nextval;
+					-- se Obtiene los cargos castigados objetos del castigo
+					FOR rc_cu_detallefact IN cu_detallefact(tbClienteCast(nuIndex).sesususc,
+															tbClienteCast(nuIndex).cargcaca,
+															tbClienteCast(nuIndex).fecha_castigo) LOOP
 
-             -- se Obtiene los cargos castigados objetos del castigo
-             FOR rc_cu_detallefact IN cu_detallefact(tbClienteCast(nuIndex).sesususc,
-                                                    tbClienteCast(nuIndex).cargcaca,
-                                                    tbClienteCast(nuIndex).fecha_castigo) LOOP
+						nucontproce := rc_cu_detallefact.sesususc;
+						nuRegistros := nuRegistros + 1;
 
-             nucontproce := rc_cu_detallefact.sesususc;
-             nuRegistros := nuRegistros + 1;
+						tbdetafactCast(nuRegistros).id_cons_fact  := nuFacturaCast;
+						tbdetafactCast(nuRegistros).id_factura    := tbClienteCast(nuIndex).id_factura;
+						tbdetafactCast(nuRegistros).id_Suscripc   := rc_cu_detallefact.sesususc;
+						tbdetafactCast(nuRegistros).id_concepto   := rc_cu_detallefact.concepto;
+						tbdetafactCast(nuRegistros).id_signo      := rc_cu_detallefact.signo_fact;
+						tbdetafactCast(nuRegistros).vlr_castfact  := rc_cu_detallefact.valor_fact;
+						tbdetafactCast(nuRegistros).fecha_castigo := tbClienteCast(nuIndex).fecha_castigo;
 
-             tbdetafactCast(nuRegistros).id_cons_fact  := nuFacturaCast;
-             tbdetafactCast(nuRegistros).id_factura    := tbClienteCast(nuIndex).id_factura;
-             tbdetafactCast(nuRegistros).id_Suscripc   := rc_cu_detallefact.sesususc;
-             tbdetafactCast(nuRegistros).id_concepto   := rc_cu_detallefact.concepto;
-             tbdetafactCast(nuRegistros).id_signo      := rc_cu_detallefact.signo_fact;
-             tbdetafactCast(nuRegistros).vlr_castfact  := rc_cu_detallefact.valor_fact;
-             tbdetafactCast(nuRegistros).fecha_castigo := tbClienteCast(nuIndex).fecha_castigo;
+					END LOOP;
 
-            END LOOP;
+				END LOOP;
 
+				-- realiza el borrado de los registros anteriores
+				pkg_truncate_tablas_open.prcldc_cargosfact_castigo_tmp;
 
-          END LOOP;
+				FORALL indx IN 1 .. tbdetafactCast.COUNT
+				INSERT INTO ldc_cargosfact_castigo_tmp
+                VALUES tbdetafactCast(indx);
+				
+				COMMIT;
+				
+				pkg_traza.trace('Fin armado de cargos para cobro', cnuNVLTRC);
 
-          -- realiza el borrado de los registros anteriores
-          pkg_truncate_tablas_open.prcldc_cargosfact_castigo_tmp;
+			EXCEPTION
+				WHEN OTHERS THEN
+				sberror := SQLERRM;
+				pkg_traza.trace('ERROR al obtener los cargos para el cobro-'||sberror, cnuNVLTRC);
+			END;
+		END IF;
 
-          FORALL indx IN 1 .. tbdetafactCast.COUNT
-               INSERT INTO ldc_cargosfact_castigo_tmp
-                    VALUES tbdetafactCast(indx);
-        COMMIT;
-        ut_trace.trace('LDC_UILDC_FIFCAST.Process Fin armado de cargos para cobro', 10);
+		-- Inicia el proceso a partir de los cargos a cobrar que fueron objeto de castigo
+		-- en la tabla ldc_cargosfact_castigo_tmp
 
-        EXCEPTION
-          WHEN OTHERS THEN
-             sberror := SQLERRM;
-             ut_trace.trace('LDC_UILDC_FIFCAST.Process ERROR al obtner los cargos para el cobro-'||sberror, 10);
-        END;
-     END IF;
+		IF isbDepto = 'Y' THEN
+			sbOrderData :=   'pkg_bcdirecciones.fnuGetUbicaGeoPadre(ads.geograp_location_id)';
+		END IF;
 
-     -- Inicia el proceso a partir de los cargos a cobrar que fueron objeto de castigo
-     -- en la tabla ldc_cargosfact_castigo_tmp
+		IF isbLocalida = 'Y' THEN
+			sbOrderData := sbOrderData||',ads.geograp_location_id';
+		END IF;
 
-      -- Si el ordenamiento es por todos los campos: departamento, localidad,contrato, ruta y Ciclo
-     /* IF isbDepto = 'Y' AND isbLocalida = 'Y' AND isbContrato = 'Y' AND isbRuta = 'Y' AND isbCiclo = 'Y'  THEN
+		IF  isbContrato = 'Y' THEN
+			sbOrderData := sbOrderData||',vlc.id_suscripc';
+		END IF;
 
-         sbOrderData :=  'dage_geogra_location.fnugetgeo_loca_father_id(ads.geograp_location_id),'||
-                         'ads.geograp_location_id, vlc.id_suscripc, sec.SUSCCICL, seg.route_id';
-      END IF;
+		IF  isbCiclo = 'Y' THEN
+			sbOrderData := sbOrderData||',suc.SUSCCICL';
+		END IF;
 
-      -- si el ordenamiento es por los campos: departamento, localidad,contrato
-      IF isbDepto = 'Y' AND isbLocalida = 'Y' AND isbContrato = 'N' AND isbRuta = 'N'  AND isbCiclo = 'N' THEN
+		IF  isbRuta = 'Y' THEN
+			sbOrderData := sbOrderData||',seg.route_id';
+		END IF;
 
-         sbOrderData :=  'dage_geogra_location.fnugetgeo_loca_father_id(ads.geograp_location_id),'||
-                         'ads.geograp_location_id';
-      END IF;
+		sbOrderData := REPLACE(TRIM(REPLACE(sbOrderData,',', ' ')),' ',',') ;
 
-      -- Si el ordenamiento es por departamento
-      IF isbDepto = 'Y' AND isbLocalida = 'N' AND isbContrato = 'N' AND isbRuta = 'N' AND isbCiclo = 'N' THEN
+		-- Armado del SQL
+		-- Consulta para generar las facturas segun el ordenamiento indicado
+		sbsql := 'Select vlc.id_suscripc,' ||chr(13)||
+				  'vlc.id_factura,'  ||chr(13)||
+				  'vlc.id_cons_fact,'||chr(13)||
+				  'pkg_bcdirecciones.fnuGetUbicaGeoPadre(ads.geograp_location_id),'||chr(13)||
+				  'ads.geograp_location_id,'||chr(13)||
+				  'suc.SUSCCICL,'||chr(13)||
+				  'seg.route_id'||chr(13);
 
-         sbOrderData :=  'dage_geogra_location.fnugetgeo_loca_father_id(ads.geograp_location_id)';
-      END IF;
+		sbfrom := ' FROM ldc_cargosfact_castigo_tmp vlc,
+					 concepto con,
+					 suscripc suc,
+					 ab_address ads,
+					 ab_segments seg
+			   WHERE vlc.id_concepto = con.conccodi
+				 AND suc.susccodi    = vlc.id_suscripc
+				 AND ads.address_id  = suc.susciddi
+				 AND seg.segments_id = ads.segment_id'||chr(13)||
+				 ' GROUP BY vlc.id_suscripc,
+							vlc.id_factura,
+							vlc.id_cons_fact,
+							pkg_bcdirecciones.fnuGetUbicaGeoPadre(ads.geograp_location_id),
+							ads.geograp_location_id, suc.SUSCCICL,
+							seg.route_id '||chr(13)||' ORDER BY ';
 
-      -- Si el ordenamiento es por departamento y contrato
-      IF isbDepto = 'Y' AND isbLocalida = 'N' AND isbContrato = 'Y' AND isbRuta = 'N' AND isbCiclo = 'N'  THEN
+		IF sbOrderData IS NULL THEN
+			sbOrderData := '3';
+		END IF;
 
-         sbOrderData :=  'dage_geogra_location.fnugetgeo_loca_father_id(ads.geograp_location_id),'||
-                         'vlc.id_suscripc';
-      END IF;
+		sbsql := sbsql ||sbfrom || sbOrderData;
 
-      -- Si el ordenamiento es por localidad y contrato
-      IF isbDepto = 'N' AND isbLocalida = 'Y' AND isbContrato = 'Y' AND isbRuta = 'N' AND isbCiclo = 'N'  THEN
-         sbOrderData :=  'ds.geograp_location_id, vlc.id_suscripc';
-      END IF;
+		pkg_traza.trace('sbsql: ' || sbsql, cnuNVLTRC);
 
-      -- Si el ordenamiento es por localidad
-      IF isbDepto = 'N' AND isbLocalida = 'Y' AND isbContrato = 'N' AND isbRuta = 'N' AND isbCiclo = 'N'  THEN
-         sbOrderData :=  'ads.geograp_location_id';
-      END IF;
-
-
-      -- Si el ordenamiento es por ruta
-      IF isbDepto = 'N' AND isbLocalida = 'N' AND isbContrato = 'N' AND isbRuta = 'Y' AND isbCiclo = 'N'  THEN
-         sbOrderData :=  'seg.route_id';
-      END IF;
-
-      -- Si el ordenamiento es por contrato
-      IF isbDepto = 'N' AND isbLocalida = 'N' AND isbContrato = 'Y' AND isbRuta = 'N' AND isbCiclo = 'N'  THEN
-         sbOrderData :=  'vlc.id_suscripc';
-      END IF;
-
-       -- Si el ordenamiento es por Ciclo
-      IF isbDepto = 'N' AND isbLocalida = 'N' AND isbContrato = 'N' AND isbRuta = 'N' AND isbCiclo = 'Y'  THEN
-         sbOrderData :=  'suc.SUSCCICL';
-      END IF; */
-
-      IF isbDepto = 'Y' THEN
-         sbOrderData :=   'dage_geogra_location.fnugetgeo_loca_father_id(ads.geograp_location_id)';
-      END IF;
-
-      IF isbLocalida = 'Y' THEN
-         sbOrderData := sbOrderData||',ads.geograp_location_id';
-      END IF;
-
-      IF  isbContrato = 'Y' THEN
-         sbOrderData := sbOrderData||',vlc.id_suscripc';
-      END IF;
-
-      IF  isbCiclo = 'Y' THEN
-         sbOrderData := sbOrderData||',suc.SUSCCICL';
-      END IF;
-
-      IF  isbRuta = 'Y' THEN
-         sbOrderData := sbOrderData||',seg.route_id';
-      END IF;
-
-      sbOrderData := REPLACE(TRIM(REPLACE(sbOrderData,',', ' ')),' ',',') ;
-
-     -- Armado del SQL
-     -- Consulta para generar las facturas segun el ordenamiento indicado
-     sbsql :=
-      'Select vlc.id_suscripc,' ||chr(13)||
-      'vlc.id_factura,'  ||chr(13)||
-      'vlc.id_cons_fact,'||chr(13)||
-      'dage_geogra_location.fnugetgeo_loca_father_id(ads.geograp_location_id),'||chr(13)||
-      'ads.geograp_location_id,'||chr(13)||
-      'suc.SUSCCICL,'||chr(13)||
-      'seg.route_id'||chr(13);
-
-     sbfrom :=
-      ' FROM OPEN.ldc_cargosfact_castigo_tmp vlc,
-             OPEN.concepto con,
-             OPEN.suscripc suc,
-             OPEN.ab_address ads,
-             OPEN.ab_segments seg
-       WHERE vlc.id_concepto = con.conccodi
-         AND suc.susccodi    = vlc.id_suscripc
-         AND ads.address_id  = suc.susciddi
-         AND seg.segments_id = ads.segment_id'||chr(13)||
-         ' GROUP BY vlc.id_suscripc,
-                    vlc.id_factura,
-                    vlc.id_cons_fact,
-                    dage_geogra_location.fnugetgeo_loca_father_id(ads.geograp_location_id),
-                    ads.geograp_location_id, suc.SUSCCICL,
-                    seg.route_id '||chr(13)||' ORDER BY ';
-
-     IF sbOrderData IS NULL THEN
-        sbOrderData := '3';
-     END IF;
-
-     sbsql := sbsql ||sbfrom || sbOrderData;
-
-     dbms_output.put_line(sbsql);
-
-     -- Actualiza registro de seguimiento en ESTAPROG
-      Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Inicia Generacion Facturas...',nuTotalRecords, 0);
-      Pkgeneralservices.Committransaction;
+		-- Actualiza registro de seguimiento en ESTAPROG
+		Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Inicia Generacion Facturas...',nuTotalRecords, 0);
+		Pkgeneralservices.Committransaction;
 
 
-     nuTotalRecords := 0;
-     -- Recorre los contratos para la generacion de facturas
-     OPEN rfc_processfact FOR sbsql;
+		nuTotalRecords := 0;
+		-- Recorre los contratos para la generacion de facturas
+		OPEN rfc_processfact FOR sbsql;
 
-     -- Total de contratos a procesar
-      nuTotalRecords := tbClienteCast.Count();
-      idx            := 0;
-      LOOP
-      FETCH rfc_processfact  INTO tbcu_DataCobro(idx);
-        EXIT WHEN rfc_processfact%NOTFOUND;
+		-- Total de contratos a procesar
+		nuTotalRecords := tbClienteCast.Count();
+		idx            := 0;
+		LOOP
+			FETCH rfc_processfact  INTO tbcu_DataCobro(idx);
+			EXIT WHEN rfc_processfact%NOTFOUND;
             nucontproce := tbcu_DataCobro(idx).id_suscripc;
             idx := idx + 1;
-      END LOOP;
-      CLOSE rfc_processfact;
+		END LOOP;
+		CLOSE rfc_processfact;
 
-      tbClienteCast.delete;
+		tbClienteCast.delete;
 
+		IF nuTotalRecords > 0 THEN
 
-     -- nuTotalRecords := tbcu_DataCobro.count();
+			pkg_traza.trace('Registros a procesar nuTotalRecords['||nuTotalRecords||']', cnuNVLTRC);
 
+			-- Actualiza registro de seguimiento en ESTAPROG
+			Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Proceso en ejecucion...',nuTotalRecords, 0);
+			Pkgeneralservices.Committransaction;
 
-      IF nuTotalRecords > 0 THEN
+			--Iniciliza la cantidad de registros
+			nuProcessedRecords := 1;
 
+			--Inicializa las varibles necesarias para Imprimir el spool
+			LDC_BOPRINTFOFACTCUSTMgr.Initialize;--Metodo inicializador de variables por defecto
+			LDC_BOPRINTFOFACTCUSTMgr.SetSbPath(sbPath);--Se no se desea la ruta por defecto se fija nuestra tura
+        
+			--Se seta el nombre custom del archivo
+			sbFileName   := 'FIPFCAST' || '_' || nuPefacodi  || '_' || To_Char( SYSDATE, 'DDMMYYYY_HH24MISS' );
+			LDC_BOPRINTFOFACTCUSTMgr.SetSbFileName(sbFileName);--Se no se desea la ruta por defecto se fija nuestra tura
+        
+			--Se abre el archivo del proceso
+			LDC_BOPRINTFOFACTCUSTMgr.FileOpen();
+        
+			--Se setea el codigo de formato a generar
+			LDC_BOPRINTFOFACTCUSTMgr.SetNuIdFormato(nuIdFormato);
 
-      ut_trace.trace('LDC_UILDC_FIFCAST.Process Registros a procesar nuTotalRecords['||nuTotalRecords||']', 10);
+			--Caso 200-1685
+			LDC_BOPRINTFOFACTCUSTMGR.sbDest := ldc_detafact_cast_gascaribe.fsbgetencabezado || ldc_detafact_cast_gascaribe.fsbgetencabconc1 || ldc_detafact_cast_gascaribe.fsbgetencabconc2 || ldc_detafact_cast_gascaribe.fsbgetencabconc3 || ldc_detafact_cast_gascaribe.fsbgetencabconc4 || chr(13);
 
-      -- Actualiza registro de seguimiento en ESTAPROG
-      Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Proceso en ejecucion...',nuTotalRecords, 0);
-      Pkgeneralservices.Committransaction;
+			--Recorre los productos para obtener el armado de la factura
+			FOR nuIndex IN tbcu_DataCobro.FIRST..tbcu_DataCobro.LAST LOOP
+			
+				pkg_traza.trace('Registros procesados: '||nuProcessedRecords, cnuNVLTRC);
+				--Execucion de reglas de extraccion y adicion en el archivo
+				pkg_traza.SetLevel;
+				-- se controla posible error en LDC_BOPRINTFOFACTCUSTMgr y se guarda la factura con el error
+				-- para que el proceso continue y se procesen todas las facturas
+				begin
+					LDC_BOPRINTFOFACTCUSTMgr.prcPrintFoByFactSinTermLinea(tbcu_DataCobro(nuIndex).id_factura);
+			
+					Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Proceso en ejecucion...',nuTotalRecords, nuProcessedRecords);
+					Pkgeneralservices.Committransaction;
+			
+				exception when others then
+					if nvl(length(trim(sbFactError)),0) < 980 then -- se controla la longitud porque el campo de observacion de estaprog tiene 1000 caracteres
+						sbFactError := sbFactError || tbcu_DataCobro(nuIndex).id_factura || ', ';
+					end if;
+					nuProcessedRecords := nuProcessedRecords -1;
+				end;
 
-        --Iniciliza la cantidad de registros
-        nuProcessedRecords := 1;
+				nuProcessedRecords := nuProcessedRecords +1;
+			END LOOP;
 
-        --Inicializa las varibles necesarias para Imprimir el spool
-        LDC_BOPRINTFOFACTCUSTMgr.Initialize;--Metodo inicializador de variables por defecto
-        LDC_BOPRINTFOFACTCUSTMgr.SetSbPath(sbPath);--Se no se desea la ruta por defecto se fija nuestra tura
-        --Se seta el nombre custom del archivo
-        sbFileName   := 'FIPFCAST' || '_' || nuPefacodi  || '_' || To_Char( SYSDATE, 'DDMMYYYY_HH24MISS' );
-        LDC_BOPRINTFOFACTCUSTMgr.SetSbFileName(sbFileName);--Se no se desea la ruta por defecto se fija nuestra tura
-        --Se abre el archivo del proceso
-        LDC_BOPRINTFOFACTCUSTMgr.FileOpen();
-        --Se setea el codigo de formato a generar
-        LDC_BOPRINTFOFACTCUSTMgr.SetNuIdFormato(nuIdFormato);
+			tbcu_DataCobro.delete;
 
-        --Caso 200-1685
-        ClData := ldc_detafact_cast_gascaribe.fsbgetencabezado || ldc_detafact_cast_gascaribe.fsbgetencabconc1 || ldc_detafact_cast_gascaribe.fsbgetencabconc2 || ldc_detafact_cast_gascaribe.fsbgetencabconc3 || ldc_detafact_cast_gascaribe.fsbgetencabconc4 || chr(13);
-        LDC_BOPRINTFOFACTCUSTMgr.ClobWriteT(ClData);
-        --
+			--Se cierra el archivo global
+			LDC_BOPRINTFOFACTCUSTMgr.FileClose();
+		END IF;
 
-        --Recorre los productos para obtener el armado de la factura
-        FOR nuIndex IN tbcu_DataCobro.FIRST..tbcu_DataCobro.LAST LOOP
-          ut_trace.trace('Registros procesados: '||nuProcessedRecords, 10);
-           ----ocuFactura := OPEN.PKBCFACTURA.FRFGETBILLSBYSUBSPROG(tbProductCast(nuIndex).sesususc,6);
-          --Execucion de reglas de extraccion y adicion en el archivo
-          "OPEN".ut_trace.SetLevel(0);
-        -- se controla posible error en LDC_BOPRINTFOFACTCUSTMgr y se guarda la factura con el error
-        -- para que el proceso continue y se procesen todas las facturas
-        begin
-          LDC_BOPRINTFOFACTCUSTMgr.PrintFoByFact(tbcu_DataCobro(nuIndex).id_factura);
-        exception when others then
-          if nvl(length(trim(sbFactError)),0) < 980 then -- se controla la longitud porque el campo de observacion de estaprog tiene 1000 caracteres
-            sbFactError := sbFactError || tbcu_DataCobro(nuIndex).id_factura || ', ';
-          end if;
-          nuProcessedRecords := nuProcessedRecords -1;
-        end;
-          --"OPEN".ut_trace.SetLevel(99);
-          --LDC_BOPRINTFOFACTCUSTMgr.PrintFoByFact(1133401637);
+		pkg_traza.SetLevel(99);
 
-          --commit cada 500 clientes
-          IF(Mod(nuProcessedRecords,500) = 0) THEN
-            --Se hace el llamado a la funcion queescribe en el archivo elClobTemporal
-            LDC_BOPRINTFOFACTCUSTMgr.FileWrite();
-            --Limpiar el Clob ya enviado al archivo
-            LDC_BOPRINTFOFACTCUSTMgr.ClobClear();
+		pkg_traza.trace('Registros procesados: '||nuProcessedRecords, cnuNVLTRC);
+		pkg_traza.trace('Registros a procesar: '||nuTotalRecords, cnuNVLTRC);
 
-            Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Proceso en ejecucion...',nuTotalRecords, nuProcessedRecords);
-            Pkgeneralservices.Committransaction;
-          END IF;
+		Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Proceso en ejecucion...', nuTotalRecords, nuProcessedRecords);
+		Pkgeneralservices.Committransaction;
 
-          nuProcessedRecords := nuProcessedRecords +1;
-        END LOOP;
+		-- Finaliza proceso en estaprog
+		if trim(sbFactError) is null then
+			sbMensFinProc := 'Proceso Finalizado Ok';
+		else
+			sbMensFinProc := 'Proceso Finalizado. Error en Facturas: ' || substr(sbFactError,950); -- se controla la longitud porque el campo de observacion de estaprog tiene 1000 caracteres
+		end if;
 
-        tbcu_DataCobro.delete;
+		Pkstatusexeprogrammgr.Processfinishnok(sbProgramName, sbMensFinProc);
 
-        --Se hace el llamado a la funcion que escribe en el archivo el ClobTemporal
-        LDC_BOPRINTFOFACTCUSTMgr.FileWrite();
-        --Limpiar el Clob ya enviado al archivo
-        LDC_BOPRINTFOFACTCUSTMgr.ClobClear();
-
-        --Se cierra el archivo global
-        LDC_BOPRINTFOFACTCUSTMgr.FileClose();
-      END IF;
-
-      "OPEN".ut_trace.SetLevel(99);
-
-      ut_trace.trace('Registros procesados: '||nuProcessedRecords, 10);
-      ut_trace.trace('Registros a procesar: '||nuTotalRecords, 10);
-
-      Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Proceso en ejecucion...', nuTotalRecords, nuProcessedRecords);
-      Pkgeneralservices.Committransaction;
-
-      -- Finaliza proceso en estaprog
-      if trim(sbFactError) is null then
-         sbMensFinProc := 'Proceso Finalizado Ok';
-      else
-         sbMensFinProc := 'Proceso Finalizado. Error en Facturas: ' || substr(sbFactError,950); -- se controla la longitud porque el campo de observacion de estaprog tiene 1000 caracteres
-      end if;
-
-      Pkstatusexeprogrammgr.Processfinishnok(sbProgramName, sbMensFinProc);
-
-      ut_trace.trace('Fin LDC_UILDC_FIFCAST.Process', 10);
-    EXCEPTION
-      WHEN ex.CONTROLLED_ERROR then
-        Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Error (Contrato ' || nucontproce || '): ' ||
+		pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN);
+		
+	EXCEPTION
+		WHEN pkg_error.CONTROLLED_ERROR then
+			Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Error (Contrato ' || nucontproce || '): ' ||
                  DBMS_UTILITY.FORMAT_ERROR_STACK ||
                                            ' - ' ||
                                            DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,nuTotalRecords, nuProcessedRecords);
-        Pkgeneralservices.Committransaction;
-        RAISE;
-      WHEN OTHERS THEN
-        Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Error (Contrato ' || nucontproce || '): ' ||
+			Pkgeneralservices.Committransaction;
+			RAISE pkg_error.CONTROLLED_ERROR;
+		WHEN OTHERS THEN
+			Pkstatusexeprogrammgr.Upstatusexeprogramat(sbProgramName, 'Error (Contrato ' || nucontproce || '): ' ||
                  DBMS_UTILITY.FORMAT_ERROR_STACK ||
                                            ' - ' ||
                                            DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,nuTotalRecords, nuProcessedRecords);
-        Pkgeneralservices.Committransaction;
-        Errors.setError;
-        RAISE ex.CONTROLLED_ERROR;
-    END Process;
+			Pkgeneralservices.Committransaction;
+			pkg_error.setError;
+			pkg_error.getError(nuError, sberror);
+			pkg_traza.trace(csbMetodo||' '||sbError);
+			pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERR);
+			RAISE pkg_error.CONTROLLED_ERROR;
+		END Process;
 
     /*****************************************************************
     Propiedad intelectual de CSCo. (C).

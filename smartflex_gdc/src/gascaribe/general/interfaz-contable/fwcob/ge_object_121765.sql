@@ -15,7 +15,11 @@ sa_bocreatePackages.CreatePackage('GE_OBJECT_121765_',
 'old_tb0_0 ty0_0; ' || chr(10) ||
 'tb0_0 ty0_0;type ty0_2 is table of GE_OBJECT.NAME_%type index by binary_integer; ' || chr(10) ||
 'old_tb0_2 ty0_2; ' || chr(10) ||
-'tb0_2 ty0_2; ' || chr(10) ||
+'tb0_2 ty0_2;type ty1_0 is table of GE_OBJECT_PARAMETER.OBJECT_NAME%type index by binary_integer; ' || chr(10) ||
+'old_tb1_0 ty1_0; ' || chr(10) ||
+'tb1_0 ty1_0;type ty1_1 is table of GE_OBJECT_PARAMETER.PARAMETER_NAME%type index by binary_integer; ' || chr(10) ||
+'old_tb1_1 ty1_1; ' || chr(10) ||
+'tb1_1 ty1_1; ' || chr(10) ||
 'END GE_OBJECT_121765_;');
 END;
 /
@@ -109,7 +113,7 @@ DESCRIPTION='Contabilizacion automatica de actas BRILLA en SAP'
 COMMENT_='Registra la informacion de la contabilizacion de las actas del dia inmediatamente anterior de BRILLA en SAP y en las tablas LDCI_ACTACONT y LDCI_INCOLIQU, y al terminar envia un correo de notificacion a las cuentas registradas en el parametro  EMAIL_NOTIF_ACTA_CONTABIL_FNB de la tabla DCI_CARASEWE
 '
 ,
-PARAMETERS='()'
+PARAMETERS='(_e_, _e_)'
 ,
 OBJECT_CLASS='P'
 ,
@@ -126,12 +130,68 @@ GE_OBJECT_121765_.tb0_2(0),
 'Registra la informacion de la contabilizacion de las actas del dia inmediatamente anterior de BRILLA en SAP y en las tablas LDCI_ACTACONT y LDCI_INCOLIQU, y al terminar envia un correo de notificacion a las cuentas registradas en el parametro  EMAIL_NOTIF_ACTA_CONTABIL_FNB de la tabla DCI_CARASEWE
 '
 ,
-'()'
+'(_e_, _e_)'
 ,
 'P'
 ,
 null);
 end if;
+
+exception when others then
+GE_OBJECT_121765_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not GE_OBJECT_121765_.blProcessStatus) then
+ return;
+end if;
+
+GE_OBJECT_121765_.tb1_0(0):=GE_OBJECT_121765_.tb0_2(0);
+GE_OBJECT_121765_.tb1_1(0):='IDTFECFIN'
+;
+ut_trace.trace('insertando tabla: GE_OBJECT_PARAMETER fila (0)',1);
+INSERT INTO GE_OBJECT_PARAMETER(OBJECT_NAME,PARAMETER_NAME,DATA_TYPE,IN_OUT,COMMENT_,SEQUENCE) 
+VALUES (GE_OBJECT_121765_.tb1_0(0),
+GE_OBJECT_121765_.tb1_1(0),
+'DATE'
+,
+'IN'
+,
+'Fecha_Final'
+,
+2);
+
+exception when others then
+GE_OBJECT_121765_.blProcessStatus := false;
+rollback;
+ut_trace.trace('**ERROR:'||sqlerrm);
+raise;
+END;
+/
+BEGIN
+
+if (not GE_OBJECT_121765_.blProcessStatus) then
+ return;
+end if;
+
+GE_OBJECT_121765_.tb1_0(1):=GE_OBJECT_121765_.tb0_2(0);
+GE_OBJECT_121765_.tb1_1(1):='IDTFECINI'
+;
+ut_trace.trace('insertando tabla: GE_OBJECT_PARAMETER fila (1)',1);
+INSERT INTO GE_OBJECT_PARAMETER(OBJECT_NAME,PARAMETER_NAME,DATA_TYPE,IN_OUT,COMMENT_,SEQUENCE) 
+VALUES (GE_OBJECT_121765_.tb1_0(1),
+GE_OBJECT_121765_.tb1_1(1),
+'DATE'
+,
+'IN'
+,
+'Fecha_Inicial'
+,
+1);
 
 exception when others then
 GE_OBJECT_121765_.blProcessStatus := false;

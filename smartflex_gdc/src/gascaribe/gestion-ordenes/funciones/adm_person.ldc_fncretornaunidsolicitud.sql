@@ -20,6 +20,9 @@ RETURN NUMBER IS
                                  Se retira fblaplicaentrega(csbEntrega2588) y variable csbEntrega2588
                                  Se declaran variables para la gestión de trazas, se hace uso del pkg_traza.trace
                                  Se ajusta el bloque de exceptiones según pautas técnicas                                 
+  07/04/2025     Jorge Valiente  OSF-4194: * Se realiza intecambio de poscion entre los cursores 
+                                           CuUnidadOperativa y CuUnidadOperativaOrdenTrab
+                                           * Se modifica el cursor CuUnidadOperativa para adicionar fitro de orden de trabajo este NULL
   ***************************************************************************/
     --Se declaran variables para la gestión de trazas
     csbMetodo            CONSTANT VARCHAR2(32)       := $$PLSQL_UNIT;
@@ -35,7 +38,8 @@ RETURN NUMBER IS
     SELECT x.unidad_operativa 
       FROM ldc_asigna_unidad_rev_per x
      WHERE x.solicitud_generada = nupasolicitud
-       AND ROWNUM = 1;    
+        AND x.orden_trabajo IS NULL
+        AND ROWNUM = 1;    
        
     CURSOR CuUnidadOperativaOrdenTrab
     IS
@@ -52,19 +56,20 @@ BEGIN
     pkg_traza.trace(csbMetodo ||' nupasolicitud: ' || nupasolicitud, csbNivelTraza);    
     
   BEGIN
-    OPEN CuUnidadOperativa;
-    FETCH CuUnidadOperativa INTO nuunidadoperativa;
-    CLOSE CuUnidadOperativa;
-    
+
+    OPEN CuUnidadOperativaOrdenTrab;
+    FETCH CuUnidadOperativaOrdenTrab INTO nuunidadoperativa;
+    CLOSE CuUnidadOperativaOrdenTrab;
+
   EXCEPTION
     WHEN OTHERS THEN
          nuunidadoperativa := NULL;
   END;
   
 	IF nuunidadoperativa IS NULL THEN
-        OPEN CuUnidadOperativaOrdenTrab;
-        FETCH CuUnidadOperativaOrdenTrab INTO nuunidadoperativa;
-        CLOSE CuUnidadOperativaOrdenTrab;
+        OPEN CuUnidadOperativa;
+        FETCH CuUnidadOperativa INTO nuunidadoperativa;
+        CLOSE CuUnidadOperativa;
 	END IF;
 
     pkg_traza.trace(csbMetodo ||' nuunidadoperativa: ' || nuunidadoperativa, csbNivelTraza);

@@ -849,7 +849,9 @@ return NUMBER;
                                       vaCECO     in LDCI_INCOLIQU.CENTROCO%type,
                                       -->>                                      
                                       dcrcinad IN ic_decoreco.dcrcinad%TYPE,
-                                      nuComprobante IN LDCI_INCOLIQU.comprobante%type)
+                                      nuComprobante IN LDCI_INCOLIQU.comprobante%type,
+                                      -- OSF-4197
+                                      vaCEBE     IN  LDCI_INCOLIQU.cod_centrobenef%type)
   RETURN NUMBER;
 
   FUNCTION fvaGetOICos (inudeparta  in ldci_cencoubgtra.ccbgdpto%TYPE,
@@ -17098,10 +17100,10 @@ FUNCTION fnuLDCI_INCOLIQUACTA(nuICLITIDO IN LDCI_INCOLIQU.ICLITIDO%TYPE,
                                       nuCOD_CLASIFCONTA in LDCI_INCOLIQU.COD_CLASIFCONTA%type,
                                       vaCLAVCONT IN LDCI_INCOLIQU.CLAVCONT%TYPE,
                                       vaCLASECTA IN LDCI_INCOLIQU.CLASECTA%TYPE,
-                                      vaINDICCME  VARCHAR2,--LDCI_INCOLIQU.INDICCME%TYPE,
+                                      vaINDICCME VARCHAR2,--LDCI_INCOLIQU.INDICCME%TYPE,
                                       nuIMPOMTRX IN LDCI_INCOLIQU.IMPOMTRX%TYPE,
                                       nuIMPOMSOC IN LDCI_INCOLIQU.IMPOMSOC%TYPE,
-                                      vaINDICIVA  VARCHAR2,--LDCI_INCOLIQU.INDICIVA%TYPE,
+                                      vaINDICIVA VARCHAR2,--LDCI_INCOLIQU.INDICIVA%TYPE,
                                       nuCANTIDAD IN LDCI_INCOLIQU.CANTIDAD%TYPE,
                                       vaTXTPOSCN IN LDCI_INCOLIQU.TXTPOSCN%TYPE,
                                       vaOBJCOSTO IN LDCI_INCOLIQU.OBJCOSTO%TYPE,
@@ -17114,8 +17116,10 @@ FUNCTION fnuLDCI_INCOLIQUACTA(nuICLITIDO IN LDCI_INCOLIQU.ICLITIDO%TYPE,
                                       nuNUSEINSE IN LDCI_INCOLIQU.NUSEINSE%type,
                                       vaCTADIV   in LDCI_INCOLIQU.CTADIV%type,
                                       vaCECO     in LDCI_INCOLIQU.CENTROCO%type,
-                                      dcrcinad IN ic_decoreco.dcrcinad%TYPE,
-                                      nuComprobante IN LDCI_INCOLIQU.comprobante%type)
+                                      dcrcinad   IN ic_decoreco.dcrcinad%TYPE,
+                                      nuComprobante IN LDCI_INCOLIQU.comprobante%type,
+                                      -- OSF-4197
+                                      vaCEBE     IN  LDCI_INCOLIQU.cod_centrobenef%type)
   RETURN NUMBER
   IS
   /************************************************************************
@@ -17146,7 +17150,12 @@ FUNCTION fnuLDCI_INCOLIQUACTA(nuICLITIDO IN LDCI_INCOLIQU.ICLITIDO%TYPE,
                             Porcentaje Reparto FNB 14%
                             En esta funcion se incluye el CECO como parametro, para validar si viene NULL 
                             o trae informacion, si trae es el CECO para FNB, si no debe buscarlo porque
-                            es GAS.                            
+                            es GAS.
+    Edmlar      23/04/2025  OSF-4197
+                            Se quita la asignacion coloca en comentario la linea donde se asigna la variable del paquete del CEBE
+                            a la variable vaCentBen
+                            vaCentBen := ldci_pkinterfazsap.vaCentBen
+
   ************************************************************************/
   sbLEDGERS LDCI_INCOLIQU.LEDGERS%type;
   vaCentBen ldci_centrobenef.cebecodi%TYPE;
@@ -17236,7 +17245,8 @@ FUNCTION fnuLDCI_INCOLIQUACTA(nuICLITIDO IN LDCI_INCOLIQU.ICLITIDO%TYPE,
     LDCI_PKWEBSERVUTILS.proCaraServWeb('WS_COSTOS', 'NOMB_ATRIB_ACTIVO_OT', vaNomAtrAct, osbErrorMessage);
 
         sbLEDGERS := fsbGetLedgers(nuICLITIDO, nuComprobante);
-        vaCentBen := ldci_pkinterfazsap.vaCentBen;
+        -- OSF-4197
+        vaCentBen := vaCEBE;
 
         -- 27-08-2015 Aranda 4212 cgonzalev se crea el parametro ASIGNITANTICIPO para
         -- determinar si en el campo asignacion va el nuemro del anticipo o el NIT

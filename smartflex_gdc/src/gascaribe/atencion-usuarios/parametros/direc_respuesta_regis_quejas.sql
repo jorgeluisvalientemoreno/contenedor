@@ -1,0 +1,51 @@
+/***************************************************************************
+Propiedad Intelectual de Gases del Caribe
+Parametro       : DIREC_RESPUESTA_REGIS_QUEJAS  
+Autor           : Paola Acosta
+Fecha           : 04-02-2025
+Modificaciones  :
+Autor       Fecha           Caso        Descripcion
+pacosta     04-02-2025      OSF-3930    Creacion
+***************************************************************************/
+
+MERGE INTO OPEN.PARAMETROS A USING
+ (SELECT
+  'DIREC_RESPUESTA_REGIS_QUEJAS' as CODIGO,
+  'Parametro para establecer la direccion de respuesta por defecto cuando el tramite Registro de Quejas no obtiene una direccion de la instancia' as DESCRIPCION,
+  514268 as VALOR_NUMERICO,
+  NULL as VALOR_CADENA,
+  NULL as VALOR_FECHA,
+  2 as PROCESO, 
+  'A' as ESTADO,
+  'N' as OBLIGATORIO,
+  SYSDATE as FECHA_CREACION,
+  SYSDATE as FECHA_ACTUALIZACION,
+  'OPEN' as USUARIO,
+  'NO TERMINAL' as TERMINAL
+  FROM DUAL) B
+ON (A.CODIGO = B.CODIGO)
+WHEN NOT MATCHED THEN 
+INSERT (
+  CODIGO, DESCRIPCION, VALOR_NUMERICO, VALOR_CADENA, VALOR_FECHA, 
+  PROCESO, ESTADO, OBLIGATORIO, FECHA_CREACION, FECHA_ACTUALIZACION, 
+  USUARIO, TERMINAL)
+VALUES (
+  B.CODIGO, B.DESCRIPCION, B.VALOR_NUMERICO, B.VALOR_CADENA, B.VALOR_FECHA, 
+  B.PROCESO, B.ESTADO, B.OBLIGATORIO, B.FECHA_CREACION, B.FECHA_ACTUALIZACION, 
+  B.USUARIO, B.TERMINAL)
+WHEN MATCHED THEN
+UPDATE SET 
+  A.DESCRIPCION = B.DESCRIPCION,
+  A.VALOR_NUMERICO = B.VALOR_NUMERICO,
+  A.VALOR_CADENA = B.VALOR_CADENA,
+  A.VALOR_FECHA = B.VALOR_FECHA,
+  A.PROCESO = B.PROCESO,
+  A.ESTADO = B.ESTADO,
+  A.OBLIGATORIO = B.OBLIGATORIO,
+  A.FECHA_CREACION = B.FECHA_CREACION,
+  A.FECHA_ACTUALIZACION = B.FECHA_ACTUALIZACION,
+  A.USUARIO = B.USUARIO,
+  A.TERMINAL = B.TERMINAL;
+
+COMMIT;
+/

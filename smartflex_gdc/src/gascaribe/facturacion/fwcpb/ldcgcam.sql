@@ -875,7 +875,7 @@ LDCGCAM_.tb0_1(0),
 'Generación de Proceso de Facturación Masivos'
 ,
 null,
-'17'
+'19'
 ,
 8,
 2,
@@ -889,9 +889,10 @@ null,
 ,
 'Y'
 ,
-81,
-'C',
-to_date('19-11-2021 10:09:43','DD-MM-YYYY HH24:MI:SS'),
+7922,
+'C'
+,
+to_date('13-01-2025 10:20:15','DD-MM-YYYY HH24:MI:SS'),
 null);
 
 exception when others then
@@ -934,12 +935,12 @@ LDCGCAM_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
     <EXECUTABLE_ID>500000000014968</EXECUTABLE_ID>
     <NAME>LDCGCAM</NAME>
     <DESCRIPTION>Generación de Proceso de Facturación Masivos</DESCRIPTION>
-    <VERSION>17</VERSION>
+    <VERSION>19</VERSION>
     <MODULE>21</MODULE>
     <DIRECT_EXECUTION>Y</DIRECT_EXECUTION>
     <PATH_FILE_HELP/>
-    <OBJECT_NAME>LDC_PKGGCMA.PRGCAM</OBJECT_NAME>
-    <QUERY_NAME>LDC_PKGGCMA.FRFGETGCAM</QUERY_NAME>
+    <OBJECT_NAME>PKG_UILDCGCAM.PRCOBJETO</OBJECT_NAME>
+    <QUERY_NAME>PKG_UILDCGCAM.FRFCONSULTA</QUERY_NAME>
     <ALLOW_SCHEDULE>N</ALLOW_SCHEDULE>
     <ALLOW_FREQUENCY>N</ALLOW_FREQUENCY>
   </APPLICATION>
@@ -951,9 +952,9 @@ LDCGCAM_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
     <ENTITY_TYPE_ID>3339</ENTITY_TYPE_ID>
     <EXTERNAL_TYPE_ID>500000000014968</EXTERNAL_TYPE_ID>
     <ENTITY_ID>9623</ENTITY_ID>
-    <EXTERNAL_ID>500000000014968</EXTERNAL_ID>
-    <' ||
-'FRAME_ID>4696</FRAME_ID>
+    <EXTERNAL_ID>500000000014968</EXTERNAL_I' ||
+'D>
+    <FRAME_ID>4696</FRAME_ID>
     <IS_UPDATABLE>N</IS_UPDATABLE>
     <IS_VISIBLE>N</IS_VISIBLE>
     <REQUIRED>N</REQUIRED>
@@ -981,8 +982,8 @@ LDCGCAM_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
       <FRAME_ID>4696</FRAME_ID>
       <DATA_LENGTH/>
       <DATA_PRECISION/>
-      <DATA_' ||
-'SCALE/>
+    ' ||
+'  <DATA_SCALE/>
       <DATA_TYPE>NUMBER</DATA_TYPE>
       <DISPLAY_VIEW>10</DISPLAY_VIEW>
       <IS_UPDATABLE>Y</IS_UPDATABLE>
@@ -1011,8 +1012,8 @@ LDCGCAM_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
       <ENTITY_ATTRIBUTE_ID>18238</ENTITY_ATTRIBUTE_ID>
       <CONFIGURATION_ID>-999999996</CONFIGURATION_ID>
       <ATTRIBUTE_NAME>PEFAANO</ATTRIBUTE_NAME>
-      <ENTITY_ID>999</ENTITY_ID>' ||
-'
+      <ENTITY_ID>999</EN' ||
+'TITY_ID>
       <ENTITY_NAME>PERIFACT</ENTITY_NAME>
       <PARENT_CONF_ID>-999999998</PARENT_CONF_ID>
       <TYPE_ATTRIB_ID>2</TYPE_ATTRIB_ID>
@@ -1045,9 +1046,9 @@ from dual
 union all
 select 4, '||chr(38)||'apos;FCPE'||chr(38)||'apos;
 from dual
-</SELECT_STATEM' ||
-'ENT>
-      <SELECT_STATEMENT_ID>120190837</SELECT_STATEMENT_ID>
+</SELEC' ||
+'T_STATEMENT>
+      <SELECT_STATEMENT_ID>120192775</SELECT_STATEMENT_ID>
       <TAG_NAME/>
       <PROCESS_SEQUENCE/>
       <STATEMENT_CACHE>N</STATEMENT_CACHE>
@@ -1072,8 +1073,8 @@ from dual
       <DATA_LENGTH>7</DATA_LENGTH>
       <DATA_PRECISION>0</DATA_PRECISION>
       <DATA_SCALE>0</DATA_SCALE>
-      <DATA_TYPE>DATE' ||
-'</DATA_TYPE>
+      <DATA_T' ||
+'YPE>DATE</DATA_TYPE>
       <DISPLAY_VIEW>7</DISPLAY_VIEW>
       <IS_UPDATABLE>Y</IS_UPDATABLE>
       <IS_VISIBLE>Y</IS_VISIBLE>
@@ -1102,8 +1103,8 @@ from dual
       <CONFIGURATION_ID>-999999994</CONFIGURATION_ID>
       <ATTRIBUTE_NAME>NULL</ATTRIBUTE_NAME>
       <ENTITY_ID>-1</ENTITY_ID>
-      <ENTITY_NAME>DUAL</ENTITY_N' ||
-'AME>
+      <ENTITY_NAME>DUAL</' ||
+'ENTITY_NAME>
       <PARENT_CONF_ID>-999999998</PARENT_CONF_ID>
       <TYPE_ATTRIB_ID>2</TYPE_ATTRIB_ID>
       <ENTITY_TYPE_ID>3339</ENTITY_TYPE_ID>
@@ -1132,8 +1133,8 @@ from dual
       <USER_DEFAULT_ALLOWED>N</USER_DEFAULT_ALLOWED>
       <STYLE_CASE>U</STYLE_CASE>
       <SEQUENCE_ID>5</SEQUENCE_ID>
-      <EXTERNAL_ROOT_ID>6121</EXTERNAL_ROOT_ID' ||
-'>
+      <EXTERNAL_ROOT_ID>6121</EXTERNAL' ||
+'_ROOT_ID>
       <PARENT_ATTRIBUTE_NAME/>
       <PARENT_ENTITY_NAME/>
     </ATTRIBUTE>
@@ -1160,8 +1161,8 @@ from dual
       <DISPLAY_NAME>Fecha de Programacion</DISPLAY_NAME>
       <INIT_BASIC_EXP_ID/>
       <VALID_BASIC_EXP_ID/>
-      <INIT_EXPRES' ||
-'SION_ID>121379779</INIT_EXPRESSION_ID>
+      <INI' ||
+'T_EXPRESSION_ID>121386309</INIT_EXPRESSION_ID>
       <VALID_EXPRESSION_ID/>
       <DEFAULT_VALUE/>
       <SELECT_STATEMENT/>
@@ -1189,8 +1190,8 @@ from dual
       <FRAME_ID>4696</FRAME_ID>
       <DATA_LENGTH/>
       <DATA_PRECISION/>
-      <DATA_SCA' ||
-'LE/>
+      <' ||
+'DATA_SCALE/>
       <DATA_TYPE>NUMBER</DATA_TYPE>
       <DISPLAY_VIEW>10</DISPLAY_VIEW>
       <IS_UPDATABLE>Y</IS_UPDATABLE>
@@ -1227,11 +1228,11 @@ XMLType(LDCGCAM_.clColumn_0),
 ,
 '1.0.0.0'
 ,
-17,
+19,
 'LDCGCAM.APP'
 ,
 null,
-'67064cbad2a6aff3f3e4c336c1a0417b'
+'e5768fc324285bd6098a51f8965d7a77'
 ,
 3);
 
@@ -1253,10 +1254,10 @@ end if;
  
   ut_trace.trace('Borrando tabla GE_STATEMENT',1);
   BEGIN
-   delete from GE_STATEMENT where STATEMENT_ID = 120190837 and MODULE_ID = 21 and NAME = 'lista de procesos';
+   delete from GE_STATEMENT where STATEMENT_ID = 120192775 and MODULE_ID = 21 and NAME = 'lista de procesos';
   EXCEPTION
   when ex.RECORD_HAVE_CHILDREN then
-    ut_trace.trace('No se pudo borrar la sentencia: [120190837]',1);
+    ut_trace.trace('No se pudo borrar la sentencia: [120192775]',1);
    null;
   END;
 ut_trace.trace('Obtiene nueva secuencia de GE_STATEMENT',1);
@@ -1303,9 +1304,9 @@ if (not LDCGCAM_.blProcessStatus) then
  return;
 end if;
  
- ut_trace.trace('Borrando tabla GR_CONFIG_EXPRESSION['||'121379779'||']',1);
+ ut_trace.trace('Borrando tabla GR_CONFIG_EXPRESSION['||'121386309'||']',1);
 delete from GR_CONFIG_EXPRESSION where 
-  OBJECT_NAME = 'FWFW_PROCESS_CT54E121379779';
+  OBJECT_NAME = 'FWFW_PROCESS_CT54E121386309';
 
 ut_trace.trace('Obtiene nueva secuencia de GR_CONFIG_EXPRESSION',1);
 nuNewRule := GR_BOSEQUENCE.NEXTGR_CONFIG_EXPRESSION();
@@ -1315,10 +1316,10 @@ INSERT INTO GR_CONFIG_EXPRESSION(CONFIG_EXPRESSION_ID,OBJECT_NAME,CONFIGURA_TYPE
 VALUES (nuNewRule, nuNewRule, 54, 
 'GE_BOINSTANCECONTROL.SETENTITYATTRIBUTE(UT_DATE.FDTDATEWITHFORMAT(UT_DATE.FDTSYSDATE()))',
 'OPEN', to_date('13-03-2020 09:55:12','DD-MM-YYYY HH24:MI:SS'), 
-to_date('18-11-2021 09:40:08','DD-MM-YYYY HH24:MI:SS'), to_date('18-11-2021 09:40:08','DD-MM-YYYY HH24:MI:SS'), 'G', 
+to_date('16-12-2021 21:25:21','DD-MM-YYYY HH24:MI:SS'), to_date('16-12-2021 21:25:21','DD-MM-YYYY HH24:MI:SS'), 'G', 
 'N', 'PU', null, 
 'DS', 'Inicializa fecha', 'PP', 
-'CREATE OR REPLACE PROCEDURE FWFW_PROCESS_CT54E121379779(errorNumber OUT NUMBER, errorMessage OUT VARCHAR2)
+'CREATE OR REPLACE PROCEDURE FWFW_PROCESS_CT54E121386309(errorNumber OUT NUMBER, errorMessage OUT VARCHAR2)
 IS
 -- Generated by Code Generator (PVCS Version 1.5)
  -- Open Systems Ltd, Copyright 2003.
@@ -1539,4 +1540,3 @@ end;
 
 BEGIN ut_trace.trace('********************FIN  proceso de objeto:LDCGCAM_******************************'); end;
 /
-

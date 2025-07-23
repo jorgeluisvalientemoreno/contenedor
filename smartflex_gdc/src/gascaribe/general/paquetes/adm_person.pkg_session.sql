@@ -6,6 +6,7 @@ create or replace package adm_person.pkg_session is
 
     Autor       Fecha       Casi     Descripción
     ---------   ----------- -------- ------------------------------
+	jsoto		15/11/2024	OSF-3576 Creación de funcion fsbGetPersonByUserId
     epenao      26/01/2024  OSF-1835 +Creación del método fnugetuseridbymask
                                       que enmascara al método:
                                       SA_BOUser.fnuGetUserId
@@ -14,6 +15,8 @@ create or replace package adm_person.pkg_session is
     epenao      11/10/2023  OSF-1734 +Creación del método fnuGetSesion
                                      +Ajuste de los métodos para que hagan 
                                       uso de la traza personalizada. 
+    jpinedc     14/03/2025  OSF-4042 +Creación del método prcEstableceValorModulo
+    lfvalencia  04/04/2025  OSF-3846 +Creación frcObtFunciona
 */
     /*****************************************************************
         Procedimiento   :   getUser
@@ -105,8 +108,7 @@ create or replace package adm_person.pkg_session is
     --Retorna el id de la sesión actual. 
     FUNCTION fnuGetSesion
     RETURN NUMBER;
-
-
+    
 /*******************************************************************************
     Fuente=Propiedad Intelectual de Gases del Caribe
     programa    :   fnugetEmpresaDeUsuario
@@ -169,6 +171,36 @@ create or replace package adm_person.pkg_session is
 *******************************************************************************/
     FUNCTION fnuTipoSolicitudInstancia
     RETURN NUMBER;
+
+/*******************************************************************************
+    Fuente=Propiedad Intelectual de Gases del Caribe
+    programa    :   fsbGetPersonByUserId
+    Autor       :   Jhon Soto - Horbath
+    Fecha       :   15-11-2024
+    Descripcion :   Función que retorna el id de sa_user con el nombre en GE_PERSON asociada. 
+    Parametros de entrada:  N/A
+
+    Modificaciones  :
+    Autor       Fecha        Caso     Descripcion
+*******************************************************************************/
+
+    function fsbGetPersonByUserId ( inuUserId in sa_user.user_id%type)
+    return varchar2;
+
+    -- Establece el Valor para el Módulo
+    PROCEDURE prcEstableceValorModulo
+    (
+        isbModule               IN  VARCHAR2,
+        isbAcccion              IN  VARCHAR2,
+        isbRegistraSoloSiEsNulo IN  VARCHAR2     
+    );
+
+    --Obtiene el registro de la tabla funciona
+    FUNCTION frcObtFunciona
+    (
+        inuUsuarioBd  IN  funciona.funcusba%TYPE
+    )
+    RETURN Funciona%ROWTYPE; 
 
 END pkg_session;
 /
@@ -542,6 +574,122 @@ EXCEPTION
     WHEN OTHERS THEN
         RETURN NULL;
 END fnuTipoSolicitudInstancia;
+
+/*******************************************************************************
+    Fuente=Propiedad Intelectual de Gases del Caribe
+    programa    :   fsbGetPersonByUserId
+    Autor       :   Jhon Soto - Horbath
+    Fecha       :   15-11-2024
+    Descripcion :   Función que retorna el id de sa_user con el nombre en GE_PERSON asociada. 
+    Parametros de entrada:  N/A
+
+    Modificaciones  :
+    Autor       Fecha        Caso     Descripcion
+	jsoto		15/11/2024	OSF-3576  Creación de función 
+*******************************************************************************/
+    
+    function fsbGetPersonByUserId ( inuUserId in sa_user.user_id%type)
+    return varchar2
+    IS 
+
+        csbMT_NAME  CONSTANT VARCHAR2(100) := csbNOMPKG||'.fsbGetPersonByUserId'; --Nombre del método en la traza
+		sbUser		VARCHAR2(200);
+
+		-- Cursor para consultar el Usuario
+		CURSOR cuConsultaUsuario IS
+		SELECT name_
+		  FROM ge_person
+		 WHERE user_id = inuUserId;
+
+	BEGIN
+
+		pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+		
+		-- con el id del usuario de la base de datos averiguamos el nombre del usuario
+		-- nombre del usuario conectado
+		IF inuUserId > 0 THEN
+			OPEN cuconsultausuario;
+			FETCH cuconsultausuario
+			  INTO sbUser;
+			CLOSE cuconsultausuario;
+		END IF;
+
+		return(sbUser);
+
+		pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+
+	EXCEPTION
+		  when OTHERS then
+				pkg_error.SetError;
+				pkg_error.getError(nuCodError,sbMensErro);
+				pkg_traza.trace('Error:'||nuCodError||'-'||sbMensErro,pkg_traza.cnuNivelTrzDef);
+				pkg_traza.trace(csbMT_NAME,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
+				RETURN sbUser;
+	end fsbGetPersonByUserId;
+	
+    -- Establece el Valor para el Módulo
+    PROCEDURE prcEstableceValorModulo
+    (
+        isbModule               IN  VARCHAR2,
+        isbAcccion              IN  VARCHAR2,
+        isbRegistraSoloSiEsNulo IN  VARCHAR2     
+    )
+    IS 
+
+        csbMT_NAME  CONSTANT VARCHAR2(100) := csbNOMPKG||'.prcEstableceValorModulo'; --Nombre del método en la traza
+
+	BEGIN
+
+		pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO); 
+		
+		ut_session.setmodule(isbModule, isbAcccion, isbRegistraSoloSiEsNulo);
+		   
+		pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+
+	EXCEPTION
+		  when OTHERS then
+				pkg_error.SetError;
+				pkg_error.getError(nuCodError,sbMensErro);
+				pkg_traza.trace('Error:'||nuCodError||'-'||sbMensErro,pkg_traza.cnuNivelTrzDef);
+				pkg_traza.trace(csbMT_NAME,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
+    END prcEstableceValorModulo;
+
+    /*******************************************************************************
+        Fuente=Propiedad Intelectual de Gases del Caribe
+        programa    :   frcObtFunciona
+        Autor       :   Luis Felipe Valencia
+        Fecha       :   19/02/2024
+        Descripcion :   Obtiene el registro de la tabla funciona.
+        Parametros de entrada:  Usuario de base de datos
+        Retorna: Retorna el registro del tabla funciona
+
+        Modificaciones  :
+        Autor       Fecha        Caso     Descripcion
+        fvalencia   19/02/2024  OSF-3846  Creacion.
+    *******************************************************************************/
+    FUNCTION frcObtFunciona
+    (
+        inuUsuarioBd  IN  funciona.funcusba%TYPE
+    )
+    RETURN Funciona%ROWTYPE
+    IS
+        csbMetodo  CONSTANT VARCHAR2(100) := csbNOMPKG||'.frcObtFunciona'; --Nombre del método en la traza
+        rcFunciona  Funciona%ROWTYPE;
+    BEGIN
+        pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbINICIO);
+
+        rcFunciona := pkbcfunciona.frcFunciona(inuUsuarioBd);
+
+        pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN);
+        return rcFunciona;
+    EXCEPTION
+        WHEN OTHERS then
+            pkg_error.SetError;
+            pkg_error.getError(nuCodError,sbMensErro);
+            pkg_traza.trace('Error:'||nuCodError||'-'||sbMensErro,pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
+            RETURN rcFunciona;
+    END frcObtFunciona;
 
 END pkg_session;
 

@@ -1,0 +1,5 @@
+PROMPT Creando Sinónimos privados para PKG_BOACTUALIZADATOSPREDIO
+BEGIN
+    pkg_utilidades.prCrearSinonimos( 'PKG_BOACTUALIZADATOSPREDIO', 'PERSONALIZACIONES');
+END;
+/

@@ -24,42 +24,62 @@ IS
     18-11-2022			cgonzalez			OSF-693: Se modifica para revertir el cambio de estado de corte
                                             cuando el producto no esta suspendido por Falta de Pago
     15/05/2024          Paola Acosta        OSF-2674: Cambio de esquema ADM_PERSON  
-                                            Retiro marcacion esquema .open objetos de lógica                                             
+                                            Retiro marcacion esquema .open objetos de lógica  
+    23/12/2024          jcatuche            OSF-3787: A nivel general se estandariza la traza y el manejo de errores.
+                                            Se crean constantes csbSesion y csbUser y se eliminan las variables locales de ProcessLog
+                                            Se refactoriza procedimiento interno ProcessLog
+                                            Se cambian llamados a procedimientos open con los procedimientos homologados
+                                            Se ajusta cursor de procedimiento interno fnuGetProCastbyProd para adicionar la misma validación 
+                                            de saldo castigado que tiene el cursor cuProds, considerando los saldos reactivados
 */
     ----------------------------------------------------------------------------
     -- Constantes
     ----------------------------------------------------------------------------
+    csbMetodo           CONSTANT VARCHAR2(32)       := $$PLSQL_UNIT;                -- Constante para nombre de función    
+    cnuNivelTraza       CONSTANT NUMBER(2)          := pkg_traza.cnuNivelTrzDef;    -- Nivel de traza para esta función. 
+    csbInicio           CONSTANT VARCHAR2(4)        := pkg_traza.fsbINICIO;         -- Indica inicio de método
+    csbFin              CONSTANT VARCHAR2(4)        := pkg_traza.fsbFIN;            -- Indica Fin de método ok
+    csbFin_Erc          CONSTANT VARCHAR2(4)        := pkg_traza.fsbFIN_ERC;        -- Indica fin de método con error controlado
+    csbFin_Err          CONSTANT VARCHAR2(4)        := pkg_traza.fsbFIN_ERR;        -- Indica fin de método con error no controlado
+    
     -- Mensaje de Nulo
     cnuNULL_ATTR    constant number := 2126;
+    
+    csbSesion       constant varchar2(50) := pkg_session.fnuGetSesion;
+    csbUser         constant varchar2(50) := pkg_session.getUser;
 
     ----------------------------------------------------------------------------
     -- Variables
     ----------------------------------------------------------------------------
     -- Log PB
     nuLdlpcons  ldc_log_pb.ldlpcons%type;
+    
+    dtFecha     DATE;
 
     -- Indicador
-    nuIndicador number;
-
-    -- Codigo Error
-    nuErrorCode     number;
-    -- Descripcion Error
-    sbErrorMessage  varchar2(4000);
+    nuIndicador     number;
+    
+    nuError         NUMBER;
+    sbError         VARCHAR2(4000);
 
     -- Producto
     sbSesunuse      ge_boInstanceControl.stysbValue;
 
     --
-    nuMovivalo  movisafa.mosfvalo%type;
+    nuMovivalo      movisafa.mosfvalo%type;
 
     --
-    nuProyCast  gc_prodprca.prpcprca%type;
+    nuProyCast      gc_prodprca.prpcprca%type;
+    
+    rcRegNegProd    pkg_gc_debt_negot_prod.styRegistro;
 
     -- Consecutivo gc_debt_negot_prod dummy
-    nuDumNegProd gc_debt_negot_prod.debt_negot_prod_id%type;
+    nuDumNegProd    gc_debt_negot_prod.debt_negot_prod_id%type;
+    
+    nuBilled_Value  gc_debt_negot_charge.Billed_Value%type;
 
     -- Plantilla cargo gc_debt_negot_charge
-    rcDebtNegoCharg  dagc_debt_negot_charge.styGC_debt_negot_charge;
+    rcDebtNegoCharg  pkg_gc_debt_negot_charge.styRegistro;
 
     --
     nuSaldo     saldfavo.safavalo%type;
@@ -97,7 +117,7 @@ IS
         AND     s.active = 'Y' 
         AND     s.product_id = inuProducto;
 
-    -- Obtiene poblaci??n de productos
+    -- Obtiene población de productos
     CURSOR cuProds IS
         SELECT  servsusc.*
         FROM    servsusc, gc_prodprca
@@ -106,7 +126,7 @@ IS
         AND     sesusafa > 0
         AND     prpcnuse = sbSesunuse;
 
-    -- Obtiene cargos para reactivaci??n de cartera castigada
+    -- Obtiene cargos para reactivación de cartera castigada
     CURSOR cuCargos(nuCuenta number) IS
         SELECT      cargcuco, cargconc, sum(decode(cargsign,'CR',cargvalo,'DB',-cargvalo)) saldo
         FROM        (
@@ -126,7 +146,7 @@ IS
                     )
         GROUP BY    cargcuco, cargconc;
 
-    -- Obtiene saldo castigado por cuenta de cobro, ordenando por fecha de generaci??n de la factura
+    -- Obtiene saldo castigado por cuenta de cobro, ordenando por fecha de generación de la factura
     --
     CURSOR cuCuentas(nuProd number) IS
         SELECT  cucocodi, factfege, sum(decode(cargsign,'CR',cargvalo,'DB',-cargvalo)) saldo
@@ -151,8 +171,23 @@ IS
             )
         GROUP BY    cucocodi, factfege
         ORDER BY    factfege asc;
+    
+    --Obtiene los registros de los cargos de negociación insertados para la negociación dummy
+    CURSOR cuCargosNegociacion (inuNegotChargeProd in Number) IS
+        SELECT debt_negot_charge_id
+        FROM gc_debt_negot_charge
+        WHERE  debt_negot_prod_id = inuNegotChargeProd;
 
 
+    --Obtiene elRowId del registro suspecone a actualizar
+    CURSOR cuSuspcone (inuProducto in number) IS
+        SELECT s.suconuse,s.rowid row_id 
+        FROM suspcone s
+        WHERE 	suconuse = inuProducto
+		AND 	sucofeat IS NULL
+        AND		sucocoec = 6;
+        
+    rcSuspcone  cuSuspcone%rowtype;
     /*
         updCuencobr
     */
@@ -163,13 +198,12 @@ IS
       
     PROCEDURE updCuencobr
     (
-        nuCucocodi in cuencobr.cucocodi%type
+        inuCucocodi in cuencobr.cucocodi%type
     )
     IS
-        nuCucovaab  cuencobr.cucovaab%type;
-        nuCucovato  cuencobr.cucovato%type;
-    BEGIN
-        -- Determina el valor total y el valor abonado
+        csbSubMet           CONSTANT VARCHAR2(50) := csbMetodo||'.updCuencobr';
+        
+        cursor cuCuenta is
         SELECT NVL ( SUM ( DECODE ( cargsign, 'DB', (cargvalo),
                                               'CR', -(cargvalo),
                                               0 ) ) , 0 ) cucovato,
@@ -179,30 +213,83 @@ IS
                                               'AP', -cargvalo,
                                               'NS', cargvalo,
                                               0 ) ) , 0 ) cucovaab
-        INTO    nuCucovato, nuCucovaab
         FROM    cargos
-        WHERE   cargcuco = nuCucocodi;
-
+        WHERE   cargcuco = inuCucocodi;
+        
+        nuCucovaab  cuencobr.cucovaab%type;
+        nuCucovato  cuencobr.cucovato%type;
+    BEGIN
+        pkg_traza.trace(csbSubMet, cnuNivelTraza, csbInicio);
+        pkg_traza.trace('inuCucocodi    <= '||inuCucocodi, cnuNivelTraza);
+        
+        if cuCuenta%isopen then close cuCuenta; end if;
+        
+        -- Determina el valor total y el valor abonado
+        open cuCuenta;
+        fetch cuCuenta into nuCucovato, nuCucovaab;
+        close cuCuenta;
+        
         -- Actualiza datos
-        pktblcuencobr.updcucovato(nuCucocodi,nuCucovato);
-        pktblcuencobr.updcucovaab(nuCucocodi,nuCucovaab);
+        pkg_cuencobr.prAcCUCOVATO(inuCucocodi,nuCucovato);
+        pkg_cuencobr.prAcCUCOVAAB(inuCucocodi,nuCucovaab);
 
         -- Efectua commit
-        pkgeneralservices.committransaction;
-
+        
+        pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin);
+        
     EXCEPTION
-        when ex.CONTROLLED_ERROR then
-            raise ex.CONTROLLED_ERROR;
+        when pkg_error.CONTROLLED_ERROR then
+            pkg_error.GetError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, cnuNivelTraza);
+            pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin_Erc);
+            raise pkg_error.CONTROLLED_ERROR;
         when others then
-            Errors.setError;
-            raise ex.CONTROLLED_ERROR;
+            pkg_error.setError;
+            pkg_error.GetError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, cnuNivelTraza);
+            pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin_Err);
+            raise pkg_error.CONTROLLED_ERROR;
     END updCuencobr;
+    
+    FUNCTION fnuGetMaxNegoCharge
+    (
+        inuCuenta       cuencobr.cucocodi%type,
+        inuNegotProd    gc_debt_negot_charge.debt_negot_prod_id%type
+    )
+    return number
+    IS
+        cursor cuMaxNegoCharge is
+        select  DEBT_NEGOT_CHARGE_ID
+        FROM gc_debt_negot_charge
+        WHERE  cucocodi = inuCuenta
+        AND billed_value = 
+        (
+            SELECT max(billed_value)
+            FROM   gc_debt_negot_charge
+            WHERE  cucocodi = inuCuenta
+            AND debt_negot_prod_id = inuNegotProd
+            AND creation_date > trunc(sysdate)
+        )
+		AND	ROWNUM = 1;
+                                        
+        nuNegotProd  gc_debt_negot_charge.debt_negot_prod_id%type;
+    BEGIN
+
+        if cuMaxNegoCharge%isopen then close cuMaxNegoCharge; end if;
+        
+        open cuMaxNegoCharge;
+        fetch cuMaxNegoCharge into nuNegotProd;
+        close cuMaxNegoCharge;
+        
+        return  nuNegotProd;
+        
+    END fnuGetMaxNegoCharge;
 
 
     /*
         DistribPunDebt:
         Distribuye el saldo a favor entre las cuentas de cobro castigadas.
-        La distribuci??n se realiza desde la cuenta de cobro m?!s antigua.
+        La distribución se realiza desde la cuenta de cobro m?!s antigua.
     */
     PROCEDURE DistribPunDebt
     (
@@ -211,6 +298,7 @@ IS
         otbCargos       out gc_bcdebtnegocharge.tytbDebtNegoCharges
     )
     IS
+        csbSubMet           CONSTANT VARCHAR2(50) := csbMetodo||'.DistribPunDebt';
         nuPuniDebt          number;
         nuValordist         number;
         nuSaldFavo          number;
@@ -218,20 +306,25 @@ IS
         nuSaldoCargos       number;
         nuAjustVal          number;
     BEGIN
-
+        pkg_traza.trace(csbSubMet, cnuNivelTraza, csbInicio);
+        pkg_traza.trace('itbCuentas     <= '||itbCuentas.count, cnuNivelTraza);
+        pkg_traza.trace('inuSaldFavo    <= '||inuSaldFavo, cnuNivelTraza);
+        
         nuSaldFavo      := inuSaldFavo;
 
         /* Distribuye Saldo a favor entre cuentas de cobro */
 
         for pos in itbCuentas.first..itbCuentas.last loop
-
-            --dbms_output.put_Line('Saldo Favor --> '||nuSaldFavo);
+            
+            pkg_traza.trace('===============================',cnuNivelTraza);
+            pkg_traza.trace('Cuenta: '||itbCuentas(pos).cucocodi,cnuNivelTraza);
+            pkg_traza.trace('Saldo: '||itbCuentas(pos).nuSaldo,cnuNivelTraza);
 
             /* Establece saldo de la cuenta */
             nuPuniDebt := itbCuentas(pos).nuSaldo;
 
             -- Unicamente procesa la cuenta si la misma tiene saldo castigado
-            -- y si a??n resta saldo a favor por aplicar.
+            -- y si aún resta saldo a favor por aplicar.
 
             if nuSaldFavo > 0 AND nuPuniDebt > 0 then
 
@@ -246,13 +339,15 @@ IS
                     nuSaldFavo  := 0;
                 END if;
 
-                --dbms_output.put_Line('Cuenta --> '||itbCuentas(pos).cucocodi||'-'||nuValordist);
+                pkg_traza.trace('nuValordist: '||nuValordist,cnuNivelTraza);
+                pkg_traza.trace('nuSaldFavo: '||nuSaldFavo,cnuNivelTraza);
 
                 /* Inserta Cargos dependiendo del valor a distribuir */
 
                 for Cargo in cuCargos(itbCuentas(pos).cucocodi) loop
 
-                    nuDebtNegoChargeId                      := seq_gc_debt_negot_c_197160.nextval;
+                    pkg_traza.trace('------------------------------',cnuNivelTraza);
+                    nuDebtNegoChargeId                      := null;
                     rcDebtNegoCharg.debt_negot_charge_id    := nuDebtNegoChargeId;
                     rcDebtNegoCharg.conccodi                := Cargo.cargconc;
 
@@ -270,7 +365,7 @@ IS
                        rcDebtNegoCharg.billed_value := abs(round((Cargo.saldo/nuPuniDebt)*nuValordist));
                     END if;
 
-                    /* Se asigna el signo de los cargos de reactivaci??n */
+                    /* Se asigna el signo de los cargos de reactivación */
 
                     if(Cargo.saldo < 0) then
                         rcDebtNegoCharg.signcodi := 'CR';
@@ -281,54 +376,68 @@ IS
                     END if;
 
                     rcDebtNegoCharg.cucocodi := Cargo.cargcuco;
+                    
+                    pkg_traza.trace('conccodi: '||rcDebtNegoCharg.conccodi,cnuNivelTraza);
+                    pkg_traza.trace('signcodi: '||rcDebtNegoCharg.signcodi,cnuNivelTraza);
+                    pkg_traza.trace('billed_value: '||rcDebtNegoCharg.billed_value,cnuNivelTraza);
+                    pkg_traza.trace('nuSaldoCargos: '||nuSaldoCargos,cnuNivelTraza);
 
                     /* Inserta Cargo a Reactivar */
-                    dagc_debt_negot_charge.insrecord(rcDebtNegoCharg);
-
-                    --dbms_output.put_Line('Inserta Cargo! '||rcDebtNegoCharg.conccodi||'-'||rcDebtNegoCharg.signcodi||'-'||rcDebtNegoCharg.billed_value);
+                    pkg_gc_debt_negot_charge.prInsRegistro(rcDebtNegoCharg,nuDebtNegoChargeId);
+                    pkg_traza.trace('Consecutivo insertado: '||nuDebtNegoChargeId,cnuNivelTraza);
 
                 END loop;
 
                 /*
                    Garantiza que el valor distribuido sea igual al saldo de los cargos.
-                   Si esto no es as?-, por redondeo se ha perdido precisi??n del valor a distribuir.
+                   Si esto no es as?-, por redondeo se ha perdido precisión del valor a distribuir.
                    Se asigna el saldo restante al cargo de mayor valor.
                 */
 
-                dbms_output.put_Line(itbCuentas(pos).cucocodi||'|'||nuValordist||'|'||nuSaldoCargos);
-
                 if nuSaldoCargos <> nuValordist then
-                       nuAjustVal := nuValordist - nuSaldoCargos;
+                        
+                        pkg_traza.trace('Ajuste por diferencia entre el saldo y el valor a distribuir: ['||nuSaldoCargos||']['||nuValordist||']',cnuNivelTraza);
+                        
+                        nuDebtNegoChargeId := null;
+                        nuDebtNegoChargeId := fnuGetMaxNegoCharge(itbCuentas(pos).cucocodi,nuDumNegProd);
+                        pkg_traza.trace('Consecutivo máximo valor cargo en la tabla de negociación: '||nuDebtNegoChargeId,cnuNivelTraza);
+                        
+                        nuAjustVal := nuValordist - nuSaldoCargos;
+                        pkg_traza.trace('nuAjustVal: '||nuAjustVal,cnuNivelTraza);
+                        
+                        nuBilled_Value := pkg_gc_debt_negot_charge.fnuObtBILLED_VALUE(nuDebtNegoChargeId);
+                        pkg_traza.trace('nuBilled_Value: '||nuBilled_Value,cnuNivelTraza);
+                        
+                        pkg_gc_debt_negot_charge.prAcBILLED_VALUE(nuDebtNegoChargeId,nuBilled_Value + nuAjustVal);
 
-                       UPDATE   gc_debt_negot_charge
-                       SET      billed_value = billed_value + nuAjustVal
-                       WHERE    cucocodi = itbCuentas(pos).cucocodi
-                                AND billed_value = (
-                                                    SELECT max(billed_value)
-                                                    FROM   gc_debt_negot_charge
-                                                    WHERE  cucocodi = itbCuentas(pos).cucocodi
-													AND debt_negot_prod_id = nuDumNegProd
-													AND creation_date > trunc(sysdate)
-                                                    )
-						AND		ROWNUM = 1;
                 END if;
-
+            ELSE
+                pkg_traza.trace('Sin saldo a favor para cruzar o cuenta sin saldo pendiente para reactivar: ['||nuSaldFavo||']['||nuPuniDebt||']',cnuNivelTraza);
             END if;
 
         END loop;
 
-        /* Llena colecci??n de cargos de negociaci??n */
-        gc_bcdebtnegocharge.getdebtnegocharges(rcDebtNegoCharg.debt_negot_prod_id,otbCargos);
+        /* Llena colección de cargos de negociación */
+        gc_bcdebtnegocharge.getdebtnegocharges(nuDumNegProd,otbCargos);
 
         /* Asienta Cambios */
-        pkgeneralservices.committransaction;
-
+        commit;
+        
+        pkg_traza.trace('otbCargos     => '||otbCargos.count, cnuNivelTraza);
+        pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin);
+        
     EXCEPTION
-        when ex.CONTROLLED_ERROR then
-            raise ex.CONTROLLED_ERROR;
+        when pkg_error.CONTROLLED_ERROR then
+            pkg_error.GetError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, cnuNivelTraza);
+            pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin_Erc);
+            raise pkg_error.CONTROLLED_ERROR;
         when others then
-            Errors.setError;
-            raise ex.CONTROLLED_ERROR;
+            pkg_error.setError;
+            pkg_error.GetError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, cnuNivelTraza);
+            pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin_Err);
+            raise pkg_error.CONTROLLED_ERROR;
     END DistribPunDebt;
 
     /*
@@ -340,20 +449,27 @@ IS
     )
     return number
     IS
-        nuProyCast  gc_prodprca.prpcprca%type;
-    BEGIN
-
+        cursor cuprpcprca is
         SELECT  prpcprca
-        INTO    nuProyCast
         FROM    gc_prodprca
         WHERE   prpcnuse = inuProduct
-                AND prpcsaca > 0
+                AND (prpcsaca - nvl(prpcsare,0)) > 0
                 AND trunc(prpcfeca) =   (
                                             SELECT  max(trunc(prpcfeca))
                                             FROM    gc_prodprca
                                             WHERE   prpcnuse = inuProduct
-                                            AND     prpcsaca > 0
+                                            AND     (prpcsaca - nvl(prpcsare,0)) > 0
                                         );
+                                        
+        nuProyCast  gc_prodprca.prpcprca%type;
+    BEGIN
+
+        if cuprpcprca%isopen then close cuprpcprca; end if;
+        
+        open cuprpcprca;
+        fetch cuprpcprca into nuProyCast;
+        close cuprpcprca;
+        
         return  nuProyCast;
     END fnuGetProCastbyProd;
 
@@ -367,99 +483,138 @@ IS
     )
     return number
     IS
+        cursor cuMovisafa is
+        SELECT  sum(mosfvalo)
+        FROM    movisafa
+        WHERE   mosfsesu = inuProduct;
+        
         -- Valor
         nuMovivalo  movisafa.mosfvalo%type := 0;
     BEGIN
 
-        SELECT  sum(mosfvalo)
-        INTO    nuMovivalo
-        FROM    movisafa
-        WHERE   mosfsesu = inuProduct;
+        if cuMovisafa%isopen then close cuMovisafa; end if;
+        
+        open cuMovisafa;
+        fetch cuMovisafa INTO nuMovivalo;
+        close cuMovisafa;
 
         return  nuMovivalo;
 
     END fnugetMovisafa;
 
 
-    /*
-        ProcessLog
-        Inserta o Actualiza el log de PB
-    */
+    -- Inserta o Actualiza el log de PB
     procedure ProcessLog
     (
-        inuCons in out  ldc_log_pb.ldlpcons%type,
-        isbProc in      ldc_log_pb.ldlpproc%type,
-        idtFech in      ldc_log_pb.ldlpfech%type,
         isbInfo in      ldc_log_pb.ldlpinfo%type
     )
     is
-        -- Session
-        sbSession   varchar2(50);
-        -- Usuario
-        sbUser      varchar2(50);
-        -- Info Aux
-        sbInfoAux   ldc_log_pb.ldlpinfo%type;
+        rcLogPb     pkg_ldc_log_pb.styRegistro;
+        
     begin
-        -- Obtiene valor de la session
-        SELECT  USERENV('SESSIONID'),
-                USER
-        INTO    sbSession,
-                sbUser
-        FROM    dual;
-
+        
+        
+        rcLogPb.LDLPCONS := nuLdlpcons;
+        rcLogPb.LDLPPROC := 'LDCDSCC';
+        rcLogPb.LDLPUSER := csbUser;
+        rcLogPb.LDLPTERM := csbSesion;
+        rcLogPb.LDLPFECH := dtFecha;
+        rcLogPb.LDLPINFO := isbInfo;
+        
+        
         -- Insertamos o Actualizamos
-        if(inuCons is null) then
+        if ( nuLdlpcons is null) then
 
-            -- Obtiene CONS de log pb
-            select  SEQ_LDC_LOG_PB.nextval
-            into    inuCons
-            from    dual;
-
-            insert into ldc_log_pb
-            (
-                LDLPCONS, LDLPPROC, LDLPUSER, LDLPTERM, LDLPFECH, LDLPINFO
-            )
-            values
-            (
-                inuCons,
-                isbProc,
-                sbUser,
-                sbSession,
-                idtFech,
-                isbInfo
-            );
-
+            pkg_ldc_log_pb.prInsRegistro(rcLogPb,nuLdlpcons);
+            
         else
-            -- Obtiene Datos
-            select  LDLPINFO
-            into    sbInfoAux
-            from    ldc_log_pb
-            where   LDLPCONS = inuCons;
-
             -- Actualiza Datos
-            update  ldc_log_pb
-            set     LDLPINFO = LDLPINFO||' '||isbInfo
-            where   LDLPCONS = inuCons;
+            pkg_ldc_log_pb.prActRegistro(rcLogPb);
+            
         end if;
 
-        commit;
-
     end ProcessLog;
+    
+    --Borra producto por negociación
+    procedure prBorraNegoProducto is
+        csbSubMet           CONSTANT VARCHAR2(50) := csbMetodo||'.prBorraNegoProducto';
+    begin
+        pkg_traza.trace(csbSubMet, cnuNivelTraza, csbInicio);
+        
+        if nuDumNegProd is not null then
+            pkg_gc_debt_negot_prod.prBorRegistro(nuDumNegProd);
+            commit;
+        end if;
+        
+        pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin);
+    EXCEPTION
+        when pkg_error.CONTROLLED_ERROR then
+            pkg_error.GetError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, cnuNivelTraza);
+            pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin_Erc);
+            raise pkg_error.CONTROLLED_ERROR;
+        when others then
+            pkg_error.setError;
+            pkg_error.GetError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, cnuNivelTraza);
+            pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin_Err);
+            raise pkg_error.CONTROLLED_ERROR;
+    end prBorraNegoProducto;
+    
+    --Borra cargos por negociación
+    procedure prBorraNegoCargos is
+        csbSubMet           CONSTANT VARCHAR2(50) := csbMetodo||'.prBorraNegoCargos';
+    begin
+        pkg_traza.trace(csbSubMet, cnuNivelTraza, csbInicio);
+        
+        if nuDumNegProd is not null then
+            for rc in cuCargosNegociacion(nuDumNegProd) loop
+            
+                pkg_gc_debt_negot_charge.prBorRegistro(rc.DEBT_NEGOT_CHARGE_ID);
+                
+            end loop;
+
+            -- Asienta cambios
+            commit;
+        end if;
+        
+        pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin);
+    EXCEPTION
+        when pkg_error.CONTROLLED_ERROR then
+            pkg_error.GetError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, cnuNivelTraza);
+            pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin_Erc);
+            raise pkg_error.CONTROLLED_ERROR;
+        when others then
+            pkg_error.setError;
+            pkg_error.GetError(nuError, sbError);
+            pkg_traza.trace('sbError: ' || sbError, cnuNivelTraza);
+            pkg_traza.trace(csbSubMet, cnuNivelTraza, csbFin_Err);
+            raise pkg_error.CONTROLLED_ERROR;
+    end prBorraNegoCargos;
+    
+    --Borra temporales
+    procedure prBorraTemporales is
+    begin
+        prBorraNegoCargos;
+        prBorraNegoProducto;
+    end prBorraTemporales;
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 BEGIN
-
+    pkg_traza.trace(csbMetodo, cnuNivelTraza, csbInicio);
     -- Obtiene producto de pantalla
     sbSesunuse := ge_boInstanceControl.fsbGetFieldValue ('SERVSUSC', 'SESUNUSE');
+    nuProducto := TO_NUMBER(sbSesunuse);
+    pkg_traza.trace('Identificador del producto: '||nuProducto, cnuNivelTraza);
+    
+    dtFecha := SYSDATE;
 
     -- Inserta Actualiza Log PB
     ProcessLog
     (
-        nuLdlpcons,
-        'LDCDSCC',
-        sysdate,
         'Producto:'||nvl(to_char(sbSesunuse),'NULL')
     );
 
@@ -467,64 +622,54 @@ BEGIN
     -- Required Attributes
     ------------------------------------------------
     if (sbSesunuse is null) then
-        Errors.SetError(
+        pkg_error.setErrorMessage(
             cnuNULL_ATTR,
             'Producto'
         );
-        raise ex.CONTROLLED_ERROR;
+    
     end if;
 
     -- Valida si esta castigado
-    nuIndicador := 0;
-
-    select  count(1)
-    into    nuIndicador
-    from    servsusc
-    where   sesunuse = sbSesunuse
-    and     sesuesfn <> 'C';
-
-    if(nuIndicador > 0) then
-        Errors.SetError(
+    IF pkg_bcproducto.fsbEstadoFinanciero(nuProducto) != 'C' then
+        pkg_error.setErrorMessage(
             -20100,
             'El Producto '||sbSesunuse||' no se encuentra Castigado'
         );
-        raise ex.CONTROLLED_ERROR;
-    end if;
+    END IF;
 
     -- Valida si tiene saldo a favor
-    nuIndicador := 0;
-
-    select  count(1)
-    into    nuIndicador
-    from    servsusc
-    where   sesunuse = sbSesunuse
-    and     sesusafa <= 0;
-
-    if(nuIndicador > 0) then
-        Errors.SetError(
+    IF nvl(pkg_bcproducto.fnuSaldoAfavor(nuProducto),0) <= 0 then
+        pkg_error.setErrorMessage(
             -20100,
             'El Producto '||sbSesunuse||' no tiene Saldo a Favor'
         );
-        raise ex.CONTROLLED_ERROR;
-    end if;
-
-    ------------------------------------------------
-    -- User code
-    ------------------------------------------------
-
+    END IF;
+    
     -- Establece nombre del programa
-    pkerrors.setapplication('SQL');
-
-    -- Inicializa consecutivo dummy
-    nuDumNegProd := seq_gc_debt_negot_p_197149.nextval;
-
+    pkg_error.setapplication('SQL');
+    
+    rcRegNegProd := NULL;
+    
+    rcRegNegProd.DEBT_NEGOT_PROD_ID      := null;
+    rcRegNegProd.DEBT_NEGOTIATION_ID     := 1;
+    rcRegNegProd.SESUNUSE                := -1;            
+    rcRegNegProd.LATE_CHARGE_LIQ_DATE    := sysdate;
+    rcRegNegProd.LATE_CHARGE_DAYS        := 0;   
+    rcRegNegProd.BILLED_LATE_CHARGE      := 0;  
+    rcRegNegProd.NOT_BILLED_LATE_CHA     := 0;
+    rcRegNegProd.NOT_BILLED_VALUE        := 0;    
+    rcRegNegProd.PENDING_BALANCE         := 0;     
+    rcRegNegProd.VALUE_TO_PAY            := 0;       
+    rcRegNegProd.EXONER_RECONN_CHARGE    := 'N';
+    
     -- Inserta gc_debt_negot_prod dummy servsusc
-    INSERT INTO gc_debt_negot_prod
-    VALUES (nuDumNegProd,1,-1,sysdate,0,0,0,0,0,0,'N');
+    pkg_gc_debt_negot_prod.prInsRegistro(rcRegNegProd,nuDumNegProd);
+    pkg_traza.trace('Registra producto por negociación dummy: '||nuDumNegProd, cnuNivelTraza);
 
     -- Inicializa plantilla gc_debt_negot_charge
-    rcDebtNegoCharg := dagc_debt_negot_charge.frcgetrecord(1);
-
+    rcDebtNegoCharg := pkg_gc_debt_negot_charge.frcObtRegistro(1);
+    pkg_traza.trace('Obtiene regisro de cargos de negociación dummy', cnuNivelTraza);
+    
     rcDebtNegoCharg.debt_negot_prod_id := nuDumNegProd;
     rcDebtNegoCharg.creation_date := sysdate;
     rcDebtNegoCharg.user_id := 1;
@@ -540,6 +685,8 @@ BEGIN
 
         -- Valida sumatoria de movimientos de saldo
         nuMovivalo := round(fnugetMovisafa(nuProd.sesunuse));
+        
+        pkg_traza.trace('Saldo a favor producto y movimientos: ['||nuSaldo||']['||nuMovivalo||']', cnuNivelTraza);
 
         -- Unicamente reactiva si los movimientos de saldo a favor y el sesusafa
         -- son congruentes
@@ -547,6 +694,8 @@ BEGIN
 
             -- Obtiene proyecto de castigo
             nuProyCast := fnuGetProcastbyProd(nuProd.sesunuse);
+            
+            pkg_traza.trace('Proyecto de castigo para el producto: '||nuProyCast, cnuNivelTraza);
 
             -- Actualiza documento de soporte
             rcDebtNegoCharg.support_document := 'PUN-'||to_char(nuProyCast);
@@ -555,12 +704,14 @@ BEGIN
             open cuCuentas(nuProd.sesunuse);
             fetch cuCuentas bulk collect INTO tbCuentas;
             close cuCuentas;
+            
+            pkg_traza.trace('Obtiene las cuentas gestionadas por el castigo: '||tbCuentas.count, cnuNivelTraza);
 
-            -- Distribuir saldo a reactivar por cuenta de cobro e Insertar cargos de reactivaci??n
+            -- Distribuir saldo a reactivar por cuenta de cobro e Insertar cargos de reactivación
             DistribPunDebt(tbCuentas,nuSaldo,tbNegoCharg);
 
             -- Reactivar cartera
-            -- Invoca al Servicio de reactivaci??n de cartera por negociaci??n de deuda
+            -- Invoca al Servicio de reactivación de cartera por negociación de deuda
             gc_bocastigocartera.reactnegociateddebt(tbNegoCharg,nuProd.sesunuse);
 
             -- Si
@@ -573,36 +724,29 @@ BEGIN
 
                 -- Aplica saldo a favor en las cuentas reactivadas
                 BEGIN
-
+                    pkg_traza.trace('Aplica Saldo a Favor producto', cnuNivelTraza);
                     pkAccountMgr.ApplyPositiveBalServ(nuProd.sesunuse);
 
                 EXCEPTION
                     when OTHERS then
-                        dbms_output.put_Line('NO Se aplico saldo a favor para el producto: ' || nuProd.sesunuse);
+                        pkg_error.setError;
+                        pkg_error.GetError(nuError, sbError);
+                        sbError := 'Error aplicando saldo a favor al producto '||nuProd.sesunuse||', proyecto de castigo '||nuProyCast||' y saldo a favor '||nuMovivalo||'. Error: '||sbError;
+                        pkg_error.setErrorMessage( isbMsgErrr => sbError);
                 END;
 
             end if;
 
             -- Elimina datos temporales
-            DELETE FROM gc_debt_negot_charge
-            WHERE  debt_negot_prod_id = nuDumNegProd;
-
-            -- Asienta cambios
-            pkgeneralservices.committransaction;
+            prBorraNegoCargos;
 
         end if;
 
     end loop;
 
     -- Borra registro Dummy
-    DELETE FROM gc_debt_negot_prod
-    WHERE  debt_negot_prod_id = nuDumNegProd;
-
-    -- Commit
-    pkgeneralservices.committransaction;
+    prBorraNegoProducto;
 		
-	nuProducto := TO_NUMBER(sbSesunuse);
-    
     OPEN cuSuspensionCartera(nuProducto);
     FETCH cuSuspensionCartera INTO nuSuspensionCartera;
     CLOSE cuSuspensionCartera;
@@ -610,50 +754,64 @@ BEGIN
     IF (nuSuspensionCartera > 0) THEN
         DBMS_LOCK.SLEEP(5);
         
-        IF (pktblservsusc.fnugetsesuesco(nuProducto) = 6) THEN
-
-            pktblservsusc.updsesuesco(nuProducto, 1);
-
-			UPDATE 	suspcone
-			SET 	sucofeat = SYSDATE
-			WHERE 	suconuse = nuProducto
-			AND 	sucofeat IS NULL
-			AND		sucocoec = 6;
-
-			pkgeneralservices.committransaction;
+        IF (pkg_bcproducto.fnuEstadoCorte(nuProducto) = 6) THEN
+            pkg_producto.prActualizaEstadoCorte(nuProducto, 1);
+            
+            if cuSuspcone%isopen then close cuSuspcone; end if;
+            
+            rcSuspcone := null;
+            open cuSuspcone(nuProducto);
+            fetch cuSuspcone into rcSuspcone;
+            close cuSuspcone;
+            
+            if rcSuspcone.suconuse is not null then
+            
+                pkg_suspcone.prc_ActFechaAtencionRowId(rcSuspcone.row_id,SYSDATE,nuError,sbError);
+                
+                if nuError != constants_per.OK then
+                    pkg_error.setErrorMessage( isbMsgErrr => sbError);
+                end if;
+            
+            end if;
+            
+			commit;
+			
         END IF;
     END IF;
+    
+    ProcessLog
+    (
+        'Ok'
+    );
+    
+    pkg_traza.trace(csbMetodo, cnuNivelTraza, csbFin);
 
 EXCEPTION
-    when ex.CONTROLLED_ERROR then
-        Errors.GetError(nuErrorCode, sbErrorMessage);
-        dbms_output.put_line('ERROR CONTROLLED ');
-        dbms_output.put_line('Error onuErrorCode: '||nuErrorCode);
-        dbms_output.put_line('Error osbErrorMess: '||sbErrorMessage);
+    when pkg_error.CONTROLLED_ERROR then
+        rollback;
+        pkg_error.GetError(nuError, sbError);
+        pkg_traza.trace('sbError: ' || sbError, cnuNivelTraza);
+        pkg_traza.trace(csbMetodo, cnuNivelTraza, csbFin_Erc);
 
         ProcessLog
         (
-            nuLdlpcons,
-            null,
-            null,
-            'Error:'||nvl(to_char(nuErrorCode),'NULL')||' Error_Desc:'||nvl(to_char(sbErrorMessage),'NULL')
+            'Error:'||nvl(to_char(nuError),'NULL')||' Error_Desc:'||nvl(to_char(sbError),'NULL')
         );
-        raise;
+        prBorraTemporales;
+        raise pkg_error.CONTROLLED_ERROR;
     when OTHERS then
-        Errors.setError;
-        Errors.GetError(nuErrorCode, sbErrorMessage);
-        dbms_output.put_line('ERROR CONTROLLED ');
-        dbms_output.put_line('Error onuErrorCode: '||nuErrorCode);
-        dbms_output.put_line('Error osbErrorMess: '||sbErrorMessage);
-
+        rollback;
+        pkg_error.setError;
+        pkg_error.GetError(nuError, sbError);
+        pkg_traza.trace('sbError: ' || sbError, cnuNivelTraza);
+        pkg_traza.trace(csbMetodo, cnuNivelTraza, csbFin_Err);
+        
         ProcessLog
         (
-            nuLdlpcons,
-            null,
-            null,
-            'Error:'||nvl(to_char(nuErrorCode),'NULL')||' Error_Desc:'||nvl(to_char(sbErrorMessage),'NULL')
+            'Error:'||nvl(to_char(nuError),'NULL')||' Error_Desc:'||nvl(to_char(sbError),'NULL')
         );
-        raise ex.CONTROLLED_ERROR;
+        prBorraTemporales;
+        raise pkg_error.CONTROLLED_ERROR;
 END LDC_DistSaldFavoClieCast;
 /
 PROMPT Otorgando permisos de ejecucion a LDC_DISTSALDFAVOCLIECAST

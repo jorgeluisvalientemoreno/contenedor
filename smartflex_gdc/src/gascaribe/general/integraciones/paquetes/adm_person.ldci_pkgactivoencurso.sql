@@ -9,18 +9,31 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   FECHA:      05/03/2014
 
   HISTORIA DE MODIFICACIONES
-  FECHA         AUTOR    MODIFICACION
-
+  FECHA         AUTOR       MODIFICACION
+  10/06/2025    jpinedc     OSF-4558: * Se borran  fvaGetSociedad y ActSociedad
+                            * Se agrega el argumento  de entrada isbSociedad a
+                            ** curecord
+                            ** fblCargaPrevia
+                            ** fvaGetTexto_Breve
+                            ** acttexto_breve
+                            ** fboExiste
+                            ** validaLlave
+                            ** validaLlaveDuplicada
+                            ** consultarRegistro
+                            ** frcConsultaRregistro
+                            ** borraregistro
   ********************************************************************************/
   --<<
   -- cursor de la ldci_activoencurso
   -->>
   CURSOR curecord(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
-                  ivasubnumero     IN ldci_activoencurso.subnumero%TYPE) IS
+                  ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                  isbSociedad      IN ldci_activoencurso.sociedad%TYPE) IS
     SELECT ldci_activoencurso.*, ldci_activoencurso.rowid
       FROM ldci_activoencurso
      WHERE codigo_activo = ivacodigo_activo
-       AND subnumero = ivasubnumero;
+       AND subnumero = ivasubnumero
+       AND sociedad = isbSociedad;
 
   tyldc_activoencurso ldci_activoencurso%ROWTYPE;
 
@@ -46,26 +59,13 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   cnurecord_already_exist CONSTANT NUMBER := 1;
   cnutableparameter       CONSTANT NUMBER := 1000;
 
-  --<<
-  -- funcion para obtener la sociedad
-  --<<
-  FUNCTION fvaGetSociedad(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
-                          ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
-                          inuusecache      IN NUMBER DEFAULT 0)
-    RETURN VARCHAR2;
-
-  --<<
-  -- Procedimiento para la Actualizacion de la sociedad
-  -->>
-  PROCEDURE ActSociedad(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
-                        ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
-                        ivasociedad      IN ldci_activoencurso.sociedad%TYPE);
 
   --<<
   -- Funcion para obtener el texto breve
   -->>
   FUNCTION fvaGetTexto_Breve(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                              ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                             isbSociedad      IN ldci_activoencurso.sociedad%TYPE,
                              inuusecache      IN NUMBER DEFAULT 0)
     RETURN VARCHAR2;
 
@@ -74,6 +74,7 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   -->>
   PROCEDURE acttexto_breve(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                            ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                           isbSociedad      IN ldci_activoencurso.sociedad%TYPE,
                            ivatexto_breve   IN ldci_activoencurso.texto_breve%TYPE);
 
   --<<
@@ -81,6 +82,7 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   -->>
   FUNCTION fboExiste(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                      ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                     isbSociedad      IN ldci_activoencurso.sociedad%TYPE,
                      inuusecache      IN NUMBER DEFAULT 0) RETURN BOOLEAN;
 
   --<<
@@ -88,6 +90,7 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   -->>
   PROCEDURE validaLlave(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                         ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                        isbSociedad      IN ldci_activoencurso.sociedad%TYPE,
                         inuusecache      IN NUMBER DEFAULT 0);
 
   --<<
@@ -95,6 +98,7 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   -->>
   PROCEDURE validaLlaveDuplicada(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                                  ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                                 isbSociedad      IN ldci_activoencurso.sociedad%TYPE,
                                  inuusecache      IN NUMBER DEFAULT 0);
 
   --<<
@@ -102,6 +106,7 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   -->>
   PROCEDURE consultarRegistro(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                               ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                              isbSociedad      IN ldci_activoencurso.sociedad%TYPE,
                               orcrecord        OUT NOCOPY styldc_activoencurso,
                               inuusecache      IN NUMBER DEFAULT 0);
 
@@ -110,6 +115,7 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   -->>
   FUNCTION frcConsultaRregistro(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                                 ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                                isbSociedad      IN ldci_activoencurso.sociedad%TYPE,
                                 inuusecache      IN NUMBER DEFAULT 0)
     RETURN styldc_activoencurso;
 
@@ -122,7 +128,8 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   -- Funcion para Borrar un Activo Fijo en Curso
   -->>
   PROCEDURE borraregistro(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
-                          ivasubnumero     IN ldci_activoencurso.subnumero%TYPE);
+                          ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                          isbSociedad      IN ldci_activoencurso.sociedad%TYPE);
 
   --<<
   -- Funcion para Borrar un Activo Fijo en Curso por Rowid
@@ -139,6 +146,7 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
 
 END LDCI_PKGACTIVOENCURSO;
 /
+
 CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   /********************************************************************************
   PROPIEDAD INTELECTUAL DE SURTIGAS.
@@ -154,39 +162,43 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
 
   ********************************************************************************/
 
-  --<<
-  -- Tipo Cursor
-  -->>
-  TYPE tyrfldc_activoencurso IS REF CURSOR;
+    csbSP_NAME		CONSTANT VARCHAR2(35)	:= $$PLSQL_UNIT||'.';
+    csbNivelTraza    CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
 
-  --<<
-  -- Tipos referenciando al registro
-  --<<
-  TYPE tytbcodigo_activo IS TABLE OF ldci_activoencurso.codigo_activo%TYPE INDEX BY BINARY_INTEGER;
-  TYPE tytbsubnumero IS TABLE OF ldci_activoencurso.subnumero%TYPE INDEX BY BINARY_INTEGER;
-  TYPE tytbsociedad IS TABLE OF ldci_activoencurso.sociedad%TYPE INDEX BY BINARY_INTEGER;
-  TYPE tytbtexto_breve IS TABLE OF ldci_activoencurso.texto_breve%TYPE INDEX BY BINARY_INTEGER;
+    --<<
+    -- Tipo Cursor
+    -->>
+    TYPE tyrfldc_activoencurso IS REF CURSOR;
 
-  --<<
-  -- Tipo de Dato
-  -->>
-  TYPE tyrcldc_activoencurso IS RECORD(
+    --<<
+    -- Tipos referenciando al registro
+    --<<
+    TYPE tytbcodigo_activo IS TABLE OF ldci_activoencurso.codigo_activo%TYPE INDEX BY BINARY_INTEGER;
+    TYPE tytbsubnumero IS TABLE OF ldci_activoencurso.subnumero%TYPE INDEX BY BINARY_INTEGER;
+    TYPE tytbsociedad IS TABLE OF ldci_activoencurso.sociedad%TYPE INDEX BY BINARY_INTEGER;
+    TYPE tytbtexto_breve IS TABLE OF ldci_activoencurso.texto_breve%TYPE INDEX BY BINARY_INTEGER;
+
+    --<<
+    -- Tipo de Dato
+    -->>
+    TYPE tyrcldc_activoencurso IS RECORD(
     codigo_activo tytbcodigo_activo,
     subnumero     tytbsubnumero,
     sociedad      tytbsociedad,
     texto_breve   tytbtexto_breve);
 
-  --<<
-  --Variables Globales
-  -->>
-  rcRecOfTab   tyrcLDC_ACTIVOENCURSO;
-  rcData       cuRecord%ROWTYPE;
-  rcRecordNull cuRecord%ROWTYPE;
-  cnuCACHEON   NUMBER := 1;
+    --<<
+    --Variables Globales
+    -->>
+    rcRecOfTab   tyrcLDC_ACTIVOENCURSO;
+    rcData       cuRecord%ROWTYPE;
+    rcRecordNull cuRecord%ROWTYPE;
+    cnuCACHEON   NUMBER := 1;
 
-  FUNCTION fblCargaPrevia(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
-                          ivasubnumero     IN ldci_activoencurso.subnumero%TYPE)
-  /********************************************************************************
+    FUNCTION fblCargaPrevia(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
+                          ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                          isbSociedad      IN ldci_activoencurso.sociedad%TYPE)
+    /********************************************************************************
     PROPIEDAD INTELECTUAL DE SURTIGAS.
     FUNCION:     fblCargaPrevia
     DESCRIPCION: Carga la Carga Previa.
@@ -201,20 +213,31 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     FECHA:      05/03/2014
 
     HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
-   RETURN BOOLEAN IS
-  BEGIN
-    IF (iVACODIGO_ACTIVO = rcData.CODIGO_ACTIVO AND
-       iVASUBNUMERO = rcData.SUBNUMERO) THEN
-      RETURN(TRUE);
-    END IF;
-    RETURN(FALSE);
-  END;
+    RETURN BOOLEAN IS
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fblCargaPrevia';    
+        blCargaPrevia   BOOLEAN := FALSE;
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO); 
+        
+        IF 
+        (
+            iVACODIGO_ACTIVO = rcData.CODIGO_ACTIVO AND
+            iVASUBNUMERO = rcData.SUBNUMERO AND 
+            isbSociedad = rcData.SOCIEDAD
+        ) THEN
+            blCargaPrevia := TRUE;
+        END IF;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);            
+        RETURN blCargaPrevia;
+        
+    END fblCargaPrevia;
 
   PROCEDURE reCarga(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
-                    ivasubnumero     IN ldci_activoencurso.subnumero%TYPE) IS
+                    ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                    isbSociedad      IN ldci_activoencurso.sociedad%TYPE) IS
   /********************************************************************************
     PROPIEDAD INTELECTUAL DE SURTIGAS.
     PROCEDIMIENTO:    reCarga
@@ -229,97 +252,31 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     FECHA:      05/03/2014
 
     HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
-  BEGIN
-    IF (curecord%ISOPEN) THEN
-      CLOSE curecord;
-    END IF;
-    OPEN curecord(ivacodigo_activo, ivasubnumero);
-    FETCH curecord
-      INTO rcdata;
-    IF (curecord%NOTFOUND) THEN
-      CLOSE curecord;
-      rcdata := rcrecordnull;
-      RAISE no_data_found;
-    END IF;
-    CLOSE curecord;
-  END;
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fblCargaPrevia';      
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO); 
+            
+        IF (curecord%ISOPEN) THEN
+            CLOSE curecord;
+        END IF;
+        
+        OPEN curecord(ivacodigo_activo, ivasubnumero, isbSociedad);
+        FETCH curecord INTO rcdata;
+        IF (curecord%NOTFOUND) THEN
+          CLOSE curecord;
+          rcdata := rcrecordnull;
+          RAISE no_data_found;
+        END IF;
+        CLOSE curecord;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);         
+    END reCarga;
 
-  FUNCTION fvaGetSociedad(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
-                          ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
-                          inuusecache      IN NUMBER DEFAULT 0)
-  /********************************************************************************
-    PROPIEDAD INTELECTUAL DE SURTIGAS.
-    FUNCION:     fvaGetSociedad
-    DESCRIPCION: funcion para obtener la sociedad.
-
-    PARAMETROS DE ENTRADA: ivacodigo_activo => Codigo de Activo
-                           ivasubnumero     => Subnumero
-                           inuusecache      => Control
-    PARAMETROS DE SALIDA:  Ninguno
-    RETORNOS:              Sociedad
-
-    AUTOR:       Jorge Mario Galindo - ArquitecSoft
-    FECHA:       05/03/2014
-
-    HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
-    ********************************************************************************/
-   RETURN VARCHAR2 IS
-  BEGIN
-    IF (inuusecache = cnucacheon AND
-       fblcargaprevia(ivacodigo_activo, ivasubnumero)) THEN
-      RETURN(rcdata.sociedad);
-    END IF;
-    recarga(ivacodigo_activo, ivasubnumero);
-    RETURN(rcdata.sociedad);
-
-  EXCEPTION
-    WHEN OTHERS THEN
-      ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-       RETURN NULL;
-  END;
-
-  PROCEDURE ActSociedad(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
-                        ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
-                        ivasociedad      IN ldci_activoencurso.sociedad%TYPE) IS
-    /********************************************************************************
-    PROPIEDAD INTELECTUAL DE SURTIGAS.
-    PROCEDIMIENTO:    ActSociedad
-    DESCRIPCION:      Procedimiento para actualizar la sociedad de un activo fijo en
-                      curso.
-
-    PARAMETROS DE ENTRADA: ivacodigo_activo => Codigo de Activo
-                           ivasubnumero     => Subnumero
-                           ivasociedad      => Sociedad
-    PARAMETROS DE SALIDA:  Ninguno
-    RETORNOS:              Ninguno
-
-    AUTOR:            Jorge Mario Galindo - ArquitecSoft
-    FECHA:            05/03/2014
-
-    HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
-    ********************************************************************************/
-  BEGIN
-    UPDATE ldci_activoencurso
-       SET sociedad = ivasociedad
-     WHERE codigo_activo = ivacodigo_activo
-       AND subnumero = ivasubnumero;
-
-    rcdata.sociedad := ivasociedad;
-  EXCEPTION
-    WHEN no_data_found THEN
-      ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-
-  END;
-
-  FUNCTION fvaGetTexto_Breve(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
+    FUNCTION fvaGetTexto_Breve(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                              ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                             isbSociedad      IN ldci_activoencurso.sociedad%TYPE,
                              inuusecache      IN NUMBER DEFAULT 0)
   /********************************************************************************
     PROPIEDAD INTELECTUAL DE SURTIGAS.
@@ -335,28 +292,35 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     AUTOR:       Jorge Mario Galindo - ArquitecSoft
     FECHA:       05/03/2014
 
-    HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
-   RETURN VARCHAR2 IS
-  BEGIN
-    IF (inuusecache = cnucacheon AND
-       fblcargaprevia(ivacodigo_activo, ivasubnumero)) THEN
-      RETURN(rcdata.texto_breve);
-    END IF;
-    recarga(ivacodigo_activo, ivasubnumero);
-    RETURN(rcdata.texto_breve);
+    RETURN VARCHAR2 IS
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fvaGetTexto_Breve';     
+    BEGIN
 
-  EXCEPTION
-    WHEN OTHERS THEN
-      ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-       RETURN NULL;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO); 
+            
+        IF (inuusecache = cnucacheon AND
+            fblcargaprevia(ivacodigo_activo, ivasubnumero, isbSociedad)) THEN
+            RETURN(rcdata.texto_breve);
+        END IF;
+        
+        recarga(ivacodigo_activo, ivasubnumero, isbSociedad);
 
-  END;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN); 
+        
+        RETURN(rcdata.texto_breve);
 
-  PROCEDURE actTexto_Breve(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
+    EXCEPTION
+        WHEN OTHERS THEN
+            ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
+            RETURN NULL;
+    END fvaGetTexto_Breve;
+
+    PROCEDURE acttexto_breve(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                            ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                           isbSociedad      IN ldci_activoencurso.sociedad%TYPE,
                            ivatexto_breve   IN ldci_activoencurso.texto_breve%TYPE) IS
     /********************************************************************************
     PROPIEDAD INTELECTUAL DE SURTIGAS.
@@ -373,23 +337,32 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     FECHA:         05/03/2014
 
     HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
-  BEGIN
-    UPDATE ldci_activoencurso
-       SET texto_breve = ivatexto_breve
-     WHERE codigo_activo = ivacodigo_activo
-       AND subnumero = ivasubnumero;
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'acttexto_breve';              
+    BEGIN
+    
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO); 
+            
+        UPDATE ldci_activoencurso
+        SET texto_breve = ivatexto_breve
+        WHERE codigo_activo = ivacodigo_activo
+        AND subnumero = ivasubnumero
+        AND sociedad = isbSociedad;
 
-    rcdata.texto_breve := ivatexto_breve;
-  EXCEPTION
-    WHEN no_data_found THEN
-      ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-  END;
+        rcdata.texto_breve := ivatexto_breve;
+        
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN); 
+                
+    EXCEPTION
+        WHEN no_data_found THEN
+            ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
+    END acttexto_breve;
 
-  PROCEDURE cargar(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
+    PROCEDURE cargar(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                    ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                   isbSociedad      IN ldci_activoencurso.sociedad%TYPE, 
                    inuusecache      IN NUMBER DEFAULT 0) IS
     /********************************************************************************
     PROPIEDAD INTELECTUAL DE SURTIGAS.
@@ -406,19 +379,28 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     FECHA:      05/03/2014
 
     HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
-  BEGIN
-    IF (inuusecache = cnucacheon AND
-       fblcargaprevia(ivacodigo_activo, ivasubnumero)) THEN
-      RETURN;
-    END IF;
-    recarga(ivacodigo_activo, ivasubnumero);
-  END;
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'cargar';      
+    BEGIN
+    
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO); 
+            
+        IF (inuusecache = cnucacheon AND
+            fblcargaprevia(ivacodigo_activo, ivasubnumero, isbSociedad)) THEN
+            pkg_traza.trace('Registro en Cache', csbNivelTraza);
+        ELSE
+            recarga(ivacodigo_activo, ivasubnumero, isbSociedad);
+        END IF;
+        
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+                 
+    END cargar;
 
-  FUNCTION fboExiste(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
+    FUNCTION fboExiste(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                      ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                     isbSociedad      IN ldci_activoencurso.sociedad%TYPE,                      
                      inuusecache      IN NUMBER DEFAULT 0) RETURN BOOLEAN IS
     /********************************************************************************
     PROPIEDAD INTELECTUAL DE SURTIGAS.
@@ -436,20 +418,27 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     FECHA:      05/03/2014
 
     HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
-  BEGIN
-    cargar(ivacodigo_activo, ivasubnumero, inuusecache);
-    RETURN(TRUE);
-  EXCEPTION
-    WHEN no_data_found THEN
-      ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-      RETURN(FALSE);
-  END;
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'fboExiste';      
+        boExiste    BOOLEAN;
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+        cargar(ivacodigo_activo, ivasubnumero, isbSociedad, inuusecache);
+        boExiste := TRUE;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+        RETURN boExiste;
+    EXCEPTION
+        WHEN no_data_found THEN
+            ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
+            boExiste := FALSE;            
+            RETURN boExiste;
+    END fboExiste;
 
-  PROCEDURE validaLlave(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
+    PROCEDURE validaLlave(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                         ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                        isbSociedad      IN ldci_activoencurso.sociedad%TYPE,  
                         inuusecache      IN NUMBER DEFAULT 0) IS
     /********************************************************************************
     PROPIEDAD INTELECTUAL DE SURTIGAS.
@@ -466,19 +455,22 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     FECHA:      05/03/2014
 
     HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
-  BEGIN
-    cargar(ivacodigo_activo, ivasubnumero, inuusecache);
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'validaLlave';        
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);    
+        cargar(ivacodigo_activo, ivasubnumero, isbSociedad, inuusecache);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+    EXCEPTION
+        WHEN no_data_found THEN
+            ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
+    END validaLlave;
 
-  EXCEPTION
-    WHEN no_data_found THEN
-      ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-  END;
-
-  PROCEDURE validaLlaveDuplicada(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
+    PROCEDURE validaLlaveDuplicada(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                                  ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                                isbSociedad      IN ldci_activoencurso.sociedad%TYPE,                                   
                                  inuusecache      IN NUMBER DEFAULT 0) IS
     /********************************************************************************
     PROPIEDAD INTELECTUAL DE SURTIGAS.
@@ -495,20 +487,26 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     FECHA:      05/03/2014
 
     HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
-  BEGIN
-    cargar(ivacodigo_activo, ivasubnumero, inuusecache);
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'validaLlaveDuplicada'; 
+    BEGIN
+    
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO); 
+            
+        cargar(ivacodigo_activo, ivasubnumero, isbSociedad, inuusecache);
 
-  EXCEPTION
-    WHEN no_data_found THEN
-      ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-      RETURN;
-  END;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN); 
+        
+    EXCEPTION
+        WHEN no_data_found THEN
+            ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
+    END validaLlaveDuplicada;
 
-  PROCEDURE consultarRegistro(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
+    PROCEDURE consultarRegistro(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                               ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                              isbSociedad      IN ldci_activoencurso.sociedad%TYPE,                                
                               orcrecord        OUT NOCOPY styldc_activoencurso,
                               inuusecache      IN NUMBER DEFAULT 0) IS
     /********************************************************************************
@@ -526,20 +524,27 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     FECHA:      05/03/2014
 
     HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
-  BEGIN
-    cargar(ivacodigo_activo, ivasubnumero, inuusecache);
-    orcrecord := rcdata;
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'consultarRegistro';     
+    BEGIN
+    
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO); 
+            
+        cargar(ivacodigo_activo, ivasubnumero, isbSociedad, inuusecache);
+        orcrecord := rcdata;
 
-  EXCEPTION
-    WHEN no_data_found THEN
-      ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-  END;
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN); 
+        
+    EXCEPTION
+        WHEN no_data_found THEN
+            ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
+    END consultarRegistro;
 
-  FUNCTION frcConsultaRregistro(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
+    FUNCTION frcConsultaRregistro(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
                                 ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                                isbSociedad      IN ldci_activoencurso.sociedad%TYPE,                                 
                                 inuusecache      IN NUMBER DEFAULT 0)
     /********************************************************************************
     PROPIEDAD INTELECTUAL DE SURTIGAS.
@@ -557,19 +562,20 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     FECHA:      05/03/2014
 
     HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
-   RETURN styldc_activoencurso IS
-  BEGIN
-    cargar(ivacodigo_activo, ivasubnumero, inuusecache);
-    RETURN(rcdata);
-
-  EXCEPTION
-    WHEN no_data_found THEN
-      ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-
-  END;
+    RETURN styldc_activoencurso IS
+        csbMetodo        CONSTANT VARCHAR2(70) := csbSP_NAME || 'frcConsultaRregistro';       
+    BEGIN
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);     
+        cargar(ivacodigo_activo, ivasubnumero, isbSociedad, inuusecache);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);         
+        RETURN(rcdata);
+    EXCEPTION
+        WHEN no_data_found THEN
+            ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
+    END frcConsultaRregistro;
 
   PROCEDURE insertaRegistro(ircldc_activoencurso IN ldci_activoencurso%ROWTYPE) IS
     /********************************************************************************
@@ -609,10 +615,12 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
   EXCEPTION
     WHEN dup_val_on_index THEN
       ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-  END;
+  END insertaRegistro;
 
   PROCEDURE borraRegistro(ivacodigo_activo IN ldci_activoencurso.codigo_activo%TYPE,
-                          ivasubnumero     IN ldci_activoencurso.subnumero%TYPE) IS
+                          ivasubnumero     IN ldci_activoencurso.subnumero%TYPE,
+                          isbSociedad      IN ldci_activoencurso.sociedad%TYPE
+                          ) IS
     /********************************************************************************
     PROPIEDAD INTELECTUAL DE SURTIGAS.
     PROCEDURE:   borraRegistro
@@ -627,18 +635,19 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     FECHA:      05/03/2014
 
     HISTORIA DE MODIFICACIONES
-    FECHA         AUTOR    MODIFICACION
-
+    FECHA       AUTOR   CASO        MODIFICACION
+    10/06/2025  jpinedc OSF-4558    Se agrega argumento de entrada isbSociedad
     ********************************************************************************/
   BEGIN
     DELETE FROM ldci_activoencurso
      WHERE codigo_activo = ivacodigo_activo
-       AND subnumero = ivasubnumero;
+       AND subnumero = ivasubnumero
+       AND sociedad = isbSociedad;
 
   EXCEPTION
     WHEN no_data_found THEN
       ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tipo_trab '||sqlerrm||' '||DBMS_UTILITY.format_error_backtrace;
-   END;
+   END borraRegistro;
 
   PROCEDURE borraRowid(irirowid ROWID) IS
     /********************************************************************************
@@ -708,20 +717,14 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKGACTIVOENCURSO IS
     -- Se valida si el codigo de activo en curso pasado
     -- por parametro de entrada existe
     -->>
-    IF (ldci_pkgActivoEnCurso.fboExiste(ivacodigo_activo => codActivo, ivasubnumero => codSubnum))THEN
-
-       --<<
-       -- Se actualiza la sociedad
-       -->>
-       ldci_pkgActivoEnCurso.ActSociedad(ivacodigo_activo => codActivo,
-                                        ivasubnumero     => codSubnum,
-                                        ivasociedad      => sociedad);
+    IF (ldci_pkgActivoEnCurso.fboExiste(ivacodigo_activo => codActivo, ivasubnumero => codSubnum, isbSociedad => sociedad))THEN
 
        --<<
        -- Se actualiza el texto Breve
        -->>
        ldci_pkgActivoEnCurso.ActTexto_Breve(ivacodigo_activo => codActivo,
                                            ivasubnumero     => codSubnum,
+                                           isbSociedad => sociedad,
                                            ivatexto_breve   => descripci);
 
     ELSE
@@ -754,6 +757,7 @@ ldci_pkInterfazSAP.vaMensError :=  '[fnuGetTipoTrab] - No se pudo obtener el tip
 
 END LDCI_PKGACTIVOENCURSO;
 /
+
 PROMPT Otorgando permisos de ejecucion a LDCI_PKGACTIVOENCURSO
 BEGIN
   pkg_utilidades.prAplicarPermisos('LDCI_PKGACTIVOENCURSO','ADM_PERSON');
@@ -763,5 +767,4 @@ END;
 GRANT EXECUTE on ADM_PERSON.LDCI_PKGACTIVOENCURSO to INTEGRACIONES;
 GRANT EXECUTE on ADM_PERSON.LDCI_PKGACTIVOENCURSO to INTEGRADESA;
 /
-
 

@@ -11,6 +11,7 @@ create or replace PACKAGE ldc_pkgprocefactspoolfac IS
     Historia de Modificaciones
         DD-MM-YYYY      <Autor>.                Modificacion
         -----------     -------------------     ------------------------------------
+        03/02/2025		LJLB				OSF-3707: se agrega logica de unidades por concepto
         13/12/2023      felipe.valencia         OSF-1939: se modifca para agregar función
                                                 fsb_valida_imprime_factura y se modfican estandares tecnicos
         26-07-2023		jpinedc (MVM) 	        OSF-1462: Se modifica el servicio RfConcepParcial
@@ -31,6 +32,8 @@ glCupon_Cupon_id        ld_cupon_causal.cuponume%TYPE := NULL;
 glCausal_Cupon_id       ld_cupon_causal.causal_id%TYPE := NULL;
 glPackage_type_Cupon_id NUMBER := 0;
 -----------------------------------------------------------------------------------------------------------------------------------------
+FUNCTION fsbVersion RETURN VARCHAR2;
+FUNCTION fsbVersion RETURN VARCHAR2;
 
 PROCEDURE rfdatoslecturas
 /**************************************************************************
@@ -285,7 +288,7 @@ FUNCTION fsbGetDescConcDife (inuservicio IN NUMBER, inudifeconc IN NUMBER, idtfe
   =========       =========           ====================
  ******************************************************************************************/
  PROCEDURE prcGetInfoAdicional( nuFactcodi        IN  NUMBER,
-                                orfcursorinfoadic OUT constants.tyRefCursor);
+                                orfcursorinfoadic OUT constants_per.tyRefCursor);
  /******************************************************************************************
   Propiedad intelectual de GDC (c).
 
@@ -317,10 +320,27 @@ create or replace PACKAGE BODY ldc_pkgprocefactspoolfac IS
 *******************************************************************************************************/
     csbNOMPKG            CONSTANT VARCHAR2(32)       := $$PLSQL_UNIT||'.';--constante nombre del paquete
     csbNivelTraza        CONSTANT NUMBER(2)          := pkg_traza.cnuNivelTrzDef;--Nivel de traza para este paquete.
-
+-- Identificador del ultimo caso que hizo cambios
+	csbVersion          CONSTANT VARCHAR2(15) := 'OSF-4454';
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-PROCEDURE RfDatosLecturas(
+  FUNCTION fsbVersion RETURN VARCHAR2 IS
+  /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fsbVersion
+    Descripcion     : Retona el identificador del ultimo caso que hizo cambios
+    Autor           : Luis Javier Lopez - Horbath
+    Fecha           : 19-05-2025
+
+    Modificaciones  :
+    Autor       Fecha       Caso       Descripcion
+    LJLB      19-05-2025   OSF-4454    Creacion
+  ***************************************************************************/
+  BEGIN
+    RETURN csbVersion;
+  END fsbVersion;
+
+ PROCEDURE RfDatosLecturas(
                           sbFactcodi  ge_boInstanceControl.stysbValue
                          ,sbfactpefa  ge_boInstanceControl.stysbValue
                          ,blNRegulado BOOLEAN
@@ -370,8 +390,8 @@ CURSOR cumedidor(inuservicio NUMBER) IS
 rfcumedidor cumedidor%ROWTYPE;
 sbconsumo       VARCHAR2(100);
 vnuCicloEsp     NUMBER;
-sbCicloespe     VARCHAR2(100) := dald_parameter.fsbgetvalue_chain('LDC_CICLVALI',NULL);
-sbObservacion   VARCHAR2(100) := dald_parameter.fsbgetvalue_chain('LDC_SPOOL_OBSERV',NULL);
+sbCicloespe     VARCHAR2(100) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_CICLVALI');
+sbObservacion   VARCHAR2(100) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_SPOOL_OBSERV');
 sbobsdesvsign   ld_parameter.parameter_id%TYPE;
 nuPerFactPrev   perifact.pefacodi%type;
 nuPerConsPrev   pericose.pecscons%type;
@@ -411,9 +431,9 @@ csbMetodo  CONSTANT VARCHAR2(100) := csbNOMPKG||'fsbgetConsumo';
     CURSOR cuCicloTelemedidos
     IS
     SELECT COUNT(*)
-    FROM (SELECT to_number(regexp_substr(dald_parameter.fsbGetValue_Chain('CICLO_TELEMEDIDOS_GDC'),'[^,]+', 1, LEVEL))  ciclo
+    FROM (SELECT to_number(regexp_substr(PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('CICLO_TELEMEDIDOS_GDC'),'[^,]+', 1, LEVEL))  ciclo
     FROM   dual
-    CONNECT BY regexp_substr(dald_parameter.fsbGetValue_Chain('CICLO_TELEMEDIDOS_GDC'), '[^,]+', 1, LEVEL) IS NOT NULL )
+    CONNECT BY regexp_substr(PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('CICLO_TELEMEDIDOS_GDC'), '[^,]+', 1, LEVEL) IS NOT NULL )
     WHERE ciclo =  pkg_bcproducto.fnuciclofacturacion(inuproducto);
 
 BEGIN
@@ -460,7 +480,7 @@ BEGIN
     pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
 
  nufactpefa    := to_number(sbfactpefa);
- sbobsdesvsign := dald_parameter.fsbGetValue_Chain('PARAM_OBS_DESV_SIGNIFI',NULL);
+ sbobsdesvsign := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('PARAM_OBS_DESV_SIGNIFI');
  BEGIN
   IF NOT blNRegulado THEN
    sbconsumo := fsbgetConsumo(sbfactpefa, nuSesunuse, nucicloc );
@@ -894,45 +914,73 @@ PROCEDURE RfDatosCodBarras(
   Fecha             Autor             Modificacion
   =========       =========           ====================
   11/11/2014      ggamarra             Creaci?n.
+  04/06/2025	  jsoto				  OSF-4272 Se modifica cursor
+									  Se cambia cursor por llamado a utilidad
+									  pkg_bcImpresionCodigoBarras.ftbDatosCodigoBarras para obtener los
+									  datos para el código de barras
+  04/06/2025	  jsoto				  OSF-4272 Se modifica cursor
+									  Se cambia cursor por llamado a utilidad
+									  pkg_bcImpresionCodigoBarras.ftbDatosCodigoBarras para obtener los
+									  datos para el código de barras
 *************************************************************************************/
-sbcodigoean ld_parameter.value_chain%TYPE;
 
     csbMetodo  CONSTANT VARCHAR2(100) := csbNOMPKG||'RfDatosCodBarras';--nombre del método
     sbError             VARCHAR2(4000);
     nuError             NUMBER;
+	dtFechaVencFactura	DATE;
+	tbCodigoBarras 		pkg_bcImpresionCodigoBarras.tytbDatosCodBarras;
+	sbCodEmpresa		empresa.codigo%TYPE;
+	nuIndice			NUMBER;
+	rcPeriodo			pkg_perifact.sbtRegPeriodofact;
+	sbFactPefa			perifact.pefacodi%TYPE;
+
+	dtFechaVencFactura	DATE;
+	tbCodigoBarras 		pkg_bcImpresionCodigoBarras.tytbDatosCodBarras;
+	sbCodEmpresa		empresa.codigo%TYPE;
+	nuIndice			NUMBER;
+	rcPeriodo			pkg_perifact.sbtRegPeriodofact;
+	sbFactPefa			perifact.pefacodi%TYPE;
+
 
 BEGIN
-    pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+ pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+ pkg_traza.trace('sbFactcodi: '||sbFactcodi);
 
- sbcodigoean := dald_parameter.fsbGetValue_Chain('COD_EAN_CODIGO_BARRAS');
- OPEN orfcursor FOR
-  SELECT codigo_1
-        ,codigo_2
-        ,codigo_3
-        ,codigo_4
-        ,CASE
-          WHEN codigo_3 IS NOT NULL THEN
-                '(415)' || codigo_1 || '(8020)' || codigo_2 || '(3900)' ||
-                 codigo_3 || '(96)' || codigo_4
-          ELSE
-           NULL
-          END codigo_barras
-    FROM (
-          SELECT sbcodigoean codigo_1
-                ,lpad(cuponume, 10, '0') codigo_2
-                ,lpad(round(cupovalo), 10, '0') codigo_3
-                ,to_char(add_months(cucofeve, 120), 'yyyymmdd') codigo_4
-            FROM factura, cuencobr, cupon
-           WHERE factcodi = sbFactcodi
-             AND cupodocu = factcodi
-             AND cuponume = pkbobillprintheaderrules.fsbgetcoupon()
-             AND factcodi = cucofact
-           UNION
-          SELECT NULL, ' ', NULL, ' ' FROM dual
-         )
-   WHERE rownum = 1;
+ sbFactPefa := pkg_factura.fnuobtfactpefa(TO_NUMBER(sbFactcodi));
 
-   pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+ rcPeriodo := pkg_perifact.frcObtInfoPeriodo(TO_NUMBER(sbFactPefa));
+
+ dtFechaVencFactura := add_months(rcPeriodo.pefafepa,120);
+
+ sbCodEmpresa 		:= pkg_boconsultaempresa.fsbObtEmpresaFactura(sbFactcodi);
+
+ tbCodigoBarras := pkg_bcImpresionCodigoBarras.ftbDatosCodigoBarras(pkbobillprintheaderrules.fsbgetcoupon(),dtFechaVencFactura,sbCodEmpresa);
+
+	nuIndice := tbCodigoBarras.FIRST;
+
+	IF nuIndice IS NOT NULL THEN
+
+		pkg_traza.trace('tbCodigoBarras(nuIndice).codigo_1 '||tbCodigoBarras(nuIndice).codigo_1);
+		pkg_traza.trace('tbCodigoBarras(nuIndice).codigo_2 '||tbCodigoBarras(nuIndice).codigo_2);
+		pkg_traza.trace('tbCodigoBarras(nuIndice).codigo_3 '||tbCodigoBarras(nuIndice).codigo_3);
+		pkg_traza.trace('tbCodigoBarras(nuIndice).codigo_4 '||tbCodigoBarras(nuIndice).codigo_4);
+		pkg_traza.trace('tbCodigoBarras(nuIndice).codigo_barras '||tbCodigoBarras(nuIndice).codigo_barras);
+
+		OPEN orfcursor FOR
+		SELECT 	tbCodigoBarras(nuIndice).codigo_1 codigo_1
+				,tbCodigoBarras(nuIndice).codigo_2 codigo_2
+				,tbCodigoBarras(nuIndice).codigo_3 codigo_3
+				,tbCodigoBarras(nuIndice).codigo_4 codigo_4
+				,tbCodigoBarras(nuIndice).codigo_barras codigo_barras
+		FROM dual;
+
+	END IF;
+
+
+ pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+
+ pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+
 EXCEPTION
     WHEN pkg_Error.Controlled_Error  THEN
         pkg_Error.getError(nuError, sbError);
@@ -977,8 +1025,8 @@ nuConcepto  ld_parameter.numeric_value%TYPE;
 BEGIN
     pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
  -- Obtiene el identificador del contrato instanciado
- sbTipoMet  := dald_parameter.fsbGetValue_Chain('LDC_MET_CALCTOTAL',0);
- nuConcepto := dald_parameter.fnuGetNumeric_Value('LDC_CONCTATT',0);
+ sbTipoMet  := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_MET_CALCTOTAL');
+ nuConcepto := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('LDC_CONCTATT');
  -- Si el valor es T, indica que se deben tener en cuenta todos los conceptos
  IF sbTipoMet = 'T' THEN
   OPEN orfcursor FOR
@@ -1089,6 +1137,14 @@ END rfdatoscuenxcobrtt;
     Historia de Modificaciones
         Fecha           Autor               Modificacion
         =========       =========           ====================
+		20/05/2025      LJLB                OSF-4456: se agrega logica para que se muestre el saldo de diferido y cuotas a usuarios
+                                            no regulados
+        15/05/2025      LJLB                OSF-4454: se agrega logica para que a los diferidos no se le muestre el concepto
+        03/02/2025		LJLB				OSF-3707: se agrega logica de unidades por concepto
+		20/05/2025      LJLB                OSF-4456: se agrega logica para que se muestre el saldo de diferido y cuotas a usuarios
+                                            no regulados
+        15/05/2025      LJLB                OSF-4454: se agrega logica para que a los diferidos no se le muestre el concepto
+        03/02/2025		LJLB				OSF-3707: se agrega logica de unidades por concepto
 		01/10/2024      LJLB                OSF-3398: se modifica para quitar saldo a favor del subtotal y quitar concepto de
 											716 de las cuotas
 		23/05/2024      LJLB                OSF-2738 se coloca nuevo parametros con los conceptos de IVA
@@ -1214,9 +1270,9 @@ PROCEDURE RfConcepParcial(
  nuPorcSubs            NUMBER;
  sbIdentifica          ld_policy.identification_id%TYPE;
  nuDoso                cargos.cargdoso%TYPE;
- nuConcSubAdi          NUMBER := dald_parameter.fnugetnumeric_value('LDC_CONSUBADI', NULL);
- nuConcSubAdiTT        NUMBER := dald_parameter.fnugetnumeric_value('LDC_CONSUBADITT', NULL);
- nuConcSubTT           NUMBER := dald_parameter.fnugetnumeric_value('LDC_CONSUBTRAS', NULL);
+ nuConcSubAdi          NUMBER := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('LDC_CONSUBADI');
+ nuConcSubAdiTT        NUMBER := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('LDC_CONSUBADITT');
+ nuConcSubTT           NUMBER := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('LDC_CONSUBTRAS');
  sbdoso196             cargos.cargdoso%type := null;
  nucodo196             cargos.cargcodo%type := null;
  sbAplicasoosf65       VARCHAR2(1);
@@ -1224,25 +1280,25 @@ PROCEDURE RfConcepParcial(
  nmdfinte              diferido.difeinte%TYPE;
  nmvalsubcreg048       ldc_deprtatt.dpttvano%TYPE;
  nmvalconsucreg048     ldc_deprtatt.dpttvano%TYPE;
- nuConcInte            NUMBER        := dald_parameter.fnugetnumeric_value('LDC_CONCINTTT', NULL);
- sbprograma            VARCHAR2(40)  := dald_parameter.fsbgetvalue_chain('LDC_PROGAGRUP',NULL);
- sbTextagrupador       VARCHAR2(400) := dald_parameter.fsbgetvalue_chain('LDC_TEXTAGRUP',NULL);
+ nuConcInte            NUMBER        := PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('LDC_CONCINTTT');
+ sbprograma            VARCHAR2(40)  := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_PROGAGRUP');
+ sbTextagrupador       VARCHAR2(400) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_TEXTAGRUP');
  sbaplicaentrega635    VARCHAR2(1)   := 'N';
  nuFinanciacion        VARCHAR2(400);
- sbPlanCon             VARCHAR2(4000) := ','||dald_parameter.fsbgetvalue_chain('LDC_PLANCOCF', NULL)||',';
- sbPlanOtr             VARCHAR2(4000) := ','||dald_parameter.fsbgetvalue_chain('LDC_PLANOTCO', NULL)||',';
- sbDescCon             VARCHAR2(4000) := dald_parameter.fsbgetvalue_chaiN('LDC_DESCPLCO', NULL);
- sbDescOtrco           VARCHAR2(4000) := dald_parameter.fsbgetvalue_chain('LDC_DESCPLOC', NULL);
+ sbPlanCon             VARCHAR2(4000) := ','||PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_PLANCOCF')||',';
+ sbPlanOtr             VARCHAR2(4000) := ','||PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_PLANOTCO')||',';
+ sbDescCon             VARCHAR2(4000) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_DESCPLCO');
+ sbDescOtrco           VARCHAR2(4000) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_DESCPLOC');
  sbconcdefa            concepto.concdefa%type;
  nuAplicaEntrega200342 NUMBER;
- sbcod_con_iva_gdc     ld_parameter.value_chain%type := dald_parameter.fsbgetvalue_chain('COD_CON_IVA_GDC',NULL);
+ sbcod_con_iva_gdc     ld_parameter.value_chain%type := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('COD_CON_IVA_GDC');
  sbindice              VARCHAR2(50);
  nucargconc            cargos.cargconc%TYPE := NULL;
  sbcargdoso            cargos.cargdoso%TYPE := NULL;
  nucargvalo            cargos.cargvalo%TYPE := NULL;
- sbCodiFactProt        VARCHAR2(4000) := dald_parameter.fsbgetvalue_chain('LDC_CODCONCSEGUPROT', NULL); -- se lamacena codigo de factura protegida
+ sbCodiFactProt        VARCHAR2(4000) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_CODCONCSEGUPROT'); -- se lamacena codigo de factura protegida
  nuExiste              NUMBER;
- sbDescriConBri        VARCHAR2(150) := dald_parameter.fsbgetvalue_chain('LDC_DESCCONCCREDBRIL', NULL);
+ sbDescriConBri        VARCHAR2(150) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_DESCCONCCREDBRIL');
  nuSaldoDife           NUMBER;
  nuIndeBri             NUMBER := 1;
  csbMetodo  CONSTANT VARCHAR2(100) := csbNOMPKG||'RfConcepParcial';--nombre del método
@@ -1457,6 +1513,17 @@ PROCEDURE RfConcepParcial(
  TYPE tytbcuDiferidos IS TABLE OF stytbcuDiferidos INDEX BY BINARY_INTEGER;
  tdiferidos tytbcuDiferidos;
 
+   -- Tipo de dato de tabla PL donde el indice es el concepto y el valor es la unidad de medida
+  tbUnidadMedConc pkg_conc_unid_medida_dian.tytbUnidadMedConc;
+  nuCantidad NUMBER;
+  sbUnidMed        VARCHAR2(20);
+  nuValorUnitario  NUMBER(25,2);
+
+  CURSOR cuGetSaldoDif(inuDiferido IN NUMBER) IS
+  SELECT decode(difesign, 'DB', difesape, -1 * difesape)
+                         ,(difenucu - difecupa)
+  FROM diferido
+  WHERE difecodi =inuDiferido;
 
 BEGIN
     pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
@@ -1476,6 +1543,13 @@ BEGIN
     sbAplicasoosf65       := 'S';
     tbCargos              := tbCargosNull;
     tbCargosOrdered       := tbFinalNull;
+
+	--se carga tabla de unidades de medida
+	tbUnidadMedConc.DELETE;
+
+    tbUnidadMedConc := pkg_conc_unid_medida_dian.ftblCargarUnidadxConcepto;
+
+
     OPEN cuCargos;
     FETCH cuCargos BULK COLLECT INTO tbCargos;
     CLOSE cuCargos;
@@ -1778,13 +1852,27 @@ BEGIN
                     IF nuAplica =  0 AND tbCargos(i).cargsign NOT IN ('PA', 'AS') AND nuAplicaTiPro = 0 THEN
                         IF (NOT gtbIvaConc.exists(tbCargos(i).cargconc)) THEN
                               nuValorIva := fnuGetValorIva(tbCargos(i).cargconc, tbCargos(i).cargcuco);
-                               gtbIvaConc(tbCargos(i).cargconc) := tbCargos(i).cargconc;
+                              gtbIvaConc(tbCargos(i).cargconc) := tbCargos(i).cargconc;
                         END IF;
+
+						nuCantidad :=  1;
+						sbUnidMed  := 'und';
+						nuValorUnitario := tbCargos(i).cargvalo;
+
+						 -- Valida si existe la unidad de medida del concepto en la tabla conc_unid_medida_dian
+						IF tbUnidadMedConc.EXISTS(tbCargos(i).cargconc) then
+						  sbUnidMed := lower(tbUnidadMedConc(tbCargos(i).cargconc).sbUnidadMed);
+						  IF tbUnidadMedConc(tbCargos(i).cargconc).sbRequiereTarifa = 'S' THEN
+						    nuValorUnitario := ROUND( CASE WHEN nvl(tbCargos(i).cargunid,0) = 0 THEN 0 ELSE tbCargos(i).cargvalo / tbCargos(i).cargunid END, 0) ;
+							nuCantidad := NVL(tbCargos(i).cargunid, 1);
+						  END IF;
+						END IF;
+
                         tbCargosOrdered(inx).concepto_id := tbCargos(i).cargconc;
-                        tbCargosOrdered(inx).unidad_items := 'und';
-                        tbCargosOrdered(inx).cantidad := 1;
+                        tbCargosOrdered(inx).unidad_items := sbUnidMed;
+                        tbCargosOrdered(inx).cantidad := nuCantidad;
                         tbCargosOrdered(inx).valor_iva := nuValorIva;
-                        tbCargosOrdered(inx).valor_unitario := tbCargos(i).cargvalo;
+                        tbCargosOrdered(inx).valor_unitario := nuValorUnitario;
                         tbCargosOrdered(-1).valor_iva := tbCargosOrdered(-1).valor_iva + nuValorIva;
 
 
@@ -1903,6 +1991,18 @@ BEGIN
                                blConcGravado :=  fnuGetValorIva(nvl(nucargconc, tbCargos(i).cargconc), tbCargos(i).cargcuco) > 0;
                             END IF;
 
+                            nuCantidad :=  1;
+                            sbUnidMed  := 'und';
+                            nuValorUnitario := nuInteres;
+                             -- Valida si existe la unidad de medida del concepto en la tabla conc_unid_medida_dian
+                            IF tbUnidadMedConc.EXISTS(tbCargos(i).cargconc) then
+                              sbUnidMed := lower(tbUnidadMedConc(tbCargos(i).cargconc).sbUnidadMed);
+                              IF tbUnidadMedConc(tbCargos(i).cargconc).sbRequiereTarifa = 'S' THEN
+                                nuValorUnitario := ROUND( CASE WHEN nvl(tbCargos(i).cargunid,0) = 0 THEN 0 ELSE nuInteres / tbCargos(i).cargunid END, 0) ;
+                                nuCantidad := NVL(tbCargos(i).cargunid, 1);
+                              END IF;
+                            END IF;
+
                             IF nuValorIva > 0 OR blConcGravado THEN
                                inx := inx  + 1;
                                tbCargosOrdered(inx).etiqueta := '32';
@@ -1913,20 +2013,20 @@ BEGIN
                                tbCargosOrdered(inx).saldo_ant := NULL;
                                tbCargosOrdered(inx).capital := NULL;
                                tbCargosOrdered(inx).concepto_id := nvl(nucargconc, tbCargos(i).cargconc);
-                               tbCargosOrdered(inx).unidad_items := 'und';
-                               tbCargosOrdered(inx).cantidad := 1;
+                               tbCargosOrdered(inx).unidad_items := sbUnidMed;
+                               tbCargosOrdered(inx).cantidad := nuCantidad;
                                tbCargosOrdered(inx).valor_iva := nuValorIva;
-                               tbCargosOrdered(inx).valor_unitario := nuInteres;
+                               tbCargosOrdered(inx).valor_unitario := nuValorUnitario;
                                tbCargosOrdered(inx).interes := nuInteres;
                                tbCargosOrdered(-1).valor_iva := tbCargosOrdered(-1).valor_iva + nuValorIva;
                                inx := inx + 1;
                                tbCargosOrdered(inx).servicio := tbCargos(i).servcodi;
                             ELSE
                                tbCargosOrdered(inx).concepto_id := nvl(nucargconc, tbCargos(i).cargconc);
-                               tbCargosOrdered(inx).unidad_items := 'und';
-                               tbCargosOrdered(inx).cantidad := 1;
+                               tbCargosOrdered(inx).unidad_items := sbUnidMed;
+                               tbCargosOrdered(inx).cantidad := nuCantidad;
                                tbCargosOrdered(inx).valor_iva := nuValorIva;
-                               tbCargosOrdered(inx).valor_unitario := nuInteres;
+                               tbCargosOrdered(inx).valor_unitario := nuValorUnitario;
                                tbCargosOrdered(inx).interes := nuInteres;
                             END IF;
 
@@ -1990,6 +2090,18 @@ BEGIN
                                        blConcGravado :=  fnuGetValorIva(nvl(nucargconc, tbCargos(i).cargconc), tbCargos(i).cargcuco) > 0;
                                     END IF;
 
+                                    nuCantidad :=  1;
+                                    sbUnidMed  := 'und';
+                                    nuValorUnitario := tbCargos(i).cargvalo;
+                                     -- Valida si existe la unidad de medida del concepto en la tabla conc_unid_medida_dian
+                                    IF tbUnidadMedConc.EXISTS(tbCargos(i).cargconc) then
+                                      sbUnidMed := lower(tbUnidadMedConc(tbCargos(i).cargconc).sbUnidadMed);
+                                      IF tbUnidadMedConc(tbCargos(i).cargconc).sbRequiereTarifa = 'S' THEN
+                                        nuValorUnitario := ROUND( CASE WHEN nvl(tbCargos(i).cargunid,0) = 0 THEN 0 ELSE tbCargos(i).cargvalo / tbCargos(i).cargunid END, 0) ;
+                                        nuCantidad := NVL(tbCargos(i).cargunid, 1);
+                                      END IF;
+                                    END IF;
+
                                     IF nuValorIva > 0 OR  blConcGravado THEN
                                        inx := inx  + 1;
                                        tbCargosOrdered(inx).etiqueta := '32';
@@ -2000,10 +2112,10 @@ BEGIN
                                        tbCargosOrdered(inx).saldo_ant := NULL;
                                        tbCargosOrdered(inx).capital := NULL;
                                        tbCargosOrdered(inx).concepto_id := tbCargos(i).cargconc;
-                                       tbCargosOrdered(inx).unidad_items := 'und';
-                                       tbCargosOrdered(inx).cantidad := 1;
+                                       tbCargosOrdered(inx).unidad_items := sbUnidMed;
+                                       tbCargosOrdered(inx).cantidad := nuCantidad;
                                        tbCargosOrdered(inx).valor_iva := nuValorIva;
-                                       tbCargosOrdered(inx).valor_unitario := tbCargos(i).cargvalo;
+                                       tbCargosOrdered(inx).valor_unitario := nuValorUnitario;
                                        tbCargosOrdered(inx).interes := tbCargos(i).cargvalo;
                                        tbCargosOrdered(-1).valor_iva := tbCargosOrdered(-1).valor_iva + nuValorIva;
                                        inx := inx + 1;
@@ -2074,11 +2186,23 @@ BEGIN
                                 tbCargosOrdered(inx).saldo_dif := nuDifesape;
                                 tbCargosOrdered(inx).cuotas := nuDifecuotas;
                                 IF nuAplicaTiPro = 0 THEN
+                                    nuCantidad :=  1;
+                                    sbUnidMed  := 'und';
+                                    nuValorUnitario := tbCargos(i).cargvalo;
+                                     -- Valida si existe la unidad de medida del concepto en la tabla conc_unid_medida_dian
+                                    IF tbUnidadMedConc.EXISTS(tbCargos(i).cargconc) then
+                                      sbUnidMed := lower(tbUnidadMedConc(tbCargos(i).cargconc).sbUnidadMed);
+                                      IF tbUnidadMedConc(tbCargos(i).cargconc).sbRequiereTarifa = 'S' THEN
+                                        nuValorUnitario := ROUND( CASE WHEN nvl(tbCargos(i).cargunid,0) = 0 THEN 0 ELSE tbCargos(i).cargvalo / tbCargos(i).cargunid END, 0) ;
+                                        nuCantidad := NVL(tbCargos(i).cargunid, 1);
+                                      END IF;
+                                    END IF;
+
                                     tbCargosOrdered(inx).concepto_id := tbCargos(i).cargconc;
-                                    tbCargosOrdered(inx).unidad_items := 'und';
-                                    tbCargosOrdered(inx).cantidad := 1;
+                                    tbCargosOrdered(inx).unidad_items := sbUnidMed;
+                                    tbCargosOrdered(inx).cantidad := nuCantidad;
                                     tbCargosOrdered(inx).valor_iva := nuValorIva;
-                                    tbCargosOrdered(inx).valor_unitario := tbCargos(i).cargvalo;
+                                    tbCargosOrdered(inx).valor_unitario := nuValorUnitario;
                                 END IF;
 
                                 inx := inx + 1;
@@ -2185,7 +2309,8 @@ BEGIN
                                   pkg_traza.trace('tdiferidos (k).difecodi[' || tdiferidos(k).difecodi || '] NO EXISTE ', pkg_traza.cnuNivelTrzDef);
                                   tbCargosOrdered(inx).etiqueta := '32';
                                   pkg_traza.trace('tdiferidos (k).difecodi[' || tdiferidos(k).difecodi || '] NO EXISTE ', pkg_traza.cnuNivelTrzDef);
-                                  tbCargosOrdered(inx).concepto_id := tdiferidos(k).difeconc;
+                                  tbCargosOrdered(inx).concepto_id := null;
+                                  tbCargosOrdered(inx).concepto_id := null;
                                   tbCargosOrdered(inx).conceptos := tdiferidos(k).concdefa;
                                   pkg_traza.trace('tdiferidos (k).difecodi[' || tdiferidos(k).difecodi || '] NO EXISTE ', pkg_traza.cnuNivelTrzDef);
                                   tbCargosOrdered(inx).signo := NULL;
@@ -2279,7 +2404,8 @@ BEGIN
                                   pkg_traza.trace('tdiferidos (k).difecodi[' || tdiferidos(k).difecodi || '] NO EXISTE ', pkg_traza.cnuNivelTrzDef);
                                   tbCargosOrdered(inx).etiqueta := '32';
                                   pkg_traza.trace('tdiferidos (k).difecodi[' || tdiferidos(k).difecodi || '] NO EXISTE ', pkg_traza.cnuNivelTrzDef);
-                                  tbCargosOrdered(inx).concepto_id := tdiferidos(k).difeconc;
+                                  tbCargosOrdered(inx).concepto_id := null;
+                                  tbCargosOrdered(inx).concepto_id := null;
                                   tbCargosOrdered(inx).conceptos := tdiferidos(k).concdefa;
                                   pkg_traza.trace('tdiferidos (k).difecodi[' || tdiferidos(k).difecodi || '] NO EXISTE ', pkg_traza.cnuNivelTrzDef);
                                   tbCargosOrdered(inx).signo := NULL;
@@ -2384,9 +2510,12 @@ BEGIN
                 nmconta := 0;
                 SELECT COUNT(1) INTO nmconta
                 FROM (
-                   SELECT to_number(column_value) tipo_producto
-                     FROM TABLE(ldc_boutilities.splitstrings(dald_parameter.fsbgetvalue_chain('INTFINANPRODSPOOL',NULL),','))
-                )
+                    SELECT to_number(regexp_substr(PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('INTFINANPRODSPOOL'),
+                                                 '[^,]+',
+                                                 1,
+                                                 LEVEL)) AS tipo_producto
+                    FROM dual
+                  CONNECT BY regexp_substr(PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('INTFINANPRODSPOOL'), '[^,]+', 1, LEVEL) IS NOT NULL)
                 WHERE tipo_producto = tbCargosOrdered(i).servicio;
                 IF tbcargosordered(i).cuotas > 0 AND tbcargosordered(i).interes > 0 AND nmconta >= 1 THEN
                     sbmensa := null;
@@ -2502,7 +2631,10 @@ BEGIN
                 tbCargosOrdered(-1).interes := 0;
                 tbCargosOrdered(-1).total := 0;
 				tbCargosOrdered(-1).valor_iva :=  0;
-                tbCargosOrdered(-1).saldo_dif := pkbobillprintheaderrules.fnugettotalpreviousbalance;
+                tbCargosOrdered(-1).saldo_dif := 0;
+                tbCargosOrdered(inx).saldo_ant := pkbobillprintheaderrules.fnugettotalpreviousbalance;
+                tbCargosOrdered(-1).saldo_dif := 0;
+                tbCargosOrdered(inx).saldo_ant := pkbobillprintheaderrules.fnugettotalpreviousbalance;
             END IF;
             -- Crea los detalles
             IF tbCargos(i).cargsign IN ('CR', 'AS', 'PA') THEN
@@ -2546,10 +2678,19 @@ BEGIN
             tbCargosOrdered(inx).capital := tbCargos(i).cargvalo;
             tbCargosOrdered(inx).interes := NULL;
             tbCargosOrdered(inx).total := NULL;
-            tbCargosOrdered(inx).saldo_dif := NULL;
-            IF tbCargos(i).cargconc IN (nuConcSuministro) THEN
-                tbCargosOrdered(inx).CUOTAS := tbCargos(i).cargunid;
+
+            IF  substr(tbCargos(i).cargdoso, 0, 3)  = 'DF-' THEN
+                IF cuGetSaldoDif%ISOPEN THEN CLOSE cuGetSaldoDif; END IF;
+
+                OPEN cuGetSaldoDif(substr(tbCargos(i).cargdoso,4,length(tbCargos(i).cargdoso) - 3));
+                FETCH cuGetSaldoDif INTO nuDifesape,nuDifecuotas;
+                CLOSE cuGetSaldoDif;
+
+               tbCargosOrdered(inx).CUOTAS := nuDifecuotas;
+               tbCargosOrdered(inx).saldo_dif := nuDifesape;
+               tbCargosOrdered(-1).saldo_dif := tbCargosOrdered(-1).saldo_dif + NVL(nuDifesape,0);
             END IF;
+
             inx := inx + 1;
 
             -- Acumulaci?n de totales
@@ -2617,11 +2758,11 @@ BEGIN
                                     ,tbcargosordered(i).total
                                     ,tbcargosordered(i).interes
                                     ,tbcargosordered(i).saldo_dif
-                                    ,NULL
-                                    ,NULL
-                                    ,NULL
+                                    ,tbcargosordered(i).saldo_ant
                                     ,NULL
                                     ,tbcargosordered(i).cuotas
+                                    ,null
+                                    ,null
                                     ,tbcargosordered(i).car_doso
                                     ,tbcargosordered(i).car_caca
 									,tbcargosordered(i).unidad_items
@@ -2668,6 +2809,10 @@ PROCEDURE RfDatosConceptos(
 
     Fecha           Autor               Modificacion
     =========       =========           ====================
+     21-05-2025      LJLB                OSF-4456: se ajusta consulta de no regulado para agregar nuevos campos solicitados de cuotas y saldo
+                                    diferido
+    20-11-2024      LJLB                OSF-3617: se quita de la agrupacion de cargos el campo doc_soporte, para el cursor de
+                                        usuarios no regulados.
     20-08-2016      Sandra Mu?oz        Se agrupan los cargos del servicio 7055
     18/05/2014      Agordillo           Modificacion Cambio.7864
                                         * Se modifica para que cuando se consulta los no Regulados, el campo CUOTAS se obtenga
@@ -2870,7 +3015,7 @@ SELECT *
                      ,to_char(SUM(amortizacion), 'FM999,999,999,990') interes
                      ,to_char(SUM(presente_mes), 'FM999,999,999,990') total
                      ,to_char(SUM(saldo_diferido), 'FM999,999,999,990') saldo_dif
-                     ,ltrim(rtrim(to_char(MAX(producto),'FM999,999,999,990'))) cuotas
+                     ,ltrim(rtrim(to_char(MAX(cuotas_pendientes),'FM999,999,999,990'))) cuotas
                      ,unidad_items
                      ,cantidad
                      ,sum(valor_iva) valor_iva
@@ -2878,7 +3023,27 @@ SELECT *
                      ,MAX(orden_concepto) orden
                  FROM ldc_conc_factura_temp
                 WHERE conc_signo NOT IN ('SA', 'PA')
-                GROUP BY id, concepto, doc_soporte, cau_cargo, unidad_items, cantidad
+                 and not exists (select 1 from concbali, concepto where concbali.COBLCOBA =  concepto_id  and concepto.conccodi = COBLCONC and CONCTICL = 4)
+                GROUP BY id, concepto,  cau_cargo, cuotas_pendientes, unidad_items, cantidad
+                union all
+                SELECT id etiqueta
+                     ,MAX(nvl(concepto_id, decode(id, 31, -1,33, -2, -3 )))  concepto_id
+                     ,concepto desc_concep
+                     ,NULL saldo_ant
+                     ,to_char(SUM(valor_mes), 'FM999,999,999,990') capital
+                     ,to_char(SUM(amortizacion), 'FM999,999,999,990') interes
+                     ,to_char(SUM(presente_mes), 'FM999,999,999,990') total
+                     ,to_char(SUM(saldo_diferido), 'FM999,999,999,990') saldo_dif
+                     ,ltrim(rtrim(to_char(MAX(cuotas_pendientes),'FM999,999,999,990'))) cuotas
+                     ,unidad_items
+                     ,cantidad
+                     ,sum(valor_iva) valor_iva
+                     ,SUM(valor_unitario) valor_unitario
+                     ,MAX(orden_concepto) orden
+                 FROM ldc_conc_factura_temp
+                WHERE conc_signo NOT IN ('SA', 'PA')
+                 and  exists (select 1 from concbali, concepto where concbali.COBLCOBA =  concepto_id  and concepto.conccodi = COBLCONC and CONCTICL = 4)
+                GROUP BY id, concepto,  cau_cargo,  unidad_items, cantidad
                 ORDER BY orden
            ))
      union all
@@ -3052,8 +3217,8 @@ END rfLastPayment;
     nuconcepto  diferido.difeconc%TYPE := inudifeconc;
     dtFechaini  diferido.difefein%TYPE := idtfechaini;
     sbdescConcepto   VArCHAR2(4000);
-    sbListConcepNoagr  VARCHAR2(4000) := DALD_PARAMETER.FSBGETVALUE_CHAIN('LDC_LISTCONCNAGRUP', NULL);
-    sbTipoProd  VARCHAR2(4000) := DALD_PARAMETER.FSBGETVALUE_CHAIN('LDC_TIPOPRODNAGRP', NULL);
+    sbListConcepNoagr  VARCHAR2(4000) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_LISTCONCNAGRUP');
+    sbTipoProd  VARCHAR2(4000) := PKG_BCLD_PARAMETER.FSBOBTIENEVALORCADENA('LDC_TIPOPRODNAGRP');
 
     csbMetodo  CONSTANT VARCHAR2(100) := csbNOMPKG||'fsbGetDescConcDife';
     sbError             VARCHAR2(4000);
@@ -3234,7 +3399,7 @@ EXCEPTION
  END fnuGetCaliConsumo;
 
  PROCEDURE prcGetInfoAdicional( nuFactcodi        IN  NUMBER,
-                                orfcursorinfoadic OUT constants.tyRefCursor) IS
+                                orfcursorinfoadic OUT CONSTANTS_PER.TYREFCURSOR) IS
  /******************************************************************************************
   Propiedad intelectual de GDC (c).
 

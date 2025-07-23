@@ -1,0 +1,12 @@
+Prompt Creando sinonimos privados para OPEN.GE_BASE_ADMINISTRA
+BEGIN
+    -- OSF-4010
+    pkg_Utilidades.prCrearSinonimos(upper('GE_BASE_ADMINISTRA'), upper('OPEN'));
+END;
+/
+Prompt Creando sinonimo privado en MULTIEMPRESA para OPEN.GE_BASE_ADMINISTRA
+BEGIN
+    -- OSF-4010
+    EXECUTE IMMEDIATE ( 'CREATE OR REPLACE SYNONYM MULTIEMPRESA.GE_BASE_ADMINISTRA FOR OPEN.GE_BASE_ADMINISTRA' );
+END;
+/

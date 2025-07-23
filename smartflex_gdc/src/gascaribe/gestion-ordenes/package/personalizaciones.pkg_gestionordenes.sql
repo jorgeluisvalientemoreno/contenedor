@@ -15,6 +15,7 @@ create or replace PACKAGE personalizaciones.pkg_gestionordenes IS
 		cgonzalez	25/08/2023	OSF-1473 Ajuste a servicio prGetRegiLega
         jsoto       28/09/2023  OSF-1676 Agregar constantes para estados de orden
         jsoto       09/10/2023  OSF-1704 Agregar constantes tipo causal Exito y Fallo
+        pacosta     28/03/2025  OSF-4151 Se agregan constantes csbEstadoActRegistrado y csbEstadoActAsignado 
     ***************************************************************************/
 
    /*cantidad de campos cadena de legalizacion*/
@@ -62,7 +63,10 @@ create or replace PACKAGE personalizaciones.pkg_gestionordenes IS
     CNUCAUSALEXITO              CONSTANT NUMBER(4) := 1;
     
     CNUCAUSALFALLO              CONSTANT NUMBER(4) := 2;
-
+    
+    csbEstadoActRegistrado      CONSTANT VARCHAR2(1) := 'R';
+    
+    csbEstadoActAsignado        CONSTANT VARCHAR2(1) := 'A';
 
    CURSOR cuGetObjetoAccion(inuTipoTrab     IN  OBJETOS_ACCION.TIPOTRABAJO%type,
                             inuactividad    IN  OBJETOS_ACCION.IDACTIVIDAD%type,

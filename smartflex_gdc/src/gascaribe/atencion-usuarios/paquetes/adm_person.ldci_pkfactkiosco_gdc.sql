@@ -14,17 +14,18 @@ AS
 
     Historia de Modificaciones
 
-    Autor        Fecha       Descripcion.
-    hectorfdv    05-03-2014  Ajuste en el calculo del saldo anteror TQ 3034
-    hectorfdv    31-03-2014  Ajuste para cuando el retorno de la api de saldos sea nulo TQ 3034
-    hectorfdv    29-04-2014  Ajuste de retorno en la funcion fnuConsultComponentCostoGen para evitar retorno nulo TQ 3292
-    FCastro      03-05-2016  Se modifica PROGENERAFACT para cambiar el formato de conversion a caracter de la columna
-                             InteresFinanciacion ya que esta colocando 3 espacios en blanco al inicio y genera error en el XML
-    Esantiago    23-09-2020  ca234: Se modifica PROGENERAFACTGDC  y RfConcepParcial
-  cgonzalez  14-09-2023  OSF-1565: Se modifica el servicio FnuGetSaldoAnterior. Se realizan ajustes de estandar v8.
-    dsaltarin     12/08/2024  SD-20871: De acuerdo con instrucciones de Luis Javier Lopez se cambia el llamado a esto LDC_DETALLEFACT_GASCARIBE.RFDATOSCONCEPTOS por 
-                              ldc_detallefact_gascaribe.rfdatosconcestadocuenta debido a que por los cambios de facturación electrónica el cursor que se usaba devuelve mas datos.
-                              
+    Autor           Fecha       Descripcion.
+    hectorfdv       05-03-2014  Ajuste en el calculo del saldo anteror TQ 3034
+    hectorfdv       31-03-2014  Ajuste para cuando el retorno de la api de saldos sea nulo TQ 3034
+    hectorfdv       29-04-2014  Ajuste de retorno en la funcion fnuConsultComponentCostoGen para evitar retorno nulo TQ 3292
+    FCastro         03-05-2016  Se modifica PROGENERAFACT para cambiar el formato de conversion a caracter de la columna
+                                InteresFinanciacion ya que esta colocando 3 espacios en blanco al inicio y genera error en el XML
+    Esantiago       23-09-2020  ca234: Se modifica PROGENERAFACTGDC  y RfConcepParcial
+    gonzalez        14-09-2023  OSF-1565: Se modifica el servicio FnuGetSaldoAnterior. Se realizan ajustes de estandar v8.
+    dsaltarin       12/08/2024  SD-20871: De acuerdo con instrucciones de Luis Javier Lopez se cambia el llamado a esto LDC_DETALLEFACT_GASCARIBE.RFDATOSCONCEPTOS por 
+                                ldc_detallefact_gascaribe.rfdatosconcestadocuenta debido a que por los cambios de facturación electrónica el cursor que se usaba devuelve mas datos.
+    Jorge Valiente  06/02/2025  OSF-3938: Validar existencia del punto de atencion y medio de recepcion del funcional
+                                            conectado para generar duplicado                              
     ************************************************************************/
 
     FUNCTION FNUCONSULTAVALORANTFACT (nuSusccodi IN suscripc.susccodi%TYPE)
@@ -5134,22 +5135,13 @@ AS
 
             IF nuPackageId IS NULL THEN
                 nuPackageId := 0;
-
-                pkg_error.SETERROR;
+                --pkg_error.SETERROR;
                 pkg_error.GETERROR (osberrormessage, osberrormessage);
                 pkg_traza.trace('osberrormessage: ' || osberrormessage, csbNivelTraza);
             END IF;
-
-            --fin Caso 200-1427
-
-            LDCI_pkWebServUtils.proCaraServWeb ('WS_KIOSCO_CAUSA',
-                                                'CAUSALES_COBRO_DUPLICADO',
-                                                 sbCusaCargo,
-                                                 osbErrorMessage);
-            pkg_traza.trace(csbMetodo||' sbCusaCargo: '||sbCusaCargo, csbNivelTraza);
-
+            
             --Inicio CASO 200-459
-            sbcadena := '5. Datos para generar crago a la -1 ONUCUPONUME['|| ONUCUPONUME || '] - SBCUSACARGO[' || SBCUSACARGO   || '] - PACKAGE_ID [0]';
+            sbcadena := '5. Datos para generar crago a la -1 ONUCUPONUME['|| ONUCUPONUME || '] - PACKAGE_ID [0]';
             pkg_traza.trace(csbMetodo||' sbcadena: '||sbcadena, csbNivelTraza);
             LDC_PROCONTROL_DUPLICADO (inuSusccodi, sbcadena);
             --Fin CASO 200-459
@@ -5157,7 +5149,7 @@ AS
             rcCobroDupli.CUPONUME := ONUCUPONUME;
             pkg_traza.trace(csbMetodo||' rcCobroDupli.CUPONUME: '||rcCobroDupli.CUPONUME, csbNivelTraza);
 
-            RCCOBRODUPLI.CAUSAL_ID := TO_NUMBER (NVL (SBCUSACARGO, '280'));
+            RCCOBRODUPLI.CAUSAL_ID := 280;
             pkg_traza.trace(csbMetodo||' rcCobroDupli.CAUSAL_ID: '||rcCobroDupli.CAUSAL_ID, csbNivelTraza);
 
             --CASO 200-1948
@@ -7624,6 +7616,8 @@ AS
                                          Se reemplaza SELECT-INTO por cursor cuSuscripc, cuAbaddress cuNuCausal
                                          Declarar variable sbXML para recibir el armado del XML getSolicitudDuplicadoKiosco
                                          Ajustar bloque de exceptions según las pautas técnicas
+      Jorge Valiente        06/02/2025   OSF-3938: Validar existencia del punto de atencion y medio de recepcion del funcional
+                                                   conectado para generar duplicado
     ************************************************************************/
 
     PROCEDURE proSoliDuplicadoKiosco (  inuSuscCodi       IN  SUSCRIPC.SUSCCODI%TYPE,
@@ -7664,6 +7658,12 @@ AS
           FROM cc_causal_type
          WHERE Causal_Type_Id = p_causal_type_id;
 
+        --OSF-3938
+        nuPersonId NUMBER;
+        nuPuntoAtencion NUMBER;
+        sbMedioRecepcion VARCHAR2(1);
+        ------------------------
+        
     BEGIN
         pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbInicio);
         pkg_error.prInicializaError( ONUERRORCODE, OSBERRORMESSAGE);
@@ -7671,6 +7671,27 @@ AS
         pkg_traza.trace(csbMetodo||' inuRecepTipo: '||inuRecepTipo, csbNivelTraza);
         pkg_traza.trace(csbMetodo||' sbobservacion: '||sbobservacion, csbNivelTraza);
 
+        ---OSF-3938
+        BEGIN
+          nuPersonId := pkg_bopersonal.fnugetpersonaid;
+          pkg_traza.trace('Codigo Funcional: '||nuPersonId, csbNivelTraza);        
+          nuPuntoAtencion := pkg_bopersonal.fnugetpuntoatencionid(nuPersonId);
+          pkg_traza.trace('Punto de Atencion: '||nuPuntoAtencion, csbNivelTraza);        
+          IF nvl(nuPuntoAtencion,0) = 0 or nuPuntoAtencion = -1 THEN
+            Pkg_Error.SetErrorMessage( isbMsgErrr => 'El funcional no tiene Punto de Atencion Valido');
+          END IF;
+        EXCEPTION
+          WHEN OTHERS THEN
+            Pkg_Error.SetErrorMessage( isbMsgErrr => 'El funcional no tiene Punto de Atencion Valido');
+        END;
+        sbMedioRecepcion := pkg_BcPuntoAtencion.fsbValMedioRecepcion(nuPuntoAtencion,inuRecepTipo);
+        pkg_traza.trace('Medio de Recepcion: '||inuRecepTipo, csbNivelTraza);        
+        pkg_traza.trace('Existe Relacion: '||sbMedioRecepcion, csbNivelTraza);        
+        IF sbMedioRecepcion = 'N' THEN
+          Pkg_Error.SetErrorMessage( isbMsgErrr => 'El funcional no tiene configurado el Medio de recepcion '|| inuRecepTipo);
+        END IF;
+        ---------------------------
+        
         --Se consulta el codigo de cliente que corresponde al contrato
         OPEN cuSuscripc;
         FETCH cuSuscripc INTO nususclient, nuIdAddress;
@@ -7747,6 +7768,7 @@ AS
     END proSoliDuplicadoKiosco;
 END LDCI_PKFACTKIOSCO_GDC;
 /
+
 PROMPT Otorgando permisos de ejecucion a LDCI_PKFACTKIOSCO_GDC
 BEGIN
   pkg_utilidades.prAplicarPermisos('LDCI_PKFACTKIOSCO_GDC','ADM_PERSON');

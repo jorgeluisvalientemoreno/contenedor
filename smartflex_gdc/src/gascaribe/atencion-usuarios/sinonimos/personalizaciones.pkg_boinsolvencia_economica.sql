@@ -1,0 +1,4 @@
+BEGIN
+ pkg_utilidades.prCrearSinonimos(UPPER('PKG_BOINSOLVENCIA_ECONOMICA'), 'PERSONALIZACIONES');
+END; 
+/

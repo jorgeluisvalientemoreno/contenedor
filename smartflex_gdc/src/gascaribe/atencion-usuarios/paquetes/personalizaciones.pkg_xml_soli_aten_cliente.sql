@@ -11,6 +11,8 @@ CREATE OR REPLACE PACKAGE personalizaciones.pkg_xml_soli_aten_cliente IS
         Adrianavg   26-09-2023	OSF-1634    Creacion
 		jsoto		16-11-2023  OSF-1799    Corrección del encabezado del xml en todos los método se suprime ||
                                             cambia manejo de trazas por personalizado
+        fvalencia   13-11-2024  OSF-3198    Se agrega la función getSolitudActualizaDatosPredio
+        fvalencia   14-05-2025  OSF-4171    Se agrega la función getSolitudExencionContribucion
 
         Parametros de Entrada
         Parametros de Salida
@@ -58,6 +60,37 @@ FUNCTION getSolicitudTrasPresPortal(inuMedioRecepcionId  IN mo_packages.receptio
                                     isbComentario        IN mo_packages.comment_%type,
                                     inuContratoId        IN NUMBER )
                                     RETURN constants_per.tipo_xml_sol%type;
+
+FUNCTION getSolitudActualizaDatosPredio
+(
+    inuContratoId        IN NUMBER,
+    inuMedioRecepcionId  IN mo_packages.reception_type_id%TYPE,
+    inuContactoId        IN NUMBER,
+    inuDireccion         IN ab_address.address_id%TYPE,
+    isbComentario        IN mo_packages.comment_%TYPE,
+    inuRelaSoliPredio    IN NUMBER,
+    inuDirecInstalacion  IN ab_address.address_id%TYPE,
+    inuDirecEntregaFact  IN ab_address.address_id%TYPE,
+    inuDirecInstaSoli    IN ab_address.address_id%TYPE,
+    inuDirecEntFacSoli   IN ab_address.address_id%TYPE,
+    inuSubcategoria      IN NUMBER,
+    isbResolucion        IN VARCHAR2,
+    isbDocumentacion     IN VARCHAR2,
+    inuRespuesta         IN NUMBER
+)
+RETURN constants_per.tipo_xml_sol%TYPE;
+
+FUNCTION getSolitudExencionContribucion
+(
+    inuContratoId        IN NUMBER,
+    inuProductoId        IN NUMBER,
+    inuMedioRecepcionId  IN mo_packages.reception_type_id%TYPE,
+    inuContactoId        IN NUMBER,
+    inuDireccion         IN ab_address.address_id%TYPE,
+    isbComentario        IN mo_packages.comment_%TYPE
+)
+RETURN constants_per.tipo_xml_sol%TYPE  ;
+
 END pkg_xml_soli_aten_cliente;
 /
 
@@ -434,6 +467,184 @@ WHEN others THEN
     Pkg_Error.seterror;
     raise PKG_ERROR.CONTROLLED_ERROR;
 END;
+
+   /***************************************************************************
+        Propiedad Intelectual de Gases del Caribe
+        Programa        : getSolitudActualizaDatosPredio
+        Descripcion     : Arma el XML de la solicitud 100220 actualizacion
+                          de datos prefio
+        Fecha           : 26-09-2023
+        =========================================================
+        Autor       Fecha       Caso        Descripcion
+        fvalencia   13-11-2023	OSF-3198    Creacion
+
+        Parametros de Entrada
+        Parametro                 Descripcion
+        inuContratoId             Codigo del contrato
+        inuMedioRecepcionId       Codigo del medio de recepcion        
+        inuContactoId             Codigo del solicitante
+        inuDireccion              Direccion respuesta
+        isbComentario             Observacion registro de la solicitud
+        inuRelaSoliPredio         Relacion del solicitante con el predio
+        inuDirecInstalacion       Dirección de instalación
+        inuDirecEntregaFact       Dirección de entrega de factura
+        inuDirecInstaSoli         Dirección de Instalación Solicitada
+        inuDirecEntFacSoli        Dirección de entrega Solicitada
+        inuSubcategoria           Subcategoría
+        isbResolucion             Resolución
+        isbDocumentacion          Flag de documentación completa
+        inuRespuesta              Respuesta
+     
+
+        Parametros de Salida
+        Modificaciones  :
+        =========================================================
+        Autor       Fecha       Caso    Descripcion
+
+    ***************************************************************************/
+FUNCTION getSolitudActualizaDatosPredio
+(
+    inuContratoId        IN NUMBER,
+    inuMedioRecepcionId  IN mo_packages.reception_type_id%TYPE,
+    inuContactoId        IN NUMBER,
+    inuDireccion         IN ab_address.address_id%TYPE,
+    isbComentario        IN mo_packages.comment_%TYPE,
+    inuRelaSoliPredio    IN NUMBER,
+    inuDirecInstalacion  IN ab_address.address_id%TYPE,
+    inuDirecEntregaFact  IN ab_address.address_id%TYPE,
+    inuDirecInstaSoli    IN ab_address.address_id%TYPE,
+    inuDirecEntFacSoli   IN ab_address.address_id%TYPE,
+    inuSubcategoria      IN NUMBER,
+    isbResolucion        IN VARCHAR2,
+    isbDocumentacion     IN VARCHAR2,
+    inuRespuesta         IN NUMBER
+)
+RETURN constants_per.tipo_xml_sol%TYPE IS
+    csbMetodo CONSTANT VARCHAR(80) := sbPkgName||'.getSolitudActualizaDatosPredio';
+BEGIN
+
+	pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbINICIO);
+	
+    pkg_traza.trace(csbMetodo||
+                    ' inuMedioRecepcionId: '||inuMedioRecepcionId||' '||
+                    ' inuContactoId: '||inuContactoId||' '||
+                    ' inuDireccion: '||inuDireccion||' '||
+                    ' isbComentario: '||isbComentario||' '||
+                    ' inuRelaSoliPredio: '||inuRelaSoliPredio||' '||
+                    ' inuDirecInstalacion: '||inuDirecInstalacion||' '||
+                    ' inuDirecEntregaFact: '||inuDirecEntregaFact||' '||
+                    ' inuDirecInstaSoli: '||inuDirecInstaSoli||' '||
+                    ' inuContratoId: '||inuContratoId ,pkg_traza.cnuNivelTrzDef);
+
+    sbXmlSol :=
+    '<?xml version="1.0" encoding="ISO-8859-1"?>
+    <P_ACTUALIZAR_DATOS_DEL_PREDIO_100220 ID_TIPOPAQUETE="100220">
+    <CONTRACT>' || inuContratoId || '</CONTRACT>
+    <FECHA_DE_SOLICITUD>'||sysdate||' </FECHA_DE_SOLICITUD> 
+    <RECEPTION_TYPE_ID>' || inuMedioRecepcionId || '</RECEPTION_TYPE_ID>
+    <CONTACT_ID>' || inuContactoId || '</CONTACT_ID>
+    <ADDRESS_ID>'||inuDireccion||'</ADDRESS_ID>
+    <COMMENT_>'||isbComentario||'</COMMENT_>
+    <ROLE_ID>' ||inuRelaSoliPredio ||'</ROLE_ID>
+    <M_CAMBIAR_DATOS_DEL_PREDIO_100232>
+        <DIRECCI_N_DE_INSTALACI_N>' ||inuDirecInstalacion ||'</DIRECCI_N_DE_INSTALACI_N> 
+        <DIRECCI_N_DE_ENTREGA_DE_FACTURA>' ||inuDirecEntregaFact ||'</DIRECCI_N_DE_ENTREGA_DE_FACTURA> 
+        <DIRECCI_N_INSTAL_SOLICITADA>' ||inuDirecInstaSoli ||'</DIRECCI_N_INSTAL_SOLICITADA> 
+        <DIR_ENTREGA_FACTURA_SOLICITADA>' ||inuDirecEntFacSoli ||'</DIR_ENTREGA_FACTURA_SOLICITADA>
+        <SUBCATEGORY_ID>' ||inuSubcategoria ||'</SUBCATEGORY_ID> 
+        <N_MERO_DE_RESOLUCI_N>' ||isbResolucion ||'</N_MERO_DE_RESOLUCI_N>
+        <DOCUMENTACI_N_COMPLETA>' ||isbDocumentacion ||'</DOCUMENTACI_N_COMPLETA> 
+        <ANSWER_ID>' ||inuRespuesta ||'</ANSWER_ID> 
+    </M_CAMBIAR_DATOS_DEL_PREDIO_100232>
+    </P_ACTUALIZAR_DATOS_DEL_PREDIO_100220>';
+
+	pkg_traza.trace(csbMetodo||' sbXmlSol'||sbXmlSol,pkg_traza.cnuNivelTrzDef);
+
+    pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN);
+    return sbXmlSol;
+EXCEPTION
+WHEN PKG_ERROR.CONTROLLED_ERROR THEN
+    pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERC);
+    raise PKG_ERROR.CONTROLLED_ERROR;
+WHEN others THEN
+    pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
+    Pkg_Error.seterror;
+    raise PKG_ERROR.CONTROLLED_ERROR;
+
+END getSolitudActualizaDatosPredio;
+
+   /***************************************************************************
+        Propiedad Intelectual de Gases del Caribe
+        Programa        : getSolitudExencionContribucion
+        Descripcion     : Arma el XML de la solicitud 100320 exencion de
+                          contribución
+        Fecha           : 14-05-2025
+        =========================================================
+        Autor       Fecha       Caso        Descripcion
+        fvalencia   14-05-2025	OSF-4171    Creacion
+
+        Parametros de Entrada
+        Parametro                 Descripcion
+        inuMedioRecepcionId       Codigo del medio de recepcion        
+        inuContactoId             Codigo del solicitante
+        inuDireccion              Direccion respuesta
+        isbComentario             Observacion registro de la solicitud     
+
+        Parametros de Salida
+        Modificaciones  :
+        =========================================================
+        Autor       Fecha       Caso    Descripcion
+
+    ***************************************************************************/
+FUNCTION getSolitudExencionContribucion
+(
+    inuContratoId        IN NUMBER,
+    inuProductoId        IN NUMBER,
+    inuMedioRecepcionId  IN mo_packages.reception_type_id%TYPE,
+    inuContactoId        IN NUMBER,
+    inuDireccion         IN ab_address.address_id%TYPE,
+    isbComentario        IN mo_packages.comment_%TYPE
+)
+RETURN constants_per.tipo_xml_sol%TYPE 
+IS
+    csbMetodo CONSTANT VARCHAR(80) := sbPkgName||'.getSolitudExencionContribucion';
+BEGIN
+
+	pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbINICIO);
+	
+    pkg_traza.trace(csbMetodo||
+                    ' inuMedioRecepcionId: '||inuMedioRecepcionId||' '||
+                    ' inuContactoId: '||inuContactoId||' '||
+                    ' inuDireccion: '||inuDireccion||' '||
+                    ' isbComentario: '||isbComentario,pkg_traza.cnuNivelTrzDef);
+
+    sbXmlSol :=
+    '<?xml version="1.0" encoding="ISO-8859-1"?>
+    <P_SOLICITUD_DE_EXENCION_DE_CONTRIBUCION_DECRETO_654_DE_2013_100320 ID_TIPOPAQUETE="100320">
+    <FECHA_SOLICITUD>'||SYSDATE||' </FECHA_SOLICITUD> 
+    <RECEPTION_TYPE_ID>' || inuMedioRecepcionId || '</RECEPTION_TYPE_ID>
+    <CONTACT_ID>' || inuContactoId || '</CONTACT_ID>
+    <ADDRESS_ID>'||inuDireccion||'</ADDRESS_ID>
+    <COMMENT_>'||isbComentario||'</COMMENT_>
+    <CONTRACT>' || inuContratoId || '</CONTRACT>
+    <PRODUCT>' || inuProductoId || '</PRODUCT> 
+    <M_MOTIVO_DE_EXENCION_DE_CONTRIBUCION_100338/>
+    </P_SOLICITUD_DE_EXENCION_DE_CONTRIBUCION_DECRETO_654_DE_2013_100320>';
+
+	pkg_traza.trace(csbMetodo||' sbXmlSol'||sbXmlSol,pkg_traza.cnuNivelTrzDef);
+
+    pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN);
+    return sbXmlSol;
+EXCEPTION
+WHEN PKG_ERROR.CONTROLLED_ERROR THEN
+    pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERC);
+    raise PKG_ERROR.CONTROLLED_ERROR;
+WHEN others THEN
+    pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);
+    Pkg_Error.seterror;
+    raise PKG_ERROR.CONTROLLED_ERROR;
+
+END getSolitudExencionContribucion;
 END pkg_xml_soli_aten_cliente;
 /
 

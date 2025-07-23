@@ -875,7 +875,7 @@ ACOTESDO_.tb0_1(0),
 'LDC - Actualizacion De Estado De Documentos'
 ,
 null,
-'13'
+'16'
 ,
 8,
 2,
@@ -889,9 +889,10 @@ null,
 ,
 'Y'
 ,
-62,
-null,
-to_date('17-10-2020 12:59:49','DD-MM-YYYY HH24:MI:SS'),
+1374,
+'C'
+,
+to_date('22-11-2024 14:49:47','DD-MM-YYYY HH24:MI:SS'),
 null);
 
 exception when others then
@@ -934,12 +935,12 @@ ACOTESDO_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
     <EXECUTABLE_ID>500000000013061</EXECUTABLE_ID>
     <NAME>ACOTESDO</NAME>
     <DESCRIPTION>LDC - Actualizacion De Estado De Documentos</DESCRIPTION>
-    <VERSION>13</VERSION>
+    <VERSION>16</VERSION>
     <MODULE>4</MODULE>
     <DIRECT_EXECUTION>Y</DIRECT_EXECUTION>
     <PATH_FILE_HELP/>
-    <OBJECT_NAME>LDC_PRACTUALIZAOTESDOC</OBJECT_NAME>
-    <QUERY_NAME>LDC_FNCONSULTAOTESDOC</QUERY_NAME>
+    <OBJECT_NAME>PKG_UIACOTESDO.PRCOBJETO</OBJECT_NAME>
+    <QUERY_NAME>PKG_UIACOTESDO.FRFCONSULTA</QUERY_NAME>
     <ALLOW_SCHEDULE>N</ALLOW_SCHEDULE>
     <ALLOW_FREQUENCY>N</ALLOW_FREQUENCY>
   </APPLICATION>
@@ -951,9 +952,9 @@ ACOTESDO_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
     <ENTITY_TYPE_ID>3339</ENTITY_TYPE_ID>
     <EXTERNAL_TYPE_ID>500000000013061</EXTERNAL_TYPE_ID>
     <ENTITY_ID>9623</ENTITY_ID>
-    <EXTERNAL_ID>500000000013061</EXTERNAL_ID>
-   ' ||
-' <FRAME_ID>471</FRAME_ID>
+    <EXTERNAL_ID>500000000013061</EXTERNAL_' ||
+'ID>
+    <FRAME_ID>471</FRAME_ID>
     <IS_UPDATABLE>N</IS_UPDATABLE>
     <IS_VISIBLE>N</IS_VISIBLE>
     <REQUIRED>N</REQUIRED>
@@ -979,9 +980,9 @@ ACOTESDO_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
       <ENTITY_TYPE_ID>3339</ENTITY_TYPE_ID>
       <EXTERNAL_TYPE_ID>500000000013061</EXTERNAL_TYPE_ID>
       <FRAME_ID>471</FRAME_ID>
-      <DATA_LENGTH>0</DATA_LENGTH>
- ' ||
-'     <DATA_PRECISION>15</DATA_PRECISION>
+      <DATA_LENGTH>0</DATA_LE' ||
+'NGTH>
+      <DATA_PRECISION>15</DATA_PRECISION>
       <DATA_SCALE>0</DATA_SCALE>
       <DATA_TYPE>NUMBER</DATA_TYPE>
       <DISPLAY_VIEW>4</DISPLAY_VIEW>
@@ -998,7 +999,7 @@ ACOTESDO_.clColumn_0 := '<?xml version="1.0" encoding="UTF-8"?>
       <SELECT_STATEMENT>select decode(OPERATING_UNIT_ID, 1, -1, OPERATING_UNIT_ID) id, NAME description
 from OR_OPERATING_UNIT
 ORDER BY ID</SELECT_STATEMENT>
-      <SELECT_STATEMENT_ID>120185880</SELECT_STATEMENT_ID>
+      <SELECT_STATEMENT_ID>120198213</SELECT_STATEMENT_ID>
       <TAG_NAME/>
       <PROCESS_SEQUENCE/>
       <STATEMENT_CACHE>N</STATEMENT_CACHE>
@@ -1007,14 +1008,14 @@ ORDER BY ID</SELECT_STATEMENT>
       <SEQUENCE_ID>2</SEQUENCE_ID>
       <EXTERNAL_ROOT_ID>6121</EXTERNAL_ROOT_ID>
       <PARENT_ATTRIBUTE_NAME/>
-      <PARENT_ENTITY_NAM' ||
-'E/>
+      <PARENT_ENT' ||
+'ITY_NAME/>
     </ATTRIBUTE>
     <ATTRIBUTE>
-      <ENTITY_ATTRIBUTE_ID>90187144</ENTITY_ATTRIBUTE_ID>
+      <ENTITY_ATTRIBUTE_ID>90190359</ENTITY_ATTRIBUTE_ID>
       <CONFIGURATION_ID>-999999996</CONFIGURATION_ID>
       <ATTRIBUTE_NAME>STATUS_DOCU</ATTRIBUTE_NAME>
-      <ENTITY_ID>5741</ENTITY_ID>
+      <ENTITY_ID>5780</ENTITY_ID>
       <ENTITY_NAME>LDC_DOCUORDER</ENTITY_NAME>
       <PARENT_CONF_ID>-999999998</PARENT_CONF_ID>
       <TYPE_ATTRIB_ID>2</TYPE_ATTRIB_ID>
@@ -1036,11 +1037,11 @@ ORDER BY ID</SELECT_STATEMENT>
       <INIT_EXPRESSION_ID/>
       <VALID_EXPRESSION_ID/>
       <DEFAULT_VALUE/>
-      <SEL' ||
-'ECT_STATEMENT>SELECT '||chr(38)||'apos;CO'||chr(38)||'apos; id, '||chr(38)||'apos;EN PODER DE CONTRATISTA'||chr(38)||'apos; description FROM DUAL
+   ' ||
+'   <SELECT_STATEMENT>SELECT '||chr(38)||'apos;CO'||chr(38)||'apos; id, '||chr(38)||'apos;EN PODER DE CONTRATISTA'||chr(38)||'apos; description FROM DUAL
 UNION
 SELECT '||chr(38)||'apos;EP'||chr(38)||'apos; id, '||chr(38)||'apos;EN PODER DE LA EMPRESA'||chr(38)||'apos; description FROM DUAL</SELECT_STATEMENT>
-      <SELECT_STATEMENT_ID>120185881</SELECT_STATEMENT_ID>
+      <SELECT_STATEMENT_ID>120198214</SELECT_STATEMENT_ID>
       <TAG_NAME/>
       <PROCESS_SEQUENCE/>
       <STATEMENT_CACHE>N</STATEMENT_CACHE>
@@ -1060,8 +1061,8 @@ SELECT '||chr(38)||'apos;EP'||chr(38)||'apos; id, '||chr(38)||'apos;EN PODER DE 
       <PARENT_CONF_ID>-999999998</PARENT_CONF_ID>
       <TYPE_ATTRIB_ID>2</TYPE_ATTRIB_ID>
       <ENTITY_TYPE_ID>3339</ENTITY_TYPE_ID>
-      <EXTE' ||
-'RNAL_TYPE_ID>500000000013061</EXTERNAL_TYPE_ID>
+    ' ||
+'  <EXTERNAL_TYPE_ID>500000000013061</EXTERNAL_TYPE_ID>
       <FRAME_ID>471</FRAME_ID>
       <DATA_LENGTH>7</DATA_LENGTH>
       <DATA_PRECISION>0</DATA_PRECISION>
@@ -1091,8 +1092,8 @@ SELECT '||chr(38)||'apos;EP'||chr(38)||'apos; id, '||chr(38)||'apos;EN PODER DE 
       <PARENT_ENTITY_NAME/>
     </ATTRIBUTE>
     <ATTRIBUTE>
-      <ENTITY_AT' ||
-'TRIBUTE_ID>4367</ENTITY_ATTRIBUTE_ID>
+      <EN' ||
+'TITY_ATTRIBUTE_ID>4367</ENTITY_ATTRIBUTE_ID>
       <CONFIGURATION_ID>-999999994</CONFIGURATION_ID>
       <ATTRIBUTE_NAME>LEGALIZATION_DATE</ATTRIBUTE_NAME>
       <ENTITY_ID>3294</ENTITY_ID>
@@ -1118,8 +1119,8 @@ SELECT '||chr(38)||'apos;EP'||chr(38)||'apos; id, '||chr(38)||'apos;EN PODER DE 
       <VALID_EXPRESSION_ID/>
       <DEFAULT_VALUE/>
       <SELECT_STATEMENT/>
-      <SELECT_STATEMENT_' ||
-'ID/>
+      <SELECT_STA' ||
+'TEMENT_ID/>
       <TAG_NAME/>
       <PROCESS_SEQUENCE/>
       <STATEMENT_CACHE>N</STATEMENT_CACHE>
@@ -1145,9 +1146,9 @@ SELECT '||chr(38)||'apos;EP'||chr(38)||'apos; id, '||chr(38)||'apos;EN PODER DE 
       <DATA_PRECISION>10</DATA_PRECISION>
       <DATA_SCALE>0</DATA_SCALE>
       <DATA_TYPE>NUMBER</DATA_TYPE>
-      <DISPLAY_VIEW>4</DISPLAY_VIEW>
-   ' ||
-'   <IS_UPDATABLE>Y</IS_UPDATABLE>
+      <DISPLAY_VIEW>4</DISPLAY_VI' ||
+'EW>
+      <IS_UPDATABLE>Y</IS_UPDATABLE>
       <IS_VISIBLE>Y</IS_VISIBLE>
       <REQUIRED>N</REQUIRED>
       <DISPLAY_ORDER>4</DISPLAY_ORDER>
@@ -1161,7 +1162,7 @@ SELECT '||chr(38)||'apos;EP'||chr(38)||'apos; id, '||chr(38)||'apos;EN PODER DE 
 union
 select -1 id, '||chr(38)||'apos;TODOS'||chr(38)||'apos; description from DUAL
 ORDER BY ID</SELECT_STATEMENT>
-      <SELECT_STATEMENT_ID>120185882</SELECT_STATEMENT_ID>
+      <SELECT_STATEMENT_ID>120198215</SELECT_STATEMENT_ID>
       <TAG_NAME/>
       <PROCESS_SEQUENCE/>
       <STATEMENT_CACHE>N</STATEMENT_CACHE>
@@ -1174,8 +1175,8 @@ ORDER BY ID</SELECT_STATEMENT>
     </ATTRIBUTE>
     <ATTRIBUTE>
       <ENTITY_ATTRIBUTE_ID>104880</ENTITY_ATTRIBUTE_ID>
-      <CONFIGURATION_ID>-999999992<' ||
-'/CONFIGURATION_ID>
+      <CONFIGURATION_ID>-999' ||
+'999992</CONFIGURATION_ID>
       <ATTRIBUTE_NAME>APPOINTMENT_CONFIRM</ATTRIBUTE_NAME>
       <ENTITY_ID>3294</ENTITY_ID>
       <ENTITY_NAME>OR_ORDER</ENTITY_NAME>
@@ -1199,9 +1200,9 @@ ORDER BY ID</SELECT_STATEMENT>
       <INIT_EXPRESSION_ID/>
       <VALID_EXPRESSION_ID/>
       <DEFAULT_VALUE/>
-      <SELECT_STATEMENT>SELECT '||chr(38)||'apos;EP'||chr(38)||'apos; id, '||chr(38)||'apos;EN PODER DE LA EMPRESA'||chr(38)||'apos; description FROM DUAL</SELECT' ||
-'_STATEMENT>
-      <SELECT_STATEMENT_ID>120185883</SELECT_STATEMENT_ID>
+      <SELECT_STATEMENT>SELECT '||chr(38)||'apos;EP'||chr(38)||'apos; id, '||chr(38)||'apos;EN PODER DE LA EMPRESA'||chr(38)||'apos; description FROM DUAL<' ||
+'/SELECT_STATEMENT>
+      <SELECT_STATEMENT_ID>120198216</SELECT_STATEMENT_ID>
       <TAG_NAME/>
       <PROCESS_SEQUENCE/>
       <STATEMENT_CACHE>N</STATEMENT_CACHE>
@@ -1224,11 +1225,11 @@ XMLType(ACOTESDO_.clColumn_0),
 ,
 '1.0.0.0'
 ,
-13,
+16,
 'ACOTESDO.APP'
 ,
 null,
-'15740850404b2dc8bd3ba11a38243a2a'
+'b79550a2c7fb5a49fd4c1a5b58211e4a'
 ,
 3);
 
@@ -1250,10 +1251,10 @@ end if;
  
   ut_trace.trace('Borrando tabla GE_STATEMENT',1);
   BEGIN
-   delete from GE_STATEMENT where STATEMENT_ID = 120185880 and MODULE_ID = 4 and NAME = 'Código De La Unidad Operativa A La Cual Fue Asignada La Orden De Trabajo';
+   delete from GE_STATEMENT where STATEMENT_ID = 120198213 and MODULE_ID = 4 and NAME = 'Código De La Unidad Operativa A La Cual Fue Asignada La Orden De Trabajo';
   EXCEPTION
   when ex.RECORD_HAVE_CHILDREN then
-    ut_trace.trace('No se pudo borrar la sentencia: [120185880]',1);
+    ut_trace.trace('No se pudo borrar la sentencia: [120198213]',1);
    null;
   END;
 ut_trace.trace('Obtiene nueva secuencia de GE_STATEMENT',1);
@@ -1293,10 +1294,10 @@ end if;
  
   ut_trace.trace('Borrando tabla GE_STATEMENT',1);
   BEGIN
-   delete from GE_STATEMENT where STATEMENT_ID = 120185881 and MODULE_ID = 4 and NAME = 'Estado Actual De La Orden';
+   delete from GE_STATEMENT where STATEMENT_ID = 120198214 and MODULE_ID = 4 and NAME = 'Estado Actual De La Orden';
   EXCEPTION
   when ex.RECORD_HAVE_CHILDREN then
-    ut_trace.trace('No se pudo borrar la sentencia: [120185881]',1);
+    ut_trace.trace('No se pudo borrar la sentencia: [120198214]',1);
    null;
   END;
 ut_trace.trace('Obtiene nueva secuencia de GE_STATEMENT',1);
@@ -1312,7 +1313,7 @@ SELECT '|| chr(39) ||'EP'|| chr(39) ||' id, '|| chr(39) ||'EN PODER DE LA EMPRES
 ut_trace.trace('Modificando GE_DISTRIBUTION_FILE',1);
 UPDATE GE_DISTRIBUTION_FILE SET  GE_DISTRIBUTION_FILE.APP_XML = 
   UPDATEXML(GE_DISTRIBUTION_FILE.APP_XML, 
-  '//COMPOSITION/ATTRIBUTE[ENTITY_ATTRIBUTE_ID = 90187144 and ENTITY_ID = 5741]/SELECT_STATEMENT_ID/text()', 
+  '//COMPOSITION/ATTRIBUTE[ENTITY_ATTRIBUTE_ID = 90190359 and ENTITY_ID = 5780]/SELECT_STATEMENT_ID/text()', 
   to_char(nuNewStatement)) 
 WHERE GE_DISTRIBUTION_FILE.DISTRIBUTION_FILE_ID = 'ACOTESDO';
  
@@ -1336,10 +1337,10 @@ end if;
  
   ut_trace.trace('Borrando tabla GE_STATEMENT',1);
   BEGIN
-   delete from GE_STATEMENT where STATEMENT_ID = 120185882 and MODULE_ID = 4 and NAME = 'Tipo De Trabajo';
+   delete from GE_STATEMENT where STATEMENT_ID = 120198215 and MODULE_ID = 4 and NAME = 'Tipo De Trabajo';
   EXCEPTION
   when ex.RECORD_HAVE_CHILDREN then
-    ut_trace.trace('No se pudo borrar la sentencia: [120185882]',1);
+    ut_trace.trace('No se pudo borrar la sentencia: [120198215]',1);
    null;
   END;
 ut_trace.trace('Obtiene nueva secuencia de GE_STATEMENT',1);
@@ -1380,10 +1381,10 @@ end if;
  
   ut_trace.trace('Borrando tabla GE_STATEMENT',1);
   BEGIN
-   delete from GE_STATEMENT where STATEMENT_ID = 120185883 and MODULE_ID = 4 and NAME = 'Nuevo Estado';
+   delete from GE_STATEMENT where STATEMENT_ID = 120198216 and MODULE_ID = 4 and NAME = 'Nuevo Estado';
   EXCEPTION
   when ex.RECORD_HAVE_CHILDREN then
-    ut_trace.trace('No se pudo borrar la sentencia: [120185883]',1);
+    ut_trace.trace('No se pudo borrar la sentencia: [120198216]',1);
    null;
   END;
 ut_trace.trace('Obtiene nueva secuencia de GE_STATEMENT',1);
@@ -1588,4 +1589,3 @@ end;
 
 BEGIN ut_trace.trace('********************FIN  proceso de objeto:ACOTESDO_******************************'); end;
 /
-

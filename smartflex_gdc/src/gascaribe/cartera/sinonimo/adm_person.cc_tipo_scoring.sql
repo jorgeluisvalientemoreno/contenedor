@@ -1,5 +1,5 @@
 PROMPT Crea sinonimo objeto dependiente CC_TIPO_SCORING
 BEGIN
-    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.CC_TIPO_SCORING FOR CC_TIPO_SCORING';
+    pkg_Utilidades.prCrearSinonimos( UPPER('CC_TIPO_SCORING'), UPPER('open'));
 END;
 /

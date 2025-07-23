@@ -14,6 +14,7 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.PKG_BCSOLICITUDES IS
 	jsoto		      23-10-2023	OSF-1773 Se agregan funciones
 	jpinedc		    26-09-2024	OSF-3368 Se crea fnuObtieneOrdenEnComentario
   dsaltarin     02-10-2024  OSF-3407 Se crea fnuGetPrimeraOT
+  jvaliente     14-03-2025  OSF-3541 Creacion de servicio para obtener DATA de solicitudes
 *******************************************************************************/
 
 CURSOR cuRecord( inuPackage_Id IN mo_packages.package_id%TYPE ) IS
@@ -194,6 +195,21 @@ FUNCTION frcGetRecord
 
   -- Servicio para retornar el producto del motivo
   FUNCTION fnuObtProductoDeMotivo(inuMotivo NUMBER) RETURN NUMBER;
+
+  -- Obtiene la relacion con el predio
+  FUNCTION fnuObtRelacionConPredio(inuSolicitud NUMBER) RETURN NUMBER;
+
+  -- Obtiene el Codigo resolucion
+  FUNCTION fsbObtResolucion(inuSolicitud NUMBER) RETURN VARCHAR2;
+
+  -- Obtiene el Flag documentacion completa
+  FUNCTION fsbObtFlagDocumentacion(inuSolicitud NUMBER) RETURN VARCHAR2;
+
+  --Obtiene código de la causal de solicitud registrado en el motivo mediante la solicitud.
+  FUNCTION fnuObtCausalSolicitud(inuSolicitud NUMBER) RETURN NUMBER;
+
+  --Obtiene código de la causal de solicitud registrado con el motivo.
+  FUNCTION fnuObtCausalMotivo(inuMotivo NUMBER) RETURN NUMBER;
 
 END PKG_BCSOLICITUDES;
 /
@@ -1951,6 +1967,337 @@ FUNCTION fblExiste
       RAISE pkg_Error.Controlled_Error;
     
   END fnuObtProductoDeMotivo;   
+
+  /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuObtRelacionConPredio
+    Descripcion     : Obtiene la relacion con el predio.
+    Caso            : OSF-3541
+    Autor           : Jorge Valiente
+    Fecha           : 19-12-2024
+  
+    Parametros
+      Entrada
+        inuSolicitud        Codigo Solicitud
+  
+      Salida
+        nuRelacionPredio    Codigo Relacion Predio
+  
+    Modificaciones  :
+    Autor       Fecha       Caso       Descripcion
+  ***************************************************************************/
+
+  FUNCTION fnuObtRelacionConPredio(inuSolicitud NUMBER) RETURN NUMBER IS
+  
+    csbMetodo   VARCHAR2(70) := csbSP_NAME || 'fnuObtRelacionConPredio';
+    nuErrorCode NUMBER; -- se almacena codigo de error
+    sbMensError VARCHAR2(2000); -- se almacena descripcion del error
+  
+    CURSOR cuRelacionPredio is
+      SELECT MSTM.ROLE_ID
+        FROM MO_SUBS_TYPE_MOTIV MSTM
+       WHERE package_id = inuSolicitud;
+  
+    --variables del codigo de SubCategoria
+    nuRelacionPredio NUMBER;
+  
+  BEGIN
+  
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbINICIO);
+  
+    pkg_traza.trace('Solicitud: ' || inuSolicitud, cnuNVLTRC);
+  
+    open cuRelacionPredio;
+    fetch cuRelacionPredio
+      into nuRelacionPredio;
+    close cuRelacionPredio;
+  
+    pkg_traza.trace('Relacion Predio: ' || nuRelacionPredio, cnuNVLTRC);
+  
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN);
+  
+    return(nuRelacionPredio);
+  
+  EXCEPTION
+    WHEN pkg_Error.Controlled_Error THEN
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERC);
+      RAISE pkg_Error.Controlled_Error;
+    
+    WHEN OTHERS THEN
+      pkg_Error.setError;
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERR);
+      RAISE pkg_Error.Controlled_Error;
+    
+  END fnuObtRelacionConPredio;
+
+  /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuObtResolucion
+    Descripcion     : Obtiene el Codigo resolucion.
+    Caso            : OSF-3541
+    Autor           : Jorge Valiente
+    Fecha           : 19-12-2024
+  
+    Parametros
+      Entrada
+        inuSolicitud        Codigo Solicitud
+  
+      Salida
+        sbResolucion        Codigo Resolucion
+  
+    Modificaciones  :
+    Autor       Fecha       Caso       Descripcion
+  ***************************************************************************/
+
+  FUNCTION fsbObtResolucion(inuSolicitud NUMBER) RETURN VARCHAR2 IS
+  
+    csbMetodo   VARCHAR2(70) := csbSP_NAME || 'fsbObtResolucion';
+    nuErrorCode NUMBER; -- se almacena codigo de error
+    sbMensError VARCHAR2(2000); -- se almacena descripcion del error
+  
+    CURSOR cuResolucion is
+      SELECT RESTRAT_RESOLUTION
+        FROM MO_BILL_DATA_CHANGE MBDC
+       WHERE MBDC.Package_Id = inuSolicitud;
+  
+    --variables del codigo de SubCategoria
+    sbResolucion VARCHAR2(50);
+  
+  BEGIN
+  
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbINICIO);
+  
+    pkg_traza.trace('Solicitud: ' || inuSolicitud, cnuNVLTRC);
+  
+    open cuResolucion;
+    fetch cuResolucion
+      into sbResolucion;
+    close cuResolucion;
+  
+    pkg_traza.trace('Resolucion: ' || sbResolucion, cnuNVLTRC);
+  
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN);
+  
+    return(sbResolucion);
+  
+  EXCEPTION
+    WHEN pkg_Error.Controlled_Error THEN
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERC);
+      RAISE pkg_Error.Controlled_Error;
+    
+    WHEN OTHERS THEN
+      pkg_Error.setError;
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERR);
+      RAISE pkg_Error.Controlled_Error;
+    
+  END fsbObtResolucion;
+
+  /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuObtFlagDocumentacion
+    Descripcion     : Obtiene el Flag documentacion completa.
+    Caso            : OSF-3541
+    Autor           : Jorge Valiente
+    Fecha           : 19-12-2024
+  
+    Parametros
+      Entrada
+        inuSolicitud        Codigo Solicitud
+  
+      Salida
+        sbFlagDocumentacion FLAG Documentacion
+  
+    Modificaciones  :
+    Autor       Fecha       Caso       Descripcion
+  ***************************************************************************/
+
+  FUNCTION fsbObtFlagDocumentacion(inuSolicitud NUMBER) RETURN VARCHAR2 IS
+  
+    csbMetodo   VARCHAR2(70) := csbSP_NAME || 'fsbObtFlagDocumentacion';
+    nuErrorCode NUMBER; -- se almacena codigo de error
+    sbMensError VARCHAR2(2000); -- se almacena descripcion del error
+  
+    CURSOR cuFlagDocumentacion is
+      SELECT custom_decision_flag
+        FROM mo_motive mm
+       WHERE mm.Package_Id = inuSolicitud;
+  
+    --variables del codigo de SubCategoria
+    sbFlagDocumentacion VARCHAR2(1);
+  
+  BEGIN
+  
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbINICIO);
+  
+    pkg_traza.trace('Solicitud: ' || inuSolicitud, cnuNVLTRC);
+  
+    open cuFlagDocumentacion;
+    fetch cuFlagDocumentacion
+      into sbFlagDocumentacion;
+    close cuFlagDocumentacion;
+  
+    pkg_traza.trace('Flag Documentacion: ' || sbFlagDocumentacion,
+                    cnuNVLTRC);
+  
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN);
+  
+    return(sbFlagDocumentacion);
+  
+  EXCEPTION
+    WHEN pkg_Error.Controlled_Error THEN
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERC);
+      RAISE pkg_Error.Controlled_Error;
+    
+    WHEN OTHERS THEN
+      pkg_Error.setError;
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERR);
+      RAISE pkg_Error.Controlled_Error;
+    
+  END fsbObtFlagDocumentacion;
+
+  /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuObtCausalSolicitud
+    Descripcion     : Obtiene código de la causal de solicitud registrado en el motivo mediante la solicitud.
+    Caso            : OSF-4187
+    Autor           : Jorge Valiente
+    Fecha           : 07-04-2025
+  
+    Parametros
+      Entrada
+        inuSolicitud   Codigo solicitud
+  
+      Salida
+        nuCausal       Codigo Causal Solicitud
+  
+    Modificaciones  :
+    Autor       Fecha       Caso       Descripcion
+  ***************************************************************************/
+
+  FUNCTION fnuObtCausalSolicitud(inuSolicitud NUMBER) RETURN NUMBER IS
+  
+    csbMetodo   VARCHAR2(70) := csbSP_NAME || 'fnuObtCausalSolicitud';
+    nuErrorCode NUMBER; -- se almacena codigo de error
+    sbMensError VARCHAR2(2000); -- se almacena descripcion del error
+  
+    CURSOR cuCausalMotivo IS
+      SELECT mm.causal_id
+        FROM mo_packages mp, mo_motive mm
+       WHERE mm.Package_Id = inuSolicitud;
+  
+    --variables del codigo de SubCategoria
+    nuCausal NUMBER;
+  
+  BEGIN
+  
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbINICIO);
+  
+    pkg_traza.trace('Solicitud: ' || inuSolicitud, cnuNVLTRC);
+  
+    OPEN cuCausalMotivo;
+    FETCH cuCausalMotivo
+      INTO nuCausal;
+    CLOSE cuCausalMotivo;
+  
+    pkg_traza.trace('Causal Solicitud: ' || nuCausal, cnuNVLTRC);
+  
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN);
+  
+    RETURN(nuCausal);
+  
+  EXCEPTION
+  
+    WHEN pkg_Error.Controlled_Error THEN
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERC);
+      RAISE pkg_Error.Controlled_Error;
+    
+    WHEN OTHERS THEN
+      pkg_Error.setError;
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERR);
+      RAISE pkg_Error.Controlled_Error;
+    
+  END fnuObtCausalSolicitud;
+
+  /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuObtCausalMotivo
+    Descripcion     : Obtiene código de la causal de solicitud registrado con el motivo.
+    Caso            : OSF-4187
+    Autor           : Jorge Valiente
+    Fecha           : 07-04-2025
+  
+    Parametros
+      Entrada
+        inuMotivo   Codigo Motivo
+  
+      Salida
+        nuCausal    Codigo Causal Solicitud
+  
+    Modificaciones  :
+    Autor       Fecha       Caso       Descripcion
+  ***************************************************************************/
+
+  FUNCTION fnuObtCausalMotivo(inuMotivo NUMBER) RETURN NUMBER IS
+  
+    csbMetodo   VARCHAR2(70) := csbSP_NAME || 'fnuObtCausalMotivo';
+    nuErrorCode NUMBER; -- se almacena codigo de error
+    sbMensError VARCHAR2(2000); -- se almacena descripcion del error
+  
+    CURSOR cuCausalMotivo IS
+      SELECT mm.causal_id FROM mo_motive mm WHERE mm.motive_id = inuMotivo;
+  
+    --variables del codigo de SubCategoria
+    nuCausal NUMBER;
+  
+  BEGIN
+  
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbINICIO);
+  
+    pkg_traza.trace('Motivo: ' || inuMotivo, cnuNVLTRC);
+  
+    OPEN cuCausalMotivo;
+    FETCH cuCausalMotivo
+      INTO nuCausal;
+    CLOSE cuCausalMotivo;
+  
+    pkg_traza.trace('Causal Solicitud: ' || nuCausal, cnuNVLTRC);
+  
+    pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN);
+  
+    RETURN(nuCausal);
+  
+  EXCEPTION
+  
+    WHEN pkg_Error.Controlled_Error THEN
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERC);
+      RAISE pkg_Error.Controlled_Error;
+    
+    WHEN OTHERS THEN
+      pkg_Error.setError;
+      pkg_Error.getError(nuErrorCode, sbMensError);
+      pkg_traza.trace('Error: ' || sbMensError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERR);
+      RAISE pkg_Error.Controlled_Error;
+    
+  END fnuObtCausalMotivo;
 
 END PKG_BCSOLICITUDES;
 /

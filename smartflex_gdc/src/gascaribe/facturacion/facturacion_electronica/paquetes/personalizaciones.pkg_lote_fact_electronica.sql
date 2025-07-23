@@ -112,6 +112,25 @@ CREATE OR REPLACE PACKAGE personalizaciones.pkg_lote_fact_electronica IS
     Autor       Fecha       Caso       Descripcion
     LJLB        08-05-2024  OSF-2158    Creacion
   ***************************************************************************/
+  
+  FUNCTION fsbObtCodEmpresa	( inuCodLote      IN   lote_fact_electronica.codigo_lote%type)
+   RETURN VARCHAR2;
+    /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fsbObtCodEmpresa
+    Descripcion     : Obtener el codigo de la empresa del Lote
+    Autor           : Jhon Jairo Soto
+    Fecha           : 21-03-2025
+
+    Parametros de Entrada
+      inuCodLote          codigo del lote
+    Parametros de Salida
+
+    Modificaciones  :
+    =========================================================
+    Autor       Fecha       Caso       Descripcion
+  ***************************************************************************/
+  
 END pkg_lote_fact_electronica;   
 
 /
@@ -159,6 +178,7 @@ CREATE OR REPLACE PACKAGE BODY  personalizaciones.pkg_lote_fact_electronica IS
     =========================================================
     Autor       Fecha       Caso       Descripcion
     LJLB       08-05-2024   OSF-2158    Creacion
+	JSOTO	   14-03-2025   OSF-4103    Se agrega campo empresa al insertar en lote_fact_electronica
   ***************************************************************************/
     csbMT_NAME      VARCHAR2(100) := csbSP_NAME || '.prInsLoteFactElectronica';
   BEGIN
@@ -172,6 +192,7 @@ CREATE OR REPLACE PACKAGE BODY  personalizaciones.pkg_lote_fact_electronica IS
     pkg_traza.trace('iregLoteFacturaEle.fecha_inicio => ' || iregLoteFacturaEle.fecha_inicio, pkg_traza.cnuNivelTrzDef);
     pkg_traza.trace('iregLoteFacturaEle.flag_terminado => ' || iregLoteFacturaEle.flag_terminado, pkg_traza.cnuNivelTrzDef);
     pkg_traza.trace('iregLoteFacturaEle.tipo_documento => ' || iregLoteFacturaEle.tipo_documento, pkg_traza.cnuNivelTrzDef);
+	pkg_traza.trace('iregLoteFacturaEle.empresa => ' || iregLoteFacturaEle.Empresa, pkg_traza.cnuNivelTrzDef);
 
     INSERT INTO lote_fact_electronica( codigo_lote,
                                         periodo_facturacion,
@@ -181,7 +202,8 @@ CREATE OR REPLACE PACKAGE BODY  personalizaciones.pkg_lote_fact_electronica IS
                                         cantidad_hilos,
                                         fecha_inicio,
                                         flag_terminado,
-                                        tipo_documento)
+                                        tipo_documento,
+										empresa)
                     VALUES( iregLoteFacturaEle.codigo_lote,
                             iregLoteFacturaEle.periodo_facturacion,
                             iregLoteFacturaEle.anio,
@@ -190,7 +212,8 @@ CREATE OR REPLACE PACKAGE BODY  personalizaciones.pkg_lote_fact_electronica IS
                             iregLoteFacturaEle.cantidad_hilos,
                             iregLoteFacturaEle.fecha_inicio,
                             iregLoteFacturaEle.flag_terminado,
-                            iregLoteFacturaEle.tipo_documento);
+                            iregLoteFacturaEle.tipo_documento,
+							iregLoteFacturaEle.empresa);
     pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
   EXCEPTION
     WHEN pkg_error.CONTROLLED_ERROR THEN
@@ -412,9 +435,60 @@ CREATE OR REPLACE PACKAGE BODY  personalizaciones.pkg_lote_fact_electronica IS
        pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
        raise pkg_error.CONTROLLED_ERROR;
   END prActLoteFactElectronica;
+
+  FUNCTION fsbObtCodEmpresa	( inuCodLote      IN   lote_fact_electronica.codigo_lote%type)  RETURN VARCHAR2 IS
+  
+  /***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fsbObtCodEmpresa
+    Descripcion     : Obtener el codigo de la empresa del Lote
+    Autor           : Jhon Jairo Soto
+    Fecha           : 21-03-2025
+
+    Parametros de Entrada
+      inuCodLote          codigo del lote
+    Parametros de Salida
+
+    Modificaciones  :
+    =========================================================
+    Autor       Fecha       Caso       Descripcion
+  ***************************************************************************/
+    csbMT_NAME      VARCHAR2(100) := csbSP_NAME || '.fsbObtCodEmpresa';
+	sbCodEmpresa	VARCHAR2(10);
+
+    CURSOR cuObtEmpresa IS
+    SELECT empresa
+    FROM lote_fact_electronica
+    WHERE lote_fact_electronica.codigo_lote = inuCodLote;
+	
+  BEGIN
+    pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+
+    IF cuObtEmpresa%ISOPEN THEN 
+		CLOSE cuObtEmpresa; 
+	END IF;
+    
+	OPEN cuObtEmpresa;
+    FETCH cuObtEmpresa INTO sbCodEmpresa;
+    CLOSE cuObtEmpresa;
+
+    pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+    RETURN sbCodEmpresa;
+  EXCEPTION
+    WHEN pkg_error.CONTROLLED_ERROR THEN
+       pkg_error.geterror(nuError,sbError);
+       pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+       pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
+       raise pkg_error.CONTROLLED_ERROR;
+    WHEN OTHERS THEN
+       pkg_error.setError;
+       pkg_error.geterror(nuError,sbError);
+       pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+       pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+       raise pkg_error.CONTROLLED_ERROR;
+  END fsbObtCodEmpresa;  
+ 
 END pkg_lote_fact_electronica;
-
-
 /
 
 BEGIN

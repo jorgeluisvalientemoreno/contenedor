@@ -1,133 +1,79 @@
-CREATE OR REPLACE package adm_person.ldc_bcdeletechargedupl is
+DECLARE
 
-  /**************************************************************************
-  HISTORIA DE MODIFICACIONES
-  FECHA        AUTOR       DESCRIPCION
-  20/06/2024   Adrianavg   OSF-2848: Se migra del esquema OPEN al esquema ADM_PERSON
-  ***************************************************************************/
-/*****************************************************************
-    Propiedad intelectual de PETI (c).
-
-    Unidad         : LDC_BCDeleteChargeDupl
-    Descripcion    : Paquete donde se implementa la lógica eliminar cargos con cuentas de cobro -1
-                     de cargo por concepto de duplicado  PB  LDCACD
-
-    Autor          : Jhon Jairo Soto
-    Fecha          : 26/03/2015
-
-    Metodos
-
-    Nombre         :
-    Parametros         Descripcion
-    ============  ===================
+    -- OSF-3694
+    csbObjeto        CONSTANT VARCHAR2(70) :=   upper('ldc_bcdeletechargedupl');
+    csbEsquema       CONSTANT VARCHAR2(30) :=   'ADM_PERSON';
+    csbTipoObjeto    CONSTANT VARCHAR2(30) :=   'PACKAGE';
+              
+    nuError          NUMBER;
+    sbError          VARCHAR2(4000);
 
 
-    Historia de Modificaciones
-    Fecha             Autor             Modificacion
-    =========         =========         ====================
-  ******************************************************************/
+    CURSOR cuDBA_Synonyms
+    IS
+    SELECT *
+    FROM DBA_Synonyms
+    WHERE owner <> UPPER(csbEsquema)
+    AND table_owner = UPPER(csbEsquema) 
+    AND table_name = UPPER(csbObjeto);
+    
+    TYPE tyDBA_Synonyms IS TABLE OF cuDBA_Synonyms%ROWTYPE INDEX BY BINARY_INTEGER;
+    tbDBA_Synonyms tyDBA_Synonyms;
+    
+    CURSOR cuDBA_Objects
+    IS
+    SELECT *
+    FROM DBA_Objects
+    WHERE owner = UPPER(csbEsquema) 
+    AND object_name = UPPER(csbObjeto)
+    AND object_type = UPPER(csbTipoObjeto);   
 
- /*****************************************************************
-  Propiedad intelectual de PETI (c).
+    TYPE tyDBA_Objects IS TABLE OF cuDBA_Objects%ROWTYPE INDEX BY BINARY_INTEGER;
+    tbDBA_Objects tyDBA_Objects;
+    
+    PROCEDURE prcExeImm( isbSent VARCHAR2)
+    IS
+    BEGIN
 
-  Unidad         : PrDeleteChargeDupl
-  Descripcion    : Eliminar cargos con cuentas de cobro -1
-                   de cargo por concepto de duplicado
-  Autor          :
-  Fecha          : 26/03/2015
+        EXECUTE IMMEDIATE isbSent;
+        dbms_output.put_line('Ok Sentencia[' || isbSent || ']');
+                
+        EXCEPTION WHEN OTHERS THEN
+        dbms_output.put_line('Error Sentencia[' || isbSent || '][' || sqlerrm || ']');
+    END prcExeImm;
 
-  Parametros              Descripcion
-  ============         ===================
+begin
 
-  Fecha             Autor             Modificacion
-  =========       =========           ====================
-  ******************************************************************/
+    OPEN cuDBA_Synonyms;
+    FETCH cuDBA_Synonyms BULK COLLECT INTO tbDBA_Synonyms;
+    CLOSE cuDBA_Synonyms;
+    
+    IF tbDBA_Synonyms.COUNT > 0 THEN
+        FOR indtb IN 1..tbDBA_Synonyms.COUNT LOOP
+            prcExeImm('DROP SYNONYM ' || tbDBA_Synonyms(indtb).Owner || '.' ||  tbDBA_Synonyms(indtb).Synonym_Name);     
+        END LOOP;
+    ELSE
+        dbms_output.put_line('No hay sinonimos para [' || csbEsquema || '.' || csbObjeto || ']');
+    END IF;
 
-Procedure PrDeleteChargedupl;
+    OPEN cuDBA_Objects;
+    FETCH cuDBA_Objects BULK COLLECT INTO tbDBA_Objects;
+    CLOSE cuDBA_Objects;
 
-end LDC_BCDeleteChargeDupl;
-/
-CREATE OR REPLACE PACKAGE BODY adm_person.LDC_BCDeleteChargeDupl IS
-
-  /*****************************************************************
-    Propiedad intelectual de PETI (c).
-
-    Unidad         : LDC_BCDeleteCharges
-    Descripcion    : Paquete donde se implementa la lógica eliminar cargos con cuentas de cobro -1
-                     de cargo por concepto de duplicado  PB  LDCACD
-
-    Autor          : Jhon Jairo Soto
-    Fecha          : 26/03/2015
-
-    Metodos
-
-    Nombre         :
-    Parametros         Descripcion
-    ============  ===================
-
-
-    Historia de Modificaciones
-    Fecha             Autor             Modificacion
-    =========         =========         ====================
-  ******************************************************************/
-
- /*****************************************************************
-  Propiedad intelectual de PETI (c).
-
-  Unidad         : PrDeleteChargeDupl
-  Descripcion    : Eliminar cargos con cuentas de cobro -1
-                   de cargo por concepto de duplicado
-  Autor          :
-  Fecha          : 26/03/2015
-
-  Parametros              Descripcion
-  ============         ===================
-
-  Fecha             Autor             Modificacion
-  =========       =========           ====================
-  ******************************************************************/
-
-Procedure PrDeleteChargedupl is
-
-    cnuNULL_ATTRIBUTE constant number := 2126;
-    sbSesunuse ge_boInstanceControl.stysbValue;
-
-BEGIN
-   ut_trace.Trace('INICIO LDC_BCDeleteChargedupl.PrDeleteChargedupl', 10);
-
-    sbSesunuse := ge_boInstanceControl.fsbGetFieldValue ('SERVSUSC', 'SESUNUSE');
-
-    ------------------------------------------------
-    -- Required Attributes
-    ------------------------------------------------
-
-    if (sbSesunuse is null) then
-        Errors.SetError (cnuNULL_ATTRIBUTE, 'Numero de producto:');
-        raise ex.CONTROLLED_ERROR;
-    end if;
-
-    ------------------------------------------------
-    -- User code
-    ------------------------------------------------
-    delete from cargos
-    where CARGNUSE = TO_NUMBER(sbSesunuse) and cargconc = 24 AND CARGPROG = 2038
-    and CARGCUCO = -1;
-    commit;
-
-    ut_trace.Trace('FIN LDC_BCDeleteChargedupl.PrDeleteChargedupl', 10);
-EXCEPTION
-    when ex.CONTROLLED_ERROR then
-        raise;
-
-    when OTHERS then
-        Errors.setError;
-        raise ex.CONTROLLED_ERROR;
-END PrDeleteChargedupl;
-
-END LDC_BCDeleteChargeDupl;
-/
-PROMPT OTORGA PERMISOS ESQUEMA sobre LDC_BCDELETECHARGEDUPL
-BEGIN
-    pkg_utilidades.prAplicarPermisos('LDC_BCDELETECHARGEDUPL', 'ADM_PERSON'); 
+    IF tbDBA_Objects.COUNT > 0 THEN
+        FOR indtb IN 1..tbDBA_Objects.COUNT LOOP
+            prcExeImm('DROP ' || tbDBA_Objects(indtb).OBJECT_TYPE ||' '||  tbDBA_Objects(indtb).Owner || '.' ||  tbDBA_Objects(indtb).Object_Name);     
+        END LOOP;
+    ELSE
+        dbms_output.put_line('No existe [' || csbEsquema || '.' || csbObjeto || ']');    
+    END IF;
+    
+    
+    EXCEPTION
+        WHEN OTHERS THEN        
+            pkg_error.setError;
+            pkg_Error.getError(nuError,sbError);
+            dbms_output.put_line('sbError => ' || sbError );
+            RAISE pkg_error.Controlled_Error;
 END;
 /

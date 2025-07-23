@@ -12,9 +12,11 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_MAESTROMATERIAL AS
   jpinedc   29/04/2024  OSF-2581: proNotificarMaterial: Se reemplaza ldc_sendEmail por 
                         pkg_Correo.prcEnviaCorreo
   fvalencia 02/07/2024  OSF-2793: Se modifica el procedimiento proNotificarMaterial
+  jpinedc   21/04/2025  OSF-4264: proNotificarMaterial: Se modifica
 */
 
-Procedure proNotificarMaterial(Isbcodmaterial  In Varchar2,     -- codMaterial
+Procedure proNotificarMaterial(isbEmpresa     in VARCHAR2,      -- Empresa                          ,
+                              Isbcodmaterial  In Varchar2,     -- codMaterial
                               Isbdescmaterial In Varchar2,     -- descMaterial
                               Isbtipomaterial In Varchar2,     -- tipoMaterial
                               Isbgrarticulos  In Varchar2,     -- GRArticulos
@@ -22,7 +24,8 @@ Procedure proNotificarMaterial(Isbcodmaterial  In Varchar2,     -- codMaterial
                               Isbestadomat    In Varchar2,     -- estado
                               Inuporciva      In Number,       -- porcentaje iva
                               isbItemDoVal    in VARCHAR2,     -- doble valoracion
-                              isbItemSeri     in varchar2);    -- material serializado
+                              isbItemSeri     in varchar2     -- material serializado
+                              );    
 END LDCI_MAESTROMATERIAL;
 /
 
@@ -95,16 +98,18 @@ AS
                 || DBMS_UTILITY.format_error_backtrace);
     END proObtenerXmlItem;
 
-    PROCEDURE proNotificarMaterial (Isbcodmaterial    IN VARCHAR2, -- codMaterial
-                                    Isbdescmaterial   IN VARCHAR2, -- descMaterial
-                                    Isbtipomaterial   IN VARCHAR2, -- tipoMaterial
-                                    Isbgrarticulos    IN VARCHAR2, -- GRArticulos
-                                    Isbunmedida       IN VARCHAR2, -- Unidad de Medida
-                                    Isbestadomat      IN VARCHAR2,   -- estado
-                                    Inuporciva        IN NUMBER, -- porcentaje iva
-                                    ISbitemdoval      IN VARCHAR2, -- doble valoracion
-                                    isbItemSeri       IN VARCHAR2)
-    AS                                                 -- material serializado
+    Procedure proNotificarMaterial(isbEmpresa      in VARCHAR2,      -- Empresa                          
+                              Isbcodmaterial  In Varchar2,     -- codMaterial
+                              Isbdescmaterial In Varchar2,     -- descMaterial
+                              Isbtipomaterial In Varchar2,     -- tipoMaterial
+                              Isbgrarticulos  In Varchar2,     -- GRArticulos
+                              Isbunmedida     In Varchar2,     -- Unidad de Medida
+                              Isbestadomat    In Varchar2,     -- estado
+                              Inuporciva      In Number,       -- porcentaje iva
+                              isbItemDoVal    in VARCHAR2,     -- doble valoracion
+                              isbItemSeri     in varchar2     -- material serializado
+                              )
+    AS
         /*
       PROPIEDAD INTELECTUAL DE GASES DE OCCIDENTE S.A. E.S.P
 
@@ -137,9 +142,11 @@ AS
      MABG/GDC           02/03/2021  Caso 630: Se modifica el procedimiento para que haga el registro en la forma GEITS del item y tambien
                     para que registre la categoria de acuerdo a la descripcion del item
         felipe.valencia                             02/07/2024  OSF-2793: agrega validación de item obsoleto
+        lubin.pineda                                21/04/2025  OSF-4264: Se agrega argumento de entrada isbEmpresa.
+                                                                Se inserta o actualiza el registro del material para la
+                                                                empresa en multiempresa.materiales         
      */
         -- define variables
-        --Nuclasif Ldci_Itemtmp.Measure_Unit%Type;
         Nuunimed               Ldci_Itemtmp.Measure_Unit%TYPE;
         Sbisrecovery           Ldci_Itemtmp.Is_Recovery%TYPE;
         Sbitemdobleval         Ldci_Itemtmp.Item_Code%TYPE;
@@ -234,6 +241,7 @@ AS
 
         nuEstadoInicial       NUMBER;
         sbObsoleto            VARCHAR2 (2);
+        sbHabilitado          VARCHAR2(1);  
 
         CURSOR CuValDescCate (sbDescItem ge_items.description%TYPE)
         IS
@@ -475,6 +483,9 @@ AS
             sbObsoleto            := 'N';
         END IF;
 
+        sbHabilitado := CASE sbObsoleto WHEN 'S' THEN 'N' ELSE  'S' END;
+
+        pkg_traza.trace('sbHabilitado: ' || sbHabilitado, pkg_traza.cnuNivelTrzDef);
         pkg_traza.trace('nuEstadoInicial: ' || nuEstadoInicial, pkg_traza.cnuNivelTrzDef);
         pkg_traza.trace('sbObsoleto: ' || sbObsoleto, pkg_traza.cnuNivelTrzDef);
         pkg_traza.trace('Inuitemsgama: ' || Inuitemsgama, pkg_traza.cnuNivelTrzDef);
@@ -533,6 +544,8 @@ AS
 
             IF Nuresultado = 0
             THEN
+                
+                pkg_Materiales.prcInsRegistro( iSbcodmaterial, isbEmpresa, sbHabilitado );
                 /* INSERTO SATISFACTORIAMENTE*/
                 COMMIT;
                 swValItem := TRUE;                                --- caso 630
@@ -541,6 +554,13 @@ AS
                 RAISE exceOs_Set_Newitem;
             END IF;                                  --If Nuresultado = 0 Then
         ELSE
+        
+            IF pkg_Materiales.fblExiste( iSbcodmaterial, isbEmpresa ) THEN
+                pkg_Materiales.prcActHabilitado( iSbcodmaterial, isbEmpresa, sbHabilitado );        
+            ELSE
+                pkg_Materiales.prcInsRegistro( iSbcodmaterial, isbEmpresa, sbHabilitado );
+            END IF;
+            
             /* ACTUALIZO SATISFACTORIAMENTE*/
             COMMIT;
 
@@ -843,3 +863,4 @@ END;
 GRANT EXECUTE on ADM_PERSON.LDCI_MAESTROMATERIAL to INTEGRACIONES;
 GRANT EXECUTE on ADM_PERSON.LDCI_MAESTROMATERIAL to INTEGRADESA;
 /
+

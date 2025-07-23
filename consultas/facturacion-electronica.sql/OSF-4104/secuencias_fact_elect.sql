@@ -1,0 +1,1 @@
+select * from secuencia_tipodocu_emfael  ;

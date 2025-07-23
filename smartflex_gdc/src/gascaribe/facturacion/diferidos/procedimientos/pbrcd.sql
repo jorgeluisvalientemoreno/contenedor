@@ -14,6 +14,11 @@ AS
                                                         en el parametro LDC_TASAS_PBRCD
         jpinedc                     18/06/2024          OSF-2605: * Se usa pkg_Correo
                                                         * Ajustes por estándares
+        jcatuche                    02/05/2025          OSF-4188: Control de proceso para evitar actualizar cuota de diferido cuando la diferencia entre 
+                                                        cuotas pactadas menos las facturadas es negativa
+                                                        Se elimina cursor cuTasasPBRCD, la validación se implementa con funcionalidad existente
+                                                        Se cambian llamados por homologación de servicios para el usuario y la session.
+                                                        Se corrigen errores detectados
     */
 
     csbMetodo        CONSTANT VARCHAR2(70) :=  'PBRCD';
@@ -52,6 +57,15 @@ AS
     sbError             VARCHAR2(4000);
     nuError             NUMBER;
     nudiferido  NUMBER := 0;
+    
+    CURSOR cuTotalDife(inuTasa diferido.difetain%TYPE)
+    IS
+    SELECT COUNT (1)
+    FROM diferido
+    WHERE DIFESAPE > 0
+    AND DIFEINTE <> 0
+    AND DIFETAIN = inuTasa
+    ;
 
     -- Cursor para obtener los diferidos con saldo pendiente
     CURSOR cuDiferidos (inuTasa diferido.difetain%TYPE)
@@ -61,15 +75,15 @@ AS
     DIFENUSE     nuServicio
     FROM diferido
     WHERE DIFESAPE > 0
-    AND DIFEINTE <> 0 AND DIFETAIN = inuTasa;
+    AND DIFEINTE <> 0 AND DIFETAIN = inuTasa
+    ;
 
     sbRecipients        VARCHAR2 (20000);
     sbSubject           VARCHAR2 (200);
     sbMessage0          VARCHAR2 (30000);
     sbMessage1          VARCHAR2 (30000);
 
-    TYPE tytblDiferido IS TABLE OF cuDiferidos%ROWTYPE
-        INDEX BY PLS_INTEGER;
+    TYPE tytblDiferido IS TABLE OF cuDiferidos%ROWTYPE INDEX BY PLS_INTEGER;
 
     tblDiferido         tytblDiferido;
     rgDiferido          cuDiferidos%ROWTYPE;
@@ -92,20 +106,12 @@ AS
     nuCountTotal        NUMBER := 0;
     nuFactor            diferido.DIFEFAGR%TYPE;
     sbParametros        GE_PROCESS_SCHEDULE.PARAMETERS_%TYPE;
+    nuCuotas            NUMBER;
 
     -- Log PB
     nuLdlpcons          ldc_log_pb.ldlpcons%TYPE;
 
     nuTasaValida        conftain.cotitain%TYPE;
-
-    CURSOR cuTasasPBRCD (inuTasa IN conftain.cotitain%TYPE)
-    IS
-        SELECT COLUMN_VALUE
-          FROM TABLE (
-                   ldc_boutilities.splitstrings (
-                       pkg_BCLD_Parameter.fsbObtieneValorCadena ('LDC_TASAS_PBRCD'),
-                       ','))
-         WHERE COLUMN_VALUE = inuTasa;
 
     /*
     Autor                     Fecha                      Deccripcion
@@ -127,15 +133,13 @@ AS
         sbSession   VARCHAR2 (50);
         -- Usuario
         sbUser      VARCHAR2 (50);
-        -- Info Aux
-        sbInfoAux   ldc_log_pb.ldlpinfo%TYPE;
     BEGIN
     
         pkg_traza.trace(csbMetodo1, csbNivelTraza, pkg_traza.csbINICIO); 
         
         -- Obtiene valor de la session
-        sbSession   := USERENV ('SESSIONID');
-        sbUser      := USER;
+        sbSession   := pkg_session.fnuGetSesion;
+        sbUser      := pkg_session.getUser;
 
         -- Insertamos o Actualizamos
         IF (inuCons IS NULL)
@@ -156,12 +160,6 @@ AS
                          idtFech,
                          isbInfo);
         ELSE
-            -- Obtiene Datos
-            SELECT LDLPINFO
-            INTO sbInfoAux
-            FROM ldc_log_pb
-            WHERE LDLPCONS = inuCons;
-
             -- Actualiza Datos
             UPDATE ldc_log_pb
             SET LDLPINFO = LDLPINFO || ' ' || isbInfo
@@ -187,6 +185,11 @@ AS
         THEN
             CLOSE cuDiferidos;
         END IF;
+        
+        IF cuTotalDife%ISOPEN
+        THEN
+            CLOSE cuTotalDife;
+        END IF;
 
         pkg_traza.trace(csbMetodo2, csbNivelTraza, pkg_traza.csbFIN);
 
@@ -207,51 +210,56 @@ AS
 BEGIN
     
     pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO); 
-        
-    pkg_Traza.Trace ('INICIO LDC_BcChangeQuotaValue.prRecalculateQuotaValue',10);
-    sbFECHA_PROCESO :=
+    
+    sbParametros := dage_process_schedule.fsbGetParameters_(inuProgramacion);
+    pkg_traza.trace('sbParametros:'||sbParametros, csbNivelTraza);  
+    
+    sbFECHA_PROCESO := 
         ut_string.getparametervalue (sbParametros,
                                      'FECHA_PROCESO',
                                      '|',
                                      '=');
+                                     
+    pkg_traza.trace('FECHA_PROCESO:'||sbFECHA_PROCESO, csbNivelTraza);
     dtExecDate := TO_DATE (sbFECHA_PROCESO, LDC_BOConsGenerales.fsbGetFormatoFecha);
     sbRecipients := pkg_BCLD_Parameter.fsbObtieneValorCadena ('FUNC_ACT_CFMV');
 
     nuLdlpcons := NULL;
 
-    ProcessLog (nuLdlpcons,
-                'PBRCD',
-                SYSDATE,
-                'Inicia el proceso ' || dtExecDate);
+    ProcessLog 
+    (
+        nuLdlpcons,
+        'PBRCD',
+        SYSDATE,
+        'Inicia el proceso ' || sbFECHA_PROCESO
+    );
 
     nuLdlpcons := NULL;
 
+    prcCerraCursorDiferidos;
+    
     FOR rgLDC_CONFTAIN IN cuLDC_CONFTAIN (dtSysdate)
     LOOP
-        SELECT COUNT (1)
-          INTO nuCantidad
-          FROM diferido
-         WHERE     DIFESAPE > 0
-               AND DIFEINTE <> 0
-               AND DIFETAIN = rgLDC_CONFTAIN.COTITAIN;
+        nuCotitain := rgLDC_CONFTAIN.cotitain;
+        nuPorc := rgLDC_CONFTAIN.cotiporc;
+        
+        open cuTotalDife(nuCotitain);
+        fetch cuTotalDife into nuCantidad;
+        close cuTotalDife;
+        
+        sbMessage0 := 'Se procesarán '|| nuCantidad|| ' productos el tipo de tasa '|| nuCotitain;
 
-        sbMessage0 :=
-               'Se procesaran '
-            || nuCantidad
-            || ' productos el tipo de tasa '
-            || rgLDC_CONFTAIN.COTITAIN;
-
-        ProcessLog (nuLdlpcons,
-                    'PBRCD',
-                    SYSDATE,
-                    sbMessage0);
+        ProcessLog 
+        (
+            nuLdlpcons,
+            'PBRCD',
+            SYSDATE,
+            sbMessage0
+        );
 
         nuLdlpcons := NULL;
 
-        nuCotitain := rgLDC_CONFTAIN.cotitain;
-        nuPorc := rgLDC_CONFTAIN.cotiporc;
-
-        OPEN cuDiferidos (rgLDC_CONFTAIN.cotitain);
+        OPEN cuDiferidos (nuCotitain);
 
         LOOP
             FETCH cuDiferidos BULK COLLECT INTO tblDiferido LIMIT limit_in;
@@ -265,28 +273,30 @@ BEGIN
                 nudiferido := rgDiferido.idDiferido;
                 --Validar si la suscripcion asociada al diferido esta en
                 --proceso de facturacion
-                pkg_Traza.Trace('Proceso Facturación => '||pkg_BCContrato.fnuCodigoProcFacturacion(rgDiferido.nuSuscripcion));
-                pkg_Traza.Trace('Contrato => '||rgDiferido.nuSuscripcion);
+                pkg_Traza.Trace('Proceso Facturación => '||pkg_BCContrato.fnuCodigoProcFacturacion(rgDiferido.nuSuscripcion),csbNivelTraza);
+                pkg_Traza.Trace('Contrato => '||rgDiferido.nuSuscripcion,csbNivelTraza);
                 IF pkg_BCContrato.fnuCodigoProcFacturacion(rgDiferido.nuSuscripcion) >
                    0
                 THEN
                     --Enviar notificacion
 
-                    sbSubject :=
-                           'ERROR EN EL PROCESO DE ACTUALIZACION DE LA CUOTA MENSUAL DE LOS DIFERIDOS'
-                        || dtExecDate;
-                    sbMessage0 :=
-                        'Durante la ejecucion del proceso se detecto que al menos uno de los productos se encuentra en proceso de facturacion.';
-                    ProcessLog (nuLdlpcons,
-                                'PBRCD',
-                                SYSDATE,
-                                sbSubject || ' ' || sbMessage0);
+                    sbSubject :='ERROR EN EL PROCESO DE ACTUALIZACIÓN DE LA CUOTA MENSUAL DE LOS DIFERIDOS '|| sbFECHA_PROCESO;
+                    sbMessage0 := 'Durante la ejecución del proceso se detectó que al menos uno de los productos se encuentra en proceso de facturación.';
+                    ProcessLog 
+                    (
+                        nuLdlpcons,
+                        'PBRCD',
+                        SYSDATE,
+                        sbSubject || ' ' || sbMessage0
+                    );
 
                     --Enviar correo
-                    pkg_Correo.prcEnviaCorreo (
+                    pkg_Correo.prcEnviaCorreo 
+                    (
                         isbDestinatarios   => sbRecipients,
                         isbAsunto          => sbSubject,
-                        isbMensaje         => sbMessage0);
+                        isbMensaje         => sbMessage0
+                    );
 
                     --Detener proceso
                     pkg_error.setErrorMessage( isbMsgErrr => sbMessage0);
@@ -309,7 +319,7 @@ BEGIN
                         pktbldiferido.fnugetDIFESPRE (rgDiferido.idDiferido);
 
                     --OSF 345 - Logica para procesar tasas del parametro LDC_TASAS_PBRCD
-                    IF (rgLDC_CONFTAIN.cotitain =
+                    IF (nuCotitain =
                         pktblparametr.fnugetvaluenumber ('BIL_TASA_USURA'))
                     THEN
                         --Validar el metodo antes de obtener el % interes
@@ -320,31 +330,29 @@ BEGIN
                            0
                         THEN
                             --Validar si el % de interes pactado sobrepasa el % de usura
-                            IF nuInteresPorc > rgLDC_CONFTAIN.cotiporc
+                            IF nuInteresPorc > nuPorc
                             THEN
-                                nuInteresPorc := rgLDC_CONFTAIN.cotiporc;
+                                nuInteresPorc := nuPorc;
                                 sbProcesar := 'S';
                             ELSE
                                 sbProcesar := 'N';
                             END IF;
                         ELSE
-                            nuInteresPorc := rgLDC_CONFTAIN.cotiporc;
+                            nuInteresPorc := nuPorc;
                             sbProcesar := 'S';
                         END IF;
                     ELSE
-                        OPEN cuTasasPBRCD (rgLDC_CONFTAIN.cotitain);
-
-                        FETCH cuTasasPBRCD INTO nuTasaValida;
-
-                        CLOSE cuTasasPBRCD;
-
-                        IF (nuTasaValida IS NOT NULL)
+                        nuTasaValida := null;
+                        
+                        nuTasaValida := pkg_BCLD_Parameter.fnuValidaSiExisteCadena('LDC_TASAS_PBRCD',',',nuCotitain);
+                        
+                        IF (nuTasaValida > 0)
                         THEN
-                            nuInteresPorc := rgLDC_CONFTAIN.cotiporc;
+                            nuInteresPorc := nuPorc;
                             sbProcesar := 'S';
                         END IF;
                     END IF;
-
+                    
                     IF sbProcesar = 'S'
                     THEN
                         nuCount := nuCount + 1;
@@ -357,79 +365,71 @@ BEGIN
                                                                       );
 
                         -- Obtiene el valor de la cuota
-                        pkDeferredMgr.CalculatePayment (
-                            pktbldiferido.fnugetdifesape (
-                                rgDiferido.idDiferido), -- Saldo a Diferir (difesape)
-                            (  pktbldiferido.fnugetDIFENUCU (
-                                   rgDiferido.idDiferido)
-                             - pktbldiferido.fnugetdifecupa (
-                                   rgDiferido.idDiferido)), -- Numero de Cuotas  diferido
-                            nuNominalPerc,                  -- Interes Nominal
-                            nuMethod,                     -- Metodo de Calculo
-                            nuFactor,       --nuSpread,              -- Spread
-                            nuInteresPorc + nuSpread, -- Interes Efectivo mas Spread
-                            nuQuotaValue         -- Valor de la Cuota (Salida)
-                                        );
-                        --  Obtiene el factor de redondeo para la suscripcion
-                        FA_BOPoliticaRedondeo.ObtFactorRedondeo (
-                            rgDiferido.nuSuscripcion,
-                            nuRoundFactor,
-                            inuIdCompany);
+                        nuCuotas := pktbldiferido.fnugetDIFENUCU(rgDiferido.idDiferido) - pktbldiferido.fnugetdifecupa(rgDiferido.idDiferido);
+                        pkg_Traza.Trace ('nuCuotas Pendientes:'||nuCuotas,csbNivelTraza);
+                        pkg_Traza.Trace ('Valor cuota:'||pktbldiferido.fnugetDIFEVACU (rgDiferido.idDiferido),csbNivelTraza);
+                        If nuCuotas >= 0 Or pktbldiferido.fnugetDIFEVACU (rgDiferido.idDiferido) < 0 Then
+                        
+                            If pktbldiferido.fnugetDIFEVACU (rgDiferido.idDiferido) < 0 and nuCuotas < 0 Then
+                                nuCuotas := 1;
+                            End If;
+                            
+                            pkDeferredMgr.CalculatePayment 
+                            (
+                                pktbldiferido.fnugetdifesape(rgDiferido.idDiferido), -- Saldo a Diferir (difesape)
+                                nuCuotas, -- Numero de Cuotas  diferido
+                                nuNominalPerc,                  -- Interes Nominal
+                                nuMethod,                     -- Metodo de Calculo
+                                nuFactor,       --nuSpread,              -- Spread
+                                nuInteresPorc + nuSpread, -- Interes Efectivo mas Spread
+                                nuQuotaValue         -- Valor de la Cuota (Salida)
+                            );
+                            
+                            --  Obtiene el factor de redondeo para la suscripcion
+                            FA_BOPoliticaRedondeo.ObtFactorRedondeo 
+                            (
+                                rgDiferido.nuSuscripcion,
+                                nuRoundFactor,
+                                inuIdCompany
+                            );
 
-                        pkg_Traza.Trace (
-                               'Ingraso al proceso de recalcular valor diferido del metodo '
-                            || nuMethod);
+                            pkg_Traza.Trace ('Ingresó al proceso de recalcular valor diferido del método '|| nuMethod,csbNivelTraza);
 
-                        OPEN CUPLANDIFE (
-                            pktbldiferido.fnugetdifepldi (
-                                rgDiferido.idDiferido),
-                            nuMethod);
+                            OPEN CUPLANDIFE (pktbldiferido.fnugetdifepldi(rgDiferido.idDiferido),nuMethod);
+                            FETCH CUPLANDIFE INTO TEMPCUPLANDIFE;
+                            IF CUPLANDIFE%FOUND
+                            THEN
 
-                        FETCH CUPLANDIFE INTO TEMPCUPLANDIFE;
+                                NUFactorGradiante := TEMPCUPLANDIFE.PLDIFAGR;
+                                pkg_Traza.Trace ('Factor Gradiante --> '|| NUFactorGradiante,csbNivelTraza);
+                                
+                                NUNumeroCuotas :=pktbldiferido.FNUGETDIFECUPA (rgDiferido.idDiferido);
+                                pkg_Traza.Trace ('Número cuotas --> ' || NUNumeroCuotas,csbNivelTraza);
 
-                        IF CUPLANDIFE%FOUND
-                        THEN
+                                NUCuotaCalculada := POWER ((1 + (NUFactorGradiante / 100)),NUNumeroCuotas);
 
-                            NUFactorGradiante := TEMPCUPLANDIFE.PLDIFAGR;
-                            pkg_Traza.Trace (
-                                   'Factor Gradiante --> '
-                                || NUFactorGradiante);
-                            NUNumeroCuotas :=
-                                pktbldiferido.FNUGETDIFECUPA (
-                                    rgDiferido.idDiferido);
-                            --NUNumeroCuotas := 3;
-                            pkg_Traza.Trace (
-                                'Numero cuotas --> ' || NUNumeroCuotas);
+                                NuevoQuotaValue := nuQuotaValue / NUCuotaCalculada;
 
-                            NUCuotaCalculada :=
-                                POWER ((1 + (NUFactorGradiante / 100)),
-                                       NUNumeroCuotas);
+                                pkg_Traza.Trace ('Valor original ['|| pktbldiferido.fnugetDIFEVACU (rgDiferido.idDiferido)|| '] - Valor anterior ['|| nuQuotaValue|| '] - Nuevo Valor ['|| NuevoQuotaValue|| ']',csbNivelTraza);
 
-                            NuevoQuotaValue :=
-                                nuQuotaValue / NUCuotaCalculada;
+                                nuQuotaValue := NuevoQuotaValue;
+                                
+                            END IF;
 
-                            pkg_Traza.Trace (
-                                   'Valor anterior ['
-                                || nuQuotaValue
-                                || '] - Nuevo Valor ['
-                                || NuevoQuotaValue
-                                || ']');
+                            CLOSE CUPLANDIFE;
 
-                            nuQuotaValue := NuevoQuotaValue;
-                        END IF;
-
-                        CLOSE CUPLANDIFE;
-
-                        --  Aplica politica de redondeo al valor de la cuota
-                        nuQuotaValue := ROUND (nuQuotaValue, nuRoundFactor);
-
-                        --Actualizar el valor de la cuota en el diferido
-                        pktbldiferido.upddifevacu (rgDiferido.idDiferido,
-                                                   nuQuotaValue);
-
+                            --  Aplica politica de redondeo al valor de la cuota
+                            nuQuotaValue := ROUND (nuQuotaValue, nuRoundFactor);
+                            
+                            pkg_Traza.Trace ('Actualización cuota --> ' || nuQuotaValue,csbNivelTraza);
+                            --Actualizar el valor de la cuota en el diferido
+                            pktbldiferido.upddifevacu (rgDiferido.idDiferido,nuQuotaValue);
+                        
+                        End if;
+                        
+                        pkg_Traza.Trace ('Actualización tasa --> ' || nuPorc,csbNivelTraza);
                         --OSF-252
-                        pktbldiferido.upddifeinte (rgDiferido.idDiferido,
-                                                   rgLDC_CONFTAIN.cotiporc);
+                        pktbldiferido.upddifeinte (rgDiferido.idDiferido,nuPorc);
                     END IF;
 
                     sbProcesar := 'S';
@@ -442,16 +442,15 @@ BEGIN
         --cerramos el cursor
         prcCerraCursorDiferidos;
 
-        sbMessage0 :=
-               'Se procesaron '
-            || nuCountTasa
-            || ' productos el tipo de tasa '
-            || rgLDC_CONFTAIN.COTITAIN;
+        sbMessage0 :='Se procesaron '|| nuCountTasa|| ' productos el tipo de tasa '|| nuCotitain;
 
-        ProcessLog (nuLdlpcons,
-                    'PBRCD',
-                    SYSDATE,
-                    sbMessage0);
+        ProcessLog 
+        (
+            nuLdlpcons,
+            'PBRCD',
+            SYSDATE,
+            sbMessage0
+        );
 
         nuLdlpcons := NULL;
 
@@ -460,12 +459,11 @@ BEGIN
         --Marcar el registro de LDC_CONFTAIN como procesado (Flag y fecha de proceso)
         UPDATE LDC_CONFTAIN
         SET FLAG = 'S', FECHA_PROCESAMIENTO = dtExecDate
-        WHERE     COTITAIN = rgLDC_CONFTAIN.cotitain
-               AND COTIFEIN = rgLDC_CONFTAIN.COTIFEIN;
+        WHERE     COTITAIN = nuCotitain
+        AND COTIFEIN = rgLDC_CONFTAIN.COTIFEIN;
 
-        sbMessage1 :=
-               sbMessage1
-            || 'El proceso de actualizacion de diferidos termino. Se actualizaron los diferidos asociados a la tasa '
+        sbMessage1 := sbMessage1
+            || 'El proceso de actualización de diferidos terminó. Se actualizaron los diferidos asociados a la tasa '
             || nuCotitain
             || ' - '
             || pktbltasainte.fsbgetdescription (nuCotitain)
@@ -480,13 +478,10 @@ BEGIN
         nuCount := 0;
     END LOOP;
 
-    pkg_Traza.Trace ('');
-
     prcCerraCursorDiferidos;
 
     COMMIT;
-    sbSubject :=
-        'ACTUALIZACION DE LA CUOTA MENSUAL DE LOS DIFERIDOS' || dtExecDate;
+    sbSubject :='ACTUALIZACIÓN DE LA CUOTA MENSUAL DE LOS DIFERIDOS ' || sbFECHA_PROCESO;
 
     ProcessLog (nuLdlpcons,
                 'PBRCD',
@@ -500,7 +495,7 @@ BEGIN
         sbMessage0 := sbMessage1;
     ELSE
         sbMessage0 :=
-            'El proceso de actualizacion de diferidos termino. No se actualizaron registros ya que no se encontro ningun registro de tasa sin procesar.';
+            'El proceso de actualización de diferidos terminó. No se actualizaron registros ya que no se encontró ningún registro de tasa sin procesar.';
     END IF;
 
     ProcessLog (nuLdlpcons,
@@ -530,23 +525,24 @@ EXCEPTION
         ROLLBACK;
         prcCerraCursorDiferidos;
         sbSubject :=
-               'ERROR EN EL PROCESO DE ACTUALIZACION DE LA CUOTA MENSUAL DE LOS DIFERIDOS'
-            || dtExecDate;
-        sbMessage0 :=
-               'Durante la ejecucion del proceso se presento un error no controlado ['
-            || SQLCODE
-            || ' - '
-            || SQLERRM
-            || ']. Por favor contacte al Administrador.';
-        ProcessLog (nuLdlpcons,
-                    'PBRCD',
-                    SYSDATE,
-                    sbSubject);
+               'ERROR EN EL PROCESO DE ACTUALIZACION DE LA CUOTA MENSUAL DE LOS DIFERIDOS '|| sbFECHA_PROCESO;
+        sbMessage0 := 'Durante la ejecución del proceso se presentó un error no controlado ['|| SQLCODE|| ' - '|| SQLERRM|| ']. Por favor contacte al Administrador.';
+        
+        ProcessLog 
+        (
+            nuLdlpcons,
+            'PBRCD',
+            SYSDATE,
+            sbSubject
+        );
 
-        ProcessLog (nuLdlpcons,
-                    'PBRCD',
-                    SYSDATE,
-                    sbMessage0||' Diferido Error :'||nudiferido);
+        ProcessLog 
+        (
+            nuLdlpcons,
+            'PBRCD',
+            SYSDATE,
+            sbMessage0||' Diferido Error :'||nudiferido
+        );
         nuLdlpcons := NULL;
         
         pkg_Correo.prcEnviaCorreo (isbDestinatarios   => sbRecipients,
@@ -555,8 +551,8 @@ EXCEPTION
 
         pkg_Error.setError;
         pkg_Error.getError(nuError, sbError);
-        pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
-        pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+        pkg_traza.trace('sbError: ' || sbError, csbNivelTraza);
+        pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
         RAISE pkg_Error.Controlled_Error;   
 END PBRCD;
 /

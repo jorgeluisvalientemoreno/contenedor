@@ -5,8 +5,8 @@ create or replace PACKAGE  personalizaciones.pkg_UtilFacturacionElecGen IS
     FROM user_arguments
     WHERE NVL(PACKAGE_NAME,'-') = NVL(isbPack,'-')
     AND OBJECT_NAME = isbApi
-    AND DATA_TYPE IS NOT NULL
-    ;
+    AND DATA_TYPE IS NOT NULL;
+	 
 
     TYPE TYTRCPROGRAMA IS RECORD(
         PROGRAM_NAME VARCHAR2(100),
@@ -18,12 +18,13 @@ create or replace PACKAGE  personalizaciones.pkg_UtilFacturacionElecGen IS
         PROGRAM_ACTION VARCHAR2(4000)
     );
 
-
     -- Tipo de dato para los argumentos de un método
     TYPE tbltytArgumentos      IS TABLE OF cuArgumentos%ROWTYPE INDEX BY VARCHAR2(100);
 
     TYPE tbltytSchedChainProg IS TABLE OF TYTRCPROGRAMA INDEX BY BINARY_INTEGER;
-
+	
+	tbDatosEmpresa pkg_empresa.tytbInfoEmpresas;
+	
 
     FUNCTION ftbArgumentos( isbPack IN VARCHAR2,
                             isbApi  IN VARCHAR2)  RETURN tbltytArgumentos;
@@ -215,7 +216,7 @@ create or replace PACKAGE  personalizaciones.pkg_UtilFacturacionElecGen IS
         Autor       Fecha       Caso       Descripcion
         LJLB        17-01-2024  OSF-2158    Creacion
       ***************************************************************************/
-      PROCEDURE prCrearProcMasivoNotas ;
+      PROCEDURE prCrearProcMasivoNotas;
     /***************************************************************************
         Propiedad Intelectual de Gases del Caribe
         Programa        : prCrearProcMasivoNotas
@@ -233,7 +234,7 @@ create or replace PACKAGE  personalizaciones.pkg_UtilFacturacionElecGen IS
         Autor       Fecha       Caso       Descripcion
         LJLB       09-07-2024   OSF-2158    Creacion
     ***************************************************************************/
-    
+
      PROCEDURE prJobEliminarRegFactElect ;
     /***************************************************************************
         Propiedad Intelectual de Gases del Caribe
@@ -252,10 +253,48 @@ create or replace PACKAGE  personalizaciones.pkg_UtilFacturacionElecGen IS
         Autor       Fecha       Caso       Descripcion
         LJLB       13-09-2024   OSF-3239    Creacion
     ***************************************************************************/
+                          
+								
+	PROCEDURE prcCrearLoteMasivoVenta (isbCodEmpresa	IN VARCHAR2);
 
+	    /***************************************************************************
+        Propiedad Intelectual de Gases del Caribe
+        Programa        : prcCrearLoteMasivoVenta
+        Descripcion     : Crear lote masivo para facturas de venta
+
+        Autor           : Jhon Soto
+        Fecha           : 27-03-2025
+
+        Parametros de Entrada
+
+        Parametros de Salida
+
+        Modificaciones  :
+        =========================================================
+        Autor       Fecha       Caso       Descripcion
+    ***************************************************************************/
+	
+	PROCEDURE prcCrearLoteMasivoNotas (isbCodEmpresa IN VARCHAR2);
+		    /***************************************************************************
+        Propiedad Intelectual de Gases del Caribe
+        Programa        : prcCrearLoteMasivoNotas
+        Descripcion     : Crear lote masivo para notas
+
+        Autor           : Jhon Soto
+        Fecha           : 27-03-2025
+
+        Parametros de Entrada
+
+        Parametros de Salida
+
+        Modificaciones  :
+        =========================================================
+        Autor       Fecha       Caso       Descripcion
+    ***************************************************************************/
+	
 END pkg_UtilFacturacionElecGen;
 /
-create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
+create or replace PACKAGE BODY personalizaciones.pkg_UtilFacturacionElecGen IS
    csbProgram       VARCHAR2(2000) := 'JOBFAELGE';
 
 	-- Declaracion de variables y tipos globales privados del paquete
@@ -268,7 +307,7 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
    V_TYTRCPROGRAMA TYTRCPROGRAMA;
    V_TYTRCPROGRAMAnull TYTRCPROGRAMA;
    -- Versión del paquete
-   csbVersion              CONSTANT VARCHAR2(15) := 'OSF-2158';
+   csbVersion              CONSTANT VARCHAR2(15) := 'OSF-4104';
    -- Para el control de traza:
    csbSP_NAME              CONSTANT VARCHAR2(32) := $$PLSQL_UNIT;
    csbNivelTraza           CONSTANT NUMBER(2)    := pkg_traza.fnuNivelTrzDef;
@@ -422,6 +461,7 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
         nuIdReporte         NUMBER;
         nuFactura            NUMBER;
         sbProcesoInt        VARCHAR2(100) :=(isbProceso)||'_'||to_char(inuHilo) ;
+		sbEmpresa			VARCHAR2(10);
 
         CURSOR cuGetFactRecuProcesar IS
         SELECT *
@@ -444,103 +484,7 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
         TYPE tblFacturas  IS TABLE OF cuGetFactRecuProcesar%ROWTYPE;
         v_tblFacturas   tblFacturas;
 
-        CURSOR cuGetNotasaProcesar IS
-        WITH NotasFact AS (
-            SELECT *
-            FROM notas
-            WHERE  notatino IN ('C', 'D')
-              AND notaprog NOT IN  ( SELECT to_number(regexp_substr(sbProgramaExcluir,  '[^,]+',   1, LEVEL)) AS programas
-                                      FROM dual
-                                      CONNECT BY regexp_substr(sbProgramaExcluir, '[^,]+', 1, LEVEL) IS NOT NULL )
-			  AND notas.notafecr BETWEEN dtFechaInicial AND  dtFechaFinal
-           ), NotaIngreso AS
-              (SELECT *
-               FROM NotasFact
-               WHERE EXISTS ( SELECT 1
-                              FROM cargos
-                              WHERE cargos.cargcodo = NotasFact.notanume
-                                AND (cargos.cargprog = NotasFact.notaprog)
-                                AND cargos.cargcaca IN ( SELECT to_number(regexp_substr(pkg_bcfactuelectronicagen.csbCausalesIngr,  '[^,]+',   1, LEVEL)) AS programas
-                                                          FROM dual
-                                                          CONNECT BY regexp_substr(pkg_bcfactuelectronicagen.csbCausalesIngr, '[^,]+', 1, LEVEL) IS NOT NULL )) ),
-		  NotasFinales AS
-          (SELECT unique NotaIngreso.notanume
-          FROM NotaIngreso, factura,  servsusc, cuencobr
-          WHERE  factura.factcodi = NotaIngreso.notafact
-            AND  factura.factpefa = inuPeriodo
-			AND cuencobr.cucofact = factura.factcodi
-			AND cuencobr.cuconuse = servsusc.sesunuse
-			AND servsusc.sesususc = factura.factsusc
-			AND servsusc.sesuserv NOT IN (  SELECT to_number(regexp_substr(PKG_BCFACTUELECTRONICAGEN.csbTipoProdExcluir,  '[^,]+',   1, LEVEL)) AS TIPOPROD
-											  FROM dual
-											  CONNECT BY regexp_substr(PKG_BCFACTUELECTRONICAGEN.csbTipoProdExcluir, '[^,]+', 1, LEVEL) IS NOT NULL )
-			AND EXISTS (  SELECT 1
-						  FROM facturas_emitidas
-						  WHERE facturas_emitidas.tipo_documento <> inuTipoDocu
-							   AND facturas_emitidas.documento = to_char(factura.factcodi) )
-            AND NOT EXISTS ( SELECT 1
-							 FROM factura_elect_general
-							  WHERE factura_elect_general.tipo_documento = inuTipoDocu
-								 AND factura_elect_general.documento = to_char(NotaIngreso.notanume)
-							  UNION ALL
-							  SELECT 1
-							  FROM facturas_emitidas
-							  WHERE facturas_emitidas.tipo_documento = inuTipoDocu
-							   AND facturas_emitidas.documento = to_char(NotaIngreso.notanume) ))
-		 SELECT *
-		 FROM NotasFinales
-         WHERE mod(NotasFinales.notanume, inuTotalHilo )+ 1 = inuHilo;
-
-
-        TYPE tblNotas  IS TABLE OF cuGetNotasaProcesar%ROWTYPE;
-        v_tblNotas   tblNotas;
-
-        CURSOR cuGetVentas IS
-        WITH FacturaVentas AS (
-                SELECT  unique factura.factcodi
-                FROM factura,  servsusc, cuencobr
-                WHERE factura.factprog <> 6
-                 AND factura.factpefa = inuPeriodo
-				 AND cuencobr.cucofact = factura.factcodi
-				 AND cuencobr.cuconuse = servsusc.sesunuse
-				 AND servsusc.sesususc = factura.factsusc
-				 AND servsusc.sesuserv NOT IN (  SELECT to_number(regexp_substr(PKG_BCFACTUELECTRONICAGEN.csbTipoProdExcluir,  '[^,]+',   1, LEVEL)) AS TIPOPROD
-												  FROM dual
-												  CONNECT BY regexp_substr(PKG_BCFACTUELECTRONICAGEN.csbTipoProdExcluir, '[^,]+', 1, LEVEL) IS NOT NULL )
-                 AND (factura.factfege) between dtFechaInicial and dtFechaFinal),
-         FacturaVentaIng AS
-              (SELECT *
-               FROM FacturaVentas
-               WHERE EXISTS ( SELECT 1
-                              FROM cargos, cuencobr
-                              WHERE cuencobr.cucofact = FacturaVentas.factcodi
-                                AND cargos.cargcuco = cuencobr.cucocodi
-                                AND cargos.cargsign IN ('DB','CR')
-                                AND cargos.cargcaca IN ( SELECT to_number(regexp_substr(pkg_bcfactuelectronicagen.sbCausalesIngVenta,  '[^,]+',   1, LEVEL)) AS causales
-                                                          FROM dual
-                                                          CONNECT BY regexp_substr(pkg_bcfactuelectronicagen.sbCausalesIngVenta, '[^,]+', 1, LEVEL) IS NOT NULL )
-                                  AND SUBSTR(cargos.cargdoso,1,3) IN ( SELECT (regexp_substr(pkg_bcfactuelectronicagen.sbDocumeSoporte,  '[^,]+',   1, LEVEL)) AS DOCU
-                                                                       FROM dual
-                                                                       CONNECT BY regexp_substr(pkg_bcfactuelectronicagen.sbDocumeSoporte, '[^,]+', 1, LEVEL) IS NOT NULL  )
-                               )),
-		 FacturasFinales AS (
-			 SELECT FacturaVentaIng.factcodi
-			 FROM FacturaVentaIng
-			 WHERE NOT EXISTS ( SELECT  1
-								FROM factura_elect_general
-								WHERE factura_elect_general.tipo_documento = inuTipoDocu
-									AND factura_elect_general.documento = to_char(FacturaVentaIng.factcodi)
-								UNION ALL
-								SELECT 1
-								FROM facturas_emitidas
-								WHERE facturas_emitidas.tipo_documento = inuTipoDocu
-								   AND facturas_emitidas.documento = to_char(FacturaVentaIng.factcodi) ))
-		SELECT *
-		FROM FacturasFinales
-        WHERE  mod(FacturasFinales.factcodi, inuTotalHilo )+ 1 = inuHilo;
-
-        TYPE tblFactVentas  IS TABLE OF cuGetVentas%ROWTYPE;
-        v_tblFactVentas   tblFactVentas;
+        
 
         CURSOR cuGetDocuActualizar IS
         SELECT factura_elect_general.documento
@@ -593,13 +537,17 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
 
                   nuErrorCode := 0;
                   nuFactura :=  v_tblFacturas(idx).factcodi;
-                  PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( nuFactura,
-                                                                   inuCodigoLote,
-                                                                   isbOperacion,
-                                                                   InuTipoDocu,
-                                                                   nuIdReporte,
-                                                                   nuErrorCode,
-                                                                   sbErrorMessage);
+				  
+				  sbEmpresa := pkg_lote_fact_electronica.fsbObtCodEmpresa(inuCodigoLote);
+              
+                  PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( inuFactura => nuFactura,
+                                                                   inuCodigoLote => inuCodigoLote,
+                                                                   isbOperacion => isbOperacion,
+                                                                   inuTipoDocu => InuTipoDocu,
+                                                                   inuIdReporte => nuIdReporte,
+																   isbCodEmpresa => sbEmpresa,
+                                                                   onuError => nuErrorCode,
+                                                                   osbError => sbErrorMessage);
 
                   IF nuErrorCode <> 0 THEN
                      ROLLBACK;
@@ -616,73 +564,6 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
             END LOOP;
             CLOSE cuGetFactRecuProcesar;
 
-        ELSIF InuTipoDocu = PKG_BCFACTUELECTRONICAGEN.cnuTipoDocuVentas AND isbOperacion = 'I'  THEN
-           --se realiza proceso de facturacion electronica
-              OPEN cuGetVentas;
-              LOOP
-                FETCH cuGetVentas BULK COLLECT INTO v_tblFactVentas LIMIT 100;
-                  nuTotal := nuTotal  + v_tblFactVentas.COUNT;
-                  nufactura:=  null;
-                  FOR idx IN 1..v_tblFactVentas.COUNT LOOP
-
-                      nuErrorCode := 0;
-                      nuFactura :=  v_tblFactVentas(idx).factcodi;
-                      PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( nuFactura,
-                                                                       inuCodigoLote,
-                                                                       isbOperacion,
-                                                                       InuTipoDocu,
-                                                                       nuIdReporte,
-                                                                       nuErrorCode,
-                                                                       sbErrorMessage);
-
-                      IF nuErrorCode <> 0 THEN
-                         ROLLBACK;
-                      ELSE
-                         nuRegist := nuRegist + 1;
-                         COMMIT;
-                      END IF;
-                      pkg_estaproc.prActualizaAvance( sbProcesoInt,
-                                                      'Procesando venta '||v_tblFactVentas(idx).factcodi,
-                                                       nuRegist,
-                                                       nuTotal);
-                  END LOOP;
-                  EXIT   WHEN cuGetVentas%NOTFOUND;
-                END LOOP;
-                CLOSE cuGetVentas;
-        ELSIF InuTipoDocu = PKG_BCFACTUELECTRONICAGEN.cnuTipoDocuNotas AND isbOperacion = 'I' THEN
-              --se realiza proceso de facturacion electronica
-              OPEN cuGetNotasaProcesar;
-              LOOP
-                FETCH cuGetNotasaProcesar BULK COLLECT INTO v_tblNotas LIMIT 100;
-                  nuTotal := nuTotal  + v_tblNotas.COUNT;
-                  nufactura:=  null;
-                  FOR idx IN 1..v_tblNotas.COUNT LOOP
-
-                      nuErrorCode := 0;
-                      nuFactura :=  v_tblNotas(idx).notanume;
-                      PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( nuFactura,
-                                                                       inuCodigoLote,
-                                                                       isbOperacion,
-                                                                       InuTipoDocu,
-                                                                       nuIdReporte,
-                                                                       nuErrorCode,
-                                                                       sbErrorMessage);
-
-                      IF nuErrorCode <> 0 THEN
-                         ROLLBACK;
-                      ELSE
-                         nuRegist := nuRegist + 1;
-                         COMMIT;
-                      END IF;
-                      pkg_estaproc.prActualizaAvance( sbProcesoInt,
-                                                      'Procesando nota '||v_tblNotas(idx).notanume,
-                                                       nuRegist,
-                                                       nuTotal);
-                  END LOOP;
-                  EXIT   WHEN cuGetNotasaProcesar%NOTFOUND;
-                END LOOP;
-                CLOSE cuGetNotasaProcesar;
-
         END IF;
 
         IF isbOperacion = 'A' THEN
@@ -696,14 +577,19 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
 
                       nuErrorCode := 0;
                       nuFactura :=  v_tblFacturas(idx).factcodi;
-                      PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( nuFactura,
-                                                                       inuCodigoLote,
-                                                                       isbOperacion,
-                                                                       InuTipoDocu,
-                                                                       nuIdReporte,
-                                                                       nuErrorCode,
-                                                                       sbErrorMessage);
-
+					  
+			  
+					  sbEmpresa := pkg_lote_fact_electronica.fsbObtCodEmpresa(inuCodigoLote);
+                      
+                      PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( inuFactura => nuFactura,
+                                                                       inuCodigoLote => inuCodigoLote,
+                                                                       isbOperacion => isbOperacion,
+                                                                       inuTipoDocu => InuTipoDocu,
+                                                                       inuIdReporte => nuIdReporte,
+																	   isbCodEmpresa => sbEmpresa,
+                                                                       onuError => nuErrorCode,
+                                                                       osbError => sbErrorMessage);
+                                                                   
                       IF nuErrorCode <> 0 THEN
                          ROLLBACK;
                       ELSE
@@ -1498,6 +1384,7 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
                                    inuMes      IN  NUMBER,
                                    inuCiclo    IN  NUMBER,
                                    inuCantHilo IN NUMBER,
+								   isbCodEmpresa IN VARCHAR2,
                                    onuLote     OUT NUMBER) IS
      /***************************************************************************
         Propiedad Intelectual de Gases del Caribe
@@ -1514,12 +1401,15 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
            inuMes         mes
            inuCiclo       ciclo
            inuCantHilo    cantidad de hilo
+		   isbCodEmpresa  Codigo de empresa
+
         Parametros de Salida
            onuLote       codigo del lote insertado
         Modificaciones  :
         =========================================================
         Autor       Fecha       Caso       Descripcion
         LJLB       14-05-2024   OSF-2158    Creacion
+		JSOTO	   27-03-2025	OSF-4104	Se agrega parametro de entrada isbCodEmpresa
     ***************************************************************************/
          PRAGMA AUTONOMOUS_TRANSACTION;
          csbMetodo        CONSTANT VARCHAR2(105) := csbSP_NAME ||  '.prInsertaLoteaProce';
@@ -1536,9 +1426,11 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
          v_styLoteFactElectronica.mes := inuMes;
          v_styLoteFactElectronica.ciclo := inuCiclo;
          v_styLoteFactElectronica.cantidad_hilos := inuCantHilo;
+		 v_styLoteFactElectronica.empresa := isbCodEmpresa;
          v_styLoteFactElectronica.fecha_inicio := SYSDATE;
          v_styLoteFactElectronica.flag_terminado := 'N';
          v_styLoteFactElectronica.tipo_documento := inuTipoDocu;
+		 
 
          pkg_lote_fact_electronica.prInsLoteFactElectronica(v_styLoteFactElectronica);
          commit;
@@ -1559,13 +1451,14 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
             RAISE pkg_Error.Controlled_Error;
     END prInsertaLoteaProce;
 
-    PROCEDURE prInsertaLoteaProcesar( inuTipoDocu IN NUMBER,
-                                   inuPeriodo  IN  NUMBER,
-                                   inuAno      IN  NUMBER,
-                                   inuMes      IN  NUMBER,
-                                   inuCiclo    IN  NUMBER,
-                                   inuCantHilo IN NUMBER,
-                                   onuLote     OUT NUMBER) IS
+    PROCEDURE prInsertaLoteaProcesar( 	inuTipoDocu 	IN 	NUMBER,
+										inuPeriodo  	IN  NUMBER,
+										inuAno      	IN  NUMBER,
+										inuMes      	IN  NUMBER,
+										inuCiclo    	IN  NUMBER,
+										inuCantHilo 	IN 	NUMBER,
+										isbCodEmpresa  	IN 	VARCHAR2,
+										onuLote     	OUT NUMBER) IS
      /***************************************************************************
         Propiedad Intelectual de Gases del Caribe
         Programa        : prInsertaLoteaProcesar
@@ -1581,27 +1474,30 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
            inuMes         mes
            inuCiclo       ciclo
            inuCantHilo    cantidad de hilo
+		   isbCodEmpresa	  Código de empresa
         Parametros de Salida
            onuLote       codigo del lote insertado
         Modificaciones  :
         =========================================================
         Autor       Fecha       Caso       Descripcion
         LJLB       14-05-2024   OSF-2158    Creacion
+		JSOTO	   14-03-2025   OSF-4104	Se agrega parametro isbCodEmpresa
     ***************************************************************************/
          csbMetodo        CONSTANT VARCHAR2(105) := csbSP_NAME ||  '.prInsertaLoteaProcesar';
-
          v_styLoteFactElectronica  pkg_lote_fact_electronica.styLoteFactElectronica;
+		 
       BEGIN
          pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
          onuLote := SEQ_LOTE_FACT_ELECTRONICA.nextval;
          pkg_traza.trace(' onuLote => ' || onuLote, pkg_traza.cnuNivelTrzDef);
-
+		 
          v_styLoteFactElectronica.codigo_lote := onuLote;
          v_styLoteFactElectronica.periodo_facturacion := inuPeriodo;
          v_styLoteFactElectronica.anio := inuAno;
          v_styLoteFactElectronica.mes := inuMes;
          v_styLoteFactElectronica.ciclo := inuCiclo;
          v_styLoteFactElectronica.cantidad_hilos := inuCantHilo;
+		 v_styLoteFactElectronica.empresa := isbCodEmpresa;
          v_styLoteFactElectronica.fecha_inicio := SYSDATE;
          v_styLoteFactElectronica.flag_terminado := 'N';
          v_styLoteFactElectronica.tipo_documento := inuTipoDocu;
@@ -1703,7 +1599,8 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
         SELECT perifact.pefacodi,
                perifact.pefaano,
                perifact.pefames,
-               perifact.pefacicl
+               perifact.pefacicl,
+			   pkg_boconsultaempresa.fsbObtEmpresaCiclo(perifact.pefacicl) empresa
         FROM perifact, ldc_pecofact
         WHERE ldc_pecofact.pcfapefa = perifact.pefacodi
          AND NVL(ldc_pecofact.PCFAOBSE,'N') = 'N'
@@ -1772,6 +1669,7 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
                                        reg.pefames,
                                        reg.pefacicl,
                                        nuTOTAL_HILOS,
+									   reg.empresa,
                                        onuLoteProc);
                END IF;
 
@@ -1829,10 +1727,248 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
         Modificaciones  :
         =========================================================
         Autor       Fecha       Caso       Descripcion
+		JSOTO	   17-03-2025	OSF-4104	Se cambia lógica para hacer mediante un loop llamado a prcCrearLoteMasivoVenta
         LJLB       18-10-2024   OSF-3493    se cloca filtro de cargtipr = 'A' para cargos con condiciones especiales
 		LJLB       15-05-2024   OSF-2158    Creacion
     ***************************************************************************/
+	
         csbMetodo        CONSTANT VARCHAR2(100) := csbSP_NAME ||  '.prCrearProcMasivoVenta';
+		nuIndice    	 empresa.codigo%TYPE;
+
+    BEGIN
+       pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+		
+		tbDatosEmpresa.DELETE;
+	 
+		tbDatosEmpresa := pkg_empresa.frcObtieneInfoEmpresas;
+	 
+		nuIndice := tbDatosEmpresa.FIRST;
+		
+		LOOP
+			EXIT WHEN nuIndice IS NULL;
+			
+			prcCrearLoteMasivoVenta(tbDatosEmpresa(nuIndice).codigo);
+			
+			nuIndice := tbDatosEmpresa.NEXT(nuIndice);
+			
+		END LOOP;
+
+       pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+   EXCEPTION
+      WHEN pkg_Error.Controlled_Error  THEN
+            pkg_error.getError(nuError,sbError);
+            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+		    RAISE pkg_Error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_Error.setError;
+            pkg_error.getError(nuError,sbError);
+            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
+		    RAISE pkg_Error.Controlled_Error;
+    END prCrearProcMasivoVenta;
+
+    PROCEDURE prCrearProcMasivoNotas IS
+    /***************************************************************************
+        Propiedad Intelectual de Gases del Caribe
+        Programa        : prCrearProcMasivoNotas
+        Descripcion     : procesa para la Creacion de cadena de Jobs del proceso masivo para notas
+
+        Autor           : Luis Javier Lopez Barrios
+        Fecha           : 09-07-2024
+
+        Parametros de Entrada
+
+        Parametros de Salida
+
+        Modificaciones  :
+        =========================================================
+        Autor       Fecha       Caso       Descripcion
+        LJLB       09-07-2024   OSF-2158    Creacion
+		JSOTO	   17-03-2025	OSF-4104	Se cambia la lógica por loop de empresas y llamado a PRCCREARLOTEMASIVONOTAS
+
+    ***************************************************************************/
+        csbMetodo        CONSTANT VARCHAR2(100) := csbSP_NAME ||  '.prCrearProcMasivoNotas';
+		nuIndice    	 empresa.codigo%TYPE;
+		
+    BEGIN
+		pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+		
+		tbDatosEmpresa.DELETE;
+	 
+		tbDatosEmpresa := pkg_empresa.frcObtieneInfoEmpresas;
+	 
+		nuIndice := tbDatosEmpresa.FIRST;
+		
+		LOOP
+			EXIT WHEN nuIndice IS NULL;
+			
+			prccrearlotemasivonotas(tbDatosEmpresa(nuIndice).codigo);
+			
+			nuIndice := tbDatosEmpresa.NEXT(nuIndice);
+		END LOOP;
+	   		
+		pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+   EXCEPTION
+      WHEN pkg_Error.Controlled_Error  THEN
+            pkg_error.getError(nuError,sbError);
+            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+            RAISE pkg_Error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_Error.setError;
+            pkg_error.getError(nuError,sbError);
+            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
+            RAISE pkg_Error.Controlled_Error;
+    END prCrearProcMasivoNotas;
+
+	
+    PROCEDURE prActualizaEstrFactElec(  inuFactura   IN   NUMBER,
+                                         inuCodigoLote IN  NUMBER,
+                                         isbOperacion  IN  VARCHAR2,
+                                         inuTipoDocu   IN  NUMBER,
+                                         InuIdReporte   IN NUMBER,
+                                         onuError     OUT  NUMBER,
+                                         osbError     OUT  VARCHAR2) IS
+     /***************************************************************************
+        Propiedad Intelectual de Gases del Caribe
+        Programa        : prActualizaEstrFactElec
+        Descripcion     : proceso para generar estructura de facturacion electronica
+
+        Autor           : Luis Javier Lopez Barrios
+        Fecha           : 17-01-2024
+
+        Parametros de Entrada
+          inuFactura       codigo de la factura
+          inuCodigoLote    codigo de lote
+          isbOperacion    Operacion a realizar I - Insertar A -Actualizar
+          inuTipoDocu     tipo de documento a generar
+          InuIdReporte    codigo de reporte
+        Parametros de Salida
+          onuError        codigo del error
+          osbError        mensaje de error
+        Modificaciones  :
+        =========================================================
+        Autor       Fecha       Caso       Descripcion
+        LJLB        17-01-2024  OSF-2158    Creacion
+		JSOTO		21-03-2025	OSF-4104	Se obtiene el codigo de empresa para enviarlo a prGenerarEstrFactElec
+      ***************************************************************************/
+       csbMetodo        CONSTANT VARCHAR2(100) := csbSP_NAME ||  '.prActualizaEstrFactElec';
+       nuIdReporte 		NUMBER;
+	   sbCodEmpresa		VARCHAR2(10);
+	   
+    BEGIN
+       pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+	   
+	   sbCodEmpresa := pkg_lote_fact_electronica.fsbObtCodEmpresa(inuCodigoLote);
+	   
+       PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( inuFactura => inuFactura,
+                                                       inuCodigoLote => inuCodigoLote,
+                                                       isbOperacion => isbOperacion,
+                                                       inuTipoDocu => inuTipoDocu,
+                                                       inuIdReporte => inuIdReporte,
+													   isbCodEmpresa => sbCodEmpresa,
+                                                       onuError => onuError,
+                                                       osbError => osbError);
+       pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+   EXCEPTION
+      WHEN pkg_Error.Controlled_Error  THEN
+            pkg_error.getError(nuError,sbError);
+            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+        WHEN OTHERS THEN
+            pkg_Error.setError;
+            pkg_error.getError(nuError,sbError);
+            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
+    END prActualizaEstrFactElec;
+
+    PROCEDURE prJobEliminarRegFactElect IS
+    /***************************************************************************
+        Propiedad Intelectual de Gases del Caribe
+        Programa        : prJobEliminarRegFactElect
+        Descripcion     : job que se encarga de eliminar las facturas /notas enviadas a la Dian
+
+        Autor           : Luis Javier Lopez Barrios
+        Fecha           : 13-09-2024
+
+        Parametros de Entrada
+
+        Parametros de Salida
+
+        Modificaciones  :
+        =========================================================
+        Autor       Fecha       Caso       Descripcion
+        LJLB       13-09-2024   OSF-3239    Creacion
+    ***************************************************************************/
+      csbMetodo        CONSTANT VARCHAR2(150) := csbSP_NAME ||  '.prJobEliminarRegFactElect';
+      sbProceso    VARCHAR2(4000) :=  'JOBELIREFE_'||TO_CHAR(SYSDATE, 'DDMMYYYYHH24MISS'); 
+      sbFecha VARCHAR2(40) := TO_CHAR(SYSDATE, 'DDMMYYYY');
+      sbNombreTabla  VARCHAR2(40) := 'tmp_fact_electronica'||sbFecha;
+  BEGIN
+	pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
+    pkg_estaproc.prinsertaestaproc( sbProceso , 0);
+    pkg_traza.trace(' sbNombreTabla => ' || sbNombreTabla, pkg_traza.cnuNivelTrzDef);  
+    --se crea tabla temporal
+    EXECUTE IMMEDIATE 'CREATE TABLE '||sbNombreTabla||'  AS
+                        SELECT *
+                        FROM factura_elect_general
+                        WHERE  NOT EXISTS ( SELECT 1 
+                                              FROM facturas_emitidas
+                                              WHERE factura_elect_general.codigo_lote = facturas_emitidas.codigo_lote 
+                                                     AND factura_elect_general.tipo_documento =  facturas_emitidas.tipo_documento 
+                                                     AND  factura_elect_general.documento = facturas_emitidas.documento )
+                            AND factura_elect_general.emitir_factura = ''S''';
+
+    --se elimina tabla 
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE factura_elect_general';
+
+
+    EXECUTE IMMEDIATE 'INSERT INTO factura_elect_general
+                        SELECT *
+                        FROM '||sbNombreTabla;
+
+    EXECUTE IMMEDIATE 'DROP TABLE '||sbNombreTabla;
+    pkg_estaproc.practualizaestaproc(isbproceso => sbProceso);
+    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
+  EXCEPTION
+      WHEN pkg_Error.Controlled_Error  THEN
+            pkg_error.getError(nuError,sbError);
+            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
+            pkg_EstaProc.prActualizaEstaproc ( sbProceso, 'Error ', sbError );
+            RAISE pkg_Error.Controlled_Error;
+        WHEN OTHERS THEN
+            pkg_Error.setError;
+            pkg_error.getError(nuError,sbError);
+            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
+            pkg_EstaProc.prActualizaEstaproc ( sbProceso, 'Error ', sbError );
+            RAISE pkg_Error.Controlled_Error;
+  END prJobEliminarRegFactElect; 
+  
+  
+  	PROCEDURE prcCrearLoteMasivoVenta (isbCodEmpresa	IN VARCHAR2) IS
+    /***************************************************************************
+        Propiedad Intelectual de Gases del Caribe
+        Programa        : prcCrearLoteMasivoVenta
+        Descripcion     : procesa para la Creacion de cadena de Jobs del proceso masivo para ventas
+
+        Autor           : Luis Javier Lopez Barrios
+        Fecha           : 15-05-2024
+
+        Parametros de Entrada
+
+        Parametros de Salida
+
+        Modificaciones  :
+        =========================================================
+        Autor       Fecha       Caso       Descripcion
+        LJLB       18-10-2024   OSF-3493    se cloca filtro de cargtipr = 'A' para cargos con condiciones especiales
+		LJLB       15-05-2024   OSF-2158    Creacion
+    ***************************************************************************/
+        csbMetodo        CONSTANT VARCHAR2(100) := csbSP_NAME ||  '.prcCrearLoteMasivoVenta';
         sbProceso        VARCHAR2(4000) := 'PRCREARPROCMASIVOVENTA_'||TO_CHAR(SYSDATE, 'DDMMYYYYHH24MISS');
         onuLoteProc      NUMBER;
         sbOperacion      VARCHAR2(1) := 'I';
@@ -1852,7 +1988,8 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
 				 AND servsusc.sesuserv NOT IN (  SELECT to_number(regexp_substr(PKG_BCFACTUELECTRONICAGEN.csbTipoProdExcluir,  '[^,]+',   1, LEVEL)) AS TIPOPROD
 												  FROM dual
 												  CONNECT BY regexp_substr(PKG_BCFACTUELECTRONICAGEN.csbTipoProdExcluir, '[^,]+', 1, LEVEL) IS NOT NULL )
-                 AND (factura.factfege) between dtFechaInicial AND  dtFechaFinal ),
+                 AND (factura.factfege) between dtFechaInicial AND  dtFechaFinal
+				 AND pkg_boconsultaempresa.fsbObtEmpresaFactura(factura.factcodi) = isbCodEmpresa),
          FacturaVentaIng AS
               (SELECT *
                FROM FacturaVentas
@@ -1973,21 +2110,23 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
                                        v_tblFactVentas(idx).pefames,
                                        -1,
                                        1,
+									   isbCodEmpresa,
                                        onuLoteProc);
 			   END IF;
 
 			   nuRegist := nuRegist + 1;
 			  nuError := 0;
 			  nuFactura :=  v_tblFactVentas(idx).factcodi;
-			  PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( nuFactura,
-															   onuLoteProc,
-															   'I',
-															   pkg_bcfactuelectronicagen.cnuTipoDocuVentas,
-															   nuIdReporte,
-															   nuError,
-															   sbError);
-
-			  IF nuError <> 0 THEN
+              PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( inuFactura => nuFactura,
+                                                               inuCodigoLote => onuLoteProc,
+                                                               isbOperacion => 'I',
+                                                               inuTipoDocu => pkg_bcfactuelectronicagen.cnuTipoDocuVentas,
+                                                               inuIdReporte => nuIdReporte,
+															   isbCodEmpresa => isbCodEmpresa,
+                                                               onuError => nuError,
+                                                               osbError => sbError);
+                                                               
+ 			  IF nuError <> 0 THEN
 				 ROLLBACK;
                  nuRegisInco := nuRegisInco +1;
 				 IF NOT blConfirma THEN
@@ -2028,12 +2167,13 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
             pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
             pkg_EstaProc.prActualizaEstaproc ( sbProceso, 'Error ', sbError );
 		    RAISE pkg_Error.Controlled_Error;
-    END prCrearProcMasivoVenta;
+    END prcCrearLoteMasivoVenta;
 
-    PROCEDURE prCrearProcMasivoNotas IS
+  
+      PROCEDURE prcCrearLoteMasivoNotas (isbCodEmpresa IN VARCHAR2) IS
     /***************************************************************************
         Propiedad Intelectual de Gases del Caribe
-        Programa        : prCrearProcMasivoNotas
+        Programa        : prcCrearLoteMasivoNotas
         Descripcion     : procesa para la Creacion de cadena de Jobs del proceso masivo para notas
 
         Autor           : Luis Javier Lopez Barrios
@@ -2048,7 +2188,7 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
         Autor       Fecha       Caso       Descripcion
         LJLB       09-07-2024   OSF-2158    Creacion
     ***************************************************************************/
-        csbMetodo        CONSTANT VARCHAR2(100) := csbSP_NAME ||  '.prCrearProcMasivoNotas';
+        csbMetodo        CONSTANT VARCHAR2(100) := csbSP_NAME ||  '.prcCrearLoteMasivoNotas';
 
         sbProceso        VARCHAR2(4000) := 'PRCREARPROCMASIVONOTA_'||TO_CHAR(SYSDATE, 'DDMMYYYYHH24MISS');
         onuLoteProc      NUMBER;
@@ -2069,6 +2209,7 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
                AND notaprog NOT IN  ( SELECT to_number(regexp_substr(sbProgramaExcluir,  '[^,]+',   1, LEVEL)) AS programas
                                       FROM dual
                                       CONNECT BY regexp_substr(sbProgramaExcluir, '[^,]+', 1, LEVEL) IS NOT NULL )
+			  AND pkg_boconsultaempresa.fsbObtEmpresaFactura(notas.notafact) = isbCodEmpresa
               AND notas.notafecr BETWEEN dtFechaInicial AND  dtFechaFinal
 
            ), NotaIngreso AS
@@ -2188,19 +2329,22 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
 								   v_tblNotas(idx).pefames,
 								   -1,
 								   1,
+								   isbCodEmpresa,
 								   onuLoteProc);
 			   END IF;
 
-			   nuRegist := nuRegist + 1;
+			  nuRegist := nuRegist + 1;
 			  nuError := 0;
 			  nuFactura :=  v_tblNotas(idx).notanume;
-			  PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( nuFactura,
-															   onuLoteProc,
-															   sbOperacion,
-															   pkg_bcfactuelectronicagen.cnuTipoDocuNotas,
-															   nuIdReporte,
-															   nuError,
-															   sbError);
+              PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( inuFactura => nuFactura,
+                                                               inuCodigoLote => onuLoteProc,
+                                                               isbOperacion => sbOperacion,
+                                                               inuTipoDocu => pkg_bcfactuelectronicagen.cnuTipoDocuNotas,
+                                                               inuIdReporte => nuIdReporte,
+															   isbCodEmpresa => isbCodEmpresa,
+                                                               onuError => nuError,
+                                                               osbError => sbError);
+     
 
 			  IF nuError <> 0 THEN
 				 ROLLBACK;
@@ -2240,124 +2384,8 @@ create or replace PACKAGE BODY   personalizaciones.pkg_UtilFacturacionElecGen IS
             pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
             pkg_EstaProc.prActualizaEstaproc ( sbProceso, 'Error ', sbError );
             RAISE pkg_Error.Controlled_Error;
-    END prCrearProcMasivoNotas;
-
-    PROCEDURE prActualizaEstrFactElec(  inuFactura   IN   NUMBER,
-                                         inuCodigoLote IN  NUMBER,
-                                         isbOperacion  IN  VARCHAR2,
-                                         inuTipoDocu   IN  NUMBER,
-                                         InuIdReporte   IN NUMBER,
-                                         onuError     OUT  NUMBER,
-                                         osbError     OUT  VARCHAR2) IS
-     /***************************************************************************
-        Propiedad Intelectual de Gases del Caribe
-        Programa        : prActualizaEstrFactElec
-        Descripcion     : proceso para generar estructura de facturacion electronica
-
-        Autor           : Luis Javier Lopez Barrios
-        Fecha           : 17-01-2024
-
-        Parametros de Entrada
-          inuFactura       codigo de la factura
-          inuCodigoLote    codigo de lote
-          isbOperacion    Operacion a realizar I - Insertar A -Actualizar
-          inuTipoDocu     tipo de documento a generar
-          InuIdReporte    codigo de reporte
-        Parametros de Salida
-          onuError        codigo del error
-          osbError        mensaje de error
-        Modificaciones  :
-        =========================================================
-        Autor       Fecha       Caso       Descripcion
-        LJLB        17-01-2024  OSF-2158    Creacion
-      ***************************************************************************/
-       csbMetodo        CONSTANT VARCHAR2(100) := csbSP_NAME ||  '.prActualizaEstrFactElec';
-       nuIdReporte NUMBER;
-    BEGIN
-       pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-       PKG_BOFACTUELECTRONICAGEN.prGenerarEstrFactElec( inuFactura,
-                                                       inuCodigoLote,
-                                                       isbOperacion ,
-                                                       inuTipoDocu ,
-                                                       inuIdReporte,
-                                                       onuError,
-                                                       osbError );
-       pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-   EXCEPTION
-      WHEN pkg_Error.Controlled_Error  THEN
-            pkg_error.getError(nuError,sbError);
-            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
-            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-        WHEN OTHERS THEN
-            pkg_Error.setError;
-            pkg_error.getError(nuError,sbError);
-            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
-            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-    END prActualizaEstrFactElec;
-    
-    PROCEDURE prJobEliminarRegFactElect IS
-    /***************************************************************************
-        Propiedad Intelectual de Gases del Caribe
-        Programa        : prJobEliminarRegFactElect
-        Descripcion     : job que se encarga de eliminar las facturas /notas enviadas a la Dian
-
-        Autor           : Luis Javier Lopez Barrios
-        Fecha           : 13-09-2024
-
-        Parametros de Entrada
-
-        Parametros de Salida
-
-        Modificaciones  :
-        =========================================================
-        Autor       Fecha       Caso       Descripcion
-        LJLB       13-09-2024   OSF-3239    Creacion
-    ***************************************************************************/
-      csbMetodo        CONSTANT VARCHAR2(150) := csbSP_NAME ||  '.prJobEliminarRegFactElect';
-      sbProceso    VARCHAR2(4000) :=  'JOBELIREFE_'||TO_CHAR(SYSDATE, 'DDMMYYYYHH24MISS'); 
-      sbFecha VARCHAR2(40) := TO_CHAR(SYSDATE, 'DDMMYYYY');
-      sbNombreTabla  VARCHAR2(40) := 'tmp_fact_electronica'||sbFecha;
-  BEGIN
-	pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbINICIO);
-    pkg_estaproc.prinsertaestaproc( sbProceso , 0);
-    pkg_traza.trace(' sbNombreTabla => ' || sbNombreTabla, pkg_traza.cnuNivelTrzDef);  
-    --se crea tabla temporal
-    EXECUTE IMMEDIATE 'CREATE TABLE '||sbNombreTabla||'  AS
-                        SELECT *
-                        FROM factura_elect_general
-                        WHERE  NOT EXISTS ( SELECT 1 
-                                              FROM facturas_emitidas
-                                              WHERE factura_elect_general.codigo_lote = facturas_emitidas.codigo_lote 
-                                                     AND factura_elect_general.tipo_documento =  facturas_emitidas.tipo_documento 
-                                                     AND  factura_elect_general.documento = facturas_emitidas.documento )
-                            AND factura_elect_general.emitir_factura = ''S''';
-
-    --se elimina tabla 
-    EXECUTE IMMEDIATE 'TRUNCATE TABLE factura_elect_general';
-
-
-    EXECUTE IMMEDIATE 'INSERT INTO factura_elect_general
-                        SELECT *
-                        FROM '||sbNombreTabla;
-     
-    EXECUTE IMMEDIATE 'DROP TABLE '||sbNombreTabla;
-    pkg_estaproc.practualizaestaproc(isbproceso => sbProceso);
-    pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN);
-  EXCEPTION
-      WHEN pkg_Error.Controlled_Error  THEN
-            pkg_error.getError(nuError,sbError);
-            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
-            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERC);
-            pkg_EstaProc.prActualizaEstaproc ( sbProceso, 'Error ', sbError );
-            RAISE pkg_Error.Controlled_Error;
-        WHEN OTHERS THEN
-            pkg_Error.setError;
-            pkg_error.getError(nuError,sbError);
-            pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
-            pkg_traza.trace(csbMetodo, csbNivelTraza, pkg_traza.csbFIN_ERR);
-            pkg_EstaProc.prActualizaEstaproc ( sbProceso, 'Error ', sbError );
-            RAISE pkg_Error.Controlled_Error;
-  END prJobEliminarRegFactElect; 
+    END prcCrearLoteMasivoNotas;
+  
 END pkg_UtilFacturacionElecGen;
 /
 BEGIN

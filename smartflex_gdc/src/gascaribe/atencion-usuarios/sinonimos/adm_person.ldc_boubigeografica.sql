@@ -1,5 +1,7 @@
-PROMPT Crea sinonimo objeto LDC_BOUBIGEOGRAFICA
+Prompt Creando sinonimos privados para sobre ADM_PERSON.ldc_BOUbiGeografica
 BEGIN
-    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM LDC_BOUBIGEOGRAFICA FOR ADM_PERSON.LDC_BOUBIGEOGRAFICA';
+    -- OSF-4555
+    pkg_Utilidades.prCrearSinonimos(upper('ldc_BOUbiGeografica'), upper('ADM_PERSON'));
+        
 END;
 /

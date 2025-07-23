@@ -1,5 +1,13 @@
 DECLARE
   nuConta NUMBER;
+  nuExiste 	NUMBER;
+  
+  	cursor cuDatos(sbCampo VARCHAR2) is
+	select count(1)
+	  from dba_tab_columns
+	 where table_name='LOTE_FACT_ELECTRONICA'
+	   and column_name= sbCampo;
+	   
 BEGIN
 
  SELECT COUNT(*) INTO nuConta
@@ -10,7 +18,7 @@ BEGIN
   IF nuConta = 0 THEN
 
 	EXECUTE IMMEDIATE 'CREATE TABLE personalizaciones.LOTE_FACT_ELECTRONICA(  	CODIGO_LOTE       	 NUMBER(15) NOT NULL,
-																				 tipo_documento    NUMBER(15) ,
+																				TIPO_DOCUMENTO    	 NUMBER(15) ,
 																				PERIODO_FACTURACION  NUMBER(15),
 																				ANIO				 NUMBER(4),
 																				MES   				 NUMBER(2),
@@ -51,8 +59,29 @@ BEGIN
 	BEGIN
 	  pkg_utilidades.prAplicarPermisos('LOTE_FACT_ELECTRONICA','PERSONALIZACIONES');
 	END;
-	
 
   END IF;
+
+     -- Agregar Columna Empresa
+
+  	OPEN cuDatos('EMPRESA');
+	FETCH cuDatos INTO nuExiste;
+	CLOSE cuDatos;
+
+	IF nuExiste = 0 THEN
+	
+		EXECUTE IMMEDIATE 
+		'alter table PERSONALIZACIONES.LOTE_FACT_ELECTRONICA
+		add(
+			"EMPRESA" VARCHAR2(10)
+			)';
+
+
+		   EXECUTE IMMEDIATE 'COMMENT ON COLUMN PERSONALIZACIONES.RECOFAEL_LOG.EMPRESA IS '|| '''' || 'Empresa' || '''';
+  
+	END IF;
+
+
+
 END;
 /

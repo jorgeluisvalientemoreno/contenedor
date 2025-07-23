@@ -39,6 +39,28 @@ IS
 	FUNCTION fnuSEQ_LDC_ACTCALLCENTER
 	RETURN ldc_actcallcenter.actcc_id%type;
 	
+	--funcion que retorna valor de la secuencia SEQ_CUPON
+	FUNCTION fnuSEQ_CUPON
+	RETURN cupon.cuponume%type;
+	
+    FUNCTION fnuSEQ_GE_PROC_SCHE_DETAIL	
+	RETURN ge_proc_sche_detail.proc_sche_detail_id%type;
+	   /***************************************************************************
+        Propiedad Intelectual de Gases del Caribe
+        Programa        : fnuSEQ_GE_PROC_SCHE_DETAIL
+        Descripcion     : funcion que devuelve valor de la secuencia SEQ_GE_PROC_SCHE_DETAIL 
+
+        Autor           : Luis Javier Lopez Barrios
+        Fecha           : 10-12-2024
+
+        Parametros de Entrada
+        Parametros de Salida
+        Modificaciones  :
+        =========================================================
+        Autor       Fecha       Caso       Descripcion
+        LJLB       10-12-2024   OSF-3741    Creacion
+     ***************************************************************************/
+
 	
 END PKG_GESTIONSECUENCIAS;
 /
@@ -49,7 +71,7 @@ IS
     --------------------------------------------
     -- Constantes 
     --------------------------------------------
-    csbVERSION          CONSTANT VARCHAR2(10) := 'OSF-3604';
+    csbVERSION          CONSTANT VARCHAR2(10) := 'OSF-3536';
     csbSP_NAME          CONSTANT VARCHAR2(100):= $$PLSQL_UNIT||'.';
     cnuNVLTRC           CONSTANT NUMBER       := pkg_traza.cnuNivelTrzDef;
 	csbInicio   		CONSTANT VARCHAR2(35) := pkg_traza.fsbINICIO;
@@ -245,6 +267,105 @@ IS
 			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
 			RAISE pkg_Error.Controlled_Error;
     END fnuSEQ_LDC_ACTCALLCENTER;	
+
+    /**************************************************************************
+    <FUNCTION Fuente="Propiedad Intelectual de <Empresa>">
+    <Unidad> fnuSEQ_CUPON </Unidad>
+    <Autor> Jhon Soto </Autor>
+    <Fecha> 03-12-2024 </Fecha>
+    <Descripcion> 
+        Retorna el siguiente valor de la secuencia fnuSEQ_CUPON
+    </Descripcion>
+    <Historial>
+           <Modificacion Autor="Jsoto" Fecha="03-12-2024" Inc="OSF-3740" Empresa="GDC">
+               Creación
+           </Modificacion>
+    </Historial>
+    </FUNCTION>
+    **************************************************************************/					
+
+	FUNCTION fnuSEQ_CUPON
+	RETURN cupon.cuponume%type
+    IS
+	
+		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'fnuSEQ_CUPON';
+		
+		nuError				NUMBER;  
+		nuSeq	            cupon.cuponume%type;
+		sbError			    VARCHAR2(4000);     
+        
+    BEGIN
+		
+		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);
+		
+		nuSeq := SQ_CUPON_CUPONUME.NEXTVAL;
+		
+		pkg_traza.trace('nuSeq: ' || nuSeq, cnuNVLTRC);
+        
+		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
+		
+		RETURN nuSeq;
+
+    EXCEPTION
+		WHEN pkg_error.CONTROLLED_ERROR THEN
+			pkg_error.setError;
+			pkg_Error.getError(nuError, sbError);
+			pkg_traza.trace('nuError: ' || nuError || ' sbError: ' || sbError, cnuNVLTRC);
+			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERC); 
+			RAISE pkg_error.CONTROLLED_ERROR;
+		WHEN others THEN
+			pkg_Error.setError;
+			pkg_Error.getError(nuError, sbError);
+			pkg_traza.trace('nuError: ' || nuError || ' sbError: ' || sbError, cnuNVLTRC);
+			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
+			RAISE pkg_Error.Controlled_Error;
+    END fnuSEQ_CUPON;	
+
+    FUNCTION fnuSEQ_GE_PROC_SCHE_DETAIL	RETURN ge_proc_sche_detail.proc_sche_detail_id%type IS
+	 /***************************************************************************
+        Propiedad Intelectual de Gases del Caribe
+        Programa        : fnuSEQ_GE_PROC_SCHE_DETAIL
+        Descripcion     : funcion que devuelve valor de la secuencia SEQ_GE_PROC_SCHE_DETAIL 
+
+        Autor           : Luis Javier Lopez Barrios
+        Fecha           : 10-12-2024
+
+        Parametros de Entrada
+        Parametros de Salida
+        Modificaciones  :
+        =========================================================
+        Autor       Fecha       Caso       Descripcion
+        LJLB       10-12-2024   OSF-3741    Creacion
+     ***************************************************************************/
+
+		csbMT_NAME  		VARCHAR2(70) := csbSP_NAME || 'fnuSEQ_GE_PROC_SCHE_DETAIL';
+
+		nuError				NUMBER;  
+		nuSeq	            ge_proc_sche_detail.proc_sche_detail_id%type;
+		sbError			    VARCHAR2(4000);     
+
+    BEGIN
+
+		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);		
+		nuSeq := SEQ_GE_PROC_SCHE_DETAIL.NEXTVAL;		
+		pkg_traza.trace('nuSeq: ' || nuSeq, cnuNVLTRC);        
+		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);		
+		RETURN nuSeq;
+
+    EXCEPTION
+		WHEN pkg_error.CONTROLLED_ERROR THEN
+			pkg_error.setError;
+			pkg_Error.getError(nuError, sbError);
+			pkg_traza.trace('nuError: ' || nuError || ' sbError: ' || sbError, cnuNVLTRC);
+			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERC); 
+			RAISE pkg_error.CONTROLLED_ERROR;
+		WHEN others THEN
+			pkg_Error.setError;
+			pkg_Error.getError(nuError, sbError);
+			pkg_traza.trace('nuError: ' || nuError || ' sbError: ' || sbError, cnuNVLTRC);
+			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
+			RAISE pkg_Error.Controlled_Error;
+     END fnuSEQ_GE_PROC_SCHE_DETAIL;
 	    	
 END PKG_GESTIONSECUENCIAS;
 /
@@ -253,4 +374,3 @@ BEGIN
 pkg_utilidades.prAplicarPermisos(upper('PKG_GESTIONSECUENCIAS'),'ADM_PERSON'); 
 END;
 /
-

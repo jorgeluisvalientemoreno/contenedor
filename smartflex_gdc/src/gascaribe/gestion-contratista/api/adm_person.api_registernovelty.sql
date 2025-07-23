@@ -7,6 +7,7 @@ create or replace procedure   adm_person.api_registernovelty (  inuOperatingUnit
                                                                 inuObservType     IN NUMBER,
                                                                 isbObservation    IN VARCHAR2,
 																isbRelacionaOrden IN VARCHAR2 DEFAULT 'S',
+                                                                onuOrdenNovedad   OUT NUMBER,
                                                                 onuErrorCode     OUT GE_MESSAGE.MESSAGE_ID%TYPE,
                                                                 osbErrorMessage  OUT GE_ERROR_LOG.DESCRIPTION%TYPE ) IS
  /***************************************************************************
@@ -35,21 +36,85 @@ create or replace procedure   adm_person.api_registernovelty (  inuOperatingUnit
     Autor       Fecha           Descripcion
 	JSOTO		19/10/2023      OSF-1730 Se agrega variable isbRelacionaOrden para relacionar la orden de novedad
 								Se actualiza el manejo de traza personalizada.
+	jpinedc		10/07/2024      OSF-2204: * Se cambia OS_REGISTERNEWCHARGE                                
   ***************************************************************************/
   
-  nuIdDireccion           NUMBER;
-  cnuTipoRelacionNovedad  NUMBER := 14;
-  csbMT_NAME  			  VARCHAR2(35) := 'API_REGISTERNOVELTY';
-  cnuNVLTRC 			  CONSTANT NUMBER := pkg_traza.cnuNivelTrzApi;
-  csbInicio   			  CONSTANT VARCHAR2(35) := pkg_traza.fsbINICIO;
-	
- BEGIN
+    nuIdDireccion           NUMBER;
+    cnuTipoRelacionNovedad  NUMBER := 14;
+    csbMT_NAME  			  VARCHAR2(35) := 'API_REGISTERNOVELTY';
+    cnuNVLTRC 			  CONSTANT NUMBER := pkg_traza.cnuNivelTrzApi;
+    csbInicio   			  CONSTANT VARCHAR2(35) := pkg_traza.fsbINICIO;
+  
+	PROCEDURE prcRegistraOrdenNovedad
+	(
+        inuUnidadOperativa  IN  NUMBER,   
+        inuItem             IN  NUMBER,
+        inuOperario         IN  NUMBER,
+        inuOrden            IN  NUMBER,
+        inuValorRef         IN  NUMBER,
+        inuCantidad         IN  NUMBER,
+        inuTipoComentario   IN  NUMBER,
+        isbComentario       IN  VARCHAR2,
+        onuOrdenNovedad     OUT NUMBER,
+        onuError            OUT NUMBER,
+        osbError	        OUT VARCHAR2
+	) IS
+
+        csbMetodo        CONSTANT VARCHAR2(70) := csbMT_NAME || '.prcRegistraOrdenNovedad';
+	BEGIN
+
+        pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbINICIO);
+
+        pkg_error.prInicializaError(onuError, osbError);
+        
+        CT_BONOVELTY.VALIDATENOVELTY(
+            inuUnidadOperativa,
+            inuItem,
+            inuOperario,
+            inuOrden,
+            inuValorRef,
+            inuCantidad,
+            NULL,
+            inuTipoComentario,
+            isbComentario,
+            FALSE
+        );
+        
+        CT_BONOVELTY.CREATENOVELTY(
+            INUCONTRACTOR => NULL,
+            INUOPERUNIT   => inuUnidadOperativa,
+            INUITEM       => inuItem,
+            INUTECUNIT    => inuOperario,
+            INUORDERID    => inuOrden,
+            INUVALUE      => inuValorRef,
+            INUAMOUNT     => inuCantidad,
+            INUUSERID     => NULL,
+            INUCOMMENTYPE => inuTipoComentario,
+            ISBCOMMENT    => isbComentario,
+            ONUORDER      => onuOrdenNovedad
+        );        
+	          
+        pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN);  
+    
+    EXCEPTION
+        WHEN pkg_error.Controlled_Error THEN
+            pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERC);
+            pkg_Error.getError(onuError,osbError);        
+            pkg_traza.trace('osbError => ' || osbError, cnuNVLTRC );
+        WHEN OTHERS THEN
+            pkg_traza.trace(csbMetodo, cnuNVLTRC, pkg_traza.csbFIN_ERR);          
+            pkg_error.setError;
+            pkg_Error.getError(onuError,osbError);
+            pkg_traza.trace('osbError => ' || osbError, cnuNVLTRC );	
+	END prcRegistraOrdenNovedad;
+    
+BEGIN
  
 	pkg_traza.trace(csbMT_NAME,cnuNVLTRC,csbInicio);
 	
 	pkg_error.prInicializaError(onuErrorCode, osbErrorMessage);
    
-   OS_REGISTERNEWCHARGE( inuOperatingUnit,
+    prcRegistraOrdenNovedad( inuOperatingUnit,
                          inuItemId,
                          inuPersonId,
                          inuOrderId,
@@ -57,6 +122,7 @@ create or replace procedure   adm_person.api_registernovelty (  inuOperatingUnit
                          inuAmount,
                          inuObservType,
                          isbObservation,
+                         onuOrdenNovedad,
                          onuErrorCode,
                          osbErrorMessage );
   

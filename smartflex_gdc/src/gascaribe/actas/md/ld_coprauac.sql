@@ -317,7 +317,7 @@ null,
 'Y'
 ,
 67,
-null,
+'C',
 to_date('09-09-2022 15:43:07','DD-MM-YYYY HH24:MI:SS'),
 null);
 

@@ -13,6 +13,7 @@ IS
 
     DD-MM-YYYY    <Autor>.SAONNNNN        Modificacion
     -----------  -------------------    -------------------------------------
+	28/11/2024	 JSOTO					 OSF-3636 Se borra el procedimiento ProcessLDICU ya que el PB LDICU usará otros objetos
     21/06/2024   PAcosta                 OSF-2847: Cambio de esquema ADM_PERSON 
     23-06-2021   Horbath                 CA684: Se Crea PrintCouponNet
     30-07-2013   lgranada.SAO213197      Se modifica el metodo <GetQuotationData>
@@ -28,13 +29,6 @@ IS
     FUNCTION fsbVersion
     RETURN varchar2;
 
-
-    /**************************************************************
-    Propiedad intelectual de Open International Systems (c).
-    Unidad      :  ProcessRCICU
-    Descripcion :  Proceso de impresion de cupon
-    ***************************************************************/
-    PROCEDURE ProcessLDICU;
 
     /**************************************************************
     Propiedad intelectual de Open International Systems (c).
@@ -187,48 +181,6 @@ IS
     --}
     END PrintCoupon;
 
-    /**************************************************************
-    Propiedad intelectual de Open International Systems (c).
-    Unidad      :  ProcessLDICU
-    Descripcion :  Proceso de impresion de cupon
-
-    Autor       :  Carlos A. Garcia M
-    Fecha       :  28-02-2012
-    Parametros  :
-
-                   inuQuotationId       Identificador de la cotizacion
-
-    Historia de Modificaciones
-    Fecha        Autor              Modificacion
-    =========    =========          ====================
-
-    ***************************************************************/
-    PROCEDURE ProcessLDICU
-    IS
-
-    sbCUPONUME ge_boInstanceControl.stysbValue;
-    nuConfexme ld_parameter.numeric_value%type;
-
-    BEGIN
-
-                --  Obtiene la solicitud instanciada
-
-        sbCUPONUME := ge_boInstanceControl.fsbGetFieldValue ('CUPON', 'CUPONUME');
-
-        ------------------------------------------------
-        -- User code
-        ------------------------------------------------
-        nuConfexme := dald_parameter.fnuGetNumeric_Value('EXTRACT_COUPON');
-        PrintCoupon(to_number(sbCUPONUME),nuConfexme) ;
-
-    EXCEPTION
-        when ex.CONTROLLED_ERROR then
-            raise;
-
-        when OTHERS then
-            Errors.setError;
-            raise ex.CONTROLLED_ERROR;
-    END;
 
     /**************************************************************
     Propiedad intelectual de Open International Systems (c).

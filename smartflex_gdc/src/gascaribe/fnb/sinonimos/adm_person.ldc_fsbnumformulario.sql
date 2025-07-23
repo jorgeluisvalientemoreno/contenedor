@@ -1,5 +1,6 @@
-PROMPT CREA SINONIMO LDC_FSBNUMFORMULARIO
+Prompt Creando sinonimos privados para sobre ldc_fsbnumformulario
 BEGIN
- EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM LDC_FSBNUMFORMULARIO FOR ADM_PERSON.LDC_FSBNUMFORMULARIO';
+ 
+    pkg_Utilidades.prCrearSinonimos(upper('ldc_fsbnumformulario'), upper('adm_person'));
 END;
 /

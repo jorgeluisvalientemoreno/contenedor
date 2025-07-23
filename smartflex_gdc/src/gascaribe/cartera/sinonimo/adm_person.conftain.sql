@@ -1,5 +1,5 @@
 PROMPT Crea Sinonimo a tabla CONFTAIN
 BEGIN
-    EXECUTE IMMEDIATE 'CREATE OR REPLACE SYNONYM ADM_PERSON.CONFTAIN FOR CONFTAIN';
+    pkg_utilidades.prCrearSinonimos( upper('CONFTAIN'), 'OPEN');
 END;
 /

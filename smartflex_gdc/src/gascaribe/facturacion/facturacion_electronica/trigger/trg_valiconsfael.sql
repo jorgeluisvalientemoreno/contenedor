@@ -11,6 +11,7 @@ create or replace TRIGGER TRG_VALICONSFAEL
 
     HISTORIA DE MODIFICACIONES
     FECHA        AUTOR       DESCRIPCION
+    03-04-2025   JSOTO       OSF-4104 Se agrega sbEmpresa
   ***************************************************************************/
    sbexiste       VARCHAR2(4);
    sbOperacion    VARCHAR2(4);
@@ -25,6 +26,7 @@ create or replace TRIGGER TRG_VALICONSFAEL
    nuConsFinal    recofael.cons_final%type;
    sbEstado       recofael.estado%type;
    nuUltimoCons   recofael.ultimo_cons%type;
+   sbEmpresa	  recofael.empresa%type;
    regRecofaelLog  pkg_recofael_log.styRecofaelLog;
 
 -- Ejecucion antes de cada fila, variables :NEW, :OLD son permitidas
@@ -40,6 +42,7 @@ create or replace TRIGGER TRG_VALICONSFAEL
         nuConsFinal   := :new.cons_final;
         sbEstado      := :new.estado;
         nuUltimoCons  := :new.ultimo_cons;
+		sbEmpresa	  := :new.empresa;
 
         pkg_traza.trace(' nuCodigo => ' || nuCodigo, pkg_traza.cnuNivelTrzDef);
         pkg_traza.trace(' nuTipodocu => ' || nuTipodocu, pkg_traza.cnuNivelTrzDef);
@@ -94,7 +97,8 @@ create or replace TRIGGER TRG_VALICONSFAEL
 		regRecofaelLog.fecha_ini_vigencia_ant   := :old.fecha_ini_vigencia;
 		regRecofaelLog.fecha_fin_vigencia_act   := :new.fecha_fin_vigencia;
 		regRecofaelLog.fecha_fin_vigencia_ant   := :old.fecha_fin_vigencia;
-		regRecofaelLog.operacion   			 := sbOperacion;
+		regRecofaelLog.operacion   			        := sbOperacion;
+    regRecofaelLog.empresa   			          := sbEmpresa;
 
 		pkg_recofael_log.PrInsRecofaelLog(  regRecofaelLog,
 										   nuError,
@@ -127,11 +131,11 @@ create or replace TRIGGER TRG_VALICONSFAEL
       pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
       IF sbEstado = 'A' THEN
 
-
           pkg_recofael.prValidaSolapamientoCons( nuCodigo,
                                                  nuTipodocu,
                                                  nuConsInicial,
                                                  nuConsFinal,
+												                         sbEmpresa,
                                                  nuError,
                                                  sbError);
           IF nuError <> 0 THEN

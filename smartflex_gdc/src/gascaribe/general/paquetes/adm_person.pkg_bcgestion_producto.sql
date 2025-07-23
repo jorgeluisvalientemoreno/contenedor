@@ -7,6 +7,7 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.PKG_BCGESTION_PRODUCTO IS
 		Descripcion :   Paquete con los metodos para manejo de información sobre los productos
 		Modificaciones  :
 		Autor       Fecha       Caso     	Descripcion
+		jerazomvm	25/02/2024	OSF-4046	Se crea la función fnuObtComponentePrincipal
 		jerazomvm	29/02/2022	OSF-2374	Creación
 	*******************************************************************************/
 	
@@ -52,6 +53,10 @@ CREATE OR REPLACE PACKAGE ADM_PERSON.PKG_BCGESTION_PRODUCTO IS
 	PROCEDURE prcObtieneCompoxProduct(inuProductoId    IN  mo_packages.package_id%type,
 									  otbcomponentid   OUT pkg_bccomponentes.tytbcomponent_id
 									 );
+									 
+	-- Obtiene el componente principal del producto
+    FUNCTION fnuObtComponentePrincipal(inuProducto IN pr_product.product_id%TYPE)
+	RETURN NUMBER;
 									
 END PKG_BCGESTION_PRODUCTO;
 /
@@ -154,6 +159,65 @@ CREATE OR REPLACE PACKAGE BODY ADM_PERSON.PKG_BCGESTION_PRODUCTO IS
 			RAISE pkg_Error.Controlled_Error;
 	END prcObtieneCompoxProduct;
 
+	/***************************************************************************
+    Propiedad Intelectual de Gases del Caribe
+    Programa        : fnuObtComponentePrincipal
+    Descripcion     : Obtiene el componente principal del producto
+	
+    Autor           : Jhon Erazo
+    Fecha           : 25/02/2025
+	
+	Parametros		:
+		Entrada		:
+			inuProducto		Identificador del producto
+		
+		Salida		:
+			
+			nuComponente	Identificador del componente
+
+    Modificaciones  :
+    Autor       Fecha       Caso       	Descripcion
+	jerazomvm	25/02/2025	OSF-4046	Creación
+	***************************************************************************/
+    FUNCTION fnuObtComponentePrincipal(inuProducto IN pr_product.product_id%TYPE)
+	RETURN NUMBER
+    IS
+	
+		csbMT_NAME  	VARCHAR2(70) := csbSP_NAME || 'fnuObtComponentePrincipal';
+		
+		nuError			NUMBER;  
+		nuComponente	pr_component.component_id%type;
+		sbmensaje		VARCHAR2(1000);  
+        
+    BEGIN
+		
+		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, csbInicio);
+		
+		pkg_traza.trace('inuProducto: ' || inuProducto, cnuNVLTRC);
+		
+		-- Obtiene el componente principal
+		nuComponente := pr_bcproduct.fnugetmaincomponentid(inuProducto);
+		pkg_traza.trace('nuComponente: ' || nuComponente, cnuNVLTRC);
+		
+		pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN);
+		
+		RETURN nuComponente;
+
+    EXCEPTION
+		WHEN pkg_error.CONTROLLED_ERROR THEN
+			pkg_error.setError;
+			pkg_Error.getError(nuError, sbmensaje);
+			pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
+			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERC); 
+			RAISE pkg_error.CONTROLLED_ERROR;
+		WHEN others THEN
+			pkg_Error.setError;
+			pkg_Error.getError(nuError, sbmensaje);
+			pkg_traza.trace('nuError: ' || nuError || ' sbmensaje: ' || sbmensaje, cnuNVLTRC);
+			pkg_traza.trace(csbMT_NAME, cnuNVLTRC, pkg_traza.csbFIN_ERR); 
+			RAISE pkg_Error.Controlled_Error;
+    END fnuObtComponentePrincipal;
+	
 END PKG_BCGESTION_PRODUCTO;
 /
 PROMPT Otorgando permisos de ejecución para adm_person.PKG_BCGESTION_PRODUCTO

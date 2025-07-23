@@ -1,0 +1,6 @@
+Prompt Creando sinonimos privados 
+BEGIN
+    -- OSF-3970
+    pkg_Utilidades.prCrearSinonimos(upper('ldc_log_camb_fecha_max_leg'), upper('open'));
+END;
+/

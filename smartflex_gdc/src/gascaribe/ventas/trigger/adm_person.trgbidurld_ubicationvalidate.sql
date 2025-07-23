@@ -15,6 +15,9 @@ Fecha  : 05-10-2012
 
 Historia de Modificaciones
 Fecha        IDEntrega             Modificación
+08-05-2025    felipe.valencia      OSF-3909: Se agrega validación para no actualizar el campo
+                                   TOTAL_DELIVER desde LDISP y adicionalemente se hacen cambios
+                                  por estandares
 05-10-2012   jconsuegra.SAO156577  Creación
 **************************************************************/
 declare
@@ -25,33 +28,34 @@ declare
   nuindex         number;
   nuubiasig       number := Ld_Boconstans.cnuCero;
   nupromo         Ld_Subsidy.Promotion_Id%type;
+  csbNombreTrigger    VARCHAR2(100) := $$PLSQL_UNIT;
+  sbError             VARCHAR2(4000);
+  nuError             NUMBER;
 begin
-  --{
-    -- Logica del Negocio
-  --}
+  pkg_traza.trace(csbNombreTrigger, pkg_traza.cnuNivelTrzDef, pkg_traza.csbInicio);
 
   if DELETING then
     /*Validar que no se haya asignado un subsidio asociado a esa población*/
     nuubiasig := Ld_BcSubsidy.Fnugetubiactiveasig(:old.ubication_id);
 
     if nuubiasig > Ld_Boconstans.cnuCero then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No se puede borrar la ubicación porque ya se han asignado subsidios de ese tipo');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No se puede borrar la ubicación porque ya se han asignado subsidios de ese tipo');
     end if;
   end if;
 
   if INSERTING or UPDATING then
 
     if :new.sucacate is null then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'Debe ingresar la categoría');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'Debe ingresar la categoría');
     end if;
 
     if :new.authorize_quantity is null and :new.authorize_value is null then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'Debe ingresar la cantidad autorizada o el valor autorizado');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'Debe ingresar la cantidad autorizada o el valor autorizado');
     end if;
 
     /*Validar el concepto de exclusión de los atributos: cantidad autorizada y valor autorizado*/
     if :new.authorize_quantity is not null and :new.authorize_value is not null then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'Debe ingresar la cantidad autorizada o el valor autorizado pero ambos al tiempo no es posible');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'Debe ingresar la cantidad autorizada o el valor autorizado pero ambos al tiempo no es posible');
     end if;
 
     /*Obtener los datos de un subsidio*/
@@ -59,11 +63,11 @@ begin
 
     /*Validar que se ingrese el mismo concepto de cantidad autorizada parametrizada en el subsidio*/
     if :new.authorize_quantity is not null and rcsubsidy.authorize_quantity is null then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No existe correspondencia entre la cantidad autorizada de la población y del subsidio');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No existe correspondencia entre la cantidad autorizada de la población y del subsidio');
     end if;
 
     if :new.authorize_quantity is not null and rcsubsidy.authorize_quantity < :new.authorize_quantity then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La cantidad autorizada de la población no puede ser mayor a la cantidad autorizada del subsidio');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La cantidad autorizada de la población no puede ser mayor a la cantidad autorizada del subsidio');
     end if;
 
     nuindex := ld_boconstans.nuUbiIndex;
@@ -85,11 +89,11 @@ begin
 
     /*Validar que se ingrese el mismo concepto de valor autorizado parametrizada en el subsidio*/
     if :new.authorize_value is not null and rcsubsidy.authorize_value is null then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No existe correspondencia entre el valor autorizado de la población y del subsidio');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No existe correspondencia entre el valor autorizado de la población y del subsidio');
     end if;
 
     if :new.authorize_value is not null and rcsubsidy.authorize_value < :new.authorize_value then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'El valor autorizado de la población no puede ser mayor al valor autorizado del subsidio');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'El valor autorizado de la población no puede ser mayor al valor autorizado del subsidio');
     end if;
 
     LD_BOConstans.tbubisubsidy(nuindex).authorize_value := :new.authorize_value;
@@ -99,44 +103,50 @@ begin
     if :new.authorize_quantity is not null and
        :new.authorize_value    is null and
        :new.authorize_quantity <= LD_BOConstans.cnuCero_Value then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'La cantidad autorizada debe ser mayor a cero');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'La cantidad autorizada debe ser mayor a cero');
     end if;
 
     /*Validar que el valor autorizado sea mayor a cero*/
     if :new.authorize_quantity is null and
        :new.authorize_value    is not null and
        :new.authorize_value    <= LD_BOConstans.cnuCero_Value then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'El valor autorizado debe ser mayor a cero');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'El valor autorizado debe ser mayor a cero');
     end if;
 
     /*Validar que no se incluyan poblaciones dependientes*/
     if :new.geogra_location_id is null and (:new.sucacate is not null or :new.sucacodi is not null ) then
       if :new.sucacate is not null then
-         ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No se puede asignar un valor fijo en la categoría mientras la ubicación geográfica no tenga un valor definido');
+         pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No se puede asignar un valor fijo en la categoría mientras la ubicación geográfica no tenga un valor definido');
       end if;
       if :new.sucacodi is not null then
-         ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No se puede asignar un valor fijo en la subcategoría cuando la ubicación geográfica no tenga un valor definido');
+         pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No se puede asignar un valor fijo en la subcategoría cuando la ubicación geográfica no tenga un valor definido');
       end if;
     end if;
 
     if :new.geogra_location_id is not null and :new.sucacate is null and :new.sucacodi is not null then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No se puede asignar un valor fijo en la subcategoría mientras no se defina un valor en la categoría');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No se puede asignar un valor fijo en la subcategoría mientras no se defina un valor en la categoría');
     end if;
 
     if :new.geogra_location_id is null and :new.sucacate is null and :new.sucacodi is not null then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No se puede asignar un valor fijo en la subcategoría mientras no se defina un valor en la categoría y la ubicación geográfica');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No se puede asignar un valor fijo en la subcategoría mientras no se defina un valor en la categoría y la ubicación geográfica');
     end if;
 
     /*Validar que no se pueda ingresar una categoría con valor -1*/
     if :new.sucacate = Ld_Boconstans.cnuallrows then
-      ge_boerrors.seterrorcodeargument(Ld_Boconstans.cnuGeneric_Error, 'No se puede ingresar una categoría con valor -1');
+      pkg_Error.SetErrorMessage(pkg_Error.cnuGeneric_message, 'No se puede ingresar una categoría con valor -1');
     end if;
+
+    IF (NVL(pkg_Error.getApplication,'--') in ('LDISP')) THEN
+        IF (NVL(:old.TOTAL_DELIVER,0) <> 0 AND (:old.TOTAL_DELIVER <> :new.TOTAL_DELIVER)) THEN
+            :new.TOTAL_DELIVER := :old.TOTAL_DELIVER;
+        END IF;
+    END IF;
 
     if :new.authorize_quantity IS not null then
         :new.TOTAL_AVAILABLE := :new.authorize_quantity - nvl(:new.TOTAL_DELIVER,0);
-	elsif :new.AUTHORIZE_VALUE IS not null then
-	    :new.TOTAL_AVAILABLE := :new.AUTHORIZE_VALUE - nvl(:new.TOTAL_DELIVER,0);
-	END if;
+    elsif :new.AUTHORIZE_VALUE IS not null then
+        :new.TOTAL_AVAILABLE := :new.AUTHORIZE_VALUE - nvl(:new.TOTAL_DELIVER,0);
+    END if;
 
   end if;
 
@@ -154,12 +164,18 @@ begin
                                           );
   end if;
 
-
+  pkg_traza.trace(csbNombreTrigger, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
 Exception
-  When ex.CONTROLLED_ERROR then
-    raise ex.CONTROLLED_ERROR;
-  When others then
-    Errors.setError;
-    raise ex.CONTROLLED_ERROR;
+    WHEN pkg_Error.Controlled_Error  THEN
+        pkg_Error.getError(nuError, sbError);
+        pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
+        pkg_traza.trace(csbNombreTrigger, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
+        RAISE pkg_Error.Controlled_Error;
+    WHEN OTHERS THEN
+        pkg_Error.setError;
+        pkg_Error.getError(nuError, sbError);
+        pkg_traza.trace('sbError: ' || sbError, pkg_traza.cnuNivelTrzDef);
+        pkg_traza.trace(csbNombreTrigger, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+        RAISE pkg_Error.Controlled_Error;  
 end TRGBIDURLD_UBICATIONVALIDATE;
 /

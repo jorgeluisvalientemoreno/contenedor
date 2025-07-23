@@ -30,7 +30,7 @@ PROCEDURE rfdatosconsumohist
 ,sbfactpefa  ge_boinstancecontrol.stysbvalue
 ,sbfactcodi  ge_boinstancecontrol.stysbvalue
 ,blnregulado BOOLEAN
-,orfcursor   OUT constants.tyRefCursor
+,orfcursor   OUT constants_per.tyRefCursor
 );
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ PROCEDURE RfDatosAdicionales
 ,sbFactsusc  ge_boInstanceControl.stysbValue
 ,sbPeriodo   ge_boInstanceControl.stysbValue
 ,blNRegulado BOOLEAN
-,orfcursor OUT constants.tyRefCursor
+,orfcursor OUT constants_per.tyRefCursor
 );
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -77,7 +77,7 @@ PROCEDURE RfDatosMedMalubi
 (
  sbfactpefa ge_boinstancecontrol.stysbvalue
 ,nuproduct  servsusc.sesunuse%TYPE
-,orfcursor OUT constants.tyRefCursor
+,orfcursor OUT constants_per.tyRefCursor
 );
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -94,13 +94,17 @@ create or replace PACKAGE BODY      ldc_pkgprocefactspoolconsu IS
   Fecha          : 18/MAR/2022
 
 *******************************************************************************************************/
+   -- Constantes para el control de la traza
+  csbSP_NAME     CONSTANT VARCHAR2(200):= $$PLSQL_UNIT||'.';
+  nuError number;
+  sbError VARCHAR2(4000);
 -----------------------------------------------------------------------------------------------------------------------
 PROCEDURE rfdatosconsumohist(
                              sbfactsusc  ge_boinstancecontrol.stysbvalue
                             ,sbfactpefa  ge_boinstancecontrol.stysbvalue
                             ,sbfactcodi  ge_boinstancecontrol.stysbvalue
                             ,blnregulado BOOLEAN
-                            ,orfcursor   OUT constants.tyRefCursor
+                            ,orfcursor   OUT constants_per.tyRefCursor
                             ) AS
  /*********************************************************************************************************************
   Propiedad intelectual de PETI (c).
@@ -116,6 +120,7 @@ PROCEDURE rfdatosconsumohist(
 
   Fecha             Autor            Modificacion
   =========       =========          ====================
+  20-05-2025      LJLB               OSF-4456: se agrega funcion para consultar consumo de productos no regulados
   17/04/2019      elal               ca 200-2032 se cambia tipo de variable a presion y temperatura
   13/03/2017      KCienfuegos.CA1081 Se modifican los cursores cucm_vavafacoP y cucm_vavafacoPL
                                      para obtener el valor de la columna vvfcvalo en lugar de la
@@ -137,6 +142,7 @@ PROCEDURE rfdatosconsumohist(
                                             es : round(consumo_act/(par_pod_calor * consumo_act),2).
 
 *********************************************************************************************************************/
+csbMT_NAME 		VARCHAR2(150) := csbSP_NAME || '.rfdatosconsumohist';
 nuperidocons        pericose.pecscons%TYPE;
 cons_correg         NUMBER;
 sbFactor_correccion VARCHAR2(200);
@@ -162,13 +168,15 @@ equival_kwh         VARCHAR2(500);
 nuCategoria         servsusc.sesucate%TYPE;
 sbAplicasoosf65     VARCHAR2(1);
 nmvalconsumo        cargos.cargvalo%TYPE;
-par_pod_calor       NUMBER := dald_parameter.fnugetnumeric_value('FIDF_POD_CALORIFICO');
+par_pod_calor       NUMBER := pkg_bcld_parameter.fnuobtienevalornumerico('FIDF_POD_CALORIFICO');
 nucicloc            NUMBER;
 nuproduct           NUMBER;
 nugeoloc            ge_geogra_location.geograp_location_id%TYPE;
 vnucite             NUMBER;
-sbCicloespe         VARCHAR2(100) := dald_parameter.fsbgetvalue_chain('LDC_CICLVALI',NULL);
+sbCicloespe         VARCHAR2(100) := pkg_bcld_parameter.fsbobtienevalorcadena('LDC_CICLVALI');
 vnuCicloEsp         NUMBER;
+ sbConceptoConsuNoRegu  VARCHAR2(4000) := pkg_parametros.fsbGetValorCadena('CONCEPTO_PARA_CALCCONS_USUNOREGULADO');
+ sbCiclosTelemedidos  VARCHAR2(4000) := pkg_parametros.fsbGetValorCadena('CICLO_TELEMEDIDOS_GDC');
 
 --Declaracion de cursores
 CURSOR cucm_vavafacoP(nuproduct1 IN servsusc.sesunuse%TYPE) IS
@@ -202,6 +210,25 @@ CURSOR cucm_vavafacotL(nugeoloc1 IN NUMBER) IS
     AND vvfcvafc = 'TEMPERATURA'
     AND vvfcubge = nugeoloc1
   ORDER BY vvfcfefv ASC;
+  
+  
+  CURSOR cuObtConsumoNoReg IS
+  SELECT SUM(NVL(a.cargunid, 0)) consumo
+  FROM cargos a, cuencobr 
+  WHERE cucofact = sbfactcodi
+     AND a.cargcuco = cucocodi
+     AND (cargdoso NOT LIKE 'DF-%' OR cargdoso NOT LIKE 'ID-%' )
+     AND cargconc IN ( SELECT to_number(regexp_substr(sbConceptoConsuNoRegu,'[^,]+', 1,LEVEL)) AS tipoprod
+                       FROM dual
+                       CONNECT BY regexp_substr(sbConceptoConsuNoRegu, '[^,]+', 1, LEVEL) IS NOT NULL)
+     AND ((SELECT nvl(SUM(decode(c.cargsign, 'CR', -c.cargvalo, c.cargvalo)),0)
+             FROM cargos c
+            WHERE c.cargcuco = a.cargcuco
+              AND c.cargconc = a.cargconc
+              AND c.cargsign IN ('DB', 'CR')
+              AND c.cargdoso = a.cargdoso) <> 0
+        OR a.cargsign NOT IN ('DB', 'CR'));
+
 
 -- Obtiene los historicos de consumo
 PROCEDURE gethistoricos(
@@ -210,11 +237,13 @@ PROCEDURE gethistoricos(
                        ,nuciclo    IN NUMBER
                        ,nuperiodo  IN NUMBER
                        ) AS
+ 
+  csbMT_NAME1      VARCHAR2(150) := csbMT_NAME || '.gethistoricos';
  TYPE tytbperiodos IS TABLE OF NUMBER INDEX BY BINARY_INTEGER;
  tbperconsumo    tytbperiodos;
  tbperfactura    tytbperiodos;
  tbperiodos      tytbperiodos;
- frperiodos      constants.tyrefcursor;
+ frperiodos      constants_per.tyrefcursor;
  nuperfactactual perifact.pefacodi%TYPE;
  nuperfactprev   perifact.pefacodi%TYPE;
  nuperconsprev   pericose.pecscons%TYPE;
@@ -264,14 +293,15 @@ PROCEDURE gethistoricos(
                      )
    GROUP BY pecscons);
 BEGIN
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist.getHistoricos',15);
+ pkg_traza.trace( csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
  nuciclof := nuciclo;
  -- Periodo de facturacion Actual
- nuperfactactual := nuperiodo; -- obtenervalorinstancia('FACTURA','FACTPEFA');
+ nuperfactactual := nuperiodo; 
  -- Obtiene los periodos facturados
  frperiodos := ldc_detallefact_gascaribe.frfcambiociclo(nucontrato);
  FETCH frperiodos BULK COLLECT INTO tbperiodos;
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Inicio Obtiene los ultimos 6 periodos facturados',15);
+ 
+ pkg_traza.trace('Inicio Obtiene los ultimos 6 periodos facturados', pkg_traza.cnuNivelTrzDef);
  -- Obtiene los ultimos 6 periodos facturados
  FOR i IN 1 .. 6 LOOP
   -- Periodo de Facturacion Anterior
@@ -296,10 +326,10 @@ BEGIN
                                                          ,nuperfactprev
                                                          );
   EXCEPTION
-   WHEN "OPEN".ex.CONTROLLED_ERROR THEN
-    nuperconsprev := -1;
+   WHEN pkg_error.CONTROLLED_ERROR THEN
+		nuperconsprev := -1;
    WHEN OTHERS THEN
-    nuperconsprev := -1;
+		nuperconsprev := -1;
   END;
   tbperconsumo(i) := nuperconsprev;
   tbperfactura(i) := nuperfactprev;
@@ -311,8 +341,8 @@ BEGIN
   -- El Anterior queda actual para hayar los anteriores
   nuperfactactual := nuperfactprev;
  END LOOP;
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Fin  Obtiene los ultimos 6 periodos facturados',15);
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Inicio recorre el cursor cuconsumo',15);
+ pkg_traza.trace('Fin Obtiene los ultimos 6 periodos facturados', pkg_traza.cnuNivelTrzDef);
+ pkg_traza.trace('Inicio recorre el cursor cuconsumo', pkg_traza.cnuNivelTrzDef);
  FOR i IN cuconsumo(nuproducto, tbperconsumo) LOOP
   ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_1',15);
   consumo_mes_1 := nvl(i.consumo_1, 0);
@@ -327,7 +357,7 @@ BEGIN
   ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos For recorre el cursor cuconsumo i.consumo_6',15);
   consumo_mes_6 := nvl(i.consumo_6, 0);
  END LOOP;
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.getHistoricos Fin recorre el cursor cuconsumo',15);
+ pkg_traza.trace('Fin recorre el cursor cuconsumo', pkg_traza.cnuNivelTrzDef);
  -- Hayando meses
  fecha_cons_mes_1 := ldc_detallefact_gascaribe.fsbgetfechapermmyyyy(tbperfactura(1));
  fecha_cons_mes_2 := ldc_detallefact_gascaribe.fsbgetfechapermmyyyy(tbperfactura(2));
@@ -335,174 +365,183 @@ BEGIN
  fecha_cons_mes_4 := ldc_detallefact_gascaribe.fsbgetfechapermmyyyy(tbperfactura(4));
  fecha_cons_mes_5 := ldc_detallefact_gascaribe.fsbgetfechapermmyyyy(tbperfactura(5));
  fecha_cons_mes_6 := ldc_detallefact_gascaribe.fsbgetfechapermmyyyy(tbperfactura(6));
- ut_trace.trace('Fin LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist.getHistoricos',15);
+ pkg_traza.trace( csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
 END gethistoricos;
 BEGIN
- ut_trace.trace('Inicio LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist',15);
+  pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
  nuproduct   := ldc_detallefact_gascaribe.fnugetproducto(sbfactcodi);
- nuCategoria := pktblservsusc.fnugetcategory(nuproduct);
+ nuCategoria := pkg_bcproducto.fnucategoria(nuproduct);
  IF NOT blnregulado THEN
-  BEGIN
-   nucicloc := nvl(pktblservsusc.fnugetbillingcycle(nuproduct), -1);
-   -- Se obtiene el periodo de consumo actual, dado el periodo de facturacion
-   nuperidocons := ldc_boformatofactura.fnuobtperconsumo(nucicloc,sbfactpefa);
-  EXCEPTION
-   WHEN OTHERS THEN
-    nucicloc     := -1;
-    nuperidocons := -1;
-  END;
-  gethistoricos(sbfactsusc, nuproduct, nucicloc, sbfactpefa);
-  ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist Obtener el origen del consumo',15);
-  -- Obtener el origen del consumo
-  BEGIN
-   SELECT decode(cossmecc, 1, 'LEC.MEDIDOR', 'ESTIMADO') INTO calculo_cons
-     FROM vw_cmprodconsumptions
-    WHERE cosssesu = nuproduct
-      AND cosspefa = sbfactpefa
-      AND cosspecs = nuperidocons;
-  EXCEPTION
-   WHEN OTHERS THEN
-    calculo_cons := NULL;
-  END;
-  ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist VAlidacion ciclo asociado',15);
-  --Spacheco ara:8209 --se valida si el ciclo asociado al usuario esta configurado en el parametro
-  --de ciclo de telemedido
-  IF calculo_cons IS NOT NULL THEN
-   SELECT COUNT(*) INTO vnucite
-     FROM TABLE(ldc_boutilities.splitstrings(dald_parameter.fsbGetValue_Chain('CICLO_TELEMEDIDOS_GDC'),
-                                                  ','))
-    WHERE column_value = pktblservsusc.fnugetsesucicl(nuproduct);
-   IF vnucite = 1 THEN
-      calculo_cons := 'RTU';
-   END IF;
-  END IF;
-  ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 1 ', 15);
-  sbAplicasoosf65 := 'S';
-  IF sbAplicasoosf65 = 'S' THEN
-   nmvalconsumo := 0;
-   BEGIN
-    SELECT nvl(SUM(cc.cargvalo),0) INTO nmvalconsumo
-      FROM cuencobr cu,cargos cc
-     WHERE cucofact    = sbfactcodi
-       AND cc.cargpefa = sbfactpefa
-       AND cu.cucocodi = cc.cargcuco
-       AND cc.cargconc = 31
-       AND cc.cargcaca = 15
-       AND substr(cc.cargdoso,1,5) = 'CO-20';
-   EXCEPTION
-    WHEN OTHERS THEN
-      nmvalconsumo := 0;
-   END;
-  END IF;
-  BEGIN
-   /*01-03-2015 Llozada: Se envia el consumo sin multiplicarlo por el factor de correcci?n ya que en
-     la tabla de consumos est? f?rmula ya est? aplicada.*/
-   SELECT to_char(fac_correccion, '0.9999')
-         ,round(consumo_act)
-         ,decode(sbAplicasoosf65,'S',round(consumo_act) || ' M3 Equivalen a ' ||
-             round(par_pod_calor * consumo_act, 2) || 'Kwh Aprox $ '||replace(to_char(round(to_char((  decode((par_pod_calor * consumo_act),0,0,nmvalconsumo/(par_pod_calor * consumo_act)))), 2), '999990.99'), ' ', '') ||' kw/h',round(consumo_act) || ' M3 Equivalen a '||round(par_pod_calor * consumo_act, 2) || 'Kwh')
-         ,round((consumo_mes_1 + consumo_mes_2 + consumo_mes_3 +
-                 consumo_mes_4 + consumo_mes_5 + consumo_mes_6) / 6) cons_promedio
-     INTO sbFactor_correccion
-         ,cons_correg
-         ,equival_kwh
-         ,consumo_promedio
-     FROM (SELECT ldc_detallefact_gascaribe.fnugetconsumoresidencial(MAX(sesunuse)
-                 ,MAX(cosspecs)) consumo_act
-                 ,MAX(fccofaco) fac_correccion
-                 ,MAX(fccofasc) supercompres
-                 ,MAX(fccofapc) * MAX(fccofaco) poder_calor
-             FROM factura f
-            INNER JOIN servsusc s
-               ON (sesususc = factsusc AND
-                     sesuserv =
-                     dald_parameter.fnugetnumeric_value('COD_SERV_GAS'))
-             LEFT OUTER JOIN conssesu c
-               ON (c.cosssesu = s.sesunuse AND c.cosspefa = f.factpefa AND
-                   cossmecc = 4)
-             LEFT OUTER JOIN cm_facocoss
-               ON (cossfcco = fccocons)
-            WHERE factcodi = sbfactcodi), perifact
-    WHERE pefacodi = sbfactpefa;
- ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 2 ',15);
- BEGIN
-  nugeoloc := daab_address.fnugetgeograp_location_id(dapr_product.fnugetaddress_id(
-                                                                                   nuproduct,  0)
-                                                                                  ,0
-                                                                                  );
- END;
- ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 3',15);
- /*SPacheco Ara 8640 se trabaja con open fetch para identificar la configuracion mas
-        cerca al dia del proceso*/
-  --se consulta presion
-  OPEN cucm_vavafacoP(nuproduct);
- FETCH cucm_vavafacoP INTO presion;
-  IF cucm_vavafacoP%NOTFOUND THEN
-   ------si no existe configuracion de presion para el producto se consulta por localidad
-    OPEN cucm_vavafacoPl(nugeoloc);
-   FETCH cucm_vavafacoPl INTO presion;
-    IF cucm_vavafacoPl%NOTFOUND THEN
-      presion := 0;
-    END IF;
-   CLOSE cucm_vavafacoPl;
-   ------
-  END IF;
- CLOSE cucm_vavafacoP;
- ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist 4',15);
- /*SPacheco Ara 8640 se trabaja con open fetch para identificar la configuracion mas
-        cerca al dia del proceso*/
-   --se consulta la temperatura configurada por el producto
-  OPEN cucm_vavafacoPt(nuproduct);
-  FETCH cucm_vavafacoPt INTO temperatura;
-   IF cucm_vavafacoPt%NOTFOUND THEN
-    ------si no posee configuracion de temperatura por producto consulta por localidad
-     OPEN cucm_vavafacotl(nugeoloc);
-    FETCH cucm_vavafacotl INTO temperatura;
-     IF cucm_vavafacotl%NOTFOUND THEN
-        temperatura := 0;
-     END IF;
-    CLOSE cucm_vavafacotl;
-    ------
-   END IF;
-  CLOSE cucm_vavafacoPt;
-  sbconsumo_promedio := to_char(consumo_promedio, 'FM999,999,990');
- EXCEPTION
-  WHEN no_data_found THEN
-   sbFactor_correccion := '0';
-   consumo_mes_1       := 0;
-   fecha_cons_mes_1    := ' ';
-   consumo_mes_2       := 0;
-   fecha_cons_mes_2    := ' ';
-   consumo_mes_3       := 0;
-   fecha_cons_mes_3    := ' ';
-   consumo_mes_4       := 0;
-   fecha_cons_mes_4    := ' ';
-   consumo_mes_5       := 0;
-   fecha_cons_mes_5    := ' ';
-   consumo_mes_6       := 0;
-   fecha_cons_mes_6    := ' ';
-   consumo_promedio    := 0;
-   sbconsumo_promedio  := '0';
-   temperatura         := 0;
-   cons_correg         := 0;
-   calculo_cons        := ' ';
-   equival_kwh         := ' ';
- END;
- -- Si es no regulado no muestra datos
- --INICIO CA 200-2032 ELAL -- se valida ciclos especiales
-  SELECT COUNT(*) INTO vnuCicloEsp
-    FROM(
-         SELECT to_number(regexp_substr(sbCicloespe,'[^,]+', 1, LEVEL))  ciclos
-           FROM   dual
-        CONNECT BY regexp_substr(sbCicloespe, '[^,]+', 1, LEVEL) IS NOT NULL )
-          WHERE ciclos =  nucicloc;
-  presionvar :=  to_char(presion, 'FM999,990.90');
-  IF  vnuCicloEsp >= 1 THEN
-   sbFactor_correccion := 'VER ANEXO';
-   temperatura := 'VER ANEXO';
-   presionvar := 'VER ANEXO';
-  END IF;
+      BEGIN
+       nucicloc := nvl(pktblservsusc.fnugetbillingcycle(nuproduct), -1);
+       -- Se obtiene el periodo de consumo actual, dado el periodo de facturacion
+       nuperidocons := ldc_boformatofactura.fnuobtperconsumo(nucicloc,sbfactpefa);
+      EXCEPTION
+       WHEN OTHERS THEN
+        nucicloc     := -1;
+        nuperidocons := -1;
+      END;
+      gethistoricos(sbfactsusc, nuproduct, nucicloc, sbfactpefa);
+      ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist Obtener el origen del consumo',15);
+      -- Obtener el origen del consumo
+      BEGIN
+       SELECT decode(cossmecc, 1, 'LEC.MEDIDOR', 'ESTIMADO') INTO calculo_cons
+         FROM vw_cmprodconsumptions
+        WHERE cosssesu = nuproduct
+          AND cosspefa = sbfactpefa
+          AND cosspecs = nuperidocons;
+      EXCEPTION
+       WHEN OTHERS THEN
+        calculo_cons := NULL;
+      END;
+      ut_trace.trace('LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist VAlidacion ciclo asociado',15);
+      --Spacheco ara:8209 --se valida si el ciclo asociado al usuario esta configurado en el parametro
+      --de ciclo de telemedido
+      IF calculo_cons IS NOT NULL THEN
+      
+	   SELECT COUNT(*) INTO vnucite
+	   FROM (
+		   SELECT to_number(regexp_substr(sbCiclosTelemedidos,'[^,]+', 1,LEVEL)) AS ciclo
+		   FROM dual
+		   CONNECT BY regexp_substr(sbCiclosTelemedidos, '[^,]+', 1, LEVEL) IS NOT NULL)
+	   WHERE ciclo = pkg_bcproducto.fnuciclofacturacion(nuproduct);
+
+       IF vnucite = 1 THEN
+          calculo_cons := 'RTU';
+       END IF;
+      END IF;
+     pkg_traza.trace(' Paso 1', pkg_traza.cnuNivelTrzDef);
+      sbAplicasoosf65 := 'S';
+    
+	   nmvalconsumo := 0;
+	   BEGIN
+		SELECT nvl(SUM(cc.cargvalo),0) INTO nmvalconsumo
+		  FROM cuencobr cu,cargos cc
+		 WHERE cucofact    = sbfactcodi
+		   AND cc.cargpefa = sbfactpefa
+		   AND cu.cucocodi = cc.cargcuco
+		   AND cc.cargconc = 31
+		   AND cc.cargcaca = 15
+		   AND substr(cc.cargdoso,1,5) = 'CO-20';
+	   EXCEPTION
+		WHEN OTHERS THEN
+		  nmvalconsumo := 0;
+	   END;
+   
+      BEGIN
+       /*01-03-2015 Llozada: Se envia el consumo sin multiplicarlo por el factor de correcci?n ya que en
+         la tabla de consumos est? f?rmula ya est? aplicada.*/
+       SELECT to_char(fac_correccion, '0.9999')
+             ,round(consumo_act)
+             , round(consumo_act) || ' M3 Equivalen a ' ||
+                 round(par_pod_calor * consumo_act, 2) || 'Kwh Aprox $ '||replace(to_char(round(to_char((  decode((par_pod_calor * consumo_act),0,0,nmvalconsumo/(par_pod_calor * consumo_act)))), 2), '999990.99'), ' ', '') ||' kw/h'
+		     ,round((consumo_mes_1 + consumo_mes_2 + consumo_mes_3 +
+                     consumo_mes_4 + consumo_mes_5 + consumo_mes_6) / 6) cons_promedio
+         INTO sbFactor_correccion
+             ,cons_correg
+             ,equival_kwh
+             ,consumo_promedio
+         FROM (SELECT ldc_detallefact_gascaribe.fnugetconsumoresidencial(MAX(sesunuse)
+                     ,MAX(cosspecs)) consumo_act
+                     ,MAX(fccofaco) fac_correccion
+                     ,MAX(fccofasc) supercompres
+                     ,MAX(fccofapc) * MAX(fccofaco) poder_calor
+                 FROM factura f
+                INNER JOIN servsusc s
+                   ON (sesususc = factsusc AND
+                         sesuserv =
+                        pkg_bcld_parameter.fnuobtienevalornumerico('COD_SERV_GAS'))
+                 LEFT OUTER JOIN conssesu c
+                   ON (c.cosssesu = s.sesunuse AND c.cosspefa = f.factpefa AND
+                       cossmecc = 4)
+                 LEFT OUTER JOIN cm_facocoss
+                   ON (cossfcco = fccocons)
+                WHERE factcodi = sbfactcodi), perifact
+        WHERE pefacodi = sbfactpefa;
+    pkg_traza.trace(' Paso 2', pkg_traza.cnuNivelTrzDef);
+     BEGIN
+      nugeoloc := pkg_bcdirecciones.fnugetlocalidad(pkg_bcproducto.fnuIdDireccInstalacion(nuproduct)  );
+     END;
+     pkg_traza.trace(' Paso 3', pkg_traza.cnuNivelTrzDef);
+	 /*SPacheco Ara 8640 se trabaja con open fetch para identificar la configuracion mas
+            cerca al dia del proceso*/
+      --se consulta presion
+      OPEN cucm_vavafacoP(nuproduct);
+     FETCH cucm_vavafacoP INTO presion;
+      IF cucm_vavafacoP%NOTFOUND THEN
+       ------si no existe configuracion de presion para el producto se consulta por localidad
+        OPEN cucm_vavafacoPl(nugeoloc);
+       FETCH cucm_vavafacoPl INTO presion;
+        IF cucm_vavafacoPl%NOTFOUND THEN
+          presion := 0;
+        END IF;
+       CLOSE cucm_vavafacoPl;
+       ------
+      END IF;
+     CLOSE cucm_vavafacoP;
+     pkg_traza.trace(' Paso 4', pkg_traza.cnuNivelTrzDef);
+     /*SPacheco Ara 8640 se trabaja con open fetch para identificar la configuracion mas
+            cerca al dia del proceso*/
+       --se consulta la temperatura configurada por el producto
+      OPEN cucm_vavafacoPt(nuproduct);
+      FETCH cucm_vavafacoPt INTO temperatura;
+       IF cucm_vavafacoPt%NOTFOUND THEN
+        ------si no posee configuracion de temperatura por producto consulta por localidad
+         OPEN cucm_vavafacotl(nugeoloc);
+        FETCH cucm_vavafacotl INTO temperatura;
+         IF cucm_vavafacotl%NOTFOUND THEN
+            temperatura := 0;
+         END IF;
+        CLOSE cucm_vavafacotl;
+        ------
+       END IF;
+      CLOSE cucm_vavafacoPt;
+      sbconsumo_promedio := to_char(consumo_promedio, 'FM999,999,990');
+     EXCEPTION
+      WHEN no_data_found THEN
+       sbFactor_correccion := '0';
+       consumo_mes_1       := 0;
+       fecha_cons_mes_1    := ' ';
+       consumo_mes_2       := 0;
+       fecha_cons_mes_2    := ' ';
+       consumo_mes_3       := 0;
+       fecha_cons_mes_3    := ' ';
+       consumo_mes_4       := 0;
+       fecha_cons_mes_4    := ' ';
+       consumo_mes_5       := 0;
+       fecha_cons_mes_5    := ' ';
+       consumo_mes_6       := 0;
+       fecha_cons_mes_6    := ' ';
+       consumo_promedio    := 0;
+       sbconsumo_promedio  := '0';
+       temperatura         := 0;
+       cons_correg         := 0;
+       calculo_cons        := ' ';
+       equival_kwh         := ' ';
+     END;
+     -- Si es no regulado no muestra datos
+     --INICIO CA 200-2032 ELAL -- se valida ciclos especiales
+      SELECT COUNT(*) INTO vnuCicloEsp
+        FROM(
+             SELECT to_number(regexp_substr(sbCicloespe,'[^,]+', 1, LEVEL))  ciclos
+               FROM   dual
+            CONNECT BY regexp_substr(sbCicloespe, '[^,]+', 1, LEVEL) IS NOT NULL )
+              WHERE ciclos =  nucicloc;
+      presionvar :=  to_char(presion, 'FM999,990.90');
+      IF  vnuCicloEsp >= 1 THEN
+		   sbFactor_correccion := 'VER ANEXO';
+		   temperatura := 'VER ANEXO';
+		   presionvar := 'VER ANEXO';
+      END IF;
  ELSE
+  --no regulado
+  --se consulta consumo de los cargos correspondientes
+  IF cuObtConsumoNoReg%ISOPEN THEN CLOSE cuObtConsumoNoReg; END IF;
+  
+  OPEN cuObtConsumoNoReg;
+  FETCH cuObtConsumoNoReg INTO cons_correg;
+  CLOSE cuObtConsumoNoReg;
+  
   sbFactor_correccion := NULL;
   consumo_mes_1       := NULL;
   fecha_cons_mes_1    := NULL;
@@ -519,7 +558,6 @@ BEGIN
   consumo_promedio    := NULL;
   temperatura         := NULL;
   presion             := NULL;
-  cons_correg         := NULL;
   equival_kwh         := NULL;
   calculo_cons        := NULL;
  END IF;
@@ -544,13 +582,19 @@ BEGIN
         ,TRIM(equival_kwh)   equival_kwh
         ,calculo_cons        calculo_cons
     FROM dual;
- ut_trace.trace('Fin LDC_DETALLEFACT_GASCARIBE.rfdatosconsumohist', 15);
+  pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
 EXCEPTION
- WHEN ex.controlled_error THEN
-   RAISE ex.controlled_error;
- WHEN OTHERS THEN
-  errors.seterror;
-  RAISE ex.controlled_error;
+ WHEN pkg_error.CONTROLLED_ERROR THEN
+      pkg_error.geterror(nuError,sbError);
+      pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
+      RAISE pkg_error.CONTROLLED_ERROR;
+    WHEN OTHERS THEN
+      pkg_error.setError;
+      pkg_error.geterror(nuError,sbError);
+      pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+      RAISE pkg_error.CONTROLLED_ERROR;
 END rfdatosconsumohist;
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -559,7 +603,7 @@ PROCEDURE RfDatosAdicionales(
                             ,sbFactsusc  ge_boInstanceControl.stysbValue
                             ,sbPeriodo   ge_boInstanceControl.stysbValue
                             ,blNRegulado BOOLEAN
-                            ,orfcursor   OUT constants.tyRefCursor
+                            ,orfcursor   OUT constants_per.tyRefCursor
                             ) IS
 /***********************************************************************************************
   Propiedad intelectual de PETI (c).
@@ -576,7 +620,8 @@ PROCEDURE RfDatosAdicionales(
   =========       =========           ====================
   01/07/2021      LJLB                 CA 635 se coloca campo de cambio de uso
 *************************************************************************************************/
-nuProductoPrincipal pr_product.product_id%TYPE;
+ csbMT_NAME      VARCHAR2(150) := csbSP_NAME || '.RfDatosAdicionales';
+ nuProductoPrincipal pr_product.product_id%TYPE;
 
 CURSOR cudireccionproducto(nuproducto pr_product.product_id%TYPE) IS
  SELECT aa.address_parsed direccion_producto
@@ -592,7 +637,7 @@ CURSOR cucausadesviacion(Isbfactcodi VARCHAR2) IS
    FROM factura f
   INNER JOIN servsusc s
      ON (sesususc = factsusc AND
-          sesuserv = dald_parameter.fnugetnumeric_value('COD_SERV_GAS'))
+          sesuserv = pkg_bcld_parameter.fnuobtienevalornumerico('COD_SERV_GAS'))
    LEFT OUTER JOIN conssesu c
      ON (c.cosssesu = s.sesunuse AND c.cosspefa = f.factpefa AND
          cossmecc = 4)
@@ -609,8 +654,8 @@ CURSOR cupagareunico(IsbFactsusc VARCHAR2) IS
     AND lp.estado         = 1;
 
 rfcupagareunico cupagareunico%ROWTYPE;
-sbTipoSoli      VARCHAR2(400) := dald_parameter.fsbgetvalue_chain('LDC_TIPOCAUSO', NULL);
-sbCategorias    VARCHAR2(400) := dald_parameter.fsbgetvalue_chain('LDC_CATEVACAMBIO', NULL);
+sbTipoSoli      VARCHAR2(400) := pkg_bcld_parameter.fsbobtienevalorcadena('LDC_TIPOCAUSO');
+sbCategorias    VARCHAR2(400) := pkg_bcld_parameter.fsbobtienevalorcadena('LDC_CATEVACAMBIO');
 nuproducto      NUMBER;
 nuCategoria     NUMBER;
 sbCambioUso     VARCHAR2(1) := 'N';
@@ -649,7 +694,7 @@ CURSOR cuGetCategoriaAnte IS
     AND c.cuconuse = nuproducto
     AND f.factpefa = nuperiante;
 BEGIN
-ut_trace.trace('Inicio -- LDC_DETALLEFACT_GASCARIBE.RfDatosAdicionales',15);
+ pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
 
   OPEN cupagareunico(sbFactsusc);
  FETCH cupagareunico INTO rfcupagareunico;
@@ -699,20 +744,26 @@ ut_trace.trace('Inicio -- LDC_DETALLEFACT_GASCARIBE.RfDatosAdicionales',15);
              ,NULL                                     cambiouso
          FROM dual;
     END IF;
-    ut_trace.trace('Fin -- LDC_DETALLEFACT_GASCARIBE.RfDatosAdicionales',15);
+   pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
 EXCEPTION
- WHEN ex.controlled_error THEN
-     RAISE ex.controlled_error;
- WHEN OTHERS THEN
-     errors.seterror;
-     RAISE ex.controlled_error;
+ WHEN pkg_error.CONTROLLED_ERROR THEN
+      pkg_error.geterror(nuError,sbError);
+      pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
+      RAISE pkg_error.CONTROLLED_ERROR;
+    WHEN OTHERS THEN
+      pkg_error.setError;
+      pkg_error.geterror(nuError,sbError);
+      pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+      RAISE pkg_error.CONTROLLED_ERROR;
 END rfdatosadicionales;
 -----------------------------------------------------------------------------------------------------------------------
 
 PROCEDURE RfDatosMedMalubi(
                            sbfactpefa ge_boinstancecontrol.stysbvalue
                           ,nuproduct  servsusc.sesunuse%TYPE
-                          ,orfcursor OUT constants.tyRefCursor
+                          ,orfcursor OUT constants_per.tyRefCursor
                           ) IS
 /****************************************************************************************
 Propiedad intelectual de GDC (c).
@@ -731,9 +782,12 @@ Parametros           Descripcion
 Fecha             Autor             Modificacion
 =========       =========           ====================
 ******************************************************************************************/
+csbMT_NAME      VARCHAR2(150) := csbSP_NAME || '.RfDatosAdicionales';
 nmconta        NUMBER;
 sbmed_mal_ubic VARCHAR2(2);
 BEGIN
+ pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
+ 
  sbmed_mal_ubic := 'N';
  SELECT COUNT(1) INTO nmconta
    FROM or_order_activity a,or_order o,ldc_obleacti l
@@ -757,12 +811,19 @@ BEGIN
  OPEN orfcursor FOR
   SELECT sbmed_mal_ubic AS med_mal_ubicado
     FROM dual;
+	pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
 EXCEPTION
- WHEN ex.controlled_error THEN
-     RAISE ex.controlled_error;
- WHEN OTHERS THEN
-     Errors.setError;
-     RAISE ex.controlled_error;
+ WHEN pkg_error.CONTROLLED_ERROR THEN
+      pkg_error.geterror(nuError,sbError);
+      pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
+      RAISE pkg_error.CONTROLLED_ERROR;
+    WHEN OTHERS THEN
+      pkg_error.setError;
+      pkg_error.geterror(nuError,sbError);
+      pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
+      RAISE pkg_error.CONTROLLED_ERROR;
 END rfdatosmedmalubi;
 -----------------------------------------------------------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKWEBSERVUTILS AS  -- spec
+CREATE OR REPLACE PACKAGE ADM_PERSON.LDCI_PKWEBSERVUTILS AS  
 /*
  * Propiedad Intelectual Gases de Occidente SA ESP
  *
@@ -31,7 +31,9 @@ Procedure Procrearerrorlogint(Sbnombreint In LDCI_Logiint.Loginoin%Type,
 
 END LDCI_PKWEBSERVUTILS;
 /
-CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKWEBSERVUTILS AS  -- body
+CREATE OR REPLACE PACKAGE BODY ADM_PERSON.LDCI_PKWEBSERVUTILS AS  
+
+csbSP_NAME     CONSTANT VARCHAR2(200):= $$PLSQL_UNIT||'.';
 
 PROCEDURE proCaraServWeb(vCaseDese in  LDCI_CARASEWE.CASECODI%type,
                          vCaseCodi in  LDCI_CARASEWE.CASECODI%type,
@@ -55,30 +57,43 @@ PROCEDURE proCaraServWeb(vCaseDese in  LDCI_CARASEWE.CASECODI%type,
  * Autor          Fecha         Descripcion
  * hectorfdv      05-11-2013    Se coloca pragma autonumus en los procedimientos Procrearerrorlogint
  *                              Para evitar que otro llamado reverse la insercion.
+ * jsoto		  03/01/2025    Se cambia el cursor cuLdcCaraSewe por llamado al nuevo servicio pkg_ldci_carasewe.fnuObtenerValor
 **/
 
- --Cursor de la caracteristica del web services
- cursor cuLdcCaraSewe (vCaseDese1 in  LDCI_CARASEWE.CASECODI%type,
-                      vCaseCodi1 in  LDCI_CARASEWE.CASECODI%type) is
-    select CASEVALO
-      from LDCI_CARASEWE
-     where CASECODI = vCaseCodi1
-       and CASEDESE = vCaseDese1;
+csbMT_NAME  		VARCHAR2(200) := csbSP_NAME || 'proCaraServWeb';
+nuErrorCode         NUMBER;
+sbErrorMessage      VARCHAR2(4000);
+
+
 BEGIN
-  --Hace la carga del cursor de caracteristicas
-  open cuLdcCaraSewe(vCaseDese, vCaseCodi);
-  fetch cuLdcCaraSewe into vCaseValo;
-  if (cuLdcCaraSewe%notfound) then
-      close cuLdcCaraSewe;
-      sbMens := '-1| No se ha encontrado la caracteristica ' || vCaseDese || ' - ' || vCaseCodi;
+
+  pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbInicio); 
+
+  if not pkg_ldci_carasewe.fblExiste(vCaseCodi,vCaseDese) then
+       sbMens := '-1| No se ha encontrado la caracteristica ' || vCaseDese || ' - ' || vCaseCodi;
+       pkg_traza.trace('sbMens: '||sbMens);
       return;
-  end if;--if (cuLdcCaraSewe%notfound) then
-  close cuLdcCaraSewe;
+  end if;
+
+  --Consulta las caracteristas del servicio web
+  vCaseValo := pkg_ldci_carasewe.fsbobtcasevalo(vCaseCodi,vCaseDese);
+
+  pkg_traza.trace('vCaseValo: '|| vCaseValo);
+  pkg_traza.trace('sbMens: '|| sbMens);
+
   sbMens := '0';
+
+  pkg_traza.trace('sbMens: '||sbMens);
+
+  pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+
 EXCEPTION
   WHEN OTHERS THEN
-      	--sbMens := '-1| No se ha encontrado la caracteristica ' || vCaseDese || ' - ' || vCaseCodi || replace(Fsbmensaje(92), '<ObjBD>', 'proCaraServWeb') || SQLERRM;
-       sbMens := '-1| No se ha encontrado la caracteristica ' || vCaseDese || ' - ' || vCaseCodi || ' proCaraServWeb' || SQLERRM;
+      pkg_Error.setError;
+      pkg_Error.getError(nuErrorCode, sbErrorMessage);
+      sbMens := '-1| No se ha encontrado la caracteristica ' || vCaseDese || ' - ' || vCaseCodi || ' proCaraServWeb' || SQLERRM;
+      pkg_traza.trace('sbErrorMessage: ' || sbErrorMessage ||' - sbMens: '||sbMens, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
 END proCaraServWeb;
 
 

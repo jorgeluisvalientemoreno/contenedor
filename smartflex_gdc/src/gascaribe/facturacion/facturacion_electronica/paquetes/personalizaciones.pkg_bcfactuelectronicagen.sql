@@ -1,4 +1,5 @@
-create or replace PACKAGE personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
+create or replace PACKAGE PERSONALIZACIONES.PKG_BCFACTUELECTRONICAGEN IS
+
   csbTipoDocumento   CONSTANT VARCHAR2(2)  := '01';
   csbTipoDocumentoCont   CONSTANT VARCHAR2(2)  := '03';
   csbTipoDocuNotaCre   CONSTANT VARCHAR2(2)  := '91';
@@ -61,6 +62,7 @@ create or replace PACKAGE personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
   sbCondicionesEspeVenta    VARCHAR2(4000) := pkg_parametros.fsbgetvalorcadena('CONDICIONES_ESPECIAL_VENTAS');
   gsbAmbiente         VARCHAR2(2);
+  gsbCodigoEmpresa 	  VARCHAR2(10);
 
   -- Tipo de dato de tabla PL donde el indice es el concepto y el valor es la unidad de medida
   TYPE tytRcUnidadMedConc IS RECORD ( nuConcepto        conc_unid_medida_dian.concepto_id%type,
@@ -137,12 +139,12 @@ create or replace PACKAGE personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 								ValorTotalFacturaMes            VARCHAR2(30),
 								ObservacionNotas                VARCHAR2(200),
 								Calificacion                    VARCHAR2(30),
-								NoUsar06                        VARCHAR2(10),
-								NoUsar07                        VARCHAR2(10),
-								NoUsar08                        VARCHAR2(10),
-								NoUsar09                        VARCHAR2(10),
-								NoUsar10                        VARCHAR2(10),
-								NoUsar11                        VARCHAR2(10) ,
+								ordenCompra                     VARCHAR2(100),
+								NoUsar07                        VARCHAR2(100),
+								NoUsar08                        VARCHAR2(100),
+								NoUsar09                        VARCHAR2(100),
+								NoUsar10                        VARCHAR2(100),
+								NoUsar11                        VARCHAR2(100) ,
 								PromedioDeConsumo               VARCHAR2(30),
 								Temperatura                     VARCHAR2(30),
 								Presion                         VARCHAR2(30) ,
@@ -508,7 +510,7 @@ create or replace PACKAGE personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
     TYPE tytCanalSiete IS RECORD (  NroCanal		 VARCHAR2(5),
                                     NumeroCompleto	 VARCHAR2(30),
-                                    Opcional81   	 VARCHAR2(30),
+                                    InfoFormaPago  	 VARCHAR2(400),
                                     Opcional82       VARCHAR2(30),
                                     Opcional83       VARCHAR2(30),
                                     Opcional84       VARCHAR2(30),
@@ -677,6 +679,10 @@ create or replace PACKAGE personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
    TYPE tbltytInfoAjustes IS TABLE OF tytInfoAjustes INDEX BY VARCHAR2(40);
 
+
+   tbDatosEmpresa pkg_empresa.tytbInfoEmpresas;
+
+
    PROCEDURE prGetInfoEquivaLoca( inuLocalidad     IN  NUMBER,
                                  osbCiudad        OUT VARCHAR2,
                                  osbDepartamento  OUT VARCHAR2,
@@ -789,6 +795,7 @@ create or replace PACKAGE personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     LJLB        09-01-2024   OSF-2158    Creacion
   ***************************************************************************/
   PROCEDURE prMapearDatosFactura ( inuFactura           IN NUMBER,
+								   isbCodEmpresa			IN VARCHAR2,
                                    oclSpool             OUT CLOB,
                                    onuError             OUT NUMBER,
                                    osbError             OUT VARCHAR2);
@@ -1221,6 +1228,7 @@ create or replace PACKAGE personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
   ***************************************************************************/
 
   PROCEDURE prGetInfoValoraReportarNotas ( inuNota    IN NUMBER,
+                                           isbNotaNrefe  IN VARCHAR2 DEFAULT 'N',
                                            onuError   OUT NUMBER,
                                            osbError   OUT VARCHAR2);
   /***************************************************************************
@@ -1233,16 +1241,18 @@ create or replace PACKAGE personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
     Parametros de Entrada
       inuNota   codigo de la nota
+      isbNotaNrefe      indica si la nota es referencia o no
     Parametros de Salida
       onuError             codigo del error
       osbError             mensaje de error
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso       Descripcion
+    LJLB        07-03-2025  OSF-4045    se agrega nuevo parametro isbNotaNrefe para validar si la nota es referenciada o no
     LJLB        05-02-2024   OSF-2158    Creacion
   ***************************************************************************/
 
-   PROCEDURE prInicializarVariables ;
+   PROCEDURE prInicializarVariables(isbCodEmpresa  IN VARCHAR2) ;
   /***************************************************************************
     Propiedad Intelectual de Gases del Caribe
     Programa        : prInicializarVariables
@@ -1253,6 +1263,7 @@ create or replace PACKAGE personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     Modificaciones  :
     Autor       Fecha       Caso       Descripcion
     LJLB       15-01-2024   OSF-2158    Creacion
+	JSOTO	   27-03/2025	OSF-4104	Se agrega parametro de entrada isbCodEmpresa
   ***************************************************************************/
    FUNCTION fsbGetPrefijo RETURN factura_elect_general.consfael%TYPE ;
   /***************************************************************************
@@ -1268,11 +1279,11 @@ create or replace PACKAGE personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
   ***************************************************************************/
 END PKG_BCFACTUELECTRONICAGEN;
 /
-create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
+create or replace PACKAGE BODY  PERSONALIZACIONES.PKG_BCFACTUELECTRONICAGEN IS
     -- Constantes para el control de la traza
   csbSP_NAME        CONSTANT VARCHAR2(100):= $$PLSQL_UNIT;
   -- Identificador del ultimo caso que hizo cambios
-  csbVersion          CONSTANT VARCHAR2(15) := 'OSF-2158';
+  csbVersion          CONSTANT VARCHAR2(15) := 'OSF-4604';
   nuError             NUMBER;
   sbError             VARCHAR2(4000);
   nuConsecutivo       NUMBER;
@@ -1299,6 +1310,8 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
   gsbTipoDocuAiu      VARCHAR2(4) := 'N';
   gsbConceptosAiu      VARCHAR2(4000) ;
+  
+  gnuCicloFact			NUMBER;
 
   v_tytInfoDatosCliente   tytInfoDatosCliente;
   v_tytInfoDatosLectura   tytInfoDatosLectura;
@@ -1317,25 +1330,15 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
   v_tytInfoTotales  tytInfoTotales;
 
-
-   csbMatriculaMerca    CONSTANT VARCHAR2(50) := pkg_parametros.fsbgetvalorcadena('MATRICULA_MERCANTIL');
-  cnuLocalidadEmisor   CONSTANT NUMBER       := pkg_parametros.fnugetvalornumerico('LOCALIDAD_EMISOR');
-  csbZonaPostalEmisor  CONSTANT VARCHAR2(100) := pkg_parametros.fsbgetvalorcadena('ZONA_POSTAL_EMISOR');
-  csbRespFiscalEmisor  CONSTANT VARCHAR2(100) := pkg_parametros.fsbgetvalorcadena('RESP_FISCAL_EMISOR');
-  csbCodTributoEmisor  CONSTANT VARCHAR2(100) := pkg_parametros.fsbgetvalorcadena('COD_TRIBUTO_EMISOR');
-  csbNombTributoEmisor CONSTANT VARCHAR2(100) := pkg_parametros.fsbgetvalorcadena('NOMBRE_TRIBUTO_EMISOR');
-  csbEmailEmisor       CONSTANT VARCHAR2(100) := pkg_parametros.fsbgetvalorcadena('EMAIL_EMISOR');
-  csbEmailContEmisor   CONSTANT VARCHAR2(100) := pkg_parametros.fsbgetvalorcadena('EMAIL_CONTROLER_EMISOR');
-  csbTelefonoEmisor    CONSTANT VARCHAR2(100) := pkg_parametros.fsbgetvalorcadena('TELEFONO_EMISOR');
-  csbFaxEmisor         CONSTANT VARCHAR2(100) := pkg_parametros.fsbgetvalorcadena('FAX_EMISOR');
-  csbRazonSocialEmisor CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('RAZON_SOCIAL_EMISOR');
-  csbDireccionEmisor   CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('DIRECCION_EMISOR');
-  csbTipoRegiEmisor    CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('TIPO_REGIMEN_EMISOR');
-
   csbArteFactRecurr    CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('ARTE_FACT_RECURRENTE');
-  csbArteFactRecurrnR    CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('ARTE_FACT_RECURRENTE_NR');
+  csbArteFactRecurrnR  CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('ARTE_FACT_RECURRENTE_NR');
   csbArteFactVenta     CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('ARTE_FACT_VENTA');
   csbArteNotas         CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('ARTE_NOTAS');
+
+  csbArteFactRecurrGdgu  	CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('ARTE_FACT_RECURRENTE_GDGU');
+  csbArteFactRecurrnRGdgu    CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('ARTE_FACT_RECURRENTE_NR_GDGU');
+  csbArteFactVentaGdgu     	CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('ARTE_FACT_VENTA_GDGU');
+  csbArteNotasGdgu         	CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('ARTE_NOTAS_GDGU');
 
   cnuCodigoDescuento   CONSTANT NUMBER  := pkg_parametros.fnugetvalornumerico('CODIGO_DESCUENTO');
   nuPorcIva            CONSTANT NUMBER := pkg_parametros.fnugetvalornumerico('PORCENTAJE_IVA_ACTUAL');
@@ -1352,7 +1355,9 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
   csbCodConcNotaCre    CONSTANT NUMBER := pkg_parametros.fnugetvalornumerico('CODIGO_CONCEPTO_NOTACRE_FAEL');
   csbCodConcNotaDeb    CONSTANT NUMBER := pkg_parametros.fnugetvalornumerico('CODIGO_CONCEPTO_NOTADEB_FAEL');
   sbcalificacion VARCHAR2(100);
-
+  cnuCodMedioPago      CONSTANT NUMBER := pkg_parametros.fnugetvalornumerico('CODIGO_MEDIO_PAGO_FAEL');
+  csbDescMedioPago     CONSTANT VARCHAR2(200) := pkg_parametros.fsbgetvalorcadena('CODIGO_MEDIO_PAGO_FAEL');
+  csbcicloArteventa    CONSTANT VARCHAR2(2000) := pkg_parametros.fsbgetvalorcadena('CICLO_ARTE_VENTA_FAEL');
 
   FUNCTION fsbVersion RETURN VARCHAR2 IS
   /***************************************************************************
@@ -1464,7 +1469,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     nuConsecutivo := inuConsecutivo;
   END prSetConsecutivo;
 
-  PROCEDURE prInicializarVariables IS
+  PROCEDURE prInicializarVariables(isbCodEmpresa  IN VARCHAR2) IS
   /***************************************************************************
     Propiedad Intelectual de Gases del Caribe
     Programa        : prInicializarVariables
@@ -1475,6 +1480,8 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     Modificaciones  :
     Autor       Fecha       Caso       Descripcion
     LJLB       15-01-2024   OSF-2158    Creacion
+	JSOTO	   20-03-2025	OSF-4104	Se agrega parametro de entrada isbCodEmpresa
+	jerazomvm	26-06-2025	OSF-4604	Se agrega la inicialización de la variable global gnuCicloFact
   ***************************************************************************/
     csbMT_NAME      VARCHAR2(100) := csbSP_NAME || '.prInicializarVariables';
     v_tytInfoDatosClientenull 	tytInfoDatosCliente;
@@ -1496,7 +1503,6 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     FROM conc_unid_medida_dian;
 
 
-
   BEGIN
     pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
     v_tytInfoDatosCliente     := v_tytInfoDatosClientenull;
@@ -1512,26 +1518,32 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     V_tbltytInfoRangos.delete;
 	tbUnidadMedConc.delete;
 
-	v_tytInfoTotales		  := v_tytInfoTotalesNULL;
-    gsbResolucion             := null;
-    gnuConsInicial            := null;
-    gnuConsFinal              := null;
-    gdtFechaResol             := null;
-    gdtFechaIniVige           := null;
-    gdtFechaFinVige           := null;
+	v_tytInfoTotales	:= v_tytInfoTotalesNULL;
+    gsbResolucion       := null;
+    gnuConsInicial      := null;
+    gnuConsFinal        := null;
+    gdtFechaResol       := null;
+    gdtFechaIniVige     := null;
+    gdtFechaFinVige     := null;
     v_tbltytInfoCargos.delete;
-    gnuContadorLinea   := 0;
-    gnuValorTotalIva := 0;
-    gnuValorTotal := 0;
-    gnuValorBaseTotal := 0;
-    gnuValorDescuento := 0;
-    gnuValorIngreso   := 0;
-    gnuValorDescgen   := 0;
-    gsbArteFactura    := NULL;
+    gnuContadorLinea   	:= 0;
+    gnuValorTotalIva 	:= 0;
+    gnuValorTotal 		:= 0;
+    gnuValorBaseTotal 	:= 0;
+    gnuValorDescuento 	:= 0;
+    gnuValorIngreso   	:= 0;
+    gnuValorDescgen   	:= 0;
+    gsbArteFactura    	:= NULL;
     v_tbltytInfoIngresos.delete;
     v_tbltytInfoImpuesto.delete;
     v_tbltytInfoAjustes.delete;
-    gsbObservacionNota := NULL;
+    gsbObservacionNota 	:= NULL;
+	gsbCodigoEmpresa  	:= isbCodEmpresa;
+	gnuCicloFact		:= NULL;
+
+	IF (tbDatosEmpresa.count = 0) THEN
+			tbDatosEmpresa := pkg_empresa.frcObtieneInfoEmpresas;
+	END IF;
 
 	IF cuUnidadMedida%ISOPEN THEN CLOSE cuUnidadMedida; END IF;
 	--se carga tabla temporal de unidad de medida por concepto
@@ -1725,6 +1737,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
   END fnuGetEquivaleTipoIdent;
 
   PROCEDURE prMapearDatosFactura ( inuFactura           IN NUMBER,
+								   isbCodEmpresa			IN VARCHAR2,
                                    oclSpool             OUT CLOB,
                                    onuError             OUT NUMBER,
                                    osbError             OUT VARCHAR2) IS
@@ -1738,6 +1751,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
     Parametros de Entrada
       inuFactura   codigo de la factura
+	  isbCodEmpresa   Empresa de la factura
     Parametros de Salida
       oclSpool      salida del spool
       onuError     codigo del error
@@ -1746,6 +1760,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     =========================================================
     Autor       Fecha       Caso       Descripcion
     LJLB        09-01-2024   OSF-2158    Creacion
+	JSOTO		20-03-2025	 OSF-4104	 Se agrega parametro isbCodEmpresa
   ***************************************************************************/
     csbMT_NAME      VARCHAR2(100) := csbSP_NAME || '.prMapearDatosFactura';
 
@@ -1995,7 +2010,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
      pkg_traza.trace('inuFactura => ' || inuFactura, pkg_traza.cnuNivelTrzDef);
      pkg_error.prinicializaerror(onuError, osbError);
      prCloseCursor;
-     prInicializarVariables;
+     prInicializarVariables(isbCodEmpresa);
      prIniciarDatos;
 	 pkg_traza.trace('Inicia Extraccion XML ',  pkg_traza.cnuNivelTrzDef);
      OPEN cuGetXmlFactura;
@@ -2272,7 +2287,8 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso       Descripcion
-    LJLB       18-10-2024   OSF-3493    se cloca filtro de cargtipr = 'A' para cargos con condiciones especiales
+    LJLB 		04/02/2024   OSF-3939   se realiza calculo de tarifa para concepto de IVA del parametro CONCEPTO_IVA_REDINTERNA_INDU
+	LJLB       18-10-2024   OSF-3493    se cloca filtro de cargtipr = 'A' para cargos con condiciones especiales
     LJLB        05-02-2024   OSF-2158    Creacion
   ***************************************************************************/
      csbMT_NAME      VARCHAR2(100)  := csbSP_NAME || '.prGetInfoValoraReportarVentas';
@@ -2296,6 +2312,8 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 	 nuValorUnitario  NUMBER(25,2);
 	 nuCantBase     NUMBER;
 	 nuValorUniBase NUMBER(25,2);
+
+	 nuConcIvaRedIndu  NUMBER := pkg_parametros.fnugetvalornumerico('CONCEPTO_IVA_REDINTERNA_INDU');
 
      --consulta valor de ingresos
      CURSOR cuGetIngresos IS
@@ -2652,8 +2670,13 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
            pkg_traza.trace(' reg.tarifa => ' ||reg.tarifa, pkg_traza.cnuNivelTrzDef);
            IF reg.tarifa <> nuPorcIva THEN
              gsbTipoDocuAiu := 'S';
-             nuValorBase  := ROUND((nuPorcentaje / nuPorcIva ) * nuValorBase, 0);
-             nuPorcentaje := nuPorcIva;
+
+			 IF nuConcIvaRedIndu = reg.cargconc THEN
+			    nuPorcentaje :=  (nuImpuesto / nuValorBase) * 100;
+			 END IF;
+			 nuValorBase  := ROUND((nuPorcentaje / nuPorcIva ) * nuValorBase, 0);
+
+			 nuPorcentaje := nuPorcIva;
              blIsConceptoAiu := TRUE;
           END IF;
 		  pkg_traza.trace(' nuValorIva => ' ||nuValorIva, pkg_traza.cnuNivelTrzDef);
@@ -2752,6 +2775,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
   END prGetInfoValoraReportarVentas;
 
   PROCEDURE prGetInfoValoraReportarNotas ( inuNota    IN NUMBER,
+                                           isbNotaNrefe  IN VARCHAR2 DEFAULT 'N',
                                            onuError   OUT NUMBER,
                                            osbError   OUT VARCHAR2) IS
   /***************************************************************************
@@ -2764,12 +2788,14 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
     Parametros de Entrada
       inuNota   codigo de la nota
+      isbNotaNrefe      indica si la nota es referencia o no
     Parametros de Salida
       onuError             codigo del error
       osbError             mensaje de error
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso       Descripcion
+     LJLB        07-03-2025  OSF-4045    se agrega nuevo parametro isbNotaNrefe para validar si la nota es referenciada o no
     LJLB        05-02-2024   OSF-2158    Creacion
   ***************************************************************************/
      csbMT_NAME      VARCHAR2(100)  := csbSP_NAME || '.prGetInfoValoraReportarNotas';
@@ -2805,7 +2831,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
                 cargos.cargconc,
                 concepto.concdesc,
                 SUM(nvl(cargos.cargunid,1)) cantidad,
-                SUM(round(decode( nvl(cargos.cargunid,1),  0, 0, cargos.cargvalo / cargos.cargunid), 0) * decode(cargos.cargsign,'CR', -1,1)  ) valorunitario
+                SUM(round(decode( nvl(cargos.cargunid,1),  0, 0, cargos.cargvalo / cargos.cargunid), 0)  ) valorunitario
          FROM cargos, cuencobr, concepto, servsusc
          WHERE cargos.cargcuco = cucocodi
           AND cuencobr.cucofact = inuFactura
@@ -2925,6 +2951,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
   BEGIN
       pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
       pkg_traza.trace(' inuNota => ' || inuNota, pkg_traza.cnuNivelTrzDef);
+      pkg_traza.trace(' isbNotaNrefe => ' || isbNotaNrefe, pkg_traza.cnuNivelTrzDef);
       prCloseCursor;
       prInicializaDatos;
       pkg_error.prinicializaerror(onuError, osbError);
@@ -2937,11 +2964,12 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
       pkg_traza.trace(' nuPrograma => '||nuPrograma, pkg_traza.cnuNivelTrzDef);
       pkg_traza.trace(' sbTipoNota => '||sbTipoNota, pkg_traza.cnuNivelTrzDef);
       pkg_traza.trace(' gsbObservacionNota => '||gsbObservacionNota, pkg_traza.cnuNivelTrzDef);
-
-      OPEN cuGetFacturaAso(nuFactura);
-      FETCH cuGetFacturaAso INTO nuFacturaAso, dtFechaAso;
-      CLOSE cuGetFacturaAso;
-
+      --si es nota referenciada se consulta la factura asociada
+      IF isbNotaNrefe = 'N' THEN
+          OPEN cuGetFacturaAso(nuFactura);
+          FETCH cuGetFacturaAso INTO nuFacturaAso, dtFechaAso;
+          CLOSE cuGetFacturaAso;
+      END IF;
       pkg_traza.trace(' nuFacturaAso => '||nuFacturaAso, pkg_traza.cnuNivelTrzDef);
       pkg_traza.trace(' dtFechaAso => '||dtFechaAso, pkg_traza.cnuNivelTrzDef);
 
@@ -2958,7 +2986,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
           IF tbUnidadMedConc.EXISTS(reg.cargconc) then
               sbUnidMed := tbUnidadMedConc(reg.cargconc).sbUnidadMed;
               IF tbUnidadMedConc(reg.cargconc).sbRequiereTarifa = 'S' THEN
-                  nuValorUnitario := (reg.valorunitario);
+                  nuValorUnitario := abs(reg.valorunitario);
                   nuCantidad := reg.cantidad;
               END IF;
           END IF;
@@ -3059,7 +3087,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso       Descripcion
-    LJLB       23-10-2024   OSF-3511    se quita cargos AS del cursos de aplicacion de saldo a favor, ademas se arregla las condiciones 
+    LJLB       23-10-2024   OSF-3511    se quita cargos AS del cursos de aplicacion de saldo a favor, ademas se arregla las condiciones
                                         para reportar consumos recuperados positivos.
     LJLB       18-10-2024   OSF-3493    se coloca filtro de cargtipr = 'A' para cargos con condiciones especiales
     LJLB        05-02-2024   OSF-2158    Creacion
@@ -3304,6 +3332,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
                               CONNECT BY regexp_substr(sbCausalesIngre, '[^,]+', 1, LEVEL) IS NOT NULL )
       AND concepto.concticl = 4
       AND cargos.cargconc = conccodi
+      AND cargos.cargsign IN ('DB','CR')
       AND servsusc.sesunuse = cuencobr.cuconuse
        AND servsusc.sesuserv NOT IN ( SELECT to_number(regexp_substr(csbTipoProdExcluir,  '[^,]+',   1, LEVEL)) AS TIPOPROD
                                          FROM dual
@@ -3346,6 +3375,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
       AND cargos.cargdoso NOT LIKE 'CO-PR%'
       AND cargos.cargdoso NOT LIKE 'DF-%'
       AND servsusc.sesunuse = cuencobr.cuconuse
+      AND cargos.cargsign IN ('DB','CR')
       AND servsusc.sesuserv NOT IN ( SELECT to_number(regexp_substr(csbTipoProdExcluir,  '[^,]+',   1, LEVEL)) AS TIPOPROD
                                      FROM dual
                                      CONNECT BY regexp_substr(csbTipoProdExcluir, '[^,]+', 1, LEVEL) IS NOT NULL )
@@ -3708,8 +3738,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
      END IF;
      CLOSE cuGetIngresoTrans;
-	pkg_traza.trace(' gnuValorIngreso => ' || gnuValorIngreso, pkg_traza.cnuNivelTrzDef);																				   
-     pkg_traza.trace(' nuValorAjuConsTra => ' || nuValorAjuConsTra, pkg_traza.cnuNivelTrzDef);
+	pkg_traza.trace(' gnuValorIngreso => ' || gnuValorIngreso, pkg_traza.cnuNivelTrzDef); pkg_traza.trace(' nuValorAjuConsTra => ' || nuValorAjuConsTra, pkg_traza.cnuNivelTrzDef);
      IF NOT blValidaAjusCons AND  nuValorAjuCons <> 0 THEN
         pkg_traza.trace(' Realizo ajuste al Final gnuValorIngreso => '||gnuValorIngreso||' nuIngresoConsumo => '|| nuIngresoConsumo , pkg_traza.cnuNivelTrzDef);
         IF (nuValorAjuCons + (gnuValorIngreso - nuIngresoConsumo))  < 0 THEN
@@ -3799,6 +3828,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     csbMT_NAME        VARCHAR2(100) := csbSP_NAME || '.prInicializarDatosCons';
     v_styConsecutivo  pkg_recofael.styConsecutivo;
     v_styConsecutivonull  pkg_recofael.styConsecutivo;
+
     CURSOR cuGetInfoFactura IS
      SELECT *
      FROM factura_elect_general
@@ -3812,17 +3842,25 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
        PRAGMA AUTONOMOUS_TRANSACTION;
        csbMT_NAME1        CONSTANT VARCHAR2(105) := csbMT_NAME ||  '.prObtenerConsetivo';
        nuConseSig         NUMBER;
+       sbSecuencia        VARCHAR2(2000);
+       sbSql              VARCHAR2(2000);
+       sbCodEmpresa       VARCHAR2(10);
+
     BEGIN
         pkg_traza.trace( csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
 
+        sbCodEmpresa := pkg_boconsultaempresa.fsbObtEmpresaFactura(inuFactura);
+
         IF isbOperacion = 'I' THEN
 
-            IF inuTipoDocu = cnuTipoDocuFactRecu THEN
-                nuConseSig := SEQ_FACTURA_ELECT_GEN_CONSFAEL.NEXTVAL;
-            ELSE
-                nuConseSig := SEQ_FACTURA_ELECT_GEN_CONSVENT.NEXTVAL;
-            END IF;
+		sbSecuencia := pkg_secuencia_tipodocu_emfael.fsbobtnombre_secuencia(sbCodEmpresa,inuTipoDocu);
+
+		sbSql := 'select '||sbSecuencia||'.'||'nextval from dual';
+
+		EXECUTE IMMEDIATE sbSql INTO nuConseSig;
+
             v_styConsecutivo := pkg_recofael.frcgetRecord( inuTipoDocu,
+                                                           sbCodEmpresa,
                                                            nuConseSig,
                                                            'A',
                                                            nuError,
@@ -3857,6 +3895,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
            nuConseSig := regFactura.CONSFAEL;
            v_styConsecutivo := pkg_recofael.frcgetRecord( inuTipoDocu,
+                                                          sbCodEmpresa,
                                                           nuConseSig,
                                                           'T',
                                                           nuError,
@@ -3933,6 +3972,12 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     Modificaciones  :
     =========================================================
     Autor       Fecha       Caso       Descripcion
+	jerazomvm	26-06/2025	 OSF-4604	Si el tipo de documento es diferente de tres, se llena el ciclo 
+										en la variable global gnuCicloFact.
+	LJLB        02-04-2025   OSF-4227    se coloca condicion para arte de venta a facturas de ciertos ciclos
+                                          configurados en el parametro CICLO_ARTE_VENTA_FAEL
+    LJLB        02-04-2025   OSF-4182    se coloca campo orden de compra
+    LJLB        03-12-2024   OSF-3666    se coloca campo orden de compra
     LJLB        09-01-2024   OSF-2158    Creacion
   ***************************************************************************/
     csbMT_NAME        VARCHAR2(100) := csbSP_NAME || '.prGetInfoCanalUno';
@@ -3949,7 +3994,11 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     osbError         VARCHAR2(4000);
     nuTipoDocu      NUMBER;
 
-    SBFechaVenc      varchar2(50);
+    sbFechaVenc      varchar2(50);
+    nuTotalPagar  NUMBER;
+    nuFactura   NUMBER;
+    sbOrdenCompra VARCHAR2(100);
+    nuCicloFact    NUMBER;
 
     CURSOR cuGetFechaPeriodo IS
     SELECT to_char(factura.factfege,'yyyy-MM')||'-01' fecha_inicial,
@@ -3957,7 +4006,8 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
            to_char(factura.factfege,'HH:MM:SS')||'-05:00' hora_inicial,
            to_char(perifact.pefaffmo,'HH:MM:SS')||'-05:00' hora_final,
            factura.factsusc,
-           to_char(factura.factfege,'yyyy-MM-DD') fecha_gene
+           to_char(factura.factfege,'yyyy-MM-DD') fecha_gene,
+            perifact.pefacicl
     FROM perifact, factura
     WHERE perifact.pefacodi = factpefa
      AND factura.factcodi = inuFactura;
@@ -3980,9 +4030,20 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     FROM cuencobr
     WHERE cucofact = inuFactu;
 
+    CURSOR cuGetOrdenCompra IS
+    SELECT  orden_compra_factura.orden_compra
+    FROM orden_compra_factura
+    WHERE orden_compra_factura.factura = inuFactura;
 
-    nuTotalPagar  NUMBER;
-    nuFactura   NUMBER;
+     CURSOR cuValidaCiclo(inuCiclo IN NUMBER) IS
+    SELECT 'X'
+    FROM ( SELECT TO_NUMBER(regexp_substr(csbcicloArteventa,  '[^,]+',   1, LEVEL)) AS ciclo
+           FROM dual
+           CONNECT BY regexp_substr(csbcicloArteventa, '[^,]+', 1, LEVEL) IS NOT NULL)
+    WHERE inuCiclo = ciclo;
+
+    sbExisteCiclo VARCHAR2(1);
+
 
     PROCEDURE prCloseCursor IS
      csbMT_NAME1      VARCHAR2(150) := csbMT_NAME || '.prCloseCursor';
@@ -3995,9 +4056,18 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
         IF cuGetFechaVenci%ISOPEN THEN
            CLOSE cuGetFechaVenci;
         END IF;
-		IF cuGetFechaPeriodoNota%ISOPEN then
-		  CLOSE cuGetFechaPeriodoNota;
-		END IF;
+
+        IF cuGetFechaPeriodoNota%ISOPEN then
+          CLOSE cuGetFechaPeriodoNota;
+        END IF;
+
+        IF cuGetOrdenCompra%ISOPEN THEN
+           CLOSE cuGetOrdenCompra;
+        END IF;
+
+        IF cuValidaCiclo%ISOPEN THEN
+          CLOSE cuValidaCiclo;
+        END IF;
 
         pkg_traza.trace( csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
     END prCloseCursor;
@@ -4014,6 +4084,8 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
          nuFactura := null;
         OtytCanalUno := v_tytCanalUnoNull;
         nuContrato := NULL;
+        sbOrdenCompra := '';
+        nuCicloFact := NULL;
         pkg_traza.trace( csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
     END prInicializaDatos;
 
@@ -4026,7 +4098,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
 
 
     OtytCanalUno.NroCanal						 := 1;
-    OtytCanalUno.NumeroCompleto                  := sbNumeroCompleto;
+    OtytCanalUno.NumeroCompleto      := sbNumeroCompleto;
     nuTipoDocu := inuTipoDocu;
 
     IF inuTipoDocu = cnuTipoDocuNotas THEN
@@ -4057,26 +4129,60 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
         END IF;
         OtytCanalUno.FacturaAsociada             := nuFacturaAso;
         OtytCanalUno.FechaFacturaAsociada        := to_char(dtFechaAso,'yyyy-MM-DD');
-        gsbArteFactura := csbArteNotas;
+
+		IF gsbCodigoEmpresa = 'GDCA' THEN
+			gsbArteFactura := csbArteNotas;
+		ELSE
+			gsbArteFactura := csbArteNotasGdgu;
+		END IF;
+
     ELSE
 
         OPEN cuGetFechaPeriodo;
-        FETCH cuGetFechaPeriodo INTO sbFechaIniPeri, sbFechaFinPeri, sbHoraIniPeri, sbHoraFinPeri, nuContrato, sbFechaGenera;
+        FETCH cuGetFechaPeriodo INTO sbFechaIniPeri, sbFechaFinPeri, sbHoraIniPeri, sbHoraFinPeri, nuContrato, sbFechaGenera, nuCicloFact;
         CLOSE cuGetFechaPeriodo;
-	    nuFactura := inuFactura;
+	      nuFactura := inuFactura;
+		  
+		-- Se asigna el ciclo a la variable global
+		gnuCicloFact	:= nuCicloFact;
 
         IF cnuTipoDocuFactRecu = inuTipoDocu THEN
             IF NOT ldc_detallefact_gascaribe.fblNoRegulado(nuContrato) THEN
-                gsbArteFactura := csbArteFactRecurr;
+				IF gsbCodigoEmpresa = 'GDCA' THEN
+					gsbArteFactura := csbArteFactRecurr;
+				ELSE
+					gsbArteFactura := csbArteFactRecurrGdgu;
+				END IF;
             ELSE
-               gsbArteFactura := csbArteFactRecurrnR;
+				IF gsbCodigoEmpresa = 'GDCA' THEN
+					gsbArteFactura := csbArteFactRecurrnR;
+				ELSE
+					gsbArteFactura := csbArteFactRecurrnRGdgu;
+				END IF;
                nuTipoDocu  := 4;
             END IF;
+
+           --se valida si el ciclo aplica para tener arte de venta
+           OPEN cuValidaCiclo(nuCicloFact);
+           FETCH cuValidaCiclo INTO sbExisteCiclo;
+           IF cuValidaCiclo%FOUND THEN
+               IF gsbCodigoEmpresa = 'GDCA' THEN
+                  gsbArteFactura := csbArteFactVenta;
+               ELSE
+                  gsbArteFactura := csbArteFactVentaGdgu;
+               END IF;
+               nuTipoDocu  := 2;
+           END IF;
+           CLOSE cuValidaCiclo;
         ELSE
-           gsbArteFactura := csbArteFactVenta;
+			IF gsbCodigoEmpresa = 'GDCA' THEN
+				gsbArteFactura := csbArteFactVenta;
+			ELSE
+				gsbArteFactura := csbArteFactVentaGdgu;
+			END IF;
         END IF;
 
-		OtytCanalUno.TipoDocumento               := csbTipoDocumento;
+        OtytCanalUno.TipoDocumento               := csbTipoDocumento;
 
         IF gsbTipoDocuAiu = 'N' THEN
            OtytCanalUno.TipoOperacion            := csbTipoOperacion;
@@ -4085,6 +4191,11 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
         END IF;
         OtytCanalUno.FacturaAsociada             := '';
         OtytCanalUno.FechaFacturaAsociada        := '';
+
+        OPEN cuGetOrdenCompra;
+        FETCH cuGetOrdenCompra INTO sbOrdenCompra;
+        CLOSE cuGetOrdenCompra;
+
     END IF;
 
 	OPEN cuGetFechaVenci(nuFactura);
@@ -4107,8 +4218,8 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     OtytCanalUno.TipoMoneda                      := csbTipoMoneda;
     OtytCanalUno.NumeroLineas                    := gnuContadorLinea;
     OtytCanalUno.FormaPago                       := csbFormaPago;
-    OtytCanalUno.CodigoMedioPago                 := '';
-    OtytCanalUno.DescripcionMedioPago            := '';
+    OtytCanalUno.CodigoMedioPago                 := cnuCodMedioPago;
+    OtytCanalUno.DescripcionMedioPago            := csbDescMedioPago;
     OtytCanalUno.FechaVencimiento                := SBFechaVenc;
     OtytCanalUno.FechaInicalPeriodoFacturacion   := sbFechaIniPeri;
     OtytCanalUno.HoraInicalPeriodoFacturacion    := sbHoraIniPeri;
@@ -4159,7 +4270,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     OtytCanalUno.ValorTotalFacturaMes            := v_tytInfoTotales.CARGOSMES;
     OtytCanalUno.ObservacionNotas                := gsbObservacionNota;
     OtytCanalUno.Calificacion                    := sbcalificacion;
-    OtytCanalUno.NoUsar06                        := '';
+    OtytCanalUno.ordenCompra                     := sbOrdenCompra;
     OtytCanalUno.NoUsar07                        := '';
     OtytCanalUno.NoUsar08                        := '';
     OtytCanalUno.NoUsar09                        := '';
@@ -4262,8 +4373,8 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     OtytCanalUnoCon.TipoMoneda                      := csbTipoMoneda;
     OtytCanalUnoCon.NumeroLineas                    := gnuContadorLinea;
     OtytCanalUnoCon.FormaPago                       := csbFormaPago;
-    OtytCanalUnoCon.CodigoMedioPago                 := '';
-    OtytCanalUnoCon.DescripcionMedioPago            := '';
+    OtytCanalUnoCon.CodigoMedioPago                 := cnuCodMedioPago;
+    OtytCanalUnoCon.DescripcionMedioPago            := csbDescMedioPago;
     OtytCanalUnoCon.FechaVencimiento                := SBFechaVenc;
     OtytCanalUnoCon.FechaInicalPeriodoFacturacion   := sbFechaIniPeri;
     OtytCanalUnoCon.HoraInicalPeriodoFacturacion    := sbHoraIniPeri;
@@ -4314,7 +4425,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     OtytCanalUnoCon.ValorTotalFacturaMes            := v_tytInfoTotales.CARGOSMES;
     OtytCanalUnoCon.ObservacionNotas                := gsbObservacionNota;
     OtytCanalUnoCon.Calificacion                    := sbcalificacion;
-    OtytCanalUnoCon.NoUsar06                        := '';
+    OtytCanalUnoCon.ordenCompra                     := sbOrdenCompra;
     OtytCanalUnoCon.NoUsar07                        := '';
     OtytCanalUnoCon.NoUsar08                        := '';
     OtytCanalUnoCon.NoUsar09                        := '';
@@ -4620,7 +4731,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     otbltytCanalNueve(0).NumeroCompleto	:= sbNumeroCompleto;
     otbltytCanalNueve(0).IDOrdenamiento	:= 0;
     otbltytCanalNueve(0).FechaConsumo	:= CASE WHEN v_tytInfoDatosConsumo.FECHA_CONS_MES_1 IS NOT NULL THEN 'ACT' ELSE '' END;
-    otbltytCanalNueve(0).Consumo		:= v_tytInfoDatosConsumo.CONS_CORREG;
+    otbltytCanalNueve(0).Consumo		:=   to_number(v_tytInfoDatosConsumo.CONS_CORREG,'FM999999999990');
     otbltytCanalNueve(0).DiasConsumo	:= NULL;
 
 
@@ -4774,7 +4885,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     Autor       Fecha       Caso       Descripcion
     LJLB        22-01-2024   OSF-2158    Creacion
   ***************************************************************************/
-   csbMT_NAME        VARCHAR2(100) := csbSP_NAME || '.prGetInfoCanalDos';
+   csbMT_NAME        VARCHAR2(100) := csbSP_NAME || '.prGetInfoCanalTres';
    sbNitComple       VARCHAR2(80);
    sbNombreEmpre     VARCHAR2(80);
    sbDigitoVeri      VARCHAR2(4);
@@ -4788,25 +4899,25 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
    onuError          NUMBER;
    osbError          VARCHAR2(4000);
 
-   CURSOR cuGetInfoSistema IS
-   SELECT SUBSTR(sistnitc, INSTR(sistnitc, '-') + 1, 1) digito,
-            SUBSTR(sistnitc, 1, INSTR(sistnitc, '-') - 1) NitSinDigi,
-         sistempr, sistdire
-   FROM sistema;
+   sbMatriculaMerca    VARCHAR2(50);
+   nuLocalidadEmisor   NUMBER;
+   sbZonaPostalEmisor  VARCHAR2(100);
+   sbRespFiscalEmisor  VARCHAR2(100);
+   sbCodTributoEmisor  VARCHAR2(100);
+   sbNombTributoEmisor VARCHAR2(100);
+   sbEmailEmisor       VARCHAR2(100);
+   sbEmailContEmisor   VARCHAR2(100);
+   sbTelefonoEmisor    VARCHAR2(100);
+   sbFaxEmisor         VARCHAR2(100);
+   sbRazonSocialEmisor VARCHAR2(200);
+   sbDireccionEmisor   VARCHAR2(200);
+   sbTipoRegiEmisor    VARCHAR2(200);
+   sbCodigoEmpresa	   VARCHAR2(10);
 
-   PROCEDURE prCloseCursor IS
-     csbMT_NAME1      VARCHAR2(150) := csbMT_NAME || '.prCloseCursor';
-   BEGIN
-        pkg_traza.trace( csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
-        IF cuGetInfoSistema%ISOPEN THEN
-           CLOSE cuGetInfoSistema;
-        END IF;
-        pkg_traza.trace( csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
-    END prCloseCursor;
 
     PROCEDURE prInicializaInfo IS
      csbMT_NAME1      VARCHAR2(150) := csbMT_NAME || '.prInicializaInfo';
-   BEGIN
+    BEGIN
         pkg_traza.trace( csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
         sbNitComple    :='';
         sbNombreEmpre  :='';
@@ -4818,20 +4929,36 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
         sbDescDepart   :='';
         sbDescLocalidad :='';
         onuError        := 0;
-       osbError         := NULL;
+        osbError         := NULL;
         pkg_traza.trace( csbMT_NAME1, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
     END prInicializaInfo;
   BEGIN
+
     pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
-
-    prCloseCursor;
     prInicializaInfo;
-
-    OPEN cuGetInfoSistema;
-    FETCH cuGetInfoSistema INTO sbDigitoVeri, sbNitSinDigito, sbNombreEmpre, sbDireccion;
-    CLOSE cuGetInfoSistema;
-
-    prGetInfoEquivaLoca( cnuLocalidadEmisor,
+    pkg_traza.trace(' gsbCodigoEmpresa => ' || gsbCodigoEmpresa, pkg_traza.cnuNivelTrzDef);
+    IF tbDatosEmpresa.EXISTS(gsbCodigoEmpresa) THEN
+        sbCodigoEmpresa := tbDatosEmpresa(gsbCodigoEmpresa).codigo;
+        sbDigitoVeri :=  SUBSTR(tbDatosEmpresa(gsbCodigoEmpresa).nit, INSTR(tbDatosEmpresa(gsbCodigoEmpresa).nit, '-') + 1, 1);
+        sbNitSinDigito := SUBSTR(tbDatosEmpresa(gsbCodigoEmpresa).nit, 1, INSTR(tbDatosEmpresa(gsbCodigoEmpresa).nit, '-') - 1);
+        nuLocalidadEmisor := tbDatosEmpresa(gsbCodigoEmpresa).localidad;
+        sbRazonSocialEmisor := tbDatosEmpresa(gsbCodigoEmpresa).razon_social_emisor;
+        sbNombreEmpre := tbDatosEmpresa(gsbCodigoEmpresa).nombre;
+        sbMatriculaMerca := tbDatosEmpresa(gsbCodigoEmpresa).matricula_mercantil;
+        sbDireccionEmisor := tbDatosEmpresa(gsbCodigoEmpresa).direccion_emisor;
+        sbZonaPostalEmisor := tbDatosEmpresa(gsbCodigoEmpresa).zona_postal_emisor;
+        sbTipoRegiEmisor := tbDatosEmpresa(gsbCodigoEmpresa).tipo_regimen_emisor;
+        sbRespFiscalEmisor := tbDatosEmpresa(gsbCodigoEmpresa).resp_fiscal_emisor;
+        sbCodTributoEmisor := tbDatosEmpresa(gsbCodigoEmpresa).cod_tributo_emisor;
+        sbNombTributoEmisor := tbDatosEmpresa(gsbCodigoEmpresa).nombre_tributo_emisor;
+        sbEmailEmisor := tbDatosEmpresa(gsbCodigoEmpresa).email_emisor;
+        sbEmailContEmisor := tbDatosEmpresa(gsbCodigoEmpresa).email_controler_emisor;
+        sbTelefonoEmisor := tbDatosEmpresa(gsbCodigoEmpresa).telefono_emisor;
+        sbFaxEmisor := tbDatosEmpresa(gsbCodigoEmpresa).fax_emisor;
+    ELSE
+       pkg_error.setErrorMessage(isbMsgErrr => 'Empresa ['||gsbCodigoEmpresa||'] no existe');
+    END IF;
+    prGetInfoEquivaLoca( nuLocalidadEmisor,
                          sbCiudad,
                          sbDepartamento,
                          sbDescDepart,
@@ -4847,33 +4974,33 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     otytCanalTres.DescripcionIdentificacionEmi	:= csbDescTipoIdeEmisor;
     otytCanalTres.NumeroIdentificacionEmisor	:= sbNitSinDigito;
     otytCanalTres.DigitoVerificacionEmisor      := sbDigitoVeri;
-    otytCanalTres.RazonSocialEmisor             := csbRazonSocialEmisor;
+    otytCanalTres.RazonSocialEmisor             := sbRazonSocialEmisor;
     otytCanalTres.NombreComercialEmisor		    := sbNombreEmpre;
-    otytCanalTres.MatriculaMercantilEmisor      := csbMatriculaMerca;
+    otytCanalTres.MatriculaMercantilEmisor      := sbMatriculaMerca;
     otytCanalTres.CodDepartamentoExpedicionEmi  := sbDepartamento;
     otytCanalTres.NomDepartamentoExpedicionEmi  := sbDescDepart;
     otytCanalTres.CodMunicipioExpedicionEmisor  := sbCiudad;
     otytCanalTres.NombreMunicipioExpedicionEmi  := sbDescLocalidad;
-    otytCanalTres.DireccionExpedicionEmisor     := csbDireccionEmisor;
-    otytCanalTres.CodigoZonaPostalExpedicionEmi := csbZonaPostalEmisor;
+    otytCanalTres.DireccionExpedicionEmisor     := sbDireccionEmisor;
+    otytCanalTres.CodigoZonaPostalExpedicionEmi := sbZonaPostalEmisor;
     otytCanalTres.CodigoPaisExpedicionEmisor    := csbPais;
     otytCanalTres.NombrePaisExpedicionEmisor    := csbNombrePais;
     otytCanalTres.CodigoDepartamentoFiscalEmi   := sbDepartamento;
     otytCanalTres.NombreDepartamentoFiscalEmi   := sbDescDepart;
     otytCanalTres.CodigoMunicipioFiscalEmisor   := sbCiudad;
     otytCanalTres.NombreMunicipioFiscalEmisor   := sbDescLocalidad;
-    otytCanalTres.DireccionFiscalEmisor         := csbDireccionEmisor;
-    otytCanalTres.CodigoZonaPostalFiscalEmisor  := csbZonaPostalEmisor;
+    otytCanalTres.DireccionFiscalEmisor         := sbDireccionEmisor;
+    otytCanalTres.CodigoZonaPostalFiscalEmisor  := sbZonaPostalEmisor;
     otytCanalTres.CodigoPaisFiscalEmisor        := csbPais;
     otytCanalTres.NombrePaisFiscalEmisor        := csbNombrePais;
-    otytCanalTres.TipoRegimenEmisor             := csbTipoRegiEmisor;
-    otytCanalTres.ResponsabilidadesFiscalesEmi  := csbRespFiscalEmisor;
-    otytCanalTres.CodigoTributoResponsableEmi   := csbCodTributoEmisor;
-    otytCanalTres.NombreTributoResponsableEmi   := csbNombTributoEmisor;
-    otytCanalTres.CorreoElectronicoEmisor       := csbEmailEmisor;
-    otytCanalTres.CorreoElectronicoControler    := csbEmailContEmisor;
-    otytCanalTres.TelefonoEmisor                := csbTelefonoEmisor;
-    otytCanalTres.FaxEmisor                     := csbFaxEmisor;
+    otytCanalTres.TipoRegimenEmisor             := sbTipoRegiEmisor;
+    otytCanalTres.ResponsabilidadesFiscalesEmi  := sbRespFiscalEmisor;
+    otytCanalTres.CodigoTributoResponsableEmi   := sbCodTributoEmisor;
+    otytCanalTres.NombreTributoResponsableEmi   := sbNombTributoEmisor;
+    otytCanalTres.CorreoElectronicoEmisor       := sbEmailEmisor;
+    otytCanalTres.CorreoElectronicoControler    := sbEmailContEmisor;
+    otytCanalTres.TelefonoEmisor                := sbTelefonoEmisor;
+    otytCanalTres.FaxEmisor                     := sbFaxEmisor;
     otytCanalTres.Opcional21                    := '';
     otytCanalTres.Opcional22                    := '';
     otytCanalTres.Opcional23                    := '';
@@ -4884,18 +5011,19 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     otytCanalTres.Opcional28                    := '';
     otytCanalTres.Opcional29                    := '';
     otytCanalTres.Opcional30                    := '';
+
+
     pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN);
+
   EXCEPTION
     WHEN pkg_error.CONTROLLED_ERROR THEN
        pkg_error.geterror(nuError,sbError);
-       prCloseCursor;
        pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
        pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERC);
        RAISE pkg_error.CONTROLLED_ERROR;
     WHEN OTHERS THEN
        pkg_error.setError;
        pkg_error.geterror(nuError,sbError);
-       prCloseCursor;
        pkg_traza.trace(' sbError => ' || sbError, pkg_traza.cnuNivelTrzDef);
        pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbFIN_ERR);
        RAISE pkg_error.CONTROLLED_ERROR;
@@ -5016,7 +5144,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     FROM fe_validacion_identificacion
     WHERE fe_validacion_identificacion.id_cliente = inuCliente
      AND fe_validacion_identificacion.valido = 'S';
-     
+
     CURSOR cuValidaContExce(inuContrato IN NUMBER) IS
     SELECT 'X'
     FROM contratos_omitir_nit_generico
@@ -5034,7 +5162,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
         IF cuValidaIdentClie%ISOPEN THEN
            CLOSE cuValidaIdentClie;
         END IF;
-        
+
         IF cuValidaContExce%ISOPEN THEN
            CLOSE cuValidaContExce;
         END IF;
@@ -5083,7 +5211,7 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
           OPEN cuValidaContExce(regInfoCliente.susccodi);
           FETCH cuValidaContExce INTO sbDatos;
           CLOSE cuValidaContExce;
-          
+
           IF sbDatos IS NULL THEN
               nuTipoIdent := fnuGetEquivaleTipoIdent(1, sbDescripTipoIde );
               sbIdentSinDigito := sbCedulaGene;
@@ -5117,6 +5245,8 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
                          osbDescLocalidad,
                          onuError,
                          osbError);
+
+
     IF onuError <> 0 THEN
        pkg_error.setErrorMessage(isbMsgErrr =>osbError );
     END IF;
@@ -5930,10 +6060,17 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
       prGetInfoCanalSiete    tabla con registro de canal siete
     Modificaciones  :
     =========================================================
-    Autor       Fecha       Caso       Descripcion
+    Autor       Fecha       Caso       	Descripcion
+	jerazomvm	26-06-2025	OSF-4604	Se valida el ciclo con la variable global gnuCicloFact,
+										Si el ciclo existe en el parametro CICLO_MOSTRAR_INFOFORMAPAGO, llenara
+										el InfoFormaPago con el valor del parametro FORMA_PAGO_OPCIONAL81									
     LJLB        22-01-2024   OSF-2158    Creacion
   ***************************************************************************/
     csbMT_NAME        VARCHAR2(100) := csbSP_NAME || '.prGetInfoCanalSiete';
+	
+	nuExisteCiclo		NUMBER;
+	sbOpcional81		VARCHAR2(400) := '';
+	
     PROCEDURE prInicializarValores IS
      csbMT_NAME1      VARCHAR2(150) := csbMT_NAME || '.prInicializarValores';
     BEGIN
@@ -5943,10 +6080,20 @@ create or replace PACKAGE BODY  personalizaciones.PKG_BCFACTUELECTRONICAGEN IS
     END prInicializarValores;
   BEGIN
     pkg_traza.trace( csbMT_NAME, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);
-
+	
+	-- valida si el ciclo existe en el nuevo parametro
+	nuExisteCiclo := pkg_parametros.fnuValidaSiExisteCadena('CICLO_MOSTRAR_INFOFORMAPAGO', ',', gnuCicloFact);
+	pkg_traza.trace('nuExisteCiclo: ' || nuExisteCiclo , pkg_traza.cnuNivelTrzDef);
+	
+	-- Si el ciclo existe en el parametro 
+	IF (nuExisteCiclo > 0) THEN
+		-- Llena el canal 7, opcional 81 con la información del parametro FORMA_PAGO_OPCIONAL81
+		sbOpcional81 := pkg_parametros.fsbGetValorCadena('FORMA_PAGO_OPCIONAL81');
+	END IF;
+	
     otytCanalSiete.NroCanal		  := '7';
     otytCanalSiete.NumeroCompleto := sbNumeroCompleto;
-    otytCanalSiete.Opcional81     := '';
+    otytCanalSiete.InfoFormaPago  := sbOpcional81;
     otytCanalSiete.Opcional82     := '';
     otytCanalSiete.Opcional83     := '';
     otytCanalSiete.Opcional84     := '';
