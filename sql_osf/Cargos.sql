@@ -54,9 +54,12 @@ select f.factcodi "Factura",
     on ssv.servcodi = s.sesuserv
   left join OPEN.SERVICIO sp
     on sp.servcodi = pr.product_type_id
- where sesunuse in (1794997)
--- sesususc in (1803481)
-   --and trunc(cargfecr) >= '12/08/2024' --sysdate - 10
-      --and c.cargdoso = 'PP-214849930'
-   --and c.cargconc in (291, 991)
+ where 1 = 1
+    -- 
+    and sesunuse in (1804604)
+    -- sesususc in (1803481)
+   --and trunc(cargfecr) >= '01/01/2025' --sysdate - 10
+    -- and c.cargdoso = 'PP-214849930'
+    -- and c.cargconc in (291, 991)
+   --and c.cargconc = 970
  ORDER BY cargfecr DESC;

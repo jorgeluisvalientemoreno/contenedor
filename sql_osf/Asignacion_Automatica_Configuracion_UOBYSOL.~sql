@@ -1,0 +1,125 @@
+--UOBYSOL - Solicitud
+select a.*,
+       (select b.description
+          from open.ps_package_type b
+         where b.package_type_id = a.package_type_id)
+  from open.LDC_PACKAGE_TYPE_ASSIGN a
+ where a.package_type_id = 100101;
+LDC_PRUOCERTIFICACION
+--UOBYSOL - Solicitud - Actividad
+select a.package_type_id,
+       c.operating_unit_id,
+       c.task_type_id,
+       c.procesopre,
+       c.procesopost,
+       c.catecodi,
+       c.items_id
+  from open.LDC_PACKAGE_TYPE_OPER_UNIT c
+ inner join open.LDC_PACKAGE_TYPE_ASSIGN a
+    on a.package_type_assign_id = c.package_type_assign_id
+ where 1 = 1
+   /*and c.package_type_assign_id =
+       (select a1.package_type_assign_id
+          from open.LDC_PACKAGE_TYPE_ASSIGN a1
+         where a1.package_type_id = 100225)*/
+   and c.items_id in (100010005, --  VISITA VALIDACION CAMBIO DE USO COMERCIAL
+                      4294587, -- VISITA VALIDACION CAMBIO DE USO RESIDENCIAL
+                      100007104 -- NOVEDAD OFERTADO - VISITA VALIDACION CAMBIO DE USO
+                      );
+
+select distinct PTOU.PACKAGE_TYPE_ASSIGN_ID Codigo_UOBYSOL,
+                ppt.package_type_id || ' - ' || ppt.description Solicitud,
+                PTOU.ITEMS_ID || ' - ' || gi.description Actividad,
+                PTOU.Operating_Unit_Id || ' - ' || oou.name Unidad_Opertiva,
+                DECODE(PTOU.CATECODI,
+                       -1,
+                       'TODAS LAS LOCALIDADES',
+                       PTOU.CATECODI) Localidad,
+                PTOU.PROCESOPRE Servicio_PRE,
+                PTOU.PROCESOPOST Servicio_POST
+  from open.LDC_PACKAGE_TYPE_OPER_UNIT PTOU
+ inner join open.LDC_PACKAGE_TYPE_ASSIGN PTA
+    on PTA.PACKAGE_TYPE_ASSIGN_ID = PTOU.package_type_assign_id
+ inner join open.ps_package_type ppt
+    on ppt.package_type_id = pta.package_type_id
+ inner join open.ge_items gi
+    on gi.items_id = PTOU.items_id
+ inner join open.or_operating_unit oou
+    on oou.operating_unit_id = PTOU.Operating_Unit_Id
+ where /*PTOU.package_type_assign_id =
+       (select a1.package_type_assign_id
+          from open.LDC_PACKAGE_TYPE_ASSIGN a1
+         where a1.package_type_id = 100101)
+   and*/
+ PTOU.items_id in (100009788)
+--   group by PTOU.PACKAGE_TYPE_OPER_UNIT_ID, ppt.package_type_id || ' - ' || ppt.description ,PTOU.ITEMS_ID || ' - ' || gi.description, PTOU.Operating_Unit_Id || ' - ' || oou.name, PTOU.PACKAGE_TYPE_ASSIGN_ID 
+ order by PTOU.PACKAGE_TYPE_ASSIGN_ID;
+
+select c.package_type_oper_unit_id
+  from open.LDC_PACKAGE_TYPE_OPER_UNIT c
+ where c.procesopre like '%FSBASIGNAUTOMATICAREVPER%';
+
+---Solicitudes, Tipo de Trabajo, Actividad, Pre, Post
+with solicitud as
+ (select ppt.* from OPEN.PS_PACKAGE_TYPE ppt)
+select distinct PTOU.PACKAGE_TYPE_ASSIGN_ID Codigo_UOBYSOL,
+                PTA.PACKAGE_TYPE_ID || ' - ' ||
+                DECODE(PTA.PACKAGE_TYPE_ID,
+                       -1,
+                       'Orden Autonoma',
+                       s.description) Solicitud,
+                --ott.task_type_id || ' - ' || ott.description Tipo_Trabajo,
+                PTOU.ITEMS_ID || ' - ' || gi.description Actividad,
+                oou.operating_unit_id || ' - ' || oou.name Unidad_Operativa,
+                PTOU.PROCESOPRE PRE,
+                PTOU.PROCESOPOST POST,
+                oou.operating_sector_id || ' - ' || oos.description Sector_Operativo_por_unidad,
+                oou.operating_zone_id || ' - ' || ooz.description Zona_Operativo_por_unidad,
+                oos_zone.operating_sector_id Sector_Operativo_por_uo
+
+  from open.LDC_PACKAGE_TYPE_OPER_UNIT PTOU
+ inner join open.LDC_PACKAGE_TYPE_ASSIGN PTA
+    on PTA.PACKAGE_TYPE_ASSIGN_ID = PTOU.package_type_assign_id
+ inner join open.ge_items gi
+    on gi.items_id = PTOU.items_id
+  left join solicitud s
+    on s.PACKAGE_TYPE_ID = PTA.PACKAGE_TYPE_ID
+  LEFT join open.or_operating_unit oou
+    on oou.operating_unit_id = PTOU.Operating_Unit_Id
+  left join open. or_operating_sector oos
+    on oos.operating_sector_id = oou.operating_sector_id
+  left join open. or_operating_sector oos_zone
+    on oos_zone.operating_zone_id = oou.operating_zone_id
+  left join open. or_operating_zone ooz
+    on ooz.operating_zone_id = oou.operating_zone_id
+--leftjoin or_task_types_items otti
+--  on otti.items_id = ptou.items_id
+--left join open.or_task_type ott
+--  on ott.task_type_id = otti.task_type_id
+ where 1 = 1
+      --and (PTOU.PROCESOPRE is not null or PTOU.PROCESOPOST is not null)
+   and ptou.items_id in (4000803)
+   and ptou.operating_unit_id in (4006, 4007, 4008)
+   and ptou.catecodi = 1;
+
+---Items y Solicitudes
+select distinct PTOU.PACKAGE_TYPE_ASSIGN_ID Codigo_UOBYSOL,
+                ppt.package_type_id || ' - ' || ppt.description Solicitud,
+                PTOU.ITEMS_ID || ' - ' || gi.description Actividad,
+                oou.operating_unit_id || ' - ' || oou.name Unidad_Operativa
+  from open.LDC_PACKAGE_TYPE_OPER_UNIT PTOU
+ inner join open.LDC_PACKAGE_TYPE_ASSIGN PTA
+    on PTA.PACKAGE_TYPE_ASSIGN_ID = PTOU.package_type_assign_id
+ inner join open.ps_package_type ppt
+    on ppt.package_type_id = pta.package_type_id
+ inner join open.ge_items gi
+    on gi.items_id = PTOU.items_id
+  left join open.or_operating_unit oou
+    on oou.operating_unit_id = PTOU.Operating_Unit_Id
+   and 'S' = &ValidaUnidadOperativa
+ where PTOU.PROCESOPRE is null
+   and PTOU.PROCESOPOST is null
+   and ptou.items_id = 4000803
+--and ptou.operating_unit_id in ()
+ order by ppt.package_type_id || ' - ' || ppt.description,
+          PTOU.ITEMS_ID || ' - ' || gi.description

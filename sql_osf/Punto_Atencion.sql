@@ -9,6 +9,13 @@ select aor.*, rowid
           left join open.sa_user su
             on gp.user_id = su.user_id
          where upper(su.mask) like upper('%JHOESC%'));
+
+SELECT a.organizat_area_id id, a.display_description description
+  FROM ge_organizat_area a, cc_orga_area_seller b
+ WHERE a.organizat_area_id = b.organizat_area_id
+   AND b.person_id =
+       ge_boinstancecontrol.fsbGetFieldValue('MO_PACKAGES', 'PERSON_ID');
+
 --Punto de atencion activo
 select coas.*, rowid
   from OPEN.CC_ORGA_AREA_SELLER coas

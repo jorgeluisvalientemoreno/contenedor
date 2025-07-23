@@ -5,8 +5,10 @@ select ottc.task_type_id || ' - ' || ott.description Tipo_trabajo,
        open.ge_causal           gc,
        open.or_task_type        ott,
        open.ge_class_causal     gcc
- where ottc.task_type_id in (12135)
-      --ottc.causal_id in ()
+ where 1 = 1
+   and ottc.task_type_id in (11359, 11360, 11361, 11362)
+   and ottc.causal_id in (3904, 3905, 3906, 3907)
    and ottc.causal_id = gc.causal_id
    and ottc.task_type_id = ott.task_type_id
-   and gc.class_causal_id = gcc.class_causal_id
+   and gc.class_causal_id = gcc.class_causal_id;
+

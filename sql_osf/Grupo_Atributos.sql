@@ -10,7 +10,9 @@ select gasa.attribute_set_id || ' - ' || gas.description Grupo,
     on gas.attribute_set_id = gasa.attribute_set_id
  inner join OPEN.GE_ATTRIBUTES ga
     on ga.attribute_id = gasa.attribute_id
- where gasa.attribute_id in
+ where 1 = 1
+   and gasa.attribute_set_id = 13040
+   and gasa.attribute_id in
        (select a.attribute_id
           from open.ge_attributes a
          where a.name_attribute like '%COMER%'

@@ -6,9 +6,15 @@ select B.OWNER         ESQUEMA,
        B.status        ESTADO,
        B.TEMPORARY     TEMPORAL
   from dba_objects b
- where b.OBJECT_NAME like (upper('%fnu_baseliquidacion%'))
-   --and b.OWNER = 'OPEN'
-   ---and b.OBJECT_TYPE = 'TABLE'
+ where 1 = 1
+      --and upper(b.OBJECT_NAME) like (upper('%pkg_boGestionSolicitudes%'))
+   and b.OWNER in ('OPEN', 'ADM_PERSON', 'PESONALIZACIONES')
+   and b.OBJECT_TYPE in ('PACKAGE', 'PROCEDURE', 'FUNCTION', 'TRIGGER')
+   and not exists (select 1
+          from PERSONALIZACIONES.HOMOLOGACION_SERVICIOS a
+         where upper(a.servicio_origen) like
+               '%' || upper(b.OBJECT_NAME) || '%')
+---and b.OBJECT_TYPE = 'TABLE'
  order by B.OBJECT_NAME;
 
 /*select distinct a.owner, a.name, b.OBJECT_TYPE

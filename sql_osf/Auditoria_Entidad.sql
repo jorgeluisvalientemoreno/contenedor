@@ -1,3 +1,10 @@
+SELECT * --column_name, data_type, data_length, nullable
+  FROM USER_TAB_COLUMNS
+ WHERE column_name = 'CREATED_AT';
+SELECT *
+  FROM open.ge_attributes e
+ WHERE 1 = 1
+   AND upper(e.display_name) like upper('%CREATED_AT%');
 SELECT *
   FROM open.au_aud_pol_attr      b,
        open.ge_entity_attributes c,
@@ -57,7 +64,6 @@ SELECT B.AUDIT_LOG_ID,
        open.AU_LOG_POLICY        au
   left join open.GE_EVENT ev
     on ev.event_id = au.event_id, open.AU_AUDIT_POLICY ap
-
  WHERE b.entity_attribute_id = c.entity_attribute_id
    AND c.entity_id = d.entity_id
    AND b.is_monitored = 1

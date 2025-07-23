@@ -1,0 +1,61 @@
+select oo.order_id,
+       oo.legalization_date,
+       oo.causal_id,
+       (select a.class_causal_id
+          from OPEN.GE_CAUSAL a
+         where a.causal_id = oo.causal_id) Clasificacion --oo.task_type_id -- 
+  from open.or_order oo
+ inner join open.ge_causal gc
+    on gc.causal_id = oo.causal_id
+--and class_causal_id = 1
+ where oo.is_pending_liq = 'Y'
+   and oo.defined_contract_id = 10861
+   and (select count(1)
+          from OPEN.CT_ORDER_CERTIFICA a
+         where a.order_id = oo.order_id) = 0
+   and (select count(1)
+          from OPEN.CT_EXCLUDED_ORDER b
+         where b.order_id = oo.order_id) = 0
+--and oo.legalization_date < '01/07/2025'
+--and oo.task_type_id in (12626,12617,12626,10043)
+-- group by oo.task_type_id
+ order by oo.legalization_date desc;
+select gc.*, rowid from open.ge_contrato gc where gc.id_contrato = 10861;
+
+SELECT *
+  FROM OPEN.CT_TASKTYPE_CONTYPE
+ WHERE 1 = 1
+      --and CONTRACT_TYPE_ID = 910
+   and TASK_TYPE_ID in (12626, 12617, 12626, 10043);
+
+SELECT CT_TASKTYPE_CONTYPE.TASK_TYPE_ID
+  FROM open.CT_TASKTYPE_CONTYPE
+ WHERE CT_TASKTYPE_CONTYPE.CONTRACT_ID = 10861;
+
+select pc.*
+  from open.ct_conpla_con_type pc
+ where pc.contract_type_id = 910;
+
+select pc.* from open.ct_conpla_con_type pc where pc.contract_id = 10861;
+
+select a.*, rowid
+  from OPEN.CT_CONDITIONS_PLAN a
+ where a.conditions_plan_id = 36;
+
+select a.*, rowid
+  from OPEN.CT_PROCESS_LOG a
+ where 1 = 1
+   and a.contract_id = 10861
+   and a.break_date >= '30/06/2025'
+ order by a.log_date desc;
+
+select *
+  from open.CT_CONDITIONS_BY_PLAN pc, open.ct_simple_condition s
+ where pc.conditions_plan_id = 36
+   and pc.items_id = s.items_id;
+
+select * from open.ge_base_administra;
+
+select oou.*
+  from open.or_operating_unit oou
+ where oou.operating_unit_id = 3210;

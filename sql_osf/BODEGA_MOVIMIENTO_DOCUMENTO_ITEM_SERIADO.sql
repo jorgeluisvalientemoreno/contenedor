@@ -54,23 +54,27 @@ SELECT gis.id_items_seriado,
        OPEN.GE_ITEMS_ESTADO_INV  gieim,
        OPEN.GE_ITEMS_ESTADO_INV  gieis,
        open.ge_items             gi
- WHERE a.movement_type = 'N'
+ WHERE 1 = 1
+   and a.movement_type = 'N'
    AND a.item_moveme_caus_id IN (20, 6)
-   AND a.support_document = ' '
-   and a.operating_unit_id = 799
+      --AND a.support_document = ' '
+   and a.operating_unit_id = 4559
+   and a.target_oper_unit_id = 4560
    and gis.id_items_seriado = a.id_items_seriado
-   and gis.operating_unit_id != 799
+      --and gis.operating_unit_id != 799
    and gis.id_items_estado_inv = giei.id_items_estado_inv
    and a.id_items_estado_inv = gieim.id_items_estado_inv
    and a.init_inv_stat_items = gieis.id_items_estado_inv
    and gi.items_id = a.items_id
  order by a.move_date asc;
 
-select * from open.ge_items_documento d
-   where d.id_items_documento in (1339611,1378953)
-     --and d.estado = 'A'
-     ;     
-select * from open.or_uni_item_bala_mov m
-   where m.id_items_documento in (1378953, 1339611)
-     and m.movement_type = 'N'
-     and m.id_items_seriado in (2506005, 2405295);
+select *
+  from open.ge_items_documento d
+ where d.id_items_documento in (1339611, 1378953)
+--and d.estado = 'A'
+;
+select *
+  from open.or_uni_item_bala_mov m
+ where m.id_items_documento in (1378953, 1339611)
+   and m.movement_type = 'N'
+   and m.id_items_seriado in (2506005, 2405295);

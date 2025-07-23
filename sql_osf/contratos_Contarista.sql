@@ -1,9 +1,10 @@
 select * --id_contrato, descripcion,id_contratista,  valor_anticipo, anticipo_amortizado
   from open.ge_contrato
- where id_contratista = (select oou.contractor_id from open.or_operating_unit oou where oou.operating_unit_id =4146)
+ where id_contratista = (select oou.contractor_id from open.or_operating_unit oou where oou.operating_unit_id =4209)
    and status = 'AB';
 --where id_contrato in (81,83);
-SELECT * FROM OPEN.CT_TASKTYPE_CONTYPE WHERE TASK_TYPE_ID = 10576;
+--select seq_ct_tasktype_con_143315.nextval from dual --5612,
+SELECT t.*,rowid FROM OPEN.CT_TASKTYPE_CONTYPE t WHERE t.contract_type_id in(18,890) -- TASK_TYPE_ID = 11359;--11412
 select contractor_id
   from open.or_operating_unit
  where operating_unit_id = 1940;
@@ -14,6 +15,7 @@ select *
    and id_contrato = 3941;
 select * from open.ge_contrato where id_contrato = 6901;
 SELECT * FROM OPEN.ldc_antic_contr WHERE IDCONTRATO = 1441;
+--11390
 --OPEN.CT_PROCESS_LOG
 --CT_CONDITIONS_BY_PLAN
 select *

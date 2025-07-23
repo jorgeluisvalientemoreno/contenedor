@@ -39,7 +39,9 @@ select ga.id_acta Acta,
        ga.comment_ Comentario,
        ga.extern_pay_date Fecha_Pago,
        ga.extern_invoice_num Factura_Pago,
-       ga.valor_liquidado
+       ga.valor_liquidado,
+       GA.EXTERN_PAY_DATE Fecha_Pago,
+ga.extern_invoice_num Factura_Pago       
   from open.ge_acta ga
   left join OPEN.GE_BASE_ADMINISTRA GBA
     on gba.id_base_administra = ga.id_base_administrativa
@@ -49,7 +51,9 @@ select ga.id_acta Acta,
     on gct.comment_type_id = ga.comment_type_id
   left join OPEN.GE_CONTRATISTA GC
     on gc.id_contratista = ga.contractor_id
- where ga.estado = 'A'
-   and ga.fecha_creacion > sysdate - 100
+ where 1 = 1
+   AND GA.ID_ACTA = 247673
+   --AND ga.estado = 'A'
+   ---and ga.fecha_creacion > sysdate - 100
  order by ga.fecha_creacion desc;
 select gc.*, rowid from open. ge_contrato gc where gc.id_contrato = 5165; --1194;

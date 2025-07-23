@@ -1,18 +1,6 @@
 DECLARE
 
-  /***************************************************************************
-    Propiedad Intelectual de Gases del Caribe
-    Programa        : prc_financia_duplicado
-    Descripcion     : servicio para financiar duplicado
-    Autor           : Jorge Valiente
-    Fecha           : 16-07-2024
-  
-    Modificaciones  :
-    Autor           Fecha       Caso        Descripcion
-    Jorge Valiente  29/07/2024  OSF-3034    Logica para validar si para la solicitud ya se definieron Condiciones de financiacion
-  ***************************************************************************/
-
-  csbSP_NAME  VARCHAR2(70) := 'prc_financia_duplicado';
+  csbSP_NAME  VARCHAR2(70) := '';
   nuErrorCode NUMBER; -- se almacena codigo de error
   sbMensError VARCHAR2(2000); -- se almacena descripcion del error
 
@@ -35,7 +23,7 @@ DECLARE
     rcSalesFinanCond DACC_Sales_Financ_Cond.styCC_Sales_Financ_Cond;
   
     --PARAMETRO CODIGO PLAN DE FINANCIACION
-    NUCOD_PLA_FIN LD_PARAMETER.PARAMETER_ID%TYPE := 85; --PKG_BCLD_PARAMETER.FNUOBTIENEVALORNUMERICO('COD_PLA_FIN_SOL_EST_CUE');
+    NUCOD_PLA_FIN NUMBER := 85;
   
     nuValorCero NUMBER := pkBillConst.CERO;
   
@@ -49,6 +37,8 @@ DECLARE
     onuTotalAcumInteres  number;
     osbRequiereVisado    varchar2(4000);
   
+    numInstalmentsArray number := 1;
+  
   BEGIN
   
     pkg_traza.trace(csbMetodo,
@@ -59,7 +49,7 @@ DECLARE
   
     --
     nuProduct := inuProduct;
-      sbCampo := NULL;
+    sbCampo   := NULL;
     SELECT 'Cuencobr: ' || d.cargcuco
       INTO sbCampo
       FROM OPEN.cargos d
@@ -103,11 +93,10 @@ DECLARE
        AND d.cargdoso = 'PP-' || inuSolicitud
        AND ROWNUM = 1;
     DBMS_OUTPUT.put_line('Cargo: ' || sbCampo);
-    
-    DBMS_OUTPUT.put_line('Valor Cero: ' || nuValorCero);
-    
   
-    /*--Actualiza los campos CC_SALES_FINANC_COND
+    DBMS_OUTPUT.put_line('Valor Cero: ' || nuValorCero);
+  
+    --/*--Actualiza los campos CC_SALES_FINANC_COND
     pkg_traza.trace('Actualiza los campos CC_SALES_FINANC_COND',
                     pkg_traza.cnuNivelTrzDef);
     rcSalesFinanCond.package_id          := inuSolicitud; -- Solicitud
@@ -118,42 +107,16 @@ DECLARE
     rcSalesFinanCond.percent_to_finance  := pkBillConst.CIENPORCIEN; --100;
     rcSalesFinanCond.interest_percent    := nuValorCero;
     rcSalesFinanCond.spread              := nuValorCero;
-    rcSalesFinanCond.quotas_number       := 1; -- Numero de cuotas
+    rcSalesFinanCond.quotas_number       := numInstalmentsArray; -- Numero de cuotas
     rcSalesFinanCond.tax_financing_one   := pkConstante.NO;
     rcSalesFinanCond.value_to_finance    := nuValorCero;
     rcSalesFinanCond.document_support    := SUPPORT_DOCUMENT;
     rcSalesFinanCond.initial_payment     := nuValorCero;
     rcSalesFinanCond.average_quote_value := nuValorCero;
-    
+  
     --*/
+  
     --/*
-      ut_trace.Init;
-  ut_trace.SetOutPut(ut_trace.cnuTRACE_DBMS_OUTPUT);
-  ut_trace.SetLevel(99);
-    "OPEN".CC_BOFinancing.ExecDebtFinanc(NUCOD_PLA_FIN,
-                                         pktblplandife.fnugetpaymentmethod(NUCOD_PLA_FIN),
-                                         SYSDATE + 1,
-                                         pktblplandife.fnugetinterestratecod(NUCOD_PLA_FIN),
-                                         "OPEN".pkBillConst.CERO,
-                                         1,
-                                         'PP-' || inuSolicitud,
-                                         "OPEN".pkBillConst.CIENPORCIEN,
-                                         "OPEN".pkBillConst.CERO,
-                                         "OPEN".pkConstante.NO,
-                                         "OPEN".cc_boconstants.csbCUSTOMERCARE,
-                                         "OPEN".pkConstante.NO,
-                                         "OPEN".pkConstante.NO,
-                                         nuDifeCofi,
-                                         onuAcumCuota,
-                                         onuSaldo,
-                                         onuTotalAcumCapital,
-                                         onuTotalAcumCuotExtr,
-                                         onuTotalAcumInteres,
-                                         osbRequiereVisado,
-                                         'Y');
-                                         --*/
-  ut_trace.SetLevel(1);
-    --OSF-3034 Valida si la solicitud ya se definieron Condiciones de financiacion
     if not dacc_sales_financ_cond.fblexist(inuSolicitud) then
       --Inserta la informacion de las condiciones
       DACC_Sales_Financ_Cond.insrecord(rcSalesFinanCond);
@@ -165,11 +128,13 @@ DECLARE
     pkg_traza.trace('Ejecucion servicio CC_BOFINANCING.FINANCINGORDER',
                     pkg_traza.cnuNivelTrzDef);
     CC_BOFINANCING.FINANCINGORDER(inuSolicitud);
+    --*/
   
     sbCampo := NULL;
     SELECT 'Diferido: ' || d.difecodi || ' - Fecha incial: ' || d.difefein ||
            ' - Numero Documento:' || d.difenudo ||
-           ' - Valor Total Diferido:' || d.difevatd ||' - Primer Pago: ' || d.difefein
+           ' - Valor Total Diferido:' || d.difevatd || ' - Primer Pago: ' ||
+           d.difefein
       INTO sbCampo
       FROM OPEN.diferido d
      WHERE d.difenuse = nuProduct

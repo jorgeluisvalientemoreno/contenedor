@@ -1,4 +1,6 @@
-select s.name
+select s.name, s.TYPE
   from dba_source s
- where upper(s.TEXT) like upper('%rfSUSPENSION_ACTIVA%')
- group by s.name
+ where 1 = 1
+   and upper(s.TEXT) like upper('%NAME_%')
+   and upper(s.name) like upper('%ADIC%')
+ group by s.name, s.TYPE

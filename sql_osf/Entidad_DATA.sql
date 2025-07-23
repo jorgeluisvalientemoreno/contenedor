@@ -10,8 +10,8 @@ select dt.OWNER Propietario,
     on gm.module_id = ge.module_id
   left join all_tab_comments atc
     on atc.TABLE_NAME = dt.TABLE_NAME
- where dt.OWNER in ('OPEN', 'ADM_PERSON', 'PERSONALIZACIONES')
-   and ge.name_ in
-       ('CC_CAUSAL', 'OR_ACT_BY_REQ_DATA', 'OR_ACT_BY_TASK_MOD','GE_SUSPENSION_TYPE');
+ where 1 = 1
+   AND dt.OWNER in ('OPEN', 'ADM_PERSON', 'PERSONALIZACIONES')
+   and ge.name_ in ('CONF_ASIG_CAMBIO_USO');
 
 --select * from all_tab_comments a where a.TABLE_NAME = 'SA_USER'

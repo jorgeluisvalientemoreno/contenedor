@@ -1,0 +1,12 @@
+select distinct /*+ index(OR_ORDER PK_OR_ORDER) index(OR_RELATED_ORDER IX_OR_RELATED_ORDER01)*/
+                OR_ORDER.Order_Id,
+                (select description
+                   FROM open.ge_transition_type
+                  WHERE transition_type_id =
+                        OR_RELATED_ORDER.rela_order_type_id) relation_type
+  FROM /*+ GetOrderRelatByOrderPno.GetOrderRelatByOrderPno SAO207537 */
+       open.OR_ORDER,
+       open.OR_RELATED_ORDER
+ WHERE OR_ORDER.ORDER_ID = OR_RELATED_ORDER.RELATED_ORDER_ID
+ START WITH OR_RELATED_ORDER.ORDER_id = 351493313
+CONNECT BY OR_RELATED_ORDER.ORDER_id = PRIOR related_order_id;

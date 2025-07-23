@@ -1,0 +1,31 @@
+--alter session set current_schema = OPEN;
+select *
+  from open.pr_product pp
+ where pp.product_id in
+       (select a.sesunuse from open.servsusc a where a.sesususc = 67506235);
+
+select pps.prod_suspension_id,
+       pps.product_id,
+       pps.suspension_type_id || ' - ' || ges.description,
+       pps.register_date,
+       pps.aplication_date,
+       pps.inactive_date,
+       pps.active,
+       pps.connection_code
+  from open.pr_prod_suspension pps
+  left join OPEN.GE_SUSPENSION_TYPE ges
+    on ges.suspension_type_id = pps.suspension_type_id
+ where pps.product_id in
+       (select a.sesunuse from open.servsusc a where a.sesususc = 67506235)
+ order by pps.register_date desc;
+
+select *
+  from open.hicaespr
+ where hcetnuse in
+       (select a.sesunuse from open.servsusc a where a.sesususc = 67506235);
+
+select *
+  from open.mo_packages p, open.mo_motive m
+ where m.product_id in
+       (select a.sesunuse from open.servsusc a where a.sesususc = 67506235)
+   and p.package_id = m.package_id;

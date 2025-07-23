@@ -1,6 +1,5 @@
 select a1.executable_id,
-       a1.name || ' - ' ||
-       a1.description Ejecutable,
+       a1.name || ' - ' || a1.description Ejecutable,
        a1.path,
        a1.version,
        a1.executable_type_id,
@@ -19,10 +18,9 @@ select a1.executable_id,
   from open.SA_EXECUTABLE a1
  inner join open.ge_module gm
     on gm.module_id = a1.module_id
- where 
- --a1.name = 'LDCAPSOMA'
- upper(a1.description) like upper('%Solicitud%Material%')
- ;
+ where
+--a1.name = 'LDCAPSOMA'
+ upper(a1.description) like upper('%Solicitud%Material%');
 
 select a1.*
   from open.SA_EXECUTABLE a1

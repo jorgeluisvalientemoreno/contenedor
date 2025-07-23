@@ -5,7 +5,7 @@ select a.*,
          where b.package_type_id = a.package_type_id)
   from open.LDC_PACKAGE_TYPE_ASSIGN a
  where a.package_type_id = 100101;
-
+--LDC_PRUOCERTIFICACION
 --UOBYSOL - Solicitud - Actividad
 select a.package_type_id,
        c.operating_unit_id,
@@ -17,11 +17,15 @@ select a.package_type_id,
   from open.LDC_PACKAGE_TYPE_OPER_UNIT c
  inner join open.LDC_PACKAGE_TYPE_ASSIGN a
     on a.package_type_assign_id = c.package_type_assign_id
- where c.package_type_assign_id =
+ where 1 = 1
+   /*and c.package_type_assign_id =
        (select a1.package_type_assign_id
           from open.LDC_PACKAGE_TYPE_ASSIGN a1
-         where a1.package_type_id = 100101)
-   and c.items_id = 100007375;
+         where a1.package_type_id = 100225)*/
+   and c.items_id in (100010005, --  VISITA VALIDACION CAMBIO DE USO COMERCIAL
+                      4294587, -- VISITA VALIDACION CAMBIO DE USO RESIDENCIAL
+                      100007104 -- NOVEDAD OFERTADO - VISITA VALIDACION CAMBIO DE USO
+                      );
 
 select distinct PTOU.PACKAGE_TYPE_ASSIGN_ID Codigo_UOBYSOL,
                 ppt.package_type_id || ' - ' || ppt.description Solicitud,
@@ -67,12 +71,12 @@ select distinct PTOU.PACKAGE_TYPE_ASSIGN_ID Codigo_UOBYSOL,
                 --ott.task_type_id || ' - ' || ott.description Tipo_Trabajo,
                 PTOU.ITEMS_ID || ' - ' || gi.description Actividad,
                 oou.operating_unit_id || ' - ' || oou.name Unidad_Operativa,
-                PTOU.PROCESOPRE        PRE,
-                PTOU.PROCESOPOST       POST,
-                oou.operating_sector_id ||' - '|| oos.description Sector_Operativo_por_unidad,
-                oou.operating_zone_id ||' - '|| ooz.description Zona_Operativo_por_unidad,
+                PTOU.PROCESOPRE PRE,
+                PTOU.PROCESOPOST POST,
+                oou.operating_sector_id || ' - ' || oos.description Sector_Operativo_por_unidad,
+                oou.operating_zone_id || ' - ' || ooz.description Zona_Operativo_por_unidad,
                 oos_zone.operating_sector_id Sector_Operativo_por_uo
-                
+
   from open.LDC_PACKAGE_TYPE_OPER_UNIT PTOU
  inner join open.LDC_PACKAGE_TYPE_ASSIGN PTA
     on PTA.PACKAGE_TYPE_ASSIGN_ID = PTOU.package_type_assign_id
@@ -80,11 +84,14 @@ select distinct PTOU.PACKAGE_TYPE_ASSIGN_ID Codigo_UOBYSOL,
     on gi.items_id = PTOU.items_id
   left join solicitud s
     on s.PACKAGE_TYPE_ID = PTA.PACKAGE_TYPE_ID
-LEFT join open.or_operating_unit oou
-   on oou.operating_unit_id = PTOU.Operating_Unit_Id
-left join open. or_operating_sector oos on oos.operating_sector_id = oou.operating_sector_id
-left join open. or_operating_sector oos_zone on oos_zone.operating_zone_id = oou.operating_zone_id
-left join open. or_operating_zone ooz on ooz.operating_zone_id = oou.operating_zone_id
+  LEFT join open.or_operating_unit oou
+    on oou.operating_unit_id = PTOU.Operating_Unit_Id
+  left join open. or_operating_sector oos
+    on oos.operating_sector_id = oou.operating_sector_id
+  left join open. or_operating_sector oos_zone
+    on oos_zone.operating_zone_id = oou.operating_zone_id
+  left join open. or_operating_zone ooz
+    on ooz.operating_zone_id = oou.operating_zone_id
 --leftjoin or_task_types_items otti
 --  on otti.items_id = ptou.items_id
 --left join open.or_task_type ott

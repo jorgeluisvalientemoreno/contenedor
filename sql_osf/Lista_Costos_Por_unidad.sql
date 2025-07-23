@@ -6,12 +6,13 @@ SELECT distinct u.operating_unit_id,
  inner join open.or_ope_uni_task_type ut
     on ut.operating_unit_id = u.operating_unit_id
  inner join open.or_task_type t
-    on t.task_type_id in (12150, 12149)
-   and ut.task_type_id = t.task_type_id
+--on t.task_type_id in (12150, 12149)
+and ut.task_type_id = t.task_type_id
  inner join open.ge_list_unitary_cost l
     on l.operating_unit_id = u.operating_unit_id
    and sysdate between l.validity_start_date and l.validity_final_date
- WHERE u.oper_unit_status_id in (1, 3)
+ WHERE 1 = 1
+   and u.oper_unit_status_id in (1, 3)
    and PKG_BCCONTRATOCONTRATISTA.fsbContratoVigentexTipTra(t.task_type_id,
                                                            u.contractor_id) = 'S';
 

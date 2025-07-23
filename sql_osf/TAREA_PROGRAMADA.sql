@@ -1,4 +1,9 @@
---select * from open.ge_object a where upper(a.description) like '%JOB%VENTA%';
+--
+select *
+  from open.ge_object a
+ where 1 = 1
+   and upper(a.description) like '%CALIAD%'
+   and upper(a.name_) like '%LDC_BOASIGAUTO.PRASIGNACION%';
 select *
   from open.GE_PROCESS_SCHEDULE b
  where /*b.executable_id = 5049 and*/
