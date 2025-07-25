@@ -18,8 +18,11 @@ namespace CONTROLDESARROLLO.UI
          BLGENERAL BlGeneral = new BLGENERAL();
 
         //Tabla de memoria para items de datos adicionales
-        DataTable DTDatoParametrosServicio = new DataTable();
+        DataTable DTDatoParametrosMetodo = new DataTable();
         /////////////////////////////////////////////////////////////////////////
+
+        public Int64 nuIndiceMetodo = 0;
+        public Int64 nuIndiceParametro = 0;
 
         public crearpaquete()
         {
@@ -27,13 +30,13 @@ namespace CONTROLDESARROLLO.UI
 
 
             //Creacion de campos de la tabla de memoria
-            DTDatoParametrosServicio.Columns.Clear();
-            DTDatoParametrosServicio.Rows.Clear();
-            DTDatoParametrosServicio.Columns.Add("indice");
-            DTDatoParametrosServicio.Columns.Add("nombre_servicio");
-            DTDatoParametrosServicio.Columns.Add("nombre_columna");
-            DTDatoParametrosServicio.Columns.Add("tipo");
-            DTDatoParametrosServicio.Columns.Add("io");
+            DTDatoParametrosMetodo.Columns.Clear();
+            DTDatoParametrosMetodo.Rows.Clear();
+            DTDatoParametrosMetodo.Columns.Add("indicemetodo");
+            DTDatoParametrosMetodo.Columns.Add("indiceparametro");
+            DTDatoParametrosMetodo.Columns.Add("nombre");
+            DTDatoParametrosMetodo.Columns.Add("tipo");
+            DTDatoParametrosMetodo.Columns.Add("io");
             /////////////////////////////////////////////////////
         }
 
@@ -48,9 +51,9 @@ namespace CONTROLDESARROLLO.UI
 
             // Crear una nueva columna de texto
             DataGridViewTextBoxColumn textColumnIndiceMetodo = new DataGridViewTextBoxColumn();
-            textColumnIndiceMetodo.HeaderText = "Indice";
-            textColumnIndiceMetodo.Name = "indice";
-            textColumnIndiceMetodo.Visible = false;
+            textColumnIndiceMetodo.HeaderText = "Indice Metodo";
+            textColumnIndiceMetodo.Name = "indicemetodo";
+            //textColumnIndiceMetodo.Visible = false;
             // Agregar la columna al DataGridView
             DgvMetodos.Columns.Add(textColumnIndiceMetodo);
 
@@ -85,6 +88,12 @@ namespace CONTROLDESARROLLO.UI
 
 
             //Manejo de variables de metodos
+            DataGridViewTextBoxColumn textColumnIndiceParametro = new DataGridViewTextBoxColumn();
+            textColumnIndiceParametro.HeaderText = "Indice Parametro";
+            textColumnIndiceParametro.Name = "indiceparametro";
+            //textColumnIndiceMetodo.Visible = false;
+            DgvVariables.Columns.Add(textColumnIndiceParametro);
+
             // Crear una nueva columna de texto
             DataGridViewTextBoxColumn textColumnNombre = new DataGridViewTextBoxColumn();
             textColumnNombre.HeaderText = "Nombre";
@@ -114,11 +123,14 @@ namespace CONTROLDESARROLLO.UI
             // Agregar la columna ComboBox al DataGridView
             DgvVariables.Columns.Add(comboColumnIO);
 
-
+            // Asegúrate de que haya al menos una fila
+            DgvMetodos.Rows[0].Cells[0].Value = nuIndiceMetodo;
+            nuIndiceMetodo = nuIndiceMetodo + 1;
 
             // Asegúrate de que haya al menos una fila
-            DgvMetodos.Rows[0].Cells[0].Value = 0;
-            
+            DgvVariables.Rows[0].Cells[0].Value = nuIndiceParametro;
+            nuIndiceParametro = nuIndiceParametro + 1;
+
         }
 
         private void BtnProcesar_Click(object sender, EventArgs e)
@@ -139,7 +151,7 @@ namespace CONTROLDESARROLLO.UI
                         }
                         else
                         {
-                            TxbLogica.Text = TxbLogica.Text + "function " + row.Cells["nombre"].Value.ToString() + "IS RETURN " + row.Cells["Retorno"].Value.ToString() + ";" + Environment.NewLine;
+                            TxbLogica.Text = TxbLogica.Text + "function " + row.Cells["nombre"].Value.ToString() + " RETURN " + row.Cells["Retorno"].Value.ToString() + ";" + Environment.NewLine;
                         }
                     }
                     catch
@@ -164,11 +176,13 @@ namespace CONTROLDESARROLLO.UI
                     {
                         if (row.Cells["Metodo"].Value.ToString().ToUpper() == "procedimiento".ToUpper())
                         {
-                            TxbLogica.Text = TxbLogica.Text + "procedure " + row.Cells["nombre"].Value.ToString() + ";" + Environment.NewLine;
+                            TxbLogica.Text = TxbLogica.Text + BlGeneral.FsbEstructuraProcedimiento(CbxEsquema.Text.ToLower(), row.Cells["nombre"].Value.ToString(), DgvVariables, "S");
+                            //TxbLogica.Text = TxbLogica.Text + "procedure " + row.Cells["nombre"].Value.ToString() + ";" + Environment.NewLine;
                         }
                         else
                         {
-                            TxbLogica.Text = TxbLogica.Text + "function " + row.Cells["nombre"].Value.ToString() + "IS RETURN " + row.Cells["Retorno"].Value.ToString() + ";" + Environment.NewLine;
+                            TxbLogica.Text = TxbLogica.Text + BlGeneral.FsbEstructuraFuncion(CbxEsquema.Text.ToLower(), row.Cells["nombre"].Value.ToString(), row.Cells["Retorno"].Value.ToString(), DgvVariables, "S");
+                            //TxbLogica.Text = TxbLogica.Text + "function " + row.Cells["nombre"].Value.ToString() + "IS RETURN " + row.Cells["Retorno"].Value.ToString() + ";" + Environment.NewLine;
                         }
                     }
                     catch
@@ -220,30 +234,240 @@ namespace CONTROLDESARROLLO.UI
             }
         }
 
-        private void DgvMetodos_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        private void DgvMetodos_UserAddedRow(object sender, DataGridViewRowEventArgs e)
         {
-            //MessageBox.Show("Indice: " + e.RowIndex);
-            // Asegúrate de que haya al menos una fila
-            if (DgvMetodos.CurrentRow != null && DgvMetodos.CurrentRow.Index >= 0)
+            e.Row.Cells["indicemetodo"].Value = nuIndiceMetodo;
+            nuIndiceMetodo = nuIndiceMetodo + 1;
+        }
+
+        private void DgvVariables_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            //DataGridViewRow DgvMetodosfilaActiva = DgvMetodos.CurrentRow;
+
+            //DataGridViewRow DgvVariablesFilaSeleccionada = DgvVariables.CurrentRow;
+
+            ////string nombreColumna = DgvVariables.Columns[e.ColumnIndex].Name;
+            ////object nuevoValor = DgvVariables.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+
+            //MessageBox.Show("Indice: " + DgvMetodosfilaActiva.Cells[0].Value.ToString());
+
+            //DataRow[] DTBuscarDataParametro = DTDatoParametrosMetodo.Select("indice = " + Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value));
+            //if (DTBuscarDataParametro.Length > 0)
+            //{
+            //    MessageBox.Show("Existe DATA en memoria");
+            //    foreach (var drow in DTBuscarDataParametro)
+            //    {
+            //        MessageBox.Show(drow[0].ToString() + " - " + drow[1].ToString() + " - " + drow[2].ToString() + " - " + drow[3].ToString());
+            //        drow.Delete();
+            //    }
+            //    DTDatoParametrosMetodo.AcceptChanges();
+            //    DataRow NuevaFila = DTDatoParametrosMetodo.NewRow();
+            //    NuevaFila["indicemetodo"] = Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value);
+            //    NuevaFila["nombre"] = DgvVariablesFilaSeleccionada.Cells[0].Value;
+            //    NuevaFila["tipo"] = DgvVariablesFilaSeleccionada.Cells[1].Value;
+            //    NuevaFila["io"] = DgvVariablesFilaSeleccionada.Cells[2].Value;
+
+            //    // Agregar una nueva fila a la tabla de memoria.
+            //    DTDatoParametrosMetodo.Rows.Add(NuevaFila);
+            //}
+            //else
+            //{
+            //    //MessageBox.Show("NO Existe DATA en memoria");
+            //    DataRow NuevaFila = DTDatoParametrosMetodo.NewRow();
+            //    NuevaFila["indicemetodo"] = Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value);
+            //    NuevaFila["nombre"] = DgvVariablesFilaSeleccionada.Cells[0].Value;
+            //    NuevaFila["tipo"] = DgvVariablesFilaSeleccionada.Cells[1].Value;
+            //    NuevaFila["io"] = DgvVariablesFilaSeleccionada.Cells[2].Value;
+                
+            //    // Agregar una nueva fila a la tabla de memoria.
+            //    DTDatoParametrosMetodo.Rows.Add(NuevaFila);
+            //}
+        }
+
+        private void DgvVariables_CurrentCellChanged(object sender, EventArgs e)
+        {
+
+            //if (DgvVariables.CurrentRow != null)
+            //{
+            //    DataGridViewRow DgvMetodosfilaActiva = DgvMetodos.CurrentRow;
+
+            //    DataGridViewRow DgvVariablesFilaSeleccionada = DgvVariables.CurrentRow;
+
+            //    //string nombreColumna = DgvVariables.Columns[e.ColumnIndex].Name;
+            //    //object nuevoValor = DgvVariables.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+
+            //    MessageBox.Show("Indice: " + DgvMetodosfilaActiva.Cells[0].Value.ToString());
+
+            //    DataRow[] DTBuscarDataParametro = DTDatoParametrosMetodo.Select("indice = " + Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value));
+            //    if (DTBuscarDataParametro.Length > 0)
+            //    {
+            //        MessageBox.Show("Existe DATA en memoria");
+            //        foreach (var drow in DTBuscarDataParametro)
+            //        {
+            //            MessageBox.Show(drow[0].ToString() + " - " + drow[1].ToString() + " - " + drow[2].ToString() + " - " + drow[3].ToString());
+            //            drow.Delete();
+            //        }
+            //        DTDatoParametrosMetodo.AcceptChanges();
+            //        DataRow NuevaFila = DTDatoParametrosMetodo.NewRow();
+            //        NuevaFila["indicemetodo"] = Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value);
+            //        NuevaFila["nombre"] = DgvVariablesFilaSeleccionada.Cells[0].Value;
+            //        NuevaFila["tipo"] = DgvVariablesFilaSeleccionada.Cells[1].Value;
+            //        NuevaFila["io"] = DgvVariablesFilaSeleccionada.Cells[2].Value;
+
+            //        // Agregar una nueva fila a la tabla de memoria.
+            //        DTDatoParametrosMetodo.Rows.Add(NuevaFila);
+            //    }
+            //    else
+            //    {
+            //        //MessageBox.Show("NO Existe DATA en memoria");
+            //        DataRow NuevaFila = DTDatoParametrosMetodo.NewRow();
+            //        NuevaFila["indicemetodo"] = Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value);
+            //        NuevaFila["nombre"] = DgvVariablesFilaSeleccionada.Cells[0].Value;
+            //        NuevaFila["tipo"] = DgvVariablesFilaSeleccionada.Cells[1].Value;
+            //        NuevaFila["io"] = DgvVariablesFilaSeleccionada.Cells[2].Value;
+
+            //        // Agregar una nueva fila a la tabla de memoria.
+            //        DTDatoParametrosMetodo.Rows.Add(NuevaFila);
+            //    }
+            //}
+
+        }
+
+        private void DgvVariables_RowLeave(object sender, DataGridViewCellEventArgs e)
+        {
+
+            //int fila = e.RowIndex;
+
+            //DataGridViewRow DgvMetodosfilaActiva = DgvMetodos.CurrentRow;
+
+            ////DataGridViewRow DgvVariablesFilaSeleccionada = DgvVariables.CurrentRow;
+
+            ////string nombreColumna = DgvVariables.Columns[e.ColumnIndex].Name;
+            ////object nuevoValor = DgvVariables.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+
+            ////MessageBox.Show("Indice: " + DgvMetodosfilaActiva.Cells[0].Value.ToString());
+
+            //DataRow[] DTBuscarDataParametro = DTDatoParametrosMetodo.Select("indice = " + Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value));
+
+            //if (DTBuscarDataParametro.Length > 0)
+            //{
+            //    MessageBox.Show("Existe DATA en memoria");
+            //    foreach (var drow in DTBuscarDataParametro)
+            //    {
+            //        MessageBox.Show(drow[0].ToString() + " - " + drow[1].ToString() + " - " + drow[2].ToString() + " - " + drow[3].ToString());
+            //        drow.Delete();
+            //    }
+            //    DTDatoParametrosMetodo.AcceptChanges();
+            //    DataRow NuevaFila = DTDatoParametrosMetodo.NewRow();
+            //    NuevaFila["indicemetodo"] = Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value);
+            //    NuevaFila["nombre"] = DgvVariables.Rows[fila].Cells[0].Value;
+            //    NuevaFila["tipo"] = DgvVariables.Rows[fila].Cells[1].Value;
+            //    NuevaFila["io"] = DgvVariables.Rows[fila].Cells[2].Value;
+
+            //    // Agregar una nueva fila a la tabla de memoria.
+            //    DTDatoParametrosMetodo.Rows.Add(NuevaFila);
+            //}
+            //else
+            //{
+            //    //MessageBox.Show("NO Existe DATA en memoria");
+            //    DataRow NuevaFila = DTDatoParametrosMetodo.NewRow();
+            //    NuevaFila["indicemetodo"] = Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value);
+            //    NuevaFila["nombre"] = DgvVariables.Rows[fila].Cells[0].Value;
+            //    NuevaFila["tipo"] = DgvVariables.Rows[fila].Cells[1].Value;
+            //    NuevaFila["io"] = DgvVariables.Rows[fila].Cells[2].Value;
+
+            //    // Agregar una nueva fila a la tabla de memoria.
+            //    DTDatoParametrosMetodo.Rows.Add(NuevaFila);
+            //}
+            
+        }
+
+        private void DgvVariables_Leave(object sender, EventArgs e)
+        {
+            ////if ((DgvVariables.RowCount - 1) > 0)
+            ////{
+            //    DataGridViewRow DgvMetodosfilaActiva = DgvMetodos.CurrentRow;
+            //foreach (DataGridViewRow row in DgvVariables.Rows)
+            //{
+            //    try
+            //    {
+            //        MessageBox.Show("Data " + DgvMetodosfilaActiva.Cells[0].Value.ToString() + "fila : " + row.Cells["indiceparametro"].Value.ToString() + " - Parametro: " + row.Cells["nombre"].Value.ToString() + " - Tipo: " + row.Cells["tipo"].Value.ToString() + " - IN/OUT" + row.Cells["io"].Value.ToString());
+            //    }
+            //    catch
+            //    {
+            //    }
+            //}
+            ////}
+
+            DataGridViewRow DgvMetodosfilaActiva = DgvMetodos.CurrentRow;
+
+            foreach (DataGridViewRow fila in DgvVariables.Rows)
             {
 
-                String sbIndice = DgvMetodos.Rows[DgvMetodos.CurrentRow.Index - 1].Cells[0].Value.ToString();
+                DataRow[] DTBuscarDataParametro = DTDatoParametrosMetodo.Select("indicemetodo = " + Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value));
 
-                DgvMetodos.Rows[e.RowIndex].Cells[0].Value = int.Parse(sbIndice) + 1;
+                if (DTBuscarDataParametro.Length > 0)
+                {
+                    MessageBox.Show("Existe DATA en memoria");
+                    foreach (var drow in DTBuscarDataParametro)
+                    {
+                        //MessageBox.Show(drow[0].ToString() + " - " + drow[1].ToString() + " - " + drow[2].ToString() + " - " + drow[3].ToString());
+                        drow.Delete();
+                    }
+                    DTDatoParametrosMetodo.AcceptChanges();
+                    DataRow NuevaFila = DTDatoParametrosMetodo.NewRow();
+                    NuevaFila["indicemetodo"] = Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value);
+                    NuevaFila["indiceparametro"] = fila.Cells[0].Value;
+                    NuevaFila["nombre"] = fila.Cells[1].Value;
+                    NuevaFila["tipo"] = fila.Cells[2].Value;
+                    NuevaFila["io"] = fila.Cells[3].Value;
 
-                MessageBox.Show("Valor celda Indice: " + e.RowIndex);
+                    // Agregar una nueva fila a la tabla de memoria.
+                    DTDatoParametrosMetodo.Rows.Add(NuevaFila);
+                    MessageBox.Show("Metodo: " + DgvMetodosfilaActiva.Cells[0].Value.ToString() + " - Parametro: " + fila.Cells[0].Value.ToString() + " - Nombre:" + fila.Cells[1].Value.ToString() + " - Tipo: " + fila.Cells[2].Value.ToString() + " - I/O: " + fila.Cells[3].Value.ToString());
 
+                }
+                else
+                {
+                    MessageBox.Show("NO Existe DATA en memoria");
+                    DataRow NuevaFila = DTDatoParametrosMetodo.NewRow();
+                    NuevaFila["indicemetodo"] = Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value);
+                    NuevaFila["indiceparametro"] = fila.Cells[0].Value;
+                    NuevaFila["nombre"] = fila.Cells[1].Value;
+                    NuevaFila["tipo"] = fila.Cells[2].Value;
+                    NuevaFila["io"] = fila.Cells[3].Value;
+
+                    // Agregar una nueva fila a la tabla de memoria.
+                    DTDatoParametrosMetodo.Rows.Add(NuevaFila);
+                    MessageBox.Show("Metodo: " + DgvMetodosfilaActiva.Cells[0].Value.ToString() + " - Parametro: " + fila.Cells[0].Value.ToString() + " - Nombre:" + fila.Cells[1].Value.ToString() + " - Tipo: " + fila.Cells[2].Value.ToString() + " - I/O: " + fila.Cells[3].Value.ToString());
+
+                }
             }
         }
 
-        private void DgvMetodos_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void DgvVariables_UserAddedRow(object sender, DataGridViewRowEventArgs e)
         {
-            //if (e.RowIndex >= 0)
-            //{
-            //    DataGridViewRow filaSeleccionada = DgvMetodos.Rows[e.RowIndex];
-            //    string valor = filaSeleccionada.Cells["indice"].Value.ToString();
-            //    MessageBox.Show("Fila seleccionada: " + valor);
-            //}
+            e.Row.Cells["indiceparametro"].Value = nuIndiceParametro;
+            nuIndiceParametro = nuIndiceParametro + 1;
+        }
+
+        private void DgvVariables_Enter(object sender, EventArgs e)
+        {
+            DataGridViewRow DgvMetodosfilaActiva = DgvMetodos.CurrentRow;
+
+            foreach (DataGridViewRow fila in DgvVariables.Rows)
+            {
+
+                DataRow[] DTBuscarDataParametro = DTDatoParametrosMetodo.Select("indicemetodo = " + Convert.ToInt64(DgvMetodosfilaActiva.Cells[0].Value));
+
+                if (DTBuscarDataParametro.Length > 0)
+                {
+                    foreach (var filedata in DTBuscarDataParametro)
+                    {
+                        MessageBox.Show(filedata[0].ToString() + " - " + filedata[1].ToString() + " - " + filedata[2].ToString() + " - " + filedata[3].ToString() + " - " + filedata[4].ToString());
+                    }
+                }
+            }
         }
     }
 }

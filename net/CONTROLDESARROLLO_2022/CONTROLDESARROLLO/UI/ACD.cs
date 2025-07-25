@@ -33,14 +33,6 @@ namespace CONTROLDESARROLLO.UI
             }
         }
 
-        private void validacionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (valimp form = new valimp())
-            {
-                form.ShowDialog();
-            }
-        }
-
         private void crecionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (crearprocedimiento form = new crearprocedimiento())
@@ -58,6 +50,21 @@ namespace CONTROLDESARROLLO.UI
 
         }
 
+        private void menuvalidacionarchivo_Click(object sender, EventArgs e)
+        {
+            using (valimp form = new valimp())
+            {
+                form.ShowDialog();
+            }
+        }
 
+        private void menuvalidacioncodigo_Click(object sender, EventArgs e)
+        {
+            using (valimpcodigo form = new valimpcodigo())
+            {
+                form.ShowDialog();
+            }
+
+        }
     }
 }

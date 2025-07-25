@@ -91,7 +91,7 @@ namespace CONTROLDESARROLLO.UI
 
         private void BtnProcesar_Click(object sender, EventArgs e)
         {
-            TxbLogica.Text = BlGeneral.FsbEstructuraFuncion(CbxEsquema.Text.ToLower(), TbxNombre.Text, CbxTipo.SelectedIndex.ToString(), DgvVariables, "N");
+            TxbLogica.Text = BlGeneral.FsbEstructuraFuncion(CbxEsquema.Text.ToLower(), TbxNombre.Text, CbxTipo.Text, DgvVariables, "N");
 
             //MessageBox.Show("Seleccionaste: " + CbxTipo.SelectedIndex.ToString() + " - " + CbxTipo.SelectedItem.ToString());
 

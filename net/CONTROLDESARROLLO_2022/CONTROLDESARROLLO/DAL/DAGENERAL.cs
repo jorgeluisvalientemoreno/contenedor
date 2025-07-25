@@ -30,7 +30,7 @@ namespace CONTROLDESARROLLO.DAL
         }
 
         //Retornar Estructura Funcion
-        public String FsbEstructuraFuncion(String CbxEsquema, String TbxNombre, String CbxTipo, DataGridView DgvVariables, String sbAplicaPaquete) 
+        public String FsbEstructuraFuncion(String CbxEsquema, String TbxNombre, String CbxTipo, DataGridView DgvVariables, String sbAplicaPaquete)
         {
             String sbEstructuraFuncion;
 
@@ -40,35 +40,50 @@ namespace CONTROLDESARROLLO.DAL
                 sbEstructuraFuncion = "function " + TbxNombre;
 
             ////////////////////////
-            if (DgvVariables.RowCount > 0)
+
+            if (sbAplicaPaquete == "N")
             {
-
-                int NuCantidadFilas = DgvVariables.Rows.Count;
-
-                sbEstructuraFuncion = sbEstructuraFuncion + "(" + Environment.NewLine;
-                foreach (DataGridViewRow row in DgvVariables.Rows)
+                if (DgvVariables.RowCount > 0)
                 {
-                    if (!row.IsNewRow) // Ignorar la fila nueva
-                    {
-                        //MessageBox.Show("ID: {id}, Nombre: {nombre}, Edad: {edad}");
-                        sbEstructuraFuncion = sbEstructuraFuncion + row.Cells["nombre"].Value.ToString() + " " + row.Cells["io"].Value.ToString() + " " + row.Cells["tipo"].Value.ToString();
-                    }
-                    NuCantidadFilas = NuCantidadFilas - 1;
 
-                    if (NuCantidadFilas > 1)
+                    int NuCantidadFilas = DgvVariables.Rows.Count;
+
+                    sbEstructuraFuncion = sbEstructuraFuncion + "(" + Environment.NewLine;
+                    foreach (DataGridViewRow row in DgvVariables.Rows)
                     {
-                        sbEstructuraFuncion = sbEstructuraFuncion + "," + Environment.NewLine;
+                        if (!row.IsNewRow) // Ignorar la fila nueva
+                        {
+                            //MessageBox.Show("ID: {id}, Nombre: {nombre}, Edad: {edad}");
+                            sbEstructuraFuncion = sbEstructuraFuncion + row.Cells["nombre"].Value.ToString() + " " + row.Cells["io"].Value.ToString() + " " + row.Cells["tipo"].Value.ToString();
+                        }
+                        NuCantidadFilas = NuCantidadFilas - 1;
+
+                        if (NuCantidadFilas > 1)
+                        {
+                            sbEstructuraFuncion = sbEstructuraFuncion + "," + Environment.NewLine;
+                        }
                     }
+                    sbEstructuraFuncion = sbEstructuraFuncion + ")" + Environment.NewLine;
+
                 }
-                sbEstructuraFuncion = sbEstructuraFuncion + ")" + Environment.NewLine;
-
             }
+
             /////////////////////////
             sbEstructuraFuncion = sbEstructuraFuncion + "  return " + CbxTipo + " is " + Environment.NewLine;
-            sbEstructuraFuncion = sbEstructuraFuncion + "  csbMetodo CONSTANT VARCHAR2(100) := '" + TbxNombre + "';" + Environment.NewLine;
+            if (sbAplicaPaquete == "N")
+                sbEstructuraFuncion = sbEstructuraFuncion + "  csbMetodo CONSTANT VARCHAR2(100) := '" + TbxNombre + "';" + Environment.NewLine;
+            else
+                sbEstructuraFuncion = sbEstructuraFuncion + "  csbMetodo CONSTANT VARCHAR2(100) := csbSP_NAME||'" + TbxNombre + "';" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "  onuErrorCode    number;" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "  osbErrorMessage varchar2(4000);" + Environment.NewLine;
-            sbEstructuraFuncion = sbEstructuraFuncion + "  nuReturn " + CbxTipo + ";" + Environment.NewLine;
+            if  (CbxTipo.ToUpper() == "varchar2".ToUpper())
+            {
+                sbEstructuraFuncion = sbEstructuraFuncion + "  nuReturn " + CbxTipo + "(4000);" + Environment.NewLine;
+            }
+            else
+            {
+                sbEstructuraFuncion = sbEstructuraFuncion + "  nuReturn " + CbxTipo + ";" + Environment.NewLine;
+            }
             sbEstructuraFuncion = sbEstructuraFuncion + "BEGIN" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "  pkg_traza.trace(csbMetodo, pkg_traza.cnuNivelTrzDef, pkg_traza.csbINICIO);" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "  pkg_traza.trace('Traza', pkg_traza.cnuNivelTrzDef);" + Environment.NewLine;
@@ -87,18 +102,24 @@ namespace CONTROLDESARROLLO.DAL
             sbEstructuraFuncion = sbEstructuraFuncion + "    pkg_traza.trace(csbMetodo,pkg_traza.cnuNivelTrzDef,pkg_traza.csbFIN_ERR);" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "    RETURN(nuReturn);" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "END;" + Environment.NewLine;
-            sbEstructuraFuncion = sbEstructuraFuncion + "/" + Environment.NewLine;
-
-            if (CbxEsquema != "OPEN")
+            if (sbAplicaPaquete == "N")
             {
-                sbEstructuraFuncion = sbEstructuraFuncion + "BEGIN" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "  pkg_utilidades.prAplicarPermisos('" + TbxNombre + "','" + CbxEsquema + "');" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "END;" + Environment.NewLine;
                 sbEstructuraFuncion = sbEstructuraFuncion + "/" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "BEGIN" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "  pkg_utilidades.prCrearSinonimos('" + TbxNombre + "','" + CbxEsquema + "');" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "END;" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "/" + Environment.NewLine;
+            }
+
+            if (sbAplicaPaquete == "N")
+            {
+                if (CbxEsquema != "OPEN")
+                {
+                    sbEstructuraFuncion = sbEstructuraFuncion + "BEGIN" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "  pkg_utilidades.prAplicarPermisos('" + TbxNombre + "','" + CbxEsquema + "');" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "END;" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "/" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "BEGIN" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "  pkg_utilidades.prCrearSinonimos('" + TbxNombre + "','" + CbxEsquema + "');" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "END;" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "/" + Environment.NewLine;
+                }
             }
 
             return sbEstructuraFuncion; 
@@ -114,34 +135,41 @@ namespace CONTROLDESARROLLO.DAL
                 sbEstructuraFuncion = "create or replace procedure " + CbxEsquema + "." + TbxNombre;
             else
                 sbEstructuraFuncion = "procedure " + TbxNombre;
-            
+
             ////////////////////////
-            if (DgvVariables.RowCount > 0)
+            if (sbAplicaPaquete == "N")
             {
-                int NuCantidadFilas = DgvVariables.Rows.Count;
-
-                sbEstructuraFuncion = sbEstructuraFuncion + "(" + Environment.NewLine;
-                foreach (DataGridViewRow row in DgvVariables.Rows)
+                if (DgvVariables.RowCount > 0)
                 {
-                    if (!row.IsNewRow) // Ignorar la fila nueva
-                    {
-                        //MessageBox.Show("ID: {id}, Nombre: {nombre}, Edad: {edad}");
-                        sbEstructuraFuncion = sbEstructuraFuncion + row.Cells["nombre"].Value.ToString() + " " + row.Cells["io"].Value.ToString() + " " + row.Cells["tipo"].Value.ToString();
-                    }
-                    NuCantidadFilas = NuCantidadFilas - 1;
+                    int NuCantidadFilas = DgvVariables.Rows.Count;
 
-                    if (NuCantidadFilas > 1)
+                    sbEstructuraFuncion = sbEstructuraFuncion + "(" + Environment.NewLine;
+                    foreach (DataGridViewRow row in DgvVariables.Rows)
                     {
-                        sbEstructuraFuncion = sbEstructuraFuncion + "," + Environment.NewLine;
+                        if (!row.IsNewRow) // Ignorar la fila nueva
+                        {
+                            //MessageBox.Show("ID: {id}, Nombre: {nombre}, Edad: {edad}");
+                            sbEstructuraFuncion = sbEstructuraFuncion + row.Cells["nombre"].Value.ToString() + " " + row.Cells["io"].Value.ToString() + " " + row.Cells["tipo"].Value.ToString();
+                        }
+                        NuCantidadFilas = NuCantidadFilas - 1;
+
+                        if (NuCantidadFilas > 1)
+                        {
+                            sbEstructuraFuncion = sbEstructuraFuncion + "," + Environment.NewLine;
+                        }
+
                     }
+                    sbEstructuraFuncion = sbEstructuraFuncion + ") IS " + Environment.NewLine;
 
                 }
-                sbEstructuraFuncion = sbEstructuraFuncion + ") IS " + Environment.NewLine;
 
             }
             /////////////////////////
             sbEstructuraFuncion = sbEstructuraFuncion + Environment.NewLine;
-            sbEstructuraFuncion = sbEstructuraFuncion + "  csbMetodo CONSTANT VARCHAR2(100) := '" + TbxNombre + "';" + Environment.NewLine;
+            if (sbAplicaPaquete == "N")
+                sbEstructuraFuncion = sbEstructuraFuncion + "  csbMetodo CONSTANT VARCHAR2(100) := '" + TbxNombre + "';" + Environment.NewLine;
+            else
+                sbEstructuraFuncion = sbEstructuraFuncion + "  csbMetodo CONSTANT VARCHAR2(100) := csbSP_NAME||'" + TbxNombre + "';" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "  onuErrorCode    number;" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "  osbErrorMessage varchar2(4000);" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "  cnuNVLTRC CONSTANT NUMBER(2) := pkg_traza.cnuNivelTrzDef;" + Environment.NewLine;
@@ -164,19 +192,25 @@ namespace CONTROLDESARROLLO.DAL
             sbEstructuraFuncion = sbEstructuraFuncion + "    pkg_traza.trace(csbMetodo,cnuNVLTRC,pkg_traza.csbFIN_ERR);" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "    raise pkg_error.CONTROLLED_ERROR;" + Environment.NewLine;
             sbEstructuraFuncion = sbEstructuraFuncion + "END;" + Environment.NewLine;
-            sbEstructuraFuncion = sbEstructuraFuncion + "/" + Environment.NewLine;
-
-            if (CbxEsquema.ToUpper() != "OPEN")
+            if (sbAplicaPaquete == "N")
             {
-                sbEstructuraFuncion = sbEstructuraFuncion + "BEGIN" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "  pkg_utilidades.prAplicarPermisos('" + TbxNombre + "','" + CbxEsquema + "');" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "END;" + Environment.NewLine;
                 sbEstructuraFuncion = sbEstructuraFuncion + "/" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "BEGIN" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "  pkg_utilidades.prCrearSinonimos('" + TbxNombre + "','" + CbxEsquema + "');" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "END;" + Environment.NewLine;
-                sbEstructuraFuncion = sbEstructuraFuncion + "/" + Environment.NewLine;
+            }
 
+            if (sbAplicaPaquete == "N")
+            {
+                if (CbxEsquema.ToUpper() != "OPEN")
+                {
+                    sbEstructuraFuncion = sbEstructuraFuncion + "BEGIN" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "  pkg_utilidades.prAplicarPermisos('" + TbxNombre + "','" + CbxEsquema + "');" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "END;" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "/" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "BEGIN" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "  pkg_utilidades.prCrearSinonimos('" + TbxNombre + "','" + CbxEsquema + "');" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "END;" + Environment.NewLine;
+                    sbEstructuraFuncion = sbEstructuraFuncion + "/" + Environment.NewLine;
+
+                }
             }
             
             return sbEstructuraFuncion;

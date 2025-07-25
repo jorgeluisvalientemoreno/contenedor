@@ -42,11 +42,6 @@ namespace CONTROLDESARROLLO.UI
             dgvHomologacion.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
         }
 
-        private void valimp_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnCarpeta_Click(object sender, EventArgs e)
         {
             lbxArchivos.Items.Clear();

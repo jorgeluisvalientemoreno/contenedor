@@ -159,9 +159,8 @@
             this.DgvMetodos.RowTemplate.Height = 28;
             this.DgvMetodos.Size = new System.Drawing.Size(1194, 255);
             this.DgvMetodos.TabIndex = 18;
-            this.DgvMetodos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvMetodos_CellClick);
             this.DgvMetodos.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvMetodos_CellValueChanged);
-            this.DgvMetodos.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DgvMetodos_RowsAdded);
+            this.DgvMetodos.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.DgvMetodos_UserAddedRow);
             // 
             // TabParametros
             // 
@@ -194,6 +193,12 @@
             this.DgvVariables.RowTemplate.Height = 28;
             this.DgvVariables.Size = new System.Drawing.Size(1194, 302);
             this.DgvVariables.TabIndex = 19;
+            this.DgvVariables.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvVariables_CellEndEdit);
+            this.DgvVariables.CurrentCellChanged += new System.EventHandler(this.DgvVariables_CurrentCellChanged);
+            this.DgvVariables.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvVariables_RowLeave);
+            this.DgvVariables.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.DgvVariables_UserAddedRow);
+            this.DgvVariables.Enter += new System.EventHandler(this.DgvVariables_Enter);
+            this.DgvVariables.Leave += new System.EventHandler(this.DgvVariables_Leave);
             // 
             // crearpaquete
             // 

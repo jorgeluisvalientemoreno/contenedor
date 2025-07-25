@@ -121,6 +121,12 @@
     <Compile Include="UI\crearprocedimiento.Designer.cs">
       <DependentUpon>crearprocedimiento.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\valimpcodigo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\valimpcodigo.Designer.cs">
+      <DependentUpon>valimpcodigo.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\valimp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\valimp.resx">
       <DependentUpon>valimp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\valimpcodigo.resx">
+      <DependentUpon>valimpcodigo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
