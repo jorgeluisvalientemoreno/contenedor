@@ -1,0 +1,4 @@
+select *
+from LOGPNO_EHG
+where upper(a) like '%ERROR%'
+and a like '%50338277%' 

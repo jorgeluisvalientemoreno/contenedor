@@ -1,0 +1,9 @@
+select *
+from or_order_activity
+where package_id in (  236564852 , 236564863, 236564877 , 236564886);
+
+SELECT * 
+FROM LDC_VENT_EXC_COMISION
+WHERE status_ = 'E'
+and  package_id in (  236564852 , 236564863, 236564877 , 236564886)
+order by register_date desc 

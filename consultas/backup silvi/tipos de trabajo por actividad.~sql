@@ -1,0 +1,43 @@
+select or_task_types_items.task_type_id tipo_trabajo,or_task_type.description , or_task_types_items.items_id actividad
+from open.or_task_types_items
+left join or_task_type on or_task_types_items.task_type_id = or_task_type.task_type_id
+where or_task_types_items.task_type_id = 11259 
+  or_task_types_items.items_id in (4000044,4001238);
+
+
+ Select o.id_actividad_rol,
+    o.id_rol,
+    r.description as  rol,
+    o.id_actividad,
+    i.description as Actividad
+    from open.or_actividades_rol o,
+    open.sa_role  r,
+    open.ge_items  i
+     where o.id_rol = r.role_id
+     and o.id_actividad = i.items_id
+     and o.id_actividad in (4000980)
+     
+     select *
+     from open.or_actividades_rol
+     where id_actividad = 4000980 
+     for update 
+    
+    
+select *
+from open.ldc_ttp_tts 
+where tts_id = 10534 
+
+select *
+from open.ldc_tt_causal_warr
+where task_type_id = 10534
+
+select *
+from open.ldc_garantlog
+where 
+LDCGTA
+
+
+select *
+from open.ldc_logtiptraadi
+where orden_orginal = 
+LDCLOGTA

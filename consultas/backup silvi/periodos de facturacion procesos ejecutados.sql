@@ -1,0 +1,37 @@
+select p.prejcope  "Periodo_fact",
+       p.prejprog  "Programa",
+ case when prejespr = 'T' Then 'Terminado'  
+      when prejespr = 'E' Then 'En ejecucion' 
+      when prejespr = '-' Then '-'   end as  "Estado",
+       pf.pefacicl "Ciclo",
+       pf.pefames  "Mes",
+       pf.pefaano  "Ano"
+from procejec  p
+left join perifact pf on p.prejcope = pf.pefacodi 
+where p.prejcope in (111277)
+and prejprog ='FCRI'  ;
+
+SELECT PF.PEFACODI , PF.PEFACICL, E.ESPRPROG , E.ESPRFEIN,E.ESPRPROG,e.esprporc
+FROM ESTAPROG E
+LEFT JOIN PERIFACT PF ON E.ESPRPEFA = PF.PEFACODI
+WHERE E.ESPRPEFA= 103612;
+
+update procejec set prejfech ='31/05/2023'  where prejcope = 103892 and prejprog ='FGCC' 
+;
+
+select pefacodi , pefames, pefaano , pefafimo , pefaffmo , pefacicl 
+from perifact pf
+where not exists ( select null from procejec p  where p.prejcope = pf.pefacodi  and prejprog ='FGCC' AND prejespr = 'T'  )
+and pf.pefacicl = 101
+and exists ( select null from procejec p2 , perifact pf2 
+            where pf2.pefacodi= p2.prejcope 
+            and  pf2.pefaffmo < pf.pefafimo 
+            and pf.pefacicl= pf2.pefacicl
+            and pf2.pefafimo = (select max( pf3.pefafimo)
+                                from  perifact pf3 where pf2.pefacicl= pf3.pefacicl
+                               and pf3.pefacodi < pf.pefacodi and  pf3.pefaffmo <  pf.pefaffmo)
+            and p2.prejprog ='FGCC' 
+            AND p2.prejespr = 'T'      );
+            
+            
+     

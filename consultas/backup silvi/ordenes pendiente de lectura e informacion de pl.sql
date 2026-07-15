@@ -1,0 +1,10 @@
+select A.product_id , sesucicl , sesucate , sesuesco , sesuesfn , o.order_id ,a.order_activity_id,
+ order_status_id,o.task_type_id , o.operating_unit_id ,o.causal_id ,legalization_date , le.leemoble, le.leemleto,l.leemoble, l.leemleto,hcppcopr
+from open.or_order o
+inner join open.or_order_activity a on  o.order_id = a.order_id
+inner join open.servsusc s on sesunuse = a.product_Id and sesususc = a.subscription_id
+inner join open.pr_product pr on pr.product_id =  sesunuse
+inner join open.hicoprpm  on  hcppsesu = sesunuse and hcpppeco  = 107303
+left join open.lectelme  le on sesunuse=  le.leemsesu  and le.leempecs= 107303
+left join open.lectelme@osfpl  l on sesunuse=  l.leemsesu  and l.leempecs= 107712  and le.leemclec = 'F'
+where o.task_type_id in (10043) and order_status_id in (0,5 )and sesucicl = 101 and l.leemclec = 'F' and product_status_id !=2 --and sesunuse = 17232228

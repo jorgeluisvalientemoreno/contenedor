@@ -47,14 +47,14 @@ select id_contrato,co.status, co.descripcion, id_tipo_contrato,co.fecha_inicial,
        co.valor_total_contrato-nvl(co.valor_asignado,0)-nvl(co.valor_no_liquidado,0)-nvl(co.valor_liquidado,0) cupo
 from open.ge_contrato co
 --where id_contrato=6861 
-where id_contratista in (select contractor_id from open.or_operating_unit where operating_unit_id=4118)
+where id_contratista in (select contractor_id from open.or_operating_unit where operating_unit_id=4285)
   and status='AB'
-  and exists(select null from open.ct_tasktype_contype c where c.contract_id=co.id_contrato and task_type_id=10734
+  and exists(select null from open.ct_tasktype_contype c where c.contract_id=co.id_contrato and task_type_id=11056
              union
              select null from open.ct_tasktype_contype c , open.ge_contrato co2
                where c.contract_type_id=co2.id_tipo_contrato 
                  and co2.id_contrato=co.id_contrato
-                and task_type_id=10734
+                and task_type_id=11056
                 and not exists(select null from open.ct_tasktype_contype c2 where c2.contract_id=co2.id_contrato)
                )
    ;

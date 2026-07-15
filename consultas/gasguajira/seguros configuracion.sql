@@ -1,0 +1,5 @@
+select *
+from ld_policy_type;
+
+select * 
+from LD_PRODUCT_LINE

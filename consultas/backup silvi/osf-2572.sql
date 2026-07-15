@@ -1,0 +1,49 @@
+select * from ld_policy_type   where  policy_type_id     = 586 ;
+select * from LD_PRODUCT_LINE WHERE PRODUCT_lINE_ID IN (311,91,131)  ;
+select * from LD_POLICY_STATE;
+SELECT * FROM LD_VALIDITY_POLICY_TYPE ;
+
+select l.policy_id,
+       policy_number,
+       l.state_policy,
+       l.contratist_code,
+       l.product_line_id,
+       l.dt_in_policy,
+       l.dt_en_policy,
+       l.name_insured,
+       l.identification_id,
+       l.suscription_id,
+       l.product_id,
+       sesuesfn,
+       s.sesuplfa, dt_insured_policy 
+from ld_policy l 
+inner join servsusc s on sesususc= l.suscription_id and l.product_id= sesunuse
+where l.suscription_id in (48154714) 
+and l.state_policy in (1)
+order by dt_in_policy desc
+;
+
+
+select address_id , a.geograp_location_id , g.description , g.geo_loca_father_id , ge.description
+from ab_address a
+inner join ge_geogra_location g on a.geograp_location_id = g.geograp_location_id -- ciudad
+inner join ge_geogra_location ge on   ge.geograp_location_id= g.geo_loca_father_id --localidad
+where address_id in ( 133006,293639,346112)
+;
+
+select l.product_line_id,
+       l.description,
+       ty.policy_type_id,
+       ty.description,
+       ty.contratist_code codepolytype,
+       ty.contratista_id  codeaseg,
+       ty.is_exq,
+       va.initial_date,
+       va.final_date,
+       va.policy_value,
+       va.share_value Valuepri
+from open.ld_product_line l
+inner join open.ld_policy_type ty on ty.product_line_id  = l.product_line_id 
+inner join open.ld_validity_policy_type va on va.policy_type_id = ty.policy_type_id
+where l.product_line_id in (131)  and va.final_date> sysdate 
+

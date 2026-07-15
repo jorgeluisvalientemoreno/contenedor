@@ -1,0 +1,29 @@
+SELECT 
+    c.cargnuse,
+    m.package_type_id,
+    a.activity_id,
+    a.operating_unit_id,
+    o.causal_id,
+    ge.description,
+    a.order_id,
+    LISTAGG(i.items_id || '>1>Y', ';') WITHIN GROUP (ORDER BY i.items_id) AS items_concatenados
+FROM open.cargos@osfpl c
+INNER JOIN open.mo_packages@osfpl m ON substr(cargdoso, 4, 20) = m.package_id
+INNER JOIN open.or_order_activity@osfpl a ON m.package_id = a.package_id
+INNER JOIN open.ge_items@osfpl ge ON a.activity_id = ge.items_id
+INNER JOIN open.or_order@osfpl o ON o.order_id = a.order_id
+INNER JOIN open.or_order_items@osfpl i ON o.order_id = i.order_id
+WHERE cargpefa = 114061
+AND cargsign NOT IN ('PA', 'SA', 'TS')
+AND cargdoso LIKE '%PP%'
+AND cargprog = 241
+AND cargcaca = 41
+AND m.package_type_id = 100101
+AND value > 0
+GROUP BY c.cargnuse,
+    m.package_type_id,
+    a.activity_id,
+    a.operating_unit_id,
+    o.causal_id,
+    ge.description,
+    a.order_id;

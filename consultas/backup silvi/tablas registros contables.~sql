@@ -1,0 +1,11 @@
+select * from IC_TIPOMOVI ; --63 y 64 
+select * from IC_TIPODOCO  ;--77 actas
+select * from IC_TICOCONT  ; --Tipo de comprobante 4 - L7 ACTAS
+
+-- Consulta básica para ver los datos de cada tabla con sus alias
+
+SELECT * FROM OPEN.IC_COMPCONT A;
+SELECT * FROM OPEN.IC_CONFRECO C;
+SELECT * FROM OPEN.IC_CLASCORE F;
+SELECT * FROM OPEN.IC_CLASCONT G;
+SELECT * FROM OPEN.IC_RECOCLCO I;

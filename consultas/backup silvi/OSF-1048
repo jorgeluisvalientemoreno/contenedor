@@ -1,0 +1,53 @@
+ --valida que producto no este pendiente de suspension rp
+    cursor cuValidaOrdeSusp is
+      select 'x'
+        from ldc_prodreasu
+       where ESTASUSP = 'N'
+         and PRODUCT_ID = inuProducto;
+​
+    --Valida que el producto no se encuentre en proceso de cambio de suspension
+    CURSOR cuValidaProdProc IS
+      SELECT 'X'
+        FROM LDC_PRODRERP
+       WHERE PRREPROD = inuProducto
+         and PRREPROC = 'N';
+​
+    --valida orden de persecucion
+    CURSOR cuValiOrdePers IS
+      SELECT /*+ index (o PK_OR_ORDER)
+                     index (oa IDX_OR_ORDER_ACTIVITY_010)
+                        */
+       'X'
+        FROM or_order o, or_order_activity oa
+       WHERE o.ordeR_id = oa.order_id
+         AND oa.product_id = inuProducto
+         AND o.task_type_id IN (10169, 10884, 10918, 12521) --sbTitrPers
+         AND o.order_status_id in (0, 5, 6, 7, 11); --sbEstaOrpe
+​
+    --SE VALDIA ORDEN DE RECONEXION
+    CURSOR cuValidaOrReco IS
+      SELECT /*+ index (o PK_OR_ORDER)
+                        index (oa IDX_OR_ORDER_ACTIVITY_010)
+                        index (s PK_MO_PACKAGES)
+                        */
+       'X'
+        FROM or_order o, or_order_activity oa, mo_packages s
+       WHERE o.ordeR_id = oa.order_id
+         AND oa.package_id = s.package_id
+         AND oa.product_id = inuProducto
+         AND s.package_type_id IN (300) --sbTramReco
+         AND (o.order_status_id in (5, 7) --sbEstaOrre
+             or (o.order_status_id = nuEstaCerrOt and
+             DAGE_CAUSAL.FNUGETCLASS_CAUSAL_ID(o.causal_id, null) =
+             nuClasCausExi)) --sbEstaOrre
+​
+         AND s.MOTIVE_STATUS_ID = nuEstaReso;
+​
+    sbObserva VARCHAR2(4000);
+​
+    --se obtiene estado de corte del producto
+    CURSOR cuGetEstaCorte Is
+      SELECT SESUESCO, sesuesfn, PRODUCT_STATUS_ID
+        FROM servsusc, PR_PRODUCT
+       WHERE sesunuse = inuProducto
+         AND product_id = sesunuse;

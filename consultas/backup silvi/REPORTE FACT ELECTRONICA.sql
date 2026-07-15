@@ -1,0 +1,5 @@
+select *
+from open.reportes, OPEN.REPOINCO
+WHERE repoapli = 'JOBFAELGE'
+  AND REINREPO = REPONUME
+ AND TRUNC(REPOFECH) = TRUNC(SYSDATE);

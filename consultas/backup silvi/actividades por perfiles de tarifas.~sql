@@ -1,0 +1,5 @@
+select *
+from open.TA_PERFILES ; 
+select *
+from open.TA_ACTIPERF
+ 

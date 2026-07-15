@@ -1,0 +1,14 @@
+select a.product_id ,o.order_id, a.order_activity_id,o.task_type_id ,o.causal_id ,o.legalization_date , le.leemoble, le.leemleto,a.value1,a.value2,
+CASE WHEN a.value1 = 'READING>>>>' then a.order_id||'|'||9688||'|'||'38963||'||a.order_activity_id||'>'||'1'||';'|| regexp_substr( a.value2,'COMMENT1>[^>]*')||'>>'||';;;'||'|||'||'1277'||';PRUEBA|'||substrc ( o.exec_initial_date,1,19) ||';'|| substrc ( o.execution_final_date,1,19)
+     ELSE  a.order_id||'|'||9688||'|'||'38963||'||a.order_activity_id||'>'||'1'||';'||  regexp_substr( a.value1,'READING>[^>]*')||'>>'||';;;'||'|||'||'1277'||';PRUEBA|'||substrc ( o.exec_initial_date,1,19) ||';'|| substrc ( o.execution_final_date,1,19) end as cadena_legalizacion
+from open.or_order o
+inner join open.or_order_activity a on  o.order_id = a.order_id
+inner join open.lectelme  le on a.product_id=  le.leemsesu  and le.leempecs= 111236 --periodo actual
+inner join open.pericose pe on pe.pecscons= le.leempecs
+where o.task_type_id in (10043,12617) and order_status_id in (8) and le.leemclec = 'F'  
+and legalization_date between pe.pecsfeci and pe.pecsfecf
+and a.register_date between pe.pecsfeci and pe.pecsfecf
+
+
+
+select * from open.pericose where pecscons= 111236

@@ -1,0 +1,1 @@
+select * from personalizaciones.coslprom c where producto = 50952926

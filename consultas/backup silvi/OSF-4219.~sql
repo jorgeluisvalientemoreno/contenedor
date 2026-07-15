@@ -1,0 +1,50 @@
+update ldci_actacont
+set actcontabiliza ='N'
+where idacta= 242949;
+
+
+update ic_encoreco
+set ecrccoco = 4
+where ecrccons in ( 270113 , 270172);
+
+update contratista
+set empresa='GDGU'
+where contratista=909;
+
+select *
+from ic_encoreco
+inner join ic_decoreco on dcrcecrc = ecrccons
+inner join ldci_tipointerfaz on  ecrccoco = cod_comprobante
+where ldci_pkinterfazsap.fvaGetData(42, DCRCINAD, '|') = '242949'
+AND ecrcfech BETWEEN '11/03/2025' AND '14/05/2025'
+AND dcrccuco NOT IN ('A', 'G')
+AND tipointerfaz = 'L7';
+
+
+select *
+from ldci_actacont
+where  idacta = 250592
+order by fechcontabiliza desc  ;
+
+select contratista.contratista, contratista.empresa
+from ge_acta, ge_contrato, contratista
+where id_acta = 242949
+and ge_contrato.id_contrato = ge_acta.id_contrato
+and ge_contrato.id_contratista = contratista.contratista;
+
+select *
+from ge_acta
+where id_acta = 242949;
+ 
+ 
+ SELECT *
+FROM ldci_logsproc
+WHERE LOPRPROC = 'L7' AND LOPRFECH > SYSDATE -10
+order by LOPRFECH desc ;
+
+
+select * from ldci_encaintesap
+where  cod_interfazldc in (57296);
+
+select * from ldci_detaintesap
+where  cod_interfazldc in (57298);

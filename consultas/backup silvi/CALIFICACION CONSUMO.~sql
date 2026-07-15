@@ -1,0 +1,13 @@
+SELECT cavccodi, calivaco.cavcdesc
+FROM open.caravaco, open.racavaco, open.calivaco
+ WHERE rcvccrvc = crvccodi -- Join Clases con Rangos
+                      AND cavccodi = rcvccavc -- Join Rangos con Calificaci?n
+                      AND crvccate = 1
+                      AND crvcsuca = 2
+                      AND round(12) BETWEEN crvcraci AND
+                      crvcracf
+                      AND  round((49 - 12) / 10 * 100) BETWEEN rcvcrain AND
+                      rcvcrafi;
+                      
+                      
+                      round((24 - 11) / 11 * 100); 

@@ -1,0 +1,16 @@
+select *
+from ldc_proceso_actividad pa
+where pa.proceso_id in (7,9)
+order by proceso_id
+;
+
+select *
+from ldc_proceso p 
+where p.proceso_id in (7,9)
+order by p.proceso_id  ;
+
+select *
+from ldc_actividad_generada ga
+where ga.proceso_id in (7,9)
+order by proceso_id
+;

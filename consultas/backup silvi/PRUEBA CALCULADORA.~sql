@@ -1,0 +1,93 @@
+-- Normalito 
+DECLARE
+ RESPUESTA   VARCHAR2(2000);
+  TOTAL       NUMBER ;
+  SBRESPUESTA VARCHAR2(2000) ; 
+BEGIN
+  dbms_output.put_line('OPERACION ARITMETICA');
+   SELECT LDC_QA_FNUCALCULADORA(10,20,'S') INTO RESPUESTA  FROM DUAL;
+  dbms_output.put_line('TOTAL OBTENIDO: '||RESPUESTA);
+   IF RESPUESTA = '15' THEN
+   dbms_output.put_line('PRUEBA EXITOSA');
+  ELSE
+   dbms_output.put_line('PRUEBA FAIL' );
+  END IF;
+END;
+
+--Variables 
+DECLARE
+ RESPUESTA   VARCHAR2(2000);
+  N1 NUMBER;
+  N2 NUMBER;
+  OP VARCHAR2(2000);
+  ESPERADO VARCHAR2(2000);
+BEGIN
+  N1 := 20 ;
+  N2 := 10 ;
+  OP := 'r' ;
+  ESPERADO := 10 ;
+  dbms_output.put_line('OPERACION ARITMETICA REALIZADA: '|| OP);
+  dbms_output.put_line('NUMERO 1: '|| N1);
+  dbms_output.put_line('NUMERO 2: '|| N2);
+  
+  SELECT LDC_QA_FNUCALCULADORA(N1,N2,OP) INTO RESPUESTA  FROM DUAL;
+  dbms_output.put_line('TOTAL CALCULADO: '||RESPUESTA);
+  dbms_output.put_line('VALOR ESPERADO: '||ESPERADO);
+   
+   IF OP = 'S' AND RESPUESTA = ESPERADO THEN
+   dbms_output.put_line('PRUEBA EXITOSA');
+   ELSE IF OP = 'R' AND RESPUESTA = ESPERADO  THEN 
+      dbms_output.put_line('PRUEBA EXITOSA');
+      ELSE IF OP = 'M' AND RESPUESTA = ESPERADO  THEN 
+      dbms_output.put_line('PRUEBA EXITOSA');
+         ELSE IF OP = 'D' AND RESPUESTA = ESPERADO  THEN 
+         dbms_output.put_line('PRUEBA EXITOSA');
+           ELSE
+           dbms_output.put_line('PRUEBA FALLIDA' );
+           END IF ;
+         END IF;
+      END IF;
+   END IF;
+END;
+
+--Variables mayus y min
+DECLARE
+ RESPUESTA   VARCHAR2(2000);
+  N1 NUMBER;
+  N2 NUMBER;
+  OP VARCHAR2(2000);
+  ESPERADOS VARCHAR2(2000);
+   ESPERADOM VARCHAR2(2000);
+    ESPERADOR VARCHAR2(2000);
+     ESPERADOD VARCHAR2(2000);
+BEGIN
+  N1 := 20 ;
+  N2 := 20 ;
+  OP := 's' ;
+  ESPERADOS := 40 ;
+  ESPERADOM := 400 ;
+  ESPERADOR:= 0 ;
+  ESPERADOD := 1 ;
+  dbms_output.put_line('OPERACION ARITMETICA REALIZADA: '|| OP);
+  dbms_output.put_line('NUMERO 1: '|| N1);
+  dbms_output.put_line('NUMERO 2: '|| N2);
+  
+  SELECT LDC_QA_FNUCALCULADORA(N1,N2,OP) INTO RESPUESTA  FROM DUAL;
+  dbms_output.put_line('TOTAL CALCULADO: '||RESPUESTA);
+  dbms_output.put_line('VALOR ESPERADO: '||ESPERADO);
+   
+   IF OP = 'S' OR OP = 's' AND RESPUESTA = ESPERADOS THEN
+   dbms_output.put_line('PRUEBA EXITOSA');
+   ELSE IF OP = 'R' OR OP = 'r' AND RESPUESTA = ESPERADO  THEN 
+      dbms_output.put_line('PRUEBA EXITOSA');
+      ELSE IF OP = 'M' OR OP = 'm' AND RESPUESTA = ESPERADO  THEN 
+      dbms_output.put_line('PRUEBA EXITOSA');
+         ELSE IF OP = 'D' OR OP = 'd' AND RESPUESTA = ESPERADO  THEN 
+         dbms_output.put_line('PRUEBA EXITOSA');
+           ELSE
+           dbms_output.put_line('PRUEBA FAIL' );
+           END IF ;
+         END IF;
+      END IF;
+   END IF;
+END;

@@ -1,0 +1,3 @@
+BEGIN 
+  LDC_PKACTCOPRSUCA.prProceso ; 
+END ; 

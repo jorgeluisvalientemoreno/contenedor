@@ -1,0 +1,5 @@
+select p.package_id , p.package_type_id , p.motive_status_id , subscriber_id , subscription_id , product_id 
+from mo_packages p 
+left join mo_motive mo on p.package_id = mo.package_id 
+where p.package_type_id=100229 and p.motive_status_id = 13
+order by mo.motiv_recording_date desc 

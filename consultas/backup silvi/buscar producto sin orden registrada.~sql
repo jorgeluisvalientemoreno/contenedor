@@ -1,0 +1,19 @@
+select m.product_id, p.package_type_id, m.motive_status_id, s.description, (select a.order_id from or_order_activity  a  where m.product_id = a.product_id and p.package_id = a.package_id and a.order_id is null )  orden
+  from open.mo_motive  m
+  inner join open.mo_packages p on p.package_id = m.package_id
+  inner join ps_motive_status s on m.motive_status_id = s.motive_status_id
+  Where p.package_type_id in (300)
+and   m.motive_status_id in (1)
+
+-- buscar producto sin orden registrada
+select m.product_id, ss.sesuesco, ss.sesuesfn, p.package_type_id, m.motive_status_id, s.description, (select a.order_id from or_order_activity  a  where m.product_id = a.product_id and p.package_id = a.package_id and a.order_id is null )  orden
+  from open.mo_motive  m
+  inner join open.mo_packages p on p.package_id = m.package_id
+  inner join ps_motive_status s on m.motive_status_id = s.motive_status_id
+  inner join servsusc ss on m.product_id = ss.sesunuse
+  Where p.package_type_id in (300)
+and   m.motive_status_id in (1) and orden is null
+
+select nombre, empresa from Estudiantes where empresa is null;
+
+select * from 

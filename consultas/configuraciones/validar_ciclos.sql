@@ -8,15 +8,15 @@ where ciclcodi in (201)
 
 select *
 from open.pericose p
-where p.pecscico=201
- and p.pecsfeci>='01/01/2025'
+where p.pecscico=301
+ and p.pecsfeci>='01/01/2026'
 for update
 
 ;
 select *
 from open.perifact
-where pefacicl=501
- and pefaano>=2025
+where pefacicl=301
+ and pefaano>=2026
  for update
 
 

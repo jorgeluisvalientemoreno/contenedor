@@ -1,0 +1,24 @@
+with lecturas as ( 
+select leemsesu producto_osf ,s.sesunusegas prod_gasplus, leempefa, leempecs 
+from migragg.lectelme l 
+inner join homologacion.servsusc_homologado s on s.sesunuseosf = l.leemsesu
+group by leemsesu  ,s.sesunusegas , leempefa, leempecs ),
+consumos as 
+(
+select  producto_osf ,prod_gasplus, leempefa, leempecs, cosspefa, cosspecs,cossmecc, cosscons ,cosscoca
+from migragg.conssesu
+inner join lecturas on producto_osf = cosssesu and leempefa= cosspefa and cosspecs= leempecs
+where cossmecc=4  
+and cosscoca>0
+),
+cargo as 
+(select producto_osf ,prod_gasplus, leempefa, leempecs , cosspefa, cosspecs,cossmecc, cosscons , cosscoca , c.cargunid, cargcodo , cargpeco , CARGCUCO
+ from migragg.cargos c
+ inner join consumos on producto_osf= cargnuse and cargpefa = cosspefa and cargpeco= cosspecs
+ where cargconc= 31
+ and cargcaca = 15 
+ and cargsign ='DB'
+ )
+ select * --   producto_osf , prod_gasplus , leempefa , leempecs , cargcodo, cosscons ,  cargunid , cargcuco 
+ from cargo 
+ WHERE cargcodo!= cosscons ;

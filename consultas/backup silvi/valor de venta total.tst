@@ -1,0 +1,72 @@
+PL/SQL Developer Test script 3.0
+17
+begin
+  -- Call the function
+  :result := ld_bogassalevalue.fnugetsalevalueform(inucommplanid => :inucommplanid,
+                                                   inucategoryid => :inucategoryid,
+                                                   inusubcategoryid => :inusubcategoryid,
+                                                   inuaddressid => :inuaddressid,
+                                                   inucycleid => :inucycleid,
+                                                   inupersonid => :inupersonid,
+                                                   inupos_id => :inupos_id,
+                                                   idtdate => :idtdate,
+                                                   inuidenttype => :inuidenttype,
+                                                   inuidentification => :inuidentification,
+                                                   inusubscribertype => :inusubscribertype,
+                                                   isbpromotionlist => :isbpromotionlist);
+                                                  
+  ROLLBACK; 
+end;
+13
+result
+1
+2000256
+4
+inucommplanid
+1
+4
+4
+inucategoryid
+1
+1
+3
+inusubcategoryid
+1
+2
+3
+inuaddressid
+1
+1086489
+4
+inucycleid
+1
+201
+3
+inupersonid
+1
+38963
+4
+inupos_id
+0
+4
+idtdate
+1
+27/09/2023
+12
+inuidenttype
+1
+1
+3
+inuidentification
+1
+85459864
+5
+inusubscribertype
+1
+1105
+3
+isbpromotionlist
+1
+88|86
+5
+0

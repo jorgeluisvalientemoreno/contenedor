@@ -1,0 +1,17 @@
+with facturas_migra as
+( select factcodi , factsusc contratoosf , s.susccodigas cont_gasplus  , factfege , factpefa , pefames, pefaano
+  from migragg.factura
+  inner join homologacion.suscripc_homologado s on s.susccodiosf = factsusc
+  inner join open.perifact on factpefa =pefacodi  )
+ ,
+ factura_gasplus AS 
+ (
+ select  fm.factcodi ,  fm.contratoosf ,  fm.cont_gasplus  , fm.factfege , fm.factpefa , fm.pefames, fm.pefaano , f.factano , f.factmes
+ from gasgg.factura f
+ inner join facturas_migra  fm on  f.factcodi =  fm.factcodi and cont_gasplus = f.factsusc 
+ )
+ 
+ select *
+ from factura_gasplus
+ where pefaano != factano 
+ or  pefames != factmes 

@@ -1,0 +1,18 @@
+select * from LD_SUBSIDY ; 
+select * from LD_UBICATION;
+select * from LD_MAX_RECOVERY;
+select * from LD_SUBSIDY_DETAIL;
+
+select * from LD_SUBSIDY l
+left join LD_UBICATION  u on l.subsidy_id = u.subsidy_id
+left join LD_SUBSIDY_DETAIL d on d.ubication_id =  u.ubication_id   
+where l.subsidy_id in (382,383,384)
+ promotion_id = 417 ; 
+
+
+
+select * from LD_deal where description like '%MANAURE%' -- CONVENIOS SOBRE LOS CUALES SE CREAN LOS SUBSIDIOS 
+
+
+select * from cc_promotion c where c.promotion_id in (417,418,419)  ; -- actualizar las ´promociones asociadas al subsidio
+

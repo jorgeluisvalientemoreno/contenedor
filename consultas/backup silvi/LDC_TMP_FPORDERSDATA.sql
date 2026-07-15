@@ -1,0 +1,9 @@
+select *
+from LDC_TMP_FPORDERSDATA
+where fecha_registro > '19/12/2022 18:11:00'
+and nutproductid in (1173565,50726644,50052255,50052840,50053840,50040254,50018681,50027765,50035938,50035937)
+
+
+select *
+from GC_COLL_MGMT_PRO_DET 
+where order_id in (263378131)

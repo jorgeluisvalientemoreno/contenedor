@@ -1,0 +1,42 @@
+insert into lote_fact_electronica
+select personalizaciones.SEQ_LOTE_FACT_ELECTRONICA.nextval CODIGO_LOTE ,
+PERIODO_FACTURACION ,
+ANIO ,
+MES ,
+CICLO ,
+20 CANTIDAD_REGISTRO ,
+CANTIDAD_HILOS ,
+HILOS_PROCESADO ,
+HILOS_FALLIDO ,
+INTENTOS ,
+FLAG_TERMINADO ,
+FECHA_INICIO ,
+FECHA_FIN ,
+null FECHA_INICIO_PROC ,
+null FECHA_FIN_PROC
+from lote_fact_electronica
+where codigo_lote = 32;
+
+
+select personalizaciones.SEQ_LOTE_FACT_ELECTRONICA.nextval from dual;
+
+
+select *
+from lote_fact_electronica;
+
+
+ --SEQ_LOTE_FACT_ELECTRONICA.nextval;
+update factura_elect_general set codigo_lote = 38
+where codigo_lote = 37 and documento in (2132185692,2132185525,2132185523,2132185887,2132185728,2132185417,2132185398,2132185615,2132185919,2132185613
+,2132185531,2132185531,2132185692,2132185692,2132185523,2132185523,2132185728,2132185728,2132185728,2132185417
+);
+---
+update factura_elect_general set codigo_lote = 34
+where codigo_lote = 22 and documento = 2132183630;
+update factura_elect_general set codigo_lote = 35
+where codigo_lote = 22 and documento = 2132183440;
+update factura_elect_general set codigo_lote = 36
+where codigo_lote = 22 and documento = 2132177487;
+select *
+from factura_elect_general
+where codigo_lote = 22;

@@ -1,0 +1,6 @@
+DECLARE
+    nuexit number;
+    sboutput varchar2(32764);
+BEGIN
+    GE_BOPROCESS_SERVER.SETSERVERUP();
+END;

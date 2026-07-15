@@ -1,0 +1,3 @@
+select *
+from or_task_types_items o
+where o.task_type_ID =12149

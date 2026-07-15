@@ -1,0 +1,3 @@
+
+select * from LDC_TIPSOLPLANFINAN;
+select * from LDC_TIPSOLPLANCOMERCIAL;

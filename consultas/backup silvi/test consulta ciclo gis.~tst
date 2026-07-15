@@ -1,0 +1,38 @@
+PL/SQL Developer Test script 3.0
+9
+begin
+  -- Call the procedure
+  personalizaciones.ldci_pkg_bointegragis.prcobtenerciclo(inudepartamento => :inudepartamento,
+                                                          inucategoria => :inucategoria,
+                                                          inusubcategoria => :inusubcategoria,
+                                                          oclrespuesta => :oclrespuesta,
+                                                          onucodigoerror => :onucodigoerror,
+                                                          osbmensajeerror => :osbmensajeerror);
+end;
+6
+inudepartamento
+1
+55
+4
+inucategoria
+1
+3
+4
+inusubcategoria
+1
+1
+4
+oclrespuesta
+1
+<CLOB>
+112
+onucodigoerror
+1
+-9999
+4
+osbmensajeerror
+1
+Fallo Desconocido ORA-06508: PL/SQL: could not find program unit being called - Traza: ORA-06512: at "PERSONALIZACIONES.LDCI_PKG_BOINTEGRAGIS", line 70
+5
+1
+sbParametro

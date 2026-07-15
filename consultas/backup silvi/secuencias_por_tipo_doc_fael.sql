@@ -1,0 +1,2 @@
+select * 
+from SECUENCIA_TIPODOCU_EMFAEL

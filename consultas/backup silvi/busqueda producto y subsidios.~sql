@@ -1,0 +1,121 @@
+--busqueda de contrato con varios productos y subsidios
+  Select s.sesususc,   c.cargnuse, pp.product_type_id, se.servdesc,  c.cargconc,
+         t.concdesc,t.conccore,conccoin,c.cargvalo, c.cargcaca, ca.cacadesc,
+         c.cargsign, c.cargcuco,c.cargpefa,c.cargunid, c.cargfecr, s.sesuesco,s.sesuesfn , s.sesucate, c.cargcaca
+    From cargos  c, servsusc  s,concepto  t, causcarg ca, pr_product pp, servicio se 
+    Where c.cargnuse = s.sesunuse
+    and   c.cargconc = t.conccodi
+    and   c.cargcaca = ca.cacacodi
+    and   s.sesunuse = pp.product_id
+    and   pp.product_type_id = se.servcodi
+    and   pp.product_type_id in (7055,7014)
+    and   c.cargpefa = 99980
+    and   c.cargvalo > 0
+    and  c.cargcaca = 15
+    and  not  exists (Select null
+    from diferido dd
+    Where c.cargnuse = dd.difenuse
+    and   dd.difesape > 0 and dd.difeprog = 'GCNED') 
+    and not exists (Select null
+     from ldc_osf_sesucier l
+     where l.producto = c.cargnuse  and l.nuano =2022 
+     and  l.numes= 4
+     AND l.edad_deuda > 90 )
+     (select null 
+      from cargos ca
+     where ca.cargcuco = c.cargcuco
+     and ca.cargconc in ( 196,167) )
+    order by c.cargfecr desc
+
+
+
+--and  dd.difecoin = -1
+--and   conccoin = dd.difecoin
+and   s.sesususc = 66328617
+ and  c.cargnuse = 50980704
+--and c.cargnuse = 50764658
+
+select difesusc , difenuse ,difeconc, difesape , difeprog, difecoin
+from diferido 
+where difenuse = 1136896 /*and  difeprog = 'GCNED';*/
+
+select *
+from diferido 
+where difenuse = 50764658 ;
+
+select *
+from cargos  c
+where c.cargnuse = 50980704
+and cargpefa = 99413
+and cargconc = 31 
+and cargcaca = 15
+order by c.cargfecr desc 
+
+--ver estado de corte
+select *
+from pr_product pp
+where pp.subscription_id = 48252502 and pp.product_id = 50764658
+
+-- estadode corte y financiacion
+select s.sesuesco , s.sesuesfn, s.sesunuse , s.sesususc
+from servsusc s
+where s.sesususc = 48252502 and s.sesunuse = 50764658
+
+
+-- porcentaje de subsidio PARA CONCEPTO 196
+select SUM(ralivasu) * 100 / SUM(ralivaul) as porcentaje_subsidio
+from rangliqu , 
+cargos  c
+where ralisesu = 50980704
+AND ralivasu > 0
+and ralisesu = c.cargnuse 
+and  ralipefa = c.cargpefa
+and c.cargpefa = 99413; 
+
+ --Porcentaje concepto 196
+select c.cargnuse as producto , c.cargconc , r.ralisesu,r.ralivasu , r.ralivaul ,
+r.ralivalo,c.cargpefa,c.cargfecr, round((r.ralivasu) * 100 / (r.ralivaul),2) as porcentaje_subsidio
+from rangliqu r, cargos  c
+where r.ralisesu = 50980704
+and r.ralisesu = c.cargnuse 
+and ralivasu > 0 
+and  c.cargconc in (196 )
+and  r.ralipefa = c.cargpefa
+and c.cargpefa= 99413
+order by c.cargfecr desc ;
+
+
+select *
+from rangliqu
+where ralisesu = 50980704
+AND ralivasu > 0 ;
+
+ 
+select *
+from cargos c 
+where c.cargnuse = 50764623
+and cargpefa = 99413
+/*and cargconc = 31 */
+and cargcaca = 15
+order by c.cargfecr desc ;
+
+
+
+/* Calculo de consumo en Kwh */
+select round(cargvalo/(cargunid * 10.37),2) as Cons_KW
+from cargos 
+where cargnuse =50980704
+and cargpefa = 99413
+and cargconc = 31 
+and cargcaca = 15;
+
+-- cargcon debe ser 31 para tener consumo 
+--cuenta de cobro
+select * from cargos 
+where cargnuse = 1186617
+and cargpefa= 99472
+and cargvalo >0
+order by cargfecr desc
+
+--busqueda factura
+SELECT cucofact FROM cuencobr l WHERE l.cucocodi = 3017107268;

@@ -1,0 +1,50 @@
+select * from ge_action_module where description = 'Atiende la Solicitud de Cambio de Uso del Servicio';
+select * from gr_config_expression where config_expression_id = 121370488;
+
+select * from ge_causal ge where ge.causal_id in  1602 ;
+
+select *
+from wf_causal_unit_type where unit_type_id = 100392
+;
+select *
+from ge_equivalenc_values
+where equivalence_set_id = 218
+and target_value = 1603 ; 
+
+--and origin_value in (3164);  
+-- Causal de la primera orden;
+
+select ge.* , ,ca.description, c.class_causal_id , c.description
+from ge_equivalenc_values ge 
+left join ge_causal ca on causal_id= origin_value
+left join ge_class_causal c   on ca.class_causal_id =  c.class_causal_id
+where equivalence_set_id = 218
+and target_value = 1603 ; 
+
+--1602	100392	NO_PLANEA
+--1603	100392	NO_CAMBIO
+--1601	100392	COTIZA_PLANEA
+--1600	100392	NO_COTIZA_PLANEA
+
+select * from ge_equivalence_set where equivalence_set_id = 218;
+
+select * from or_task_type_causal where task_type_id = 10217;
+
+select ge.* ,task_type_id ,ca.description, c.class_causal_id , c.description
+from ge_equivalenc_values ge 
+left join  or_task_type_causal t on t.causal_id= origin_value
+left join ge_causal ca on ca.causal_id= t.causal_id
+left join ge_class_causal c   on ca.class_causal_id =  c.class_causal_id
+where equivalence_set_id = 218
+and target_value <> 1603  and task_type_id = 10217 ; 
+
+select * from concsopl where cososerv in ( 7014,3) and cosoconc in (291,287);
+select * from mo_packages_asso;
+
+select * from wf_data_external e where e.package_id = 206851988;
+
+select * from wf_instance where plan_id = -1781610998 ;
+
+select * from ge_action_module m where m.description = 'Liquidar, Facturar y Aplicar Dep¿sito de Cotizaci¿n IFRS' ;
+
+select * from gr_config_expression g where g.config_expression_id= 121396989;

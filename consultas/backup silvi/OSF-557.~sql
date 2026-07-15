@@ -1,0 +1,8 @@
+select sesususc,sesunuse,sesuserv,sesuesco   
+from servsusc
+where ( select count(distinct(product_type_id ))
+from open.pr_product pr 
+where subscription_id =sesususc 
+and product_status_id  = 1 ) > 3
+and sesususc in (1016875)
+and rownum <= 5

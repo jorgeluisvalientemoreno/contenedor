@@ -1,0 +1,13 @@
+select *
+from LDC_COPRSUCA
+where cpscanco = 2022
+and cpscmeco= 10 
+and cpscubge = 55
+ ;
+
+
+select * 
+from COPRSUCA
+where cpscanco = 2022 
+and cpscmeco = 10 
+and cpscubge = 55; 

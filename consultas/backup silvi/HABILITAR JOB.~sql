@@ -1,0 +1,10 @@
+      
+--Habilitar job                              
+ BEGIN
+ DBMS_SCHEDULER.ENABLE('CCIERRE_DOS');
+END;
+/
+
+
+  
+                            

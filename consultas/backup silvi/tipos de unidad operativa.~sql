@@ -1,0 +1,4 @@
+select * 
+from or_oper_unit_persons p , or_operating_unit o , GE_TIPO_UNIDAD g 
+where o.operating_unit_id = p.operating_unit_id and g.ID_TIPO_UNIDAD= o.UNIT_TYPE_ID
+and person_id = 13549 and OPER_UNIT_STATUS_ID in (1,3) 

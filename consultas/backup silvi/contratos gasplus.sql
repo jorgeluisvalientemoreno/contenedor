@@ -1,0 +1,33 @@
+select *
+ from homologacion.
+  
+  
+  select *
+  from migragg.ge_contrato
+  where descripcion like '%406%'; 
+  
+  --Grupo contratista 2310 , 9683  ( ejemplo ) 
+
+
+select *
+ from gasgg.cuadcont
+ where CUADNOMB LIKE '%PROEXEQUIAL%'; 
+
+  
+ select CG.*
+ from gasgg.contrato  cg 
+ inner join  gasgg.cuadcont c on c.cuadcodi= cg.contcuad
+ WHERE CUADCODI = 5210 ;
+ 
+ 
+ select *
+ from homologacion.homouniop
+ where uniophomo= 5207 ;
+ 
+ SELECT *
+ FROM OPEN.GE_CONTRATO G 
+ WHERE G.ID_CONTRATISTA IN (6329 , 6330 , 6331 , 6332)
+ 
+ SELECT *
+ FROM OPEN.GE_CONTRATISTA G 
+ WHERE G.ID_CONTRATISTA IN (6329 , 6330 , 6331 , 6332)

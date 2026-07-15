@@ -1,0 +1,30 @@
+select a.address_id, 
+       a.address, 
+       a.geograp_location_id,
+       a.estate_number ,
+       ab.premise_type_id,
+       a.is_urban , 
+       ab.category_ , 
+       ab.subcategory_,
+       ab.ciclcodi
+from open.ab_address a
+inner join open.ab_premise  ab on a.estate_number  = ab.premise_id 
+left join ab_segments  ab on a.segment_id = ab.segments_id
+left join AB_INFO_PREMISE ap on ap.premise_id = ab.premise_id 
+where (select count(1) from suscripc b where b.susciddi = a.address_id) = 0
+and a.address not in ('KR MTTO CL MTTO - 0', 'RECAUDO PAGO NACIONAL', 'KR GENERICA CL GENERICA - 0')
+and ab.premise_type_id is not null
+and ap.is_ring = 'Y'
+and ab.ciclcodi = 7514
+and ab.subcategory_ in (5,6,3,2)
+and a.geograp_location_id = 55
+
+/*select *
+from ab_segments*/
+
+select a.geograp_location_id , ab.ciclcodi
+from ab_address a
+left join open.ab_premise ap  on a.estate_number  = ap.premise_id 
+left join ab_segments  ab on a.segment_id = ab.segments_id
+where a.geograp_location_id = 145
+

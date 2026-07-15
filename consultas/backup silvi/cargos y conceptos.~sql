@@ -1,0 +1,49 @@
+select (select cucofact from cuencobr where cucocodi =3026716022) factura,
+       (select sesususc from servsusc where sesunuse = cargnuse) contrato, 
+       cargnuse,
+       cargconc || ' ' || concdesc  as concepto,
+       cargcaca || ' ' || cacadesc  causa,
+       cargsign ,
+       cargpefa ,
+       cargvalo,
+       cargdoso ,
+       cargunid,
+       cargfecr,
+       cargprog 
+from cargos c
+left join concepto t on  cargconc   = t.conccodi
+left join servsusc on sesunuse = cargnuse 
+left join causcarg on cacacodi = cargcaca 
+where sesususc = 15000226
+and cargpefa =  102790
+and cargdoso not like '%PR-%'
+and cargconc in (31,130,196,167)
+and cargcaca != 20
+
+
+cargpefa = 99481
+and cargcuco = 3017137828
+and cargdoso  = '-'
+and cargconc in (284,157,156,286) 
+
+
+select cargcuco 
+from cargos 
+where cargnuse =15000276
+and cargpefa = 102790
+and cargcuco = -1 
+--for update 
+
+
+
+select sesunuse , sesuserv 
+from servsusc 
+where sesususc =15000276
+
+SELECT factcodi
+FROM factura
+WHERE factpefa = 102721
+ AND factsusc = 48058460
+ AND factprog = 6;
+
+

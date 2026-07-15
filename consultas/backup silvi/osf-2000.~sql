@@ -1,0 +1,13 @@
+select subscriber_id , identification, subscriber_name, subs_last_name , e_mail , address , phone 
+from suscripc  s
+left join ge_subscriber ge on s.suscclie= ge.subscriber_id
+where not exists (select null from servsusc where sesususc = susccodi ) and subscriber_name not like '%CONSTRUCTORA%' and address is not null and rownum <= 10
+
+;
+
+select sesususc , sesunuse , sesuserv, sesufein , sesucate , sesusuca , sesuesco , sesucicl , sesucico , sesuesfn , sesuplfa , product_status_id , a.address_parsed
+from servsusc s1
+left join pr_product pr on product_id = sesunuse 
+left join ab_address a on a.address_id = pr.address_id
+where  a.address_parsed = 'KR 54 CL 132 - 110 CASA 42' and sesuserv=7057 ;
+

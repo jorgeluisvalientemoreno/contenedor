@@ -26,11 +26,11 @@ select ldc_otlegalizar.order_id,
        ldc_otadicionalda.name_attribute,
        ldc_otadicionalda.value
   from open.ldc_otlegalizar
- left join Open.ldc_otadicional on ldc_otadicional.order_id = ldc_otlegalizar.order_id
+ left join open.ldc_otadicional on ldc_otadicional.order_id = ldc_otlegalizar.order_id
  left join open.ldc_datoactividadotadicional on ldc_datoactividadotadicional.order_id = ldc_otadicional.order_id
  left join open.ldc_otdalegalizar on ldc_otdalegalizar.order_id = ldc_otlegalizar.order_id
  left join open.ldc_otadicionalda on ldc_otadicionalda.order_id = ldc_otlegalizar.order_id
- left join OPEN.ldc_otdatoactividad on ldc_otdatoactividad.order_id = ldc_otlegalizar.order_id
+ left join open.ldc_otdatoactividad on ldc_otdatoactividad.order_id = ldc_otlegalizar.order_id
  left join open.ge_causal on ge_causal.causal_id = ldc_otlegalizar.causal_id
  left join open.ge_class_causal on ge_class_causal.class_causal_id = ge_causal.class_causal_id  
  group by (ldc_otlegalizar.order_id, ldc_otlegalizar.task_type_id, ldc_otlegalizar.causal_id, ge_causal.description,
@@ -43,29 +43,30 @@ select ldc_otlegalizar.order_id,
            ldc_datoactividadotadicional.name_attribute_value, ldc_datoactividadotadicional.component_id,
            ldc_datoactividadotadicional.component_id_value, ldc_otadicionalda.name_attribute, ldc_otadicionalda.value)
  order by fecha_registro desc;
- --VALIDAR SI LA PERSONA ESTA ASOCIADA A LA UNIDAD
- SELECT *
- FROM OPEN.OR_OPER_UNIT_PERSONS
- WHERE OPERATING_UNIT_ID=1886
-   AND PERSON_ID IN (
- SELECT PERSON_ID
- FROM OPEN.SA_USER SA, OPEN.GE_PERSON P
- WHERE P.USER_ID=SA.USER_ID
-  AND MASK='ANADEL');
 
 
--- VALIDAR SI FUE GESTIONADA
-SELECt a.product_id, O.ORDER_ID, OT.OPERATING_UNIT_ID,open.daor_operating_unit.fsbgetname(ot.operating_unit_id) nombre,
-    O.TASK_TYPE_ID, O.CAUSAL_ID, OT.ORDER_STATUS_ID, FECHA_REGISTRO,A.PACKAGE_ID, a.product_id,
-     mensaje_legalizado, ORDER_COMMENT
-FROM OPEN.Ldc_Otlegalizar O, OPEN. OR_ORDER OT, open.or_order_activity a
+ --validar si la persona esta asociada a la unidad
+ select *
+ from open.or_oper_unit_persons
+ where operating_unit_id=&unidad
+   and person_id in (
+ select person_id
+ from open.sa_user sa, open.ge_person p
+ where p.user_id=sa.user_id
+  and mask=&loginusuario);
+
+
+-- validar si fue gestionada
+select a.product_id, o.order_id, ot.operating_unit_id,open.daor_operating_unit.fsbgetname(ot.operating_unit_id) nombre,
+    o.task_type_id, o.causal_id, ot.order_status_id, fecha_registro,a.package_id, a.product_id,
+     mensaje_legalizado, order_comment
+from open.ldc_otlegalizar o, open. or_order ot, open.or_order_activity a
 where --mensaje_legalizado is not null
 1=1
-AND O.ORDER_ID=OT.ORDER_ID
+and o.order_id=ot.order_id
 and a.order_id=o.order_id
 and ot.order_status_id not in (8,12)
-and ot.order_id=232777187  
---and a.product_id=50100065
+and ot.order_id=&orden  
  ;
 
 
@@ -73,100 +74,99 @@ and ot.order_id=232777187
 
 select *
 from open.ldc_otadicionalda
-where order_id=141800828;
-
-SELECT *
-FROM OPEN.LDC_ANEXOLEGALIZA
-where order_id=207478110;
-SELECT *
-FROM OPEN.LDC_AGENLEGO
-WHERE AGENTE_ID=63;
-
-SELECT *
-FROM OPEN.LDC_USUALEGO L
-INNER  JOIN OPEN.GE_PERSON P ON P.PERSON_ID=L.PERSON_ID 
-INNER JOIN OPEN.SA_USER S ON S.USER_ID=P.USER_ID AND MASK=UPPER('DIASAL')
---WHERE L.AGENTE_ID=16
-
---WHERE AGENTE_ID=16;
-WHERE PERSON_ID IN ( 
-SELECT PERSON_ID
- FROM OPEN.SA_USER SA, OPEN.GE_PERSON P
- WHERE P.USER_ID=SA.USER_ID
-  AND MASK=upper('DIASAL'));
-SELECT *
-FROM OPEN.LDC_TIPOTRABLEGO;
-
-SELECT *
-FROM OPEN.LDC_TIPOTRABADICLEGO;
-
-SELECT *
-FROM OPEN.LDC_OTITEM
-where order_id=232777187;
-
-SELECT *
-FROM OPEN.LDC_OTDALEGALIZAR
-where order_id=232777187;
-
-SELECT *
-FROM OPEN.LDC_OTADICIONAL
-where order_id=232777187;
-
-SELECT *
-FROM OPEN.LDC_OTDATOACTIVIDAD
-where order_id=232777187;
+where order_id=&orden ;
 
 select *
-from open.LDC_DATOACTIVIDADOTADICIONAL a
-where a.order_id=232777187;
+from open.ldc_anexolegaliza
+where order_id=&orden ;
+select *
+from open.ldc_agenlego
+where agente_id=&agente;
 
----NO Ofertados
-SELECT CODIGO_MATERIAL CODIGO, DESCRIPCION_MATERIAL DESCRIPCION
-  FROM LDC_OR_TASK_TYPES_MATERIALES
- WHERE TIPO_TRABAJO = &tipotrabajo
-   and (select count(LIUL.ITEM)
-          from LDC_ITEM_UO_LR LIUL
-         where LIUL.ITEM = CODIGO_MATERIAL) = 0
- ORDER BY CODIGO_MATERIAL ASC;
+select *
+from open.ldc_usualego l
+inner  join open.ge_person p on p.person_id=l.person_id 
+inner join open.sa_user s on s.user_id=p.user_id and mask=upper(&loginusuario)
+where person_id in ( 
+select person_id
+ from open.sa_user sa, open.ge_person p
+ where p.user_id=sa.user_id
+  and mask=upper(upper(&loginusuario)));
+
+  
+select *
+from open.ldc_tipotrablego;
+
+select *
+from open.ldc_tipotrabadiclego;
+
+select *
+from open.ldc_otitem
+where order_id=&orden;
+
+select *
+from open.ldc_otdalegalizar
+where order_id=&orden;
+
+select *
+from open.ldc_otadicional
+where order_id=&orden;
+
+select *
+from open.ldc_otdatoactividad
+where order_id=&orden;
+
+select *
+from open.ldc_datoactividadotadicional a
+where a.order_id=&orden;
+
+---no ofertados
+select codigo_material codigo, descripcion_material descripcion
+  from ldc_or_task_types_materiales
+ where tipo_trabajo = &tipotrabajo
+   and (select count(liul.item)
+          from ldc_item_uo_lr liul
+         where liul.item = codigo_material) = 0
+ order by codigo_material asc;
 
 
----Ofertados 
-SELECT GI.ITEMS_ID CODIGO, GI.DESCRIPTION DESCRIPCION
-  FROM GE_ITEMS GI
- WHERE GI.ITEMS_ID in
+---ofertados 
+select gi.items_id codigo, gi.description descripcion
+  from ge_items gi
+ where gi.items_id in
        (select *
-          from open.LDC_ITEM_UO_LR LIUOL , OPEN.GE_ITEMS I
-          WHERE ITEM=ITEMS_ID
-          AND  LIUOL.UNIDAD_OPERATIVA = 2630
-           AND LIUOL.ACTIVIDAD = 4000044
-           AND I.ITEMS_ID=10004070)
- ORDER BY GI.ITEMS_ID ASC;
+          from open.ldc_item_uo_lr liuol , open.ge_items i
+          where item=items_id
+          and  liuol.unidad_operativa = 2630
+           and liuol.actividad = 4000044
+           and i.items_id=10004070)
+ order by gi.items_id asc;
  
  
-WITH BASE AS(
-SELECT O.ORDER_ID, R.EXEC_FINAL_DATE, O.OPERATING_UNIT_ID, O.EXECUTION_FINAL_DATE, I.ITEM, OPEN.DAGE_ITEMS.FSBGETDESCRIPTION(I.ITEM, NULL) DESC_ITEM, I.CANTIDAD
-FROM OPEN.LDC_OTLEGALIZAR R, OPEN.LDC_OTITEM I, OPEN.OR_ORDER O 
-where O.order_id=232777187
-  AND R.ORDER_ID=I.ORDER_ID
-  AND R.ORDER_ID=O.ORDER_ID
+with base as(
+select o.order_id, r.exec_final_date, o.operating_unit_id, o.execution_final_date, i.item, open.dage_items.fsbgetdescription(i.item, null) desc_item, i.cantidad
+from open.ldc_otlegalizar r, open.ldc_otitem i, open.or_order o 
+where o.order_id=&orden
+  and r.order_id=i.order_id
+  and r.order_id=o.order_id
 )
-SELECT *
-FROM BASE LEFT JOIN OPEN.GE_LIST_UNITARY_COST C ON TRUNC(BASE.EXEC_FINAL_DATE) BETWEEN C.VALIDITY_START_DATE AND C.VALIDITY_FINAL_DATE AND BASE.OPERATING_UNIT_ID=C.OPERATING_UNIT_ID
+select *
+from base left join open.ge_list_unitary_cost c on trunc(base.exec_final_date) between c.validity_start_date and c.validity_final_date and base.operating_unit_id=c.operating_unit_id
   ;
  
 
 
-WITH BASE AS(
-SELECT O.ORDER_ID, R.EXEC_FINAL_DATE, O.OPERATING_UNIT_ID, O.EXECUTION_FINAL_DATE, I.TASK_TYPE_ID, I.ACTIVIDAD, I.MATERIAL, OPEN.DAGE_ITEMS.FSBGETDESCRIPTION(I.MATERIAL, NULL) DESC_ITEM, I.CANTIDAD
-FROM OPEN.LDC_OTLEGALIZAR R, OPEN.LDC_OTADICIONAL I, OPEN.OR_ORDER O 
-where O.order_id=232777187
-  AND R.ORDER_ID=I.ORDER_ID
-  AND R.ORDER_ID=O.ORDER_ID
+with base as(
+select o.order_id, r.exec_final_date, o.operating_unit_id, o.execution_final_date, i.task_type_id, i.actividad, i.material, open.dage_items.fsbgetdescription(i.material, null) desc_item, i.cantidad
+from open.ldc_otlegalizar r, open.ldc_otadicional i, open.or_order o 
+where o.order_id=&orden
+  and r.order_id=i.order_id
+  and r.order_id=o.order_id
 )
-SELECT *
-FROM BASE 
-LEFT JOIN OPEN.GE_LIST_UNITARY_COST C ON TRUNC(BASE.EXEC_FINAL_DATE) BETWEEN C.VALIDITY_START_DATE AND C.VALIDITY_FINAL_DATE AND BASE.OPERATING_UNIT_ID=C.OPERATING_UNIT_ID
-LEFT JOIN OPEN.GE_UNIT_COST_ITE_LIS LI ON LI.LIST_UNITARY_COST_ID=C.LIST_UNITARY_COST_ID AND LI.ITEMS_ID=BASE.MATERIAL
+select *
+from base 
+left join open.ge_list_unitary_cost c on trunc(base.exec_final_date) between c.validity_start_date and c.validity_final_date and base.operating_unit_id=c.operating_unit_id
+left join open.ge_unit_cost_ite_lis li on li.list_unitary_cost_id=c.list_unitary_cost_id and li.items_id=base.material
   ;
  
 
@@ -177,59 +177,61 @@ LEFT JOIN OPEN.GE_UNIT_COST_ITE_LIS LI ON LI.LIST_UNITARY_COST_ID=C.LIST_UNITARY
 --tabla principal
 select *
 from open.ldc_otlegalizar
-where order_id=232777187;
+where order_id=&orden;
 --datos adiconales orden padre
-SELECT *
-FROM OPEN.LDC_OTDALEGALIZAR
-where order_id=232777187;
+select *
+from open.ldc_otdalegalizar
+where order_id=&orden;
 --atributos orden padre
-SELECT *
-FROM OPEN.LDC_OTDATOACTIVIDAD
-where order_id=232777187;
+select *
+from open.ldc_otdatoactividad
+where order_id=&orden;
 --atributos orden hija
 select *
-from open.LDC_DATOACTIVIDADOTADICIONAL a
-where a.order_id=232777187;
---Trabajos adicionales
---LDC_TIPOTRABADICLEGO(configuracion)
+from open.ldc_datoactividadotadicional a
+where a.order_id=&orden;
+--trabajos adicionales
+--ldc_tipotrabadiclego(configuracion)
 --ordenes adicionales
-SELECT *
-FROM OPEN.LDC_OTADICIONAL
-where order_id=232777187;
+select *
+from open.ldc_otadicional
+where order_id=&orden;
 --items legalizados en la orden padre
-SELECT *
-FROM OPEN.LDC_OTITEM
+select *
+from open.ldc_otitem;
 --datos adicionales ordenes adicionales
 select *
-from ldc_otadicionalda
+from ldc_otadicionalda;
 
 
 
 --tabla principal
 select *
 from open.ldc_otlegalizar
-where order_id=232777187;
+where order_id=&orden;
 --datos adiconales orden padre
-SELECT *
-FROM OPEN.LDC_OTDALEGALIZAR
-where order_id=232777187;
+select *
+from open.ldc_otdalegalizar
+where order_id=&orden;
 --atributos orden padre
-SELECT *
-FROM OPEN.LDC_OTDATOACTIVIDAD
-where order_id=232777187;
+select *
+from open.ldc_otdatoactividad
+where order_id=&orden;
 --atributos orden hija
 select *
-from open.LDC_DATOACTIVIDADOTADICIONAL a
-where a.order_id=232777187;
---Trabajos adicionales
---LDC_TIPOTRABADICLEGO(configuracion)
---ordenes adicionales
-SELECT *
-FROM OPEN.LDC_OTADICIONAL
-where order_id=232777187;
+from open.ldc_datoactividadotadicional a
+where a.order_id=&orden;
+--trabajos adicionales
+--ldc_tipotrabadiclego(configuracion)
+--ordene adicionales
+select *
+from open.ldc_otadicional
+where order_id=&orden;
 --items legalizados en la orden padre
-SELECT *
-FROM OPEN.LDC_OTITEM
+select *
+from open.ldc_otitem
+where order_id=&orden;
 --datos adicionales ordenes adicionales
 select *
-from ldc_otadicionalda
+from ldc_otadicionaldas
+where order_id=&orden;

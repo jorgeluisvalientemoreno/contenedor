@@ -1,0 +1,27 @@
+
+select c.* , d.* 
+from cargos c
+inner join diferido d on difenuse = cargnuse
+inner join concepto t on  difeconc  = t.conccodi
+where difecodi = substr(cargdoso, 4, 20)
+and cargcaca = 51
+--and cargcuco in (3017705636,3017705653,3016050305,3016050306,3016050307,3016050286)
+and cargvalo > 0
+and difesape > 0
+and cargpefa in (99445)
+--and difeconc in (130)
+--and  difepldi in (130)
+--and difeprog ='GCNED'
+order by cargfecr desc;
+
+
+select cucocodi
+from cuencobr
+where cucofact = 2097720991
+
+
+
+
+
+
+

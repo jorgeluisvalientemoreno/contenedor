@@ -1,0 +1,43 @@
+select  cargnuse,
+        s.sesuserv || ' ' || se.servdesc as Tipo_de_producto,
+       (select cucofact from cuencobr where cucocodi = cargcuco) factura, 
+       (select sesususc from servsusc where sesunuse = cargnuse) contrato,
+       cargconc || ' ' || concdesc  as concepto,
+       cargcaca ,
+       cargpefa ,
+       cargvalo,
+       cargdoso ,
+       difecodi, 
+       d.difesape,
+       difefein ,
+       d.difefumo, 
+       difenucu - difecupa as cuot_pend,
+       difepldi ,
+       grupcodi,
+       difeprog
+from cargos c
+left join diferido d on difenuse = cargnuse
+left join servsusc s on sesunuse = cargnuse 
+left join servicio se on se.servcodi = s.sesuserv
+left join concepto t on  difeconc  = t.conccodi
+left join LDC_CONCGRVF on cogrcodi = c.cargconc
+where difecodi = substr(cargdoso, 4, 20)
+and cargcaca = 20
+and cargcuco in ( select cucocodi from cuencobr where cucofact =3000009303)
+and cargvalo > 0
+and cargpefa in (102790)
+and difefumo > '02/12/2022'
+/*and sesuserv = 7055
+and grupcodi = 13*/
+--and difepldi   in( 111,110)
+--and difeprog in ('GCNED')
+--and grupcodi is null
+/*and difenucu - difecupa = 14*/
+--and difefein BETWEEN '1/07/2020 00:00:00' and '1/08/2020  00:00:00'
+--and cargdoso like '%DF%'
+--and difesape > 0
+--and c.cargconc in ( select cogrcodi  from LDC_CONCGRVF  where  grupcodi = 18 ) 
+--and difeconc in (130)
+--and  difepldi in (130)
+--and difeprog ='GCNED'
+--order by cargfecr desc;

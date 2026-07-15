@@ -1,0 +1,27 @@
+--validar parametro1
+select p.parameter_id,p.numeric_value,
+       p.value_chain, p.description
+from open.ld_parameter  p
+where  p.parameter_id like upper('%M3_MAX_NVO_USU%')
+;
+
+select p.parameter_id,p.data_type ,
+       p.value, p.description,p.allow_update 
+from open.ge_parameter   p
+where p.description like upper('%AIU%') ; --for update 
+
+--validar parametro3
+SELECT p.PARAMETER_ID,p.NUMERIC_VALUE,
+  p.VALUE_CHAIN, p.DESCRIPTION
+FROM OPEN.LD_PARAMETER  p
+WHERE  p.PARAMETER_ID like '%PARAM_EJEC_MARCA_DESMA_PROD%' ;
+
+
+ 
+select * from open.PROCESO_NEGOCIO --where codigo = 21
+ ; 
+select * 
+from personalizaciones.parametros  p
+where proceso = 21  --p.codigo like '%OBSERVACIONES_NLECTURA_LECTESP%'
+for update
+

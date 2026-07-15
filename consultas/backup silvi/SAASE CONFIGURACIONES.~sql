@@ -1,0 +1,49 @@
+ select *
+ from sa_role_executables
+ where executable_id= 500000000015721
+for update
+   
+INSERT INTO sa_role_executables S ( S.ROLE_ID , S.EXECUTABLE_ID) VALUES ( 2, 500000000015721) 
+
+ select *
+ from sa_executable
+ where name = 'LDCAPANUL';
+ 
+ select *
+ from sa_user_roles
+ where user_id = 5423 --for update 
+ 
+ --DIANA 2125 
+ select *
+ from sa_user 
+ where MASK like '%DIASAL%'
+ 
+ SELECT * 
+  FROM  SA_ROLE 
+  WHERE upper(name) like '%PROY%' --3126 - PROYECTO
+
+UPDATE sa_user
+SET USER_TYPE_ID=3
+--select * from open.sa_user
+where mask='DIASAL';
+---El rol 50 lo requiere GCNED para permitir negociaciones a nivel de contrato a un usuario
+
+INSERT INTO
+SA_USER_ROLES ( ROLE_ID, USER_id )
+values
+( 2, 1971 );
+
+GRANT ADMIN_SYSTEM_ROLE TO DIASAL;
+REVOKE PUBLIC_SYSTEM_ROLE FROM DIASAL;
+
+grant ALTER USER to diasal;
+update ge_person set ORGANIZAT_AREA_ID=64 where user_id in (select s.user_id from open.sa_user s where mask='DIASAL');
+
+update open.ld_parameter set value_chain='N' where parameter_id='VALIDA_CONFIG_TT';
+
+select sa.user_id "user id" , sa.mask "usuario" , u.role_id||' - ' || (s.name)   "Rol" , initcap(s.description) "descripcion"
+from sa_user_roles u
+left join sa_role s on s.role_id = u.role_id 
+left join  sa_user sa on u.user_id = sa.user_id
+where sa.user_id =5423;
+upper(name) like '%SBSS_PROFESI_CONTR_EST_TEC_GDC%'

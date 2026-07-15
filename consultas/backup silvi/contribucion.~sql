@@ -1,0 +1,5 @@
+
+select * from COTCSERV
+;
+
+select * from concepto where conccodi =37

@@ -1,0 +1,32 @@
+SELECT A.entity_attribute_id , A.entity_id , A.attribute_type_id ,A.technical_name ,A.display_name 
+FROM GE_ENTITY_ATTRIBUTES  a
+left join ge_entity e on e.entity_id = a.entity_id 
+WHERE e.name_ LIKE '%GE_SUBSCRIBER%'
+AND A.ENTITY_ID = 61;
+
+SELECT *
+FROM GE_ENTITY
+WHERE name_ LIKE '%SUSCRIPC%'
+
+SELECT A.entity_attribute_id , A.entity_id , A.attribute_type_id ,A.technical_name ,A.display_name 
+FROM GE_ENTITY_ATTRIBUTES  a
+left join ge_entity e on e.entity_id = a.entity_id 
+WHERE e.name_ LIKE '%SUSCRIPC%'
+AND A.ENTITY_ID =91;
+
+
+SELECT *
+FROM GE_ENTITY_REFERENCE 
+WHERE PARENT_ENTITY_ID = 3203
+AND CHILD_ENTITY_ID = 91
+
+select * from GE_ATTRIBUTE_REFERENCE
+where entity_reference_id = 515
+and attribute_reference_id = 
+
+select *
+from BLACK_LIST_PRODUCT
+ 
+
+
+

@@ -1,0 +1,9 @@
+select * from open.ciclo
+left join open.pericose pc on pc.pecscico=ciclcodi and sysdate between pc.pecsfeci and pc.pecsfecf
+left join open.perifact pf on pf.pefacicl=ciclcodi and sysdate between pf.pefafimo and pf.pefaffmo
+where pefaactu = 'S' and pefacodi = 99472
+
+select *
+from perifact 
+where/* pefacicl = 1001 and*/ pefacodi = 99413
+for update

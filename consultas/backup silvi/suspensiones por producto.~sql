@@ -1,0 +1,14 @@
+select * 
+from pr_prod_suspension pr 
+where pr.product_id= 50112723;
+
+--select * from ldc_marca_producto l where l.id_producto = 50112723; 
+--select * from pr_comp_suspension  ps  , PR_COMPONENT  c where  c.COMPONENT_ID = ps.COMPONENT_ID and c.service_number= 50112723;
+
+
+select sesususc, sesunuse ,sesucate,sesuesco,sesuesfn from servsusc where sesunuse= 1186962
+
+
+update pr_prod_suspension pr set suspension_type_id=105 where pr.product_id= 50664712 and prod_suspension_id = 2913731 
+update pr_prod_suspension pr set inactive_date =null  where pr.product_id= 50664712 and suspension_type_id = 105 and prod_suspension_id = 2913731 
+update pr_prod_suspension pr set active='Y' where pr.product_id= 50664712 and prod_suspension_id = 2913731 

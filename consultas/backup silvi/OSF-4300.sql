@@ -1,0 +1,41 @@
+SELECT SUSCCODI , PRODUCT_ID, PRODUCT_TYPE_id  , S.SUSCIDDI , AA.ADDRESS_PARSED "DIRECCION_COBRO"  , PR.ADDRESS_ID , A.ADDRESS_PARSED "DIRECCION_INSTALACION" 
+FROM SUSCRIPC S
+INNER JOIN PR_PRODUCT PR  ON subscription_ID = SUSCCODI 
+LEFT JOIN AB_ADDRESS A ON PR.ADDRESS_ID = A.ADDRESS_ID
+LEFT JOIN AB_ADDRESS AA ON S.SUSCIDDI = AA.ADDRESS_ID
+WHERE SUSCCODI = 1000519 
+GROUP BY SUSCCODI ,PRODUCT_ID,PRODUCT_TYPE_id, S.SUSCIDDI , AA.ADDRESS_PARSED, PR.ADDRESS_ID , A.ADDRESS_PARSED;
+
+UPDATE ciclo_facturacion
+SET EMPRESA ='GDGU'
+where ciclo =6002;
+
+select *
+from suscripc
+where suscclie = 245082;
+
+select s.* , empresa
+from suscripc s , ciclo_facturacion c
+where c.ciclo=susccicl
+and suscclie = 245082
+
+update ab_segments a
+set ciclcodi=201,
+    cicocodi=201/*,
+    operating_sector_id=9106,
+    a.neighborhood_id=9107,
+    geograp_location_id=9104*/
+where segments_id in (select segment_id
+                      from ab_address
+                      where address_id  in (711943));
+                     
+
+update suscripc
+set susccicl = 201 
+where suscclie = 745833
+and susccodi = 48055021;
+
+update servsusc 
+set sesucicl = 201 ,
+sesucico= 201 
+where sesususc = 48055021;

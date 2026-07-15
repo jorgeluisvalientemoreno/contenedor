@@ -1,0 +1,13 @@
+select * -- distinct (substrc (description,1,55))
+from OPEN.ge_error_log 
+where --application LIKE '%fgca%'
+ time_stamp BETWEEN '11/07/2024 09:00:00' AND  '11/07/2024 09:30:00'  --and os_user like '%Silvana%'
+--order by time_stamp desc
+
+;
+
+/*select distinct (substrc (description,1,55))
+from OPEN.ge_error_log 
+where application LIKE '%fgca%'
+--and method like '%package body OPEN.LDC_UTILIDADES_FACT(285)%'
+ and time_stamp BETWEEN '04/06/2024 11:30:00' AND  '04/06/2024 13:00:00'*/

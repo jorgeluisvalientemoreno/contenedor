@@ -1,0 +1,83 @@
+DECLARE 
+ 
+  producto number(10)  ;
+  promedio number(10)  ;
+  desv number(10)  ;
+  Consumo_desv number(10);
+  periodo_fact number(6);
+  Lectura_ant number(10);
+  Calificacion varchar(25);
+  Lectura_act number(10);
+  porcentaje number(10)  ;
+  
+  cursor Consumo_actual   is 
+  select  ( promedio*(1 + desv/100))  from dual ;
+  
+  cursor  max_perifact   is 
+  select   max(l2.leempefa) periodo_fact  
+  from open.lectelme l2 
+  where l2.leemsesu = producto ;
+  
+  
+  cursor Consumo_anterior  is
+  (select lectelme.leemleto Lectura_ant
+   from open.lectelme
+   where   leemsesu = producto
+   and leempefa < periodo_fact
+                   and leemfele = (select max(l3.leemfele)
+                                   from lectelme l3
+                                    where lectelme.leemsesu = l3.leemsesu
+                                    and  leempefa < periodo_fact));
+
+  cursor  Calificacion_est is
+  (select calivaco.cavccodi ||' : '|| initcap(calivaco.cavcdesc) as Calificacion 
+  from open.caravaco
+  inner join open.racavaco on racavaco.rcvccrvc = crvccodi
+  inner join open.calivaco on calivaco.cavccodi = racavaco.rcvccavc 
+  where caravaco.crvccate = (select category_id  
+                           from open.pr_product
+                           where product_id = producto)
+   and caravaco.crvcsuca = (select subcategory_id   
+                         from open.pr_product
+                         where product_id = producto)
+   and  promedio  between caravaco.crvcraci and caravaco.crvcracf
+  and round(( Consumo_desv - promedio) /  promedio * 100)  between racavaco.rcvcrain and racavaco.rcvcrafi  );
+ 
+  cursor Consumo_final  is
+   select (Lectura_ant + Consumo_desv )  , round(( Consumo_desv - promedio) / promedio * 100)  
+   from dual; 
+ 
+
+BEGIN 
+  
+  producto := 50734808  ;
+  promedio :=  108.667  ;
+  desv := 81  ;
+     
+  OPEN Consumo_actual ; 
+  FETCH Consumo_actual INTO Consumo_desv ; 
+  DBMS_OUTPUT.PUT_LINE ('Consumo desviado: '|| Consumo_desv);
+  CLOSE Consumo_actual ;
+
+  OPEN max_perifact ; 
+  FETCH max_perifact INTO   periodo_fact ; 
+  DBMS_OUTPUT.PUT_LINE ('Max fecha fact: '||   periodo_fact);
+  CLOSE max_perifact ;
+  
+  OPEN Consumo_anterior  ; 
+  FETCH Consumo_anterior  INTO  Lectura_ant ; 
+  DBMS_OUTPUT.PUT_LINE ('Lect anterior : '|| Lectura_ant);
+  CLOSE Consumo_anterior  ;
+  
+  OPEN Calificacion_est  ; 
+  FETCH Calificacion_est  INTO  Calificacion ; 
+  DBMS_OUTPUT.PUT_LINE ( Calificacion);
+  CLOSE Calificacion_est  ;
+  
+  OPEN Consumo_final  ; 
+  FETCH Consumo_final  INTO  Lectura_ant ,   porcentaje  ; 
+  DBMS_OUTPUT.PUT_LINE ('lectura a ingresar :'|| Lectura_ant  );
+   DBMS_OUTPUT.PUT_LINE ('Porcentaje de desviacion :'||   porcentaje  );
+  CLOSE Consumo_final  ;
+  
+  END ; 

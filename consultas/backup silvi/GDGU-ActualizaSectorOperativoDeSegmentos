@@ -1,0 +1,93 @@
+SELECT UNIQUE   ab_address.address_id, 
+                ab_address.segment_id, 
+                ab_address.neighborthood_id, 
+                ge_geogra_location.description, 
+                or_operating_sector.operating_sector_id, 
+                or_operating_sector.description
+FROM    migragg.migra_direcciones_gdg dir, ab_address, ab_segments, ge_geogra_location, or_operating_sector
+WHERE   dir.predabdr = ab_address.address_id
+AND     ab_address.segment_id = ab_segments.segments_id
+AND     ab_segments.operating_sector_id IS NULL
+AND     ab_address.neighborthood_id = ge_geogra_location.geograp_location_id
+AND     replace(ge_geogra_location.description, 'BARRIO', '') = replace(or_operating_sector.description, 'SECTOR', '');
+/
+SELECT UNIQUE   ab_address.neighborthood_id, 
+                ge_geogra_location.description, 
+                or_operating_sector.operating_sector_id, 
+                or_operating_sector.description
+FROM    migragg.migra_direcciones_gdg dir, ab_address, ab_segments, ge_geogra_location, or_operating_sector
+WHERE   dir.predabdr = ab_address.address_id
+AND     ab_address.segment_id = ab_segments.segments_id
+AND     ab_segments.operating_sector_id IS NULL
+AND     ab_address.neighborthood_id = ge_geogra_location.geograp_location_id
+AND     replace(ge_geogra_location.description, 'BARRIO', '') = replace(or_operating_sector.description, 'SECTOR', '');
+/
+SELECT UNIQUE   ab_address.neighborthood_id, 
+                ge_geogra_location.description
+FROM    migragg.migra_direcciones_gdg dir, ab_address, ab_segments, ge_geogra_location--, or_operating_sector
+WHERE   dir.predabdr = ab_address.address_id
+AND     ab_address.segment_id = ab_segments.segments_id
+AND     ab_segments.operating_sector_id IS NULL
+AND     ab_address.neighborthood_id = ge_geogra_location.geograp_location_id
+--AND     replace(ge_geogra_location.description, 'BARRIO', '') = replace(or_operating_sector.description, 'SECTOR', '');
+/
+create table homobarriosector as
+SELECT UNIQUE   ab_address.neighborthood_id, 
+                --ge_geogra_location.description, 
+                or_operating_sector.operating_sector_id --, 
+                --or_operating_sector.description
+FROM    migragg.migra_direcciones_gdg dir, ab_address, ab_segments, ge_geogra_location, or_operating_sector
+WHERE   dir.predabdr = ab_address.address_id
+AND     ab_address.segment_id = ab_segments.segments_id
+AND     ab_segments.operating_sector_id IS NULL
+AND     ab_address.neighborthood_id = ge_geogra_location.geograp_location_id
+AND     replace(ge_geogra_location.description, 'BARRIO', '') = replace(or_operating_sector.description, 'SECTOR', '');
+/
+ALTER TRIGGER ADM_PERSON.TRG_LDCBI_AB_SEGMENTS DISABLE;
+/
+DECLARE
+    CURSOR cuDirecciones IS
+        SELECT UNIQUE   ab_address.address_id,
+                        ab_address.segment_id,
+                        ab_address.neighborthood_id,
+                        homobarriosector.operating_sector_id
+        FROM    migragg.migra_direcciones_gdg dir, ab_address, ab_segments, homobarriosector
+        WHERE   dir.predabdr = ab_address.address_id
+        AND     ab_address.segment_id = ab_segments.segments_id
+        AND     ab_segments.operating_sector_id IS NULL
+        AND     ab_address.neighborthood_id = homobarriosector.neighborthood_id;
+        
+    TYPE tytbDirecciones IS TABLE OF cuDirecciones%ROWTYPE INDEX BY BINARY_INTEGER;
+    tbDirecciones tytbDirecciones;
+    nuIndex BINARY_INTEGER;
+    
+BEGIN
+    OPEN cuDirecciones;
+    FETCH cuDirecciones BULK COLLECT INTO tbDirecciones;
+    CLOSE cuDirecciones;
+    
+    nuIndex := tbDirecciones.first;
+    
+    WHILE nuIndex IS NOT NULL LOOP
+    
+        UPDATE  ab_segments
+        SET     operating_sector_id = tbDirecciones(nuIndex).operating_sector_id
+        WHERE   segments_id = tbDirecciones(nuIndex).segment_id;
+        
+        nuIndex := tbDirecciones.NEXT(nuIndex);
+    END LOOP;
+    
+    COMMIT;
+END;
+/
+ALTER TRIGGER ADM_PERSON.TRG_LDCBI_AB_SEGMENTS ENABLE;
+/
+SELECT UNIQUE   ab_address.address_id,
+                        ab_address.segment_id,
+                        ab_address.neighborthood_id,
+                        homobarriosector.operating_sector_id
+        FROM    migragg.migra_direcciones_gdg dir, ab_address, ab_segments, homobarriosector
+        WHERE   dir.predabdr = ab_address.address_id
+        AND     ab_address.segment_id = ab_segments.segments_id
+        --AND     ab_segments.operating_sector_id IS NULL
+        AND     ab_address.neighborthood_id = homobarriosector.neighborthood_id

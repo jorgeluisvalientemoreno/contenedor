@@ -1,0 +1,18 @@
+Select sesususc , sesuserv , cargnuse , cargcuco ,cargpefa
+from cargos
+left join servsusc on sesunuse = cargnuse
+where  cargpefa in ( 103794)
+and cargcaca in (15)
+and exists( select null
+           from  cuencobr c1
+           where c1.cuconuse =  cargnuse
+           and c1.cucovare > 0
+           and c1.cucofact != (select b1.cucofact from cuencobr b1 where cargcuco = b1.cucocodi and cargnuse = b1.cuconuse )  )
+and (select  (sum(br2.cucosacu) - sum(br2.cucovare) - sum(br2.cucovrap))
+     from servsusc s2, cuencobr br2
+     where  br2.cuconuse = s2.sesunuse
+     and s2.sesunuse = cargnuse
+     and br2.cucosacu > 0
+     and br2.cucofact != (select b1.cucofact from cuencobr b1 where cargcuco = b1.cucocodi and cargnuse = b1.cuconuse )
+     group by s2.sesunuse, s2.sesuserv) >0
+ group by  sesususc , sesuserv , cargnuse, cargcuco ,cargpefa

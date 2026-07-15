@@ -1,0 +1,9 @@
+SELECT DISTINCT difeconc ,c1.concdesc, l.product_line_id , li.concept_id
+FROM migragg.ld_policy l 
+inner join  migragg.diferido d on  difecodi = deferred_policy_id
+inner join concepto c1 on difeconc =c1.conccodi
+inner join ld_product_line  li on l.product_line_id= li.product_line_id   ;
+
+
+
+

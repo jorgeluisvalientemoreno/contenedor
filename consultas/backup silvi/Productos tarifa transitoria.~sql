@@ -1,0 +1,10 @@
+select prttsesu "Producto",
+       prttfein "Fecha Ingreso",
+       prttacti "Flag",
+       prttcicl "Ciclo",
+       prttfefi "Fecha final",
+       prttsoli "Solicitud_Retiro",
+       prttusua "Usuario",
+       prttterm "Terminal"
+from open.ldc_prodtatt l
+where prttsesu in (51004180,51004173,6625215,51990014,6636332)

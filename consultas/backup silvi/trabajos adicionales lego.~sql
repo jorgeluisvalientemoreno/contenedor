@@ -1,0 +1,14 @@
+select *
+from LDC_TIPOTRABADICLEGO
+where tipotrablego_id = 11259
+for update  ;
+
+select *
+from  LDC_TIPOTRABLEGO
+where tipotrablego_id = 11259 ; 
+
+select *  
+from open.LDC_ITEM_UO_LR 
+where unidad_operativa = 3615
+and actividad = 4000039 
+for update ; 

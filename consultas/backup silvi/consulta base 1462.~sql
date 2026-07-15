@@ -1,0 +1,14 @@
+select  s1.sesususc "Contrato", s1.sesunuse "Producto", s1.sesuserv "Tipo producto",cucofact "Factura",cucocodi"cuentas de cobro",cucosacu "Saldo_cuenta_cobro" ,cucovare "Valor_reclamo", (sum(cucosacu) - sum(cucovare) - sum(cucovrap)) "saldo_pend "
+from servsusc s1, cuencobr
+where cuconuse = s1.sesunuse
+and cucosacu > 0 and sesucicl in (1220)
+ and sesususc  =48195391 and cucofact  not  in (2117173573)and sesuserv=7055
+group by  s1.sesunuse, s1.sesususc,  s1.sesuserv,cucofact,cucovare,cucosacu,cucocodi
+order by  s1.sesususc;
+
+SELECT CARGCUCO, CARGNUSE ,sesuserv , CARGCONC, CARGCACA, concdesc , cargvalo,CARGPEFA,sesucicl 
+FROM CARGOS
+LEFT JOIN SERVSUSC ON CARGNUSE = SESUNUSE
+LEFT JOIN CONCEPTO ON CARGCONC = CONCCODI
+WHERE CARGPEFA = 105565 and sesususc = 48071810
+;

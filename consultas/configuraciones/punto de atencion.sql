@@ -1,6 +1,6 @@
 select mask, p.name_, PERSON_ID, P.E_MAIL, p.organizat_area_id
 from open.sa_user u, open.ge_person  p
-where mask LIKE upper('%diasal%')
+where mask LIKE upper('%construservi%')
   and u.user_id=p.user_id;
   
   SELECT *
@@ -13,12 +13,13 @@ from open.or_ope_uni_rece_type re
 where re.operating_unit_id=45;
 
 select up.operating_unit_id,
-       open.daor_operating_unit.fsbgetname(up.operating_unit_id, null),
+       u.name,
        p.person_id,
        p.name_
-from open.or_oper_unit_persons up, open.ge_person p
+from open.or_oper_unit_persons up 
+join open.or_operating_unit u on u.operating_unit_id=up.operating_unit_id, open.ge_person p
 where up.person_id=p.person_id
-  and p.person_id=42795
+  and p.person_id=15925
   and operating_unit_id in (1939, 3666)
 ;
 

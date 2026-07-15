@@ -1,0 +1,4 @@
+select * from LDC_PECOFACT where pcfapefa = 107281
+where pcfafere >='01/01/2024';
+
+select * from perifact where pefacodi = 107378

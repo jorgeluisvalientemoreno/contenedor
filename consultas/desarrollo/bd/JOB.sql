@@ -5,9 +5,9 @@ from OPEN.GE_PROCESS_SCHEDULE s,open.ge_object o
 --where process_schedule_id=120677
 where parameters_ like 'OBJECT_ID='||O.OBJECT_ID
   --and o.object_id=121630
-    AND S.FREQUENCY='DI'
+    --AND S.FREQUENCY='DI'
     AND JOB!=-1
-  AND O.NAME_ LIKE UPPER('%ldci_pkgestnotiorden%')
+  AND O.NAME_ LIKE UPPER('%LDC_GeneraObligaAuto%')
 where parameters_ like '%ldc_prFillOTREV%';
 
 
@@ -37,8 +37,8 @@ select * from DBA_SCHEDULER_JOBS
   order by JOB_NAME;
 94408
 
-select * from dba_jobs where job=85446;
-select * from dba_jobs_running WHERE JOB=85446;
+select * from dba_jobs where job=3781220;
+select * from dba_jobs_running WHERE JOB=3781220;
 select * from dba_jobs_running_rac WHERE JOB=85446;
 SELECT * FROM DBA_SCHEDULER_RUNNING_JOBS;
 

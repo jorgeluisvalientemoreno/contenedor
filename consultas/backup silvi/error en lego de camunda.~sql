@@ -1,0 +1,8 @@
+select * from ldci_package_camunda_log where package_id in (186560812)
+--FOR UPDATE;
+
+
+S.package_id = 186560693
+
+--52401028, 52401031 ,52401034,52401037
+

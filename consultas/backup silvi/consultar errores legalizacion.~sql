@@ -1,0 +1,4 @@
+select *
+from open.ge_error_log  l2
+where  l2.error_log_id in (635978651,635978652,635978653)
+and time_stamp>='16/06/2021 9:27:36';

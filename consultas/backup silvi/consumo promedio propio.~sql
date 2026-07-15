@@ -1,0 +1,13 @@
+select hcppsesu "Producto",
+       hcpptico "Tipo_cons",
+       hcppcopr "Consumo_promedio",
+       hcpppeco "Periodo_consumo",pecsfeci "Fecha inicial" ,pecsfecf "Fecha final",
+       hcppcons "Consecutivo"
+from  open.hicoprpm
+left join pericose pc on hcpppeco = pc.pecscons
+where hcppsesu = 50562782
+and hcpptico = 1
+order by hcpppeco desc
+
+/* update hicoprpm set hcppcopr= 100 where hcppsesu = 6516586 and hcpppeco = 105857
+and hcpptico = 1*/

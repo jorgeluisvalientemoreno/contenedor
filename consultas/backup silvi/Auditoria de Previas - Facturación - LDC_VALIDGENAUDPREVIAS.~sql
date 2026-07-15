@@ -1,0 +1,46 @@
+select *
+from LDC_VALIDGENAUDPREVIAS p
+where p.cod_pefacodi in ( , , , , 103284)--AUDPREV, AUDPOST
+for update;
+
+insert into LDC_VALIDGENAUDPREVIAS values( 114477 , trunc(sysdate) , 'AUDPREV');
+insert into LDC_VALIDGENAUDPREVIAS values( 114477 , trunc(sysdate) , 'AUDPOST'); 
+
+declare
+    sbruta varchar2(2000):= '/smartfiles/Facturacion/Auditorias';
+    sbAgrupDepa       VARCHAR2 (2) := 'S';
+BEGIN
+    LDC_PRGEAUDPRE;
+END;
+
+select *
+from LDC_VERIPRES 
+where veprcicl = 6012
+and veprpefa= 138444;
+select *
+from  LDC_AJUSCOPR
+where ajcpcicl= 6012;
+select *
+from  LDC_LECTMENO
+where lemecicl = 6012 
+and lemepefa=138444 ;
+select *
+from  LDC_CONSALTO --tiene info
+where  coalcicl =6012
+and coalano=2026;
+select * 
+from  LDC_VAPLANERR --tiene info
+where plercicl= 6012
+and plerano=2026;
+select *
+from  LDC_PRNOFGCA
+where ciclo= 6012
+and ano =2026;
+select *
+from  LDC_CONSNOFA  --tiene info
+where ciclo=6012
+and ano=2026;
+select *
+from  LDC_ORPECAME
+where ciclo=6012
+and ano=2026;

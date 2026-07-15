@@ -1,0 +1,46 @@
+
+
+select r.dpttsesu , r.dpttcont, r.dpttperi, r.dpttpeco ,
+ r.dpttrang ,r.dpttvano , r.dpttconc , r.dpttunid  ,  c.cargpefa, c.cargconc   from ldc_deprtatt r
+inner join cargos c on c.cargnuse = r.dpttsesu
+where r.dpttsesu = 50980704
+and c.cargpefa = 99413
+and c.cargconc  = 167
+and r.dpttpeco = 99408
+group by (r.dpttsesu , r.dpttcont, r.dpttperi, r.dpttpeco ,
+ r.dpttrang ,r.dpttvano , r.dpttconc , r.dpttunid  ,  c.cargpefa, c.cargconc)
+
+select *   from ldc_deprtatt r
+inner join cargos c on c.cargnuse = r.dpttsesu
+where r.dpttsesu = 50980704
+and c.cargpefa = 99413
+and c.cargconc  = 167
+and r.dpttconc = 167
+and r.dpttpeco = 99408
+
+
+SELECT r.dpttvano AS nmvalsubcreg048
+              FROM open.ldc_deprtatt r , cargos c
+             WHERE c.cargnuse = r.dpttsesu 
+               AND r.dpttsesu = 50980704
+               AND r.dpttcuco = 3016351870
+               AND r.dpttpeco = 99408
+               AND c.cargpefa = 99413
+               AND r.dpttconc = 167
+               and c.cargconc  = 167
+               AND r.dpttrang = '0 - 20' ;
+               
+SELECT r.dpttvano as nmvalconsucreg048
+              FROM open.ldc_deprtatt r ,cargos c
+             WHERE c.cargnuse = r.dpttsesu 
+               AND r.dpttsesu = 50980704
+               AND r.dpttcuco = 3016351870
+               AND r.dpttpeco = 99408
+               AND c.cargpefa =99413
+               AND r.dpttconc = 130
+               and c.cargconc  = 167
+               AND r.dpttrang = '0 - 20' ;
+
+ select (nmvalsubcreg048 * 100)/ nmvalconsucreg048 
+
+cargos

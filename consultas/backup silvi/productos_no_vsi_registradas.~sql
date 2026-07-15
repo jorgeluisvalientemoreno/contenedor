@@ -1,0 +1,15 @@
+select *
+from pr_product p
+where (select count(1) 
+      from  mo_motive pp 
+      where p.product_id = pp.product_id
+      and pp.motive_type_id  = 100101 
+       and  pp.motive_status_id =13)  = 0      
+
+48361079
+
+select count(1) 
+      from  mo_motive pp 
+      where  pp.product_id= 6522143
+      and pp.motive_type_id  = 100101 
+       and  pp.motive_status_id =13

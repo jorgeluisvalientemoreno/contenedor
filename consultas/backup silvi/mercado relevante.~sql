@@ -1,0 +1,10 @@
+select * from TA_DEFICRBT where decbcons in (8,7,22)
+
+select * FROM fa_mercrele
+;
+select * from TA_CONFCRTA  where coctdect = 2 
+--1 -- 22 mercado relevante 
+--2 -- 9 plan comercial 
+--3-- 8 subcategoria
+--4 --- categoria
+

@@ -8,9 +8,11 @@ BEGIN
     ut_trace.SetLevel(0);
     ut_trace.Trace('INICIO');
 
-    --se notifican las ventas que tienen todas sus órdenes legalizadas, para que continuen
+    --se notifican las ventas que tienen todas sus ï¿½rdenes legalizadas, para que continuen
+    --no idea cual es la diferencia pero el segundo lo usamos para empujar una interacciÃ³n que estaba detenida 
+    --en "espera de solicitudes hijas", ya que con el primero no avanzaba.
     WF_BOAnswer_Receptor.AnswerReceptor(1130931168, MO_BOCausal.fnuGetSuccess);--se pasa el codigo del flujo
-
+    WF_BOAnswer_Receptor.Answerreceptorbyqueue(-1617274713,MO_BOCausal.fnuGetSuccess);
     
 
     commit;

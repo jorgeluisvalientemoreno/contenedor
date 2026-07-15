@@ -1,0 +1,5 @@
+select idContrato,IdProducto,IdTipoProducto,datalake_at, Categoria,Subcategoria
+from bigdc.comun.dimhistoriaproducto
+where idContrato=17104209select idContrato,IdProducto,IdTipoProducto,datalake_at, Categoria,Subcategoria
+from bigdc.comun.dimhistoriaproducto
+where idContrato=17104209

@@ -1,0 +1,60 @@
+select *
+from open.funciona
+where funcnomb =  'DIASAL'; 
+--for update 
+
+SELECT *
+FROM open.GE_PERSON WHERE PERSON_ID= 38963 
+
+/*SELECT *
+FROM open.causcodd
+for update */
+  
+
+select *
+from OPEN.GE_ORGANIZAT_AREA
+where organizat_area_id = 64 
+
+
+select *
+from open.cc_orga_area_seller
+where person_id =38963  ; 
+
+update cc_orga_area_seller set organizat_area_id = 64 where person_id =38963; 
+update ge_person set ORGANIZAT_AREA_ID=64 where PERSON_ID= 38963 ; 
+select *
+from open.or_oper_unit_persons
+where PERSON_ID = 37289 ; 
+
+  SELECT *
+  FROM OPEN.CC_ORGA_AREA_SELLER s, OPEN.GE_ORGANIZAT_AREA a
+  WHERE PERSON_ID IN (38963)
+   and s.organizat_area_id=a.organizat_area_id;
+
+select operating_unit_id,oper_unit_classif_id
+from or_operating_unit
+where operating_unit_id in ( 4021, 4022); 
+
+
+SELECT *
+FROM OR_OPER_UNIT_CLASSIF 
+WHERE OPER_UNIT_CLASSIF_ID = 22; --22 es vendedor 
+   
+
+select d.* , e.operating_unit_id,e.oper_unit_classif_id , c.description 
+from open.or_oper_unit_persons d
+left join or_operating_unit e on d.operating_unit_id = e.operating_unit_id 
+left join OR_OPER_UNIT_CLASSIF  c on c.OPER_UNIT_CLASSIF_ID = e.oper_unit_classif_id 
+where PERSON_ID = 38963 ; 
+
+select *
+from sa_user s, ge_person p
+where s.user_id=p.user_id
+and s.mask='DIASAL'
+
+
+;
+
+  SELECT *
+  FROM OPEN.CC_ORGA_AREA_SELLER s
+  WHERE PERSON_ID IN (38963) for update ;

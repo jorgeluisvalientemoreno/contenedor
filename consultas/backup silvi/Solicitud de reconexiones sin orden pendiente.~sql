@@ -1,0 +1,121 @@
+select p.package_id, p.package_type_id, p.request_date, p.motive_status_id, m.product_id,to_char( p.request_date, 'yyyy' ) A?o, 
+(SELECT PR.PRODUCT_STATUS_ID FROM OPEN.PR_PRODUCT PR WHERE PR.PRODUCT_ID=M.PRODUCT_ID) ESTPROD,
+(SELECT sesuesco FROM open.SERVSUSC SS WHERE SS.SESUNUSE=M.PRODUCT_ID) ESTCORTE,
+(select max(o.LEGALIZATION_DATE)from open.or_order_activity a, open.or_order o where a.package_id=p.package_id and o.order_id=a.order_id AND o.task_type_id in(12527,10559,12529)) fecha_leg
+
+from open.mo_packages p, open.mo_motive m
+where p.package_id=m.package_id
+and p.package_type_id in (300,100240,100333)
+and p.motive_status_id=13
+and not exists(select null from open.or_order_activity a, open.or_order o where a.package_id=p.package_id and o.order_id=a.order_id and o.order_status_id in (0,5,6,7,11))
+and exists(select null from open.or_order_activity a, open.or_order o where a.package_id=p.package_id and o.order_id=a.order_id AND o.task_type_id in(12527,10559,12529) AND trunc(o.LEGALIZATION_DATE) >= :fecha_lega and o.order_status_id in (8))
+/*select sesususc,sesunuse,sesuserv,sesucicl,
+       p.suspen_ord_act_id, sesuesfn,
+       sesuesco, (select escodesc from open.estacort where escocodi=sesuesco) descestco,
+       p.product_status_id, (select ps.description from open.ps_product_status ps where ps.product_status_id=p.product_status_id and ps.prod_status_type_id=1) descestpr
+  from open.pr_product p, open.servsusc
+ where product_id=sesunuse
+   and sesunuse = &nuse;
+-----------------
+select o.order_id, a.package_id, p.motive_status_id, a.order_activity_id,  o.task_type_id,
+       TT.DESCRIPTION DESCTT,
+       o.created_date, o.legalization_date, o.order_status_id,
+       (select os.description from open.or_order_status os where os.order_status_id=o.order_status_id) descestaor,
+        o.causal_id || ' - '  || gc.description causal, cc.class_causal_id,
+        cc.description tipo_Causal
+        /*(select cc.description
+           from open.GE_CLASS_CAUSAL cc 
+          where gc.class_causal_id = cc.class_causal_id) tipo_Causal*/
+/*from open.or_order o 
+inner join open.or_task_type tt on (tt.task_type_id=o.task_type_id)
+left outer join open.or_order_Activity a on (o.order_id = a.order_id)
+left outer join open.mo_packages p on (a.package_id = p.package_id)
+left outer join open.ge_Causal gc on (gc.causal_id = o.causal_id)
+left outer join open.GE_CLASS_CAUSAL cc on (gc.class_causal_id = cc.class_causal_id)
+where a.product_id = &nuse
+and o.order_status_id != 12
+and cc.class_causal_id = 1
+  and (upper(tt.description) like '%SUSP%' or upper(tt.description) like '%RECO%')
+union
+select o.order_id, a.package_id, p.motive_status_id, a.order_activity_id,  o.task_type_id,
+       TT.DESCRIPTION DESCTT,
+       o.created_date, o.legalization_date, o.order_status_id,
+       (select os.description from open.or_order_status os where os.order_status_id=o.order_status_id) descestaor,
+        o.causal_id || ' - '  || gc.description causal, cc.class_causal_id,
+        cc.description tipo_Causal
+        /*(select cc.description
+           from open.GE_CLASS_CAUSAL cc 
+          where gc.class_causal_id = cc.class_causal_id) tipo_Causal*/
+/*from open.or_order o 
+inner join open.or_task_type tt on (tt.task_type_id=o.task_type_id)
+left outer join open.or_order_Activity a on (o.order_id = a.order_id)
+left outer join open.mo_packages p on (a.package_id = p.package_id)
+left outer join open.ge_Causal gc on (gc.causal_id = o.causal_id)
+left outer join open.GE_CLASS_CAUSAL cc on (gc.class_causal_id = cc.class_causal_id)
+where a.product_id = &nuse
+and o.order_status_id in (0,5,11)
+  and (upper(tt.description) like '%SUSP%' or upper(tt.description) like '%RECO%')
+order by created_date;
+
+
+----------------------------
+select *
+  from open.suspcone s
+ where s.suconuse = &nuse;
+ 
+select * from open.pr_prod_suspension p where p.product_id = &nuse;
+
+SELECT cp.product_id, cp.component_id, cp.component_type_id, cp.component_status_id, 
+       (select ps.description 
+          from open.ps_product_status ps 
+         where ps.product_status_id=cp.component_status_id 
+           and ps.prod_status_type_id=2) descestcomp
+  from open.pr_component cp
+ where cp.product_id = &nuse;
+ 
+select p.*
+  from open.pr_comp_suspension p
+  where p.component_id in (SELECT cp.component_id
+                             from open.pr_component cp
+                            where cp.product_id = &nuse);
+
+
+select p.package_id, m.motive_id,a.product_id, p.request_date, p.attention_date, p.package_type_id,
+       pt.description descsoli,
+       p.motive_status_id,
+       (select ms.description from open.ps_motive_status ms where ms.motive_status_id=p.motive_status_id) descestsoli,
+       o.order_id, o.task_type_id,
+       (select tt.description from open.or_task_type tt where tt.task_type_id=o.task_type_id) desctt,
+       o.created_date, o.legalization_date, o.order_status_id,
+       (select os.description from open.or_order_status os where os.order_status_id=o.order_status_id) descestaor,
+       o.causal_id || ' - '  || (select gc.description || ' - ' || cc.description
+                                from open.ge_Causal gc , open.GE_CLASS_CAUSAL cc 
+                               where gc.causal_id = o.causal_id
+                                 and gc.class_causal_id = cc.class_causal_id) desccaus
+  from open.mo_packages p
+left outer join open.ps_package_type pt on (pt.package_type_id=p.package_type_id)
+left outer join open.or_order_Activity a on (a.package_id=p.package_id)
+left outer join open.or_order o on (o.order_id = a.order_id)
+left outer join open.mo_motive m on (m.package_id=p.package_id)
+where m.product_id=&nuse
+  --and p.package_type_id = 100287;                        
+and (upper( pt.description) like '%SUSP%' or upper(pt.description) like '%RECO%');
+
+select *
+from open.hicaesco h
+where h.hcecnuse = &nuse
+order by h.hcecfech;
+
+/*select cuconuse,cucocodi,cucosacu,cucovare,cucofeve
+from open.cuencobr 
+where cuconuse=&nuse
+and cucosacu>0;
+
+select *
+from open.gc_prodprca p
+where p.prpcnuse = &nuse;
+
+SELECT NUANO, NUMES, PRODUCTO,S.ESTADO_TECNICO EST_PRODUCTO, S.ESTADO_CORTE, S.ESTADO_FINANCIERO
+FROM OPEN.LDC_OSF_SESUCIER S
+WHERE PRODUCTO = &nuse
+ORDER BY NUANO,NUMES*/

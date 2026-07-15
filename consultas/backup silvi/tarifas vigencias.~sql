@@ -1,0 +1,95 @@
+
+ SELECT * FROM ta_tariconc WHERE tacocons = 1942;
+ SELECT * FROM open.ta_vigetaco WHERE vitctaco = 4265 ORDER BY vitcfein desc;-- for update ;
+select *  from ta_conftaco t; 
+
+select *
+ from TA_CONFCRTA cf
+ inner join TA_DEFICRBT on DECBCONS= cf.COCTDECB
+ --inner join TA_DEFICRTA on DECTCONS=COCTDECT
+ where coctdect = 164 order by coctprio;
+
+--TARIFAS VENTAS
+ select  cotcconc, cotcserv,cotcvige,tacocr01 PLAN_COME ,tacocr02  ,tacocr03 ,vitctaco,vitccons, vitcfein,vitcfefi , vitcvalo, vitcporc
+ from ta_conftaco t
+ left join ta_tariconc ta on cotccons= tacocotc
+ left join ta_confcrta
+ 
+ left join  open.ta_vigetaco on tacocons = vitctaco
+ left join open.concepto c on cotcconc = c.conccodi
+ where cotcconc in (287,137)  and 
+ cotcserv =7014 and cotcvige = 'S' and vitcfefi >='01/05/2024'--and cotcdect= 122 and vitcfefi >='01/10/2023' and tacocr01=4-- and  TACOCR02= 2 and TACOCR03= 1
+ ;
+  select  cotcconc, cotcserv,cotcvige,tacocr01 PLAN_COME ,tacocr02 SUBCATEGORIA ,tacocr03 CATEGORIA,vitctaco,vitccons, vitcfein,vitcfefi , vitcvalo, vitcporc
+ from ta_conftaco t
+ left join ta_tariconc ta on cotccons= tacocotc
+ left join  open.ta_vigetaco on tacocons = vitctaco
+ left join open.concepto c on cotcconc = c.conccodi
+ where cotcconc in (674)  and 
+ cotcserv =7014 and cotcvige = 'S' and vitcfefi >='01/12/2025' and tacocr01=4 and tacocr02 in (1,-1)
+  
+ ;
+select *
+from  open.ta_rangvitc
+where ravtvitc in (40093,40111) ; --FOR UPDATE 
+  -- TACOCR01 PLAN COMERCIAL 
+ -- TACOCR02 SUBCATEGORIA
+ -- TACOCR03 CATEGORIA  
+ ;
+ 
+ 
+ select ta.* , cotcconc 
+from   open.ta_vigetaco  ta 
+left join ta_tariconc on  tacocons = vitctaco
+left join  ta_conftaco on cotccons= tacocotc
+where vitctaco = 4265 ;
+ 
+ select  cotcconc, cotcserv,cotcvige,tacocr01 PLAN_COME ,tacocr02 SUBCATEGORIA ,tacocr03 CATEGORIA,vitctaco,vitccons, vitcfein,vitcfefi , vitcvalo, vitcporc,
+        ta_rangvitc.ravtporc
+ from open.ta_conftaco t
+ left join open.ta_tariconc ta on cotccons= tacocotc
+ left join  open.ta_vigetaco on tacocons = vitctaco
+ left join open.concepto c on cotcconc = c.conccodi
+ left join open.ta_rangvitc on ravtvitc = vitccons
+ where cotcconc in (19,30,674)
+   and cotcserv =7014 
+   and cotcvige = 'S' 
+   and sysdate between vitcfein and vitcfefi 
+   and tacocr01=4 and tacocr02 in (1,-1) ;
+ 
+
+SELECT tacocr01 commercialPlanId, cotcconc conceptId, c.CONCDESC concept, vitcvalo value , tacocr03 subcateg , tacocr02 mercarele, tacocr04 categ
+ FROM open.ta_tariconc a
+          LEFT OUTER JOIN open.ta_conftaco b ON (a.tacocotc = b.cotccons)
+          LEFT OUTER JOIN open.ta_vigetaco d ON (d.vitctaco = a.tacocons)
+          LEFT OUTER JOIN open.ta_rangvitc e ON (e.ravtvitc = d.vitccons)
+          INNER JOIN open.concepto c on c.conccodi = cotcconc AND c.conccodi in (30, 19, 674)
+ WHERE cotcserv = 7014
+   AND tacocr01 = 4
+  -- AND tacocr03 in (1, -1)
+  and sysdate between vitcfein and vitcfefi ; 
+  
+  
+
+select *
+from open.concserv
+where coseserv= 7014 
+and coseconc in (137,287); 
+
+--Deben estar activos los conceptos para que se generen coseacti ='S'
+
+--30 interna 19 cxc  674 cert
+select * from ta_vigetaco where  vitctaco in (4050,4051);
+  -- for update 
+
+select * from TA_RANGVITP where RAVPVITP in ( 391979, 391978)  --for update /*order by 1 desc*/  ;--unir con VITPCONS
+select  * from ta_conftaco where  cotcconc in (985);   ---for update 
+select * from TA_VIGETACP order by 1 desc ; 
+select * from TA_TARICOPR order by 1 desc ;
+
+select v.*
+from open.TA_TARICOPR 
+left join open.ta_vigetaco on vitctaco = tacptacc 
+left join open.TA_VIGETACP v on TACPCONS=VITPTACP
+where vitctaco in (4130,4131); 
+select * from ta_indetabu;

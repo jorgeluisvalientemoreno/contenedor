@@ -1,0 +1,14 @@
+select o.order_id ,o.task_type_id , o.order_status_id , sesususc , sesunuse , sesucate , sesuserv , product_status_id , created_date 
+from or_order o
+left join or_order_activity  a on o.order_id = a.order_id 
+left join servsusc on sesunuse = a.product_id and a.subscription_id = sesususc 
+left join pr_product  pr on pr.product_id = sesunuse and pr.product_id = a.product_id  
+where  o.order_status_id in (0,5)
+and sesucate = 2 
+and sesucicl in (1407) 
+and product_status_id  = 1 
+and o.task_type_id in (10043,12617)
+and o.order_status_id  in (0,5) 
+
+ 
+--and rownum < 20 

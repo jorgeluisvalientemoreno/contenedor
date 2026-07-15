@@ -1,0 +1,13 @@
+SELECT *
+FROM OPEN.TA_PERFUSUA 
+INNER JOIN  OPEN.SA_USER ON  USER_ID = PEUSUSUA ;
+
+INSERT INTO TA_PERFUSUA
+SELECT SQ_TA_PERFUSUA_PEUSCONS.NEXTVAL,
+21,
+1923 --22
+FROM DUAL 
+SELECT * 
+
+--4626 es el rol para la pestaña de procesos de tgta 
+--4631 para tgta parametrización 

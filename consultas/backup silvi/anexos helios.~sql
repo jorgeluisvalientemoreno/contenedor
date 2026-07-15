@@ -1,0 +1,18 @@
+select *
+from  personalizaciones.anexos_factura_helio
+where periodo_facturacion= 115815 
+;
+
+insert into personalizaciones.anexos_factura_helio
+select factsusc as contrato,
+factpefa as periodo_facturacion,
+'CO' as tipo_anexo,
+'PRUEBA DE ANEXOS'||' '|| factsusc as anexo,
+sysdate as fecha_registro
+from factura
+where factpefa= 115815 
+and factprog= 6 
+
+
+
+select * from perifact where pefacicl= 2401 and pefaano= 2025  

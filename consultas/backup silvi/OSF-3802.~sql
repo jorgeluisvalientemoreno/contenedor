@@ -1,0 +1,5 @@
+select sesususc , c.*
+from cargos c , servsusc ,cuencobr
+where cargnuse = sesunuse
+/*and cargconc = 291*/ and cargfecr >=trunc(sysdate ) and cucocodi = cargcuco  and sesususc = 67536751 
+order by cargfecr desc

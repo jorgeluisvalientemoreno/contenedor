@@ -1,0 +1,3 @@
+select cucofact 
+from open.cuencobr l 
+where l.cucocodi in (3026740563 ,  3026740562 )

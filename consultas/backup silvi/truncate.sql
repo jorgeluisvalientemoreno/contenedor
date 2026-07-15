@@ -1,0 +1,4 @@
+select * from temppefa --FCPC 
+BEGIN
+   EXECUTE IMMEDIATE 'TRUNCATE TABLE TEMPPEFA';
+END;

@@ -1,0 +1,21 @@
+select * from racavaco ;
+select * from caravaco;
+select * from MEANVACO ;
+select * from calivaco  ; 
+select * from remevaco ; 
+select * from conssesu ;
+select * from MECACONS;
+select * from DACOSERV ; --no se usa 
+select * from HICOPRPM ; 
+select * from ldc_calificacion_cons; 
+LEFT JOIN PERICOSE ON HCPPPECO = pecscons 
+where HCPPCOPR < 0 
+AND PECSFECI > '01/05/2022'
+
+
+ hcppsesu = 1504445 and hcpppeco = 99784; --tabla de consumos promedios 
+
+ select *
+ from or_extern_systems_id
+
+where cosscavc = 2  

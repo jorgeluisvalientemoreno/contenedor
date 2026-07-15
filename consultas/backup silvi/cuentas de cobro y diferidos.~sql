@@ -1,0 +1,22 @@
+select cucofact 
+from open.cuencobr l 
+where l.cucocodi = 3017706183;
+
+
+select */* , SUBSTR(CARGDOSO, 4, 20)*/
+from cargos c
+inner join diferido on difenuse = cargnuse
+where cargnuse = 17144911
+and difecodi = substr(cargdoso, 4, 20)
+and cargcaca = 51
+and cargcuco =3017705636
+and cargvalo > 0
+and difesape > 0
+order by cargfecr desc;
+
+
+Select *
+from cargos 
+where cargnuse = 17144911
+order by cargfecr desc
+where cargcuco = 3017706183

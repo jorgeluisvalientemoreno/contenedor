@@ -1,0 +1,6 @@
+SELECT *
+      FROM LDC_PEFAGEPTT
+      WHERE PEGPPROC   = 'FGCC'
+      --AND PEGPESTA = 'N'
+      and pegpperi = 107374
+for update 

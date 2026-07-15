@@ -1,0 +1,9 @@
+select sesususc , sesunuse 
+from servsusc 
+
+select d.difesusc , difenuse , sesuserv , difecodi , difeconc , difesape , difefein , difefumo , difepldi 
+from diferido d 
+left join servsusc on sesususc = difesusc and sesunuse = difenuse 
+where  difesusc in ( select contrato from  LDC_CONTABDI where  difesusc = contrato) 
+and difesusc = 48259287 
+and difesape > 0

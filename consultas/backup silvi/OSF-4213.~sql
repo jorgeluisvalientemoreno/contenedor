@@ -1,0 +1,11 @@
+SELECT *
+FROM LDCI_LOGSPROC
+WHERE LOPRPROC = 'L2' AND LOPRFECH >= TRUNC(SYSDATE) 
+ORDER BY LOPRFECH DESC ;
+
+
+select * from ldci_encaintesap
+where cod_interfazldc = 57294 ;  
+
+select * from ldci_detaintesap
+where cod_interfazldc = 57294 ;  

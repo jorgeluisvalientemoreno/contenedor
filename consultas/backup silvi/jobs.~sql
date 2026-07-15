@@ -1,0 +1,106 @@
+--validar job estados 
+select owner , job_name ,state ,instance_id , j.JOB_ACTION
+FROM dba_scheduler_jobs j
+WHERE UPPER(j.job_name) LIKE upper('%CIER%')--and UPPER( j.JOB_ACTION) LIKE upper('%LDC_PROGENCIERRE%')
+ --and state  = 'DISABLED'
+ 
+ CIERRE_COMERCIAL_GDC
+-- Instancia 1  
+ dbms_scheduler.set_attribute(
+                              'LATE_FEE_CALC_FOR_PDL_LOANS', nombre_scheduler
+                              'INSTANCE_ID',
+                              '1'
+                             );
+--Habilitar job                              
+ BEGIN
+ DBMS_SCHEDULER.ENABLE('CIERRE_COMERCIAL');
+ COMMIT;
+END;
+
+--CAMBIAR INSTANCE_ID
+BEGIN
+dbms_scheduler.set_attribute(
+                              'CIERRE_COMERCIAL',
+                              'INSTANCE_ID',
+                              '1'
+                             );
+COMMIT;
+END;
+
+SELECT next_run_date,state,start_date,state,owner,job_name, A.last_start_date
+FROM DBA_SCHEDULER_JOBS  A 
+WHERE job_name = 'JOB_FACTUELECT_ENERSOLAR';
+
+
+SELECT *
+FROM DBA_SCHEDULER_JOB_RUN_DETAILS
+WHERE job_name = 'LDC_JOBRETIROTARTRANS';
+
+SELECT *
+FROM USER_SCHEDULER_JOB_LOG
+WHERE job_name = 'LDC_JOBRETIROTARTRANS';
+
+
+select *
+from GE_PROCESS_SCHEDULE
+where PARAMETERS_ like '%OBJECT_ID=121628%';
+
+
+select *
+from GE_PROCESS_SCHEDULE
+where PARAMETERS_ like '%OBJECT_ID=121628%';
+
+select *
+from dba_jobs 
+where job = 1494107; 
+
+SELECT * 
+FROM ldc_osf_estaproc
+WHERE proceso like  '%CIER%'
+AND ano = 2024
+AND mes = 3
+--and fecha_inicial_ejec >= '19/09/2023 15:00:00'
+ORDER BY fecha_inicial_ejec desc 
+
+DECLARE
+BEGIN
+  dbms_scheduler.enable ('CIERRE_MES');
+  COMMIT ; 
+END;
+
+
+DECLARE
+BEGIN
+    DBMS_SCHEDULER.RUN_JOB ('JOB_FACTUELECT_ENERSOLAR');
+    COMMIT;
+END;
+
+
+SELECT *
+FROM DBA_SCHEDULER_JOB_RUN_DETAILS
+WHERE job_name = 'JOB_FACTUELECT_ENERSOLAR' order by req_start_date desc;
+
+SELECT *
+FROM USER_SCHEDULER_JOB_LOG
+WHERE job_name = 'JOB_FACTUELECT_ENERSOLAR' order by log_id desc;
+
+
+
+
+DECLARE
+  job_name VARCHAR2(100);
+  job_list SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST('CIERRE_COMERCIAL', 'CIERRE_UNO', 'CIERRE_DOS');
+BEGIN
+  FOR i IN 1..job_list.COUNT LOOP
+    job_name := job_list(i);
+    dbms_scheduler.set_attribute(
+                                  job_name,
+                                  'INSTANCE_ID',
+                                  1  -- Mismo INSTANCE_ID para todos
+                                 );
+  END LOOP;
+  COMMIT;
+END;
+/
+
+

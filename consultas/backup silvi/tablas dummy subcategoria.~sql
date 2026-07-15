@@ -1,0 +1,21 @@
+select *
+from open.hicoprpm
+where hicoprpm.hcppsesu  = 50641341
+for update 
+
+DELETE FROM hicoprpm where hcppsesu  = 50641341
+update open.hicoprpm set hcppcopr = 0 where hcppsesu  = 50641341
+
+create table hicoprpm_sil 
+(hcppsesu number(10) , hcpptico number(4)  ,hcppcopr  number(15,3) , hcpppeco  number(15) ,hcppcons  number(10)  ) 
+
+insert into hicoprpm
+(hcppsesu  , hcpptico ,hcppcopr   , hcpppeco ,hcppcons  ) 
+select *
+from hicoprpm_sil
+where hcppsesu  = 50641341
+
+;
+select *
+from  hicoprpm_sil 
+where hcppsesu  = 50559509

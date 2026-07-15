@@ -1,0 +1,6 @@
+select * from  LDC_PRODTATT where PRTTSESU =6037931;
+
+
+
+
+

@@ -1,0 +1,8 @@
+Select *
+From open.LDC_FINAN_COND
+Where finan_plan_id  in (23)
+and subcategory_id = 3
+
+select * 
+from open.cc_sales_financ_cond
+where financing_plan_id = 23

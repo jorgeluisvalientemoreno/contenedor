@@ -1,0 +1,5 @@
+select *
+from feullico
+where felisesu=14523661
+order by felifeul desc 
+for update 

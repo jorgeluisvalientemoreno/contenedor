@@ -1,0 +1,10 @@
+select *
+from all_source 
+where upper(text) like upper('%LDC_PROGENCIERRE_GDC%');
+
+select *
+from dba_dependencies
+where  upper(referenced_name) like upper('%LDC_PROGENCIERRE_GDC%');
+
+select * from dba_source d where upper(d.TEXT) like upper('%LDC_PROGENCIERRE_GDC%'); 
+

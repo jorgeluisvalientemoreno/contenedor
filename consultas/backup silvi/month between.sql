@@ -1,0 +1,3 @@
+
+SELECT round(MONTHS_BETWEEN(TO_DATE('31/07/2023','DD/MM/YYYY'),sysdate), 0 ) 
+FROM DUAL;

@@ -1,0 +1,19 @@
+select subs_last_name || ' ' || subscriber_name   as cliente ,sesususc,(select cucofact from cuencobr where cucocodi =cargcuco) factura,cargpefa,
+          sesusuca|| ' ' || sucadesc  subcategoria , sesucate || ' ' ||catedesc   categoria,sesuplfa ||' ' || plsudesc plan  ,cargnuse  ,
+          cargconc || '  ' || concdesc as concepto,cargcaca, cargsign || ' ' || signdesc signo  , cargunid , cargvalo, cargdoso, cargfecr  
+from cargos 
+left  join servsusc on cargnuse = sesunuse
+left join subcateg on sucacate = sesucate and sucacodi = sesusuca
+left join categori on catecodi = sesucate 
+left join concepto on cargconc =  conccodi
+left join plansusc on sesuplfa = plsucodi 
+left join pr_product pr on sesunuse = product_id and cargnuse = product_id 
+left join suscripc s on susccodi = sesususc 
+left join ge_subscriber ge  on subscriber_id = suscclie 
+left join signo on signcodi = cargsign 
+where cargpefa in (101975)
+and cargconc in (31) 
+and cargdoso like 'CO%PR%'
+and cargvalo > 1000000
+
+

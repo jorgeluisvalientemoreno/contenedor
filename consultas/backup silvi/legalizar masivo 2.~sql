@@ -1,0 +1,94 @@
+DECLARE
+
+    TYPE t_cadenas IS TABLE OF VARCHAR2(4000);
+
+    v_cadenas t_cadenas := t_cadenas(
+
+        '399857538|9688|38963||393304014>1;READING>232>>;;;|||1277;PRUEBA|23-04-2026 09:03:26;23-04-2026 09:08:26',
+
+        '399853183|9688|38963||393299659>1;READING>2369>>;;;|||1277;PRUEBA|23-04-2026 12:47:25;23-04-2026 12:52:25',
+
+        '399853195|9688|38963||393299671>1;READING>417>>;;;|||1277;PRUEBA|23-04-2026 12:49:02;23-04-2026 12:54:02'
+
+    );
+
+    sbcadena_total         VARCHAR2(4000);
+    sbcadenalegalizacionot VARCHAR2(4000);
+
+    sbfecha_ini VARCHAR2(30);
+    sbfecha_fin VARCHAR2(30);
+
+    dtfecha_exe_ini DATE;
+    dtult_fecha_lect DATE;
+
+    nuerror NUMBER;
+    sberror VARCHAR2(4000);
+
+    pos_fecha NUMBER;
+
+BEGIN
+
+    FOR i IN 1 .. v_cadenas.COUNT LOOP
+
+        sbcadena_total := v_cadenas(i);
+
+
+        pos_fecha := REGEXP_INSTR(
+                        sbcadena_total,
+                        '[0-9]{2}-[0-9]{2}-[0-9]{4}'
+                     );
+
+
+        sbcadenalegalizacionot :=
+            RTRIM(
+                SUBSTR(sbcadena_total, 1, pos_fecha - 2),
+                '|'
+            );
+
+
+        sbfecha_ini :=
+            SUBSTR(sbcadena_total, pos_fecha, 19);
+
+        sbfecha_fin :=
+            SUBSTR(sbcadena_total, pos_fecha + 20, 19);
+
+        dbms_output.put_line('-----------------------------------');
+        dbms_output.put_line('Registro : ' || i);
+        dbms_output.put_line('Fecha Ini: ' || sbfecha_ini);
+        dbms_output.put_line('Fecha Fin: ' || sbfecha_fin);
+
+        dtfecha_exe_ini :=
+            TO_DATE(sbfecha_ini, 'dd-mm-yyyy hh24:mi:ss');
+
+        dtult_fecha_lect :=
+            TO_DATE(sbfecha_fin, 'dd-mm-yyyy hh24:mi:ss');
+
+        api_legalizeOrders(
+            sbcadenalegalizacionot,
+            dtfecha_exe_ini,
+            dtult_fecha_lect,
+            NULL,
+            nuerror,
+            sberror
+        );
+
+        IF nuerror = 0 THEN
+
+            dbms_output.put_line(
+                'Estado   : OK'
+            );
+
+        ELSE
+
+            dbms_output.put_line(
+                'Estado   : ERROR - ' || sberror
+            );
+
+        END IF;
+
+        COMMIT;
+
+    END LOOP;
+
+END;
+/

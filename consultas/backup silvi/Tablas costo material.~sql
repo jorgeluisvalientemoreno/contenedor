@@ -1,0 +1,3 @@
+select ge_unit_cost_ite_lis.price
+from open.ge_unit_cost_ite_lis
+where ge_unit_cost_ite_lis.list_unitary_cost_id = 3966

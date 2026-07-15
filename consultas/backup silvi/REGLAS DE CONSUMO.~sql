@@ -1,0 +1,3 @@
+select *
+from ldc_calificacion_cons
+where  codigo_calificacion = 2004

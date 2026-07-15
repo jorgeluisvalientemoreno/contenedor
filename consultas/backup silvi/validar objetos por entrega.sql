@@ -1,0 +1,18 @@
+--VALIDAR OBJETOS ENTREGA
+select *
+from open.ldc_versionobjetos v ,open.LDC_VERSIONENTREGA c , open.ge_database_version
+where c.codigo=v.codigo_entrega
+ and version_name = nombre_entrega
+and c.codigo_caso like '%0000027%'
+--and v.objeto like '%PBMAFA%'
+ and c.fecha >= '19/05/2022 08:30:10';
+ 
+--validar entrega 
+select *
+from open.LDC_VERSIONENTREGA e, open.LDC_VERSIONAPLICA  ap
+where e.codigo=ap.codigo_entrega
+--and e.fecha >= '26/01/2021 17:00:10'
+ and codigo_caso like '%27%'
+ --and nombre_entrega like '%BSS_JJJM_OSF-223%'
+and ap.codigo_empresa = 'GDC'
+order by e.fecha desc

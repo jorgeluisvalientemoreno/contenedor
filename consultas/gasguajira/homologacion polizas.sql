@@ -1,0 +1,37 @@
+SELECT *
+FROM SERVSUSC
+WHERE SESUSUSC = 5511304 ;
+
+SELECT *
+FROM MIGRAGG.SERVSUSC
+WHERE SESUSUSC = 5511304 ;
+
+SELECT SH.* , SESUSERV 
+FROM SERVSUSC S 
+INNER JOIN HOMOLOGACION.SERVSUSC_HOMOLOGADO SH ON S.SESUNUSE = SH.SESUNUSEOSF 
+WHERE S.SESUSUSC = 5511304 ;
+
+
+;
+
+SELECT *
+FROM GASGG.SERVSUSC S 
+INNER JOIN GASGG.SERVICIO SE ON SE.SERVCODI = S.SESUSERV
+WHERE SESUSUSC  = 2011304 ;
+
+select *
+from gasgg.poliza
+where polisusc  = 2011304 
+and poliesta= 1  ;
+
+select * 
+from homologacion.homopoli
+where homopolicotp  in ( '206','1408', '402')
+;
+
+
+select * 
+from homologacion.homo
+;
+
+
