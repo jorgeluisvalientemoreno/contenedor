@@ -1,5 +1,6 @@
 -- reseva documento SAP 
-select GID.ID_ITEMS_DOCUMENTO RESERVA_SAP,
+select GID.*,
+       GID.ID_ITEMS_DOCUMENTO RESERVA_SAP,
        GID.DOCUMENT_TYPE_ID TIPO_RESERVA,
        GID.DOCUMENTO_EXTERNO DOCUMENTO_EXTERNO_OSF,
        DECODE(GID.ESTADO,
@@ -52,7 +53,7 @@ select GID.ID_ITEMS_DOCUMENTO RESERVA_SAP,
        gis.operating_unit_id || ' - ' || UNIDADASOCIADA.NAME unidad_asociada,
        gis.subscriber_id || ' - ' || trim(gs.subscriber_name) || ' ' ||
        trim(gs.subs_last_name) Cliente
-  from GE_ITEMS_DOCUMENTO GID
+  from open.GE_ITEMS_DOCUMENTO GID
   left join OPEN.GE_ITEMS_REQUEST GIR
     on GIR.ID_ITEMS_DOCUMENTO = GID.ID_ITEMS_DOCUMENTO
   left join open.or_operating_unit UNIDADORIGEN

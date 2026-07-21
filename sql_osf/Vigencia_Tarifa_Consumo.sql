@@ -4,4 +4,6 @@ select t1.*, rowid
        (select t.vitctaco || '-' || max(t.vitcfefi)
           from ta_vigetaco t
          group by t.vitctaco)
-   and t1.vitctaco = 1744
+  -- and t1.vitctaco = 1744
+  
+  order by t1.vitcfein desc

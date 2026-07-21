@@ -1,4 +1,7 @@
-select ga.id_acta Acta,
+select ga.id_contrato Contrato,
+       gcontrato.id_tipo_contrato || ' - ' || gtc.descripcion Tipo_contrato,
+       ga.id_base_administrativa Base_Administativa,
+       ga.id_acta Acta,
        ga.nombre Nombre,
        decode(ga.id_tipo_acta,
               '1',
@@ -51,8 +54,13 @@ select ga.id_acta Acta,
     on gct.comment_type_id = ga.comment_type_id
   left join OPEN.GE_CONTRATISTA GC
     on gc.id_contratista = ga.contractor_id
+  left join open.ge_contrato gcontrato
+    on gcontrato.id_contrato = ga.id_contrato
+  left join open.GE_TIPO_CONTRATO gtc
+    on gtc.id_tipo_contrato = gcontrato.id_tipo_contrato
  where 1 = 1
-   AND GA.ID_ACTA = 247673
---AND ga.estado = 'A'
----and ga.fecha_creacion > sysdate - 100
+       AND GA.ID_ACTA = 177329
+      --AND ga.estado = 'A'
+ --  and ga.fecha_creacion > sysdate - 1
+--  AND gc.id_contratista = 9
  order by ga.fecha_creacion desc;

@@ -1,0 +1,7 @@
+SELECT oou.operating_unit_id || ' - ' || oou.name, oou.*
+  FROM OR_OPERATING_UNIT oou
+ WHERE 1 = 1
+   and oou.OPER_UNIT_STATUS_ID =
+       DALD_PARAMETER.fnuGetNumeric_Value('LDC_STATUS_BODEGA')
+   AND oou.OPERATING_UNIT_ID = nuUnidadOperativa
+   and oou.operating_unit_id = 2363;

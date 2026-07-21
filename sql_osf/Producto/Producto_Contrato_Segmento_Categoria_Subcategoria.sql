@@ -16,10 +16,12 @@ select distinct p.subscription_id Contrato,
     on aa.address_id = p.address_id
  inner join open.ps_product_status ps
     on ps.product_status_id = p.product_status_id
- inner join ab_segments aseg
+ inner join open.ab_segments aseg
     on aseg.segments_id = aa.segment_id
  inner join open.categori csegmento
     on csegmento.catecodi = aseg.category_
- where p.category_id in (2)
-   and p.product_type_id = 7014
-   and p.product_status_id = 1
+ where 1=1 
+   --and p.category_id in (2)
+   --and p.product_type_id = 7014
+   --and p.product_status_id = 1
+   and p.product_id = 2467346

@@ -32,8 +32,8 @@ select t.trsmcodi Pedido,
  inner join open.ge_contratista gc
     on gc.id_contratista = oou.contractor_id
  where 1 = 1
---and TRSMCODI = 260756
-;
+      --and TRSMCODI = 260756
+   and trsmdsre is not null;
 select l.result_process_id,
        l.request_material_id,
        l.estado_anterior || ' - ' || lt_ea.descripcion,

@@ -31,16 +31,8 @@ select distinct oo.order_id Orden,
                    from open.ge_items gi
                   where gi.items_id = ooa.activity_id) Actividad,
                 oo.task_type_id || ' - ' || ott.description Tipo_Trabajo,
-                oo.causal_id || ' - ' ||
-                (select gc.description
-                   from open.ge_causal gc
-                  where gc.causal_id = oo.causal_id) Causal_Legalizacion,
-                (select x.class_causal_id || ' - ' || x.description
-                   from open.ge_class_causal x
-                  where x.class_causal_id =
-                        (select y.class_causal_id
-                           from open.ge_causal y
-                          where y.causal_id = oo.causal_id)) Clasificacion_Causal,
+                oo.causal_id || ' - ' || gc.description Causal_Legalizacion,
+                gc.class_causal_id || ' - ' || x.description Clasificacion_Causal,
                 oo.operating_unit_id || ' - ' ||
                 (select h.name
                    from open.or_operating_unit h
@@ -197,8 +189,8 @@ select distinct oo.order_id Orden,
                    from open.or_operating_unit oou
                   where oou.operating_unit_id = oo.operating_unit_id) TIPO_ASIGNACION,
                 /*(select mm1.Motive_Id
-                   from open.mo_motive mm1
-                  where mm1.package_id = MP.PACKAGE_ID) Motivo,*/
+                 from open.mo_motive mm1
+                where mm1.package_id = MP.PACKAGE_ID) Motivo,*/
                 --/*
                 (SELECT min(order_id)
                    FROM open.or_related_order
@@ -304,7 +296,8 @@ select distinct oo.order_id Orden,
                 'NO') Generada_CAMUNDA,*/
                 CT.CERTIFICATE_ID     ACTA,
                 ga.extern_pay_date    Pago_Acta,
-                ga.extern_invoice_num Factura_Pago_Acta
+                ga.extern_invoice_num Factura_Pago_Acta,
+                ms.suspension_type_id Tipo_suspension_Solicitud
   from open.or_order_activity ooa
   left join open.or_order oo
     on oo.order_id = ooa.order_id
@@ -373,9 +366,16 @@ select distinct oo.order_id Orden,
   left join open.ge_acta ga
     on ga.id_acta = ct.certificate_id
    and 'S' = &ConsultarActa
- where 1 = 1 
+  left join open.ge_causal gc
+    on gc.causal_id = oo.causal_id
+  left join open.ge_class_causal x
+    on x.class_causal_id = gc.class_causal_id
+  left join open.mo_suspension ms
+    on ms.motive_id = mm.motive_id
+   and 'S' = &Consulta_Tipo_Suspen_Solicitud
+ where 1 = 1
 ---Orden
--- and ooa.order_id in (336812247)
+-- and ooa.order_id in (360396755 )
 -- and ooa.order_activity_id in(42}95152)
 -- and oo.task_type_id in (11029)
 -- and oo.order_status_id = 8--not in (8, 12, 0, 7, 6)
@@ -387,7 +387,7 @@ select distinct oo.order_id Orden,
 -- and ooa.activity_id in (4295751)
 -- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
 -- and ooa.subscription_id in (48052662)
--- and ooa.product_id in (17248467)
+-- and ooa.product_id in (6108709)
 -- and ooa.order_activity_id in (322824237)
 -- and mp.package_type_id = 100210
 -- and trunc(mp.request_date) >= '07/07/2024'
@@ -409,5 +409,7 @@ and oo.legalization_date >= '01/08/2024'*/
 -- and servicio.servcodi = 7053
 --and ga.estado = 'A'
 -- and ga.id_acta is null
+--and upper(ott.description) like '%SUSPEN%'
+--and x.class_causal_id = 1
  order by oo.created_date desc;
 --305802917

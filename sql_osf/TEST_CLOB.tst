@@ -1,0 +1,37 @@
+PL/SQL Developer Test script 3.0
+17
+declare
+
+  SBSENTENCIA CLOB;
+
+begin
+  DBMS_OUTPUT.ENABLE(10000000000000);
+ut_trace.Init;
+ut_trace.SetOutPut(ut_trace.cnuTRACE_DBMS_OUTPUT);
+ut_trace.SetLevel(99);
+  -- Call the procedure
+  SBSENTENCIA := 'SELECT CADOCICL CICLO, CADOSESU PRODUCTO, CADOCONC CONCEPTO, CADOCACA CAUSAL, CADOSIGN SIGNO, CADOCANT CANTIDAD, CADOVALO VALOR FROM LDC_CARGDOBL, LDC_TEMPPPAUD, pr_product p, ab_address d, GE_GEOGRA_LOCATION l WHERE CADOANO = ANIO AND CADOMES = MES AND CADOCICL= CICLO and CADOSESU = p.product_id and p.address_id = d.address_id and L.GEOGRAP_LOCATION_ID = D.GEOGRAP_LOCATION_ID and L.GEO_LOCA_FATHER_ID = 2|SELECT COALCICL CICLO, COALSESU PRODUCTO, COALCATE CATEGORIA, COALSUCA SUBCATEGORIA, COALPEFA PEFACODI , COALCATE sesucate, nvl(COALCOPR,0) PROMEDIO, nvl(COALCOAC,0) CONSUMO_ACTUAL, nvl(COALCOAN,0) CONSUMO_ANTERIOR_1, nvl(COALCOAS,0) CONSUMO_ANTERIOR_2, nvl(COALCOAT,0) CONSUMO_ANTERIOR_3, coalregl regla FROM LDC_CONSUALTO, LDC_TEMPPPAUD, pr_product p, ab_address d, GE_GEOGRA_LOCATION l WHERE COALANO= ANIO AND COALMES = MES AND COALCICL= CICLO and COALSESU = p.product_id and p.address_id = d.address_id and L.GEOGRAP_LOCATION_ID = D.GEOGRAP_LOCATION_ID and L.GEO_LOCA_FATHER_ID = 2|SELECT VAALCICL CICLO, VAALSESU PRODUCTO, VAALSERV SERVICIO, VAALCONC CONCEPTO, VAALSIGN SIGNO, VAALCATE CATEGORIA, VAALSUCA SUBCATEGORIA, VAALDOSO DOCUMENTO, VAALVALO VALOR, VAALCACA CAUSA_CARGO, utl_raw.cast_to_varchar2(nlssort(pktblcauscarg.fsbgetdescription(VAALCACA), ''nls_sort=binary_ai'')) DESCRIPCION_CAUSA, nvl(VAALCOPR,0) PROMEDIO, nvl(VAALCOAC,0) CONSUMO_ACTUAL, nvl( VAALCOAN,0) CONSUMO_ANTERIOR_1, nvl(VAALCOAS,0) CONSUMO_ANTERIOR_2, nvl(VAALCOAT,0) CONSUMO_ANTERIOR_3 FROM LDC_VALALTCA, LDC_TEMPPPAUD, pr_product p, ab_address d, GE_GEOGRA_LOCATION l WHERE VAALANO= ANIO AND VAALMES = MES AND VAALCICL= CICLO and VAALSESU = p.product_id and p.address_id = d.address_id and L.GEOGRAP_LOCATION_ID = D.GEOGRAP_LOCATION_ID and L.GEO_LOCA_FATHER_ID = 2|SELECT VEUCCICL sesucicl, VEUCANO pefaano, VEUCMES pefames, VEUCSESU PRODUCTO, VEUCVALO VALOR, VEUCSUCA SUBCATEGORIA, utl_raw.cast_to_varchar2(nlssort(VEUCOBSE, ''nls_sort=binary_ai'')) OBSERVACION FROM LDC_VECSUCFC, LDC_TEMPPPAUD, pr_product p, ab_address d, GE_GEOGRA_LOCATION l WHERE VEUCANO= ANIO AND VEUCMES = MES AND VEUCCICL= CICLO AND VECSCONC= 196 -- Subsidio and VEUCSESU = p.product_id and p.address_id = d.address_id and L.GEOGRAP_LOCATION_ID = D.GEOGRAP_LOCATION_ID and L.GEO_LOCA_FATHER_ID = 2|SELECT VEUCCICL sesucicl, VEUCANO pefaano, VEUCMES pefames, VEUCSESU PRODUCTO, VEUCVALO VALOR, VEUCSUCA SUBCATEGORIA, utl_raw.cast_to_varchar2(nlssort(VEUCOBSE, ''nls_sort=binary_ai'')) OBSERVACION FROM LDC_VECSUCFC, LDC_TEMPPPAUD, pr_product p, ab_address d, GE_GEOGRA_LOCATION l WHERE VEUCANO= ANIO AND VEUCMES = MES AND VEUCCICL= CICLO AND VECSCONC= 17 -- Cargo Fijo and VEUCSESU = p.product_id and p.address_id = d.address_id and L.GEOGRAP_LOCATION_ID = D.GEOGRAP_LOCATION_ID and L.GEO_LOCA_FATHER_ID = 2| SELECT VEUCCICL sesucicl, VEUCANO pefaano, VEUCMES pefames, VEUCSESU PRODUCTO, VEUCVALO VALOR, VEUCSUCA SUBCATEGORIA, utl_raw.cast_to_varchar2(nlssort(VEUCOBSE, ''nls_sort=binary_ai'')) OBSERVACION FROM LDC_VECSUCFC, LDC_TEMPPPAUD, pr_product p, ab_address d, GE_GEOGRA_LOCATION l WHERE VEUCANO= ANIO AND VEUCMES = MES AND VEUCCICL= CICLO AND VECSCONC= 37 -- Contribucion and VEUCSESU = p.product_id and p.address_id = d.address_id and L.GEOGRAP_LOCATION_ID = D.GEOGRAP_LOCATION_ID and L.GEO_LOCA_FATHER_ID = 2| SELECT VECOCANT Cantidad, VECOCICL sesucicl, VECOMES pefames, VECOANO pefaano FROM LDC_VERICOMP, LDC_TEMPPPAUD, ldc_cicldepa cd WHERE VECOANO= ANIO AND VECOMES = MES AND VECOCICL= CICLO and CICLO = cd.CICLCODI and cd.CICLDEPA = 2| SELECT VAAASESU PRODUCTO, VAAATAAP Tarifa_Aplicada, VAAATACO tarifa_concepto, VAAAVALO VALOR_CARGO, VAAAUNID MT3, utl_raw.cast_to_varchar2(nlssort(VAAAMERE, ''nls_sort=binary_ai'')) MERCADORELEVANTE, utl_raw.cast_to_varchar2(nlssort(VAAACATE, ''nls_sort=binary_ai'')) CATEGORIA, utl_raw.cast_to_varchar2(nlssort(VAAASUCA, ''nls_sort=binary_ai'')) SUBCATEGORIA, utl_raw.cast_to_varchar2(nlssort(VAAACONC, ''nls_sort=binary_ai'')) CONCEPTO, VAAAFEIN FECHA_INICIAL, VAAAFEFI FECHA_FINAL, VAAARANG RANGO, VAAAVATA VALOR_TARIFA, VAAAVALI VALOR_LIQUI, VAAADIFE diferencia FROM LDC_VATAAPI, LDC_TEMPPPAUD, pr_product p, ab_address d, GE_GEOGRA_LOCATION l WHERE VAAAANO = ANIO AND VAAAMES = MES AND VAAACICL= CICLO and VAAASESU = p.product_id and p.address_id = d.address_id and L.GEOGRAP_LOCATION_ID = D.GEOGRAP_LOCATION_ID and L.GEO_LOCA_FATHER_ID = 2|select VEFASESU Producto, VEFACANT cant FROM LDC_VERIFASE, LDC_TEMPPPAUD, pr_product p, ab_address d, GE_GEOGRA_LOCATION l WHERE VEFAANO = ANIO AND VEFAMES = MES AND VEFACICL = CICLO and VEFASESU = p.product_id and p.address_id = d.address_id and L.GEOGRAP_LOCATION_ID = D.GEOGRAP_LOCATION_ID and L.GEO_LOCA_FATHER_ID = 2|SELECT a.producto, a.ano, a.mes, a.ciclo, a.observacion FROM LDC_PRNOFGCC a, LDC_TEMPPPAUD b, pr_product p, ab_address d, GE_GEOGRA_LOCATION l WHERE a.ano = b.ANIO AND a.mes = b.MES AND a.ciclo = b.CICLO AND a.producto = p.product_id AND p.address_id = d.address_id AND L.GEOGRAP_LOCATION_ID = D.GEOGRAP_LOCATION_ID AND L.GEO_LOCA_FATHER_ID = 2|SELECT a.producto, a.ano, a.mes, a.ciclo, a.categoria, a.subcategoria, a.presion_operacion_errada FROM prod_pres_oper_errada a, LDC_TEMPPPAUD b, pr_product p, ab_address d, GE_GEOGRA_LOCATION l WHERE a.ano = b.ANIO AND a.mes = b.MES AND a.ciclo = b.CICLO AND a.producto = p.product_id AND p.address_id = d.address_id AND L.GEOGRAP_LOCATION_ID = D.GEOGRAP_LOCATION_ID AND L.GEO_LOCA_FATHER_ID = 2';
+
+  ldc_export_report_excel(sbrutaarchivo     => :sbrutaarchivo,
+                          sbnombrearchivo   => :sbnombrearchivo,
+                          sbnombrehojaexcel => :sbnombrehojaexcel,
+                          sbsentencia       => SBSENTENCIA);
+end;
+4
+sbrutaarchivo
+1
+/smartfiles/Facturacion/Auditorias
+5
+sbnombrearchivo
+1
+Repo_Audi_Post_Depa_CESAR_7470_26062026_083539
+5
+sbnombrehojaexcel
+1
+Cargos Dobles|Consumos Altos|Valores Altos Cargos|Verificacion Subsidio|Verificacion Cargos Fijo|Verificacion contribuccion|Verificacion compensacion|Tarifas CONS-CF mal Aplicadas|Verificacion Facturacion serv_7053|Contratos sin marca x facturar|Productos con Presion Operacion Errada
+5
+sbsentencia
+1
+<CLOB>
+-112
+0

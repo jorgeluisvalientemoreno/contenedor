@@ -24,42 +24,47 @@ select f.factcodi "Factura",
        s.sesuserv || ' - ' || ssv.servdesc "Tipo de servicio",
        s.sesuesco || ' - ' || initcap(ec.escodesc) "Estado_corte",
        s.sesucicl "Ciclo",
-       c.cargpefa || ' - ' || pf.pefadesc "Periodo Facturacion"
+       c.cargpefa || ' - ' || pf.pefadesc "Periodo Facturacion",
+       c.cargtaco Tarifa
   from open.cargos c
-  left join open.servsusc s
+ left join open.pr_product pr
+    on c.cargnuse = pr.product_id
+ left join open.servsusc s
     on c.cargnuse = s.sesunuse
-  left join open.estacort ec
+ left join open.estacort ec
     on ec.escocodi = s.sesuesco
-  left join open.concepto co
+ left join open.concepto co
     on c.cargconc = co.conccodi
+ left join open.pericose pc
+    on c.cargpeco = pc.pecscons
+ left join open.CAUSCARG causalc
+    on causalc.cacacodi = c.cargcaca
+ left join open.SIGNO
+    on signo.signcodi = c.cargsign
+ left join OPEN.PERIFACT pf
+    on pf.pefacodi = c.cargpefa
+ left join OPEN.SERVICIO sp
+    on sp.servcodi = pr.product_type_id
   left join open.cuencobr cc
     on cc.cucocodi = c.cargcuco
   left join open.factura f
     on f.factcodi = cc.cucofact
-  left join open.pr_product pr
-    on c.cargnuse = pr.product_id
   left join open.ps_product_status ps
     on ps.product_status_id = pr.product_status_id
-  left join open.pericose pc
-    on c.cargpeco = pc.pecscons
-  left join open.CAUSCARG causalc
-    on causalc.cacacodi = c.cargcaca
-  left join open.SIGNO
-    on signo.signcodi = c.cargsign
-  left join OPEN.PERIFACT pf
-    on pf.pefacodi = c.cargpefa
   left join OPEN.PROCESOS p
     on p.proccons = c.cargprog
   left join OPEN.SERVICIO ssv
     on ssv.servcodi = s.sesuserv
-  left join OPEN.SERVICIO sp
-    on sp.servcodi = pr.product_type_id
  where 1 = 1
-    -- 
-    and sesunuse in (1804604)
-    -- sesususc in (1803481)
-   --and trunc(cargfecr) >= '01/01/2025' --sysdate - 10
-    -- and c.cargdoso = 'PP-214849930'
-    -- and c.cargconc in (291, 991)
-   --and c.cargconc = 970
+      -- 
+      --
+   and sesunuse in (17161692,2092698 )
+-- sesususc in (1803481)
+--
+and trunc(cargfecr) >= sysdate - 1
+-- and c.cargdoso = 'PP-214849930'
+-- and c.cargconc in (291, 991)
+--
+--and c.cargconc = 25
+-- and cargdoso like '%234060957'
  ORDER BY cargfecr DESC;

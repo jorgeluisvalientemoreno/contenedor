@@ -1,8 +1,8 @@
-select a.package_type_id || ' - ' || a.description
+select a.package_type_id || ' - ' || a.description Tramite, a.tag_name TAG, a.is_annulable Anulable 
   from open.ps_package_type a
  where 1=1
---and a.package_type_id in (288)
--- and upper(a.description) like upper('%reconexi%')
+and a.package_type_id in (100341)
+ --and upper(a.description) like upper('%CAMBIO%ESTADO%PRODUCTO%')
 ;
 
 select *
@@ -11,6 +11,8 @@ select *
        (select a.tag_name
           from open.ps_package_type a
          where
-and a.package_type_id in (100343)
-    --     upper(a.description) like '%SUSPENS%')
+ a.package_type_id in (100341)
+    --     upper(a.description) like '%SUSPENS%'
+    )
+    
     ;

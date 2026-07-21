@@ -6,9 +6,9 @@ select ottc.task_type_id || ' - ' || ott.description Tipo_trabajo,
        open.or_task_type        ott,
        open.ge_class_causal     gcc
  where 1 = 1
-   and ottc.task_type_id in (11198) --(11359, 11360, 11361, 11362)
-   --and ottc.causal_id in (3904, 3905, 3906, 3907)
+   and ottc.task_type_id in (12149, 12151, 12150, 12152, 12162) --(11359, 11360, 11361, 11362)
+      --and ottc.causal_id in (3904, 3905, 3906, 3907)
    and ottc.causal_id = gc.causal_id
    and ottc.task_type_id = ott.task_type_id
-   and gc.class_causal_id = gcc.class_causal_id;
-
+   and gc.class_causal_id = gcc.class_causal_id
+ order by ottc.task_type_id, gc.class_causal_id;

@@ -1,5 +1,13 @@
 ---Lista de costo
-select * from open.GE_LIST_UNITARY_COST pl3;
+select GLUC.*
+  from open.GE_LIST_UNITARY_COST GLUC
+ order by GLUC.validity_start_date desc;
+--seq_ge_list_unitary_cost
+
+--item/ actividad listalista de costos 
+select distinct GUCIL.*
+  from open.GE_UNIT_COST_ITE_LIS GUCIL
+ order by GUCIL.LAST_UPDATE_DATE desc;
 
 --Lista de costos
 select pltt.*, rowid
@@ -16,17 +24,19 @@ select pltt.*, rowid
                          where tc.id_contrato = 8341)));
 
 --lista de costos 
-select pl1.*
+select distinct pl3.*
   from open.GE_UNIT_COST_ITE_LIS pl1,
        open.GE_ITEMS             pl2,
        open.GE_LIST_UNITARY_COST pl3
  where pl2.ITEMS_ID = pl1.ITEMS_ID
    and pl3.LIST_UNITARY_COST_ID = pl1.LIST_UNITARY_COST_ID
-   and pl1.ITEMS_ID in (4295270)
---and pl1.list_unitary_cost_id = 4026
---and (select count(1) from open.GE_LIST_UNITARY_COST a where a.list_unitary_cost_id = pl3.list_unitary_cost_id) = 0
---and pl3.validity_start_date >= '01/01/2023'
-;
+      --and pl1.ITEMS_ID in (100004750)
+   and pl3.operating_unit_id in (5405, 5404)
+      --and pl1.list_unitary_cost_id = 4026
+      --and pl3.operating_unit_id = 4691
+      --and (select count(1) from open.GE_LIST_UNITARY_COST a where a.list_unitary_cost_id = pl3.list_unitary_cost_id) = 0
+   and sysdate between pl3.validity_start_date and pl3.validity_final_date
+ order by pl3.validity_final_date desc;
 
 select *
   from open.GE_LIST_UNITARY_COST pl1

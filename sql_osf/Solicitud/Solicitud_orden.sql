@@ -35,14 +35,14 @@ select /* use_nl (oo order_id) */
  mp.comment_
   from open.Or_Order_Activity ooa
  inner join open.mo_packages mp
-    on mp.package_id(+) = ooa.package_id
+    on mp.package_id = ooa.package_id
       --and mp.package_type_id = 100101
       --and mp.package_id = 192215758 --199639503
-      --and ooa.product_id = 50678406
-   and ooa.subscription_id = 1015965
+      and ooa.product_id = 1066447
+   --and ooa.subscription_id = 1015965
  inner join open.or_order oo
     on oo.order_id = ooa.order_id
  inner join open.mo_motive mm
     on mm.package_id = mp.package_id
    and mm.subscription_id = ooa.subscription_id
- order by oo.legalization_date desc;
+ order by oo.created_date desc;

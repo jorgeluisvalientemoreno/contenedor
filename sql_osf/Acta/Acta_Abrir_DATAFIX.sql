@@ -1,0 +1,192 @@
+DECLARE
+
+  cursor cuActa is
+    select ga.*, rowid from open.ge_acta ga where ga.id_acta in (176904);
+
+  rfcuActa cuActa%rowtype;
+
+  inuacta          open.ge_acta.id_acta%TYPE; -- := 259439;
+  isbcomment       VARCHAR2(4000) := 'OSF-5191';
+  onuerror         NUMBER;
+  osberror         VARCHAR2(4000);
+  isbabrircontrato VARCHAR2(4000) := 'N';
+
+  nuactualizaestado      NUMBER := 0;
+  nuactualizavalliq      NUMBER := 0;
+  nuactualizaantamo      NUMBER := 0;
+  nuactualizafongara     NUMBER := 0;
+  valor_antipo_acta      NUMBER := 0;
+  valor_fondo            NUMBER := 0;
+  nuactaanticipo         NUMBER := 0;
+  nuenviosap             NUMBER := 0;
+  nunuevovalorliquidado  NUMBER;
+  nunuevovaloramortizado NUMBER;
+  nunuevofondogaran      NUMBER;
+  nunuevovalortotal      NUMBER;
+  sblog                  VARCHAR2(2000);
+
+  nuitemdescfondogar CONSTANT NUMBER := 102007;
+  nuitemdescanticipo CONSTANT NUMBER := 102006;
+  nucodigoerror      CONSTANT NUMBER := 2701;
+
+  CURSOR cuactas IS
+    SELECT A.*
+      FROM open.ge_acta A
+     WHERE A.id_acta = inuacta
+       AND A.id_tipo_acta IN (1, 2);
+
+  CURSOR cucontratos(nucontrato NUMBER) IS
+    SELECT C.* FROM open.ge_contrato C WHERE C.id_contrato = nucontrato;
+
+  CURSOR cuactaanticipo IS
+    SELECT COUNT(1)
+      FROM open.ge_detalle_acta D
+     WHERE D.id_acta = inuacta
+       AND D.id_items = nuitemdescanticipo;
+
+  CURSOR cuenviosap IS
+    SELECT COUNT(1)
+      FROM open.ldci_facteactasenv
+     WHERE faceaeidacta = inuacta;
+
+  rwcontrato cucontratos%rowtype;
+  rwacta     cuactas%rowtype;
+BEGIN
+
+  for rfcuActa in cuActa loop
+  
+    inuacta := rfcuActa.id_acta;
+  
+    dbms_output.put_line('Acta: ' || inuacta);
+    onuerror := 0;
+    osberror := NULL;
+    IF inuacta IS NULL THEN
+      onuerror := -1;
+      osberror := 'El acta no puede ser nula';
+      --RETURN;
+      dbms_output.put_line('        Mensaje Error: ' || osberror);
+    END IF;
+    /*IF isbcomment IS NULL OR isbcomment = '' THEN
+      onuerror := -1;
+      osberror := 'El Comentario no puede ser nulo';
+      --RETURN;
+      dbms_output.put_line('Mensaje Error: ' || osberror);
+    END IF;*/
+    IF cuactas%isopen THEN
+      CLOSE cuactas;
+    END IF;
+    OPEN cuactas;
+    FETCH cuactas
+      INTO rwacta;
+    IF cuactas%notfound THEN
+      onuerror := -1;
+      osberror := '        No se encontró el acta';
+      --RETURN;
+      dbms_output.put_line('Mensaje Error: ' || osberror);
+    else
+      osberror := '        Se encontró el acta';
+      --RETURN;
+      dbms_output.put_line('Ok: ' || osberror);
+    END IF;
+    CLOSE cuactas;
+    IF nvl(rwacta.estado, 'A') != 'C' THEN
+      onuerror := -1;
+      osberror := '        El estado del acta no es cerrado';
+      --RETURN;
+      dbms_output.put_line('Mensaje Error: ' || osberror);
+    else
+      osberror := '        El estado del acta es cerrada';
+      --RETURN;
+      dbms_output.put_line('Ok: ' || osberror);
+    END IF;
+    ---SI SE REQUIERE ABRIR EL ACTA AUNQUE TENGA FACTURA,
+    --CAMBIAR PRIMERO POR FUERA DEL SCRIPT EL CAMBIO DE LA FACTURA Y FECHA DE PAGO A NULL
+    IF rwacta.extern_invoice_num IS NOT NULL OR
+       rwacta.extern_pay_date IS NOT NULL THEN
+      onuerror := -1;
+      osberror := '        El acta tiene factura';
+      --RETURN;
+      dbms_output.put_line('Mensaje Error: ' || osberror);
+    else
+      osberror := '        El acta no tiene factura';
+      --RETURN;
+      dbms_output.put_line('Ok: ' || osberror);
+    END IF;
+  
+    IF rwacta.id_tipo_acta = 2 THEN
+      IF cuactaanticipo%isopen THEN
+        CLOSE cuactaanticipo;
+      END IF;
+      --NUNCA SE DEBE PODER ABRIR UN ACTA DE COBRO DE ANTICIPO DEJADO DE FACTURAR
+      OPEN cuactaanticipo;
+      FETCH cuactaanticipo
+        INTO nuactaanticipo;
+      IF nuactaanticipo > 0 THEN
+        onuerror := -1;
+        osberror := '        El acta es un acta de anticipo no se puede abrir';
+        --RETURN;
+        dbms_output.put_line('Mensaje Error: ' || osberror);
+      else
+        osberror := '        El acta NO es un acta de anticipo se puede abrir';
+        --RETURN;
+        dbms_output.put_line('Ok: ' || osberror);
+      END IF;
+      CLOSE cuactaanticipo;
+      --SE DEBE VALIDAR C
+      OPEN cuenviosap;
+      FETCH cuenviosap
+        INTO nuenviosap;
+      CLOSE cuenviosap;
+      --Si el acta ya fue enviada a sap 
+      IF nuenviosap > 0 THEN
+        onuerror := -1;
+        osberror := '        El acta ya fue enviada a sap, validar con contabilidad si se puede abrir';
+        --RETURN;
+        dbms_output.put_line('Mensaje Error: ' || osberror);
+      else
+        osberror := '        El acta NO ha sido enviada a SAP.';
+        --RETURN;
+        dbms_output.put_line('Ok: ' || osberror);
+      END IF;
+    ELSIF rwacta.id_tipo_acta = 1 AND
+          rwacta.nombre LIKE 'ENTREGA DE ANTICIPO%' THEN
+      onuerror := -1;
+      osberror := '        El acta es un acta de anticipo no se puede abrir';
+      --RETURN;
+      dbms_output.put_line('Mensaje Error: ' || osberror);
+    ELSIF rwacta.id_tipo_acta = 1 AND
+          rwacta.nombre NOT LIKE 'ENTREGA DE ANTICIPO%' THEN
+      onuerror := -1;
+      osberror := '        El acta NO es un acta de anticipo se puede abrir';
+      --RETURN;
+      dbms_output.put_line('Ok: ' || osberror);
+    END IF;
+  
+    OPEN cucontratos(rwacta.id_contrato);
+    FETCH cucontratos
+      INTO rwcontrato;
+    CLOSE cucontratos;
+    IF rwcontrato.status = 'CE' AND isbabrircontrato = 'N' THEN
+      onuerror := -1;
+      osberror := '        El contrato se encuentra cerrado';
+      --RETURN;
+      dbms_output.put_line('Mensaje Error: ' || osberror);
+    else
+      osberror := '        El contrato ' || rwacta.id_contrato ||
+                  ' se encuenta abierto.';
+      --RETURN;
+      dbms_output.put_line('Ok: ' || osberror);
+    END IF;
+  
+    --Se deja log con los datos del acta modificada
+    sblog := '        EL ACTA ' || rwacta.id_acta || ' SEGUN CASO' ||
+             isbcomment || ' PARA ABRIRLA.' || ' VALOR_TOTAL=' ||
+             rwacta.valor_total || ' VALOR LIQUIDADO: ' ||
+             rwacta.valor_liquidado || 'FECHA CIERRE ACTA: ' ||
+             rwacta.fecha_cierre;
+  
+    dbms_output.put_line(sblog);
+  
+  end loop;
+
+END;

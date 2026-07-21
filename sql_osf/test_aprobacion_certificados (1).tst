@@ -1,5 +1,5 @@
 PL/SQL Developer Test script 3.0
-9
+10
 begin
   -- Call the procedure
   LDCI_PROUPDOBSTATUSCERTOIAWS(inuCertiOia => :inuCertiOia,
@@ -8,11 +8,12 @@ begin
                                IdtFechapro => :IdtFechapro,
                                OnuCodigo => :OnuCodigo,
                                OsbMensaje => :OsbMensaje);
+                               --4677140
 end;
 6
 inuCertiOia
 1
-4497813
+4677140
 4
 IsbStatus
 1
@@ -20,11 +21,11 @@ A
 5
 IsbObser
 1
-SE APRUEBA CERTIFICADO DE INSPECCION ANDRES ANGULO
+SE APRUEBA CERTIFICADO DE INSPECCION JESSICA
 5
 IdtFechapro
 1
-17/12/2024 11:41:55 a. m.
+10/11/2025
 12
 OnuCodigo
 1
@@ -32,6 +33,6 @@ OnuCodigo
 4
 OsbMensaje
 1
-El estado de la inspecci?n 1100322700 fue cambiado a  APROBADO. 
+El estado de la inspecci?n 123456780 fue cambiado a  APROBADO. 
 5
 0

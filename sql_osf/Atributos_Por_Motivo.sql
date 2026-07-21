@@ -7,7 +7,8 @@ select mta.*, gea.attribute_type_id || ' - ' || gat.description Tipo_Dato -- pac
    and gea.entity_attribute_id = mta.entity_attribute_id
   left join open.GE_ATTRIBUTES_TYPE gat
     on gat.attribute_type_id = gea.attribute_type_id
- where package_type_id = &solicitud
- and mta.included_xml = 'Y' 
+ where p.package_type_id = &solicitud
+-- and mta.included_xml = 'Y' 
 --where init_expression_id is not null
 --121400640
+

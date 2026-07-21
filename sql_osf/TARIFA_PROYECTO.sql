@@ -9,16 +9,22 @@ select c.* from open.concepto c where c.conccodi in (985);
 --Proyecto Tarifa
 select tpt.*
   from open.TA_PROYTARI tpt
- where tpt.prtaserv = 3
-   and tpt.prtaesta in (1, 2, 3);
+ where 1 = 1
+   and upper(tpt.prtadocu) like '%GUAJIRA%'
+      --and tpt.prtaserv = 3
+      --and tpt.prtaesta in (1, 2, 3)
+   and 1 = 1;
 
 --Tarifa con un concepto asociado al proyecto de tarifa
 select *
   from open.TA_TARICOPR tcp
  where tcp.tacpprta in (select tpt.prtacons
                           from open.TA_PROYTARI tpt
-                         where tpt.prtaserv = 3
-                           and tpt.prtaesta in (1, 2, 3))
+                         where 1 = 1
+                           and upper(tpt.prtadocu) like '%GUAJIRA%'
+                           --and tpt.prtaserv = 3
+                           --and tpt.prtaesta in (1, 2, 3)
+                           and 1= 1)
    and tcp.tacptacc in
        (select tt.tacocons
           from open.ta_tariconc tt

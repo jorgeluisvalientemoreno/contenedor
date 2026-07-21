@@ -1,5 +1,5 @@
 PL/SQL Developer Test script 3.0
-327
+328
 declare
   -- Local variables here
   i               integer;
@@ -211,7 +211,7 @@ declare
            open.ge_geogra_location departamento_Orden,
            open.pr_product         pp
      where ooa.order_id = oo.order_id
-       and ooa.order_id in (299701151)
+       and ooa.order_id in (352086222)
           --and ooa.product_id in (24000223)
           --and trunc(oo.legalization_date) >= '01/10/2023'
           --and trunc(oo.created_date) >= '01/05/2023'   
@@ -236,6 +236,7 @@ declare
        and DireccionProducto.Address_Id(+) = pp.address_id;
 
 begin
+  dbms_output.enable(1000000);
   -- Test statements here
   sbComment := 'OT prueba AIU';
   --nuAddressId := dapr_product.fnugetaddress_id();

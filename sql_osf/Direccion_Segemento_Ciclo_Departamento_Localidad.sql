@@ -1,4 +1,5 @@
-select aa.ESTATE_NUMBER,
+select aa.address_id || ' - ' || aa.address Direccion,
+       aa.ESTATE_NUMBER,
        ap.category_ categoria_perdio,
        ap.subcategory_ subcategoria_perdio,
        aa.geograp_location_id || ' - ' || ggl_localidad.description Localidad,
@@ -12,6 +13,13 @@ select aa.ESTATE_NUMBER,
   left join open.ge_geogra_location ggl_departamento
     on ggl_departamento.geograp_location_id =
        ggl_localidad.geo_loca_father_id
- where aa.address_id = (select sc.susciddi
-                          from OPEN.SUSCRIPC sc
-                         where sc.susccodi = 67560488);
+   and ggl_departamento.geograp_location_id = 8978
+  left join OPEN.AB_SEGMENTS as_
+    on as_.segments_id = aa.segment_id
+ where 1 = 1
+      --and as_.route_id = -1
+      --and aa.address_id = 
+   and not exists (select pp.product_id
+          from open.pr_product pp
+         where pp.address_id = aa.address_id)
+ order by aa.address_id desc;

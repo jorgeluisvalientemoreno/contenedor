@@ -1,0 +1,17 @@
+select pp.subscription_id Contrato,
+       pp.product_id Producto,
+       DireccionProducto.Address_Id || ' - ' || DireccionProducto.Address Direccion_Producto,
+       gs.subscriber_id || ' - ' || gs.subscriber_name || ' ' ||
+       gs.subs_last_name Cliente,
+       gs.identification Identificacion
+  from open.pr_product pp
+  left join open.ab_address DireccionProducto
+    on DireccionProducto.address_id = pp.address_id
+  left join OPEN.suscripc s
+    on s.susccodi = pp.subscription_id
+  left join OPEN.GE_SUBSCRIBER gs
+    on gs.subscriber_id = s.suscclie
+ where 1 = 1
+   --and pp.product_id = 52231303
+   and pp.subscription_id = 18500480
+   and 1= 1;

@@ -35,8 +35,10 @@ SELECT xml_log,
                 '//PREVIOUS_VALUES//MODIFICACIONES//ID_CONTRATO') tabla_ante
  where l.AUDIT_LOG_ID IN (206)
       --and tabla_ante.ESTADO_PREVIO in ('C')
-   and tabla_ante.ID_CONTRATO = '9321'
-   and l.current_date >= to_date('01/09/2022', 'dd/mm/yyyy');
+   --and tabla_ante.ID_CONTRATO = '11581'
+   --and tabla_ante.ID_ACTA = '253277'
+   --and l.current_user_mask = 'LICDIA'
+   and l.current_date >= to_date('01/11/2025', 'dd/mm/yyyy');
 SELECT *
   FROM OPEN.AU_AUDIT_POLICY_LOG au
  where

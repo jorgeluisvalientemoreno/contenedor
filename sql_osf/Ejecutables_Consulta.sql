@@ -2,7 +2,7 @@ select a1.executable_id,
        a1.name || ' - ' || a1.description Ejecutable,
        a1.path,
        a1.version,
-       a1.executable_type_id,
+       a1.executable_type_id || ' - ' || set_.name Tipo_Ejecutable,
        a1.exec_oper_type_id,
        a1.module_id || ' - ' || gm.description Modulo,
        a1.subsystem_id,
@@ -18,9 +18,11 @@ select a1.executable_id,
   from open.SA_EXECUTABLE a1
  inner join open.ge_module gm
     on gm.module_id = a1.module_id
- where
---a1.name = 'LDCAPSOMA'
- upper(a1.description) like upper('%Solicitud%Material%');
+ inner join open.SA_EXECUTABLE_TYPE SET_
+    on set_.executable_type_id = a1.executable_type_id
+ where 1 = 1
+   --and upper(a1.name) like upper('%O')
+   and upper(a1.description) like upper('%bloqu%orde%');
 
 select a1.*
   from open.SA_EXECUTABLE a1

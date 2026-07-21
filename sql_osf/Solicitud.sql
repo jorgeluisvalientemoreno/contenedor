@@ -1,9 +1,11 @@
-select distinct MP.USER_ID Usuario,
+select distinct MP.USER_ID || ' - ' || gp.name_ Usuario,
                 mp.package_type_id || ' - ' ||
                 (select b.description
                    from open.ps_package_type b
                   where b.package_type_id = mp.package_type_id) Tipo_Solicitud,
+                mm.causal_id || ' - ' || cc.description Causal_Solicitud,
                 mp.package_id Solicitud,
+                mp.cust_care_reques_num Interaccion,
                 mp.motive_status_id || ' - ' ||
                 (select d.description
                    from open.ps_motive_status d
@@ -13,10 +15,7 @@ select distinct MP.USER_ID Usuario,
                    from open.ge_reception_type c
                   where c.reception_type_id = mp.reception_type_id) Medio_Recepcion,
                 mp.request_date Fecha_Registro,
-                mp.cust_care_reques_num Interaccion,
                 mp.attention_date Fecha_Atencion,
-                mp.init_register_date Fecha_Inicio_Registro,
-                mp.cust_care_reques_num Interaccion,
                 mp.comment_ Comentario,
                 mm.motive_id Motivo,
                 (select mm.motive_status_id || ' - ' || d.description
@@ -31,7 +30,8 @@ select distinct MP.USER_ID Usuario,
                 mp.management_area_id Area_Administrativa,
                 mm.product_id Producto,
                 mm.subscription_id Contrato,
-                mp.subscriber_id Identificacion,
+                mp.subscriber_id || ' - ' || gs.subscriber_name || ' ' ||
+                gs.subs_last_name Cliente,
                 (select mm.motive_status_id || ' - ' || d.description
                    from open.ps_motive_status d
                   where d.motive_status_id = mc.motive_status_id) Estado_Componentes,
@@ -50,7 +50,8 @@ select distinct MP.USER_ID Usuario,
                 (select count(1)
                    from OPEN.OR_ORDER_ACTIVITY ooa
                   where ooa.package_id = mp.package_id) Cantidad_Ordenes,
-                (select /*+ index mdfo(IDX_MO_DATA_FOR_ORDER_01)*/ mdfo.item_id
+                (select /*+ index mdfo(IDX_MO_DATA_FOR_ORDER_01)*/
+                  mdfo.item_id
                    from OPEN.MO_DATA_FOR_ORDER mdfo
                   where mdfo.package_id = mp.package_id) Actividad,
                 decode((select count(1)
@@ -58,25 +59,45 @@ select distinct MP.USER_ID Usuario,
                         where lpcl.package_id = mp.package_id),
                        1,
                        'SI',
-                       'NO') Generada_CAMUNDA
+                       'NO') Generada_CAMUNDA,
+                mm.prov_initial_date,
+                mm.prov_final_date /*,
+                round(PKG_BOCALENDARIO.FNUOBTDIASNOFESTIVOS(mp.request_date,
+                                                            SYSDATE),
+                      0) Dias_Habiles*/
   from open.mo_packages mp
   left join open.mo_motive mm
     on MP.PACKAGE_ID = MM.PACKAGE_ID
   left join open.mo_component mc
     on mc.package_id = mp.package_id
    and 'S' in upper(&ConsultaComponente)
+  left join open.ge_subscriber gs
+    on gs.subscriber_id = mp.SUBSCRIBER_ID
+  left join open.sa_user su
+    on su.mask = mp.USER_ID
+  left join open.ge_person gp
+    on gp.user_id = su.USER_ID
+  left join OPEN.CC_CAUSAL cc
+    on cc.causal_id = mm.causal_id
  where 1 = 1
---and mp.package_id in (226273986)
---and mm.subscription_id is not null--= 50062691
+      --
+   and mp.package_id in (&solicitud)
+---- and mm.subscription_id = 53657991 --is not null--= 50062691
 --and mm.product_id = 17248467
 --and mp.cust_care_reques_num = '213303669'   
 --and mp.motive_status_id = 13
---and mp.subscriber_id in (select a2.suscclie from OPEN.SUSCRIPC a2 where a2.susccodi = 50062691)
---and mm.product_id = 50366875
---and mp.package_type_id = 100342
---and trunc(mp.request_date) >= '01/07/2025'
+-- and mp.subscriber_id = 1501179 --in (select a2.suscclie from OPEN.SUSCRIPC a2 where a2.susccodi = 50062691)
+--and mm.subscription_id = 1501179
+--and mm.product_id = (select pp.product_id from open.pr_product pp where pp.subscription_id= 1501179)
+--and mp.package_type_id in (100306,100030)
+--  and mp.request_date >= '01/06/2026'
 --and (select count(1) from open.Or_Order_Activity ooa where ooa.package_id = mp.package_id ) = 0 
 --and mm.CUSTOM_DECISION_FLAG = 'N'
--- and mp.package_type_id = 100220
+-- and mp.package_type_id = 100030
 --and (select count(1) from OPEN.OR_ORDER_ACTIVITY ooa where ooa.package_id = mp.package_id) > 0
- order by MP.PACKAGE_ID asc;
+--and mp.cust_care_reques_num = '234463094'--'236413155'
+--and gs.address_id is null
+--and MP.Request_Date > '01/01/2025'
+--and rownum <= 5
+--
+ order by MP.Request_Date desc;

@@ -7,38 +7,32 @@ select otti.task_type_id || ' - ' || ott.description Tipo_trabajo,
   left join open.or_task_type ott
     on ott.task_type_id = otti.task_type_id
  where 1 = 1
-   and otti.task_type_id in (10444, 10795, 10833, 10723)
-   and gi.item_classif_id = 2
-   and gi.items_id in (100004600, 100004601, 100006536, 100004602)
-   AND gi.description LIKE '%RECON%';
+--
+and otti.task_type_id in (&tipo_trabajo)
+--and gi.item_classif_id = 2
+--and gi.items_id in (100011672)
+--AND gi.description LIKE '%RECON%'
+;
 
 select a.*, rowid
   from OPEN.GE_ITEMS_ATTRIBUTES a
- where A.ITEMS_ID IN (100009106,
-                      100009108,
-                      100009107,
-                      100009109,
-                      100009113,
-                      100009114, -- SUSPENSION POR REFORMA DESDE CM
-                      100010569,
-                      100010570);
+ where 1 = 1
+   and A.ITEMS_ID IN (select otti.items_id
+                        from open.or_task_types_items otti
+                       where otti.task_type_id = &tipo_trabajo);
 
 select a.*, rowid
   from OPEN.GE_ITEMS a
- where A.ITEMS_ID IN (100009106,
-                      100009108,
-                      100009107,
-                      100009109,
-                      100009113,
-                      100009114, -- SUSPENSION POR REFORMA DESDE CM
-                      100010569,
-                      100010570);
+ where A.ITEMS_ID IN (select otti.items_id
+                        from open.or_task_types_items otti
+                       where otti.task_type_id = &tipo_trabajo);
 
 select a.*, rowid
   from OPEN.OR_PLANNED_ACTIVIT a
- where a.planned_activity_id IN (100009106, -- SUSPENSION EN CDM POR SEGURIDAD
-                                 100009113 -- SUSPENSION POR REFORMA DESDE CM
-                                 );
+ where a.planned_activity_id IN
+       (select otti.items_id
+          from open.or_task_types_items otti
+         where otti.task_type_id = &tipo_trabajo);
 
 --and ott.description like '%DOCUMEN%'
 -- and otti.items_id in (100009057, 100009058)
@@ -48,9 +42,9 @@ select a.*, rowid
  where 1 = 1
       -- and a.activo = 'S'
       --   
-   and a.task_type_id in (12155)
+   and a.task_type_id in (&tipo_trabajo)
 -- and (a.causal_id = 3764 or a.causal_id is null)
 ---and (a.causal_id = 9517 or a.causal_id is null)
 --and upper(a.procedimiento) like upper('%char%') --'LDC_BOPROCESAORDVMP.PGENSUSP_USUNOAUTORIZA'
  order by a.orden_ejec;
-select seq_or_actividades_rol.nextval from dual
+--select seq_or_actividades_rol.nextval from dual

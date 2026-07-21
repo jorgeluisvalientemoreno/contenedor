@@ -1,5 +1,4 @@
---TARIFAS VENTAS
---EStado Proyecto
+--Estado Proyecto
 select * from open.TA_ESTAPROY;
 
 --Concepto
@@ -12,7 +11,25 @@ select tpt.*
  where tpt.prtaserv = 3
    and tpt.prtaesta in (1, 2, 3);
 
---Tarifa con un concepto asociado al proyecto de tarifa
+select tp.prtacons || ' - ' || tp.prtadesc Proyecto_Tarifa,
+       tp.prtaserv servicio,
+       tp.prtaesta || ' - ' || tep.esprdesc Estado,
+       tp.prtausua || ' - ' || gp.name_ Usuario,
+       tp.prtafech Fecha_Creacion
+  from open.ta_proytari tp
+  left join open.ta_estaproy tep
+    on tep.esprcons = tp.prtaesta
+  left join open.sa_user sa
+    on sa.mask = tp.prtausua
+  left join open.ge_person gp
+    on sa.user_id = gp.user_id
+ where 1 = 1
+   and tp.prtaserv = 3
+   and tp.prtaesta in (1, 2, 3)
+      --and tp.prtacons in (8711, 8733, 8734)
+   and 1 = 1;
+
+--TARIFAS POR CONCEPTO POR PROYECTO
 select *
   from open.TA_TARICOPR tcp
  where tcp.tacpprta in (select tpt.prtacons
@@ -27,11 +44,13 @@ select *
                                 where cotcconc in (985)
                                   and cotcserv = 3
                                   and cotcvige = 'S'));
---Vigencia de tarifa
+                                  
+--CONFIGURAR TARIFA POR CONCEPTO
 select w.*, rowid
   from ta_conftaco w
  where w.cotcserv = 3
    and w.cotcconc = 985;
+   
 select t.*, rowid
   from open.TA_VIGETACO t
  where t.vitctaco in
@@ -67,7 +86,7 @@ select t.*, rowid
                                           and cotcserv = 3
                                           and cotcvige = 'S')));
 
---Rando de tarifa
+--Rango de tarifa
 select tcvt.*, rowid
   from TA_RANGVITP tcvt
  where tcvt.ravpvitp in

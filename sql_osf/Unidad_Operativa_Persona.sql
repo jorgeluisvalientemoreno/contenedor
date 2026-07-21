@@ -6,3 +6,4 @@ select a.operating_unit_id UNIDAD_OPERATIVA,
 select a.*, rowid
   from OPEN.OR_OPER_UNIT_PERSONS a
  where a.operating_unit_id = 4205;
+--4619,48115

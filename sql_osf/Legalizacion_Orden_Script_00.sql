@@ -9,7 +9,7 @@ declare
 begin
   -- Test statements here
 
-  os_legalizeorders('246628469|3379|15902||238522491>0;;;;|||1277;Prueba suspension por seguridad CM',
+  os_legalizeorders('402232408|9595|48115||395685794>1;;;;|||1277;PRUEBA',
                     sysdate,
                     sysdate,
                     sysdate,

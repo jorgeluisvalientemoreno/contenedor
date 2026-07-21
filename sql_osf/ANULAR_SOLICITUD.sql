@@ -1,19 +1,18 @@
-
-
 DECLARE
   cursor cuSolicitudes is
-        SELECT p2.package_id,
-                p2.request_Date,
-                p2.motive_status_id,
-                p2.user_id,
-                p2.comment_,
-                p2.cust_care_reques_num,
-                p2.package_type_id
-        FROM OPEN.mo_packages p
-        INNER JOIN OPEN.mo_packages p2 on p2.cust_care_reques_num = to_char(p.cust_care_reques_num)
-        WHERE p.package_id IN (221964346)
-    AND p2.motive_status_id = 13
-        ORDER BY  p2.package_id;
+    SELECT p2.package_id,
+           p2.request_Date,
+           p2.motive_status_id,
+           p2.user_id,
+           p2.comment_,
+           p2.cust_care_reques_num,
+           p2.package_type_id
+      FROM OPEN.mo_packages p
+     INNER JOIN OPEN.mo_packages p2
+        on p2.cust_care_reques_num = to_char(p.cust_care_reques_num)
+     WHERE p.package_id IN (236734529)
+       AND p2.motive_status_id = 13
+     ORDER BY p2.package_id;
 
   sbComment VARCHAR2(4000) := 'Se cambia estado a anulado por OSF-3553';
   sbmensaje VARCHAR2(4000);
@@ -162,7 +161,7 @@ DECLARE
 BEGIN
   nuCont := 0;
   FOR reg IN cuSolicitudes LOOP
-    nuCont := nuCont + 1;
+    nuCont  := nuCont + 1;
     nuError := 0;
     IF nuError = 0 THEN
       --1 VALIDACION
@@ -197,7 +196,8 @@ BEGIN
         BEGIN
           --Cambio estado de la solicitud
           UPDATE OPEN.mo_packages
-             SET motive_status_id = dald_parameter.fnuGetNumeric_Value('ID_ESTADO_PKG_ANULADA'), attention_date = sysdate
+             SET motive_status_id = dald_parameter.fnuGetNumeric_Value('ID_ESTADO_PKG_ANULADA'),
+                 attention_date   = sysdate
            WHERE package_id IN (reg.package_id);
         
           PACKAGE_IDvar           := reg.package_id;
@@ -256,7 +256,7 @@ BEGIN
                  annul_causal_id    = ge_boparameter.fnuget('ANNUL_CAUSAL'),
                  motive_status_id   = 5,
                  causal_id          = 287,
-         attention_date     = sysdate
+                 attention_date     = sysdate
            WHERE package_id IN (reg.package_id);
         EXCEPTION
           WHEN OTHERS THEN
@@ -278,8 +278,8 @@ BEGIN
             
           END;
           -- anula el plan de wf
-
-          IF (NVL(nuPlanId,0) <> 0) THEN
+        
+          IF (NVL(nuPlanId, 0) <> 0) THEN
             BEGIN
               mo_boannulment.annulwfplan(nuPlanId);
             EXCEPTION
@@ -317,7 +317,7 @@ BEGIN
     END IF; ----1 VALIDACION
   END LOOP;
   IF nuCont = 0 THEN
-      dbms_output.put_line('No existe ninguna solicitud para anular');  
+    dbms_output.put_line('No existe ninguna solicitud para anular');
   END IF;
 END;
 /

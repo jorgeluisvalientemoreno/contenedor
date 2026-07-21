@@ -51,11 +51,11 @@ BEGIN
 inufuncionario          := 43046;
   inupuntoatencion        := 4107;
   inutipoformulario       := 8;
-  inunumeroformulario     := 766459;
-  isbobservacion          := 'Ventas Digitales test';
-  inudireccionid          := 2356255;
+  inunumeroformulario     := 1203169988;
+  isbobservacion          := 'Ventas test XML';
+  inudireccionid          := 969919;
   inutipoidentificacion   := 1;
-  inuidentificacion       := 1203169900; --1203169900;
+  inuidentificacion       := 1203169988; --1203169900;
   isbnombre               := 'Andres';
   isbapellido             := 'Cuevas';
   isbnombreempresa        := 'Sun Energy';
@@ -70,13 +70,13 @@ inufuncionario          := 43046;
   inutelefono             := 3002569658;
   inutipopredio           := 2;
   inuestadoley            := 1;
-  inuPromicion            := 86;--null;--86;
+  inuPromicion            := null;--86;
   inuplancomercial        := 4;
-  inuvalortotal           := 2334930;
+  inuvalortotal           := 3612320;
   inuplanfinanciacion     := 23;
-  inucuotaincial          := 151288;
+  inucuotaincial          := 0;
   inunumerocuotas         := 72;
-  inucuotamensual         := 67973.72;
+  inucuotamensual         := 86906;
   inuformapago            := 13;
   isbcuotainicialrecibida := 'N';
   inutipoinstalacion      := 1;
@@ -130,92 +130,52 @@ inufuncionario          := 43046;
           </C_GAS_42>
         </M_INSTALACION_DE_GAS_59>
       </P_VENTA_DE_GAS_POR_FORMULARIO_271>';
-  /*'<P_VENTA_DE_GAS_POR_FORMULARIO_271 ID_TIPOPAQUETE="271">
-    <ID>43046</ID>
-    <POS_OPER_UNIT_ID>4107</POS_OPER_UNIT_ID>
-    <DOCUMENT_TYPE_ID>8</DOCUMENT_TYPE_ID>
-    <DOCUMENT_KEY>766452</DOCUMENT_KEY>
-    <COMMENT_>Ventas Digitales test</COMMENT_>
-    <DIRECCION>2356255</DIRECCION>
-    <TIPO_DE_IDENTIFICACION>1</TIPO_DE_IDENTIFICACION>
-    <IDENTIFICATION>1203169900</IDENTIFICATION>
-    <SUBSCRIBER_NAME>Andres</SUBSCRIBER_NAME>
-    <APELLIDO>Cuevas</APELLIDO>
-    <COMPANY>Sun Energy</COMPANY>
-    <TITLE>Gerente</TITLE>
-    <CORREO_ELECTRONICO>jvaliente@horbath.com</CORREO_ELECTRONICO>
-    <PERSON_QUANTITY>2</PERSON_QUANTITY>
-    <ENERGETICO_ANTERIOR>1</ENERGETICO_ANTERIOR>
-    <PREDIO_EN_CONSTRUCCION>N</PREDIO_EN_CONSTRUCCION>
-    <TECNICO_DE_VENTAS>-1</TECNICO_DE_VENTAS>
-    <UNIDAD_DE_TRABAJO_INSTALADORA>3478</UNIDAD_DE_TRABAJO_INSTALADORA>
-    <UNIDAD_DE_TRABAJO_CERTIFICADORA>3479</UNIDAD_DE_TRABAJO_CERTIFICADORA>
-    <PHONE>3002569658</PHONE>
-    <TIPO_DE_PREDIO>2</TIPO_DE_PREDIO>
-    <ESTADO_DE_LEY_1581>1</ESTADO_DE_LEY_1581><M_INSTALACION_DE_GAS_59>
-      <COMMERCIAL_PLAN_ID>4</COMMERCIAL_PLAN_ID>
-      <TOTAL_VALUE>2334930</TOTAL_VALUE>
-      <PLAN_DE_FINANCIACION>23</PLAN_DE_FINANCIACION>
-      <INITIAL_PAYMENT>151288</INITIAL_PAYMENT>
-      <NUMERO_DE_CUOTAS>72</NUMERO_DE_CUOTAS>
-      <CUOTA_MENSUAL>67973.72</CUOTA_MENSUAL>
-      <INIT_PAYMENT_MODE>13</INIT_PAYMENT_MODE>
-      <INIT_PAY_RECEIVED>N</INIT_PAY_RECEIVED>
-      <INSTALL_TYPE>1</INSTALL_TYPE>
-      <USAGE>1</USAGE>
-      <PROMOCIONES GROUP="1">
-          <PROMOTION_ID>86</PROMOTION_ID> 
-      </PROMOCIONES>
-      <C_GAS_42>
-        <CODIGO_DEL_PAQUETE />
-        <C_MEDICION_43 />
-      </C_GAS_42>
-    </M_INSTALACION_DE_GAS_59>
-  </P_VENTA_DE_GAS_POR_FORMULARIO_271>';*/
-  /*'
-  <P_VENTA_DE_GAS_POR_FORMULARIO_271 ID_TIPOPAQUETE="271">
-    <ID>43046</ID>
-    <POS_OPER_UNIT_ID>4107</POS_OPER_UNIT_ID>
-    <DOCUMENT_TYPE_ID>8</DOCUMENT_TYPE_ID>
-    <DOCUMENT_KEY>766448</DOCUMENT_KEY>
-    <COMMENT_>Ventas Digitales test</COMMENT_>
-    <DIRECCION>12036</DIRECCION>
-    <TIPO_DE_IDENTIFICACION>1</TIPO_DE_IDENTIFICACION>
-    <IDENTIFICATION>1203169900</IDENTIFICATION>
-    <SUBSCRIBER_NAME>Jesus Daniel</SUBSCRIBER_NAME>
-    <APELLIDO>Cuello</APELLIDO>
-    <COMPANY>Vent Dig</COMPANY>
-    <TITLE>Vent Dig</TITLE>
-    <CORREO_ELECTRONICO>jvaliente@horbath.com</CORREO_ELECTRONICO>
-    <PERSON_QUANTITY>1</PERSON_QUANTITY>
-    <ENERGETICO_ANTERIOR>1</ENERGETICO_ANTERIOR>
-    <PREDIO_EN_CONSTRUCCION>N</PREDIO_EN_CONSTRUCCION>
-    <TECNICO_DE_VENTAS>-1</TECNICO_DE_VENTAS>
-    <UNIDAD_DE_TRABAJO_INSTALADORA>3478</UNIDAD_DE_TRABAJO_INSTALADORA>
-    <UNIDAD_DE_TRABAJO_CERTIFICADORA>3479</UNIDAD_DE_TRABAJO_CERTIFICADORA>
-    <PHONE>3026644</PHONE>
-    <TIPO_DE_PREDIO>2</TIPO_DE_PREDIO>
-    <ESTADO_DE_LEY_1581>1</ESTADO_DE_LEY_1581>
-    <M_INSTALACION_DE_GAS_59>
-      <COMMERCIAL_PLAN_ID>4</COMMERCIAL_PLAN_ID>
-      <TOTAL_VALUE>2334930</TOTAL_VALUE>
-      <PLAN_DE_FINANCIACION>23</PLAN_DE_FINANCIACION>
-      <INITIAL_PAYMENT>151288</INITIAL_PAYMENT>
-      <NUMERO_DE_CUOTAS>72</NUMERO_DE_CUOTAS>
-      <CUOTA_MENSUAL>67973.72</CUOTA_MENSUAL>
-      <INIT_PAYMENT_MODE>13</INIT_PAYMENT_MODE>
-      <INIT_PAY_RECEIVED>N</INIT_PAY_RECEIVED>
-      <INSTALL_TYPE>1</INSTALL_TYPE>
-    <USAGE>1</USAGE>
-      <C_GAS_42>
-        <CODIGO_DEL_PAQUETE />
-        <C_MEDICION_43 />
-      </C_GAS_42>
-    </M_INSTALACION_DE_GAS_59>
-  </P_VENTA_DE_GAS_POR_FORMULARIO_271>
-  ';*/
 
-  /*inufuncionario          := 43046;
+  /*
+  Venta 0
+inufuncionario          := 1;
+  inupuntoatencion        := 25;
+  inutipoformulario       := 8;
+  inunumeroformulario     := 134625;
+  isbobservacion          := 'Ventas prueba test';
+  inudireccionid          := 77576;
+  inutipoidentificacion   := 1;
+  inuidentificacion       := 1203169999; --1203169900;
+  isbnombre               := 'Andres';
+  isbapellido             := 'Cuevas';
+  isbnombreempresa        := 'Sun Energy';
+  isbcargo                := 'Gerente';
+  isbcorreo               := 'jvaliente@horbath.com';
+  inucantidadpersonas      := 2;
+  inuenergeticoanterior   := 1;
+  isbpredioconstruccion   := 'N';
+  inutecnicoventas        := -1;
+  inuunidadinstaladora    := null;
+  inuunidadcertificadora  := null;
+  inutelefono             := 3002569658;
+  inutipopredio           := 2;
+  inuestadoley            := 1;
+  inuPromicion            := null;--86;
+  inuplancomercial        := 4;
+  inuvalortotal           := 3612320;
+  inuplanfinanciacion     := 72;
+  inucuotaincial          := null;
+  inunumerocuotas         := 72;
+  inucuotamensual         := 86906;
+  inuformapago            := 13;
+  isbcuotainicialrecibida := 'N';
+  inutipoinstalacion      := 1;
+  inuUso                  := 1;
+
+     if inuPromicion is not null then
+        sbPromocion := '<PROMOCIONES GROUP="1">
+                            <PROMOTION_ID>' || inuPromicion ||
+                       '</PROMOTION_ID>
+                          </PROMOCIONES>';
+      end if;  
+  
+  Venta 1
+  inufuncionario          := 43046;
   inupuntoatencion        := 4107;
   inutipoformulario       := 8;
   inunumeroformulario     := 766451;
@@ -294,7 +254,7 @@ inufuncionario          := 43046;
   IF (onuErrorCode = 0) THEN
     DBMS_OUTPUT.PUT_LINE('Venta: ' || TO_CHAR(onuPackageId) ||
                          ' - Motivo: ' || TO_CHAR(onuMotiveId));
-    --Commit;
+    Commit;
   ELSE
     DBMS_OUTPUT.PUT_LINE('Error:  ' || osbErrorMessage);
     ROLLBACK;

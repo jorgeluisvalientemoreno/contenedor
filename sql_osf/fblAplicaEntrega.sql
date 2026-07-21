@@ -1,6 +1,6 @@
-declare
-  isbEntrega Varchar2(4000) := 'OSS_MAN_STN_2001261_1';--'OSS_CON_KBM_2001458_9';--'OSS_CON_LJLB_2001325_1';--'BSS_FACT_LJLB_2001377_1'; --'OSS_CON_CBB_200308_5';--'OSS_DIS_NCZ_200703_2';--'BSS_FACT_LJLB_2001377_1';--'BSS_FACT_LJLB_2001377_1';--'OSS_RP_OOP_200304_1';
-
+DECLARE
+  --CREATE OR REPLACE function OPEN.fblAplicaEntrega(isbEntrega In Varchar2) return boolean is
+  isbEntrega Varchar2(4000) := 'OSS_OYM_DSS_200_2470_4';
   /*****************************************************************
   PROPIEDAD INTELECTUAL DE GASES DEL CARIBE E.S.P.
   
@@ -45,13 +45,11 @@ BEGIN
   -- Si aplica la entrega se retorna True, sino aplica se retorna False
   If Nvl(sbAplica, 'N') = 'S' Then
   
-    dbms_output.put_line('fblaplicaentrega(' || isbEntrega ||
-                         ') --> Return True');
+    dbms_output.put_line('Entrega ' || isbEntrega || ' - Return True');
   
   Else
   
-    dbms_output.put_line('fblaplicaentrega(' || isbEntrega ||
-                         ') --> Return False');
+    dbms_output.put_line('Entrega ' || isbEntrega || ' - Return False');
   
   End If;
 

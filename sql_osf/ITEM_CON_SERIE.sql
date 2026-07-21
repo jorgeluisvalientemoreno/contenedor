@@ -37,7 +37,9 @@ select gis.id_items_seriado SERIADO,
     on UNIDADASOCIADA.OPERATING_UNIT_ID = gis.operating_unit_id
   left join OPEN.GE_SUBSCRIBER gs
     on gs.subscriber_id = gis.subscriber_id
- where gi.items_id = 10006967
--- and gis.id_items_seriado = 1951115
---gis.serie = 'IT-3401094205-12'
+ where 1= 1 
+ --
+ and gi.items_id = 10004070
+ --and gis.id_items_seriado = 10004070
+and gis.serie = 'S-917306-2011'
 ;

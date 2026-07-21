@@ -1,0 +1,45 @@
+select co.id_contrato Contrato,
+       co.descripcion,
+       co.fecha_inicial_contrato,
+       co.fecha_final_contrato,
+       DECODE(co.status,
+              'CE',
+              'CE - CERRAR',
+              'AB',
+              'AB - ABIERTO',
+              'SIN ESTADO') Estado_Contrato,
+       --c.CONPLA_CON_TYPE_ID,
+       c.CONTRACT_TYPE_ID || ' - ' || gtc.descripcion Tipo_Contrato,
+       c.CONDITIONS_PLAN_ID || ' - ' || ccp.description Plan_Condiciones,
+       c.START_DATE Fecha_Incio_plan,
+       c.END_DATE Fecha_Final_plan,
+       --c.CONTRACT_ID Contrato,
+       decode(c.FLAG_TYPE,
+              'T',
+              'T - Tipo Contrato',
+              'C',
+              'C - Contrato',
+              'No Definido') FLAG_TIPO,
+       DECODE(NVL(c.PERSON_ID, -1),
+              -1,
+              NULL,
+              c.PERSON_ID || ' - ' || gp.name_) Funcional,
+       DECODE(NVL(c.PERSONAL_TYPE, -1),
+              -1,
+              NULL,
+              c.PERSONAL_TYPE || ' - ' || gpt.description) Tipo_Funcional
+  from OPEN.ct_conpla_con_type c
+  left join open.ge_contrato co
+    on (CONTRACT_TYPE_ID = co.id_tipo_contrato or
+       co.id_contrato = c.contract_id)
+  left join OPEN.CT_CONDITIONS_PLAN ccp
+    on ccp.conditions_plan_id = c.conditions_plan_id
+  left join OPEN.GE_TIPO_CONTRATO gtc
+    on gtc.id_tipo_contrato = c.contract_type_id
+  left join open.ge_person gp
+    on gp.person_id = c.person_id
+  left join OPEN.GE_PERSONAL_TYPE gpt
+    on gpt.personal_type = c.personal_type
+ where 1 = 1
+   and id_contrato in
+       (5541, 5542, 8721, 8722, 9741, 10281, 10461, 11341, 12061, 12241);

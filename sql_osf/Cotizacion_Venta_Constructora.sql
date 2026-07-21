@@ -1,24 +1,30 @@
 select csf.* from OPEN.CC_QUOTATION csf where csf.Package_Id = 224551078;
+
 select csf1.*
   from OPEN.cc_quotation_item csf1
  where csf1.quotation_id in
        (select csf.quotation_id
           from OPEN.CC_QUOTATION csf
          where csf.Package_Id = 224551078);
+
 select mp.*, rowid
   from open.mo_packages mp
  where mp.package_id = 224551078;
+
 select mp.*, rowid from open.mo_motive mp where mp.package_id = 224551078;
+
 select mp.*, rowid
   from open.diferido mp
  where mp.difesusc = (select mp1.subscription_id
                         from open.mo_motive mp1
                        where mp1.package_id = 224551078);
+
 select ca.*, rowid
   from open.cargos ca
  where ca.cargnuse = (select mp1.product_id
                         from open.mo_motive mp1
                        where mp1.package_id = 224551078);
+
 select gi.*, rowid
   from open.ge_items gi
  where gi.items_id in
@@ -28,16 +34,20 @@ select gi.*, rowid
                (select csf.quotation_id
                   from OPEN.CC_QUOTATION csf
                  where csf.Package_Id = 224551078));
+
 select mo_boPackages.fnugetliquidmethod(224551078) from dual;
+
 select csf.*
   from OPEN.CC_SALES_FINANC_COND csf
  where csf.package_id = 224551078;
+
 --select a.*, rowid from OPEN.CC_FINANCING_REQUEST a where a.financing_id = 9905640;
 select a.*, rowid
   from OPEN.CUPON a
  where a.cuposusc = (select mp1.subscription_id
                        from open.mo_motive mp1
                       where mp1.package_id = 224551078);
+
 --select a.*, rowid  from OPEN.GC_DEBT_NEGOTIATION a where a.coupon_id in (176973417, 177664575, 178519584, 179276040);
 SELECT /*+
                     leading(quotation)

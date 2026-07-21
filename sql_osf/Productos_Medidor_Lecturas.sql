@@ -22,7 +22,8 @@ SELECT pp.subscription_id contrato,
     ON emss.emsssesu = pp.product_id
   left join open.lectelme lt
     on lt.leemelme = emss.emsselme
- where
---emss.emsssesu = 52774400
- pp.subscription_id = 17123961
+ where 1 = 1
+      --emss.emsssesu = 52774400
+   and emss.emsscoem = 'K-5642145-26' 
+   --and pp.subscription_id = 17123961
  order by lt.leemfele desc

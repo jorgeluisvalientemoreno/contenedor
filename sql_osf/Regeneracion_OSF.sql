@@ -7,15 +7,15 @@ SELECT distinct ora_.actividad || ' - ' || giorigen.description Actividad_Legaza
     on giorigen.items_id = ora_.actividad
   left join open.ge_items gigenera
     on gigenera.items_id = ora_.actividad_regenerar
- WHERE
---ORA_.ACTIVIDAD in (200005)
- ora_.actividad_regenerar in (200005)
+ WHERE 1 = 1
+   and ORA_.ACTIVIDAD in (4295346)
+    or ora_.actividad_regenerar in (4295346)
 --and ora_.id_causal in (9594)
  order by ora_.actividad || ' - ' || giorigen.description asc,
           ora_.id_causal asc;
 
 SELECT distinct /*+ INDEX(OR_regenera_activida IDX_OR_REGENERA_ACTIVIDA_02)
-                                                                                                                                    INDEX(actRegenerar PK_GE_ITEMS) */
+                                                                                                                                                     INDEX(actRegenerar PK_GE_ITEMS) */
                 ORA_.ACTIVIDAD || ' - ' || gi_padre.description Actividad_Padre,
                 ora_.id_causal || ' - ' || gc.description Causal_Padre,
                 decode(ora_.cumplida,

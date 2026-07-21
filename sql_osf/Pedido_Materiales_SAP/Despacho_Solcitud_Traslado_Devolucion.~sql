@@ -1,0 +1,52 @@
+select MMITCODI,
+       MMITNUDO, --Numrto Dcoumento FRONT OSF
+       MMITNUPE, ---Codigo pedido FRONT de LDCISOMA
+       MMITDSAP, -- Documento SAP
+       MMITTIMO, --tipo de movimiento 
+       MMITDESC, --descripcion movimiento 
+       MMITNATU, --signo naturaleza 
+       MMITCLIE, --nit del cliente 
+       MMITFESA, --fecha de salida del documento 
+       MMITVTOT, --valor total enviado por sap 
+       MMITESTA, --estado de la interfaz: 1 creada, 2 procesada, 3 con errores 
+       MMITINTE, --fecha creacion 
+       MMITFEVE, --fecha vencimiento 
+       MMITMENS, --mensaje procesamiento 
+       DMITMMIT,
+       DMITCODI,
+       DMITITEM,
+       DMITCOIN,
+       DMITCANT,
+       DMITCAPE,
+       DMITCOUN,
+       DMITVAUN,
+       DMITPIVA,
+       DMITNUFA,
+       DMITALDE,
+       DMITMARC,
+       DMITSAFI,
+       DMITMABO,
+       DMITVALO,
+       SERIMMIT,
+       SERIDMIT,
+       SERICODI,
+       SERINUME,
+       SERIESTR,
+       SERIMARC,
+       SERIANO,
+       SERICAJA,
+       SERIREMA,
+       SERITIEN
+  from open.ldci_intemmit i
+ inner join open.ldci_dmitmmit d
+    on d.dmitmmit = i.mmitcodi
+  left join open.ldci_seridmit s
+    on s.serimmit = i.mmitcodi
+   and s.seridmit = d.dmitcodi
+ where 1 = 1
+      --and i.mmitnupe =  'GDCA-275271' --Codigo FRONT generado en LDCISOMA
+   and i.mmitdsap = 413065560;
+select *
+  from open.ldci_intemmit a, open.ldci_dmitmmit b
+ WHERE a.mmitcodi = b.dmitmmit
+   AND a.mmitdsap = 413065560

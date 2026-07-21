@@ -1,7 +1,7 @@
 declare
 
-  isbObjeto  VARCHAR2(4000) := 'PKG_FM_POSSIBLE_NTL';--'PR_BOPRODUCT';
-  isbEsquema VARCHAR2(4000) := 'ADM_PERSON';---'OPEN';
+  isbObjeto  VARCHAR2(4000) := upper('coordenadas_direccion'); --'PR_BOPRODUCT';
+  isbEsquema VARCHAR2(4000) := upper('personalizaciones'); ---'OPEN';
 
   sbTipoObje VARCHAR2(4000);
   sbPermisos VARCHAR2(4000);
@@ -48,29 +48,53 @@ BEGIN
                          ' TO REXEINNOVA');
   
   END IF;
-  
+
   IF isbEsquema = 'OPEN' THEN
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM personalizaciones.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM adm_person.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM innovacion.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-    END IF;
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM personalizaciones.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM adm_person.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM innovacion.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+  END IF;
 
-    IF isbEsquema = 'PERSONALIZACIONES' THEN
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM open.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM adm_person.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM innovacion.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-    END IF;
+  IF isbEsquema = 'PERSONALIZACIONES' THEN
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM open.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM adm_person.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM innovacion.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+  END IF;
 
-    IF isbEsquema = 'ADM_PERSON' THEN
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM open.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM personalizaciones.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM innovacion.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-    END IF;
+  IF isbEsquema = 'ADM_PERSON' THEN
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM open.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM personalizaciones.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM innovacion.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+  END IF;
 
-    IF isbEsquema = 'INNOVACION' THEN
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM open.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM personalizaciones.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-        dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM adm_person.'||isbObjeto||' FOR '||isbEsquema||'.'||isbObjeto);
-    END IF;
+  IF isbEsquema = 'INNOVACION' THEN
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM open.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM personalizaciones.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+    dbms_output.put_line('execute immediate CREATE OR REPLACE SYNONYM adm_person.' ||
+                         isbObjeto || ' FOR ' || isbEsquema || '.' ||
+                         isbObjeto);
+  END IF;
 
 end;

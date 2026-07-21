@@ -1,0 +1,52 @@
+--Tipo de trabajo
+select ott.*, rowid
+  from open.or_task_type ott
+ where 1 = 1
+   and ott.task_type_id in (11415);
+
+---Causal
+select a.*, rowid
+  from OPEN.GE_CAUSAL a
+ where 1 = 1
+   and a.causal_id in (3910);
+---Items  - Actividad
+select gi.*, rowid
+  from open.ge_items gi
+ where 1 = 1
+   and gi.items_id in (100010646);
+
+--items para actividad e orden
+select a.*, rowid
+  from OPEN.OR_ACTIVIDAD a
+ where 1 = 1
+   and a.id_actividad in (100010646);
+
+--Tipo trabajo - Causal 
+select a.*, rowid
+  from OPEN.OR_TASK_TYPE_CAUSAL a
+ where 1 = 1
+   and a.task_type_id in (11415);
+
+--Tipo trabajo - Actividad
+select otti.*, rowid
+  from open.or_task_types_items otti
+ where 1 = 1
+   and otti.task_type_id in (11415) -- and otti.items_id in (100010374, 100010373)
+;
+
+--Rol
+select sr.*, rowid from open.sa_role sr where sr.role_id in (59, 407);
+
+--Actividad - Rol
+select oar.*, rowid
+  from open.or_actividades_rol oar
+ where 1 = 1
+   and oar.id_actividad in
+       (select otti.items_id
+          from open.or_task_types_items otti
+         where otti.task_type_id in (11415));
+
+--tipo de trabajo por tipo de contrato
+select ctc.*, rowid
+  from open.ct_tasktype_contype ctc
+ where ctc.task_type_id in (11415);

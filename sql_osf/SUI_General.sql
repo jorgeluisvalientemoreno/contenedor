@@ -1,0 +1,29 @@
+--Estado proceso SUI
+select a.*, rowid
+  from PERSONALIZACIONES.ESTAPROC a
+ where a.fecha_inicial_ejec >= sysdate - 5
+   and upper(a.proceso) like upper('%LDCREPANEXA%');
+
+--Errores SUI
+select a.*, rowid from OPEN.LDCLOGERRORRSUI a;
+
+--
+WITH DETAREPOATECLI AS
+ (SELECT LDC_DETAREPOATECLI.*, LDC_DETAREPOATECLI.ROWID
+    FROM LDC_DETAREPOATECLI
+   WHERE ATECLIREPO_ID in (select t.ateclirepo_id
+                             from LDC_ATECLIREPO t
+                            where t.ano_reporte = 2025
+                              and t.mes_reporte = 3)
+     AND FLAG_REPORTA = 'S')
+SELECT DETAREPOATECLI.*,
+       IOB.INTERACCION          INTERACCION_GG,
+       IOB.TIPO_RESPUESTA       TIPO_RESPUESTA_GG,
+       IOB.FECHA_RESPUESTA      FECHA_RESPUESTA_GG,
+       IOB.RADICACION_RESPUESTA RADICACION_RESPUESTA_GG,
+       IOB.TIPO_NOTIFICACION    TIPO_NOTIFICACION_GG,
+       IOB.FECHA_NOTIFICACION   FECHA_NOTIFICACION_GG,
+       IOB.FECHA_TRASLADO_SSPD  FECHA_TRASLADO_SSPD_GG
+  FROM DETAREPOATECLI
+ inner JOIN INTERACCIONES_ONBASE IOB
+    ON IOB.INTERACCION = DETAREPOATECLI.RADICADO_ING;

@@ -1,0 +1,113 @@
+-- Item Seriado
+select id_items_seriado,
+       items_id,
+       serie,
+       DECODE(estado_tecnico,
+              'N',
+              'N - Nuevo',
+              'R',
+              'R - Reacondicionado',
+              'D',
+              'D - Dañado') Estado_Tecnico,
+       gis.id_items_estado_inv || ' - ' || giei.descripcion Estado_Inventario,
+       costo,
+       subsidio,
+       DECODE('E',
+              'E - Empresa',
+              'T',
+              'T - Tercero',
+              'C',
+              'C - Cliente',
+              'V',
+              'V - Vendido al cliente ') propiedad,
+       fecha_ingreso,
+       fecha_salida,
+       fecha_reacon,
+       fecha_baja,
+       fecha_garantia,
+       gis.operating_unit_id || ' - ' || oou.name Unidad_Operativa,
+       numero_servicio,
+       gis.subscriber_id
+  from open.ge_items_seriado gis
+ inner join open.ge_items_estado_inv giei
+    on giei.id_items_estado_inv = gis.id_items_estado_inv
+  left join open.or_operating_unit oou
+    on gis.operating_unit_id = oou.operating_unit_id
+ where 1 = 1
+   AND OOU.OPERATING_UNIT_ID = 5140
+   and gis.id_items_estado_inv = 1
+   --and gis.serie = 'K-5642145-26'
+ order by fecha_ingreso;
+
+--Elemento de medicion
+select *
+  from OPEN.ELEMMEDI em
+  left join OPEN.ELMESESU emss
+    on emss.emsselme = em.elmeidem
+ where 1 = 1
+      --and em.elmecodi = 'T-20900343-2009'
+   and emss.emsssesu in (select pp.product_id
+                           from open.pr_product pp
+                          where pp.subscription_id = 67585043
+                            and pp.product_type_id = 7014);
+
+--Movimientos de bodega
+select d.documento_externo Documento_SAP,
+       d.causal_id || ' - ' || gc.description Causal_Movimiento,
+       d.fecha Fecha_Documentacion,
+       decode(d.estado,
+              'R',
+              'R - REGISTRADO',
+              'A',
+              'A - ABIERTO',
+              'C',
+              'C - CERRADO',
+              'E',
+              'E - EXPORTADO') ESTADO_DOCUMENTO,
+       m.items_id || ' - ' || i.description Item,
+       s.serie,
+       origen.operating_unit_id || ' - ' || origen.name Unidad_Origen,
+       dest.operating_unit_id || ' - ' || dest.name Unidad_Desitno,
+       m.move_date Fecha_Movimiento,
+       --a.quota Cuota_Cupo,
+       --a.balance Balance,
+       decode(m.movement_type,
+              'I',
+              'I - AUMENTA',
+              'D',
+              'D - DISMINUYE',
+              'N',
+              'N - NEUTRO')
+  from open.or_uni_item_bala_mov m
+ inner join open.ge_items_documento d
+    on d.id_items_documento = m.id_items_documento
+ inner join open.ge_items_seriado s
+    on s.id_items_seriado = m.id_items_seriado
+   and s.serie = 'S-917306-2011'
+ inner join open.or_operating_unit dest
+    on dest.operating_unit_id = d.destino_oper_uni_id
+ inner join open.ge_items i
+    on i.items_id = m.items_id
+ inner join open.or_operating_unit origen
+    on origen.operating_unit_id = d.operating_unit_id
+  left join OPEN.GE_CAUSAL gc
+    on gc.causal_id = d.causal_id
+--inner join open.or_ope_uni_item_bala a on a.operating_unit_id = dest.operating_unit_id and a.items_id = m.items_id
+ order by m.move_date desc;
+
+--Movimientos de bodega
+select a.*, rowid from OPEN.OR_UNI_ITEM_BALA_MOV a;
+
+--Elemento de medicion x servicio
+select a.*, rowid from OPEN.ELMESESU a;
+
+--Componente de servicio
+select css.*
+  from OPEN.COMPSESU css
+ where 1 = 1
+   and css.cmsssesu in (select pp.product_id
+                          from open.pr_product pp
+                         where pp.subscription_id = 67585043
+                           and pp.product_type_id = 7014)
+--and css.cmsstcom = 7039
+;

@@ -5,28 +5,56 @@ select a.*,
          where b.package_type_id = a.package_type_id)
   from open.LDC_PACKAGE_TYPE_ASSIGN a
  where a.package_type_id = 100101;
+
 --LDC_PRUOCERTIFICACION
 --UOBYSOL - Solicitud - Actividad
-select a.package_type_id,
-       c.operating_unit_id,
-       c.task_type_id,
-       c.procesopre,
-       c.procesopost,
-       c.catecodi,
-       c.items_id
+select a.package_type_id || ' - ' || ppt.description Solicitud,
+       c.operating_unit_id || ' - ' || oop.name Unidad_Operativa,
+       c.task_type_id Tipo_Traabjo,
+       c.procesopre PRE,
+       c.procesopost POST_,
+       c.catecodi Categoia,
+       c.items_id || ' - ' || gi.description Actividad
   from open.LDC_PACKAGE_TYPE_OPER_UNIT c
- inner join open.LDC_PACKAGE_TYPE_ASSIGN a
+  left join open.LDC_PACKAGE_TYPE_ASSIGN a
     on a.package_type_assign_id = c.package_type_assign_id
+  left join open.ge_items gi
+    on gi.items_id = c.items_id
+  left join open.ps_package_type ppt
+    on ppt.package_type_id = a.package_type_id
+  left join open.or_operating_unit oop
+    on oop.operating_unit_id = c.operating_unit_id
  where 1 = 1
-   /*and c.package_type_assign_id =
-       (select a1.package_type_assign_id
-          from open.LDC_PACKAGE_TYPE_ASSIGN a1
-         where a1.package_type_id = 100225)*/
-   and c.items_id in (100010005, --  VISITA VALIDACION CAMBIO DE USO COMERCIAL
-                      4294587, -- VISITA VALIDACION CAMBIO DE USO RESIDENCIAL
-                      100007104 -- NOVEDAD OFERTADO - VISITA VALIDACION CAMBIO DE USO
-                      );
+      --and a.package_type_assign_id in (1, 634)
+   and c.items_id in (100009788)
+ order by a.package_type_id;
 
+--Asignacion automatica por orden 
+select ooa.activity_id, ooa.package_id
+  from open.Or_Order_Activity ooa
+ where ooa.order_id = &orden;
+
+select c.*
+  from open.LDC_PACKAGE_TYPE_OPER_UNIT c
+ where c.items_id in (select ooa.activity_id
+                        from open.Or_Order_Activity ooa
+                       where ooa.order_id = &orden);
+
+select a.*, rowid from OPEN.LDC_ORDER a where a.order_id = &orden;
+
+select a.*, rowid
+  from PERSONALIZACIONES.LDC_LOGERRLEORRESU a
+ where a.order_id = &orden
+ order by a.fechgene desc;
+
+SELECT P.ORAOUNID
+  FROM LDC_ORDEASIGPROC p
+ WHERE P.ORAPSOGE in (select ooa.package_id
+                        from open.Or_Order_Activity ooa
+                       where ooa.order_id = &orden)
+   AND P.ORAOPROC = 'SEVAASAU';
+
+--Categoraias 
 select distinct PTOU.PACKAGE_TYPE_ASSIGN_ID Codigo_UOBYSOL,
                 ppt.package_type_id || ' - ' || ppt.description Solicitud,
                 PTOU.ITEMS_ID || ' - ' || gi.description Actividad,

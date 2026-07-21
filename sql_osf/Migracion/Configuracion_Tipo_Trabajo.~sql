@@ -1,0 +1,113 @@
+--Tipo de trabajo
+select ott.*, rowid
+  from open.or_task_type ott
+ where 1 = 1
+   and ott.task_type_id in (&TipoTrabajo);
+
+---Causal
+select a.*, rowid
+  from OPEN.GE_CAUSAL a
+ where 1 = 1
+   and a.causal_id in
+       (select a1.causal_id
+          from OPEN.OR_TASK_TYPE_CAUSAL a1
+         where a1.task_type_id = &TipoTrabajo);
+
+---Items  - Actividad
+select gi.*, rowid
+  from open.ge_items gi
+ where 1 = 1
+   and gi.items_id in
+       (select otti.items_id
+          from open.or_task_types_items otti
+         where otti.task_type_id = &TipoTrabajo);
+
+--items para actividad e orden
+select a.*, rowid
+  from OPEN.OR_ACTIVIDAD a
+ where 1 = 1
+   and a.id_actividad in
+       (select otti.items_id
+          from open.or_task_types_items otti
+         where otti.task_type_id = &TipoTrabajo);
+
+--Tipo trabajo - Causal 
+select a.*, rowid
+  from OPEN.OR_TASK_TYPE_CAUSAL a
+ where 1 = 1
+   and a.task_type_id in (&TipoTrabajo);
+
+--Tipo trabajo - Causal 
+select a.task_type_id || ' - ' || ott.description Tipo_Trabajo,
+       a.causal_id || ' - ' || gc.description Causal
+  from OPEN.OR_TASK_TYPE_CAUSAL a
+ inner join open.ge_causal gc
+    on gc.causal_id = a.causal_id
+ inner join open.or_task_type ott
+    on ott.task_type_id = a.task_type_id
+ where 1 = 1
+   and a.task_type_id in (&TipoTrabajo);
+
+--Tipo trabajo - Actividad
+select otti.*, rowid
+  from open.or_task_types_items otti
+ where 1 = 1
+   and otti.task_type_id in (&TipoTrabajo) -- and otti.items_id in (100010374, 100010373)
+;
+
+--Tipo trabajo - Actividad
+select otti.task_type_id || ' - ' || ott.description Tipo_Trabajo,
+       otti.items_id || ' - ' || gi.description Item,
+       otti.*
+  from open.or_task_types_items otti
+ inner join open.ge_items gi
+    on gi.items_id = otti.items_id
+ inner join open.or_task_type ott
+    on ott.task_type_id = a.task_type_id
+ where 1 = 1
+   and otti.task_type_id in (&TipoTrabajo)
+      -- and otti.items_id in (100010374, 100010373)
+   and 1 = 1;
+
+--Rol
+select sr.*, rowid
+  from open.sa_role sr
+ where sr.role_id in
+       (select oar.id_rol
+          from open.or_actividades_rol oar
+         where 1 = 1
+           and oar.id_actividad in
+               (select otti.items_id
+                  from open.or_task_types_items otti
+                 where otti.task_type_id in (&TipoTrabajo)));
+
+--Actividad - Rol
+select oar.*, rowid
+  from open.or_actividades_rol oar
+ where 1 = 1
+   and oar.id_actividad in
+       (select otti.items_id
+          from open.or_task_types_items otti
+         where otti.task_type_id in (&TipoTrabajo));
+
+--tipo de trabajo por tipo de contrato
+select ctc.*, rowid
+  from open.ct_tasktype_contype ctc
+ where ctc.task_type_id in (&TipoTrabajo);
+
+--Grupo de equivalencia
+select a.*, rowid
+  from OPEN.GE_EQUIVALENC_VALUES a
+ where a.equivalence_set_id = 218
+   and a.origin_value in
+       (select a1.causal_id
+          from OPEN.OR_TASK_TYPE_CAUSAL a1
+         where a1.task_type_id = &TipoTrabajo);
+
+--Regenera Actividad
+select a.*, rowid
+  from OPEN.OR_REGENERA_ACTIVIDA a
+ where a.actividad in
+       ((select otti.items_id
+          from open.or_task_types_items otti
+         where otti.task_type_id in (&TipoTrabajo)));

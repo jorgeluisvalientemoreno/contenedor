@@ -1,0 +1,1 @@
+SELECT * FROM OPEN.ldc_antic_contr WHERE IDCONTRATO = 1441;

@@ -1,0 +1,48 @@
+--La entdad ct_conditions_by_plan agrupa en un plan de condiciones en una serie de registros de la condiguracion las pestañas 
+--Plan de condiciones
+select * from CT_CONDITIONS_PLAN ccp order by ccp.conditions_plan_id;
+
+--Condiciones de Exclusion
+SELECT /*+ index (ct_conditions_by_plan IDX_CT_CONDITIONS_BY_PLAN01)*/
+ *
+  FROM CT_CONDITIONS cc, ct_conditions_by_plan ccpb
+ WHERE 1 = 1
+   and cc.conditions_id = ccpb.conditions_id
+   and ccpb.conditions_plan_id = 36
+   AND cc.level_ = 'E'
+ ORDER BY ccpb.exec_order;
+
+--Condiciones de Novedad
+SELECT /*+ index (ct_conditions_by_plan IDX_CT_CONDITIONS_BY_PLAN01)*/
+ *
+  FROM CT_CONDITIONS cc, ct_conditions_by_plan ccpb
+ WHERE 1 = 1
+   and cc.conditions_id = ccpb.conditions_id
+   and ccpb.conditions_plan_id = 36
+   AND cc.level_ = 'N'
+ ORDER BY ccpb.exec_order;
+
+--Plan de condiciones X Condiciones Simples
+SELECT /*+ index (ct_conditions_by_plan IDX_CT_CONDITIONS_BY_PLAN01)*/
+ *
+  FROM ct_conditions_by_plan
+ WHERE ct_conditions_by_plan.conditions_plan_id = 36
+   AND ct_conditions_by_plan.flag_type = 'S' --ct_boconstants.csbTypeSimpleCondition
+ ORDER BY ct_conditions_by_plan.exec_order;
+
+--Condiciones Simples X Items
+SELECT /*+ index (ct_conditions_by_plan IDX_CT_CONDITIONS_BY_PLAN01)*/
+ csci.*
+  FROM CT_SIMPLE_CONDITION csc, ct_simple_cond_items csci
+ WHERE 1 = 1
+   and csc.simple_condition_id = csci.simple_condition_id
+   and csc.items_id in (SELECT /*+ index (ct_conditions_by_plan IDX_CT_CONDITIONS_BY_PLAN01)*/
+                         ct_conditions_by_plan.items_id
+                          FROM ct_conditions_by_plan
+                         WHERE ct_conditions_by_plan.conditions_plan_id = 36
+                           AND ct_conditions_by_plan.flag_type = 'S' --ct_boconstants.csbTypeSimpleCondition
+                        )
+ ORDER BY csci.simple_cond_items_id;
+
+--Plan de condiciones x Condiciones formuladas
+

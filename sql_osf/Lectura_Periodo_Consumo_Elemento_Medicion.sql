@@ -3,7 +3,7 @@ select lectelme.leemcons leemcons,
        lectelme.leemsesu leemsesu,
        lectelme.leemtcon || ' -  ' || tipocons.tcondesc Tipo_Consumo,
        lectelme.leemclec || ' -  ' ||
-       open.CM_BCCONSUMOSMEDIDOS.fsbMeasurementCause(lectelme.leemclec) Causal_Medicion,
+       --open.CM_BCCONSUMOSMEDIDOS.fsbMeasurementCause(lectelme.leemclec) Causal_Medicion,
        lectelme.leempecs || ' -  ' || pericose.pecsproc Periodo_consumo,
        lectelme.leempefa || ' -  ' || perifact.pefadesc Periodo_facturacion,
        lectelme.leemlean Lectura_Anterior,
@@ -16,17 +16,17 @@ select lectelme.leemcons leemcons,
        lectelme.leemfame Factor_medida_consumo,
        lectelme.leemflco Flag_confirmacion_lectura,
        lectelme.leemoble || ' -  ' ||
-       open.cc_boBssUtil.fsbMeasurementComment(lectelme.leemoble) Primera_Observacion,
+       --open.cc_boBssUtil.fsbMeasurementComment(lectelme.leemoble) Primera_Observacion,
        lectelme.leemobsb || ' -  ' ||
-       open.cc_boBssUtil.fsbMeasurementComment(lectelme.leemobsb) Segunda_Observacion,
-       lectelme.leemobsc || ' -  ' ||
-       open.cc_boBssUtil.fsbMeasurementComment(lectelme.leemobsc) Tercera_Observacion
+       --open.cc_boBssUtil.fsbMeasurementComment(lectelme.leemobsb) Segunda_Observacion,
+       lectelme.leemobsc --|| ' -  ' || open.cc_boBssUtil.fsbMeasurementComment(lectelme.leemobsc) Tercera_Observacion
   from open.lectelme, open.tipocons, open.pericose, open.perifact
  where tipocons.tconcodi = lectelme.leemtcon
    and pericose.pecscons(+) = lectelme.leempecs
    and perifact.pefacodi(+) = lectelme.leempefa
       --and lectelme.leemelme = 786034   
       --and lectelme.leemtcon = :ConsumptionType
-   and lectelme.leemsesu = 1157074
+   and lectelme.leemsesu = 50093119
 --and lectelme.leempecs = 102375
  order by lectelme.leemfele desc;
+ 

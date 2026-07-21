@@ -29,12 +29,12 @@ select distinct a.package_type_id Tipo_Solicitud,
   left join open.GE_ATTRIBUTES_TYPE gat
     on gat.attribute_type_id = gea.attribute_type_id
  where 1 = 1
-      --and  package_type_id = &solicitud
-      --and a.required = 'Y'
-      --and a.tag_name = 'SUSCIDDI'
-      --and a.included_xml = 'Y'
-      --and ee.name_ = 'LDC_USER_NOTI'
-   and (select ge.name_
-          from open.ge_entity ge
-         where ge.entity_id = a.entity_id) = 'LDC_USER_NOTI'
- order by a.process_sequence
+   and package_type_id = &solicitud
+--and a.required = 'Y'
+--and a.tag_name = 'SUSCIDDI'
+--and a.included_xml = 'Y'
+--and ee.name_ = 'LDC_USER_NOTI'
+/*and (select ge.name_
+ from open.ge_entity ge
+where ge.entity_id = a.entity_id) = 'LDC_USER_NOTI'*/
+ order by a.process_sequence;

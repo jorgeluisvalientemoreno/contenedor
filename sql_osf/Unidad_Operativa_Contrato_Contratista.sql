@@ -46,16 +46,21 @@ SELECT ID_CONTRATISTA || ' - ' || NOMBRE_CONTRATISTA "CONTRATISTA",
                OR_OPERATING_UNIT.OPERATING_UNIT_ID
            AND GE_PERSON.PERSON_ID = OR_OPER_UNIT_PERSONS.PERSON_ID
            AND GE_PERSON.USER_ID = SA_USER.USER_ID
-           AND GE_PERSON.USER_ID = 6336 --SA_BOUSER.FNUGETUSERID(UT_SESSION.GETUSER)
+           AND OR_OPERATING_UNIT.OPERATING_UNIT_ID = 2109
+           --AND GE_PERSON.USER_ID = 6336 --SA_BOUSER.FNUGETUSERID(UT_SESSION.GETUSER)
            AND CONTRACTOR_ID IS NOT NULL);
 
 select distinct a.operating_unit_id || ' - ' || a.name Unidad_Operativa,
                 c.id_contrato || ' - ' || c.descripcion Contrato,
-                b.id_contratista || ' - ' || b.nombre_contratista Contratista
+                b.id_contratista || ' - ' || b.nombre_contratista Contratista,
+                c.status Estado_Contrato,
+                c.fecha_inicial,
+                c.fecha_final
   from open.or_operating_unit a, open.ge_contratista b, open.ge_contrato c
  where a.contractor_id = b.id_contratista
    and b.id_contratista = c.id_contratista
-   and c.fecha_inicial > '01/01/2022'
-      --and a.operating_unit_id = 1599
-   and a.contractor_id = 2029
-   and c.status = 'AB';
+      --and c.fecha_inicial > '01/01/2022'
+      --
+   and a.operating_unit_id = 1886
+-- and a.contractor_id = 2029
+-- and c.status = 'AB';

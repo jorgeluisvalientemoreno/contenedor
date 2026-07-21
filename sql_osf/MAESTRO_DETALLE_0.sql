@@ -1,5 +1,10 @@
 --Maestro Detalle Solo Entidad
-select distinct ex.executable_id, ex.name, e.name_, e.display_name
+select distinct ex.executable_id,
+                ex.name          Ejecutable,
+                ex.description,
+                e.name_          Entidad,
+                e.display_name,
+                e.module_id
   from open.gi_attrib_disp_data  d,
        open.ge_entity_attributes at,
        open.ge_entity            e,

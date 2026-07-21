@@ -1,0 +1,217 @@
+with DATA_GENERAL as
+ (select mm.product_id
+    from open.mo_packages mp
+   inner join open.mo_motive mm
+      on mm.package_id = mp.package_id
+   inner join open.Ps_package_type ppt
+      on mp.package_type_id = ppt.package_type_id
+   where mp.package_id in (201727817,
+                           223827778,
+                           215210451,
+                           229414291,
+                           212493427,
+                           207123442,
+                           228191610,
+                           198164386,
+                           202024978,
+                           210445902,
+                           199382140,
+                           199382081,
+                           197797108,
+                           197724798,
+                           204213776,
+                           197797102,
+                           200131424,
+                           197797106,
+                           204168540,
+                           198897416,
+                           209608197,
+                           228054614
+                           /*58692355,
+                           63863383,
+                           67243127,
+                           67381632,
+                           67477629,
+                           67543653,
+                           68602148,
+                           70061319,
+                           72862983,
+                           197461980,
+                           197545548,
+                           197624190,
+                           197724798,
+                           197797102,
+                           197797106,
+                           197797108,
+                           197950808,
+                           198107088,
+                           198133566,
+                           198164386,
+                           198401763,
+                           198667870,
+                           198777609,
+                           198897416,
+                           199382081,
+                           199382140,
+                           200131424,
+                           201727817,
+                           201903416,
+                           202024978,
+                           202121461,
+                           202631872,
+                           204079729,
+                           204168540,
+                           204213776,
+                           204516406,
+                           205532428,
+                           206469740,
+                           207123442,
+                           207801884,
+                           209091659,
+                           209608197,
+                           209794500,
+                           209897678,
+                           209907133,
+                           210068695,
+                           210416564,
+                           210445902,
+                           212425410,
+                           212493427,
+                           213661246,
+                           213734058,
+                           214106144,
+                           214110870,
+                           215008929,
+                           215210451,
+                           216130760,
+                           216278869,
+                           216327739,
+                           216374063,
+                           216457016,
+                           217100385,
+                           217349200,
+                           217998227,
+                           218162935,
+                           218345927,
+                           218506774,
+                           218745621,
+                           218901843,
+                           218960165,
+                           219132395,
+                           219649350,
+                           219659496,
+                           219705966,
+                           219718164,
+                           219783729,
+                           219892923,
+                           220080780,
+                           220367708,
+                           220642383,
+                           221068334,
+                           221479612,
+                           221749597,
+                           221781075,
+                           222167333,
+                           222205119,
+                           223025023,
+                           223082203,
+                           223430967,
+                           223456909,
+                           223503431,
+                           223827778,
+                           223850968,
+                           224346194,
+                           224941827,
+                           225028650,
+                           225278682,
+                           225662393,
+                           225868175,
+                           225950833,
+                           226109771,
+                           226635265,
+                           226831059,
+                           226856492,
+                           227046279,
+                           227052328,
+                           227239625,
+                           227351006,
+                           227416207,
+                           227463827,
+                           227479736,
+                           227729391,
+                           227982467,
+                           227991877,
+                           228054614,
+                           228191610,
+                           228378789,
+                           228464908,
+                           228717938,
+                           229252769,
+                           229414291,
+                           229501738,
+                           229681456,
+                           229699699,
+                           229917293,
+                           230019502,
+                           230241485*/))
+select distinct pps.product_id "Producto",
+                pps.active "Activo",
+                oo.order_id "Orden Suspension",
+                ooa.activity_id || ' - ' || lower(gi.description) "Actividad",
+                oo.task_type_id || ' - ' || lower(ott.description) "Tipo_Trabajo",
+                (select a2.user_id || ' - ' ||
+                        (select lower(p.name_)
+                           from open.ge_person p
+                          where p.user_id =
+                                (select a.user_id
+                                   from open.sa_user a
+                                  where a.mask = a2.user_id))
+                   from open.or_order_stat_change a2
+                  where a2.order_id = oo.order_id
+                    and (a2.initial_status_id = 0 and a2.final_status_id = 0)
+                    and rownum = 1) "Funcional Crea Orden",
+                (select a2.user_id || ' - ' ||
+                        (select lower(p.name_)
+                           from open.ge_person p
+                          where p.user_id =
+                                (select a.user_id
+                                   from open.sa_user a
+                                  where a.mask = a2.user_id))
+                   from open.or_order_stat_change a2
+                  where a2.order_id = oo.order_id
+                    and a2.final_status_id = 8
+                    and rownum = 1) "Funcional Legaliza Orden",
+                mp.package_id "Solicitud Suspension",
+                mp.package_type_id || ' - ' || lower(ppt.description) "Tipo Solicitud",
+                mp.user_id "Funcional Crea Solicitud",
+                pps.suspension_type_id || ' - ' || lower(GST.DESCRIPTION) "Tipo Suspension",
+                pps.aplication_date "Fecha Suspension"
+  from open.pr_prod_suspension pps,
+       open.or_order_activity  ooa,
+       open.or_order           oo,
+       open.ge_items           gi,
+       open.or_task_type       ott,
+       OPEN.GE_SUSPENSION_TYPE GST,
+       DATA_GENERAL,
+       open.mo_packages        mp,
+       open.ps_package_type    ppt
+ where 1 = 1
+   and gst.suspension_type_id = pps.suspension_type_id
+   and pps.product_id = DATA_GENERAL.product_id
+   and ooa.product_id = pps.product_id
+   and oo.order_id = ooa.order_id
+   and oo.execution_final_date = pps.aplication_date
+   and gi.items_id = ooa.activity_id
+   and ott.task_type_id = oo.task_type_id
+   and upper(ott.description) like '%SUSPEN%'
+   and pps.active = 'Y'
+   and mp.package_id(+) = ooa.package_id
+   and ppt.package_type_id(+) = mp.package_type_id
+   and not exists (select *
+          from open.CT_ITEM_NOVELTY CIN
+         where CIN.items_id = ooa.activity_id)
+   and not exists
+ (select *
+          from OPEN.OR_SUPPORT_ACTIVITY OSA
+         where OSA.SUPPORT_ACTIVITY_ID = ooa.activity_id)
+ order by pps.product_id asc, pps.aplication_date desc

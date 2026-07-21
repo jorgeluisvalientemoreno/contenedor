@@ -10,5 +10,7 @@ SELECT oou.operating_unit_id || ' - ' || oou.name Unidad_Operativa,
        open.or_operating_unit    oou
  WHERE ooutt.task_type_id = ott.task_type_id
    and ooutt.operating_unit_id = oou.operating_unit_id
---   and ooutt.operating_unit_id = inuOperatingUnitId
---   and ooutt.task_type_id = inuTaskType;
+   and ooutt.operating_unit_id = &OperatingUnitId
+   and ooutt.task_type_id = &TaskTypeId;
+   
+   

@@ -1,4 +1,4 @@
-select c.*, rowid from open.concepto c where c.conccodi in (30);
+select c.*, rowid from open.concepto c where c.conccodi in (674);
 select cbl.coblconc || ' - ' || c.concdesc Concepto,
        cbl.coblcoba || ' - ' || cbase.concdesc Concepto_Base,
        cbl.coblpoim,
@@ -9,5 +9,5 @@ select cbl.coblconc || ' - ' || c.concdesc Concepto,
     on cbase.conccodi = cbl.coblcoba
   left join open.concepto c
     on c.conccodi = cbl.coblconc
- WHERE cbl.coblconc in (30)
-    or cbl.coblcoba in (30)
+ WHERE cbl.coblconc in (674)
+    or cbl.coblcoba in (674)

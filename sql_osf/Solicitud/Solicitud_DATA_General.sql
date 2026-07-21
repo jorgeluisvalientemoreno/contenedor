@@ -67,13 +67,13 @@ select distinct MP.USER_ID Usuario,
     on mc.package_id = mp.package_id
    and 'S' in upper(&ConsultaComponente)
  where 1 = 1
---and mp.package_id in (226273986)
---and mm.subscription_id is not null--= 50062691
+--and mp.package_id in (228054614 )
+--and mm.subscription_id = 1131161
 --and mm.product_id = 17248467
 --and mp.cust_care_reques_num = '213303669'   
 --and mp.motive_status_id = 13
 --and mp.subscriber_id in (select a2.suscclie from OPEN.SUSCRIPC a2 where a2.susccodi = 50062691)
---and mm.product_id = 50366875
+--and mm.product_id = 50097342
 --and mp.package_type_id = 100342
 --and trunc(mp.request_date) >= '01/07/2025'
 --and (select count(1) from open.Or_Order_Activity ooa where ooa.package_id = mp.package_id ) = 0 

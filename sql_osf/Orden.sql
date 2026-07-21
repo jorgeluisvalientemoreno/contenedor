@@ -31,16 +31,8 @@ select distinct oo.order_id Orden,
                    from open.ge_items gi
                   where gi.items_id = ooa.activity_id) Actividad,
                 oo.task_type_id || ' - ' || ott.description Tipo_Trabajo,
-                oo.causal_id || ' - ' ||
-                (select gc.description
-                   from open.ge_causal gc
-                  where gc.causal_id = oo.causal_id) Causal_Legalizacion,
-                (select x.class_causal_id || ' - ' || x.description
-                   from open.ge_class_causal x
-                  where x.class_causal_id =
-                        (select y.class_causal_id
-                           from open.ge_causal y
-                          where y.causal_id = oo.causal_id)) Clasificacion_Causal,
+                oo.causal_id || ' - ' || gc.description Causal_Legalizacion,
+                x.class_causal_id || ' - ' || x.description Clasificacion_Causal,
                 oo.operating_unit_id || ' - ' ||
                 (select h.name
                    from open.or_operating_unit h
@@ -52,6 +44,18 @@ select distinct oo.order_id Orden,
                 oo.legalization_date Fecha_Legalizacion_Orden,
                 ooa.comment_ Comentario_Orden,
                 ooa.package_id Solicitud,
+                mp.user_id || ' - ' ||
+                (select a.db_user_name
+                   from OPEN.SA_USER a
+                  where a.mask = mp.user_id) Usuario,
+                (select mp.pos_oper_unit_id || ' - ' || oou.name
+                   from open.or_operating_unit oou
+                  where oou.operating_unit_id = mp.pos_oper_unit_id) Punto_venta,
+                (select gp.person_id || ' - ' || gp.name_
+                   from OPEN.GE_PERSON gp
+                  where gp.person_id = mp.person_id) Funcional,
+                --mp.user_id Usuario,
+                --mp.person_id Funcional,
                 mm.causal_id Causal_Solicitud,
                 ooa.instance_id Instancia,
                 mp.package_type_id || ' - ' ||
@@ -69,15 +73,10 @@ select distinct oo.order_id Orden,
                    from open.ps_motive_status d
                   where d.motive_status_id = mp.motive_status_id) Estado_Solicitud,
                 mp.comment_ Comentario_Solicitud,
-                (select mp.SUBSCRIBER_ID || ' - ' || gs.subscriber_name || ' ' ||
-                        gs.subs_last_name
-                   from OPEN.GE_SUBSCRIBER gs
-                  where gs.subscriber_id = mp.SUBSCRIBER_ID) Cliente,
-                (select mp.CONTACT_ID || ' - ' || gs.subscriber_name || ' ' ||
-                        gs.subs_last_name
-                   from OPEN.GE_SUBSCRIBER gs
-                  where gs.subscriber_id = mp.CONTACT_ID) Contacto_Solicitante,
-                
+                nvl(mp.SUBSCRIBER_ID, ooa.SUBSCRIBER_ID) || ' - ' ||
+                gs.subscriber_name Cliente,
+                nvl(mp.CONTACT_ID, gs.subscriber_id) || ' - ' ||
+                gs.subscriber_name || ' ' || gs.subs_last_name Contacto_Solicitante,
                 mp.ADDRESS_ID Direccion_Solicitud,
                 (select a2.user_id || ' - ' ||
                         (select p.name_
@@ -197,8 +196,8 @@ select distinct oo.order_id Orden,
                    from open.or_operating_unit oou
                   where oou.operating_unit_id = oo.operating_unit_id) TIPO_ASIGNACION,
                 /*(select mm1.Motive_Id
-                   from open.mo_motive mm1
-                  where mm1.package_id = MP.PACKAGE_ID) Motivo,*/
+                 from open.mo_motive mm1
+                where mm1.package_id = MP.PACKAGE_ID) Motivo,*/
                 --/*
                 (SELECT min(order_id)
                    FROM open.or_related_order
@@ -269,9 +268,6 @@ select distinct oo.order_id Orden,
                        ooa.status || ' - Finalizado',
                        ooa.status || ' - Registrado') Estado_Actividad,
                 ooa.order_activity_id Actividad_Orden,
-                (select mp.pos_oper_unit_id || ' - ' || oou.name
-                   from open.or_operating_unit oou
-                  where oou.operating_unit_id = mp.pos_oper_unit_id) Punto_venta,
                 pp.category_id || ' - ' || categoria.catedesc Categoria_Producto,
                 pp.subcategory_id || ' - ' || Subcategoria.Sucadesc subCategoria_Producto,
                 (select decode(count(1), 0, 'No Tiene Flujo', 'Tiene Flujo')
@@ -295,16 +291,26 @@ select distinct oo.order_id Orden,
                 ' - Nueva:' || mbdc.new_subcategory_id) SubCategoria,
                 SegmentoDireccion.Category_ Categoria_Segmento,
                 SegmentoDireccion.Subcategory_ SubCategoria_Segmento,
-                --*/
-                /*decode((select count(1)
-                  from OPEN.LDCI_PACKAGE_CAMUNDA_LOG LPCL
-                 where lpcl.package_id = mp.package_id),
-                1,
-                'SI',
-                'NO') Generada_CAMUNDA,*/
-                CT.CERTIFICATE_ID     ACTA,
-                ga.extern_pay_date    Pago_Acta,
-                ga.extern_invoice_num Factura_Pago_Acta
+                --
+                decode((select count(1)
+                         from OPEN.LDCI_PACKAGE_CAMUNDA_LOG LPCL
+                        where lpcl.package_id = mp.package_id),
+                       1,
+                       'SI',
+                       'NO') Generada_CAMUNDA,
+                CT.CERTIFICATE_ID ACTA,
+                ga.extern_pay_date Pago_Acta,
+                ga.extern_invoice_num Factura_Pago_Acta,
+                (select 'Cantidad Suspensiones: ' || count(1) ||
+                        ' - Tipo Suspension: ' || prps.suspension_type_id
+                   from OPEN.PR_PROD_SUSPENSION PRPS
+                  where PRPS.PRODUCT_ID = pp.product_id
+                    and 'S' = &ConsultaSupension
+                  group by prps.suspension_type_id) Suspension_Activa,
+                oo.defined_contract_id Contrato_Definido,
+                oo.is_pending_liq Pendiente_liuidacion
+--},pkg_BOConsultaEmpresa.fsbObtEmpresaUnidadOper(nvl(mp.pos_oper_unit_id,oo.operating_unit_id)) Gasera
+--,ROWNUM
   from open.or_order_activity ooa
   left join open.or_order oo
     on oo.order_id = ooa.order_id
@@ -373,30 +379,39 @@ select distinct oo.order_id Orden,
   left join open.ge_acta ga
     on ga.id_acta = ct.certificate_id
    and 'S' = &ConsultarActa
- where 1 = 1 
----Orden
--- and ooa.order_id in (336812247)
--- and ooa.order_activity_id in(42}95152)
--- and oo.task_type_id in (11029)
--- and oo.order_status_id = 8--not in (8, 12, 0, 7, 6)
--- and oo.causal_id = 9944--in (8, 12)
---and trunc(oo.legalization_date) >= '01/08/2024'
---and oo.causal_id  =9322
--- and trunc(oo.created_date) = '15/01/2024'
--- and oo.operating_unit_id in (1775, 1931, 1773, 3557)
--- and ooa.activity_id in (4295751)
--- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
--- and ooa.subscription_id in (48052662)
--- and ooa.product_id in (17248467)
+  LEFT JOIN open.ge_causal gc
+    ON gc.causal_id = oo.causal_id
+  LEFT JOIN open.ge_class_causal x
+    ON x.class_causal_id = GC.CLASS_CAUSAL_ID
+  left join OPEN.GE_SUBSCRIBER gs
+    on (gs.subscriber_id = mp.SUBSCRIBER_ID or
+       gs.subscriber_id = ooa.subscriber_id)
+ where 1 = 1
+      ---Orden
+      --and ooa.order_id in (&orden)
+      -- and ooa.order_activity_id in(42}95152)
+      --  and oo.task_type_id in (10450)
+      --  and oo.order_status_id in (8)
+      -- and oo.causal_id = 9944--in (8, 12)
+      -- and trunc(oo.legalization_date) >= '01/08/2024'
+      -- and oo.causal_id  =9322
+      --  and trunc(oo.created_date) >= '01/05/2026'
+      -- and oo.operating_unit_id in (3662)
+      -- and ooa.activity_id in (4295776)
+      -- and ooa.comment_ ='Orden creada por proceso automatico de reglas de facturacion. 64 - SERVICIO DIRECTO. Se solicita verificacion del estado del CM, Gasodomesticos y lecturas.'
+      --and upper(mp.comment_) like '%SE GENERAN DESDE JOB (JOB_SUSPENSION_XNO_CERT)%'
+      --and ooa.subscription_id in (17142128)  --Contrato
+      --
+   and ooa.product_id in (1000203) -- Producto
 -- and ooa.order_activity_id in (322824237)
 -- and mp.package_type_id = 100210
 -- and trunc(mp.request_date) >= '07/07/2024'
 -- and mp.motive_status_id = 13
 -- and mp.cust_care_reques_num in ('212356951', '212681274')
--- and mp.package_type_id = 100225
+-- and mp.package_type_id = 100321
 -- and (mm.subscription_id = 48052064 or mm.product_id = 50062001)
 -- and mp.cust_care_reques_num in ('210494274','207413106')
--- and mp.package_id in (222985614)
+-- and mp.package_id in (240038322)
 -- and mm.motive_id = 96953319
 -- and pp.product_status_id = 15
 -- and rownum = 1
@@ -409,5 +424,8 @@ and oo.legalization_date >= '01/08/2024'*/
 -- and servicio.servcodi = 7053
 --and ga.estado = 'A'
 -- and ga.id_acta is null
+--AND ROWNUM = 1
+--and trunc(oo.execution_final_date) = '05/06/2024'
+-- and gs.subscriber_id = 3484749
+--and 'GDGU' = pkg_BOConsultaEmpresa.fsbObtEmpresaUnidadOper(oo.operating_unit_id)
  order by oo.created_date desc;
---305802917

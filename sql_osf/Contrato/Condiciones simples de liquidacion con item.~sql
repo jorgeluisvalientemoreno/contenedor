@@ -1,0 +1,7 @@
+select c.*
+  from OPEN.CT_SIMPLE_CONDITION C, OPEN.GE_ITEMS I
+ WHERE C.ITEMS_ID IN (100002360, 100002359, 100002361)
+   AND C.ITEMS_ID = I.ITEMS_ID;
+select *
+  from ct_simple_cond_items r
+ WHERE r.simple_condition_id IN (980, 978, 979);

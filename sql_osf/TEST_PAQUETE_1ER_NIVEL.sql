@@ -1,12 +1,12 @@
 BEGIN
     pkg_generapaqueten1.prcGenerar
     (
-        isbTabla            => 'CONF_ASIG_CAMBIO_USO',
+        isbTabla            => 'LDC_TIPOTRABADICLEGO',
         isbEsquemaTabla     => 'OPEN',
         isbAutor            => 'Jorge Valiente',
-        isbCaso             => 'OSF-4545',
-        --isbColsPseudoPK     => 'PACKAGE_ID,DATO_ADICIONAL'--,
+        isbCaso             => 'OSF-6047',
+        isbColsPseudoPK     => 'TIPOTRABLEGO_ID,TIPOTRABADICLEGO_ID',
         iblGenGetxColumna   => TRUE,
-        iblGenUpdxColumna   => TRUE
+        iblGenUpdxColumna   => FALSE
     );
 END;

@@ -1,0 +1,26 @@
+--Tipo de trabajo
+select ott.*, rowid
+  from open.or_task_type ott
+ where 1 = 1
+   and ott.task_type_id in
+       (select a1.task_type_id
+          from OPEN.OR_TASK_TYPE_CAUSAL a1
+         where a1.causal_id = &Causal);
+
+---Causal
+select a.*, rowid
+  from OPEN.GE_CAUSAL a
+ where 1 = 1
+   and a.causal_id in (&Causal);
+
+--Tipo trabajo - Causal 
+select a.*, rowid
+  from OPEN.OR_TASK_TYPE_CAUSAL a
+ where 1 = 1
+   and a.causal_id in (&Causal);
+
+--Grupo de equivalencia
+select a.*, rowid
+  from OPEN.GE_EQUIVALENC_VALUES a
+ where a.equivalence_set_id = 218
+   and a.origin_value in (&Causal);

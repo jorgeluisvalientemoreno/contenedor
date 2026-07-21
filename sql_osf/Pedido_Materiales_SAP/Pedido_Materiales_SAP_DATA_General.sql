@@ -32,7 +32,7 @@ select t.trsmcodi Pedido,
  inner join open.ge_contratista gc
     on gc.id_contratista = oou.contractor_id
  where 1 = 1
-      --and TRSMCODI = 260756
+   and TRSMCODI in (271792, 271793, 271794)
    and trsmdsre is not null;
 select l.result_process_id,
        l.request_material_id,
@@ -48,5 +48,5 @@ select l.result_process_id,
   left join open.LDCI_TRANESTA lt_en
     on lt_en.codigo = l.estado_nuevo
  where 1 = 1
-   and l.request_material_id in (260756)
+   and l.request_material_id in (271792, 271793, 271794)
  order by l.register_date desc;

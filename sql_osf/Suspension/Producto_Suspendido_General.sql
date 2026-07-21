@@ -1,0 +1,21 @@
+select pps.product_id Producto,
+       pps.suspension_type_id || ' - ' || GST.DESCRIPTION Tipo_Suspension,
+       pps.aplication_date Fecha_Suspension,
+       oo.order_id Ultima_Orden_Suspension,
+       oo.task_type_id || ' - ' || ott.description Tipo_Trabajo
+  from open.pr_prod_suspension pps
+ inner join open.pr_product pp
+    on pp.product_id = pps.product_id
+ inner join open.GE_SUSPENSION_TYPE GST
+    on gst.suspension_type_id = pps.suspension_type_id
+ inner join open.or_order_activity ooa
+    on ooa.order_activity_id = pp.suspen_ord_act_id
+ inner join open.or_order oo
+    on oo.order_id = ooa.order_id
+   and oo.task_type_id in (11157, 11293)
+ inner join open.or_task_type ott
+    on ott.task_type_id = oo.task_type_id
+ where 1 = 1
+   and pps.active = 'Y'
+   and pps.suspension_type_id not in (14, 15)
+ order by pps.product_id asc, pps.aplication_date desc;

@@ -23,16 +23,18 @@ use_nl( g h )
  '[' || to_char(instancias_flujo.final_date, 'DD-MM-YYYY HH24:MI:SS') || ']' "Fecha Final",
  e.name_ || ' [' || instancias_flujo.external_id || ']' "Código Externo",
  g.action_id || '-' || g.description "Acción",
- h.config_expression_id || '-' || h.object_name || ' [' || h.expression || ']' "Regla Acción"
+ h.config_expression_id || '-' || h.object_name || ' [' || h.expression || ']' "Regla Acción",
+ WIA.ATTRIBUTE_ID || '-' || ga.display_name Atibuto,
+ WIA.VALUE "Valor Atributo"
   FROM (SELECT /*+ leading( a )
-        index( a IDX_WF_DATA_EXTERNAL_01 )
-        index( b PK_WF_UNIT_TYPE )
-        index( c IDX_WF_INSTANCE_02 )
-        index( f PK_WF_UNIT )
-        use_nl( a b )
-        use_nl( a c )
-        use_nl( c f )
-        */
+                index( a IDX_WF_DATA_EXTERNAL_01 )
+                index( b PK_WF_UNIT_TYPE )
+                index( c IDX_WF_INSTANCE_02 )
+                index( f PK_WF_UNIT )
+                use_nl( a b )
+                use_nl( a c )
+                use_nl( c f )
+                */
          a.pack_type_tag,
          b.description unit_type_description,
          c.instance_id,
@@ -50,18 +52,25 @@ use_nl( g h )
                open.wf_unit_type     b,
                open.wf_instance      c,
                open.wf_unit          f
-         WHERE a.package_id = 213221608 --998937
+         WHERE a.package_id = 236398848 --,222913554) --998937
            AND b.unit_type_id = a.unit_type_id -- 31657381
            AND c.plan_id = a.plan_id
-           AND f.unit_id(+) = c.unit_id) instancias_flujo,
-       open.wf_instance_status d,
-       open.ge_entity e,
-       open.ge_action_module g,
-       open.gr_config_expression h
- WHERE d.instance_status_id = instancias_flujo.status_id
-   AND e.entity_id(+) = instancias_flujo.entity_id
-   AND g.action_id(+) = instancias_flujo.action_id
-   AND h.config_expression_id(+) = g.config_expression_id
+           AND f.unit_id(+) = c.unit_id) instancias_flujo
+  left join open.wf_instance_status d
+    on d.instance_status_id = instancias_flujo.status_id
+  left join open.ge_entity e
+    on e.entity_id = instancias_flujo.entity_id
+  left join open.ge_action_module g
+    on g.action_id = instancias_flujo.action_id
+  left join open.gr_config_expression h
+    on h.config_expression_id = g.config_expression_id
+  left join open.WF_INSTANCE_ATTRIB WIA
+    on WIA.INSTANCE_ID = instancias_flujo.instance_id
+  left join OPEN.GE_ATTRIBUTES GA
+    on GA.ATTRIBUTE_ID = WIA.ATTRIBUTE_ID
+   and 'S' = &ConsultarAtributos
+--and GA.ATTRIBUTE_ID(+) = WIA.ATTRIBUTE_ID
 --and d.instance_status_id = 4
+---and instancias_flujo.unit_id = 836
  START WITH instancias_flujo.instance_id = instancias_flujo.plan_id
 CONNECT BY PRIOR instancias_flujo.instance_id = instancias_flujo.parent_id;

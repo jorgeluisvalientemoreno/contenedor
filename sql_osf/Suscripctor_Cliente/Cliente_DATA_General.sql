@@ -1,79 +1,75 @@
 --DATA GENERAL
-SELECT s.susccodi Contrato,
-       a.address_id Direccion,
+SELECT a.address_id Direccion,
        a.subscriber_id Suscriptor,
        a.subscriber_name Nombre,
        a.subs_last_name Apellido,
        a.ident_type_id || ' - ' || git.description Tipo_Identificacion,
-       --cc_boOssDescription.fsbIdentificationType(a.ident_type_id) ident_type_id,
        a.identification Identification,
-       a.subscriber_type_id || ' - ' || ges.description
-       --cc_boOssDescription.fsbSubscriberType(a.subscriber_type_id) 
-        Tipo_Suscriptor,
-       --cc_boOssSubscriberData.fsbGetPhone(a.subscriber_id) phone,
-       --cc_boOssDescription.fsbParsedAddress(a.address_id) address,
-       --cc_boossaddress.fnuGeoLocIdByAddressId(a.address_id) || ' - ' ||
-       --cc_boOssDescription.fsbGeograLocation(cc_boossaddress.fnuGeoLocIdByAddressId(a.address_id)) geograp_location_id,
-       --cc_boossaddress.fnuNeighborthoodIdByAddressId(a.address_id) || ' - ' ||
-       --CC_BOOssDescription.fsbNeighborthood(cc_boossaddress.fnuNeighborthoodIdByAddressId(a.address_id)) neighborthood_id,
+       a.subscriber_type_id || ' - ' || ges.description Tipo_Suscriptor,
        a.e_mail e_mail,
-       a.contact_id Constacto,
-       b.subscriber_name || ' ' || b.subs_last_name Nombre_Contacto,
-       b.phone Telefono,
-       b.address Direccion_Contacto,
-       a.subs_status_id || ' - ' || a.subs_status_id
-       --cc_boOssDescription.fsbSubscriberStatus(a.subs_status_id) 
-        Estado,
-       c.economic_activity_id || ' - ' || gea.description
-       --cc_boOssDescription.fsbEconomicActivity(c.economic_activity_id) 
-        Actividad_Economica,
-       --cc_boOssSubscriberData.fsbNationality(a.subscriber_id) nationality,
-       --cc_boOssSubscriberData.fnuCivilState(a.subscriber_id) || ' - ' ||
-       --cc_boOssDescription.fsbCivilState(cc_boOssSubscriberData.fnuCivilState(a.subscriber_id)) civil_state_id,
-       --cc_boOssSubscriberData.fsbGender(a.subscriber_id) gender,
+       A.phone Telefono,
+       A.address Direccion,
+       a.subs_status_id || ' - ' || a.subs_status_id Estado,
+       c.economic_activity_id || ' - ' || gea.description Actividad_Economica,
        c.url url,
        decode(a.active, 'Y', 'Si', 'No') Activo,
        a.vinculate_date Fecha_Vinculacion,
-       a.marketing_segment_id || ' - ' || a.marketing_segment_id
-       --cc_boOssDescription.fsbMarketingSegment(a.marketing_segment_id) 
-        marketing_segment,
-       ---cc_boOssSubscriberData.fnuGetPersonClassId(a.subscriber_id) || ' - ' ||
-       --cc_boOssSubscriberData.fsbGetPersonClass(a.subscriber_id) person_class_id,
-       --cc_boOssSubscriberData.fnuGetPaymentBehavior(a.subscriber_id) payment_behavior,
-       a.accept_call accept_call,
-       --cc_boOssSubscriberData.fdtGetDateBithBySubscriber(a.subscriber_id) date_birth,
-       a.taxpayer_type || ' - ' || a.taxpayer_type
-       --cc_boOssSubscriberData.fdtGetDescTaxPayerType(a.taxpayer_type) 
-        taxpayer_type,
-       --cc_boOssSubscriberData.fsbGetScoring(a.subscriber_id) scoring,
-       decode(a.Is_Corporative, 'Y', 'Si', 'No') Is_Corporative,
+       a.marketing_segment_id || ' - ' || a.marketing_segment_id SEGMENTO_MERCADO,
+       a.accept_call Acepta_Llamadas,
+       a.taxpayer_type || ' - ' || a.taxpayer_type TIPO_CONTRIBUYENTE,
+       decode(a.Is_Corporative, 'Y', 'Si', 'No') Cliente_Corporativo,
+       ab.segment_id Segmento,
+       as1.category_ Categoria_Segmento,
+       as1.subcategory_ Subcategoria_Segmento,
+       a.contact_id Contacto,
+       s.susccodi Contrato,
        s.susccicl Cilo_Facturacion,
        s.SUSCIDDI || ' - ' || ab.address Direccion_Cobro,
-       ab.segment_id Segmento,
-       as1.category_ Categoria,
-       as1.subcategory_ Subcategoria,
-       s.SUSCTISU || ' - ' || gst.description Tipo_contrato
+       s.SUSCTISU || ' - ' || gst.description Tipo_contrato,
+       ss_.sesunuse Servicio_Producto,
+       ss_.sesuserv || ' - ' || servicio.servdesc Tipo,
+       ss_.sesuesco || ' - ' || ec.escodesc Estado_Servicio,
+       pp.product_status_id || ' - ' || pps.description Estado_Producto,
+       decode(ss_.sesuesfn,
+              'A',
+              'Al dia',
+              'D',
+              'Con Deuda',
+              'C',
+              'Castigado',
+              'M',
+              'Mora',
+              ss_.sesuesfn) Estado_Financiero
 --, cc_boOssSubscriberData.fnuGetOlderClient(a.subscriber_id) older_client
   FROM open.ge_subscriber a
-  left join open.ge_subscriber b
-    on b.subscriber_id(+) = a.contact_id
   left join open.ge_subs_busines_data c
     on a.subscriber_id = c.subscriber_id
-  left join open.suscripc s
-    on a.subscriber_id = s.suscclie
-  left join open.ab_address ab
-    on ab.address_id = s.SUSCIDDI
-  left join OPEN.AB_SEGMENTS as1
-    on as1.segments_id = ab.segment_id
-  left join OPEN.GE_SUBSCRIPTION_TYPE gst
-    on gst.subscription_type = s.susctisu
   left join open.ge_identifica_type git
     on git.ident_type_id = a.ident_type_id
   left join open.ge_subscriber_type ges
     on ges.subscriber_type_id = a.subscriber_type_id
   left join open.ge_economic_activity gea
     on gea.economic_activity_id = c.economic_activity_id
+  left join open.suscripc s
+    on a.subscriber_id = s.suscclie
+  left join open.ab_address ab
+    on ab.address_id = s.SUSCIDDI
+  left join OPEN.GE_SUBSCRIPTION_TYPE gst
+    on gst.subscription_type = s.susctisu
+  left join OPEN.AB_SEGMENTS as1
+    on as1.segments_id = ab.segment_id
+  left join open.servsusc ss_
+    on ss_.sesususc = s.susccodi
+  left join open.pr_product pp
+    on pp.product_id = ss_.sesunuse
+  left join open.servicio
+    on servicio.servcodi = ss_.sesuserv
+  left join open.estacort ec
+    on ec.escocodi = ss_.sesuesco
+  left join open.ps_product_status pps
+    on pps.product_status_id = pp.product_status_id
  WHERE 1 = 1
-   and s.susccodi in (67450983)
+      --and s.susccodi in (67450983)
+   AND A.IDENTIFICATION = '9013940062'
 --and 
 -- a.subscriber_id in (67450983)

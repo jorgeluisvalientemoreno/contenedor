@@ -19,17 +19,18 @@ select p.product_id Producto,
     on s.sesunuse = p.product_id
  inner join open.perifact pf
     on pf.pefacicl = s.sesucicl
---and pf.pefaactu = 'S'
+   and pf.pefaactu = 'S'
 --and pf.pefacicl in (1801)
  inner join open.ab_address aa
     on aa.address_id = p.address_id
  inner join open.ps_product_status ps
     on ps.product_status_id = p.product_status_id
- inner join ab_segments aseg
+ inner join open.ab_segments aseg
     on aseg.segments_id = aa.segment_id
  inner join open.categori csegmento
     on csegmento.catecodi = aseg.category_
- where p.category_id in (3)
-   and p.product_type_id = 7014
-      --and p.product_id in(50366875,50051197)
-   and p.product_status_id = 1
+ where 1 = 1
+      --and p.category_id in (3)
+      --and p.product_type_id = 7014
+   and p.product_id in (1999623)
+--and p.product_status_id = 1

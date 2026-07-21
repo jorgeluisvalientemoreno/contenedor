@@ -23,7 +23,9 @@ select t.trsmcodi Pedido,
     on oou.operating_unit_id = t.trsmunop
  inner join open.ge_contratista gc
     on gc.id_contratista = oou.contractor_id
- where TRSMCODI = 260756;
+ where 1 = 1
+      --and TRSMCODI = 260756
+   and 1 = 1;
 select l.result_process_id,
        l.request_material_id,
        l.estado_anterior || ' - ' || lt_ea.descripcion,
@@ -37,5 +39,6 @@ select l.result_process_id,
     on lt_ea.codigo = l.estado_anterior
   left join open.LDCI_TRANESTA lt_en
     on lt_en.codigo = l.estado_nuevo
- where l.request_material_id in (260756)
+ where 1 = 1
+   and l.request_material_id in (260756)
  order by l.register_date desc;

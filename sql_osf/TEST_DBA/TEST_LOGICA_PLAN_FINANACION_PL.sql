@@ -1,0 +1,369 @@
+declare
+
+  inuorderid      open.or_order.order_id%type := 391214253;
+  inupackageid    open.mo_packages.package_id%type := 236619516;
+  onufinanplanid  open.plandife.pldicodi%type;
+  onuquotasnumber open.plandife.pldicuma%type;
+
+  nuOrderValue open.or_order.order_value%type := 0;
+  -- Producto
+  cnuProductID open.or_order_activity.product_id%type;
+
+  -- Tipo de Actividad
+  nuActivityId open.ge_items.items_id%type;
+
+  nuNeighborthoodId open.ab_address.neighborthood_id%type;
+  nuAdressId        open.pr_product.address_id%type;
+  nuGeograpLoca     open.ab_address.geograp_location_id%type;
+  nuGeograpDepto    open.ab_address.geograp_location_id%type;
+  nuGeograpPais     open.ab_address.geograp_location_id%type;
+  nuCategoryId      open.servsusc.sesucate%type;
+  nuSubcategory     open.servsusc.sesusuca%type;
+  rcRecoFinanCond   open.ldc_finan_cond%rowtype;
+  CURSOR cuFinanCond(inuActivityId open.ge_items.items_id%type,
+                     isbLocation   varchar2,
+                     inuCateId     number,
+                     inuSucaId     number,
+                     inuOrderValue open.or_order.order_value%type) IS
+    SELECT *
+      FROM open.ldc_finan_cond
+     WHERE reco_activity = inuActivityId
+       AND geo_location_id in
+           (SELECT to_number(regexp_substr(isbLocation, '[^,]+', 1, LEVEL)) AS Localidadad
+              FROM dual
+            CONNECT BY regexp_substr(isbLocation, '[^,]+', 1, LEVEL) IS NOT NULL)
+          /*(SELECT TO_NUMBER(COLUMN_VALUE)
+          FROM TABLE(LDC_BOUTILITIES.SPLITSTRINGS(isbLocation, ',')))*/
+       AND category_id = inuCateId
+       AND subcategory_id = inuSucaId
+       and inuOrderValue between nvl(ldc_finan_cond.min_value, 0) and
+           nvl(ldc_finan_cond.max_value, 999999999);
+
+  /*Cursor para obtener el valor de la orden por item NC 378*/
+  cursor cuCostItem is
+    select nvl(c.sales_value, 0)
+      from open.ge_unit_cost_ite_lis c
+     where c.items_id = nuActivityId;
+
+  /* Cursor para obtener el valor de la orden  NC 878   */
+  cursor cuOrderValue(inuOrderId1 open.or_order.order_id%type) is
+    SELECT sum(nvl(or_order_items.total_price, 0)) value
+      FROM open.or_order_items
+     WHERE or_order_items.order_id = inuOrderId1
+       AND or_order_items.out_ = 'Y';
+
+  sbLocation varchar2(2000);
+  --rcOrderActivity OR_BCOrderActivities.tyrcOrderActivities;
+
+  cnuActRecCM  open.ld_parameter.numeric_value%type; --:= dald_parameter.fnuGetNumeric_Value('LDC_ACT_RECONE_CM',0);
+  cnuActRecACO open.ld_parameter.numeric_value%type; --:= dald_parameter.fnuGetNumeric_Value('LDC_ACT_RECONE_ACOM',0);
+
+  FUNCTION fnuValReconexion(inuProductId in open.OR_order_activity.product_id%type,
+                            inuPackageId in open.OR_order_activity.package_id%type)
+    RETURN number IS
+  
+    sbItemsReconexionCM varchar2(4000); --:= '|' ||dald_parameter.fsbGetValue_Chain('LDC_ITEMS_RECONEXION_CM',0) || '|';
+    nuReconexionCM      number;
+  
+    CURSOR cuValReconexion(nuProductId in open.OR_order_activity.product_id%type,
+                           nuPackageId in open.OR_order_activity.package_id%type) IS
+      SELECT count(1)
+        FROM open.OR_order_activity a, open.OR_order_items b
+       WHERE a.order_id = b.order_id
+         AND a.ORDER_activity_id = b.ORDER_activity_id
+         AND a.product_id = nuProductId
+         AND a.package_id = nuPackageId
+         AND instr(sbItemsReconexionCM, '|' || b.items_id || '|') > 0
+         AND b.legal_item_amount = 1; --open.ld_boconstans.cnuonenumber;
+  
+  BEGIN
+  
+    select '|' || l.value_chain
+      into sbItemsReconexionCM
+      from open.ld_parameter l
+     where l.parameter_id = 'LDC_ITEMS_RECONEXION_CM';
+  
+    dbms_output.put_line('Inicio Procedimiento LDC_BcFinanceOt.fnuValReconexion');
+    dbms_output.put_line('Producto: ' || inuProductId);
+    dbms_output.put_line('Solicitud: ' || inuPackageId);
+  
+    -- Si el CURSOR esta abierto, se cierra
+    if cuValReconexion%isopen then
+      close cuValReconexion;
+    end if;
+  
+    -- Se crea un registro del CURSOR
+    open cuValReconexion(inuProductId, inuPackageId);
+    fetch cuValReconexion
+      INTO nuReconexionCM;
+    close cuValReconexion;
+  
+    dbms_output.put_line('Fin Procedimiento LDC_BcFinanceOt.fnuValReconexion[' ||
+                         nuReconexionCM || ']');
+  
+    return nuReconexionCM;
+  
+    /*EXCEPTION
+    
+    when ex.CONTROLLED_ERROR then
+      raise ex.CONTROLLED_ERROR;
+    
+    when others then
+      Errors.setError;
+      raise ex.CONTROLLED_ERROR;*/
+  
+  END fnuValReconexion;
+
+begin
+
+  select l.numeric_value
+    into cnuActRecCM
+    from open.ld_parameter l
+   where l.parameter_id = 'LDC_ACT_RECONE_CM';
+  select l.numeric_value
+    into cnuActRecACO
+    from open.ld_parameter l
+   where l.parameter_id = 'LDC_ACT_RECONE_ACOM';
+
+  dbms_output.put_line('Inicio LDC_BcFinanceOt.GetFinanCondbyProd');
+
+  --Obtener actividad principal de la ot
+  --nuActivityId :=  daor_order_activity.fnugetactivity_id(fnuGetActivityId(inuOrderId)); --or_bolegalizeorder.prget--rcOrderActivity.nuOrderActivity;
+
+  select ooa.activity_id
+    into nuActivityId
+    from open.Or_Order_Activity ooa
+   where ooa.order_id = inuOrderId;
+
+  dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd => nuActivityId=>' ||
+                       nuActivityId);
+
+  --Obtener valor de la ot a financiar
+  -- Inicio NC 878
+  --nuOrderValue := nvl(daor_order.fnugetorder_value(inuOrderId), 0);
+
+  dbms_output.put_line('Antes nuOrderValue=>' || nuOrderValue);
+  select oo.order_value
+    into nuOrderValue
+    from open.or_order oo
+   where oo.order_id = inuOrderId;
+
+  dbms_output.put_line('Despues 1 nuOrderValue=>' || nuOrderValue);
+
+  if nuOrderValue = 0 then
+    open cuOrderValue(inuOrderId);
+    fetch cuOrderValue
+      into nuOrderValue;
+    close cuOrderValue;
+  end if;
+
+  dbms_output.put_line('Despues 2 nuOrderValue=>' || nuOrderValue);
+
+  -- Fin NC 878
+
+  dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd => nuOrderValue=>' ||
+                       nuOrderValue);
+
+  /*Inicio: Obtener el valor de la actividad principal NC378*/
+  if nuOrderValue = 0 then
+    open cuCostItem;
+    fetch cuCostItem
+      into nuOrderValue;
+    close cuCostItem;
+    dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd => nuOrderValue=>' ||
+                         nuOrderValue);
+  end if;
+  /*Fin NC378*/
+  --Obtener el producto
+
+  /*cnuProductID := to_number(ldc_boutilities.fsbgetvalorcampostabla('or_order_activity',
+  'order_id',
+  'product_id',
+  inuOrderId,
+  'package_id',
+  inuPackageId));*/
+  select ooa.product_id
+    into cnuProductID
+    from open.Or_Order_Activity ooa
+   where ooa.order_id = inuOrderId;
+
+  dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd => cnuProductID=>' ||
+                       cnuProductID);
+  --Obener la direccion del producto
+  --nuAdressId := dapr_product.fnugetaddress_id(cnuProductID);
+
+  select pp.address_id
+    into nuAdressId
+    from open.pr_product pp
+   where pp.product_id = cnuProductID;
+
+  dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd => nuAdressId=>' ||
+                       nuAdressId);
+  --Obtener el barrio
+  nuNeighborthoodId := open.daab_address.fnugetneighborthood_id(nuAdressId);
+
+  /*select a.neighborthood_id
+   into nuNeighborthoodId
+   from OPEN.AB_ADDRESS a
+  where a.address_id = nuAdressId;*/
+
+  sbLocation := nuNeighborthoodId || ',';
+  dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd => nuNeighborthoodId=>' ||
+                       nuNeighborthoodId);
+  --Obtener la localidad
+  nuGeograpLoca := open.daab_address.fnugetgeograp_location_id(nuAdressId);
+  sbLocation    := sbLocation || nuGeograpLoca || ',';
+  dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd => nuGeograpLoca =>' ||
+                       nuGeograpLoca);
+  --Obtener el Depto
+  --nuGeograpDepto := open.dage_geogra_location.fnugetgeo_loca_father_id(nuGeograpLoca);
+
+  select a.geo_loca_father_id
+    into nuGeograpDepto
+    from OPEN.GE_GEOGRA_LOCATION a
+   where a.geograp_location_id = nuGeograpLoca;
+
+  sbLocation := sbLocation || nuGeograpDepto || ',';
+  dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd => nuGeograpDepto =>' ||
+                       nuGeograpDepto);
+  --Obtener Pais
+  --Obtener categoria y subcategoria
+  --nuGeograpPais := dage_geogra_location.fnugetgeo_loca_father_id(nuGeograpDepto);
+
+  select a.geo_loca_father_id
+    into nuGeograpPais
+    from OPEN.GE_GEOGRA_LOCATION a
+   where a.geograp_location_id = nuGeograpDepto;
+
+  sbLocation := sbLocation || nuGeograpPais;
+  dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd => nuGeograpPais =>' ||
+                       nuGeograpPais);
+  --nuCategoryId  := pktblservsusc.fnugetcategory(cnuProductID);
+  --nuSubcategory := pktblservsusc.fnugetsubcategory(cnuProductID);
+
+  select ss.sesucate, ss.sesusuca
+    into nuCategoryId, nuSubcategory
+    from open.servsusc ss
+   where ss.sesunuse = cnuProductID;
+
+  dbms_output.put_line('nuSubcategory[' || nuSubcategory ||
+                       '], nuSubcategory[' || nuSubcategory || ']');
+
+  dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd => sbLocation => ' ||
+                       sbLocation);
+  dbms_output.put_line('Ejecucion LDC_BcFinanceOt.GetFinanCondbyProd[' ||
+                       nuGeograpLoca || '][' || nuCategoryId || '][' ||
+                       nuSubcategory || ']');
+
+  rcRecoFinanCond := NULL;
+
+  dbms_output.put_line('IF nuActivityId[' || nuActivityId ||
+                       '] = cnuActRecACO[' || cnuActRecACO ||
+                       '] AND fnuValReconexion(cnuProductID[' ||
+                       cnuProductID || '], inuPackageId[' || inuPackageId ||
+                       '])[' ||
+                       fnuValReconexion(cnuProductID, inuPackageId) ||
+                       '] > 0 THEN');
+  IF nuActivityId = cnuActRecACO AND
+     fnuValReconexion(cnuProductID, inuPackageId) > 0 then
+    dbms_output.put_line('Paso 1');
+    --ld_boconstans.cnuCero THEN
+    nuActivityId := cnuActRecCM;
+    -- Busca si existe un criterio que coincida con la ubicacion geografica, categoria
+    --y subcategoria del producto
+    OPEN cuFinanCond(nuActivityId,
+                     sbLocation,
+                     nuCategoryId,
+                     nuSubcategory,
+                     nuOrderValue);
+    FETCH cuFinanCond
+      INTO rcRecoFinanCond;
+    CLOSE cuFinanCond;
+  
+    IF rcRecoFinanCond.rec_finan_cond_id IS NULL THEN
+      /* Se busca configuracion por ubicacion geografica y  Categoria*/
+      OPEN cuFinanCond(nuActivityId,
+                       sbLocation,
+                       nuCategoryId,
+                       -1,
+                       nuOrderValue);
+      FETCH cuFinanCond
+        INTO rcRecoFinanCond;
+      CLOSE cuFinanCond;
+      IF rcRecoFinanCond.rec_finan_cond_id IS NULL THEN
+        /* Se busca configuracion por ubicacion geografica*/
+        OPEN cuFinanCond(nuActivityId, sbLocation, -1, -1, nuOrderValue);
+        FETCH cuFinanCond
+          INTO rcRecoFinanCond;
+        CLOSE cuFinanCond;
+      END IF;
+    END IF;
+  
+    /* Si el registro no es nulo se asigna condiciones de Financiacion */
+    IF rcRecoFinanCond.rec_finan_cond_id IS NOT NULL THEN
+      onuFinanPlanId  := rcRecoFinanCond.finan_plan_id;
+      onuQuotasNumber := rcRecoFinanCond.quotas_number;
+    END IF;
+  
+  ELSE
+    dbms_output.put_line('Paso 2');
+  
+    /* Busca si existe un criterio que coincida con la ubicacion geografica, categoria
+    y subcategoria del producto */
+  
+    dbms_output.put_line('nuActivityId: ' || nuActivityId);
+    dbms_output.put_line('sbLocation: ' || sbLocation);
+    dbms_output.put_line('nuCategoryId: ' || nuCategoryId);
+    dbms_output.put_line('nuSubcategory: ' || nuSubcategory);
+    dbms_output.put_line('nuOrderValue: ' || nuOrderValue);
+  
+    OPEN cuFinanCond(nuActivityId,
+                     sbLocation,
+                     nuCategoryId,
+                     nuSubcategory,
+                     nuOrderValue);
+    FETCH cuFinanCond
+      INTO rcRecoFinanCond;
+    CLOSE cuFinanCond;
+  
+    dbms_output.put_line('rcRecoFinanCond.rec_finan_cond_id: ' ||
+                         rcRecoFinanCond.rec_finan_cond_id);
+    IF rcRecoFinanCond.rec_finan_cond_id IS NULL THEN
+      /* Se busca configuracion por ubicacion geografica y  Categoria*/
+      OPEN cuFinanCond(nuActivityId,
+                       sbLocation,
+                       nuCategoryId,
+                       -1,
+                       nuOrderValue);
+      FETCH cuFinanCond
+        INTO rcRecoFinanCond;
+      CLOSE cuFinanCond;
+      IF rcRecoFinanCond.rec_finan_cond_id IS NULL THEN
+        /* Se busca configuracion por ubicacion geografica*/
+        OPEN cuFinanCond(nuActivityId, sbLocation, -1, -1, nuOrderValue);
+        FETCH cuFinanCond
+          INTO rcRecoFinanCond;
+        CLOSE cuFinanCond;
+      END IF;
+    END IF;
+  
+    /* Si el registro no es nulo se asigna condiciones de Financiacion */
+    IF rcRecoFinanCond.rec_finan_cond_id IS NOT NULL THEN
+      onuFinanPlanId  := rcRecoFinanCond.finan_plan_id;
+      onuQuotasNumber := rcRecoFinanCond.quotas_number;
+    END IF;
+  
+  END IF;
+
+  dbms_output.put_line('onuFinanPlanId: ' || onuFinanPlanId);
+  dbms_output.put_line('onuQuotasNumber: ' || onuQuotasNumber);
+
+  dbms_output.put_line('Fin LDC_BcFinanceOt.GetFinanCondbyProd');
+  /*EXCEPTION
+  when ex.CONTROLLED_ERROR then
+    raise ex.CONTROLLED_ERROR;
+  when others then
+    Errors.setError;
+    raise ex.CONTROLLED_ERROR;*/
+
+end;

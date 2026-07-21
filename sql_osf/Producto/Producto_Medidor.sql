@@ -1,3 +1,8 @@
+select * from open.ge_items_seriado t where t.serie in ('S-917306-2011');
+select pp.*, rowid from open.pr_product pp where pp.product_id=1999618;  
+select emss.*, rowid from OPEN.ELMESESU emss where emss.emsssesu = 1999618;  
+select a.*, rowid from OPEN.LECTELME a where a.leemsesu = 1999618;
+
 select --emss.emsselme,
  emss.emsscoem Medidor,
  emss.emssfein Fecha_Instalacion,
@@ -36,7 +41,7 @@ select --emss.emsselme,
  gis.fecha_reacon Fecha_Reacondicionamiento,
  gis.fecha_baja Fecha_de_Baja,
  gis.fecha_garantia Fecha_Garantia,
- gs.subscriber_name || '-' || gs.subs_last_name
+ gs.subscriber_name || '-' || gs.subs_last_name PROPIETARIO
   from OPEN.ELMESESU emss
   left join open.ge_items_seriado gis
     on gis.serie = emss.emsscoem
@@ -49,4 +54,4 @@ select --emss.emsselme,
  where emss.emsssesu in
        (select pp.product_id
           from open.pr_product pp
-         where pp.subscription_id in (67637315));
+         where pp.subscription_id in (1999618));

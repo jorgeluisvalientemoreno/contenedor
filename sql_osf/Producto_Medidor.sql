@@ -36,7 +36,7 @@ select --emss.emsselme,
  gis.fecha_reacon Fecha_Reacondicionamiento,
  gis.fecha_baja Fecha_de_Baja,
  gis.fecha_garantia Fecha_Garantia,
- gs.subscriber_name || '-' || gs.subs_last_name
+ gs.subscriber_name || '-' || gs.subs_last_name Nombre_Suscriptor
   from OPEN.ELMESESU emss
   left join open.ge_items_seriado gis
     on gis.serie = emss.emsscoem
@@ -46,7 +46,8 @@ select --emss.emsselme,
     on giei.id_items_estado_inv = gis.id_items_estado_inv
   left join OPEN.ge_subscriber gs
     on gs.subscriber_id = gis.subscriber_id
- where emss.emsssesu in
+ where 1 = 1
+   and emss.emsssesu in
        (select pp.product_id
           from open.pr_product pp
-         where pp.subscription_id in (67637315));
+         where pp.subscription_id in (48032581));

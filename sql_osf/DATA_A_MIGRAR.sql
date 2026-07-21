@@ -50,3 +50,8 @@ select oar.*, rowid
 select ctc.*, rowid
   from open.ct_tasktype_contype ctc
  where ctc.task_type_id in (11415);
+
+--Contrato
+select gc.*, rowid
+  from open.ge_contrato gc
+ where gc.id_contrato = 11801;

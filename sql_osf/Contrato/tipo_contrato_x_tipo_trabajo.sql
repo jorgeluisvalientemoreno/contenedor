@@ -1,0 +1,41 @@
+SELECT ctc.TASKTYPE_CONTYPE_ID,
+       ctc.CONTRACT_TYPE_ID Tipo_Contrato,
+       ctc.TASK_TYPE_ID || ' - ' || ott.description Tipo_Trabajo,
+       ctc.CONTRACT_ID Conrtato,
+       decode(ctc.FLAG_TYPE,
+              'T',
+              'T - Tipo Contrato',
+              'C',
+              'C - Contrato',
+              'No Definido') FLAG_TIPO
+
+  FROM OPEN.CT_TASKTYPE_CONTYPE ctc
+ inner join open.or_task_type ott
+    on ott.task_type_id = ctc.task_type_id
+ WHERE 1 = 1
+      --and ctc.TASK_TYPE_ID = 10576
+   and 1 = 1;
+
+--tipo de contrato x tipo de trabajo x contrato
+SELECT ctc.TASKTYPE_CONTYPE_ID,
+       ctc.CONTRACT_TYPE_ID || ' - ' || gtc.descripcion Tipo_Contrato,
+       ctc.TASK_TYPE_ID || ' - ' || ott.description Tipo_Trabajo,
+       ctc.CONTRACT_ID Conrtato,
+       decode(ctc.FLAG_TYPE,
+              'T',
+              'T - Tipo Contrato',
+              'C',
+              'C - Contrato',
+              'No Definido') FLAG_TIPO
+  FROM OPEN.CT_TASKTYPE_CONTYPE ctc
+ inner join open.or_task_type ott
+    on ott.task_type_id = ctc.task_type_id
+  left join open.ge_contrato gc
+    on (gc.id_tipo_contrato = ctc.contract_type_id or
+       ctc.contract_id = gc.id_contrato)
+  left join OPEN.GE_TIPO_CONTRATO gtc
+    on gtc.id_tipo_contrato = gc.id_tipo_contrato
+ WHERE 1 = 1
+      --and ctc.TASK_TYPE_ID = 10576
+   and gc.id_contrato = 12121
+   and 1 = 1;
